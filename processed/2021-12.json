@@ -1,0 +1,987 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2021-12",
+  "messages": [
+    {
+      "id": "msg-e2d1f780eaa4",
+      "message_id": "<74c1a5d3-fd82-5210-1bb6-ad06e8c6c93d@ffri.uniri.hr>",
+      "from_name": "marKo",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2021-12-01T13:48:20+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<CAPzcKfsgT+N4yhzGG5bkq-0LV=2jz45zn50MkW2R=Lu0NGQw=w@mail.gmail.com>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<CAPzcKfsgT+N4yhzGG5bkq-0LV=2jz45zn50MkW2R=Lu0NGQw=w@mail.gmail.com>"
+      ],
+      "body_plain": "Not sure what to say in this regard, as those methods will produce very \nsimilar results. If  I recall it correctly, Douglas Bates suggests doing \na profile CI.\nI usually do a bootstrap and do not think much about it (sorry to say \nthat, actually).\n\nAs for the number of cores (CORES in the mentioned code), they depends \non the processor you have. To establish the max number, in Windows start \nthe task manager and see how many threads you have. In Linux, You can \nuse some system monitor to check that.\n\nHope it helps,\n\nMarko\n\n  On 30. 11. 2021. 16:40, Victoria Pattison-Willits wrote:\n> Hi there\n> Thank you to the OP for sharing this question and I am following this\n> thread as I was wondering which CIs were the best to go with for mixed\n> models - I have been calculating three different types (Wald, Boot and\n> Profile) and was not really sure for mixed models (in my case v similar an\n> lmer with a nested random effect crossed with a second random effect and 8\n> fixed effects (no interactive terms)). I have been on a massive learning\n> curve and so still a little hazy how the t approaches differ in their calc\n> of  the CIs - I have been reporting the bootstrap CIs in my project\n> although there was only a very small difference when plotted for all 3\n> across all my fixed effects. Just want to check in light of this question\n> this is the correct approach!\n> \n> One also quick q related to OQ - how do you determine the number of CORES\n> if I wanted to include that code - does it depend on processing speeds etc?\n> \n> Cheers and this is my first question and I still am a relative novice so\n> thanks in advance for patience with probably very simple questions! :)\n> \n> Vicki PW\n> \n> On Fri, Nov 26, 2021 at 2:30 PM marKo <mtoncic at ffri.uniri.hr> wrote:\n> \n>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>> Dear colleagues,\n>>>\n>>>       I use linear mixed models with 1 random effect (subject), 2 fixed\n>>>       factors (one  is between factor and another is repeated) and one\n>>> covariate, and\n>>>       explore all main effects, 2-way interactions and one 3-way\n>>> interaction.\n>>>       Regarding of used software, somewhere I get effect of intercept,\n>>>       somewhere not. Reviewer asks to use p-adjustment for these\n>>>       effects. My dilemma is should I apply p-correction for 7 tests or 8\n>>> (including\n>>>       random intercept for subjects)?\n>>>\n>>>       The output do not contain F for random effect, but only variance.\n>>>       Also, the output do not contain effect size. CIs are available only\n>>> for\n>>>       betas as product of specific level of both fixed effects and\n>>> covariate, but\n>>>       since I have 3 levels for between and 4 for repeated effects, the\n>>>       output is not helpful + there is no possibility to change reference\n>>> group.\n>>>       Thus, I'm stuck with p-adjustment.\n>>>\n>>>      Any help is welcomed.\n>>>       Thank you.\n>>>\n>>\n>> As I understand, p-values are somewhat unreliable (In LMM). As a\n>> sensible alternative maybe you could compute bootstrap CI and use that\n>> to infer about significance of specific effects (if i have understood\n>> your problem correctly).\n>> I you use lme4 or nlme, this should not be a problem.\n>>\n>> You ca use (for model  m)\n>>\n>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>\n>> even use some multi-core processing to speed thing up\n>>\n>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus =\n>> No.of.CORES, nsim=No.of.SIMULATIONS)\n>>\n>> change No.of.SIMULATIONS with the desired number of repetitions (1000 or\n>> so)\n>> change No.of.CORES with the desired number of cores (depends of your\n>> machine).\n>>\n>> Hope it helps.\n>>\n>>\n>> --\n>> Marko Ton?i?, PhD\n>> Assistant professor\n>> University of Rijeka\n>> Faculty of Humanities and Social Sciences\n>> Department of Psychology\n>> Sveucilisna avenija 4, 51000 Rijeka, CROATIA\n>> e-mail: mtoncic at ffri.uniri.hr\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Not sure what to say in this regard, as those methods will produce very \nsimilar results. If  I recall it correctly, Douglas Bates suggests doing \na profile CI.\nI usually do a bootstrap and do not thi",
+      "thread_id": "thread-e2d1f780eaa4",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-fb9540c0638f",
+      "message_id": "<61A897060000DA06@ts201-smtpout71.ddc.teliasonera.net> (added by MAILER-DAEMON@telia.com)",
+      "from_name": "Björn Johansson",
+      "from_email_hash": "91d61cd4fa7619610fdd59f3c1ba1693eef74d71c9769d1b881b3ddedb998be9",
+      "date": "2021-12-02T11:58:59+01:00",
+      "subject": "[R-sig-ME] Variance estimation in gamma GLMMs",
+      "subject_clean": "Variance estimation in gamma GLMMs",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "In the program below I am making comparisons between lme4::glmer and glmmTMB for some simple randomly generated data with just an intercept and a single random effect, for the distributions Poisson, binomial and gamma with log link. For the Poisson and binomial data the results are almost identical. For the gamma data they are very close, except for the estimates of the variance of the random effects (the actual variance is 0.15 in all cases). I would like to understand why.\n\nKind regards\n\n-----------------------------------------------------------------\n\nlibrary(lme4)\nlibrary(glmmTMB)\n\n# Poisson\n\nbeta <- 3  # Intercept\nvarv <- 0.15 # Variance of random effect\nmlf <- sample(1:100,10000,replace=TRUE) # Levels of the random effect\nsimdata <- data.frame(mlf)\nv <- rnorm(100,sd=sqrt(varv))\nsimdata$v <- v[simdata$mlf]\nsimdata$expx <- exp(beta + simdata$v)\nsimdata$x <- rpois(nrow(simdata),simdata$expx)\n\nest_glmer <- glmer(x ~ 1 + (1|mlf), family = poisson, data = simdata, nAGQ=1L)\nest_tmb <- glmmTMB(x ~ 1 + (1|mlf), data=simdata, family=poisson)\nsummary(est_glmer)$varcor$mlf[[1]]\nunname(unlist(summary(est_tmb)$varcor))\n\n# Binomial\n\nbeta <- 0.5 # Intercept\nvarv <- 0.15  # Variance of random effect\nmlf <- sample(1:100,10000,replace=TRUE) # Levels for the random effect\nsimdata <- data.frame(mlf)\nv <- rnorm(100,sd=sqrt(varv))\nsimdata$v <- v[simdata$mlf]\nsimdata$p <- exp(beta+simdata$v)/(1+exp(beta+simdata$v))\nsimdata$x <- rbinom(nrow(simdata),1,simdata$p)\n\nest_glmer <- glmer(x ~ 1 + (1|mlf), family = binomial, data = simdata, nAGQ=1L)\nest_tmb <- glmmTMB(x ~ 1 + (1|mlf), data=simdata, family=binomial)\nsummary(est_glmer)$varcor$mlf[[1]]\nunname(unlist(summary(est_tmb)$varcor))\n\n# Gamma\n\nmlf <- sample(1:100,10000,replace=TRUE)\nbeta <- 7  # Intercept\nphi <- 0.5 # 1/(shape parameter) in the gamma distribution\nvarv=0.15    # Variance of the random effect\nsimdata <- data.frame(mlf)\nv <- rnorm(100,sd=sqrt(varv))\nsimdata$v <- v[simdata$mlf]\nsimdata$expx <- exp(beta + simdata$v)\nsimdata$x <- rgamma(nrow(simdata),1/phi,1/(simdata$expx*phi))\n\nest_glmer <- glmer(x ~ 1 + (1|mlf), family = Gamma(link=\"log\"), data = simdata, nAGQ=1L)\nest_tmb <- glmmTMB(x ~ 1 + (1|mlf), data=simdata, family=Gamma(link=\"log\"))\nsummary(est_glmer)$varcor$mlf[[1]]\nunname(unlist(summary(est_tmb)$varcor))\n\n\nSkickades fr?n E-post f?r Windows\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "In the program below I am making comparisons between lme4::glmer and glmmTMB for some simple randomly generated data with just an intercept and a single random effect, for the distributions Poisson, b",
+      "thread_id": "thread-fb9540c0638f",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-e5c0083123ff",
+      "message_id": "<CAPzcKfuQj+L+UwDKaRjoPqPsJugsBEpP2OVvrbsqEbPMz7DYsw@mail.gmail.com>",
+      "from_name": "Victoria Pattison-Willits",
+      "from_email_hash": "ff3d096e5f3618952a91386e5ea337458271d603c9291f453b181e9dc82df9e5",
+      "date": "2021-12-02T09:02:50-05:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<74c1a5d3-fd82-5210-1bb6-ad06e8c6c93d@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<CAPzcKfsgT+N4yhzGG5bkq-0LV=2jz45zn50MkW2R=Lu0NGQw=w@mail.gmail.com>",
+        "<74c1a5d3-fd82-5210-1bb6-ad06e8c6c93d@ffri.uniri.hr>"
+      ],
+      "body_plain": "That is great thank you for the quick reply Marko :)\n\nOn Wed, Dec 1, 2021 at 7:48 AM marKo <mtoncic at ffri.uniri.hr> wrote:\n\n> Not sure what to say in this regard, as those methods will produce very\n> similar results. If  I recall it correctly, Douglas Bates suggests doing\n> a profile CI.\n> I usually do a bootstrap and do not think much about it (sorry to say\n> that, actually).\n>\n> As for the number of cores (CORES in the mentioned code), they depends\n> on the processor you have. To establish the max number, in Windows start\n> the task manager and see how many threads you have. In Linux, You can\n> use some system monitor to check that.\n>\n> Hope it helps,\n>\n> Marko\n>\n>   On 30. 11. 2021. 16:40, Victoria Pattison-Willits wrote:\n> > Hi there\n> > Thank you to the OP for sharing this question and I am following this\n> > thread as I was wondering which CIs were the best to go with for mixed\n> > models - I have been calculating three different types (Wald, Boot and\n> > Profile) and was not really sure for mixed models (in my case v similar\n> an\n> > lmer with a nested random effect crossed with a second random effect and\n> 8\n> > fixed effects (no interactive terms)). I have been on a massive learning\n> > curve and so still a little hazy how the t approaches differ in their\n> calc\n> > of  the CIs - I have been reporting the bootstrap CIs in my project\n> > although there was only a very small difference when plotted for all 3\n> > across all my fixed effects. Just want to check in light of this question\n> > this is the correct approach!\n> >\n> > One also quick q related to OQ - how do you determine the number of CORES\n> > if I wanted to include that code - does it depend on processing speeds\n> etc?\n> >\n> > Cheers and this is my first question and I still am a relative novice so\n> > thanks in advance for patience with probably very simple questions! :)\n> >\n> > Vicki PW\n> >\n> > On Fri, Nov 26, 2021 at 2:30 PM marKo <mtoncic at ffri.uniri.hr> wrote:\n> >\n> >> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n> >>> Dear colleagues,\n> >>>\n> >>>       I use linear mixed models with 1 random effect (subject), 2 fixed\n> >>>       factors (one  is between factor and another is repeated) and one\n> >>> covariate, and\n> >>>       explore all main effects, 2-way interactions and one 3-way\n> >>> interaction.\n> >>>       Regarding of used software, somewhere I get effect of intercept,\n> >>>       somewhere not. Reviewer asks to use p-adjustment for these\n> >>>       effects. My dilemma is should I apply p-correction for 7 tests\n> or 8\n> >>> (including\n> >>>       random intercept for subjects)?\n> >>>\n> >>>       The output do not contain F for random effect, but only variance.\n> >>>       Also, the output do not contain effect size. CIs are available\n> only\n> >>> for\n> >>>       betas as product of specific level of both fixed effects and\n> >>> covariate, but\n> >>>       since I have 3 levels for between and 4 for repeated effects, the\n> >>>       output is not helpful + there is no possibility to change\n> reference\n> >>> group.\n> >>>       Thus, I'm stuck with p-adjustment.\n> >>>\n> >>>      Any help is welcomed.\n> >>>       Thank you.\n> >>>\n> >>\n> >> As I understand, p-values are somewhat unreliable (In LMM). As a\n> >> sensible alternative maybe you could compute bootstrap CI and use that\n> >> to infer about significance of specific effects (if i have understood\n> >> your problem correctly).\n> >> I you use lme4 or nlme, this should not be a problem.\n> >>\n> >> You ca use (for model  m)\n> >>\n> >> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n> >>\n> >> even use some multi-core processing to speed thing up\n> >>\n> >> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus =\n> >> No.of.CORES, nsim=No.of.SIMULATIONS)\n> >>\n> >> change No.of.SIMULATIONS with the desired number of repetitions (1000 or\n> >> so)\n> >> change No.of.CORES with the desired number of cores (depends of your\n> >> machine).\n> >>\n> >> Hope it helps.\n> >>\n> >>\n> >> --\n> >> Marko Ton?i?, PhD\n> >> Assistant professor\n> >> University of Rijeka\n> >> Faculty of Humanities and Social Sciences\n> >> Department of Psychology\n> >> Sveucilisna avenija 4, 51000 Rijeka, CROATIA\n> >> e-mail: mtoncic at ffri.uniri.hr\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "That is great thank you for the quick reply Marko :)\n\nOn Wed, Dec 1, 2021 at 7:48 AM marKo <mtoncic at ffri.uniri.hr> wrote:\n\n> Not sure what to say in this regard, as those methods will produce very\n",
+      "thread_id": "thread-e2d1f780eaa4",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-ddd448200bee",
+      "message_id": "<587ce506-2824-01b8-fb36-d13befc0ccfb@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-02T10:22:09-05:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<74c1a5d3-fd82-5210-1bb6-ad06e8c6c93d@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<CAPzcKfsgT+N4yhzGG5bkq-0LV=2jz45zn50MkW2R=Lu0NGQw=w@mail.gmail.com>",
+        "<74c1a5d3-fd82-5210-1bb6-ad06e8c6c93d@ffri.uniri.hr>"
+      ],
+      "body_plain": "Just to follow up:\n\n   parametric bootstrap is more accurate, but slower, than profile CIs. \nProfile CIs are more accurate, but slower, than Wald CIs.  It is not \nunusual for all three CIs to be similar, especially for the fixed \neffects, and especially for LMMs/clean data/large data.\n\nhttps://stats.stackexchange.com/questions/351164/confidence-intervals-for-glmm-bootstrap-vs-likelihood-profile/351171#351171\n\n   parallel::detectCores() should (?) tell you how many cores you have. \nYou may not want to use all of them at once (e.g. so you have some \nresources left for interactive work).\n\nOn 12/1/21 7:48 AM, marKo wrote:\n> Not sure what to say in this regard, as those methods will produce very \n> similar results. If? I recall it correctly, Douglas Bates suggests doing \n> a profile CI.\n> I usually do a bootstrap and do not think much about it (sorry to say \n> that, actually).\n> \n> As for the number of cores (CORES in the mentioned code), they depends \n> on the processor you have. To establish the max number, in Windows start \n> the task manager and see how many threads you have. In Linux, You can \n> use some system monitor to check that.\n> \n> Hope it helps,\n> \n> Marko\n> \n>  ?On 30. 11. 2021. 16:40, Victoria Pattison-Willits wrote:\n>> Hi there\n>> Thank you to the OP for sharing this question and I am following this\n>> thread as I was wondering which CIs were the best to go with for mixed\n>> models - I have been calculating three different types (Wald, Boot and\n>> Profile) and was not really sure for mixed models (in my case v \n>> similar an\n>> lmer with a nested random effect crossed with a second random effect \n>> and 8\n>> fixed effects (no interactive terms)). I have been on a massive learning\n>> curve and so still a little hazy how the t approaches differ in their \n>> calc\n>> of? the CIs - I have been reporting the bootstrap CIs in my project\n>> although there was only a very small difference when plotted for all 3\n>> across all my fixed effects. Just want to check in light of this question\n>> this is the correct approach!\n>>\n>> One also quick q related to OQ - how do you determine the number of CORES\n>> if I wanted to include that code - does it depend on processing speeds \n>> etc?\n>>\n>> Cheers and this is my first question and I still am a relative novice so\n>> thanks in advance for patience with probably very simple questions! :)\n>>\n>> Vicki PW\n>>\n>> On Fri, Nov 26, 2021 at 2:30 PM marKo <mtoncic at ffri.uniri.hr> wrote:\n>>\n>>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>>> Dear colleagues,\n>>>>\n>>>> ????? I use linear mixed models with 1 random effect (subject), 2 fixed\n>>>> ????? factors (one? is between factor and another is repeated) and one\n>>>> covariate, and\n>>>> ????? explore all main effects, 2-way interactions and one 3-way\n>>>> interaction.\n>>>> ????? Regarding of used software, somewhere I get effect of intercept,\n>>>> ????? somewhere not. Reviewer asks to use p-adjustment for these\n>>>> ????? effects. My dilemma is should I apply p-correction for 7 tests \n>>>> or 8\n>>>> (including\n>>>> ????? random intercept for subjects)?\n>>>>\n>>>> ????? The output do not contain F for random effect, but only variance.\n>>>> ????? Also, the output do not contain effect size. CIs are available \n>>>> only\n>>>> for\n>>>> ????? betas as product of specific level of both fixed effects and\n>>>> covariate, but\n>>>> ????? since I have 3 levels for between and 4 for repeated effects, the\n>>>> ????? output is not helpful + there is no possibility to change \n>>>> reference\n>>>> group.\n>>>> ????? Thus, I'm stuck with p-adjustment.\n>>>>\n>>>> ???? Any help is welcomed.\n>>>> ????? Thank you.\n>>>>\n>>>\n>>> As I understand, p-values are somewhat unreliable (In LMM). As a\n>>> sensible alternative maybe you could compute bootstrap CI and use that\n>>> to infer about significance of specific effects (if i have understood\n>>> your problem correctly).\n>>> I you use lme4 or nlme, this should not be a problem.\n>>>\n>>> You ca use (for model? m)\n>>>\n>>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>>\n>>> even use some multi-core processing to speed thing up\n>>>\n>>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus =\n>>> No.of.CORES, nsim=No.of.SIMULATIONS)\n>>>\n>>> change No.of.SIMULATIONS with the desired number of repetitions (1000 or\n>>> so)\n>>> change No.of.CORES with the desired number of cores (depends of your\n>>> machine).\n>>>\n>>> Hope it helps.\n>>>\n>>>\n>>> -- \n>>> Marko Ton?i?, PhD\n>>> Assistant professor\n>>> University of Rijeka\n>>> Faculty of Humanities and Social Sciences\n>>> Department of Psychology\n>>> Sveucilisna avenija 4, 51000 Rijeka, CROATIA\n>>> e-mail: mtoncic at ffri.uniri.hr\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "Just to follow up:\n\n   parametric bootstrap is more accurate, but slower, than profile CIs. \nProfile CIs are more accurate, but slower, than Wald CIs.  It is not \nunusual for all three CIs to be simil",
+      "thread_id": "thread-e2d1f780eaa4",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-944c48434618",
+      "message_id": "<ac88e587-39d0-541a-8e19-a49195aef4af@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-12-03T22:27:23-06:00",
+      "subject": "[R-sig-ME] Multi-level models for nested variables in time dimension",
+      "subject_clean": "Multi-level models for nested variables in time dimension",
+      "in_reply_to": "<CANAwtjtVAwBzq7DHX9sP+XN0skET=eh+cdG2Ww5R-QZ1To0Pyg@mail.gmail.com>",
+      "references": [
+        "<CANAwtjtVAwBzq7DHX9sP+XN0skET=eh+cdG2Ww5R-QZ1To0Pyg@mail.gmail.com>"
+      ],
+      "body_plain": "The math of mixed models doesn't care whether the original dimension was\nspace, time or something else entirely. In both time and space, you can\nhave autocorrelation that messes with model assumptions, but it's that\nautocorrelation that matters more than the physical interpretation of\nthe dimension.\n\nAll that said, it's incumbent on the user to know what the inferential\ninterpretation of the resulting model is. Methods designed to deal with\nserial autocorrelation may have a more obvious interpretation. But the\nquestion of which model gives you the inferences you need is one that\nrequires the knowledge of your data and research question that only you\nhave.\n\nHope that helps,\n\nPhillip\n\nOn 11/19/21 18:21, Vitor Vieira Vasconcelos wrote:\n> Good night, friends!\n>\n>      I have been seeing many multi-level models, using the mixed models'\n> framework, that use groups nested in \"space\", such as students nested in\n> classes, which are nested in schools, and with independent variables for\n> each of these spatial resolutions.\n>     Then I was thinking whether we could use this same framework to model\n> variables nested in the time dimension. For example, if we have some\n> variables sampled at daily resolution, other variables at monthly\n> resolution and others at year resolution, and we would like to use all them\n> in the same model to predict a dependent variable at daily resolution.\n>    Basically, I am just thinking about transposing the same framework from\n> \"space\" dimension to \"time\" dimension, and not thinking yet about\n> autocorrelation or other time-series analyses.\n>     Do you think that these ideas make sense to you?\n>\n> Best regards,\n> Vitor Vieira Vasconcelos\n> +55-31-99331-1593\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "The math of mixed models doesn't care whether the original dimension was\nspace, time or something else entirely. In both time and space, you can\nhave autocorrelation that messes with model assumptions",
+      "thread_id": "thread-944c48434618",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-83bd57484bf0",
+      "message_id": "<181d05f1-f9c7-1901-a2b9-6d720c54ee91@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-12-03T23:10:07-06:00",
+      "subject": "[R-sig-ME] When a higher level can't be modeled due to one row",
+      "subject_clean": "When a higher level can't be modeled due to one row",
+      "in_reply_to": "<CAEvy2r0SZJS0=R8xXatuu1hpA2hMFgerPxt43m9HTP0fkK2oKA@mail.gmail.com>",
+      "references": [
+        "<CAEvy2r0SZJS0=R8xXatuu1hpA2hMFgerPxt43m9HTP0fkK2oKA@mail.gmail.com>"
+      ],
+      "body_plain": "If measure varies within one study level, but is present and constant in\nthe others, then you can still do:\n\n?(1 | study / outcome) + (1 | measure)\n\nYou'll just get one BLUP/conditional mode for each study where measure\nis constant. That's fine and expected -- the measure is constant for the\nentire study, so its associated random effect shouldn't change. Of\ncourse, the measure and study effects (BLUPs) are conflated for every\nstudy but 2 (so you shouldn't overinterpret the BLUPs), but you may\nstill be able to separate their overall variance contribution (the bits\nreported in the \"random effects\" section of lme4's output).\n\nThe big fine print here is that you need to have enough\n\n- observations in each study\n\n- levels of study (with only 3 levels, study probably shouldn't be\ntreated as a blocking variable....)\n\n- variabiity between studies\n\n- levels of measure in study 2\n\n- variability between measures\n\nOn 11/9/21 12:36, Farzad Keyhan wrote:\n> Dear Colleagues,\n>\n> I initially posted my query on the meta-analysis SIG. But I realized\n> my question is related to multilevel modeling.\n>\n> Below is my data structure. If in row # 3, \"measure\" was 2 (instead of\n> 1), then, I could model \"measure\" as a level above \"study\":\n>\n>  (1 | measure / study / outcome)\n>\n> But right now, because in study 2 (rows # 3 and 4) \"measure\" can vary,\n> \"measure\" can't be considered a level above \"study\".\n>\n> On the other hand, because \"measure\" varies only in one \"study\" level\n> (i.e., study 2), I can't model \"measure\" as a crossed effect with\n> \"study\" either:\n>\n>  (1 | study / outcome) + (1 | measure)\n>\n> So, to model \"measure\" as a random factor what can we do?\n>\n> Best,\n> Fred\n>    measure  study  outcome\n>    1              1          1\n>    1              1          2\n> # 1              2          1<--row #3\n>    2              2          1\n>    1              3          3\n>    1              3          2\n>    2              4          3\n>    9              5          1\n>    9              6          2\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "If measure varies within one study level, but is present and constant in\nthe others, then you can still do:\n\n?(1 | study / outcome) + (1 | measure)\n\nYou'll just get one BLUP/conditional mode for each ",
+      "thread_id": "thread-83bd57484bf0",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-d32c683c0b6e",
+      "message_id": "<c1c76a9a-aed3-97b5-54a0-ff7247bc8cf3@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-12-03T23:23:33-06:00",
+      "subject": "[R-sig-ME] Recovering correlations",
+      "subject_clean": "Recovering correlations",
+      "in_reply_to": "<CAHmzXO5a6nQnST-zMS=ypNr9m3Fe=iRdnWVb+-YCc6Esixws6Q@mail.gmail.com>",
+      "references": [
+        "<CAHmzXO5a6nQnST-zMS=ypNr9m3Fe=iRdnWVb+-YCc6Esixws6Q@mail.gmail.com>"
+      ],
+      "body_plain": "I haven't looked at your whole simulation, but I can make a few quick\ncomments that hopefully help\n\nOn 10/11/21 06:27, Gang Chen wrote:\n> I have thought about the following models\n>\n> m2 <- lmer(y ~ 1 + (0+R1|f) + (0+R2|f), data=dat)\n>\n> m3 <- lmer(y ~ 1 + (1|f) + (0+R2|f), data=dat)\n>\n> but I've been struggling to figure out a way to recover the correlations r1\n> and r2 with the variances from the random effects based on the models m2\n> and m3.\n\nSplitting these out into separate |f terms suppresses the computation of\nthe correlations. If you want the associated correlations, then you need\nto have them in one group, e.g. (0 + R1 + R2 | f).\n\nlme4 uses an unstructured covariance structure, so there's no real\nmiddle ground between estimating all correlations (one grouping term) or\nestimating no correlations (split things into separate grouping terms)\nwithout having repeated/overlapping grouping terms.\n\nThere's nothing wrong per se with a correlation you assume is zero --\nmaybe you'll even get zero back. However, if you want to make that\nassumption stronger and selectively constrain certain elements in the\ncovariance matrix to be zero, you'll probably need to use nlme (I think\nyou could hack a solution there?), handroll something in TMB or use a\nBayesian method where you're expressing exactly the model structure you\nwant (either through the likelihood or the prior). If you're willing to\ngo over to the Julia side and use MixedModels.jl, it wouldn't be too\ndifficult to construct a model, then selectively constrain certain\nelements of the covariance matrix to zero. We don't have a interface for\nthis at the moment, but the code for ZeroCorr (roughly equal to || in\nlme4) just does this for every off-diagonal element, and it wouldn't be\ntoo hard to adapt that code for a single model to only zero-out certain\noff-diagonal elements.\n\nAlso, for the construction of dummy variables in the random effects,\nmake sure to check out lme4::dummy.\n\nHope this helps\n\nPhillip",
+      "body_snippet": "I haven't looked at your whole simulation, but I can make a few quick\ncomments that hopefully help\n\nOn 10/11/21 06:27, Gang Chen wrote:\n> I have thought about the following models\n>\n> m2 <- lmer(y ~ 1",
+      "thread_id": "thread-d32c683c0b6e",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-2a95ef51ed1c",
+      "message_id": "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>",
+      "from_name": "Bojana Dinic",
+      "from_email_hash": "cdeb92d17d4a188d60f3bcc53cc07ded8e23426438a5e771d2a20478375c4c35",
+      "date": "2021-12-04T11:26:17+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>"
+      ],
+      "body_plain": "Dear Marko,\n\nThank you. I have question, these are CIs for which statistic (I have 2 \nfactors, cond and rep, and their interaction)?\n ???????????????????????? 2.5 %??? 97.5 %\n.sig01??????? 8.6062568 12.035500\n.sigma?????? 12.8489647 14.841375\n(Intercept)? -2.1807253? 9.047992\ncond1??????? -4.1126524 11.296070\ncond3??????? -5.8346317? 7.649526\nrep2???????? -8.0280001? 5.220439\nrep3???????? -4.0846168? 9.194793\nrep4????????? 6.1875602 18.878770\ncond1:rep2? -11.2367698? 8.031134\ncond3:rep2?? -7.9112913? 7.491230\ncond1:rep3?? -8.2536791 10.129607\ncond3:rep3?? -5.9766989 10.071404\ncond1:rep4?? -0.9371539 17.551132\ncond3:rep4?? -4.2738610 11.020311\n\nKind regars,\nBojana\n\nOn 26-Nov-21 20:29, marKo wrote:\n> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>> Dear colleagues,\n>>\n>> ???? I use linear mixed models with 1 random effect (subject), 2 fixed\n>> ???? factors (one? is between factor and another is repeated) and one \n>> covariate, and\n>> ???? explore all main effects, 2-way interactions and one 3-way \n>> interaction.\n>> ???? Regarding of used software, somewhere I get effect of intercept,\n>> ???? somewhere not. Reviewer asks to use p-adjustment for these\n>> ???? effects. My dilemma is should I apply p-correction for 7 tests \n>> or 8 (including\n>> ???? random intercept for subjects)?\n>>\n>> ???? The output do not contain F for random effect, but only variance.\n>> ???? Also, the output do not contain effect size. CIs are available \n>> only for\n>> ???? betas as product of specific level of both fixed effects and \n>> covariate, but\n>> ???? since I have 3 levels for between and 4 for repeated effects, the\n>> ???? output is not helpful + there is no possibility to change \n>> reference group.\n>> ???? Thus, I'm stuck with p-adjustment.\n>>\n>> ??? Any help is welcomed.\n>> ???? Thank you.\n>>\n>\n> As I understand, p-values are somewhat unreliable (In LMM). As a \n> sensible alternative maybe you could compute bootstrap CI and use that \n> to infer about significance of specific effects (if i have understood \n> your problem correctly).\n> I you use lme4 or nlme, this should not be a problem.\n>\n> You ca use (for model? m)\n>\n> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>\n> even use some multi-core processing to speed thing up\n>\n> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus = \n> No.of.CORES, nsim=No.of.SIMULATIONS)\n>\n> change No.of.SIMULATIONS with the desired number of repetitions (1000 \n> or so)\n> change No.of.CORES with the desired number of cores (depends of your \n> machine).\n>\n> Hope it helps.\n>\n>",
+      "body_snippet": "Dear Marko,\n\nThank you. I have question, these are CIs for which statistic (I have 2 \nfactors, cond and rep, and their interaction)?\n ???????????????????????? 2.5 %??? 97.5 %\n.sig01??????? 8.6062568 1",
+      "thread_id": "thread-2a95ef51ed1c",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-9615cd194738",
+      "message_id": "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+      "from_name": "varin sacha",
+      "from_email_hash": "1917601b2a6b66ef582406a663074bc3f8b1a6bd4c8338b314201bf567396491",
+      "date": "2021-12-04T19:47:07Z",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": null,
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>"
+      ],
+      "body_plain": "Dear Mixed modelers experts,\n\nI am looking for a reference to justify my sentence here below.\nMany thanks for your help.\n\n\"The mixed model seemed well specified ? it converged and had no singular problem, no overfitting problem. So, even if the sample size is quite small, the estimates are stable and can be trusted\".\n\nBest Regards,\nSV\n?",
+      "body_snippet": "Dear Mixed modelers experts,\n\nI am looking for a reference to justify my sentence here below.\nMany thanks for your help.\n\n\"The mixed model seemed well specified ? it converged and had no singular prob",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-9bfd571425f0",
+      "message_id": "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+      "from_name": "Fernando Pedro Bruna Quintas",
+      "from_email_hash": "bb6b04e8a7e0094cc54915de3f5055d02a4c604797ae8a91f8aa78be13463259",
+      "date": "2021-12-04T19:55:18Z",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>"
+      ],
+      "body_plain": "Dear SV,\n\nI can feel that you have a very promising research career just in front of your eyes.\n\nFB\n\n________________________________\nDe: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en nombre de varin sacha via R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nEnviado: s?bado, 4 de diciembre de 2021 20:47\nPara: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nAsunto: [R-sig-ME] Reference ?\n\nDear Mixed modelers experts,\n\nI am looking for a reference to justify my sentence here below.\nMany thanks for your help.\n\n\"The mixed model seemed well specified ? it converged and had no singular problem, no overfitting problem. So, even if the sample size is quite small, the estimates are stable and can be trusted\".\n\nBest Regards,\nSV\n\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear SV,\n\nI can feel that you have a very promising research career just in front of your eyes.\n\nFB\n\n________________________________\nDe: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.or",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-2b07d70ff845",
+      "message_id": "<00737030-8883-ae8b-3185-b0d8c0d6b833@ffri.uniri.hr>",
+      "from_name": "marKo",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2021-12-04T23:38:31+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>"
+      ],
+      "body_plain": "I must admit that I do not understand what is that you are asking. Those \nCIs are for the parameters of your model (a 3x4 model + random effects: \nsubject + residuals).\nThe referent group here are cond2 and rep1.\nMaybe the problem that you have is that you would like to have an F \nstatistic for the main effects and for the interaction. I do not know.\n\nMarko\n\n\nOn 04. 12. 2021. 11:26, Bojana Dinic wrote:\n> Dear Marko,\n> \n> Thank you. I have question, these are CIs for which statistic (I have 2 \n> factors, cond and rep, and their interaction)?\n>  ???????????????????????? 2.5 %??? 97.5 %\n> .sig01??????? 8.6062568 12.035500\n> .sigma?????? 12.8489647 14.841375\n> (Intercept)? -2.1807253? 9.047992\n> cond1??????? -4.1126524 11.296070\n> cond3??????? -5.8346317? 7.649526\n> rep2???????? -8.0280001? 5.220439\n> rep3???????? -4.0846168? 9.194793\n> rep4????????? 6.1875602 18.878770\n> cond1:rep2? -11.2367698? 8.031134\n> cond3:rep2?? -7.9112913? 7.491230\n> cond1:rep3?? -8.2536791 10.129607\n> cond3:rep3?? -5.9766989 10.071404\n> cond1:rep4?? -0.9371539 17.551132\n> cond3:rep4?? -4.2738610 11.020311\n> \n> Kind regars,\n> Bojana\n> \n> On 26-Nov-21 20:29, marKo wrote:\n>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>> Dear colleagues,\n>>>\n>>> ???? I use linear mixed models with 1 random effect (subject), 2 fixed\n>>> ???? factors (one? is between factor and another is repeated) and one \n>>> covariate, and\n>>> ???? explore all main effects, 2-way interactions and one 3-way \n>>> interaction.\n>>> ???? Regarding of used software, somewhere I get effect of intercept,\n>>> ???? somewhere not. Reviewer asks to use p-adjustment for these\n>>> ???? effects. My dilemma is should I apply p-correction for 7 tests \n>>> or 8 (including\n>>> ???? random intercept for subjects)?\n>>>\n>>> ???? The output do not contain F for random effect, but only variance.\n>>> ???? Also, the output do not contain effect size. CIs are available \n>>> only for\n>>> ???? betas as product of specific level of both fixed effects and \n>>> covariate, but\n>>> ???? since I have 3 levels for between and 4 for repeated effects, the\n>>> ???? output is not helpful + there is no possibility to change \n>>> reference group.\n>>> ???? Thus, I'm stuck with p-adjustment.\n>>>\n>>> ??? Any help is welcomed.\n>>> ???? Thank you.\n>>>\n>>\n>> As I understand, p-values are somewhat unreliable (In LMM). As a \n>> sensible alternative maybe you could compute bootstrap CI and use that \n>> to infer about significance of specific effects (if i have understood \n>> your problem correctly).\n>> I you use lme4 or nlme, this should not be a problem.\n>>\n>> You ca use (for model? m)\n>>\n>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>\n>> even use some multi-core processing to speed thing up\n>>\n>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus = \n>> No.of.CORES, nsim=No.of.SIMULATIONS)\n>>\n>> change No.of.SIMULATIONS with the desired number of repetitions (1000 \n>> or so)\n>> change No.of.CORES with the desired number of cores (depends of your \n>> machine).\n>>\n>> Hope it helps.\n>>\n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I must admit that I do not understand what is that you are asking. Those \nCIs are for the parameters of your model (a 3x4 model + random effects: \nsubject + residuals).\nThe referent group here are con",
+      "thread_id": "thread-2a95ef51ed1c",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-6c40b9863481",
+      "message_id": "<SVAP279MB0223B4E65217009D6F3C5613926C9@SVAP279MB0223.NORP279.PROD.OUTLOOK.COM>",
+      "from_name": "Shane Frank",
+      "from_email_hash": "7ab87dd0a902680d14f8dd7ada1ab7ee13c72c4f1d93036378ea024a9f6bf58a",
+      "date": "2021-12-05T02:26:24Z",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+        "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>"
+      ],
+      "body_plain": "Hi SV,\n\nI think there is doubt whether a ?small? sample size adequately represents your population of interest. You can argue from a study design perspective that you avoided bias with a random sample, but the game of (low) numbers during sampling could create a bias due to randomness as well. ?Trusting? your estimates and the uncertainty around them goes beyond the fitting process. I apologize if this is obvious to you. But, I think this push-pull idea might help explain why it is difficult to give you some coup de grace reference to ?solve? your problem. I think your rationale and argumentation will be more helpful than a reference anyway. Perhaps that was what FB was insinuating. You could try sensitivity analysis to help bolster your confidence in the results if that was your goal.\n\nSF\n\n\n\n\n\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Fernando Pedro Bruna Quintas <f.bruna at udc.es>\nSent: Saturday, December 4, 2021 12:55:18 PM\nTo: R-sig-mixed-models <r-sig-mixed-models at r-project.org>; varin sacha <varinsacha at yahoo.fr>\nSubject: Re: [R-sig-ME] Reference ?\n\n\nDear SV,\n\nI can feel that you have a very promising research career just in front of your eyes.\n\nFB\n\n________________________________\nDe: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en nombre de varin sacha via R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nEnviado: s?bado, 4 de diciembre de 2021 20:47\nPara: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nAsunto: [R-sig-ME] Reference ?\n\nDear Mixed modelers experts,\n\nI am looking for a reference to justify my sentence here below.\nMany thanks for your help.\n\n\"The mixed model seemed well specified ? it converged and had no singular problem, no overfitting problem. So, even if the sample size is quite small, the estimates are stable and can be trusted\".\n\nBest Regards,\nSV\n\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cshane.frank%40usn.no%7Ccdcc63706cfd4868a1ad08d9b7605f81%7Cbc758dd0ab5343729a7ce98a9620862c%7C0%7C0%7C637742446819356248%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000&amp;sdata=%2BSjexgAApNHSzlHbZr0vAz8vsbW71nS%2BHQ1BaEeOPvs%3D&amp;reserved=0\n\n        [[alternative HTML version deleted]]\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi SV,\n\nI think there is doubt whether a ?small? sample size adequately represents your population of interest. You can argue from a study design perspective that you avoided bias with a random sample",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-a2e2e900602d",
+      "message_id": "<SYBPR01MB71939A3CD0B57198FD14AF6D986C9@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+      "from_name": "Chris Howden",
+      "from_email_hash": "c01e2fadab9d76b087ffd84fce8fe92777964edcbf6bcd6f534a214c6e34d03d",
+      "date": "2021-12-05T23:20:52Z",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+        "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>"
+      ],
+      "body_plain": "Hi Sacha,\n\nI'm not sure I really agree with that statement, although some may. \n\nSay your sample size was really small, only 6. A simple model may still fit, but I wouldn?t expect the parameters to be particularly stable. Only 1 or 2 different datum could change everything. \n\nI would also want to consider the SE of the parameter estimates. If they are very large (compared to the parameter estimates), then this is telling me the parameter estimates aren't very stable. Even though the model converged. \n\nChris Howden B.Sc. (Hons)\nFounding Partner\nData Analysis, Modelling and Training\nEvidence Based Strategy/Policy Development, IP Commercialisation and Innovation\n(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au\n\n-----Original Message-----\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On Behalf Of Fernando Pedro Bruna Quintas\nSent: Sunday, 5 December 2021 6:55 AM\nTo: R-sig-mixed-models <r-sig-mixed-models at r-project.org>; varin sacha <varinsacha at yahoo.fr>\nSubject: Re: [R-sig-ME] Reference ?\n\n\nDear SV,\n\nI can feel that you have a very promising research career just in front of your eyes.\n\nFB\n\n________________________________\nDe: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en nombre de varin sacha via R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nEnviado: s bado, 4 de diciembre de 2021 20:47\nPara: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nAsunto: [R-sig-ME] Reference ?\n\nDear Mixed modelers experts,\n\nI am looking for a reference to justify my sentence here below.\nMany thanks for your help.\n\n\"The mixed model seemed well specified   it converged and had no singular problem, no overfitting problem. So, even if the sample size is quite small, the estimates are stable and can be trusted\".\n\nBest Regards,\nSV\n\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Sacha,\n\nI'm not sure I really agree with that statement, although some may. \n\nSay your sample size was really small, only 6. A simple model may still fit, but I wouldn?t expect the parameters to be",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-3fd7bf82be95",
+      "message_id": "<68828f6f-ccea-04c7-cbe2-ebac5829dccc@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-05T19:09:58-05:00",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<SYBPR01MB71939A3CD0B57198FD14AF6D986C9@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+        "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+        "<SYBPR01MB71939A3CD0B57198FD14AF6D986C9@SYBPR01MB7193.ausprd01.prod.outlook.com>"
+      ],
+      "body_plain": "More bad news:\n\n  * I can't point you to a specific, published/peer-reviewed 'best \npractices in mixed modeling' document; maybe someone else here can.\n  * As Chris says, the lack of obvious numerical problems doesn't \nnecessarily mean the model estimates are stable.\n  * The other issue with a small sample is that a lot of the inferential \nmachinery of mixed models (p-values, confidence intervals, etc.) rests \non asymptotic assumptions.\n\n  What kinds of \"overfitting problems\" did you have in mind? What would \nthe symptoms be?\n\n\n\nOn 12/5/21 6:20 PM, Chris Howden wrote:\n> Hi Sacha,\n> \n> I'm not sure I really agree with that statement, although some may.\n> \n> Say your sample size was really small, only 6. A simple model may still fit, but I wouldn?t expect the parameters to be particularly stable. Only 1 or 2 different datum could change everything.\n> \n> I would also want to consider the SE of the parameter estimates. If they are very large (compared to the parameter estimates), then this is telling me the parameter estimates aren't very stable. Even though the model converged.\n> \n> Chris Howden B.Sc. (Hons)\n> Founding Partner\n> Data Analysis, Modelling and Training\n> Evidence Based Strategy/Policy Development, IP Commercialisation and Innovation\n> (mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au\n> \n> -----Original Message-----\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On Behalf Of Fernando Pedro Bruna Quintas\n> Sent: Sunday, 5 December 2021 6:55 AM\n> To: R-sig-mixed-models <r-sig-mixed-models at r-project.org>; varin sacha <varinsacha at yahoo.fr>\n> Subject: Re: [R-sig-ME] Reference ?\n> \n> \n> Dear SV,\n> \n> I can feel that you have a very promising research career just in front of your eyes.\n> \n> FB\n> \n> ________________________________\n> De: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en nombre de varin sacha via R-sig-mixed-models <r-sig-mixed-models at r-project.org>\n> Enviado: s bado, 4 de diciembre de 2021 20:47\n> Para: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\n> Asunto: [R-sig-ME] Reference ?\n> \n> Dear Mixed modelers experts,\n> \n> I am looking for a reference to justify my sentence here below.\n> Many thanks for your help.\n> \n> \"The mixed model seemed well specified   it converged and had no singular problem, no overfitting problem. So, even if the sample size is quite small, the estimates are stable and can be trusted\".\n> \n> Best Regards,\n> SV\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "More bad news:\n\n  * I can't point you to a specific, published/peer-reviewed 'best \npractices in mixed modeling' document; maybe someone else here can.\n  * As Chris says, the lack of obvious numerical",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 3,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-e134c596530a",
+      "message_id": "<6d653e26-f048-a565-2038-99a9c2e7d80e@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-12-06T00:32:27-06:00",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<68828f6f-ccea-04c7-cbe2-ebac5829dccc@gmail.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+        "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+        "<SYBPR01MB71939A3CD0B57198FD14AF6D986C9@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+        "<68828f6f-ccea-04c7-cbe2-ebac5829dccc@gmail.com>"
+      ],
+      "body_plain": "On 5/12/21 6:09 pm, Ben Bolker wrote:\n> ?? More bad news:\n> \n> ?* I can't point you to a specific, published/peer-reviewed 'best\n> practices in mixed modeling' document; maybe someone else here can.\n\nI don't really know of a single, short-ish document that covers this. A\nlot of best practices follow from general statistical and numerical best\npractices (see e.g. the \"stable and can be trusted\" bit that started\nthis -- you may have precise, well-defined estimates, but that's not\nnecessarily \"stable\" in the sense you want; perhaps confidence intervals\nwould be closer) and the underlying mathematics of mixed models.\n\nThere are a lot of introductory texts (both articles and books) on mixed\nmodels in general, mixed models in particular problem domains (e.g.\necology, cognitive science) and particular issues in mixed models\n(random effects selection, etc.), but the quality of these varies\ngreatly. I recently came across one that has concrete reporting\nrecommendations (Meteyard and Davies 2020,\nhttps://doi.org/10.1016/j.jml.2020.104092), but I think that they leave\nout a lot of fine print (e.g., R2-like measures for mixed models are\nproblematic; the Kenward-Roger ddf approximation requires inverting a\nlarge matrix, etc.).\n\n> ?* As Chris says, the lack of obvious numerical problems doesn't\n> necessarily mean the model estimates are stable.\n> ?* The other issue with a small sample is that a lot of the inferential\n> machinery of mixed models (p-values, confidence intervals, etc.) rests\n> on asymptotic assumptions.\n> \n> ?What kinds of \"overfitting problems\" did you have in mind? What would\n> the symptoms be?\n> \n> \n> \n> On 12/5/21 6:20 PM, Chris Howden wrote:\n>> Hi Sacha,\n>>\n>> I'm not sure I really agree with that statement, although some may.\n>>\n>> Say your sample size was really small, only 6. A simple model may\n>> still fit, but I wouldn?t expect the parameters to be particularly\n>> stable. Only 1 or 2 different datum could change everything.\n>>\n>> I would also want to consider the SE of the parameter estimates. If\n>> they are very large (compared to the parameter estimates), then this\n>> is telling me the parameter estimates aren't very stable. Even though\n>> the model converged.\n>>\n>> Chris Howden B.Sc. (Hons)\n>> Founding Partner\n>> Data Analysis, Modelling and Training\n>> Evidence Based Strategy/Policy Development, IP Commercialisation and\n>> Innovation\n>> (mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au\n>>\n>> -----Original Message-----\n>> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On\n>> Behalf Of Fernando Pedro Bruna Quintas\n>> Sent: Sunday, 5 December 2021 6:55 AM\n>> To: R-sig-mixed-models <r-sig-mixed-models at r-project.org>; varin sacha\n>> <varinsacha at yahoo.fr>\n>> Subject: Re: [R-sig-ME] Reference ?\n>>\n>>\n>> Dear SV,\n>>\n>> I can feel that you have a very promising research career just in\n>> front of your eyes.\n>>\n>> FB\n>>\n>> ________________________________\n>> De: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en\n>> nombre de varin sacha via R-sig-mixed-models\n>> <r-sig-mixed-models at r-project.org>\n>> Enviado: s bado, 4 de diciembre de 2021 20:47\n>> Para: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\n>> Asunto: [R-sig-ME] Reference ?\n>>\n>> Dear Mixed modelers experts,\n>>\n>> I am looking for a reference to justify my sentence here below.\n>> Many thanks for your help.\n>>\n>> \"The mixed model seemed well specified?? it converged and had no\n>> singular problem, no overfitting problem. So, even if the sample size\n>> is quite small, the estimates are stable and can be trusted\".\n>>\n>> Best Regards,\n>> SV\n>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>",
+      "body_snippet": "On 5/12/21 6:09 pm, Ben Bolker wrote:\n> ?? More bad news:\n> \n> ?* I can't point you to a specific, published/peer-reviewed 'best\n> practices in mixed modeling' document; maybe someone else here can.\n\n",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 4,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-1dd562a66752",
+      "message_id": "<9eb40418-30a7-2144-55f1-a2152498cdaf@gmail.com>",
+      "from_name": "Bojana Dinic",
+      "from_email_hash": "cdeb92d17d4a188d60f3bcc53cc07ded8e23426438a5e771d2a20478375c4c35",
+      "date": "2021-12-06T23:04:16+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<00737030-8883-ae8b-3185-b0d8c0d6b833@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>",
+        "<00737030-8883-ae8b-3185-b0d8c0d6b833@ffri.uniri.hr>"
+      ],
+      "body_plain": "Dear Marko,\nYes, I need effect size for F tests or p-adjustment for it. Thus, is \nthere any procedure to obtain effect sizes or if I use p-adjustments I \nam not sure whether I need to involve random effect in calculation or not?\nThank you.\n\nRegards,\nBojana\n\nOn 04-Dec-21 23:38, marKo wrote:\n> I must admit that I do not understand what is that you are asking. \n> Those CIs are for the parameters of your model (a 3x4 model + random \n> effects: subject + residuals).\n> The referent group here are cond2 and rep1.\n> Maybe the problem that you have is that you would like to have an F \n> statistic for the main effects and for the interaction. I do not know.\n>\n> Marko\n>\n>\n> On 04. 12. 2021. 11:26, Bojana Dinic wrote:\n>> Dear Marko,\n>>\n>> Thank you. I have question, these are CIs for which statistic (I have \n>> 2 factors, cond and rep, and their interaction)?\n>> ????????????????????????? 2.5 %??? 97.5 %\n>> .sig01??????? 8.6062568 12.035500\n>> .sigma?????? 12.8489647 14.841375\n>> (Intercept)? -2.1807253? 9.047992\n>> cond1??????? -4.1126524 11.296070\n>> cond3??????? -5.8346317? 7.649526\n>> rep2???????? -8.0280001? 5.220439\n>> rep3???????? -4.0846168? 9.194793\n>> rep4????????? 6.1875602 18.878770\n>> cond1:rep2? -11.2367698? 8.031134\n>> cond3:rep2?? -7.9112913? 7.491230\n>> cond1:rep3?? -8.2536791 10.129607\n>> cond3:rep3?? -5.9766989 10.071404\n>> cond1:rep4?? -0.9371539 17.551132\n>> cond3:rep4?? -4.2738610 11.020311\n>>\n>> Kind regars,\n>> Bojana\n>>\n>> On 26-Nov-21 20:29, marKo wrote:\n>>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>>> Dear colleagues,\n>>>>\n>>>> ???? I use linear mixed models with 1 random effect (subject), 2 fixed\n>>>> ???? factors (one? is between factor and another is repeated) and \n>>>> one covariate, and\n>>>> ???? explore all main effects, 2-way interactions and one 3-way \n>>>> interaction.\n>>>> ???? Regarding of used software, somewhere I get effect of intercept,\n>>>> ???? somewhere not. Reviewer asks to use p-adjustment for these\n>>>> ???? effects. My dilemma is should I apply p-correction for 7 tests \n>>>> or 8 (including\n>>>> ???? random intercept for subjects)?\n>>>>\n>>>> ???? The output do not contain F for random effect, but only variance.\n>>>> ???? Also, the output do not contain effect size. CIs are available \n>>>> only for\n>>>> ???? betas as product of specific level of both fixed effects and \n>>>> covariate, but\n>>>> ???? since I have 3 levels for between and 4 for repeated effects, the\n>>>> ???? output is not helpful + there is no possibility to change \n>>>> reference group.\n>>>> ???? Thus, I'm stuck with p-adjustment.\n>>>>\n>>>> ??? Any help is welcomed.\n>>>> ???? Thank you.\n>>>>\n>>>\n>>> As I understand, p-values are somewhat unreliable (In LMM). As a \n>>> sensible alternative maybe you could compute bootstrap CI and use \n>>> that to infer about significance of specific effects (if i have \n>>> understood your problem correctly).\n>>> I you use lme4 or nlme, this should not be a problem.\n>>>\n>>> You ca use (for model? m)\n>>>\n>>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>>\n>>> even use some multi-core processing to speed thing up\n>>>\n>>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus \n>>> = No.of.CORES, nsim=No.of.SIMULATIONS)\n>>>\n>>> change No.of.SIMULATIONS with the desired number of repetitions \n>>> (1000 or so)\n>>> change No.of.CORES with the desired number of cores (depends of your \n>>> machine).\n>>>\n>>> Hope it helps.\n>>>\n>>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Marko,\nYes, I need effect size for F tests or p-adjustment for it. Thus, is \nthere any procedure to obtain effect sizes or if I use p-adjustments I \nam not sure whether I need to involve random e",
+      "thread_id": "thread-2a95ef51ed1c",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-298871cc6f70",
+      "message_id": "<CACLfpHj6UzdU0Ov5A-Y45aZw1Pm17Phr1GBaAzHos9mdqVZEFg@mail.gmail.com>",
+      "from_name": "Gabriella Bishop",
+      "from_email_hash": "38430277d3f40e84841a809734213cf0b2258db0d728d9e0f23f1139ae96083d",
+      "date": "2021-12-07T10:58:58+01:00",
+      "subject": "[R-sig-ME] glmmTMB compatibility for piecewiseSEM 2.1.2?",
+      "subject_clean": "glmmTMB compatibility for piecewiseSEM 2.1.2?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI would like to be able to use glmmTMB with piecewiseSEM but I see the\ndevelopers of piecewiseSEM have simply left instructions on how to add a\nnew model class in their readme. This is definitely beyond my coding\nabilities and I am wondering if anyone knows of a resource that has\naccomplished this. The currently supported model classes are not suitable\nfor my needs.\n\nThe older version of piecewiseSEM does include glmmTMB compatibility but it\ndoes not allow for interaction effects and lacks some key functionality\nthat was introduced in 2.1.2.\n\nPlease let me know if anyone has information or work-arounds!\n\nThanks very much,\nGabriella\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI would like to be able to use glmmTMB with piecewiseSEM but I see the\ndevelopers of piecewiseSEM have simply left instructions on how to add a\nnew model class in their readme. This is definitely",
+      "thread_id": "thread-298871cc6f70",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-32a705e576ed",
+      "message_id": "<633d3e25-1b48-2002-c922-acd8b62ddd25@ffri.uniri.hr>",
+      "from_name": "marko",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2021-12-07T23:32:14+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<9eb40418-30a7-2144-55f1-a2152498cdaf@gmail.com>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>",
+        "<00737030-8883-ae8b-3185-b0d8c0d6b833@ffri.uniri.hr>",
+        "<9eb40418-30a7-2144-55f1-a2152498cdaf@gmail.com>"
+      ],
+      "body_plain": "I think that the only viable option (at least that i know of; please \nsomeone from the group to back me up on this) is to compare \ncompeting/nested models (the ones with and without some specific \nparameters; e.g. the model without and with the interaction parameters) \nvia LR test (\"anova(m1, m2)\" in R).\n\nAs an estimate of effect size, you can compute omega^2 (even though it \nis just a pseudo R^2 measure; a mere squared correlation between \npredicted and actual results) for those competing/nested models. See \nmore in;\n\nXu, R. (2003). Measuring explained variation in linear mixed effects \nmodels. Statistics in Medicine, 22(22), 3527?3541. \nhttps://doi.org/10.1002/sim.1572\n\nI think that some of that is implemented in the package \"sjstats\" if \nthis might be of any help.\n\nCheers,\n\nMarko\n\n\n\nOn 12/6/21 11:04 PM, Bojana Dinic wrote:\n> Dear Marko,\n> Yes, I need effect size for F tests or p-adjustment for it. Thus, is \n> there any procedure to obtain effect sizes or if I use p-adjustments I \n> am not sure whether I need to involve random effect in calculation or \n> not?\n> Thank you.\n>\n> Regards,\n> Bojana\n>\n> On 04-Dec-21 23:38, marKo wrote:\n>> I must admit that I do not understand what is that you are asking. \n>> Those CIs are for the parameters of your model (a 3x4 model + random \n>> effects: subject + residuals).\n>> The referent group here are cond2 and rep1.\n>> Maybe the problem that you have is that you would like to have an F \n>> statistic for the main effects and for the interaction. I do not know.\n>>\n>> Marko\n>>\n>>\n>> On 04. 12. 2021. 11:26, Bojana Dinic wrote:\n>>> Dear Marko,\n>>>\n>>> Thank you. I have question, these are CIs for which statistic (I \n>>> have 2 factors, cond and rep, and their interaction)?\n>>> ????????????????????????? 2.5 %??? 97.5 %\n>>> .sig01??????? 8.6062568 12.035500\n>>> .sigma?????? 12.8489647 14.841375\n>>> (Intercept)? -2.1807253? 9.047992\n>>> cond1??????? -4.1126524 11.296070\n>>> cond3??????? -5.8346317? 7.649526\n>>> rep2???????? -8.0280001? 5.220439\n>>> rep3???????? -4.0846168? 9.194793\n>>> rep4????????? 6.1875602 18.878770\n>>> cond1:rep2? -11.2367698? 8.031134\n>>> cond3:rep2?? -7.9112913? 7.491230\n>>> cond1:rep3?? -8.2536791 10.129607\n>>> cond3:rep3?? -5.9766989 10.071404\n>>> cond1:rep4?? -0.9371539 17.551132\n>>> cond3:rep4?? -4.2738610 11.020311\n>>>\n>>> Kind regars,\n>>> Bojana\n>>>\n>>> On 26-Nov-21 20:29, marKo wrote:\n>>>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>>>> Dear colleagues,\n>>>>>\n>>>>> ???? I use linear mixed models with 1 random effect (subject), 2 \n>>>>> fixed\n>>>>> ???? factors (one? is between factor and another is repeated) and \n>>>>> one covariate, and\n>>>>> ???? explore all main effects, 2-way interactions and one 3-way \n>>>>> interaction.\n>>>>> ???? Regarding of used software, somewhere I get effect of intercept,\n>>>>> ???? somewhere not. Reviewer asks to use p-adjustment for these\n>>>>> ???? effects. My dilemma is should I apply p-correction for 7 \n>>>>> tests or 8 (including\n>>>>> ???? random intercept for subjects)?\n>>>>>\n>>>>> ???? The output do not contain F for random effect, but only \n>>>>> variance.\n>>>>> ???? Also, the output do not contain effect size. CIs are \n>>>>> available only for\n>>>>> ???? betas as product of specific level of both fixed effects and \n>>>>> covariate, but\n>>>>> ???? since I have 3 levels for between and 4 for repeated effects, \n>>>>> the\n>>>>> ???? output is not helpful + there is no possibility to change \n>>>>> reference group.\n>>>>> ???? Thus, I'm stuck with p-adjustment.\n>>>>>\n>>>>> ??? Any help is welcomed.\n>>>>> ???? Thank you.\n>>>>>\n>>>>\n>>>> As I understand, p-values are somewhat unreliable (In LMM). As a \n>>>> sensible alternative maybe you could compute bootstrap CI and use \n>>>> that to infer about significance of specific effects (if i have \n>>>> understood your problem correctly).\n>>>> I you use lme4 or nlme, this should not be a problem.\n>>>>\n>>>> You ca use (for model? m)\n>>>>\n>>>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>>>\n>>>> even use some multi-core processing to speed thing up\n>>>>\n>>>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus \n>>>> = No.of.CORES, nsim=No.of.SIMULATIONS)\n>>>>\n>>>> change No.of.SIMULATIONS with the desired number of repetitions \n>>>> (1000 or so)\n>>>> change No.of.CORES with the desired number of cores (depends of \n>>>> your machine).\n>>>>\n>>>> Hope it helps.\n>>>>\n>>>>\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I think that the only viable option (at least that i know of; please \nsomeone from the group to back me up on this) is to compare \ncompeting/nested models (the ones with and without some specific \npar",
+      "thread_id": "thread-2a95ef51ed1c",
+      "thread_depth": 3,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-042d2e27793f",
+      "message_id": "<beb7f962-5cf7-6c9e-0b2d-b73a9c0a32b5@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-07T17:44:45-05:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<633d3e25-1b48-2002-c922-acd8b62ddd25@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+        "<fa07f367-996f-b283-a0dc-6f05ad60d776@gmail.com>",
+        "<00737030-8883-ae8b-3185-b0d8c0d6b833@ffri.uniri.hr>",
+        "<9eb40418-30a7-2144-55f1-a2152498cdaf@gmail.com>",
+        "<633d3e25-1b48-2002-c922-acd8b62ddd25@ffri.uniri.hr>"
+      ],
+      "body_plain": "If you just want to do multiple comparisons corrections (to be honest \nI'm not quite sure what your goal is here -- I can't see why \nmultiple-comparisons corrections and computations of effect sizes would \nbe solving the same problem ...), then using lmerTest and extracting the \nfixed-effect p-values via\n\npvals <- coef(summary(fitted_model))[,\"Pr(>|t|)\"]\n\nand calculating corrections via\n\np.adjust(pvals, \"holm\")\n\n(or whatever method you prefer) should work.\n\nMaybe applying car::Anova() to your model, which would give you \nterm-level rather than parameter-level p-values, would help?\n\nIn the category of effect sizes, the code from \nhttps://github.com/bcjaeger/r2glmm can compute partial R^2 values for \nLMMs ...\n\nOn 12/7/21 5:32 PM, marko wrote:\n> I think that the only viable option (at least that i know of; please \n> someone from the group to back me up on this) is to compare \n> competing/nested models (the ones with and without some specific \n> parameters; e.g. the model without and with the interaction parameters) \n> via LR test (\"anova(m1, m2)\" in R).\n> \n> As an estimate of effect size, you can compute omega^2 (even though it \n> is just a pseudo R^2 measure; a mere squared correlation between \n> predicted and actual results) for those competing/nested models. See \n> more in;\n> \n> Xu, R. (2003). Measuring explained variation in linear mixed effects \n> models. Statistics in Medicine, 22(22), 3527?3541. \n> https://doi.org/10.1002/sim.1572\n> \n> I think that some of that is implemented in the package \"sjstats\" if \n> this might be of any help.\n> \n> Cheers,\n> \n> Marko\n> \n> \n> \n> On 12/6/21 11:04 PM, Bojana Dinic wrote:\n>> Dear Marko,\n>> Yes, I need effect size for F tests or p-adjustment for it. Thus, is \n>> there any procedure to obtain effect sizes or if I use p-adjustments I \n>> am not sure whether I need to involve random effect in calculation or \n>> not?\n>> Thank you.\n>>\n>> Regards,\n>> Bojana\n>>\n>> On 04-Dec-21 23:38, marKo wrote:\n>>> I must admit that I do not understand what is that you are asking. \n>>> Those CIs are for the parameters of your model (a 3x4 model + random \n>>> effects: subject + residuals).\n>>> The referent group here are cond2 and rep1.\n>>> Maybe the problem that you have is that you would like to have an F \n>>> statistic for the main effects and for the interaction. I do not know.\n>>>\n>>> Marko\n>>>\n>>>\n>>> On 04. 12. 2021. 11:26, Bojana Dinic wrote:\n>>>> Dear Marko,\n>>>>\n>>>> Thank you. I have question, these are CIs for which statistic (I \n>>>> have 2 factors, cond and rep, and their interaction)?\n>>>> ????????????????????????? 2.5 %??? 97.5 %\n>>>> .sig01??????? 8.6062568 12.035500\n>>>> .sigma?????? 12.8489647 14.841375\n>>>> (Intercept)? -2.1807253? 9.047992\n>>>> cond1??????? -4.1126524 11.296070\n>>>> cond3??????? -5.8346317? 7.649526\n>>>> rep2???????? -8.0280001? 5.220439\n>>>> rep3???????? -4.0846168? 9.194793\n>>>> rep4????????? 6.1875602 18.878770\n>>>> cond1:rep2? -11.2367698? 8.031134\n>>>> cond3:rep2?? -7.9112913? 7.491230\n>>>> cond1:rep3?? -8.2536791 10.129607\n>>>> cond3:rep3?? -5.9766989 10.071404\n>>>> cond1:rep4?? -0.9371539 17.551132\n>>>> cond3:rep4?? -4.2738610 11.020311\n>>>>\n>>>> Kind regars,\n>>>> Bojana\n>>>>\n>>>> On 26-Nov-21 20:29, marKo wrote:\n>>>>> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n>>>>>> Dear colleagues,\n>>>>>>\n>>>>>> ???? I use linear mixed models with 1 random effect (subject), 2 \n>>>>>> fixed\n>>>>>> ???? factors (one? is between factor and another is repeated) and \n>>>>>> one covariate, and\n>>>>>> ???? explore all main effects, 2-way interactions and one 3-way \n>>>>>> interaction.\n>>>>>> ???? Regarding of used software, somewhere I get effect of intercept,\n>>>>>> ???? somewhere not. Reviewer asks to use p-adjustment for these\n>>>>>> ???? effects. My dilemma is should I apply p-correction for 7 \n>>>>>> tests or 8 (including\n>>>>>> ???? random intercept for subjects)?\n>>>>>>\n>>>>>> ???? The output do not contain F for random effect, but only \n>>>>>> variance.\n>>>>>> ???? Also, the output do not contain effect size. CIs are \n>>>>>> available only for\n>>>>>> ???? betas as product of specific level of both fixed effects and \n>>>>>> covariate, but\n>>>>>> ???? since I have 3 levels for between and 4 for repeated effects, \n>>>>>> the\n>>>>>> ???? output is not helpful + there is no possibility to change \n>>>>>> reference group.\n>>>>>> ???? Thus, I'm stuck with p-adjustment.\n>>>>>>\n>>>>>> ??? Any help is welcomed.\n>>>>>> ???? Thank you.\n>>>>>>\n>>>>>\n>>>>> As I understand, p-values are somewhat unreliable (In LMM). As a \n>>>>> sensible alternative maybe you could compute bootstrap CI and use \n>>>>> that to infer about significance of specific effects (if i have \n>>>>> understood your problem correctly).\n>>>>> I you use lme4 or nlme, this should not be a problem.\n>>>>>\n>>>>> You ca use (for model? m)\n>>>>>\n>>>>> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>>>>>\n>>>>> even use some multi-core processing to speed thing up\n>>>>>\n>>>>> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus \n>>>>> = No.of.CORES, nsim=No.of.SIMULATIONS)\n>>>>>\n>>>>> change No.of.SIMULATIONS with the desired number of repetitions \n>>>>> (1000 or so)\n>>>>> change No.of.CORES with the desired number of cores (depends of \n>>>>> your machine).\n>>>>>\n>>>>> Hope it helps.\n>>>>>\n>>>>>\n>>>>\n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "If you just want to do multiple comparisons corrections (to be honest \nI'm not quite sure what your goal is here -- I can't see why \nmultiple-comparisons corrections and computations of effect sizes w",
+      "thread_id": "thread-2a95ef51ed1c",
+      "thread_depth": 4,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-5108c885cade",
+      "message_id": "<1301870573.14988398.1638980979559@mail.yahoo.com>",
+      "from_name": "varin sacha",
+      "from_email_hash": "1917601b2a6b66ef582406a663074bc3f8b1a6bd4c8338b314201bf567396491",
+      "date": "2021-12-08T16:29:39Z",
+      "subject": "[R-sig-ME] Reference ?",
+      "subject_clean": "Reference ?",
+      "in_reply_to": "<6d653e26-f048-a565-2038-99a9c2e7d80e@phillipalday.com>",
+      "references": [
+        "<2035506915.12831566.1638647227536.ref@mail.yahoo.com>",
+        "<2035506915.12831566.1638647227536@mail.yahoo.com>",
+        "<PAXPR02MB77981C10DFB439406A216959926B9@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+        "<SYBPR01MB71939A3CD0B57198FD14AF6D986C9@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+        "<68828f6f-ccea-04c7-cbe2-ebac5829dccc@gmail.com>",
+        "<6d653e26-f048-a565-2038-99a9c2e7d80e@phillipalday.com>"
+      ],
+      "body_plain": "Dear all,\n\nMany thanks for all your precious comments.\n\nBest,\nSV\n\n\n\n\n\n\n\nLe lundi 6 d?cembre 2021, 07:32:36 UTC+1, Phillip Alday <me at phillipalday.com> a ?crit : \n\n\n\n\n\n\n\nOn 5/12/21 6:09 pm, Ben Bolker wrote:\n> ?? More bad news:\n> \n> ?* I can't point you to a specific, published/peer-reviewed 'best\n> practices in mixed modeling' document; maybe someone else here can.\n\nI don't really know of a single, short-ish document that covers this. A\nlot of best practices follow from general statistical and numerical best\npractices (see e.g. the \"stable and can be trusted\" bit that started\nthis -- you may have precise, well-defined estimates, but that's not\nnecessarily \"stable\" in the sense you want; perhaps confidence intervals\nwould be closer) and the underlying mathematics of mixed models.\n\nThere are a lot of introductory texts (both articles and books) on mixed\nmodels in general, mixed models in particular problem domains (e.g.\necology, cognitive science) and particular issues in mixed models\n(random effects selection, etc.), but the quality of these varies\ngreatly. I recently came across one that has concrete reporting\nrecommendations (Meteyard and Davies 2020,\nhttps://doi.org/10.1016/j.jml.2020.104092), but I think that they leave\nout a lot of fine print (e.g., R2-like measures for mixed models are\nproblematic; the Kenward-Roger ddf approximation requires inverting a\nlarge matrix, etc.).\n\n\n> ?* As Chris says, the lack of obvious numerical problems doesn't\n> necessarily mean the model estimates are stable.\n> ?* The other issue with a small sample is that a lot of the inferential\n> machinery of mixed models (p-values, confidence intervals, etc.) rests\n> on asymptotic assumptions.\n> \n> ?What kinds of \"overfitting problems\" did you have in mind? What would\n> the symptoms be?\n> \n> \n> \n> On 12/5/21 6:20 PM, Chris Howden wrote:\n>> Hi Sacha,\n>>\n>> I'm not sure I really agree with that statement, although some may.\n>>\n>> Say your sample size was really small, only 6. A simple model may\n>> still fit, but I wouldn?t expect the parameters to be particularly\n>> stable. Only 1 or 2 different datum could change everything.\n>>\n>> I would also want to consider the SE of the parameter estimates. If\n>> they are very large (compared to the parameter estimates), then this\n>> is telling me the parameter estimates aren't very stable. Even though\n>> the model converged.\n>>\n>> Chris Howden B.Sc. (Hons)\n>> Founding Partner\n>> Data Analysis, Modelling and Training\n>> Evidence Based Strategy/Policy Development, IP Commercialisation and\n>> Innovation\n>> (mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au\n>>\n>> -----Original Message-----\n>> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On\n>> Behalf Of Fernando Pedro Bruna Quintas\n>> Sent: Sunday, 5 December 2021 6:55 AM\n>> To: R-sig-mixed-models <r-sig-mixed-models at r-project.org>; varin sacha\n>> <varinsacha at yahoo.fr>\n>> Subject: Re: [R-sig-ME] Reference ?\n>>\n>>\n>> Dear SV,\n>>\n>> I can feel that you have a very promising research career just in\n>> front of your eyes.\n>>\n>> FB\n>>\n>> ________________________________\n>> De: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en\n>> nombre de varin sacha via R-sig-mixed-models\n>> <r-sig-mixed-models at r-project.org>\n>> Enviado: s bado, 4 de diciembre de 2021 20:47\n>> Para: R-sig-mixed-models <r-sig-mixed-models at r-project.org>\n>> Asunto: [R-sig-ME] Reference ?\n>>\n>> Dear Mixed modelers experts,\n>>\n>> I am looking for a reference to justify my sentence here below.\n>> Many thanks for your help.\n>>\n>> \"The mixed model seemed well specified?? it converged and had no\n>> singular problem, no overfitting problem. So, even if the sample size\n>> is quite small, the estimates are stable and can be trusted\".\n>>\n>> Best Regards,\n>> SV\n>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>",
+      "body_snippet": "Dear all,\n\nMany thanks for all your precious comments.\n\nBest,\nSV\n\n\n\n\n\n\n\nLe lundi 6 d?cembre 2021, 07:32:36 UTC+1, Phillip Alday <me at phillipalday.com> a ?crit : \n\n\n\n\n\n\n\nOn 5/12/21 6:09 pm, Ben Bolke",
+      "thread_id": "thread-9615cd194738",
+      "thread_depth": 5,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-34f60f60d4d6",
+      "message_id": "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+      "from_name": "N o s t a l g i a",
+      "from_email_hash": "93f29416d78b1175470a30600a50d4e9e491aaf80f20e7565e3c476fe22502b3",
+      "date": "2021-12-10T20:29:45+09:00",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am a novice in mixed models, and I am trying to fit a model to a \nsurvey data with an interval-scale dependent variable (hon), four \nfixed-effect variables (sex, age, schooling, and questions) and two \nrandom effects. The random effects are interviewer (intv) and \ninterviewee (ID), and as such, they are in a nested relationship. Sex, \nage and questions are found to be in an interacting relationship.\n\nA major question I am asking here is whether the interviewer effect is \nsignificant or not, so I tried the following intercept-only models, \nwith model 1 using the nested model, model 2 only the interviewer \neffect, and model 3 only the interviewee effect:\n\nmodel1 <- lmer(hon ~ sex * age * Question + schooling + (1|intv/ID)\nmodel2 <- lmer(hon ~ sex * age * Question + schooling + (1|intv)\nmodel3 <- lmer(hon ~ sex * age * Question + schooling + (1|ID)\n\nThe output from each model says the following:\n\nmodel 1:\nRandom effects:\n  Groups   Name        Variance Std.Dev.\n  ID:intv  (Intercept) 0.03988  0.1997\n  intv     (Intercept) 0.00000  0.0000\n  Residual             0.16847  0.4105\nNumber of obs: 3283, groups:  ID:intv, 305; intv, 28\n\nmodel 2:\nRandom effects:\n  Groups   Name        Variance Std.Dev.\n  intv     (Intercept) 0.002348 0.04846\n  Residual             0.205998 0.45387\nNumber of obs: 3283, groups:  intv, 28\n\nmodel 3:\nRandom effects:\n  Groups   Name        Variance Std.Dev.\n  ID       (Intercept) 0.04107  0.2027\n  Residual             0.16894  0.4110\nNumber of obs: 3294, groups:  ID, 306\n\nThe respective Log likelihood and AIC values are:\n\nmodel1\tAIC = 4249.232  LL = -2076.616 (df=48)\nmodel2\tAIC = 4539.69   LL = -2222.845 (df=47)\nmodel3\tAIC = 4274.99   LL = -2090.495 (df=47)\n\nSince I got an error message saying \"models were not all fitted to the \nsame size of dataset\" while running anova(), I compared the AICs and \nconcluded that model2 is the best model of the three.\n\nHere I have three questions:\n\n1. Why is the variance for the interviewer effect(intv) zero? Is it \nnecessarily so because of the nested model, or is it simply because \nthat there is no interviewer effect?\n\n2. If intv is really zero, why does not the model 3 give a better AIC?\n\n3. Am I allowed to compare the three models with AIC as I did above? \nOr should I use LL?\n\nThanks in advance,\n\nKenjiro Matsuda",
+      "body_snippet": "I am a novice in mixed models, and I am trying to fit a model to a \nsurvey data with an interval-scale dependent variable (hon), four \nfixed-effect variables (sex, age, schooling, and questions) and t",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-3294dc05ab19",
+      "message_id": "<2AC0B386-6093-4FB9-8722-1CE35D1F9181@anu.edu.au>",
+      "from_name": "John Maindonald",
+      "from_email_hash": "b1628b62b368b663eeb7a808cf1c7e03aaedd020f6cc7655ddb9807dbfc58128",
+      "date": "2021-12-11T01:03:31Z",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+      "references": [
+        "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>"
+      ],
+      "body_plain": "My guess is that you should not be treating answers from different\nquestions as independent.  They are nested within individuals, and\na main effect is not sufficient to account for systematic differences.\nThere are shades of the story I heard of an experimenter whose blocks\nwere made up of plots that moved successively away from the river.\nWhat do you get if you analyse a summary measure for the questionnaire\nor individual questions?\n\n\nJohn Maindonald             email: john.maindonald at anu.edu.au<mailto:john.maindonald at anu.edu.au>\n\nOn 11/12/2021, at 00:29, N o s t a l g i a <kenjiro at shoin.ac.jp<mailto:kenjiro at shoin.ac.jp>> wrote:\n\nI am a novice in mixed models, and I am trying to fit a model to a survey data with an interval-scale dependent variable (hon), four fixed-effect variables (sex, age, schooling, and questions) and two random effects. The random effects are interviewer (intv) and interviewee (ID), and as such, they are in a nested relationship. Sex, age and questions are found to be in an interacting relationship.\n\nA major question I am asking here is whether the interviewer effect is significant or not, so I tried the following intercept-only models, with model 1 using the nested model, model 2 only the interviewer effect, and model 3 only the interviewee effect:\n\nmodel1 <- lmer(hon ~ sex * age * Question + schooling + (1|intv/ID)\nmodel2 <- lmer(hon ~ sex * age * Question + schooling + (1|intv)\nmodel3 <- lmer(hon ~ sex * age * Question + schooling + (1|ID)\n\nThe output from each model says the following:\n\nmodel 1:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nID:intv  (Intercept) 0.03988  0.1997\nintv     (Intercept) 0.00000  0.0000\nResidual             0.16847  0.4105\nNumber of obs: 3283, groups:  ID:intv, 305; intv, 28\n\nmodel 2:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nintv     (Intercept) 0.002348 0.04846\nResidual             0.205998 0.45387\nNumber of obs: 3283, groups:  intv, 28\n\nmodel 3:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nID       (Intercept) 0.04107  0.2027\nResidual             0.16894  0.4110\nNumber of obs: 3294, groups:  ID, 306\n\nThe respective Log likelihood and AIC values are:\n\nmodel1 AIC = 4249.232  LL = -2076.616 (df=48)\nmodel2 AIC = 4539.69   LL = -2222.845 (df=47)\nmodel3 AIC = 4274.99   LL = -2090.495 (df=47)\n\nSince I got an error message saying \"models were not all fitted to the same size of dataset\" while running anova(), I compared the AICs and concluded that model2 is the best model of the three.\n\nHere I have three questions:\n\n1. Why is the variance for the interviewer effect(intv) zero? Is it necessarily so because of the nested model, or is it simply because that there is no interviewer effect?\n\n2. If intv is really zero, why does not the model 3 give a better AIC?\n\n3. Am I allowed to compare the three models with AIC as I did above? Or should I use LL?\n\nThanks in advance,\n\nKenjiro Matsuda\n\n_______________________________________________\nR-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list\nhttps://aus01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cjohn.maindonald%40anu.edu.au%7C5a76556ebeb544a5b77e08d9bbd07302%7Ce37d725cab5c46249ae5f0533e486437%7C0%7C0%7C637747797303366625%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=leBHp2TfI6mW1m4YIqeMw2czjyr%2FI7wrKiSWxFIAtO0%3D&amp;reserved=0\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "My guess is that you should not be treating answers from different\nquestions as independent.  They are nested within individuals, and\na main effect is not sufficient to account for systematic differen",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-71788368b88e",
+      "message_id": "<58cc93fd-a1ea-b982-23a1-722de7b12028@shoin.ac.jp>",
+      "from_name": "N o s t a l g i a",
+      "from_email_hash": "93f29416d78b1175470a30600a50d4e9e491aaf80f20e7565e3c476fe22502b3",
+      "date": "2021-12-11T14:29:18+09:00",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": "<2AC0B386-6093-4FB9-8722-1CE35D1F9181@anu.edu.au>",
+      "references": [
+        "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+        "<2AC0B386-6093-4FB9-8722-1CE35D1F9181@anu.edu.au>"
+      ],
+      "body_plain": "Hi John,\n\nTreating answers (Q) as a random effect nested within an individual \nsounds like an interesting idea. As Qs are not part of my main \ninterest, that would pose no problem to me. I guess it would be like:\n\nmodel4 <- lmer(hon ~ sex * age * Question + schooling + \n(1|intv/ID/Question)\n\nOr should I drop it from the interaction of the fixed effect?\n\n- Ken\n\n\nOn 2021/12/11 10:03, John Maindonald wrote:\n> My guess is that you should not be treating answers from different\n> questions as independent. ?They are nested within individuals, and\n> a main effect is not sufficient to account for systematic differences.\n> There are shades of the story I heard of an experimenter whose blocks\n> were made up of plots that moved successively away from the river.\n> What do you get if you analyse a summary measure for the questionnaire\n> or individual questions?\n> \n> John Maindonaldemail: john.maindonald at anu.edu.au \n> <mailto:john.maindonald at anu.edu.au>\n> \n> \n>> On 11/12/2021, at 00:29, N o s t a l g i a <kenjiro at shoin.ac.jp \n>> <mailto:kenjiro at shoin.ac.jp>> wrote:\n>>\n>> I am a novice in mixed models, and I am trying to fit a model to a \n>> survey data with an interval-scale dependent variable (hon), four \n>> fixed-effect variables (sex, age, schooling, and questions) and two \n>> random effects. The random effects are interviewer (intv) and \n>> interviewee (ID), and as such, they are in a nested relationship. \n>> Sex, age and questions are found to be in an interacting relationship.\n>>\n>> A major question I am asking here is whether the interviewer effect \n>> is significant or not, so I tried the following intercept-only \n>> models, with model 1 using the nested model, model 2 only the \n>> interviewer effect, and model 3 only the interviewee effect:\n>>\n>> model1 <- lmer(hon ~ sex * age * Question + schooling + (1|intv/ID)\n>> model2 <- lmer(hon ~ sex * age * Question + schooling + (1|intv)\n>> model3 <- lmer(hon ~ sex * age * Question + schooling + (1|ID)\n>>\n>> The output from each model says the following:\n>>\n>> model 1:\n>> Random effects:\n>> Groups ??Name ???????Variance Std.Dev.\n>> ID:intv ?(Intercept) 0.03988 ?0.1997\n>> intv ????(Intercept) 0.00000 ?0.0000\n>> Residual ????????????0.16847 ?0.4105\n>> Number of obs: 3283, groups: ?ID:intv, 305; intv, 28\n>>\n>> model 2:\n>> Random effects:\n>> Groups ??Name ???????Variance Std.Dev.\n>> intv ????(Intercept) 0.002348 0.04846\n>> Residual ????????????0.205998 0.45387\n>> Number of obs: 3283, groups: ?intv, 28\n>>\n>> model 3:\n>> Random effects:\n>> Groups ??Name ???????Variance Std.Dev.\n>> ID ??????(Intercept) 0.04107 ?0.2027\n>> Residual ????????????0.16894 ?0.4110\n>> Number of obs: 3294, groups: ?ID, 306\n>>\n>> The respective Log likelihood and AIC values are:\n>>\n>> model1AIC = 4249.232 ?LL = -2076.616 (df=48)\n>> model2AIC = 4539.69 ??LL = -2222.845 (df=47)\n>> model3AIC = 4274.99 ??LL = -2090.495 (df=47)\n>>\n>> Since I got an error message saying \"models were not all fitted to \n>> the same size of dataset\" while running anova(), I compared the AICs \n>> and concluded that model2 is the best model of the three.\n>>\n>> Here I have three questions:\n>>\n>> 1. Why is the variance for the interviewer effect(intv) zero? Is it \n>> necessarily so because of the nested model, or is it simply because \n>> that there is no interviewer effect?\n>>\n>> 2. If intv is really zero, why does not the model 3 give a better AIC?\n>>\n>> 3. Am I allowed to compare the three models with AIC as I did above? \n>> Or should I use LL?\n>>\n>> Thanks in advance,\n>>\n>> Kenjiro Matsuda\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org \n>> <mailto:R-sig-mixed-models at r-project.org> mailing list\n>> https://aus01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cjohn.maindonald%40anu.edu.au%7C5a76556ebeb544a5b77e08d9bbd07302%7Ce37d725cab5c46249ae5f0533e486437%7C0%7C0%7C637747797303366625%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=leBHp2TfI6mW1m4YIqeMw2czjyr%2FI7wrKiSWxFIAtO0%3D&amp;reserved=0 \n>> <https://aus01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cjohn.maindonald%40anu.edu.au%7C5a76556ebeb544a5b77e08d9bbd07302%7Ce37d725cab5c46249ae5f0533e486437%7C0%7C0%7C637747797303366625%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=leBHp2TfI6mW1m4YIqeMw2czjyr%2FI7wrKiSWxFIAtO0%3D&amp;reserved=0>\n>",
+      "body_snippet": "Hi John,\n\nTreating answers (Q) as a random effect nested within an individual \nsounds like an interesting idea. As Qs are not part of my main \ninterest, that would pose no problem to me. I guess it wo",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-2721422ebdd2",
+      "message_id": "<cdf5cadd-24ca-7c6a-19fd-1b6b65199e2e@huftis.org>",
+      "from_name": "Karl Ove Hufthammer",
+      "from_email_hash": "256d927983a8102ad4befb385c5fa57427693eb2406ecb4eb9807d17ef1a0d89",
+      "date": "2021-12-11T11:55:30+01:00",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+      "references": [
+        "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>"
+      ],
+      "body_plain": "N o s t a l g i a skreiv 10.12.2021 12:29:\n> Since I got an error message saying \"models were not all fitted to the \n> same size of dataset\" while running anova(), I compared the AICs and \n> concluded that model2 is the best model of the three.\n\nNo, model 2 has the *highest* AIC, and based on AIC, it would be the \n*worst* model. The best model would be the one with the lowest AIC. \n(Also, it doesn?t seem realistic to assume no random effect for the \ninterviewees, so I would also dismiss model 2 based on *theoretical* \ngrounds.)\n\nBut in this case, comparing the AICs (or log likelihood) is actually \n*not* valid, as the data were not fitted to the same dataset (something \nwhich anova() warns you about). In model 3, you have 3294 observations, \nbut in model 1 and 2, you only have 3283 observations. The only \ndifference between the models is that model 3 doesn?t include the ?intv? \nvariable. In other words, for 11 responses, you don?t know who the \ninterviewer was.\n\nSo you have to refit the models to the *same* dataset, e.g., by removing \nthe observation where ?is.na(intv)? before fitting the models.\n\n\n-- \nKarl Ove Hufthammer",
+      "body_snippet": "N o s t a l g i a skreiv 10.12.2021 12:29:\n> Since I got an error message saying \"models were not all fitted to the \n> same size of dataset\" while running anova(), I compared the AICs and \n> concluded",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-6f04602d709b",
+      "message_id": "<64F05672-B0CE-433A-B9BA-27785258E15A@anu.edu.au>",
+      "from_name": "John Maindonald",
+      "from_email_hash": "b1628b62b368b663eeb7a808cf1c7e03aaedd020f6cc7655ddb9807dbfc58128",
+      "date": "2021-12-11T18:58:18Z",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": "<58cc93fd-a1ea-b982-23a1-722de7b12028@shoin.ac.jp>",
+      "references": [
+        "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+        "<2AC0B386-6093-4FB9-8722-1CE35D1F9181@anu.edu.au>",
+        "<58cc93fd-a1ea-b982-23a1-722de7b12028@shoin.ac.jp>"
+      ],
+      "body_plain": "Possibly, you need to allow for a within individual correlation structure.\nWhat I should have said was that the correlation structure within\nindividuals persists even when allowance is made for the other fixed\neffects.  But why not start by looking at total scores?  Looking at\nprincipal components after a principal components breakdown might\nbe another possibility.  Have you been able to find published analyses,\nor on the web, that have broken results down by individual question0\nresults?\n\nJohn Maindonald             email: john.maindonald at anu.edu.au<mailto:john.maindonald at anu.edu.au>\n\n\nOn 11/12/2021, at 18:29, N o s t a l g i a <kenjiro at shoin.ac.jp<mailto:kenjiro at shoin.ac.jp>> wrote:\n\nHi John,\n\nTreating answers (Q) as a random effect nested within an individual sounds like an interesting idea. As Qs are not part of my main interest, that would pose no problem to me. I guess it would be like:\n\nmodel4 <- lmer(hon ~ sex * age * Question + schooling + (1|intv/ID/Question)\n\nOr should I drop it from the interaction of the fixed effect?\n\n- Ken\n\n\nOn 2021/12/11 10:03, John Maindonald wrote:\nMy guess is that you should not be treating answers from different\nquestions as independent.  They are nested within individuals, and\na main effect is not sufficient to account for systematic differences.\nThere are shades of the story I heard of an experimenter whose blocks\nwere made up of plots that moved successively away from the river.\nWhat do you get if you analyse a summary measure for the questionnaire\nor individual questions?\nJohn Maindonaldemail: john.maindonald at anu.edu.au<mailto:john.maindonald at anu.edu.au> <mailto:john.maindonald at anu.edu.au>\nOn 11/12/2021, at 00:29, N o s t a l g i a <kenjiro at shoin.ac.jp<mailto:kenjiro at shoin.ac.jp> <mailto:kenjiro at shoin.ac.jp>> wrote:\n\nI am a novice in mixed models, and I am trying to fit a model to a survey data with an interval-scale dependent variable (hon), four fixed-effect variables (sex, age, schooling, and questions) and two random effects. The random effects are interviewer (intv) and interviewee (ID), and as such, they are in a nested relationship. Sex, age and questions are found to be in an interacting relationship.\n\nA major question I am asking here is whether the interviewer effect is significant or not, so I tried the following intercept-only models, with model 1 using the nested model, model 2 only the interviewer effect, and model 3 only the interviewee effect:\n\nmodel1 <- lmer(hon ~ sex * age * Question + schooling + (1|intv/ID)\nmodel2 <- lmer(hon ~ sex * age * Question + schooling + (1|intv)\nmodel3 <- lmer(hon ~ sex * age * Question + schooling + (1|ID)\n\nThe output from each model says the following:\n\nmodel 1:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nID:intv  (Intercept) 0.03988  0.1997\nintv     (Intercept) 0.00000  0.0000\nResidual             0.16847  0.4105\nNumber of obs: 3283, groups:  ID:intv, 305; intv, 28\n\nmodel 2:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nintv     (Intercept) 0.002348 0.04846\nResidual             0.205998 0.45387\nNumber of obs: 3283, groups:  intv, 28\n\nmodel 3:\nRandom effects:\nGroups   Name        Variance Std.Dev.\nID       (Intercept) 0.04107  0.2027\nResidual             0.16894  0.4110\nNumber of obs: 3294, groups:  ID, 306\n\nThe respective Log likelihood and AIC values are:\n\nmodel1AIC = 4249.232  LL = -2076.616 (df=48)\nmodel2AIC = 4539.69   LL = -2222.845 (df=47)\nmodel3AIC = 4274.99   LL = -2090.495 (df=47)\n\nSince I got an error message saying \"models were not all fitted to the same size of dataset\" while running anova(), I compared the AICs and concluded that model2 is the best model of the three.\n\nHere I have three questions:\n\n1. Why is the variance for the interviewer effect(intv) zero? Is it necessarily so because of the nested model, or is it simply because that there is no interviewer effect?\n\n2. If intv is really zero, why does not the model 3 give a better AIC?\n\n3. Am I allowed to compare the three models with AIC as I did above? Or should I use LL?\n\nThanks in advance,\n\nKenjiro Matsuda\n\n_______________________________________________\nR-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> <mailto:R-sig-mixed-models at r-project.org> mailing list\nhttps://aus01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cjohn.maindonald%40anu.edu.au%7Cdbe70cc56c264314b20508d9bc673512%7Ce37d725cab5c46249ae5f0533e486437%7C0%7C0%7C637747973731627086%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=ei93uMUtP1IC3TPFAriLh0VcHVQjaTY8OXfOs9uVDdk%3D&amp;reserved=0<https://aus01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cjohn.maindonald%40anu.edu.au%7Cdbe70cc56c264314b20508d9bc673512%7Ce37d725cab5c46249ae5f0533e486437%7C0%7C0%7C637747973731627086%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=ei93uMUtP1IC3TPFAriLh0VcHVQjaTY8OXfOs9uVDdk%3D&amp;reserved=0>\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Possibly, you need to allow for a within individual correlation structure.\nWhat I should have said was that the correlation structure within\nindividuals persists even when allowance is made for the ot",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 3,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-49f684d2133f",
+      "message_id": "<CAJiQag9xhxRVJ2Ac-e1zrnrSRKqPT-87-d0LH-D7bEZNNTN5fg@mail.gmail.com>",
+      "from_name": "tao wang",
+      "from_email_hash": "a14085f2e617737b7ead88b1b65bc5c701ea83adccb2cccf6eff27ebbdcf0e9d",
+      "date": "2021-12-13T09:28:35+08:00",
+      "subject": "[R-sig-ME] How can I predict a new data (or newlevel) for generalized linear mixed model with both random and fixed effect in GLMM",
+      "subject_clean": "How can I predict a new data (or newlevel) for generalized linear mixed model with both random and fixed effect in GLMM",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "A non-text attachment was scrubbed...\nName: NonlinearMixedVolume-AgeModel-2013A.pdf\nType: application/pdf\nSize: 2138140 bytes\nDesc: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20211213/eeea86c7/attachment-0001.pdf>",
+      "body_snippet": "A non-text attachment was scrubbed...\nName: NonlinearMixedVolume-AgeModel-2013A.pdf\nType: application/pdf\nSize: 2138140 bytes\nDesc: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-model",
+      "thread_id": "thread-49f684d2133f",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-7278c2474851",
+      "message_id": "<3ad6730e-15ca-c6dc-3e96-f2636731c86e@shoin.ac.jp>",
+      "from_name": "N o s t a l g i a",
+      "from_email_hash": "93f29416d78b1175470a30600a50d4e9e491aaf80f20e7565e3c476fe22502b3",
+      "date": "2021-12-13T15:38:22+09:00",
+      "subject": "[R-sig-ME] Nested model variance/parameter value",
+      "subject_clean": "Nested model variance/parameter value",
+      "in_reply_to": "<cdf5cadd-24ca-7c6a-19fd-1b6b65199e2e@huftis.org>",
+      "references": [
+        "<2e2a3e1f-2e64-78fc-6f63-2e3eb558ec68@shoin.ac.jp>",
+        "<cdf5cadd-24ca-7c6a-19fd-1b6b65199e2e@huftis.org>"
+      ],
+      "body_plain": "Karl,\n\nThanks for pointing out my mistakes. Yes,I should have chosen model1 \nwith the least AIC among the three, and I should not have compared the \nthree with different dataset to start with.\n\nI went back the original dataset and deleted all the cases that \nincludes NAs manually (somehow \"na.action = na.exclude, data = third2\" \ndid not work). Now anova() works fine, and the best model turned out \nto be (anova-wise as well asa AIC-wise) the one with only ID as the \nrandom variable. Everything seems fine -- except that the variace for \nintv remained zero in the model that incorporates both intv and ID as \na random variable.  This probably I need to accept as it is: there is \nabsolutely no interviewer effect.\n\nThanks again,\n\n- Ken\n\n\nOn 2021/12/11 19:55, Karl Ove Hufthammer wrote:\n> N o s t a l g i a skreiv 10.12.2021 12:29:\n>> Since I got an error message saying \"models were not all fitted to \n>> the same size of dataset\" while running anova(), I compared the AICs \n>> and concluded that model2 is the best model of the three.\n> \n> No, model 2 has the *highest* AIC, and based on AIC, it would be the \n> *worst* model. The best model would be the one with the lowest AIC. \n> (Also, it doesn?t seem realistic to assume no random effect for the \n> interviewees, so I would also dismiss model 2 based on *theoretical* \n> grounds.)\n> \n> But in this case, comparing the AICs (or log likelihood) is actually \n> *not* valid, as the data were not fitted to the same dataset \n> (something which anova() warns you about). In model 3, you have 3294 \n> observations, but in model 1 and 2, you only have 3283 observations. \n> The only difference between the models is that model 3 doesn?t include \n> the ?intv? variable. In other words, for 11 responses, you don?t know \n> who the interviewer was.\n> \n> So you have to refit the models to the *same* dataset, e.g., by \n> removing the observation where ?is.na(intv)? before fitting the models.\n> \n>",
+      "body_snippet": "Karl,\n\nThanks for pointing out my mistakes. Yes,I should have chosen model1 \nwith the least AIC among the three, and I should not have compared the \nthree with different dataset to start with.\n\nI went",
+      "thread_id": "thread-34f60f60d4d6",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-6efc6392d5e5",
+      "message_id": "<CA+QAJT7-sW-+KC-gsB64PZDsAGv3DxFF19n5SLZWYRdtg9Y4PQ@mail.gmail.com>",
+      "from_name": "Saâd HANANE",
+      "from_email_hash": "2bfdf5cd8c39505a9c2b0145873a23fe612377a29e667c6965fc7f6421ee6b1e",
+      "date": "2021-12-13T16:49:40+01:00",
+      "subject": "[R-sig-ME] GLMM replicated data",
+      "subject_clean": "GLMM replicated data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\nOne aim of my study is to assess the effect of temporal variation in\nhabitat availability on the number of male singing per point count (p). To\nthis end, 60 point counts were randomly distributed in the study area, but\nthese points were fixed over the months (I recorded the number of singing\nmales at the same points but at successive months). At each point, I\nrecorded the cover of habitat available (e.g., shrubs, cereals,\nalfalfa...etc).\nI'm wondering if I should consider the ID as a random factor in this case?\nIf yes, is this command correct?\nmodel=glmer(p~cover of habitat + (1|month/ID), famlily=poisson, data=data)\nThank you very much for your help.\nRegards\n---\nSa?d Hanane, PhD\nService d'?cologie, de Biodiversit? et de Conservation des Sols\nCentre de Recherche Foresti?re\nChariae Omar Ibn Al Khattab, BP 763, Rabat-Agdal/Maroc.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nOne aim of my study is to assess the effect of temporal variation in\nhabitat availability on the number of male singing per point count (p). To\nthis end, 60 point counts were randomly distri",
+      "thread_id": "thread-6efc6392d5e5",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-5b795cd66d5e",
+      "message_id": "<00F57BE3-C9DE-4C1B-896A-824A3CBAC0DD@gmail.com>",
+      "from_name": "Mollie Brooks",
+      "from_email_hash": "5d5ab7c364ea155beb47542e3f3572a54c3783f3add3f0c6b72a5b445c2259a2",
+      "date": "2021-12-13T17:13:30+01:00",
+      "subject": "[R-sig-ME] GLMM replicated data",
+      "subject_clean": "GLMM replicated data",
+      "in_reply_to": "<CA+QAJT7-sW-+KC-gsB64PZDsAGv3DxFF19n5SLZWYRdtg9Y4PQ@mail.gmail.com>",
+      "references": [
+        "<CA+QAJT7-sW-+KC-gsB64PZDsAGv3DxFF19n5SLZWYRdtg9Y4PQ@mail.gmail.com>"
+      ],
+      "body_plain": "You probably want crossed random effects of month and point ID:\n\nmodel=glmer(p~cover of habitat + (1|month)+(1|ID), famlily=poisson, data=data)\n\nDoes your variable \"cover of habitat\" change over the months to possibly capture the effect of temporal variation in\nhabitat availability that you want? If \"cover of habitat\" is constant through time, then all of the temporal variation will be represented in your random effect of month. If  \"cover of habitat\" changes through time, then it will include part of the temporal variation, but some will still go into the random effect of month.\n\nUsing the Poisson distribution is an assumption that is usually violated in ecology. After fitting the model, you could check for over- or underdispersion and then consider a negative binomial distribution if it?s overdispersed or a Conway Maxwell Poisson if it?s underdispersed. I wrote about dispersion issues in this paper: Brooks, M. E., K. Kristensen, M. R. Darrigo, P. Rubim, M. Uriarte, E. Bruna, and B. M. Bolker. 2019. Statistical modeling of patterns in annual reproductive rates. Ecology 00(00):e02706. 10.1002/ecy.2706. Let me know if you want a copy.\n\nCheers,\nMollie\n\n\n> On 13 Dec 2021, at 16.49, Sa?d HANANE <sdhan333 at gmail.com> wrote:\n> \n> Dear all,\n> One aim of my study is to assess the effect of temporal variation in\n> habitat availability on the number of male singing per point count (p). To\n> this end, 60 point counts were randomly distributed in the study area, but\n> these points were fixed over the months (I recorded the number of singing\n> males at the same points but at successive months). At each point, I\n> recorded the cover of habitat available (e.g., shrubs, cereals,\n> alfalfa...etc).\n> I'm wondering if I should consider the ID as a random factor in this case?\n> If yes, is this command correct?\n> model=glmer(p~cover of habitat + (1|month/ID), famlily=poisson, data=data)\n> Thank you very much for your help.\n> Regards\n> ---\n> Sa?d Hanane, PhD\n> Service d'?cologie, de Biodiversit? et de Conservation des Sols\n> Centre de Recherche Foresti?re\n> Chariae Omar Ibn Al Khattab, BP 763, Rabat-Agdal/Maroc.\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "You probably want crossed random effects of month and point ID:\n\nmodel=glmer(p~cover of habitat + (1|month)+(1|ID), famlily=poisson, data=data)\n\nDoes your variable \"cover of habitat\" change over the m",
+      "thread_id": "thread-6efc6392d5e5",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-3435ed64f571",
+      "message_id": "<CAMUd9hEiX7erLad2cPEOSimB8rTbVLF-EG9k4PGy4jsTA+eN7g@mail.gmail.com>",
+      "from_name": "Jamie Dallas",
+      "from_email_hash": "b3995a2775631cc6a3224d3b64c2792af8431f7683f1d64c6d347b64f28c122a",
+      "date": "2021-12-13T13:36:28-08:00",
+      "subject": "[R-sig-ME] A GLMER Question",
+      "subject_clean": "A GLMER Question",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello All,\nI am running a GLMER with Gamma distribution and identity link. I have to\nadd a small constant (1 or 0.001) to my outcome to be able to run my models.\n\nI know in a linear regression with Normality assumption, this only effects\nmy intercept but my other coefficient estimates will stay the same.\n\nHowever, in my GLMER models I am noticing the choice of constant effects\nall my parameter estimates. I thought since I am using an identity link\nthis should not happen.\n\n1- Is my understanding wrong?\n\n2- Why are my parameter estimates changing in my Gamma distributed GLMER\nwith identity link models, depending on the choice of added constant to my\noutcome?\n\nThank you in advance!\n\nBest,\n\nJamie\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello All,\nI am running a GLMER with Gamma distribution and identity link. I have to\nadd a small constant (1 or 0.001) to my outcome to be able to run my models.\n\nI know in a linear regression with No",
+      "thread_id": "thread-3435ed64f571",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-b27569def378",
+      "message_id": "<97f1afc4-ff50-9537-c01e-dd10da08efa8@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-14T18:48:58-05:00",
+      "subject": "[R-sig-ME] A GLMER Question",
+      "subject_clean": "A GLMER Question",
+      "in_reply_to": "<CAMUd9hEiX7erLad2cPEOSimB8rTbVLF-EG9k4PGy4jsTA+eN7g@mail.gmail.com>",
+      "references": [
+        "<CAMUd9hEiX7erLad2cPEOSimB8rTbVLF-EG9k4PGy4jsTA+eN7g@mail.gmail.com>"
+      ],
+      "body_plain": "On 12/13/21 4:36 PM, Jamie Dallas wrote:\n> Hello All,\n> I am running a GLMER with Gamma distribution and identity link. I have to\n> add a small constant (1 or 0.001) to my outcome to be able to run my models.\n> \n> I know in a linear regression with Normality assumption, this only effects\n> my intercept but my other coefficient estimates will stay the same.\n> \n> However, in my GLMER models I am noticing the choice of constant effects\n> all my parameter estimates. I thought since I am using an identity link\n> this should not happen.\n> \n> 1- Is my understanding wrong?\n> \n> 2- Why are my parameter estimates changing in my Gamma distributed GLMER\n> with identity link models, depending on the choice of added constant to my\n> outcome?\n> \n> Thank you in advance!\n> \n> Best,\n> \n> Jamie\n\n   I don't necessarily see why you should expect the slopes to be \ninvariant; GLMs don't have the same properties as LMs, even with an \nidentity link. \"Small\" will be context-dependent.  If this makes much of \na difference to your results, or if you have more than a few zero \nvalues, you might need to think about a more principled approach such as \na hurdle model ...\n\nExample:\n\nlibrary(lme4)\ndd <- data.frame(x = runif(100),\n                  f = factor(rep(1:10, 10)))\nset.seed(101)\ndd$y <- simulate(~ x + (1|f),\n                  family = Gamma(link = \"identity\"),\n                  newdata = dd,\n                  newparams = list(beta = rep(1,2),\n                                   theta = 1,\n                                   sigma = 1))[[1]]\ndd$y[sample(nrow(dd), size = 10)] <- 0\n\nfitf <- function(off) {\n     g1 <- glmer(y + off ~ x + (1|f),\n                 family = Gamma(link = \"identity\"),\n                 data = dd)\n     return(fixef(g1))\n}\n\ntry(fitf(0))\noffvec <- 10^c((-5):(-2))\ncbind(offvec, t(sapply(offvec, fitf)))\n\n\n      offvec (Intercept)           x\n[1,]  1e-05    1.408488 -0.08994451\n[2,]  1e-04    1.408578 -0.08994445\n[3,]  1e-03    1.409508 -0.09000147\n[4,]  1e-02    1.085238  0.45049626\n >\n\ntry(fitf(0))\noffvec <- 10^c((-5):(-2))\ncbind(offvec, t(sapply(offvec, fitf)))",
+      "body_snippet": "On 12/13/21 4:36 PM, Jamie Dallas wrote:\n> Hello All,\n> I am running a GLMER with Gamma distribution and identity link. I have to\n> add a small constant (1 or 0.001) to my outcome to be able to run my",
+      "thread_id": "thread-3435ed64f571",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-76d6b6adaa59",
+      "message_id": "<CACtWw1Hza-aaBy3hq8RrqqwwXdt5zWC31U2mejeF0-0HPSTg+g@mail.gmail.com>",
+      "from_name": "Mike Lawson",
+      "from_email_hash": "1ae28b0a812ec667788f439136cf9ec73d584d43a08b8ed8fbcbd409b6c67ff6",
+      "date": "2021-12-20T17:43:34Z",
+      "subject": "[R-sig-ME]  Modelling with uncertain (but not missing) categorical random effect values",
+      "subject_clean": "Modelling with uncertain (but not missing) categorical random effect values",
+      "in_reply_to": "<b15a5261-9d37-9283-0f61-3c776cb1f929@gmail.com>",
+      "references": [
+        "<CACtWw1HWv6ph0vwt4TLpUxiojZ_3993Kop0bvfXe=3yt2Lu9JA@mail.gmail.com>",
+        "<CAJuCY5xD_4QNNhbKMOjsJ2uQETWyHzaBznkUxg65_+QV-5Vw9A@mail.gmail.com>",
+        "<47d07adf-6db0-e441-6e86-29d896c12ad1@phillipalday.com>",
+        "<b15a5261-9d37-9283-0f61-3c776cb1f929@gmail.com>"
+      ],
+      "body_plain": "Thanks for the suggestions Philip and Ben,\n\nI'm coming back to this after a hiatus and this may be quite a basic question.\n\nI managed to get the lme4 hack working with my data, but not if I\ninclude other random effects (that are not multi membership and not in\nthe matrix).\ni.e. in the example you provide, if I add a new random predictor, how\ndo I incorporate this into the model? As this line directly changes\nZtlist and Zt to be the matrix:\n\nlmod$reTrms$Zt <- lmod$reTrms$Ztlist[[1]] <- Matrix(t(W))\n\nMany thanks,\nMike\n\n\nOn Tue, 3 Aug 2021 at 23:16, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>    Also see\n> https://bbolker.github.io/mixedmodels-misc/notes/multimember.html (i.e.\n> you can do it in lme4, but it takes a bit of hacking)\n>\n> On 8/3/21 5:19 PM, Phillip Alday wrote:\n> > If I'm not mistaken, Thierry's suggestion is a particular case of\n> > multi-membership models, which you can also do in brms. See e.g.:\n> >\n> >\n> > https://rdrr.io/cran/brms/man/mm.html\n> >\n> > https://github.com/paul-buerkner/brms/issues/130\n> >\n> > https://discourse.mc-stan.org/t/cross-classified-multiple-membership-models-with-brms/8691\n> >\n> >\n> > On 13/07/2021 06:09, Thierry Onkelinx via R-sig-mixed-models wrote:\n> >> Dear Michael,\n> >>\n> >> Maybe something like (0 + w_1 | dad_1) + (0 + w_2 | dad_2) + (0 + w_3 |\n> >> dad_3). Where w_1 is the probability of dad_1.\n> >>\n> >> Make sure that dad_1, dad_2 and dad_3 are factors with the same levels.\n> >> Then INLA allows you to add this as f(dad_1, w_1, model = \"iid\") + f(dad_2,\n> >> w_2, copy = \"dad_\"1) + f(dad_3, w_3, copy = \"dad_1\"). So you end up with a\n> >> single random intercept for every dad (dad_2 and dad_3 share their\n> >> estimates with dad_1).\n> >>\n> >> mum_id  mum_sp  dad_sp dad_id                    con    dad_1   w_1 dad_2\n> >> w_ 2 dad_3 w_3\n> >>\n> >> Af1          A              A           Am1 / Am2             1      Am1\n> >> 0.6   Am2 0.4  NA 0\n> >> Af1          A              A           Am2                       1\n> >> Am2    1     NA     0     NA 0\n> >> Bf1          B             A           Am1 / Am2 / Am4   0      Am1    0.4\n> >>   Am2 0.3   Am4 0.3\n> >> Bf2          B              B          Bm1 / Bm3              1      Bm1\n> >> 0.5   Bm2  0.5  NA 0\n> >>\n> >> Best regards,\n> >>\n> >> ir. Thierry Onkelinx\n> >> Statisticus / Statistician\n> >>\n> >> Vlaamse Overheid / Government of Flanders\n> >> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\n> >> FOREST\n> >> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n> >> thierry.onkelinx at inbo.be\n> >> Havenlaan 88 bus 73, 1000 Brussel\n> >> www.inbo.be\n> >>\n> >> ///////////////////////////////////////////////////////////////////////////////////////////\n> >> To call in the statistician after the experiment is done may be no more\n> >> than asking him to perform a post-mortem examination: he may be able to say\n> >> what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> >> The plural of anecdote is not data. ~ Roger Brinner\n> >> The combination of some data and an aching desire for an answer does not\n> >> ensure that a reasonable answer can be extracted from a given body of data.\n> >> ~ John Tukey\n> >> ///////////////////////////////////////////////////////////////////////////////////////////\n> >>\n> >> <https://www.inbo.be>\n> >>\n> >>\n> >> Op di 13 jul. 2021 om 12:30 schreef Michael Lawson via R-sig-mixed-models <\n> >> r-sig-mixed-models at r-project.org>:\n> >>\n> >>> I have a dataset where I have offspring paternity of females with\n> >>> males of different species. However, many of the offspring have\n> >>> ambiguous paternity - where I know the offspring must be from\n> >>> particular fathers, but not from others. The data currently looks a\n> >>> bit like this (but with many more rows per mum_id):\n> >>>\n> >>> mum_id  mum_sp  dad_sp dad_id                    con\n> >>>\n> >>> Af1          A              A           Am1 / Am2             1\n> >>> Af1          A              A           Am2                       1\n> >>> Bf1          B             A           Am1 / Am2 / Am4   0\n> >>> Bf2          B              B          Bm1 / Bm3              1\n> >>>\n> >>> Which I have so far run as a binomial GLMM with con (conspecific mating) as\n> >>> a binary response, mum_sp and dad_sp (species) as fixed factors and\n> >>> mum_id as a random factor - and have just not included dad_id as\n> >>> a random factor. The ambiguously assigned fathers in dad_id is also\n> >>> non-random, i.e.\n> >>> certain individuals are more likely to be ambiguously assigned than\n> >>> others, so just leaving these cases as NA is problematic.\n> >>>\n> >>> For some of the ambiguous assignments, I can also extract\n> >>> probabilities that a possible male is the father of the offspring,\n> >>> e.g. for the first row, father Am1 is 60% likely to be the father and\n> >>> Am2 40% likely.\n> >>>\n> >>> Are there any approaches where I can include the ambiguous dad_id in\n> >>> a GLMM framework? - where the uncertainty of the assignment contributes to\n> >>> the\n> >>> overall uncertainty in the tested relationship.\n> >>>\n> >>> Thank you for any suggestions,\n> >>> Mike\n> >>>\n> >>> _______________________________________________\n> >>> R-sig-mixed-models at r-project.org mailing list\n> >>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>>\n> >>      [[alternative HTML version deleted]]\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> Graduate chair, Mathematics & Statistics\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks for the suggestions Philip and Ben,\n\nI'm coming back to this after a hiatus and this may be quite a basic question.\n\nI managed to get the lme4 hack working with my data, but not if I\ninclude ot",
+      "thread_id": "thread-76d6b6adaa59",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-7f746370d317",
+      "message_id": "<79b321be-8d3c-6224-485f-0653ff3e9645@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-20T13:10:52-05:00",
+      "subject": "[R-sig-ME]  Modelling with uncertain (but not missing) categorical random effect values",
+      "subject_clean": "Modelling with uncertain (but not missing) categorical random effect values",
+      "in_reply_to": "<CACtWw1Hza-aaBy3hq8RrqqwwXdt5zWC31U2mejeF0-0HPSTg+g@mail.gmail.com>",
+      "references": [
+        "<CACtWw1HWv6ph0vwt4TLpUxiojZ_3993Kop0bvfXe=3yt2Lu9JA@mail.gmail.com>",
+        "<CAJuCY5xD_4QNNhbKMOjsJ2uQETWyHzaBznkUxg65_+QV-5Vw9A@mail.gmail.com>",
+        "<47d07adf-6db0-e441-6e86-29d896c12ad1@phillipalday.com>",
+        "<b15a5261-9d37-9283-0f61-3c776cb1f929@gmail.com>",
+        "<CACtWw1Hza-aaBy3hq8RrqqwwXdt5zWC31U2mejeF0-0HPSTg+g@mail.gmail.com>"
+      ],
+      "body_plain": "Something like:\n\n   lmod$reTrms$Ztlist <- list(Matrix(t(W)), Z2, Z3, Z4, ...)\n\nwhere the additional `Z` components are the random-effects models for \nthe additional terms you want (you could for example pull these from an \n`lFormula()` call using a formula that included those components in the \nrandom effects), and\n\n   lmod$reTrms$Zt <- do.call(rbind, lmod$reTrms$Ztlist)\n\n(I think)\n\nOn 12/20/21 12:43 PM, Mike Lawson wrote:\n> Thanks for the suggestions Philip and Ben,\n> \n> I'm coming back to this after a hiatus and this may be quite a basic question.\n> \n> I managed to get the lme4 hack working with my data, but not if I\n> include other random effects (that are not multi membership and not in\n> the matrix).\n> i.e. in the example you provide, if I add a new random predictor, how\n> do I incorporate this into the model? As this line directly changes\n> Ztlist and Zt to be the matrix:\n> \n> lmod$reTrms$Zt <- lmod$reTrms$Ztlist[[1]] <- Matrix(t(W))\n> \n> Many thanks,\n> Mike\n> \n> \n> On Tue, 3 Aug 2021 at 23:16, Ben Bolker <bbolker at gmail.com> wrote:\n>>\n>>     Also see\n>> https://bbolker.github.io/mixedmodels-misc/notes/multimember.html (i.e.\n>> you can do it in lme4, but it takes a bit of hacking)\n>>\n>> On 8/3/21 5:19 PM, Phillip Alday wrote:\n>>> If I'm not mistaken, Thierry's suggestion is a particular case of\n>>> multi-membership models, which you can also do in brms. See e.g.:\n>>>\n>>>\n>>> https://rdrr.io/cran/brms/man/mm.html\n>>>\n>>> https://github.com/paul-buerkner/brms/issues/130\n>>>\n>>> https://discourse.mc-stan.org/t/cross-classified-multiple-membership-models-with-brms/8691\n>>>\n>>>\n>>> On 13/07/2021 06:09, Thierry Onkelinx via R-sig-mixed-models wrote:\n>>>> Dear Michael,\n>>>>\n>>>> Maybe something like (0 + w_1 | dad_1) + (0 + w_2 | dad_2) + (0 + w_3 |\n>>>> dad_3). Where w_1 is the probability of dad_1.\n>>>>\n>>>> Make sure that dad_1, dad_2 and dad_3 are factors with the same levels.\n>>>> Then INLA allows you to add this as f(dad_1, w_1, model = \"iid\") + f(dad_2,\n>>>> w_2, copy = \"dad_\"1) + f(dad_3, w_3, copy = \"dad_1\"). So you end up with a\n>>>> single random intercept for every dad (dad_2 and dad_3 share their\n>>>> estimates with dad_1).\n>>>>\n>>>> mum_id  mum_sp  dad_sp dad_id                    con    dad_1   w_1 dad_2\n>>>> w_ 2 dad_3 w_3\n>>>>\n>>>> Af1          A              A           Am1 / Am2             1      Am1\n>>>> 0.6   Am2 0.4  NA 0\n>>>> Af1          A              A           Am2                       1\n>>>> Am2    1     NA     0     NA 0\n>>>> Bf1          B             A           Am1 / Am2 / Am4   0      Am1    0.4\n>>>>    Am2 0.3   Am4 0.3\n>>>> Bf2          B              B          Bm1 / Bm3              1      Bm1\n>>>> 0.5   Bm2  0.5  NA 0\n>>>>\n>>>> Best regards,\n>>>>\n>>>> ir. Thierry Onkelinx\n>>>> Statisticus / Statistician\n>>>>\n>>>> Vlaamse Overheid / Government of Flanders\n>>>> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\n>>>> FOREST\n>>>> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n>>>> thierry.onkelinx at inbo.be\n>>>> Havenlaan 88 bus 73, 1000 Brussel\n>>>> www.inbo.be\n>>>>\n>>>> ///////////////////////////////////////////////////////////////////////////////////////////\n>>>> To call in the statistician after the experiment is done may be no more\n>>>> than asking him to perform a post-mortem examination: he may be able to say\n>>>> what the experiment died of. ~ Sir Ronald Aylmer Fisher\n>>>> The plural of anecdote is not data. ~ Roger Brinner\n>>>> The combination of some data and an aching desire for an answer does not\n>>>> ensure that a reasonable answer can be extracted from a given body of data.\n>>>> ~ John Tukey\n>>>> ///////////////////////////////////////////////////////////////////////////////////////////\n>>>>\n>>>> <https://www.inbo.be>\n>>>>\n>>>>\n>>>> Op di 13 jul. 2021 om 12:30 schreef Michael Lawson via R-sig-mixed-models <\n>>>> r-sig-mixed-models at r-project.org>:\n>>>>\n>>>>> I have a dataset where I have offspring paternity of females with\n>>>>> males of different species. However, many of the offspring have\n>>>>> ambiguous paternity - where I know the offspring must be from\n>>>>> particular fathers, but not from others. The data currently looks a\n>>>>> bit like this (but with many more rows per mum_id):\n>>>>>\n>>>>> mum_id  mum_sp  dad_sp dad_id                    con\n>>>>>\n>>>>> Af1          A              A           Am1 / Am2             1\n>>>>> Af1          A              A           Am2                       1\n>>>>> Bf1          B             A           Am1 / Am2 / Am4   0\n>>>>> Bf2          B              B          Bm1 / Bm3              1\n>>>>>\n>>>>> Which I have so far run as a binomial GLMM with con (conspecific mating) as\n>>>>> a binary response, mum_sp and dad_sp (species) as fixed factors and\n>>>>> mum_id as a random factor - and have just not included dad_id as\n>>>>> a random factor. The ambiguously assigned fathers in dad_id is also\n>>>>> non-random, i.e.\n>>>>> certain individuals are more likely to be ambiguously assigned than\n>>>>> others, so just leaving these cases as NA is problematic.\n>>>>>\n>>>>> For some of the ambiguous assignments, I can also extract\n>>>>> probabilities that a possible male is the father of the offspring,\n>>>>> e.g. for the first row, father Am1 is 60% likely to be the father and\n>>>>> Am2 40% likely.\n>>>>>\n>>>>> Are there any approaches where I can include the ambiguous dad_id in\n>>>>> a GLMM framework? - where the uncertainty of the assignment contributes to\n>>>>> the\n>>>>> overall uncertainty in the tested relationship.\n>>>>>\n>>>>> Thank you for any suggestions,\n>>>>> Mike\n>>>>>\n>>>>> _______________________________________________\n>>>>> R-sig-mixed-models at r-project.org mailing list\n>>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>>>\n>>>>       [[alternative HTML version deleted]]\n>>>>\n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>\n>> --\n>> Dr. Benjamin Bolker\n>> Professor, Mathematics & Statistics and Biology, McMaster University\n>> Director, School of Computational Science and Engineering\n>> Graduate chair, Mathematics & Statistics\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\nGraduate chair, Mathematics & Statistics",
+      "body_snippet": "Something like:\n\n   lmod$reTrms$Ztlist <- list(Matrix(t(W)), Z2, Z3, Z4, ...)\n\nwhere the additional `Z` components are the random-effects models for \nthe additional terms you want (you could for examp",
+      "thread_id": "thread-76d6b6adaa59",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-9337775847c1",
+      "message_id": "<566A93D4-DB13-492E-8A2D-EB32F8339293@ruhr-uni-bochum.de>",
+      "from_name": "Tibor Kiss",
+      "from_email_hash": "c8ce8f3db807063761028443c7cdad2a01a00c5204a855f9c2a16c81d6a7bd92",
+      "date": "2021-12-20T19:56:16+01:00",
+      "subject": "[R-sig-ME] Random structure more complex than fixed structure",
+      "subject_clean": "Random structure more complex than fixed structure",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list members,\n\nI have a model where I assume a more complex structure for the random effects than for the fixed effects. Schematically, the model looks like the following, it is a cumulative link mixed model (ordinal::clmm), because the response consists of a five point Likert scale (the same would apply to a binomial GLMM). You can find the output of the model for the fixed and random structures below.\n\nmodel <- \n  clmm(ANSWER  ~ ADVERBIAL  + POSITION + \n         (0 + ADVERBIAL * POSITION | subjects) +\n         (0 + POSITION | items),  # ADVERBIAL constant for items\n       data)\n\nThe reason for assuming random slopes with interaction, but no such interaction in the fixed effects are as follows:\n\n1. I am interested in the by-subject variability for each condition. This is a 3 x 2 design, with three ADVERBIAL types, and two POSITIONs, and I assume that there is less by-subject variance in the second level of POSITION. Hence, I need an interaction to get simple effects for each combination of the two predictors.\n\n2. If I compare this model with a simpler one, where I assume a random slope for POSITION only, then the more complex structure is indicated as significant in comparison to the simpler model (p < 0.01). \n\n3. Also, an interaction of the fixed effects does not prove to be significant.\n\nIn addition, the output of the model makes perfect sense to me: for each pair of POSITION and ADVERBIAL the by-subject variance for POSITION 2 is lower than the one for POSITION 1, which I interpret as a stronger confidence in judgments for POSITION 2 across the participants of the experiment. \n\nMy question is: is it ok/justified to assume a random structure that is more complex than the fixed structure, if I want to find out about the by-subject variability for each condition in an experiment. Also: would there be a simpler way to do the same? \n\nThanks for your help.\n\nWith kind regards\n\n\nTibor\n\n## Coefficients:\n##                     \t\t\t Estimate Std. Error z value Pr(>|z|)    \n## ADVERBIAL COM(O)  \t-0.9571     0.3479  -2.751  0.00594 ** \n## ADVERBIAL ILOC    \t\t-1.0353     0.3396  -3.049  0.00230 ** \n## POSITION  2                       1.1916     0.1738   6.856 7.08e-12 ***\n## ---\n\n## Threshold coefficients:\n##     Estimate Std. Error z value\n## 1|2  -4.5321     0.3557 -12.740\n## 2|3  -2.0566     0.3301  -6.231\n## 3|4  -1.3708     0.3278  -4.182\n## 4|5   1.7521     0.3286   5.333\n\n\n## Random effects:\n##  Groups   Name                                \t\tVariance Std.Dev. Corr                               \n##  subjects ADVERBIAL INSTR                 \t2.3987   1.5488                                      \n##           ADVERBIAL COM(O)                \t2.3873   1.5451    0.748                             \n##           ADVERBIAL ILOC                  \t\t2.1802   1.4766    0.898  0.561                      \n##           POSITION 2                      \t\t0.8843   0.9404   -0.078 -0.109 -0.088               \n##           ADVERBIAL COM(O):POSITION 2 0.7158   0.8460    0.240 -0.334  0.487 -0.178        \n##           ADVERBIAL ILOC:POSITION 2   \t0.6667   0.8165   -0.430  0.083 -0.595 -0.386 -0.790 \n##  items    POSITION 1                      \t\t0.5416   0.7359                                      \n##              POSITION 2                      \t\t0.6100   0.7810   0.781                              \n## Number of groups:  subjects 51,  items 36 \n\n\n\n???????????????????\n\nProf. Dr. Tibor Kiss\nLinguistic Data Science Lab\nRuhr-Universit?t Bochum",
+      "body_snippet": "Dear list members,\n\nI have a model where I assume a more complex structure for the random effects than for the fixed effects. Schematically, the model looks like the following, it is a cumulative link",
+      "thread_id": "thread-9337775847c1",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-56aa2664418d",
+      "message_id": "<CACtWw1E4ue6r8G4vHoCxVJY=y2gE=UvQaL2eBWVU8ja0tGGicA@mail.gmail.com>",
+      "from_name": "Mike Lawson",
+      "from_email_hash": "1ae28b0a812ec667788f439136cf9ec73d584d43a08b8ed8fbcbd409b6c67ff6",
+      "date": "2021-12-21T08:48:19Z",
+      "subject": "[R-sig-ME]  Modelling with uncertain (but not missing) categorical random effect values",
+      "subject_clean": "Modelling with uncertain (but not missing) categorical random effect values",
+      "in_reply_to": "<79b321be-8d3c-6224-485f-0653ff3e9645@gmail.com>",
+      "references": [
+        "<CACtWw1HWv6ph0vwt4TLpUxiojZ_3993Kop0bvfXe=3yt2Lu9JA@mail.gmail.com>",
+        "<CAJuCY5xD_4QNNhbKMOjsJ2uQETWyHzaBznkUxg65_+QV-5Vw9A@mail.gmail.com>",
+        "<47d07adf-6db0-e441-6e86-29d896c12ad1@phillipalday.com>",
+        "<b15a5261-9d37-9283-0f61-3c776cb1f929@gmail.com>",
+        "<CACtWw1Hza-aaBy3hq8RrqqwwXdt5zWC31U2mejeF0-0HPSTg+g@mail.gmail.com>",
+        "<79b321be-8d3c-6224-485f-0653ff3e9645@gmail.com>"
+      ],
+      "body_plain": "Thanks for the quick response - that did the trick.\n\nAll the best,\nMike\n\nOn Mon, 20 Dec 2021 at 18:10, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>     Something like:\n>\n>    lmod$reTrms$Ztlist <- list(Matrix(t(W)), Z2, Z3, Z4, ...)\n>\n> where the additional `Z` components are the random-effects models for\n> the additional terms you want (you could for example pull these from an\n> `lFormula()` call using a formula that included those components in the\n> random effects), and\n>\n>    lmod$reTrms$Zt <- do.call(rbind, lmod$reTrms$Ztlist)\n>\n> (I think)\n>\n> On 12/20/21 12:43 PM, Mike Lawson wrote:\n> > Thanks for the suggestions Philip and Ben,\n> >\n> > I'm coming back to this after a hiatus and this may be quite a basic question.\n> >\n> > I managed to get the lme4 hack working with my data, but not if I\n> > include other random effects (that are not multi membership and not in\n> > the matrix).\n> > i.e. in the example you provide, if I add a new random predictor, how\n> > do I incorporate this into the model? As this line directly changes\n> > Ztlist and Zt to be the matrix:\n> >\n> > lmod$reTrms$Zt <- lmod$reTrms$Ztlist[[1]] <- Matrix(t(W))\n> >\n> > Many thanks,\n> > Mike\n> >\n> >\n> > On Tue, 3 Aug 2021 at 23:16, Ben Bolker <bbolker at gmail.com> wrote:\n> >>\n> >>     Also see\n> >> https://bbolker.github.io/mixedmodels-misc/notes/multimember.html (i.e.\n> >> you can do it in lme4, but it takes a bit of hacking)\n> >>\n> >> On 8/3/21 5:19 PM, Phillip Alday wrote:\n> >>> If I'm not mistaken, Thierry's suggestion is a particular case of\n> >>> multi-membership models, which you can also do in brms. See e.g.:\n> >>>\n> >>>\n> >>> https://rdrr.io/cran/brms/man/mm.html\n> >>>\n> >>> https://github.com/paul-buerkner/brms/issues/130\n> >>>\n> >>> https://discourse.mc-stan.org/t/cross-classified-multiple-membership-models-with-brms/8691\n> >>>\n> >>>\n> >>> On 13/07/2021 06:09, Thierry Onkelinx via R-sig-mixed-models wrote:\n> >>>> Dear Michael,\n> >>>>\n> >>>> Maybe something like (0 + w_1 | dad_1) + (0 + w_2 | dad_2) + (0 + w_3 |\n> >>>> dad_3). Where w_1 is the probability of dad_1.\n> >>>>\n> >>>> Make sure that dad_1, dad_2 and dad_3 are factors with the same levels.\n> >>>> Then INLA allows you to add this as f(dad_1, w_1, model = \"iid\") + f(dad_2,\n> >>>> w_2, copy = \"dad_\"1) + f(dad_3, w_3, copy = \"dad_1\"). So you end up with a\n> >>>> single random intercept for every dad (dad_2 and dad_3 share their\n> >>>> estimates with dad_1).\n> >>>>\n> >>>> mum_id  mum_sp  dad_sp dad_id                    con    dad_1   w_1 dad_2\n> >>>> w_ 2 dad_3 w_3\n> >>>>\n> >>>> Af1          A              A           Am1 / Am2             1      Am1\n> >>>> 0.6   Am2 0.4  NA 0\n> >>>> Af1          A              A           Am2                       1\n> >>>> Am2    1     NA     0     NA 0\n> >>>> Bf1          B             A           Am1 / Am2 / Am4   0      Am1    0.4\n> >>>>    Am2 0.3   Am4 0.3\n> >>>> Bf2          B              B          Bm1 / Bm3              1      Bm1\n> >>>> 0.5   Bm2  0.5  NA 0\n> >>>>\n> >>>> Best regards,\n> >>>>\n> >>>> ir. Thierry Onkelinx\n> >>>> Statisticus / Statistician\n> >>>>\n> >>>> Vlaamse Overheid / Government of Flanders\n> >>>> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\n> >>>> FOREST\n> >>>> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n> >>>> thierry.onkelinx at inbo.be\n> >>>> Havenlaan 88 bus 73, 1000 Brussel\n> >>>> www.inbo.be\n> >>>>\n> >>>> ///////////////////////////////////////////////////////////////////////////////////////////\n> >>>> To call in the statistician after the experiment is done may be no more\n> >>>> than asking him to perform a post-mortem examination: he may be able to say\n> >>>> what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> >>>> The plural of anecdote is not data. ~ Roger Brinner\n> >>>> The combination of some data and an aching desire for an answer does not\n> >>>> ensure that a reasonable answer can be extracted from a given body of data.\n> >>>> ~ John Tukey\n> >>>> ///////////////////////////////////////////////////////////////////////////////////////////\n> >>>>\n> >>>> <https://www.inbo.be>\n> >>>>\n> >>>>\n> >>>> Op di 13 jul. 2021 om 12:30 schreef Michael Lawson via R-sig-mixed-models <\n> >>>> r-sig-mixed-models at r-project.org>:\n> >>>>\n> >>>>> I have a dataset where I have offspring paternity of females with\n> >>>>> males of different species. However, many of the offspring have\n> >>>>> ambiguous paternity - where I know the offspring must be from\n> >>>>> particular fathers, but not from others. The data currently looks a\n> >>>>> bit like this (but with many more rows per mum_id):\n> >>>>>\n> >>>>> mum_id  mum_sp  dad_sp dad_id                    con\n> >>>>>\n> >>>>> Af1          A              A           Am1 / Am2             1\n> >>>>> Af1          A              A           Am2                       1\n> >>>>> Bf1          B             A           Am1 / Am2 / Am4   0\n> >>>>> Bf2          B              B          Bm1 / Bm3              1\n> >>>>>\n> >>>>> Which I have so far run as a binomial GLMM with con (conspecific mating) as\n> >>>>> a binary response, mum_sp and dad_sp (species) as fixed factors and\n> >>>>> mum_id as a random factor - and have just not included dad_id as\n> >>>>> a random factor. The ambiguously assigned fathers in dad_id is also\n> >>>>> non-random, i.e.\n> >>>>> certain individuals are more likely to be ambiguously assigned than\n> >>>>> others, so just leaving these cases as NA is problematic.\n> >>>>>\n> >>>>> For some of the ambiguous assignments, I can also extract\n> >>>>> probabilities that a possible male is the father of the offspring,\n> >>>>> e.g. for the first row, father Am1 is 60% likely to be the father and\n> >>>>> Am2 40% likely.\n> >>>>>\n> >>>>> Are there any approaches where I can include the ambiguous dad_id in\n> >>>>> a GLMM framework? - where the uncertainty of the assignment contributes to\n> >>>>> the\n> >>>>> overall uncertainty in the tested relationship.\n> >>>>>\n> >>>>> Thank you for any suggestions,\n> >>>>> Mike\n> >>>>>\n> >>>>> _______________________________________________\n> >>>>> R-sig-mixed-models at r-project.org mailing list\n> >>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>>>>\n> >>>>       [[alternative HTML version deleted]]\n> >>>>\n> >>>> _______________________________________________\n> >>>> R-sig-mixed-models at r-project.org mailing list\n> >>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>>\n> >>> _______________________________________________\n> >>> R-sig-mixed-models at r-project.org mailing list\n> >>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>>\n> >>\n> >> --\n> >> Dr. Benjamin Bolker\n> >> Professor, Mathematics & Statistics and Biology, McMaster University\n> >> Director, School of Computational Science and Engineering\n> >> Graduate chair, Mathematics & Statistics\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> Graduate chair, Mathematics & Statistics",
+      "body_snippet": "Thanks for the quick response - that did the trick.\n\nAll the best,\nMike\n\nOn Mon, 20 Dec 2021 at 18:10, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>     Something like:\n>\n>    lmod$reTrms$Ztlist <- lis",
+      "thread_id": "thread-76d6b6adaa59",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-92a44430a2eb",
+      "message_id": "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+      "from_name": "Kamal Atmeh",
+      "from_email_hash": "975914db591b020b01d72aa91a7ef73ca3d6f7d2822f9500fc901cdb2f23d5e7",
+      "date": "2021-12-27T19:46:06+01:00",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list,\n\nI am trying to run bayesian phylogenetic mixed models using MCMCglmm but \nI keep getting the following error:\n\n ?? \" Error in MCMCglmm(ltau ~ x * x2 + lbmM + age + lmean_ndvi + :\n ? no slot of name \"i\" for this object of class \"ddiMatrix\" \"\n\nThis is not the first time I use MCMCglmm and it usually works \nflawlessly. I thought that there may be a conflict with the \"tidyverse\" \npackage since some functions of \"Matrix\" are masked, but I tried to run \nthe model without loading the \"tidyverse\" package and still received the \nsame error. I was not able to find answers online and am thus turning to \nthis list for answers if you can help please.\n\nI am running the following model:\n\n >>>? prior1 <-list (G = list(G1 = list(V = 1, nu = 0.02)\n ?????????????????? ?? ??? ? ,G2 = list(V = 1, nu = 0.02)\n ??????????????????? ??? ??? ,G3 = list(V = 1, nu = 0.02)\n ??????????????????? ??? ??? ,G4 = list(V = 1, nu = 0.02)),\n ??????????? ?? ??? ? R = list(V = 1, nu = 0.02)\n ???????????? ??? ??? )\n\n >>> mod_tau_mc <- MCMCglmm(ltau ~ x * x2+??? # x and x2 are categorical \nvariables\n ???????????????????????? ??? ??? lbmM +????? # continuous variable\n ???????????????????????? ??? ??? age + ??? ??? # categorical\n ??????????????????????? ?? ??? ? lmean_ndvi + ??? ??? # continuous\n ???????????????????????? ??? ??? lrange_ndvi + ??? ??? # continuous\n ??????????????????????? ?? ??? ? lnb.loc + ??? ??? # continuous\n ??????????????????????? ?? ??? ? lduration ??? ??? # continuous\n ?????????????????????? , random = ~sp_phylo+species2+phylo_pop+phylo_pop_id\n ?????????????????????? , ginverse = list(sp_phylo = inv.phylo$Ainv) ??? \n ??? # include a custom matrix for argument sp_phylo\n ?????????????????????? , family = \"gaussian\"\n ?????????????????????? , prior = prior1\n ?????????????????????? , data = dt\n ?????????????????????? , nitt = 22e+03 ??? ??? # number of iteration \nafter burnin\n ?????????????????????? , burnin = 2000 ??? ??? # number of iteration \nbefore beginning sample\n ?????????????????????? , thin = 100?? ??? ? # nb of iteration between \nsample\n ?????????????????????? , pr = TRUE)?? ??? ? #save random posterior \ndistribution\n\nI would greatly appreciate your help and happy to provide further \ninformation if needed!\n\nThank you in advance!\n\nKamal",
+      "body_snippet": "Dear list,\n\nI am trying to run bayesian phylogenetic mixed models using MCMCglmm but \nI keep getting the following error:\n\n ?? \" Error in MCMCglmm(ltau ~ x * x2 + lbmM + age + lmean_ndvi + :\n ? no slo",
+      "thread_id": "thread-92a44430a2eb",
+      "thread_depth": 0,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-0ec07e85c530",
+      "message_id": "<532604ae-da23-5aa5-5321-841768a7da95@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "2e43a7af8f4daa87297a28457149e295b738b83f542c302ce576a405c1ae25e2",
+      "date": "2021-12-27T18:49:13Z",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+      "references": [
+        "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "Hi,\n\nIs your data frame a tibble? If so, make it a standard data frame and retry.\n\nCheers,\n\nJarrod\n\nOn 27/12/2021 18:46, Kamal Atmeh wrote:\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that\n> the email is genuine and the content is safe.\n>\n> Dear list,\n>\n> I am trying to run bayesian phylogenetic mixed models using MCMCglmm but\n> I keep getting the following error:\n>\n>    \" Error in MCMCglmm(ltau ~ x * x2 + lbmM + age + lmean_ndvi + :\n>   no slot of name \"i\" for this object of class \"ddiMatrix\" \"\n>\n> This is not the first time I use MCMCglmm and it usually works\n> flawlessly. I thought that there may be a conflict with the \"tidyverse\"\n> package since some functions of \"Matrix\" are masked, but I tried to run\n> the model without loading the \"tidyverse\" package and still received the\n> same error. I was not able to find answers online and am thus turning to\n> this list for answers if you can help please.\n>\n> I am running the following model:\n>\n> >>>? prior1 <-list (G = list(G1 = list(V = 1, nu = 0.02)\n>                             ,G2 = list(V = 1, nu = 0.02)\n>                             ,G3 = list(V = 1, nu = 0.02)\n>                             ,G4 = list(V = 1, nu = 0.02)),\n>                      R = list(V = 1, nu = 0.02)\n>                      )\n>\n> >>> mod_tau_mc <- MCMCglmm(ltau ~ x * x2+    # x and x2 are categorical\n> variables\n>                                  lbmM +      # continuous variable\n>                                  age +         # categorical\n>                                  lmean_ndvi +         # continuous\n>                                  lrange_ndvi +         # continuous\n>                                  lnb.loc +         # continuous\n>                                  lduration         # continuous\n>                        , random =\n> ~sp_phylo+species2+phylo_pop+phylo_pop_id\n>                        , ginverse = list(sp_phylo = inv.phylo$Ainv)\n>     # include a custom matrix for argument sp_phylo\n>                        , family = \"gaussian\"\n>                        , prior = prior1\n>                        , data = dt\n>                        , nitt = 22e+03         # number of iteration\n> after burnin\n>                        , burnin = 2000         # number of iteration\n> before beginning sample\n>                        , thin = 100         # nb of iteration between\n> sample\n>                        , pr = TRUE)         #save random posterior\n> distribution\n>\n> I would greatly appreciate your help and happy to provide further\n> information if needed!\n>\n> Thank you in advance!\n>\n> Kamal\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.",
+      "body_snippet": "Hi,\n\nIs your data frame a tibble? If so, make it a standard data frame and retry.\n\nCheers,\n\nJarrod\n\nOn 27/12/2021 18:46, Kamal Atmeh wrote:\n> This email was sent to you by someone outside the Universi",
+      "thread_id": "thread-92a44430a2eb",
+      "thread_depth": 1,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-1e73f8b3bd4d",
+      "message_id": "<DBBP189MB1340AC1087BE1FCC3836A69DFE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+      "from_name": "Kamal Atmeh",
+      "from_email_hash": "975914db591b020b01d72aa91a7ef73ca3d6f7d2822f9500fc901cdb2f23d5e7",
+      "date": "2021-12-27T20:05:51+01:00",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": "<532604ae-da23-5aa5-5321-841768a7da95@ed.ac.uk>",
+      "references": [
+        "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+        "<532604ae-da23-5aa5-5321-841768a7da95@ed.ac.uk>"
+      ],
+      "body_plain": "Hi Jarrod,\n\nThank you for your answer.\n\nYes I transformed the dataset to a classic dataframe but the error remained.\n\nIf it can help, please find below my sessionInfo(). I eventually loaded \nthe tidyverse.\n\nCheers,\n\nKamal\n\n\nR version 4.0.3 (2020-10-10)\nPlatform: x86_64-w64-mingw32/x64 (64-bit)\nRunning under: Windows 10 x64 (build 19043)\n\nMatrix products: default\n\nlocale:\n[1] LC_COLLATE=French_France.1252? LC_CTYPE=French_France.1252\n[3] LC_MONETARY=French_France.1252 LC_NUMERIC=C\n[5] LC_TIME=French_France.1252\n\nattached base packages:\n[1] stats???? graphics? grDevices utils???? datasets? methods base\n\nother attached packages:\n ?[1] MCMCglmm_2.29???? ape_5.4-1???????? coda_0.19-4 performance_0.7.0\n ?[5] MuMIn_1.43.17???? visreg_2.7.0????? merTools_0.5.2 arm_1.11-2\n ?[9] MASS_7.3-53?????? glmmTMB_1.1.2.3?? lmerTest_3.1-3 lme4_1.1-27.1\n[13] Matrix_1.4-0????? scales_1.1.1????? forcats_0.5.1 stringr_1.4.0\n[17] dplyr_1.0.7?????? purrr_0.3.4?????? readr_1.4.0 tidyr_1.1.3\n[21] tibble_3.0.4????? ggplot2_3.3.5???? tidyverse_1.3.1 plyr_1.8.6\n\nloaded via a namespace (and not attached):\n ? [1] cubature_2.0.4.2??? TH.data_1.0-10????? minqa_1.2.4 colorspace_1.4-1\n ? [5] ellipsis_0.3.2????? estimability_1.3??? htmlTable_2.2.1 \ncorpcor_1.6.9\n ? [9] base64enc_0.1-3???? fs_1.5.0??????????? rstudioapi_0.13 fansi_0.4.1\n ?[13] mvtnorm_1.1-1?????? lubridate_1.7.10??? xml2_1.3.2 codetools_0.2-16\n ?[17] splines_4.0.3?????? knitr_1.33????????? Formula_1.2-4 jsonlite_1.7.2\n ?[21] nloptr_1.2.2.2????? packrat_0.6.0?????? broom_0.7.8 cluster_2.1.0\n ?[25] dbplyr_2.1.1??????? png_0.1-7?????????? broom.mixed_0.2.6 \nshiny_1.5.0\n ?[29] compiler_4.0.3????? httr_1.4.2????????? emmeans_1.6.1 \nbackports_1.2.1\n ?[33] fastmap_1.1.0?????? assertthat_0.2.1??? cli_2.5.0 later_1.2.0\n ?[37] htmltools_0.5.1.1?? tools_4.0.3???????? gtable_0.3.0 glue_1.4.2\n ?[41] reshape2_1.4.4????? Rcpp_1.0.7????????? cellranger_1.1.0 vctrs_0.3.8\n ?[45] nlme_3.1-149??????? iterators_1.0.13??? insight_0.14.2 \ntensorA_0.36.1\n ?[49] xfun_0.24?????????? rvest_1.0.0???????? mime_0.9 lifecycle_1.0.0\n ?[53] zoo_1.8-8?????????? promises_1.1.1????? hms_1.1.0 parallel_4.0.3\n ?[57] sandwich_3.0-0????? TMB_1.7.22????????? RColorBrewer_1.1-2 \ngridExtra_2.3\n ?[61] rpart_4.1-15??????? latticeExtra_0.6-29 stringi_1.5.3 \nbayestestR_0.10.0\n ?[65] foreach_1.5.1?????? blme_1.0-5????????? checkmate_2.0.0 boot_1.3-25\n ?[69] rlang_0.4.11??????? pkgconfig_2.0.3???? lattice_0.20-41 \nhtmlwidgets_1.5.3\n ?[73] tidyselect_1.1.0??? magrittr_2.0.1????? R6_2.4.1 generics_0.1.0\n ?[77] Hmisc_4.5-0???????? multcomp_1.4-14???? DBI_1.1.1 pillar_1.6.4\n ?[81] haven_2.4.1???????? foreign_0.8-80????? withr_2.3.0 survival_3.2-7\n ?[85] abind_1.4-5???????? nnet_7.3-14???????? modelr_0.1.8 crayon_1.4.1\n ?[89] utf8_1.1.4????????? jpeg_0.1-8.1??????? grid_4.0.3 readxl_1.3.1\n ?[93] data.table_1.14.0?? reprex_2.0.0??????? digest_0.6.27 xtable_1.8-4\n ?[97] httpuv_1.6.1??????? numDeriv_2016.8-1.1 stats4_4.0.3 munsell_0.5.0\n\n\n\nLe 27/12/2021 ? 19:49, Jarrod Hadfield a ?crit?:\n> Hi,\n>\n> Is your data frame a tibble? If so, make it a standard data frame and \n> retry.\n>\n> Cheers,\n>\n> Jarrod\n>\n> On 27/12/2021 18:46, Kamal Atmeh wrote:\n>> This email was sent to you by someone outside the University.\n>> You should only click on links or attachments if you are certain that\n>> the email is genuine and the content is safe.\n>>\n>> Dear list,\n>>\n>> I am trying to run bayesian phylogenetic mixed models using MCMCglmm but\n>> I keep getting the following error:\n>>\n>> ?? \" Error in MCMCglmm(ltau ~ x * x2 + lbmM + age + lmean_ndvi + :\n>> ? no slot of name \"i\" for this object of class \"ddiMatrix\" \"\n>>\n>> This is not the first time I use MCMCglmm and it usually works\n>> flawlessly. I thought that there may be a conflict with the \"tidyverse\"\n>> package since some functions of \"Matrix\" are masked, but I tried to run\n>> the model without loading the \"tidyverse\" package and still received the\n>> same error. I was not able to find answers online and am thus turning to\n>> this list for answers if you can help please.\n>>\n>> I am running the following model:\n>>\n>> >>>? prior1 <-list (G = list(G1 = list(V = 1, nu = 0.02)\n>> ??????????????????????????? ,G2 = list(V = 1, nu = 0.02)\n>> ??????????????????????????? ,G3 = list(V = 1, nu = 0.02)\n>> ??????????????????????????? ,G4 = list(V = 1, nu = 0.02)),\n>> ???????????????????? R = list(V = 1, nu = 0.02)\n>> ???????????????????? )\n>>\n>> >>> mod_tau_mc <- MCMCglmm(ltau ~ x * x2+??? # x and x2 are categorical\n>> variables\n>> ???????????????????????????????? lbmM +????? # continuous variable\n>> ???????????????????????????????? age +???????? # categorical\n>> ???????????????????????????????? lmean_ndvi +???????? # continuous\n>> ???????????????????????????????? lrange_ndvi +???????? # continuous\n>> ???????????????????????????????? lnb.loc +???????? # continuous\n>> ???????????????????????????????? lduration???????? # continuous\n>> ?????????????????????? , random =\n>> ~sp_phylo+species2+phylo_pop+phylo_pop_id\n>> ?????????????????????? , ginverse = list(sp_phylo = inv.phylo$Ainv)\n>> ??? # include a custom matrix for argument sp_phylo\n>> ?????????????????????? , family = \"gaussian\"\n>> ?????????????????????? , prior = prior1\n>> ?????????????????????? , data = dt\n>> ?????????????????????? , nitt = 22e+03???????? # number of iteration\n>> after burnin\n>> ?????????????????????? , burnin = 2000???????? # number of iteration\n>> before beginning sample\n>> ?????????????????????? , thin = 100???????? # nb of iteration between\n>> sample\n>> ?????????????????????? , pr = TRUE)???????? #save random posterior\n>> distribution\n>>\n>> I would greatly appreciate your help and happy to provide further\n>> information if needed!\n>>\n>> Thank you in advance!\n>>\n>> Kamal\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> The University of Edinburgh is a charitable body, registered in \n> Scotland, with registration number SC005336. Is e buidheann \n> carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, \n> ?ireamh cl?raidh SC005336.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Jarrod,\n\nThank you for your answer.\n\nYes I transformed the dataset to a classic dataframe but the error remained.\n\nIf it can help, please find below my sessionInfo(). I eventually loaded \nthe tidyv",
+      "thread_id": "thread-92a44430a2eb",
+      "thread_depth": 2,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-67a6e08c7f72",
+      "message_id": "<CAJtCY7VDyjY-ApmN24MfnN5f5W18x5Bp+RLzpChn8opSrKSh=w@mail.gmail.com>",
+      "from_name": "Walid Crampton-Mawass",
+      "from_email_hash": "842c94d90fd1439835f36a8d440427eb6c9c5d2fc79f3d645eb5daefcec69383",
+      "date": "2021-12-27T12:13:09-07:00",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": "<DBBP189MB1340AC1087BE1FCC3836A69DFE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+      "references": [
+        "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+        "<532604ae-da23-5aa5-5321-841768a7da95@ed.ac.uk>",
+        "<DBBP189MB1340AC1087BE1FCC3836A69DFE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "Hey Kamal,\n\none possible solution is to run the same code in a new session where you\nonly call the MCMCglmm package and input your data and phylogenetic\npedigree as dataframes. That way you can figure out if there were any\nconflicts in the attached packages in your session.\n\nCheers\n-- \nWalid Crampton-Mawass\n\nOn Mon, Dec 27, 2021 at 12:06 PM Kamal Atmeh <kamal.atmeh at hotmail.com>\nwrote:\n\n> Hi Jarrod,\n>\n> Thank you for your answer.\n>\n> Yes I transformed the dataset to a classic dataframe but the error\n> remained.\n>\n> If it can help, please find below my sessionInfo(). I eventually loaded\n> the tidyverse.\n>\n> Cheers,\n>\n> Kamal\n>\n>\n> R version 4.0.3 (2020-10-10)\n> Platform: x86_64-w64-mingw32/x64 (64-bit)\n> Running under: Windows 10 x64 (build 19043)\n>\n> Matrix products: default\n>\n> locale:\n> [1] LC_COLLATE=French_France.1252  LC_CTYPE=French_France.1252\n> [3] LC_MONETARY=French_France.1252 LC_NUMERIC=C\n> [5] LC_TIME=French_France.1252\n>\n> attached base packages:\n> [1] stats     graphics  grDevices utils     datasets  methods base\n>\n> other attached packages:\n>   [1] MCMCglmm_2.29     ape_5.4-1         coda_0.19-4 performance_0.7.0\n>   [5] MuMIn_1.43.17     visreg_2.7.0      merTools_0.5.2 arm_1.11-2\n>   [9] MASS_7.3-53       glmmTMB_1.1.2.3   lmerTest_3.1-3 lme4_1.1-27.1\n> [13] Matrix_1.4-0      scales_1.1.1      forcats_0.5.1 stringr_1.4.0\n> [17] dplyr_1.0.7       purrr_0.3.4       readr_1.4.0 tidyr_1.1.3\n> [21] tibble_3.0.4      ggplot2_3.3.5     tidyverse_1.3.1 plyr_1.8.6\n>\n> loaded via a namespace (and not attached):\n>    [1] cubature_2.0.4.2    TH.data_1.0-10      minqa_1.2.4 colorspace_1.4-1\n>    [5] ellipsis_0.3.2      estimability_1.3    htmlTable_2.2.1\n> corpcor_1.6.9\n>    [9] base64enc_0.1-3     fs_1.5.0            rstudioapi_0.13 fansi_0.4.1\n>   [13] mvtnorm_1.1-1       lubridate_1.7.10    xml2_1.3.2 codetools_0.2-16\n>   [17] splines_4.0.3       knitr_1.33          Formula_1.2-4 jsonlite_1.7.2\n>   [21] nloptr_1.2.2.2      packrat_0.6.0       broom_0.7.8 cluster_2.1.0\n>   [25] dbplyr_2.1.1        png_0.1-7           broom.mixed_0.2.6\n> shiny_1.5.0\n>   [29] compiler_4.0.3      httr_1.4.2          emmeans_1.6.1\n> backports_1.2.1\n>   [33] fastmap_1.1.0       assertthat_0.2.1    cli_2.5.0 later_1.2.0\n>   [37] htmltools_0.5.1.1   tools_4.0.3         gtable_0.3.0 glue_1.4.2\n>   [41] reshape2_1.4.4      Rcpp_1.0.7          cellranger_1.1.0 vctrs_0.3.8\n>   [45] nlme_3.1-149        iterators_1.0.13    insight_0.14.2\n> tensorA_0.36.1\n>   [49] xfun_0.24           rvest_1.0.0         mime_0.9 lifecycle_1.0.0\n>   [53] zoo_1.8-8           promises_1.1.1      hms_1.1.0 parallel_4.0.3\n>   [57] sandwich_3.0-0      TMB_1.7.22          RColorBrewer_1.1-2\n> gridExtra_2.3\n>   [61] rpart_4.1-15        latticeExtra_0.6-29 stringi_1.5.3\n> bayestestR_0.10.0\n>   [65] foreach_1.5.1       blme_1.0-5          checkmate_2.0.0 boot_1.3-25\n>   [69] rlang_0.4.11        pkgconfig_2.0.3     lattice_0.20-41\n> htmlwidgets_1.5.3\n>   [73] tidyselect_1.1.0    magrittr_2.0.1      R6_2.4.1 generics_0.1.0\n>   [77] Hmisc_4.5-0         multcomp_1.4-14     DBI_1.1.1 pillar_1.6.4\n>   [81] haven_2.4.1         foreign_0.8-80      withr_2.3.0 survival_3.2-7\n>   [85] abind_1.4-5         nnet_7.3-14         modelr_0.1.8 crayon_1.4.1\n>   [89] utf8_1.1.4          jpeg_0.1-8.1        grid_4.0.3 readxl_1.3.1\n>   [93] data.table_1.14.0   reprex_2.0.0        digest_0.6.27 xtable_1.8-4\n>   [97] httpuv_1.6.1        numDeriv_2016.8-1.1 stats4_4.0.3 munsell_0.5.0\n>\n>\n>\n> Le 27/12/2021 ? 19:49, Jarrod Hadfield a ?crit :\n> > Hi,\n> >\n> > Is your data frame a tibble? If so, make it a standard data frame and\n> > retry.\n> >\n> > Cheers,\n> >\n> > Jarrod\n> >\n> > On 27/12/2021 18:46, Kamal Atmeh wrote:\n> >> This email was sent to you by someone outside the University.\n> >> You should only click on links or attachments if you are certain that\n> >> the email is genuine and the content is safe.\n> >>\n> >> Dear list,\n> >>\n> >> I am trying to run bayesian phylogenetic mixed models using MCMCglmm but\n> >> I keep getting the following error:\n> >>\n> >>    \" Error in MCMCglmm(ltau ~ x * x2 + lbmM + age + lmean_ndvi + :\n> >>   no slot of name \"i\" for this object of class \"ddiMatrix\" \"\n> >>\n> >> This is not the first time I use MCMCglmm and it usually works\n> >> flawlessly. I thought that there may be a conflict with the \"tidyverse\"\n> >> package since some functions of \"Matrix\" are masked, but I tried to run\n> >> the model without loading the \"tidyverse\" package and still received the\n> >> same error. I was not able to find answers online and am thus turning to\n> >> this list for answers if you can help please.\n> >>\n> >> I am running the following model:\n> >>\n> >> >>>  prior1 <-list (G = list(G1 = list(V = 1, nu = 0.02)\n> >>                             ,G2 = list(V = 1, nu = 0.02)\n> >>                             ,G3 = list(V = 1, nu = 0.02)\n> >>                             ,G4 = list(V = 1, nu = 0.02)),\n> >>                      R = list(V = 1, nu = 0.02)\n> >>                      )\n> >>\n> >> >>> mod_tau_mc <- MCMCglmm(ltau ~ x * x2+    # x and x2 are categorical\n> >> variables\n> >>                                  lbmM +      # continuous variable\n> >>                                  age +         # categorical\n> >>                                  lmean_ndvi +         # continuous\n> >>                                  lrange_ndvi +         # continuous\n> >>                                  lnb.loc +         # continuous\n> >>                                  lduration         # continuous\n> >>                        , random =\n> >> ~sp_phylo+species2+phylo_pop+phylo_pop_id\n> >>                        , ginverse = list(sp_phylo = inv.phylo$Ainv)\n> >>     # include a custom matrix for argument sp_phylo\n> >>                        , family = \"gaussian\"\n> >>                        , prior = prior1\n> >>                        , data = dt\n> >>                        , nitt = 22e+03         # number of iteration\n> >> after burnin\n> >>                        , burnin = 2000         # number of iteration\n> >> before beginning sample\n> >>                        , thin = 100         # nb of iteration between\n> >> sample\n> >>                        , pr = TRUE)         #save random posterior\n> >> distribution\n> >>\n> >> I would greatly appreciate your help and happy to provide further\n> >> information if needed!\n> >>\n> >> Thank you in advance!\n> >>\n> >> Kamal\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > The University of Edinburgh is a charitable body, registered in\n> > Scotland, with registration number SC005336. Is e buidheann\n> > carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba,\n> > ?ireamh cl?raidh SC005336.\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hey Kamal,\n\none possible solution is to run the same code in a new session where you\nonly call the MCMCglmm package and input your data and phylogenetic\npedigree as dataframes. That way you can figure",
+      "thread_id": "thread-92a44430a2eb",
+      "thread_depth": 3,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-6b713927dcc3",
+      "message_id": "<78e0b0d7-e797-b62b-efbd-087e75c3af8d@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-12-27T14:18:28-05:00",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": "<CAJtCY7VDyjY-ApmN24MfnN5f5W18x5Bp+RLzpChn8opSrKSh=w@mail.gmail.com>",
+      "references": [
+        "<DBBP189MB13407A0E9B4A6683992D3B01FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+        "<532604ae-da23-5aa5-5321-841768a7da95@ed.ac.uk>",
+        "<DBBP189MB1340AC1087BE1FCC3836A69DFE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+        "<CAJtCY7VDyjY-ApmN24MfnN5f5W18x5Bp+RLzpChn8opSrKSh=w@mail.gmail.com>"
+      ],
+      "body_plain": "Good point. If that doesn't work, though, we're going to hit the \nrapidly-diminishing-returns part of the remote-debugging cycle. Can you \npost a reproducible example (possibly with data posted elsewhere as the \nlist doesn't support large messages or attachments, possibly \nfuzzed/anonymized if you're worried about data confidentiality)?\n\n   Ben Bolker\n\nOn 12/27/21 2:13 PM, Walid Crampton-Mawass wrote:\n> Hey Kamal,\n> \n> one possible solution is to run the same code in a new session where you\n> only call the MCMCglmm package and input your data and phylogenetic\n> pedigree as dataframes. That way you can figure out if there were any\n> conflicts in the attached packages in your session.\n> \n> Cheers\n>",
+      "body_snippet": "Good point. If that doesn't work, though, we're going to hit the \nrapidly-diminishing-returns part of the remote-debugging cycle. Can you \npost a reproducible example (possibly with data posted elsewh",
+      "thread_id": "thread-92a44430a2eb",
+      "thread_depth": 4,
+      "month": "2021-12"
+    },
+    {
+      "id": "msg-791add237226",
+      "message_id": "<DBBP189MB134071094D4D9E7257EA1404FE429@DBBP189MB1340.EURP189.PROD.OUTLOOK.COM>",
+      "from_name": "Kamal Atmeh",
+      "from_email_hash": "975914db591b020b01d72aa91a7ef73ca3d6f7d2822f9500fc901cdb2f23d5e7",
+      "date": "2021-12-27T21:30:42+01:00",
+      "subject": "[R-sig-ME] Error using MCMCglmm",
+      "subject_clean": "Error using MCMCglmm",
+      "in_reply_to": "<52390f9d-2013-f550-f740-1f26605fa570@gmail.com>",
+      "references": [
+        "<52390f9d-2013-f550-f740-1f26605fa570@gmail.com>"
+      ],
+      "body_plain": "Dear all,\n\nI have shared the data with Ben and Jarrod and the code works for Ben \n(please see below his answer). I decided to go for the old \nuninstall-reinstall of the MCMCglmm package and the code works now. \nThank you again all for your help and time with this problem.\n\nCheers,\n\nKamal\n\n\n-------- Message transf?r? --------\nSujet?: \tRe: [R-sig-ME] Error using MCMCglmm\nDate?: \tMon, 27 Dec 2021 15:08:28 -0500\nDe?: \tBen Bolker <bbolker at gmail.com>\nPour?: \tKamal Atmeh <kamal.atmeh at hotmail.com>\nCopie ??: \tJarrod Hadfield <j.hadfield at ed.ac.uk>\n\n\n\nYour data + code runs for me, although with a warning:\n\nWarning message:\nIn MCMCglmm(y ~ x * x2 + x3 + x4 + x5 + x6 + x7 + x8, random = ~r + :\nsome fixed effects are not estimable and have been removed. Use \nsingular.ok=TRUE to sample these effects, but use an informative prior!\n\nThe trace plots of the fixed effects look mediocre but not awful, \npresumably fixable by the old brute force run-it-much-longer strategy (I \nassume you kept the runs short here for troubleshooting efficiency ...)\n\nmod_tau_mc <- readRDS(\"mod_tau_mc.rds\")\nlibrary(coda)\nlibrary(lattice)\nss <- mod_tau_mc$Sol\nff <- as.mcmc(ss[,startsWith(colnames(ss), \"x\")])\nlibrary(coda)\nlibrary(lattice)\nxyplot(ff)\n\n\n\nResults attached.\n\nSlightly redacted sessionInfo():\n\nR Under development (unstable) (2021-12-11 r81355)\nPlatform: x86_64-pc-linux-gnu (64-bit)\nRunning under: Pop!_OS 21.04\n\nMatrix products: default\nBLAS: /usr/local/lib/R/lib/libRblas.so\nLAPACK: /usr/local/lib/R/lib/libRlapack.so\n\nattached base packages:\n[1] stats graphics grDevices utils datasets methods base\n\nother attached packages:\n[1] MCMCglmm_2.32 ape_5.6 coda_0.19-4 Matrix_1.4-0\n\nloaded via a namespace (and not attached):\n[1] cubature_2.0.4.2 compiler_4.2.0 tools_4.2.0 corpcor_1.6.10\n[5] parallel_4.2.0 Rcpp_1.0.7 nlme_3.1-153 grid_4.2.0\n[9] tensorA_0.36.2 lattice_0.20-45\n >\n\n[I'm cc'ing Jarrod; it would actually be best to have as much of this \ndiscussion in public/on the list as possible, in case we discover \nsomething of general interest, and it's definitely best to keep both me \nand Jarrod in the loop so that we don't duplicate effort -- we're both \npretty busy ...]\n\ncheers\nBen Bolker\n\n\nOn 12/27/21 2:55 PM, Kamal Atmeh wrote:\n> Hi Ben,\n>\n> Thank you for your answer. I shared the data with Jarrod and I will \n> share it with you too. Please find it attached in the email. I \n> anonymized the data since it is a collaboration with multiple labs and \n> it would be better for confidentiality.\n>\n> Please find below the code that I am running.\n>\n> Cheers,\n>\n> Kamal\n>\n> library(MCMCglmm)\n>\n> prior1<-list(G = list(G1 = list(V = 1, nu = 0.02)\n> ??????????????????? ,G2 = list(V = 1, nu = 0.02)\n> ??????????????????? ,G3 = list(V = 1, nu = 0.02)\n> ??????????????????? ,G4 = list(V = 1, nu = 0.02)),\n> ???????????? R = list(V = 1, nu = 0.02)\n> ???????????? )\n>\n> mod_tau_mc <- MCMCglmm(y ~ x*x2 +\n> ???????????????????????? x3+\n> ???????????????????????? x4+\n> ???????????????????????? x5+\n> ???????????????????????? x6+\n> ???????????????????????? x7 +\n> ???????????????????????? x8\n> ?????????????????????? , random = ~r+r2+r3+r4\n> ?????????????????????? , family = \"gaussian\"\n> ?????????????????????? , ginverse = list(r4 = phylo) # include a \n> custom matrix for argument phylo\n> ?????????????????????? , prior = prior1\n> ?????????????????????? , data = dataKamal\n> ?????????????????????? , nitt = 22e+03 # number of iteration after burnin\n> ?????????????????????? , burnin = 2000 # number of iteration before \n> beginning sample\n> ?????????????????????? , thin = 100 # nb of iteration between sample\n> ?????????????????????? , pr = TRUE) #save random posterior distribution\n>\n>\n> Le 27/12/2021 ? 20:18, Ben Bolker a ?crit?:\n>> ? Good point. If that doesn't work, though, we're going to hit the \n>> rapidly-diminishing-returns part of the remote-debugging cycle. Can \n>> you post a reproducible example (possibly with data posted elsewhere \n>> as the list doesn't support large messages or attachments, possibly \n>> fuzzed/anonymized if you're worried about data confidentiality)?\n>>\n>> ? Ben Bolker\n>>\n>> On 12/27/21 2:13 PM, Walid Crampton-Mawass wrote:\n>>> Hey Kamal,\n>>>\n>>> one possible solution is to run the same code in a new session where you\n>>> only call the MCMCglmm package and input your data and phylogenetic\n>>> pedigree as dataframes. That way you can figure out if there were any\n>>> conflicts in the attached packages in your session.\n>>>\n>>> Cheers\n>>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\nGraduate chair, Mathematics & Statistics\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI have shared the data with Ben and Jarrod and the code works for Ben \n(please see below his answer). I decided to go for the old \nuninstall-reinstall of the MCMCglmm package and the code w",
+      "thread_id": "thread-791add237226",
+      "thread_depth": 0,
+      "month": "2021-12"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-e2d1f780eaa4",
+      "subject": "p-correction for effects in LMM",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Victoria Pattison-Willits",
+        "marKo"
+      ],
+      "started": "2021-12-01T13:48:20+01:00",
+      "last_reply": "2021-12-02T10:22:09-05:00",
+      "root_message_id": "msg-e2d1f780eaa4"
+    },
+    {
+      "id": "thread-fb9540c0638f",
+      "subject": "Variance estimation in gamma GLMMs",
+      "message_count": 1,
+      "participants": [
+        "Björn Johansson"
+      ],
+      "started": "2021-12-02T11:58:59+01:00",
+      "last_reply": "2021-12-02T11:58:59+01:00",
+      "root_message_id": "msg-fb9540c0638f"
+    },
+    {
+      "id": "thread-944c48434618",
+      "subject": "Multi-level models for nested variables in time dimension",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2021-12-03T22:27:23-06:00",
+      "last_reply": "2021-12-03T22:27:23-06:00",
+      "root_message_id": "msg-944c48434618"
+    },
+    {
+      "id": "thread-83bd57484bf0",
+      "subject": "When a higher level can't be modeled due to one row",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2021-12-03T23:10:07-06:00",
+      "last_reply": "2021-12-03T23:10:07-06:00",
+      "root_message_id": "msg-83bd57484bf0"
+    },
+    {
+      "id": "thread-d32c683c0b6e",
+      "subject": "Recovering correlations",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2021-12-03T23:23:33-06:00",
+      "last_reply": "2021-12-03T23:23:33-06:00",
+      "root_message_id": "msg-d32c683c0b6e"
+    },
+    {
+      "id": "thread-2a95ef51ed1c",
+      "subject": "p-correction for effects in LMM",
+      "message_count": 5,
+      "participants": [
+        "Ben Bolker",
+        "Bojana Dinic",
+        "marKo",
+        "marko"
+      ],
+      "started": "2021-12-04T11:26:17+01:00",
+      "last_reply": "2021-12-07T17:44:45-05:00",
+      "root_message_id": "msg-2a95ef51ed1c"
+    },
+    {
+      "id": "thread-9615cd194738",
+      "subject": "Reference ?",
+      "message_count": 7,
+      "participants": [
+        "Ben Bolker",
+        "Chris Howden",
+        "Fernando Pedro Bruna Quintas",
+        "Phillip Alday",
+        "Shane Frank",
+        "varin sacha"
+      ],
+      "started": "2021-12-04T19:47:07+00:00",
+      "last_reply": "2021-12-08T16:29:39+00:00",
+      "root_message_id": "msg-9615cd194738"
+    },
+    {
+      "id": "thread-298871cc6f70",
+      "subject": "glmmTMB compatibility for piecewiseSEM 2.1.2?",
+      "message_count": 1,
+      "participants": [
+        "Gabriella Bishop"
+      ],
+      "started": "2021-12-07T10:58:58+01:00",
+      "last_reply": "2021-12-07T10:58:58+01:00",
+      "root_message_id": "msg-298871cc6f70"
+    },
+    {
+      "id": "thread-34f60f60d4d6",
+      "subject": "Nested model variance/parameter value",
+      "message_count": 6,
+      "participants": [
+        "John Maindonald",
+        "Karl Ove Hufthammer",
+        "N o s t a l g i a"
+      ],
+      "started": "2021-12-10T20:29:45+09:00",
+      "last_reply": "2021-12-13T15:38:22+09:00",
+      "root_message_id": "msg-34f60f60d4d6"
+    },
+    {
+      "id": "thread-49f684d2133f",
+      "subject": "How can I predict a new data (or newlevel) for generalized linear mixed model with both random and fixed effect in GLMM",
+      "message_count": 1,
+      "participants": [
+        "tao wang"
+      ],
+      "started": "2021-12-13T09:28:35+08:00",
+      "last_reply": "2021-12-13T09:28:35+08:00",
+      "root_message_id": "msg-49f684d2133f"
+    },
+    {
+      "id": "thread-3435ed64f571",
+      "subject": "A GLMER Question",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Jamie Dallas"
+      ],
+      "started": "2021-12-13T13:36:28-08:00",
+      "last_reply": "2021-12-14T18:48:58-05:00",
+      "root_message_id": "msg-3435ed64f571"
+    },
+    {
+      "id": "thread-6efc6392d5e5",
+      "subject": "GLMM replicated data",
+      "message_count": 2,
+      "participants": [
+        "Mollie Brooks",
+        "Saâd HANANE"
+      ],
+      "started": "2021-12-13T16:49:40+01:00",
+      "last_reply": "2021-12-13T17:13:30+01:00",
+      "root_message_id": "msg-6efc6392d5e5"
+    },
+    {
+      "id": "thread-76d6b6adaa59",
+      "subject": "Modelling with uncertain (but not missing) categorical random effect values",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Mike Lawson"
+      ],
+      "started": "2021-12-20T17:43:34+00:00",
+      "last_reply": "2021-12-21T08:48:19+00:00",
+      "root_message_id": "msg-76d6b6adaa59"
+    },
+    {
+      "id": "thread-9337775847c1",
+      "subject": "Random structure more complex than fixed structure",
+      "message_count": 1,
+      "participants": [
+        "Tibor Kiss"
+      ],
+      "started": "2021-12-20T19:56:16+01:00",
+      "last_reply": "2021-12-20T19:56:16+01:00",
+      "root_message_id": "msg-9337775847c1"
+    },
+    {
+      "id": "thread-92a44430a2eb",
+      "subject": "Error using MCMCglmm",
+      "message_count": 5,
+      "participants": [
+        "Ben Bolker",
+        "Jarrod Hadfield",
+        "Kamal Atmeh",
+        "Walid Crampton-Mawass"
+      ],
+      "started": "2021-12-27T19:46:06+01:00",
+      "last_reply": "2021-12-27T14:18:28-05:00",
+      "root_message_id": "msg-92a44430a2eb"
+    },
+    {
+      "id": "thread-791add237226",
+      "subject": "Error using MCMCglmm",
+      "message_count": 1,
+      "participants": [
+        "Kamal Atmeh"
+      ],
+      "started": "2021-12-27T21:30:42+01:00",
+      "last_reply": "2021-12-27T21:30:42+01:00",
+      "root_message_id": "msg-791add237226"
+    }
+  ]
+}

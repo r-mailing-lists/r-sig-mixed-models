@@ -1,0 +1,532 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2019-11",
+  "messages": [
+    {
+      "id": "msg-f9715bd06504",
+      "message_id": "<c5952d23-0ab9-e201-f775-5c90d89f5dff@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2019-11-01T21:00:03-04:00",
+      "subject": "[R-sig-ME] Your response to my R-sig-ME question",
+      "subject_clean": "Your response to my R-sig-ME question",
+      "in_reply_to": "<CABX-QoEXOJCLbJktFLw78dba=1nkgvEsK08XfVbMVPwaG3G=GQ@mail.gmail.com>",
+      "references": [
+        "<CABX-QoEXOJCLbJktFLw78dba=1nkgvEsK08XfVbMVPwaG3G=GQ@mail.gmail.com>"
+      ],
+      "body_plain": "[cc'ing r-sig-mixed-models]\n\n  Honestly, it looks to me like you *do* need multiple-comparisons\ncorrections here. I can't give you detailed advice about how to do it;\nemmeans does the pairwise comparisons, but it's not immediately obvious\nhow to do correction for *multiple* sets of pairwise comparisons.\n(Perhaps you could get away with only doing the corrections at the level\nof sets of pairwise comparisons.)  As I mentioned before, this is not a\nparticularly mixed-model-related question.  You could try CrossValidated\n(https://stats.stackexchange.com).  The emmeans and multcomp packages\nwill probably be what you need in terms of machinery.\n\n  sincerely\n   Ben Bolker\n\n\nOn 2019-11-01 6:40 a.m., Francesco Romano wrote:\n> Dear Ben,\n> \n> \n> Apologies for emailing directly about this but there seems to be a\n> problem with my subscription settings to the list at the moment. Had it\n> not been for Ian Dworkin's message content, I never would have known you\n> had also replied.\n> \n> Fortunately, I managed to fetch your message from the r-sig-ME\n> repository which I copy below:\n> \n> \"you could \"just\" use p.adjust(), something like this: library(lme4) gm1\n> <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd), data\n> = cbpp, family = binomial) cc <- coef(summary(gm1)) cc <-\n> cbind(cc,adjust.p=p.adjust(cc[,\"Pr(>|z|)\"],\"holm\")) The general\n> machinery in the multcomp package (especially the glht function) should\n> work. This looks useful:\n> https://thebiobucket.blogspot.com/2011/06/glmm-with-custom-multiple-comparisons.html\n> The bottom line is that most standard multiple-comparisons or\n> pairwise-comparisons machinery should \"just work\" with glmer fits.\n> (There are some open questions about what you're doing: it's a bit\n> unusual for people to apply multiple comparisons corrections on a set of\n> \"only\" 6 parameters specified a priori: Tukey adjustments to post hoc\n> pairwise comparisons are much more common ...)\"\n> \n> To fully understand your advice about using the multcomp package and/or\n> tukey adjustments, I need to put this better into perspective for you. I\n> have attached the table whose results the editor of the journal is\n> requesting multiple comparison corrections for. All the pairwise\n> comparisons had no a-priori hypotheses about them. It was simply a\n> matter of ascertaining whether there were any significant differences\n> between each pair of groups (factor 1) for a given level of complexity\n> (factor 2) and vice versa, for each pair of levels of complexity at a\n> given level of group. I did this by looking at simple effects and\n> re-leveling.\n> \n> Honestly, it is the first time someone asks me to apply corrections so I\n> am not too sure either. What I would like, though, is to offer a cogent\n> response as to why that should not be necessary.\n> \n> Any help is much appreciated,\n> \n> Frank Romano On 2019-10-31 10:36 a.m., Francesco Romano wrote: >/Dear\n> all, />//>/A reviewer has asked me to apply a correction to multiple\n> comparisons />/conducted for a logistic mixed effect regression with\n> binary outcome. The />/model is: />//>/glmer(outcome ~ factor1 * factor2\n> + (1|RE1) + (1|RE2), family =binomial, />/data = data) />//>/where\n> factor 1 has two levels and factor 2 has three. Could you advise on\n> />/how to run this and how to report the adjusted p-values in the same\n> table? />/At the moment, my table has the following 6 headings:\n> />//>/Reference level />//>/Contrasts />//>/Estimate />//>/SE />//>/Wald\n> *z* />//>/*p* />//>//>/Many thanks in advance, />//>/Frank />//\n> \n> \n> \n> Best,\n> \n> Frank",
+      "body_snippet": "[cc'ing r-sig-mixed-models]\n\n  Honestly, it looks to me like you *do* need multiple-comparisons\ncorrections here. I can't give you detailed advice about how to do it;\nemmeans does the pairwise compari",
+      "thread_id": "thread-f9715bd06504",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-d02e15ac764b",
+      "message_id": "<78B7183F-D5C1-4622-BA8A-B1852C5AD8AB@gmail.com>",
+      "from_name": "Chia-Yu Chen",
+      "from_email_hash": "c5a04c828ffa357a2e5722a51d9ce49723fb9ebbf6cd206d2f7f848cf77d96a2",
+      "date": "2019-11-02T19:40:15+01:00",
+      "subject": "[R-sig-ME] Doubtful significance in mixed effect model",
+      "subject_clean": "Doubtful significance in mixed effect model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI have a problem on the significance of age and sex when running glmer on my longitudinal data. \n\nMy data\nA longitudinal data where each patient is tested at 3 timepoints (here, define as ?case?). There are different treatments between cases. Along with ?case?, other factors include age, sex and drug dosages. So it looked something like this (there are 23 patients, each has 3 cases)\n\nPatient   Case   Age   Sex   DrugA   DrugB   Value\n    1            1        10      0        5           10         20\n    1            2        10      0       10           0          30\n    1            3        10      0       15           0          55\n\nWhat I want to do\nThe goal of this study is to show that ?value? is significantly different across ?cases?. Age, sex, drugA, drugB are all potential confounders. Here I want to see if either of these factors has confounding effects, that is, whether adding these factors to the model will be better or not.\n\nHow I did it\nFirst, I constructed 2 nested models, and then I compared the 2 models with likelihood test. If m2 is better than m1, then I assume this factor has significance for value. Since it?s a longitudinal data, the ?patient? is treated as random factor. I ran through the factors one by one, here take ?sex? for example:\n\nm1 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient))\nm2 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient) + ( Sex | Patient))\np_value  <- lmtest::lrtest (m1, m2)$\"Pr(>Chisq)\"[2]\n\nMy Question\nI expected that m2 shouldn?t be better than m1 for sex and age, because for each patient they didn?t change over 3 cases. I thought by specifying \"( Sex | Patient)? in the model would tell R that sex doesn?t change for each patient, and thus it doesn?t have any predictive ability for the value. However, lrtest showed that for some patients, m2 is better than m1, meaning that age or sex is significant. I?m wondering is there anything wrong in my codes? Doesn?t ( Sex | Patient) tell R that sex doesn?t change for each patient? How should I code so that m2 won?t be better than m1 for sex and age? Or is there any better way doing this?\nI?ve tried many combinations of the code, but I still can?t solve this problem. Could anyone give me some advices? Any suggestion is appreciated! Thank you in advance.\n\nBest,\nChia-Yu\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI have a problem on the significance of age and sex when running glmer on my longitudinal data. \n\nMy data\nA longitudinal data where each patient is tested at 3 timepoints (here, define as ?case?)",
+      "thread_id": "thread-d02e15ac764b",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-e0cae7a02613",
+      "message_id": "<DM6PR04MB438084D57E44BFBA85B23DD7F17D0@DM6PR04MB4380.namprd04.prod.outlook.com>",
+      "from_name": "Lenth, Russell V",
+      "from_email_hash": "d2e24904e0c924e339bc69bd07e82d3eb99052bac3cc2dcec2387df9be84bae2",
+      "date": "2019-11-02T22:25:37Z",
+      "subject": "[R-sig-ME] Your response to my R-sig-ME question",
+      "subject_clean": "Your response to my R-sig-ME question",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "If the question is how to do multiplicity adjustments for multiple sets of comparisons in 'emmeans', that is pretty simple to do. For example, starting with\n\n    library(\"emmeans\")\n    emm <- emmeans(model, ~ factor1 | factor2)\n\nBy default,\n\n    pairs(emm, by = \"factor1\")\n\nwill apply the Tukey adjustment to the pairwise comparisons of factor2 for each level of factor1, SEPARATELY. If instead, you want to multiplicity-adjust all of those simple comparisons as one family, summarize those results after removing the 'by' variable:\n\n    summary(pairs(emm, by = \"factor1\"), by = NULL, adjust = \"mvt\")\n\n(Note that the Tukey adjustment is not appropriate for that family because it is not ONE set of pairwise comparisons. The mvt adjustment is the same adjustment that the multcomp package appluies by default.)\n\nYou of course may also want simple comparisons of factor1 for each level of factor2; just reverse the roles of the two factors in the above.\n\nIf you want to combine both of those families into a single family consisting of all simple comparisons of both factor2|factor1 and factor1|factor2, that can be done as well via 'rbind':\n\n    allcmps <- pairs(emm, simple = \"each\")   # creates a list of two emmGrid objects\n    summary(do.call(rbind, allcmps), adjust = \"mvt\")\n\nI hope that helps\n\nRuss\n\nRussell V. Lenth? -? Professor Emeritus\nDepartment of Statistics and Actuarial Science?? \nThe University of Iowa ?-? Iowa City, IA 52242? USA?? \nVoice (319)335-0712 (Dept. office)? -? FAX (319)335-3017\n\n\n\n-----Original Message-----\n\nDate: Fri, 1 Nov 2019 21:00:03 -0400\nFrom: Ben Bolker <bbolker at gmail.com>\nTo: Francesco Romano <fbromano77 at gmail.com>\nCc: \"r-sig-mixed-models at r-project.org\"\n\t<r-sig-mixed-models at r-project.org>\nSubject: Re: [R-sig-ME] Your response to my R-sig-ME question\nMessage-ID: <c5952d23-0ab9-e201-f775-5c90d89f5dff at gmail.com>\nContent-Type: text/plain; charset=\"utf-8\"\n\n\n  [cc'ing r-sig-mixed-models]\n\n  Honestly, it looks to me like you *do* need multiple-comparisons corrections here. I can't give you detailed advice about how to do it; emmeans does the pairwise comparisons, but it's not immediately obvious how to do correction for *multiple* sets of pairwise comparisons.\n(Perhaps you could get away with only doing the corrections at the level of sets of pairwise comparisons.)  As I mentioned before, this is not a particularly mixed-model-related question.  You could try CrossValidated (https://stats.stackexchange.com).  The emmeans and multcomp packages will probably be what you need in terms of machinery.\n\n  sincerely\n   Ben Bolker",
+      "body_snippet": "If the question is how to do multiplicity adjustments for multiple sets of comparisons in 'emmeans', that is pretty simple to do. For example, starting with\n\n    library(\"emmeans\")\n    emm <- emmeans(",
+      "thread_id": "thread-e0cae7a02613",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-5930489efef6",
+      "message_id": "<CAJuCY5wmo1u8qjdKU+4Ov5De4VuMYNOXs-n28C0PXikkoTZqFg@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2019-11-04T09:33:48+01:00",
+      "subject": "[R-sig-ME] Doubtful significance in mixed effect model",
+      "subject_clean": "Doubtful significance in mixed effect model",
+      "in_reply_to": "<78B7183F-D5C1-4622-BA8A-B1852C5AD8AB@gmail.com>",
+      "references": [
+        "<78B7183F-D5C1-4622-BA8A-B1852C5AD8AB@gmail.com>"
+      ],
+      "body_plain": "Dear Chia-Yu,\n\n(A|B) defines a random slope along A within each level of grouping factor\nB. In maths you can write it as b_i0 + b_i1 * A with b_i0 the random\nintercept and b_i1 the random slope for level i from B.\nRandom slopes are only relevant is the variable A as different values\n**within** levels of B. So if age and sex don't change within patient, it\ndoesn't make sense to add them as a random effect.\n\nA good exploratory data analysis and common sense is a better way to look\nfor confounding factors.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp za 2 nov. 2019 om 19:41 schreef Chia-Yu Chen <jessica821112 at gmail.com>:\n\n> Hi,\n>\n> I have a problem on the significance of age and sex when running glmer on\n> my longitudinal data.\n>\n> My data\n> A longitudinal data where each patient is tested at 3 timepoints (here,\n> define as ?case?). There are different treatments between cases. Along with\n> ?case?, other factors include age, sex and drug dosages. So it looked\n> something like this (there are 23 patients, each has 3 cases)\n>\n> Patient   Case   Age   Sex   DrugA   DrugB   Value\n>     1            1        10      0        5           10         20\n>     1            2        10      0       10           0          30\n>     1            3        10      0       15           0          55\n>\n> What I want to do\n> The goal of this study is to show that ?value? is significantly different\n> across ?cases?. Age, sex, drugA, drugB are all potential confounders. Here\n> I want to see if either of these factors has confounding effects, that is,\n> whether adding these factors to the model will be better or not.\n>\n> How I did it\n> First, I constructed 2 nested models, and then I compared the 2 models\n> with likelihood test. If m2 is better than m1, then I assume this factor\n> has significance for value. Since it?s a longitudinal data, the ?patient?\n> is treated as random factor. I ran through the factors one by one, here\n> take ?sex? for example:\n>\n> m1 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient))\n> m2 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient)\n> + ( Sex | Patient))\n> p_value  <- lmtest::lrtest (m1, m2)$\"Pr(>Chisq)\"[2]\n>\n> My Question\n> I expected that m2 shouldn?t be better than m1 for sex and age, because\n> for each patient they didn?t change over 3 cases. I thought by specifying\n> \"( Sex | Patient)? in the model would tell R that sex doesn?t change for\n> each patient, and thus it doesn?t have any predictive ability for the\n> value. However, lrtest showed that for some patients, m2 is better than m1,\n> meaning that age or sex is significant. I?m wondering is there anything\n> wrong in my codes? Doesn?t ( Sex | Patient) tell R that sex doesn?t change\n> for each patient? How should I code so that m2 won?t be better than m1 for\n> sex and age? Or is there any better way doing this?\n> I?ve tried many combinations of the code, but I still can?t solve this\n> problem. Could anyone give me some advices? Any suggestion is appreciated!\n> Thank you in advance.\n>\n> Best,\n> Chia-Yu\n>\n>\n>\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Chia-Yu,\n\n(A|B) defines a random slope along A within each level of grouping factor\nB. In maths you can write it as b_i0 + b_i1 * A with b_i0 the random\nintercept and b_i1 the random slope for le",
+      "thread_id": "thread-d02e15ac764b",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-9286241e0540",
+      "message_id": "<CAJuCY5w2Jn-DZFM_T1W6oVkUCjgEQwPmiMMP4AC1y-JB6n9u+Q@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2019-11-04T09:46:00+01:00",
+      "subject": "[R-sig-ME] Advice on repeated-measures mixed model (lmer)",
+      "subject_clean": "Advice on repeated-measures mixed model (lmer)",
+      "in_reply_to": "<CAFxBq7x6iRxuSTgT+=wp0Dry-a9bgAnipK2BOqZVBJ0=TfrX+g@mail.gmail.com>",
+      "references": [
+        "<CAFxBq7x6iRxuSTgT+=wp0Dry-a9bgAnipK2BOqZVBJ0=TfrX+g@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Andre,\n\nQ1: you have count data, they don't follow a normal distribution. Use a\nPoisson or negative binomial distribution.\nQ2: confirming the best model without access to the data is not possible.\nPlot the predictions of the models, so you get an idea of different\nstructures that they model. See what makes sense for your data and what not.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp do 31 okt. 2019 om 18:39 schreef Andr? Pardal <\nandre.pardal.souza at gmail.com>:\n\n> Hey everyone,\n>\n> I am wondering if someone could advice me on a repeated-measure mixed model\n> analysis.\n>\n> So, I carried out an experiment of effect of contamination by antifouling\n> paint on predator-prey interaction (snails and barnacles).\n>\n> I have the repeated-measures of number of barnacles consume through time in\n> different treatments (AP and control) in each replicate (cages). See\n> structure of my dataframe below. (Everything is balanced.)\n>\n> > str(consumption)\n> 'data.frame': 96 obs. of  9 variables:\n>  $ tr            : Factor w/ 2 levels \"antifouling paint\",..: 1 1 1 1 1 1 1\n> 1 1 1 ...\n>  $ replicate  : Factor w/ 16 levels \"AP1\",\"AP2\",\"AP3\",..: 1 2 3 4 5 6 7 8 1\n> 2 ...\n>  $ time        : int  0 0 0 0 0 0 0 0 27 27 ...\n>  $ cons        : int  0 0 0 0 0 0 0 0 19 37 ...\n>  $ cons_pc   : num  0 0 0 0 0 ...\n>\n> 1) My first doubt is about day 0. In day 0 there is no consumption, so I\n> have a lot of zeros what is giving me trouble to meet a normal\n> distribution. My doubt here is if I should/could (or not) to remove day 0\n> from analysis. I did some tests and removed day 0, and I got far better\n> normal distribution.\n>\n> 2) I am running the following mixed-model, but I am not sure if it is\n> right. As consumption is 0 in day 0, I am running a mixed-model with\n> varying slope only. Also, what I want is set a model in each the slope\n> varies randomly per replicate through time. That's what I am running:\n>\n> *m1 = lmer(cons_pc ~ tr*time + (time-1|replicate), data= consumption)*\n>\n> Alternatively, I could have:\n>\n> *m2 = lmer(cons_pc ~ tr*time + (1+time|replicate), data= consumption)*#\n> intercept and slope varying per replicate\n> *m3 = lmer(cons_pc ~ tr*time + (1|replicate), data= consumption)* #\n> intercept only varying per replicate\n>\n> I think the first model is the right one, but I am not sure. Anyone could\n> confirm?\n>\n> I ran all of them as a test and all of them work, and the first one is the\n> best one (according to AIC score and LR-test).\n>\n> Thanks very much in advance.\n>\n> My best,\n>\n> Andre.\n> --\n>\n> Visiting PhD student\n> School of Ocean Sciences\n> Bangor University\n> Menai Bridge, Anglesey, UK\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Andre,\n\nQ1: you have count data, they don't follow a normal distribution. Use a\nPoisson or negative binomial distribution.\nQ2: confirming the best model without access to the data is not possible",
+      "thread_id": "thread-9286241e0540",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-7f4d1b85f215",
+      "message_id": "<b8582bff-c3c9-0e4e-f94f-ad82df1bb673@uni-potsdam.de>",
+      "from_name": "Diana Michl",
+      "from_email_hash": "b343875132c1f1c348a7a124b975519d18eb470db71714e349b722f64a9b1ad7",
+      "date": "2019-11-04T11:20:44+01:00",
+      "subject": "[R-sig-ME] Fwd: Re:  Doubtful significance in mixed effect model",
+      "subject_clean": "Doubtful significance in mixed effect model",
+      "in_reply_to": "<B70D9BF0-FECC-4347-9A37-66BF36F6EACC@gmail.com>",
+      "references": [
+        "<B70D9BF0-FECC-4347-9A37-66BF36F6EACC@gmail.com>"
+      ],
+      "body_plain": "Sorry I forgot to send my response below to the entire list.\n\nGlad I could help.\n\nBest\n\n\n\n-------- Weitergeleitete Nachricht --------\nBetreff: \tRe: [R-sig-ME] Doubtful significance in mixed effect model\nDatum: \tMon, 4 Nov 2019 00:24:33 +0100\nVon: \tChia-Yu Chen <jessica821112 at gmail.com>\nAn: \tDiana Michl <dmichl at uni-potsdam.de>\n\n\n\nDear Diana,\n\nThank you so much for your reply! I didn?t know my syntax was wrong \nuntil I read your explanations. They are really helpful, and I have \nsolved my problem by specifying that age and sex are nested within \npatient. Thank you once again :)\n\nBest wishes,\nChia-Yu\n\n> On Nov 2, 2019, at 21:54, Diana Michl <dmichl at uni-potsdam.de \n> <mailto:dmichl at uni-potsdam.de>> wrote:\n>\n> Hi Chia-Yu,\n>\n> (Sex | Patient) isn't right exactly because sex does not change within \n> a patient. What you probably mean is (1|sex/patient), the / implies \n> that sex is nested within patient. What you wrote means pretty much \n> the opposite, that sex does vary by patient and that you want a \n> different intercept for sex for each patient.\n>\n> If sex varies BY anything at all, it's definitely not the patient. You \n> might need to tell us what sex varies by. Or you write (1 | sex) if \n> you want different intercepts for sex. _However,_ it seems to me it \n> makes more sense to include sex as fixed effect!\n>\n> Secondly, if you want a random effect like (sex |...) at all, you \n> should include sex as a fixed effect in addition, anyway.\n>\n> So this is probably your best choice:\n>\n> lme4::glmer(data = subdata, formula =  value ~  Case + Sex + (1 | Patient)\n>\n> or, only if it makes sense:\n>\n> lme4::glmer(data = subdata, formula =  value ~  Case + Sex + (1 | Patient) + ( Sex | ...?))\n>\n> or, also only if it really makes sense:\n>\n> m2 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient) + ( 1 | Sex))\n>\n> Diana\n>   \n> Am 02.11.2019 um 19:40 schrieb Chia-Yu Chen:\n>> Hi,\n>>\n>> I have a problem on the significance of age and sex when running glmer on my longitudinal data.\n>>\n>> My data\n>> A longitudinal data where each patient is tested at 3 timepoints (here, define as ?case?). There are different treatments between cases. Along with ?case?, other factors include age, sex and drug dosages. So it looked something like this (there are 23 patients, each has 3 cases)\n>>\n>> Patient   Case   Age   Sex   DrugA   DrugB   Value\n>>      1            1        10      0        5           10         20\n>>      1            2        10      0       10           0          30\n>>      1            3        10      0       15           0          55\n>>\n>> What I want to do\n>> The goal of this study is to show that ?value? is significantly different across ?cases?. Age, sex, drugA, drugB are all potential confounders. Here I want to see if either of these factors has confounding effects, that is, whether adding these factors to the model will be better or not.\n>>\n>> How I did it\n>> First, I constructed 2 nested models, and then I compared the 2 models with likelihood test. If m2 is better than m1, then I assume this factor has significance for value. Since it?s a longitudinal data, the ?patient? is treated as random factor. I ran through the factors one by one, here take ?sex? for example:\n>>\n>> m1 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient))\n>> m2 <- lme4::glmer(data = subdata, formula =  value ~  Case + (1 | Patient) + ( Sex | Patient))\n>> p_value  <- lmtest::lrtest (m1, m2)$\"Pr(>Chisq)\"[2]\n>>\n>> My Question\n>> I expected that m2 shouldn?t be better than m1 for sex and age, because for each patient they didn?t change over 3 cases. I thought by specifying \"( Sex | Patient)? in the model would tell R that sex doesn?t change for each patient, and thus it doesn?t have any predictive ability for the value. However, lrtest showed that for some patients, m2 is better than m1, meaning that age or sex is significant. I?m wondering is there anything wrong in my codes? Doesn?t ( Sex | Patient) tell R that sex doesn?t change for each patient? How should I code so that m2 won?t be better than m1 for sex and age? Or is there any better way doing this?\n>> I?ve tried many combinations of the code, but I still can?t solve this problem. Could anyone give me some advices? Any suggestion is appreciated! Thank you in advance.\n>>\n>> Best,\n>> Chia-Yu\n>>\n>>\n>>\n>>\n>>\n>> \t[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org  mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> -- \n> Diana Michl, M.A.\n> PhD candidate\n> International Experimental Linguistics\n> Universit?t Potsdam/FU Berlin\n> uni-potsdam.de/en/ling/staff-list/diana-michl.html \n> <http://uni-potsdam.de/en/ling/staff-list/diana-michl.html>\n>\n> #Recently published:\n> Michl, D. (2019). Metonymies are more literal than metaphors: evidence \n> from ratings of German idioms. Language and Cognition, 11(1), 98?124. \n> https://doi.org/10.1017/langcog.2019.7\n> Michl, D. (2019). Speedy Metonymy, Tricky Metaphor, Irrelevant \n> Compositionality: How Nonliteralness Affects Idioms in Reading and \n> Rating. Journal of Psycholinguistic Research, 2(1), 56?82.\n> https://doi.org/10.1007/s10936-019-09658-7\n>\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Sorry I forgot to send my response below to the entire list.\n\nGlad I could help.\n\nBest\n\n\n\n-------- Weitergeleitete Nachricht --------\nBetreff: \tRe: [R-sig-ME] Doubtful significance in mixed effect mod",
+      "thread_id": "thread-7f4d1b85f215",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-00026dcb5c55",
+      "message_id": "<CAGCrCxav2ZMC0Pq+migjo+19n6jFP6e8rYiupZDMak9oWffvhQ@mail.gmail.com>",
+      "from_name": "Torsten Hauffe",
+      "from_email_hash": "984776de5b3a7d569748d539391130a08cd4301aa57939019fb20a9ad279ea07",
+      "date": "2019-11-07T14:12:33+01:00",
+      "subject": "[R-sig-ME] Subjecting data to differential equations deSolve",
+      "subject_clean": "Subjecting data to differential equations deSolve",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list,\n\nMy apologies if this question doesn't fit the scope of the mailing list.\n\nI try to solve some differential equations with the deSolve::ode and need\nto feed some values at certain time-points into the equations.\n\nAnyone has a guess why the results are off by factor 10?\n\nThanks for any input and cheers,\nTorsten\n\nHere is a simplified reproducible example:\n\n# Time of observations\nObsTime <- c(1.9, 2.0, 2.1, 3.9, 4.0, 4.1, 9.9, 10.0, 10.1, 23.9, 24.0,\n24.1)\n\n# Value of the observations\nObs <- c(0, 6, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0)\n\n# following the second example of ode(), it needs a function from where\nvalues could be obtained as function of time\nobs3Func <- approxfun(ObsTime, Obs, method = \"constant\", rule = 2)\n\n# Subjecting the time to the approx-function works\nobs3Func(ObsTime)\n\n# A simple function that I expect to return the cumulative sum of Obs (i.e.\n15)\nTest_rhs <- function(t, x, parms, obsFunc)\n{\n  with(as.list(c(parms, x)), {\n    Sa <- obsFunc(t)\n    list(Sa * s)\n  })\n}\n\nTest <- ode(y = 0,\n            times = seq(0, 65, by = 0.1),\n            func = Test_rhs,\n            parms = list(s = 1),\n            obsFunc = obs3Func)\n\n# Using s = 1, the results are off (my expectation) by factor 10\nplot(Test)\n\n# With s = 10 the result is as expected but I don't know why\nTest2 <- ode(y = 0,\n            times = seq(0, 65, by = 0.1),\n            func = Test_rhs,\n            parms = list(s = 1),\n            obsFunc = obs3Func)\nplot(Test2)\n# Changepoints & values\nTime <- c(2, 4, 10, 24)\nabline(v = Time, lty = 2, col = \"grey\")\npoints(ObsTime, cumsum(Obs), pch = 19)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list,\n\nMy apologies if this question doesn't fit the scope of the mailing list.\n\nI try to solve some differential equations with the deSolve::ode and need\nto feed some values at certain time-poin",
+      "thread_id": "thread-00026dcb5c55",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-64787e48a3a2",
+      "message_id": "<71688763-b4a5-f25b-de8e-5bc9a2aa0d37@auckland.ac.nz>",
+      "from_name": "Rolf Turner",
+      "from_email_hash": "85365426fbf4496cfac2415de7f8b411ee0133e9a8b2316f8939adcd30c2a157",
+      "date": "2019-11-08T11:01:50+13:00",
+      "subject": "[R-sig-ME] [FORGED] Subjecting data to differential equations deSolve",
+      "subject_clean": "[FORGED] Subjecting data to differential equations deSolve",
+      "in_reply_to": "<CAGCrCxav2ZMC0Pq+migjo+19n6jFP6e8rYiupZDMak9oWffvhQ@mail.gmail.com>",
+      "references": [
+        "<CAGCrCxav2ZMC0Pq+migjo+19n6jFP6e8rYiupZDMak9oWffvhQ@mail.gmail.com>"
+      ],
+      "body_plain": "Maybe I'm obtuse (some would say that there's no \"maybe\" about it! :-) ) \nbut I cannot for the life of me see what this question has to do with \nmixed models.\n\nWhy not ask it on plain vanilla r-help???\n\ncheers,\n\nRolf Turner\n\nOn 8/11/19 2:12 AM, Torsten Hauffe wrote:\n> Dear list,\n> \n> My apologies if this question doesn't fit the scope of the mailing list.\n> \n> I try to solve some differential equations with the deSolve::ode and need\n> to feed some values at certain time-points into the equations.\n> \n> Anyone has a guess why the results are off by factor 10?\n> \n> Thanks for any input and cheers,\n> Torsten\n> \n> Here is a simplified reproducible example:\n> \n> # Time of observations\n> ObsTime <- c(1.9, 2.0, 2.1, 3.9, 4.0, 4.1, 9.9, 10.0, 10.1, 23.9, 24.0,\n> 24.1)\n> \n> # Value of the observations\n> Obs <- c(0, 6, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0)\n> \n> # following the second example of ode(), it needs a function from where\n> values could be obtained as function of time\n> obs3Func <- approxfun(ObsTime, Obs, method = \"constant\", rule = 2)\n> \n> # Subjecting the time to the approx-function works\n> obs3Func(ObsTime)\n> \n> # A simple function that I expect to return the cumulative sum of Obs (i.e.\n> 15)\n> Test_rhs <- function(t, x, parms, obsFunc)\n> {\n>    with(as.list(c(parms, x)), {\n>      Sa <- obsFunc(t)\n>      list(Sa * s)\n>    })\n> }\n> \n> Test <- ode(y = 0,\n>              times = seq(0, 65, by = 0.1),\n>              func = Test_rhs,\n>              parms = list(s = 1),\n>              obsFunc = obs3Func)\n> \n> # Using s = 1, the results are off (my expectation) by factor 10\n> plot(Test)\n> \n> # With s = 10 the result is as expected but I don't know why\n> Test2 <- ode(y = 0,\n>              times = seq(0, 65, by = 0.1),\n>              func = Test_rhs,\n>              parms = list(s = 1),\n>              obsFunc = obs3Func)\n> plot(Test2)\n> # Changepoints & values\n> Time <- c(2, 4, 10, 24)\n> abline(v = Time, lty = 2, col = \"grey\")\n> points(ObsTime, cumsum(Obs), pch = 19)",
+      "body_snippet": "Maybe I'm obtuse (some would say that there's no \"maybe\" about it! :-) ) \nbut I cannot for the life of me see what this question has to do with \nmixed models.\n\nWhy not ask it on plain vanilla r-help??",
+      "thread_id": "thread-00026dcb5c55",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-0675cfe3a6f6",
+      "message_id": "<237f9963-64ad-1d7f-0332-f038d6964347@uni-bremen.de>",
+      "from_name": "Tim Richter-Heitmann",
+      "from_email_hash": "03557aa5c9959734aceaa99912711775b5e78fd4e2d6359da47b80180bec0cd6",
+      "date": "2019-11-08T17:03:33+01:00",
+      "subject": "[R-sig-ME] mixed models with very few measurements by subject",
+      "subject_clean": "mixed models with very few measurements by subject",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list,\n\nsorry for bothering.\n\nI was presented this type of data:\n\nAbundance = my response variable, 300 observations per species, no NAs\n\nhabitat_type = a fixed effect, a factor with 9 levels.\n\nsample_location = a random effect, a factor with 150? levels. I assume \nthere is enough unmeasured variability to warrant this as a random factor\n\nlandscape = another random factor of three levels, in which \nsample_location is nested within.\n\nNotice that not every sample_location or landscape contains all levels \nof habitat_type.\n\nEvery sample_location was measured twice with an interval of 1 year \ninbetween.? In principle, this can be coded as factor as well, to \naccount for temporal variability. Initial analysis showed there is very \nlittle temporal variability.\n\nBut then i am left with only one observation per location, and i was \nreading \n(https://stats.stackexchange.com/questions/242821/how-will-random-effects-with-only-1-observation-affect-a-generalized-linear-mixe) \nthat this way\n\nresidual errors and random effects may be confounded. Landscape has 50 \nobservations, but only three groups, which i think is also not a wise \noption, as per \nhttps://stats.stackexchange.com/questions/37647/what-is-the-minimum-recommended-number-of-groups-for-a-random-effects-factor.\n\nI am interested in Abundance ~ habitat_type and if there are differences \nin abundance means. I first totally ignored the existence of \nsample_location:\n\nmod <- aov(Abundance~habitat_type); res <- glht(mod, \nmcp(habitat_type=\"Tukey\", vcov=vcovHC).\n\nAnd then i compared this to\n\n ?amod <- lme(fixed=Abundance~habitat_type, data = D, random = \n~1|sample_location , method=\"ML\") ;? means <- emmeans(amod, ~habitat_type)\n\nThere are very few differences between the two approaches. I also \nignored landscape at this level.\n\nMy Questions:\n\n1. Are sample_location (many subjects, few observations) and landscape \n(few groups, many observations) suitable candidates to be modelled as a \nrandom effect?\n\n2. Can their nestedness save me, and how would i code \nLandscape:sample_location?\n\n3. Would it better to code the locations as coordinates and check for \ndifferent correlation structures in gls?\n\n\nThank you for your kind advice!\n\n\n-- \nDr. Tim Richter-Heitmann\n\nUniversity of Bremen\nMicrobial Ecophysiology Group (AG Friedrich)\nFB02 - Biologie/Chemie\nLeobener Stra?e (NW2 A2130)\nD-28359 Bremen\nTel.: 0049(0)421 218-63062\nFax: 0049(0)421 218-63069",
+      "body_snippet": "Dear list,\n\nsorry for bothering.\n\nI was presented this type of data:\n\nAbundance = my response variable, 300 observations per species, no NAs\n\nhabitat_type = a fixed effect, a factor with 9 levels.\n\nsa",
+      "thread_id": "thread-0675cfe3a6f6",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-8fb99256ef2a",
+      "message_id": "<B0286AA1-FF96-43F5-AC26-EF6E284D9366@niu.edu>",
+      "from_name": "Carl Von Ende",
+      "from_email_hash": "cab5772d0e30cdad536b00448b266e28e6a2ed52616c871939b16c1ca9e686a0",
+      "date": "2019-11-08T16:56:40Z",
+      "subject": "[R-sig-ME] solve some differential equations with the deSolve",
+      "subject_clean": "solve some differential equations with the deSolve",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi Torsten,\n\nYou are in luck. There is a R mailing list for deSolve.  I believe it is moderated by Thomas Petzoldt.  Here is the link to subscribe to it, if you wish.   \n\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-dynamic-models\n\nThis is the address of the mailing list. \n\nr-sig-dynamic-models at r-project.org\n\n\n\nBest Regards, \n\nCarl von Ende\nDept. Biol. Sciences\nNorthern Ill. Univ. \nDeKalb, IL 60115\n\n\n\n?On 11/8/19, 5:02 AM, \"R-sig-mixed-models on behalf of r-sig-mixed-models-request at r-project.org\" <r-sig-mixed-models-bounces at r-project.org on behalf of r-sig-mixed-models-request at r-project.org> wrote:\n\n    Send R-sig-mixed-models mailing list submissions to\n    \tr-sig-mixed-models at r-project.org\n    \n    To subscribe or unsubscribe via the World Wide Web, visit\n    \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    or, via email, send a message with subject or body 'help' to\n    \tr-sig-mixed-models-request at r-project.org\n    \n    You can reach the person managing the list at\n    \tr-sig-mixed-models-owner at r-project.org\n    \n    When replying, please edit your Subject line so it is more specific\n    than \"Re: Contents of R-sig-mixed-models digest...\"\n    \n    \n    Today's Topics:\n    \n       1. Subjecting data to differential equations deSolve (Torsten Hauffe)\n       2. Re: [FORGED] Subjecting data to differential equations\n          deSolve (Rolf Turner)\n    \n    ----------------------------------------------------------------------\n    \n    Message: 1\n    Date: Thu, 7 Nov 2019 14:12:33 +0100\n    From: Torsten Hauffe <torsten.hauffe at gmail.com>\n    To: R-mixed models mailing list <r-sig-mixed-models at r-project.org>\n    Subject: [R-sig-ME] Subjecting data to differential equations deSolve\n    Message-ID:\n    \t<CAGCrCxav2ZMC0Pq+migjo+19n6jFP6e8rYiupZDMak9oWffvhQ at mail.gmail.com>\n    Content-Type: text/plain; charset=\"utf-8\"\n    \n    Dear list,\n    \n    My apologies if this question doesn't fit the scope of the mailing list.\n    \n    I try to solve some differential equations with the deSolve::ode and need\n    to feed some values at certain time-points into the equations.\n    \n    Anyone has a guess why the results are off by factor 10?\n    \n    Thanks for any input and cheers,\n    Torsten\n    \n    Here is a simplified reproducible example:\n    \n    # Time of observations\n    ObsTime <- c(1.9, 2.0, 2.1, 3.9, 4.0, 4.1, 9.9, 10.0, 10.1, 23.9, 24.0,\n    24.1)\n    \n    # Value of the observations\n    Obs <- c(0, 6, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0)\n    \n    # following the second example of ode(), it needs a function from where\n    values could be obtained as function of time\n    obs3Func <- approxfun(ObsTime, Obs, method = \"constant\", rule = 2)\n    \n    # Subjecting the time to the approx-function works\n    obs3Func(ObsTime)\n    \n    # A simple function that I expect to return the cumulative sum of Obs (i.e.\n    15)\n    Test_rhs <- function(t, x, parms, obsFunc)\n    {\n      with(as.list(c(parms, x)), {\n        Sa <- obsFunc(t)\n        list(Sa * s)\n      })\n    }\n    \n    Test <- ode(y = 0,\n                times = seq(0, 65, by = 0.1),\n                func = Test_rhs,\n                parms = list(s = 1),\n                obsFunc = obs3Func)\n    \n    # Using s = 1, the results are off (my expectation) by factor 10\n    plot(Test)\n    \n    # With s = 10 the result is as expected but I don't know why\n    Test2 <- ode(y = 0,\n                times = seq(0, 65, by = 0.1),\n                func = Test_rhs,\n                parms = list(s = 1),\n                obsFunc = obs3Func)\n    plot(Test2)\n    # Changepoints & values\n    Time <- c(2, 4, 10, 24)\n    abline(v = Time, lty = 2, col = \"grey\")\n    points(ObsTime, cumsum(Obs), pch = 19)\n    \n    \t[[alternative HTML version deleted]]\n    \n    \n    \n    \n    ------------------------------\n    \n    Message: 2\n    Date: Fri, 8 Nov 2019 11:01:50 +1300\n    From: Rolf Turner <r.turner at auckland.ac.nz>\n    To: Torsten Hauffe <torsten.hauffe at gmail.com>, R-mixed models mailing\n    \tlist <r-sig-mixed-models at r-project.org>\n    Subject: Re: [R-sig-ME] [FORGED] Subjecting data to differential\n    \tequations deSolve\n    Message-ID: <71688763-b4a5-f25b-de8e-5bc9a2aa0d37 at auckland.ac.nz>\n    Content-Type: text/plain; charset=\"utf-8\"; Format=\"flowed\"\n    \n    \n    Maybe I'm obtuse (some would say that there's no \"maybe\" about it! :-) ) \n    but I cannot for the life of me see what this question has to do with \n    mixed models.\n    \n    Why not ask it on plain vanilla r-help???\n    \n    cheers,\n    \n    Rolf Turner\n    \n    On 8/11/19 2:12 AM, Torsten Hauffe wrote:\n    > Dear list,\n    > \n    > My apologies if this question doesn't fit the scope of the mailing list.\n    > \n    > I try to solve some differential equations with the deSolve::ode and need\n    > to feed some values at certain time-points into the equations.\n    > \n    > Anyone has a guess why the results are off by factor 10?\n    > \n    > Thanks for any input and cheers,\n    > Torsten\n    > \n    > Here is a simplified reproducible example:\n    > \n    > # Time of observations\n    > ObsTime <- c(1.9, 2.0, 2.1, 3.9, 4.0, 4.1, 9.9, 10.0, 10.1, 23.9, 24.0,\n    > 24.1)\n    > \n    > # Value of the observations\n    > Obs <- c(0, 6, 0, 0, 3, 0, 0, 3, 0, 0, 3, 0)\n    > \n    > # following the second example of ode(), it needs a function from where\n    > values could be obtained as function of time\n    > obs3Func <- approxfun(ObsTime, Obs, method = \"constant\", rule = 2)\n    > \n    > # Subjecting the time to the approx-function works\n    > obs3Func(ObsTime)\n    > \n    > # A simple function that I expect to return the cumulative sum of Obs (i.e.\n    > 15)\n    > Test_rhs <- function(t, x, parms, obsFunc)\n    > {\n    >    with(as.list(c(parms, x)), {\n    >      Sa <- obsFunc(t)\n    >      list(Sa * s)\n    >    })\n    > }\n    > \n    > Test <- ode(y = 0,\n    >              times = seq(0, 65, by = 0.1),\n    >              func = Test_rhs,\n    >              parms = list(s = 1),\n    >              obsFunc = obs3Func)\n    > \n    > # Using s = 1, the results are off (my expectation) by factor 10\n    > plot(Test)\n    > \n    > # With s = 10 the result is as expected but I don't know why\n    > Test2 <- ode(y = 0,\n    >              times = seq(0, 65, by = 0.1),\n    >              func = Test_rhs,\n    >              parms = list(s = 1),\n    >              obsFunc = obs3Func)\n    > plot(Test2)\n    > # Changepoints & values\n    > Time <- c(2, 4, 10, 24)\n    > abline(v = Time, lty = 2, col = \"grey\")\n    > points(ObsTime, cumsum(Obs), pch = 19)\n    \n    \n    \n    \n    ------------------------------\n    \n    Subject: Digest Footer\n    \n    _______________________________________________\n    R-sig-mixed-models mailing list\n    R-sig-mixed-models at r-project.org\n    https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    \n    \n    ------------------------------\n    \n    End of R-sig-mixed-models Digest, Vol 155, Issue 5\n    **************************************************",
+      "body_snippet": "Hi Torsten,\n\nYou are in luck. There is a R mailing list for deSolve.  I believe it is moderated by Thomas Petzoldt.  Here is the link to subscribe to it, if you wish.   \n\nhttps://stat.ethz.ch/mailman/",
+      "thread_id": "thread-8fb99256ef2a",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-57255199bf55",
+      "message_id": "<CAJuCY5xfiTSfNM1x4S4tnmMctgybhPEHje5ZZUXNo_NZK=G6pg@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2019-11-09T13:23:05+01:00",
+      "subject": "[R-sig-ME] mixed models with very few measurements by subject",
+      "subject_clean": "mixed models with very few measurements by subject",
+      "in_reply_to": "<237f9963-64ad-1d7f-0332-f038d6964347@uni-bremen.de>",
+      "references": [
+        "<237f9963-64ad-1d7f-0332-f038d6964347@uni-bremen.de>"
+      ],
+      "body_plain": "Dear Tim,\n\nAbundance is probably a count variable. If so, consider using a\ndistribution that handles count variables (e.g. Poisson, negative binomial,\n...).\n\nI'll use lme4 notation.\n\n1 . You can either use landscape + (1|sample_location) or\njust (1|sample_location). The main difference is the first model fit the\ncommon landscape effect via the landscape variable whereas those effects\nare handled by (1|sample_location) in the second model (given\nsample_location is nested in landscape).\n2. Since you have only three landscape classes, I recommend to keep the\nlandscape as a fixed effect\n3. You could fit a variogram on the BLUP of the sample_location to see if\nthere is spatial autocorrelation. The value of take spatial autocorrelation\ninto account will depend on the strength of the spatial autocorrelation.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp vr 8 nov. 2019 om 17:04 schreef Tim Richter-Heitmann <\ntrichter at uni-bremen.de>:\n\n> Dear list,\n>\n> sorry for bothering.\n>\n> I was presented this type of data:\n>\n> Abundance = my response variable, 300 observations per species, no NAs\n>\n> habitat_type = a fixed effect, a factor with 9 levels.\n>\n> sample_location = a random effect, a factor with 150  levels. I assume\n> there is enough unmeasured variability to warrant this as a random factor\n>\n> landscape = another random factor of three levels, in which\n> sample_location is nested within.\n>\n> Notice that not every sample_location or landscape contains all levels\n> of habitat_type.\n>\n> Every sample_location was measured twice with an interval of 1 year\n> inbetween.  In principle, this can be coded as factor as well, to\n> account for temporal variability. Initial analysis showed there is very\n> little temporal variability.\n>\n> But then i am left with only one observation per location, and i was\n> reading\n> (\n> https://stats.stackexchange.com/questions/242821/how-will-random-effects-with-only-1-observation-affect-a-generalized-linear-mixe)\n>\n> that this way\n>\n> residual errors and random effects may be confounded. Landscape has 50\n> observations, but only three groups, which i think is also not a wise\n> option, as per\n>\n> https://stats.stackexchange.com/questions/37647/what-is-the-minimum-recommended-number-of-groups-for-a-random-effects-factor\n> .\n>\n> I am interested in Abundance ~ habitat_type and if there are differences\n> in abundance means. I first totally ignored the existence of\n> sample_location:\n>\n> mod <- aov(Abundance~habitat_type); res <- glht(mod,\n> mcp(habitat_type=\"Tukey\", vcov=vcovHC).\n>\n> And then i compared this to\n>\n>   amod <- lme(fixed=Abundance~habitat_type, data = D, random =\n> ~1|sample_location , method=\"ML\") ;  means <- emmeans(amod, ~habitat_type)\n>\n> There are very few differences between the two approaches. I also\n> ignored landscape at this level.\n>\n> My Questions:\n>\n> 1. Are sample_location (many subjects, few observations) and landscape\n> (few groups, many observations) suitable candidates to be modelled as a\n> random effect?\n>\n> 2. Can their nestedness save me, and how would i code\n> Landscape:sample_location?\n>\n> 3. Would it better to code the locations as coordinates and check for\n> different correlation structures in gls?\n>\n>\n> Thank you for your kind advice!\n>\n>\n> --\n> Dr. Tim Richter-Heitmann\n>\n> University of Bremen\n> Microbial Ecophysiology Group (AG Friedrich)\n> FB02 - Biologie/Chemie\n> Leobener Stra?e (NW2 A2130)\n> D-28359 Bremen\n> Tel.: 0049(0)421 218-63062\n> Fax: 0049(0)421 218-63069\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Tim,\n\nAbundance is probably a count variable. If so, consider using a\ndistribution that handles count variables (e.g. Poisson, negative binomial,\n...).\n\nI'll use lme4 notation.\n\n1 . You can eithe",
+      "thread_id": "thread-0675cfe3a6f6",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-fba51227e8cc",
+      "message_id": "<fca30459879acee26dc6b904983d1c70@umail.it.umass.edu>",
+      "from_name": "John Kingston",
+      "from_email_hash": "05878052a140e90cabc8c6e646a266041d77706ec074971b669ced42ebb05ca9",
+      "date": "2019-11-10T13:15:48-05:00",
+      "subject": "[R-sig-ME] a question about partitioning effects",
+      "subject_clean": "a question about partitioning effects",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I have a data set in which a group of listeners were asked to categorize \na series of sounds that stepped incrementally from an [s] to a [sh], as \nin \"see\" and \"she\". Members of this series were followed by one of three \nvowels, each one spoken by one of four speakers. Call these the \n\"stimulus\" characteristics. Past work predicts how differences between \nthe vowels and speakers' voices would influence listeners' choice of [s] \nor [sh] as the category to which a particular step in the series \nbelongs, and those predictions are clearly confirmed by the results.\n\nIn addition to these stimulus characteristics and their predicted \neffects, I also have \"listener\" characteristics, namely, their gender -- \nthere are 23 women and 24 men -- and their scores on Simon Baron-Cohen's \nAutism Spectrum Questionnaire -- it provides a total AQ score and scores \non five subsets of questions for each listener.\n\nThe interest in this study is how a listener's gender and their total AQ \nor subset scores influence the effects of stimulus characteristics on \ntheir categorization performance. In a mixed effects logistic regression \nmodel like this, I would ordinarily represent differences between \nlisteners as a random effect, but here I also want to include the gender \nand total and subset AQ scores as fixed effects, in interactions with \nthe fixed effects that represent the stimulus characteristics.\n\nI should add that I have an analogous data set collected from a \ndifferent group of listeners, evenly divided between women and men, in \nwhich the stimulus characteristics are the same but the other listener \ncharacteristics are scores from the five subsets of the Big Five \npersonality questionnaire. As the subsets measure what are supposed to \nbe independent personality traits, there is no total Big Five score. So \nmy question is more general; namely, how do I model the effects of these \nmeasures of listeners' personality traits while also capturing \nuncontrolled differences between listeners?\n\n-- \nJohn Kingston\nProfessor\nLinguistics Department\nUniversity of Massachusetts\nIntegrative Learning Center N434\n650 N. Pleasant St.\nAmherst, MA 01003\n1-413-545-6833, fax -2792\njkingston at linguist.umass.edu\nhttp://blogs.umass.edu/jkingstn/",
+      "body_snippet": "I have a data set in which a group of listeners were asked to categorize \na series of sounds that stepped incrementally from an [s] to a [sh], as \nin \"see\" and \"she\". Members of this series were follo",
+      "thread_id": "thread-fba51227e8cc",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-5f095f8d1366",
+      "message_id": "<0c253e50-af59-369a-d4fd-0442bd3528b0@johnhaman.org>",
+      "from_name": "John Haman",
+      "from_email_hash": "e573789d004b539410619104cbd5ce6e02bb1b0550a8a9632d14ecdd202e6440",
+      "date": "2019-11-10T18:00:59-05:00",
+      "subject": "[R-sig-ME] a question about partitioning effects",
+      "subject_clean": "a question about partitioning effects",
+      "in_reply_to": "<fca30459879acee26dc6b904983d1c70@umail.it.umass.edu>",
+      "references": [
+        "<fca30459879acee26dc6b904983d1c70@umail.it.umass.edu>"
+      ],
+      "body_plain": "I'm curious about the basis for the logistic regression model here. A \ncorrect response seems to imply that there is a true categorization (or \ncoarsening) of sounds on the gradient from [s] to [sh]. Is there? Or is \nthe correct classification in the eye of the researcher?\n\nTo try to answer your actual question, have you thought about modeling \nthe data as\n\nglmer(category ~ AQ*gender*stimulus_char + (1 | listener))\n\nor some variation thereof? This would treat AQ, gender, and stimulus as \nfixed effects and supply a random intercept for each listener.\n\n-John\n\nOn 11/10/19 1:15 PM, John Kingston wrote:\n> I have a data set in which a group of listeners were asked to \n> categorize a series of sounds that stepped incrementally from an [s] \n> to a [sh], as in \"see\" and \"she\". Members of this series were followed \n> by one of three vowels, each one spoken by one of four speakers. Call \n> these the \"stimulus\" characteristics. Past work predicts how \n> differences between the vowels and speakers' voices would influence \n> listeners' choice of [s] or [sh] as the category to which a particular \n> step in the series belongs, and those predictions are clearly \n> confirmed by the results.\n>\n> In addition to these stimulus characteristics and their predicted \n> effects, I also have \"listener\" characteristics, namely, their gender \n> -- there are 23 women and 24 men -- and their scores on Simon \n> Baron-Cohen's Autism Spectrum Questionnaire -- it provides a total AQ \n> score and scores on five subsets of questions for each listener.\n>\n> The interest in this study is how a listener's gender and their total \n> AQ or subset scores influence the effects of stimulus characteristics \n> on their categorization performance. In a mixed effects logistic \n> regression model like this, I would ordinarily represent differences \n> between listeners as a random effect, but here I also want to include \n> the gender and total and subset AQ scores as fixed effects, in \n> interactions with the fixed effects that represent the stimulus \n> characteristics.\n>\n> I should add that I have an analogous data set collected from a \n> different group of listeners, evenly divided between women and men, in \n> which the stimulus characteristics are the same but the other listener \n> characteristics are scores from the five subsets of the Big Five \n> personality questionnaire. As the subsets measure what are supposed to \n> be independent personality traits, there is no total Big Five score. \n> So my question is more general; namely, how do I model the effects of \n> these measures of listeners' personality traits while also capturing \n> uncontrolled differences between listeners?\n>",
+      "body_snippet": "I'm curious about the basis for the logistic regression model here. A \ncorrect response seems to imply that there is a true categorization (or \ncoarsening) of sounds on the gradient from [s] to [sh]. ",
+      "thread_id": "thread-fba51227e8cc",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-db1fe6d5879b",
+      "message_id": "<2fb941a257d98e442bee78bcbc7c01e7@umail.it.umass.edu>",
+      "from_name": "John Kingston",
+      "from_email_hash": "05878052a140e90cabc8c6e646a266041d77706ec074971b669ced42ebb05ca9",
+      "date": "2019-11-11T12:28:08-05:00",
+      "subject": "[R-sig-ME] R-sig-mixed-models Digest, Vol 155, Issue 8",
+      "subject_clean": "R-sig-mixed-models Digest, Vol 155, Issue 8",
+      "in_reply_to": "<mailman.17945.9.1573470001.10306.r-sig-mixed-models@r-project.org>",
+      "references": [
+        "<mailman.17945.9.1573470001.10306.r-sig-mixed-models@r-project.org>"
+      ],
+      "body_plain": "Responding to John Haman:\n\nThank you for your comments.\n\nI've modeled these results using a logistic regression because the \nsounds at the two ends of the series are an unambiguous [s] and an \nunambiguous [sh], respectively. In English, the native language of all \nthe listeners, these two sounds can be analyzed as contrasting in their \nvalue for just one distinctive feature, [s] is [+anterior] and [sh] is \n[-anterior]. This feature refers to the position of the tongue tip and \nblade. The intermediate steps between the endpoints were made by mixing \nthe original [s] and [sh] waveforms in complementary proportions. So \nwith respect to both linguistic and physical characteristics of these \nsounds, it's possible to treat responses as binomially distributed.\n\nI have tried a model like the one suggested. My question is whether it's \npossible to interpret the interactions between listener gender and AQ \nscores with stimulus characteristics when other uncontrolled listener \ncharacteristics are accounted for in the random effect. A model like the \none proposed, in which there's a random effect of listener on the \nintercept, doesn't strike me as hard to interpret, but what if I wanted \nto examine random effects of listener on the slopes of the fixed effects \nand their interactions? For example, is it still possible to treat a \nrandom effect of listeners on the interactions of listener gender by a \nstimulus characteristic as accounting for uncontrolled idiosyncrasies of \nthose listeners on that interaction?\n\nBest,\nJohn\n\nOn 2019-11-11 06:00, r-sig-mixed-models-request at r-project.org wrote:\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n> \n> To subscribe or unsubscribe via the World Wide Web, visit\n> \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help' to\n> \tr-sig-mixed-models-request at r-project.org\n> \n> You can reach the person managing the list at\n> \tr-sig-mixed-models-owner at r-project.org\n> \n> When replying, please edit your Subject line so it is more specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n> \n> \n> Today's Topics:\n> \n>    1. a question about partitioning effects (John Kingston)\n>    2. Re: a question about partitioning effects (John Haman)\n> \n> ----------------------------------------------------------------------\n> \n> Message: 1\n> Date: Sun, 10 Nov 2019 13:15:48 -0500\n> From: John Kingston <jkingston at linguist.umass.edu>\n> To: r-sig-mixed-models <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] a question about partitioning effects\n> Message-ID: <fca30459879acee26dc6b904983d1c70 at umail.it.umass.edu>\n> Content-Type: text/plain; charset=\"us-ascii\"; Format=\"flowed\"\n> \n> I have a data set in which a group of listeners were asked to \n> categorize\n> a series of sounds that stepped incrementally from an [s] to a [sh], as\n> in \"see\" and \"she\". Members of this series were followed by one of \n> three\n> vowels, each one spoken by one of four speakers. Call these the\n> \"stimulus\" characteristics. Past work predicts how differences between\n> the vowels and speakers' voices would influence listeners' choice of \n> [s]\n> or [sh] as the category to which a particular step in the series\n> belongs, and those predictions are clearly confirmed by the results.\n> \n> In addition to these stimulus characteristics and their predicted\n> effects, I also have \"listener\" characteristics, namely, their gender \n> --\n> there are 23 women and 24 men -- and their scores on Simon \n> Baron-Cohen's\n> Autism Spectrum Questionnaire -- it provides a total AQ score and \n> scores\n> on five subsets of questions for each listener.\n> \n> The interest in this study is how a listener's gender and their total \n> AQ\n> or subset scores influence the effects of stimulus characteristics on\n> their categorization performance. In a mixed effects logistic \n> regression\n> model like this, I would ordinarily represent differences between\n> listeners as a random effect, but here I also want to include the \n> gender\n> and total and subset AQ scores as fixed effects, in interactions with\n> the fixed effects that represent the stimulus characteristics.\n> \n> I should add that I have an analogous data set collected from a\n> different group of listeners, evenly divided between women and men, in\n> which the stimulus characteristics are the same but the other listener\n> characteristics are scores from the five subsets of the Big Five\n> personality questionnaire. As the subsets measure what are supposed to\n> be independent personality traits, there is no total Big Five score. So\n> my question is more general; namely, how do I model the effects of \n> these\n> measures of listeners' personality traits while also capturing\n> uncontrolled differences between listeners?\n> \n> --\n> John Kingston\n> Professor\n> Linguistics Department\n> University of Massachusetts\n> Integrative Learning Center N434\n> 650 N. Pleasant St.\n> Amherst, MA 01003\n> 1-413-545-6833, fax -2792\n> jkingston at linguist.umass.edu\n> http://blogs.umass.edu/jkingstn/\n> \n> \n> \n> \n> ------------------------------\n> \n> Message: 2\n> Date: Sun, 10 Nov 2019 18:00:59 -0500\n> From: John Haman <mail at johnhaman.org>\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] a question about partitioning effects\n> Message-ID: <0c253e50-af59-369a-d4fd-0442bd3528b0 at johnhaman.org>\n> Content-Type: text/plain; charset=\"utf-8\"; Format=\"flowed\"\n> \n> I'm curious about the basis for the logistic regression model here. A\n> correct response seems to imply that there is a true categorization (or\n> coarsening) of sounds on the gradient from [s] to [sh]. Is there? Or is\n> the correct classification in the eye of the researcher?\n> \n> To try to answer your actual question, have you thought about modeling\n> the data as\n> \n> glmer(category ~ AQ*gender*stimulus_char + (1 | listener))\n> \n> or some variation thereof? This would treat AQ, gender, and stimulus as\n> fixed effects and supply a random intercept for each listener.\n> \n> -John\n> \n> On 11/10/19 1:15 PM, John Kingston wrote:\n>> I have a data set in which a group of listeners were asked to\n>> categorize a series of sounds that stepped incrementally from an [s]\n>> to a [sh], as in \"see\" and \"she\". Members of this series were followed\n>> by one of three vowels, each one spoken by one of four speakers. Call\n>> these the \"stimulus\" characteristics. Past work predicts how\n>> differences between the vowels and speakers' voices would influence\n>> listeners' choice of [s] or [sh] as the category to which a particular\n>> step in the series belongs, and those predictions are clearly\n>> confirmed by the results.\n>> \n>> In addition to these stimulus characteristics and their predicted\n>> effects, I also have \"listener\" characteristics, namely, their gender\n>> -- there are 23 women and 24 men -- and their scores on Simon\n>> Baron-Cohen's Autism Spectrum Questionnaire -- it provides a total AQ\n>> score and scores on five subsets of questions for each listener.\n>> \n>> The interest in this study is how a listener's gender and their total\n>> AQ or subset scores influence the effects of stimulus characteristics\n>> on their categorization performance. In a mixed effects logistic\n>> regression model like this, I would ordinarily represent differences\n>> between listeners as a random effect, but here I also want to include\n>> the gender and total and subset AQ scores as fixed effects, in\n>> interactions with the fixed effects that represent the stimulus\n>> characteristics.\n>> \n>> I should add that I have an analogous data set collected from a\n>> different group of listeners, evenly divided between women and men, in\n>> which the stimulus characteristics are the same but the other listener\n>> characteristics are scores from the five subsets of the Big Five\n>> personality questionnaire. As the subsets measure what are supposed to\n>> be independent personality traits, there is no total Big Five score.\n>> So my question is more general; namely, how do I model the effects of\n>> these measures of listeners' personality traits while also capturing\n>> uncontrolled differences between listeners?\n>> \n> \n> \n> \n> \n> ------------------------------\n> \n> Subject: Digest Footer\n> \n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> ------------------------------\n> \n> End of R-sig-mixed-models Digest, Vol 155, Issue 8\n> **************************************************\n\n-- \nJohn Kingston\nProfessor\nLinguistics Department\nUniversity of Massachusetts\nIntegrative Learning Center N434\n650 N. Pleasant St.\nAmherst, MA 01003\n1-413-545-6833, fax -2792\njkingston at linguist.umass.edu\nhttp://blogs.umass.edu/jkingstn/",
+      "body_snippet": "Responding to John Haman:\n\nThank you for your comments.\n\nI've modeled these results using a logistic regression because the \nsounds at the two ends of the series are an unambiguous [s] and an \nunambig",
+      "thread_id": "thread-db1fe6d5879b",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-07fc7e754b1d",
+      "message_id": "<D14049CE02C4F54D95360EEC06CE45C50FB3333C@SPMXM08.VUW.leidenuniv.nl>",
+      "from_name": "Voeten, C.C.",
+      "from_email_hash": "b59bdd5823406446eec302d03af4b856bd6dec038a842099d0a8ec9a7d1711bc",
+      "date": "2019-11-11T19:47:34Z",
+      "subject": "[R-sig-ME] R-sig-mixed-models Digest, Vol 155, Issue 8",
+      "subject_clean": "R-sig-mixed-models Digest, Vol 155, Issue 8",
+      "in_reply_to": "<2fb941a257d98e442bee78bcbc7c01e7@umail.it.umass.edu>",
+      "references": [
+        "<mailman.17945.9.1573470001.10306.r-sig-mixed-models@r-project.org>",
+        "<2fb941a257d98e442bee78bcbc7c01e7@umail.it.umass.edu>"
+      ],
+      "body_plain": "Dear John,\n\nRandom slopes by listener for gender and AQ score are unnecessary/don't make sense, as these reflect listener-specific characteristics and hence are already taken into account by the random intercept. However, you may want to consider a random slope (stimulus_char|listener) as well -- that would give you the 'maximal model' sensu Barr et al 2013. I recommend using a likelihood-ratio test (with its p-value divided by 2, see Pinheiro & Bates 2000) to see if the random-slope model is a significant improvement over the random-intercept model.\n\nBy the way, for a model with only one random factor like yours, function mixed_model from package GLMMadaptive will give slightly more accurate results than glmer.\n\nGreetings from a fellow phonologist/phonetician,\nCesko\n\n> -----Oorspronkelijk bericht-----\n> Van: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org>\n> Namens John Kingston\n> Verzonden: maandag 11 november 2019 18:28\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: Re: [R-sig-ME] R-sig-mixed-models Digest, Vol 155, Issue 8\n> \n> Responding to John Haman:\n> \n> Thank you for your comments.\n> \n> I've modeled these results using a logistic regression because the sounds at\n> the two ends of the series are an unambiguous [s] and an unambiguous [sh],\n> respectively. In English, the native language of all the listeners, these two\n> sounds can be analyzed as contrasting in their value for just one distinctive\n> feature, [s] is [+anterior] and [sh] is [-anterior]. This feature refers to the\n> position of the tongue tip and blade. The intermediate steps between the\n> endpoints were made by mixing the original [s] and [sh] waveforms in\n> complementary proportions. So with respect to both linguistic and physical\n> characteristics of these sounds, it's possible to treat responses as binomially\n> distributed.\n> \n> I have tried a model like the one suggested. My question is whether it's\n> possible to interpret the interactions between listener gender and AQ scores\n> with stimulus characteristics when other uncontrolled listener characteristics\n> are accounted for in the random effect. A model like the one proposed, in\n> which there's a random effect of listener on the intercept, doesn't strike me\n> as hard to interpret, but what if I wanted to examine random effects of\n> listener on the slopes of the fixed effects and their interactions? For\n> example, is it still possible to treat a random effect of listeners on the\n> interactions of listener gender by a stimulus characteristic as accounting for\n> uncontrolled idiosyncrasies of those listeners on that interaction?\n> \n> Best,\n> John\n> \n> On 2019-11-11 06:00, r-sig-mixed-models-request at r-project.org wrote:\n> > Send R-sig-mixed-models mailing list submissions to\n> > \tr-sig-mixed-models at r-project.org\n> >\n> > To subscribe or unsubscribe via the World Wide Web, visit\n> > \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > or, via email, send a message with subject or body 'help' to\n> > \tr-sig-mixed-models-request at r-project.org\n> >\n> > You can reach the person managing the list at\n> > \tr-sig-mixed-models-owner at r-project.org\n> >\n> > When replying, please edit your Subject line so it is more specific\n> > than \"Re: Contents of R-sig-mixed-models digest...\"\n> >\n> >\n> > Today's Topics:\n> >\n> >    1. a question about partitioning effects (John Kingston)\n> >    2. Re: a question about partitioning effects (John Haman)\n> >\n> > ----------------------------------------------------------------------\n> >\n> > Message: 1\n> > Date: Sun, 10 Nov 2019 13:15:48 -0500\n> > From: John Kingston <jkingston at linguist.umass.edu>\n> > To: r-sig-mixed-models <r-sig-mixed-models at r-project.org>\n> > Subject: [R-sig-ME] a question about partitioning effects\n> > Message-ID: <fca30459879acee26dc6b904983d1c70 at umail.it.umass.edu>\n> > Content-Type: text/plain; charset=\"us-ascii\"; Format=\"flowed\"\n> >\n> > I have a data set in which a group of listeners were asked to\n> > categorize a series of sounds that stepped incrementally from an [s]\n> > to a [sh], as in \"see\" and \"she\". Members of this series were followed\n> > by one of three vowels, each one spoken by one of four speakers. Call\n> > these the \"stimulus\" characteristics. Past work predicts how\n> > differences between the vowels and speakers' voices would influence\n> > listeners' choice of [s] or [sh] as the category to which a particular\n> > step in the series belongs, and those predictions are clearly\n> > confirmed by the results.\n> >\n> > In addition to these stimulus characteristics and their predicted\n> > effects, I also have \"listener\" characteristics, namely, their gender\n> > --\n> > there are 23 women and 24 men -- and their scores on Simon\n> > Baron-Cohen's Autism Spectrum Questionnaire -- it provides a total AQ\n> > score and scores on five subsets of questions for each listener.\n> >\n> > The interest in this study is how a listener's gender and their total\n> > AQ or subset scores influence the effects of stimulus characteristics\n> > on their categorization performance. In a mixed effects logistic\n> > regression model like this, I would ordinarily represent differences\n> > between listeners as a random effect, but here I also want to include\n> > the gender and total and subset AQ scores as fixed effects, in\n> > interactions with the fixed effects that represent the stimulus\n> > characteristics.\n> >\n> > I should add that I have an analogous data set collected from a\n> > different group of listeners, evenly divided between women and men, in\n> > which the stimulus characteristics are the same but the other listener\n> > characteristics are scores from the five subsets of the Big Five\n> > personality questionnaire. As the subsets measure what are supposed to\n> > be independent personality traits, there is no total Big Five score.\n> > So my question is more general; namely, how do I model the effects of\n> > these measures of listeners' personality traits while also capturing\n> > uncontrolled differences between listeners?\n> >\n> > --\n> > John Kingston\n> > Professor\n> > Linguistics Department\n> > University of Massachusetts\n> > Integrative Learning Center N434\n> > 650 N. Pleasant St.\n> > Amherst, MA 01003\n> > 1-413-545-6833, fax -2792\n> > jkingston at linguist.umass.edu\n> > http://blogs.umass.edu/jkingstn/\n> >\n> >\n> >\n> >\n> > ------------------------------\n> >\n> > Message: 2\n> > Date: Sun, 10 Nov 2019 18:00:59 -0500\n> > From: John Haman <mail at johnhaman.org>\n> > To: r-sig-mixed-models at r-project.org\n> > Subject: Re: [R-sig-ME] a question about partitioning effects\n> > Message-ID: <0c253e50-af59-369a-d4fd-0442bd3528b0 at johnhaman.org>\n> > Content-Type: text/plain; charset=\"utf-8\"; Format=\"flowed\"\n> >\n> > I'm curious about the basis for the logistic regression model here. A\n> > correct response seems to imply that there is a true categorization\n> > (or\n> > coarsening) of sounds on the gradient from [s] to [sh]. Is there? Or\n> > is the correct classification in the eye of the researcher?\n> >\n> > To try to answer your actual question, have you thought about modeling\n> > the data as\n> >\n> > glmer(category ~ AQ*gender*stimulus_char + (1 | listener))\n> >\n> > or some variation thereof? This would treat AQ, gender, and stimulus\n> > as fixed effects and supply a random intercept for each listener.\n> >\n> > -John\n> >\n> > On 11/10/19 1:15 PM, John Kingston wrote:\n> >> I have a data set in which a group of listeners were asked to\n> >> categorize a series of sounds that stepped incrementally from an [s]\n> >> to a [sh], as in \"see\" and \"she\". Members of this series were\n> >> followed by one of three vowels, each one spoken by one of four\n> >> speakers. Call these the \"stimulus\" characteristics. Past work\n> >> predicts how differences between the vowels and speakers' voices\n> >> would influence listeners' choice of [s] or [sh] as the category to\n> >> which a particular step in the series belongs, and those predictions\n> >> are clearly confirmed by the results.\n> >>\n> >> In addition to these stimulus characteristics and their predicted\n> >> effects, I also have \"listener\" characteristics, namely, their gender\n> >> -- there are 23 women and 24 men -- and their scores on Simon\n> >> Baron-Cohen's Autism Spectrum Questionnaire -- it provides a total AQ\n> >> score and scores on five subsets of questions for each listener.\n> >>\n> >> The interest in this study is how a listener's gender and their total\n> >> AQ or subset scores influence the effects of stimulus characteristics\n> >> on their categorization performance. In a mixed effects logistic\n> >> regression model like this, I would ordinarily represent differences\n> >> between listeners as a random effect, but here I also want to include\n> >> the gender and total and subset AQ scores as fixed effects, in\n> >> interactions with the fixed effects that represent the stimulus\n> >> characteristics.\n> >>\n> >> I should add that I have an analogous data set collected from a\n> >> different group of listeners, evenly divided between women and men,\n> >> in which the stimulus characteristics are the same but the other\n> >> listener characteristics are scores from the five subsets of the Big\n> >> Five personality questionnaire. As the subsets measure what are\n> >> supposed to be independent personality traits, there is no total Big Five\n> score.\n> >> So my question is more general; namely, how do I model the effects of\n> >> these measures of listeners' personality traits while also capturing\n> >> uncontrolled differences between listeners?\n> >>\n> >\n> >\n> >\n> >\n> > ------------------------------\n> >\n> > Subject: Digest Footer\n> >\n> > _______________________________________________\n> > R-sig-mixed-models mailing list\n> > R-sig-mixed-models at r-project.org\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n> > ------------------------------\n> >\n> > End of R-sig-mixed-models Digest, Vol 155, Issue 8\n> > **************************************************\n> \n> --\n> John Kingston\n> Professor\n> Linguistics Department\n> University of Massachusetts\n> Integrative Learning Center N434\n> 650 N. Pleasant St.\n> Amherst, MA 01003\n> 1-413-545-6833, fax -2792\n> jkingston at linguist.umass.edu\n> http://blogs.umass.edu/jkingstn/\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear John,\n\nRandom slopes by listener for gender and AQ score are unnecessary/don't make sense, as these reflect listener-specific characteristics and hence are already taken into account by the rando",
+      "thread_id": "thread-db1fe6d5879b",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-2af59a159427",
+      "message_id": "<CAO1C-jO0RF44b_RHLFe2i_zEJ8c=kG_hbebLaQ_sBvDXpBaycg@mail.gmail.com>",
+      "from_name": "Ronan James Osullivan",
+      "from_email_hash": "66318ac8ce523632ce6289ca0a4eb18bfe2f6664d81afd031895b85e931fb2b0",
+      "date": "2019-11-13T18:25:30Z",
+      "subject": "[R-sig-ME] Massive difference in random effect's posterior mean between chains",
+      "subject_clean": "Massive difference in random effect's posterior mean between chains",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\nApologies if this question is trivial or if I'm over-looking something\nobvious.\n\nI am trying to investigate the effect of Genetic Type (A or B) and climate\non the lifetime reproductive success (LRS) of a wild-spawning fish species.\nI am interacting Genetic Type with seven different climatic variables. I\nhave included a nested random effects structure to account for\npseudoreplication among years (~Year_of_Spawning), and to account for some\nof the fish spawning across multiple years (~Year_ID2). I also interact\nGenetic_Type with the relative survival of B compared to A to correct for a\nsurvival bias between the two genetic types (they are sampled at different\npoints in the spawning season).\n\nThe model is specified in MCMCglmm as follows:\nModel_a<- MCMCglmm(LRS ~\n                   (Genetic_Type-1)*climate1+\n                   (Genetic_Type -1)* climate2+\n                   (Genetic_Type -1)* climate3+\n                   (Genetic_Type -1)* climate4+\n                   (Genetic_Type -1)* climate5+\n                   (Genetic_Type -1)* climate6+\n                   (Genetic_Type -1)* climate7+\n                    Genetic_Type *relative_survival,\n                 random = ~Year_of_Spawning+ Year_ID2,\n                 family = \"poisson\",\n                 data = data1,\n                 prior = prior.exp_1,\n                 nitt = 110000,\n                 burnin = 10000,\n                 thin = 100)\n\nThe above model was run to illustrate the problem, hence the low number of\niterations.\n\nThe parameter expanded prior is as follows:\nprior.exp_1<- list(R = list(V = 1, nu = 2),\nG = list(G1 = list(V = 1, nu = 0.002, alpha.mu = 0, alpha.V = 1000),\n             G2 = list(V = 1, nu = 0.002, alpha.mu = 0, alpha.V = 1000)))\n\nIf I run 2 chains of the model, then the results for the fixed effects are\nsimilar, allowing for Monte Carlo error. However, the posterior mean\nestimate for the 'Year_of_Spawning' random effect changes massively, with\nthe posterior mean larger than the upper 95% credible interval:\n\nMODEL 1:\n G-structure:  ~Year_of_Spawning\n\n                                post.mean          l-95% CI     u-95% CI\n eff.samp\nYear_of_Spawning      5.49              7.832e-05      15.85         1000\n\n               ~Year_ID2\n\n                               post.mean          l-95% CI       u-95% CI\n eff.samp\nYear_ID2                  0.5262              0.000721         0.9471\n87.03\n\n R-structure:  ~units\n\n                             post.mean            l-95% CI       u-95% CI\n eff.samp\nunits                        0.5792               0.1383            1.082\n      87.61\n\nMODEL 2:\nG-structure:  ~Year_of_Spawning\n\n                               post.mean         l-95% CI         u-95% CI\n eff.samp\nYear_of_Spawning     39.38             9.65e-05            15.52     1000\n\n               ~Year_ID2\n\n                              post.mean         l-95% CI          u-95% CI\n  eff.samp\nYear_ID2                 0.4724             4.8e-06              0.9168\n    81.07\n\n R-structure:  ~units\n\n                             post.mean         l-95% CI          u-95% CI\n  eff.samp\nunits                        0.6403             0.1838             1.126\n      92.06\n\n\nI imagine that the problem exists in my random effects structure but I am\nunsure of where the error lies. Any and all help is massively appreciated.\n\nCheers,\nRonan\n\n\n-- \nRonan O'Sullivan | Ph.D student | School of Biological, Earth and\nEnvironmental Sciences, University College Cork, Ireland |\nhttp://fisheye.ucc.ie/toms-team/\n\nEMPSEB 26 - Chair of Organizing Committee\n\nIrish Ecological Association - Ordinary Committee Member\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nApologies if this question is trivial or if I'm over-looking something\nobvious.\n\nI am trying to investigate the effect of Genetic Type (A or B) and climate\non the lifetime reproductive succes",
+      "thread_id": "thread-2af59a159427",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-9eb4080849c6",
+      "message_id": "<CAHhX7Whdsd7A95LbMMVK6qm6+X+d2y12KN4iuaP3ozrQ9=syCw@mail.gmail.com>",
+      "from_name": "Cristiano Alessandro",
+      "from_email_hash": "7266c722d8203c463149e75451dec2ba48bf60cc5c1beca99cafa6c866cd3c17",
+      "date": "2019-11-13T15:01:44-06:00",
+      "subject": "[R-sig-ME] inconsistent results in two-way repeated measure analysis using mixed models",
+      "subject_clean": "inconsistent results in two-way repeated measure analysis using mixed models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\nI am having issues with the definition of a mixed effect model for a\ntwo-way repeated measure analysis with nested design. The issue is\ndescribed in great details at this link:\nhttps://stats.stackexchange.com/questions/435630/inconsistent-results-in-two-way-repeated-measure-analysis-using-mixed-models\n\nDoes anybody have any clue of what the problem may be? Thanks in advance.\n\n-- \n*Cristiano Alessandro, PhD*\nPostdoctoral Fellow\nPhysiology Department\nNorthwestern University\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nI am having issues with the definition of a mixed effect model for a\ntwo-way repeated measure analysis with nested design. The issue is\ndescribed in great details at this link:\nhttps://stats.",
+      "thread_id": "thread-9eb4080849c6",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-76e5ca0ea3bb",
+      "message_id": "<DB7PR03MB45555EF1E0DB42C7AD7EFF04C24C0@DB7PR03MB4555.eurprd03.prod.outlook.com>",
+      "from_name": "Williamson, Michael",
+      "from_email_hash": "fb74179698f73d2a7a695e70977fb7dad8224e5bcd1fb6f775bb9b739287519d",
+      "date": "2019-11-19T10:52:38Z",
+      "subject": "[R-sig-ME] Cook's distance for glmmTMB models",
+      "subject_clean": "Cook's distance for glmmTMB models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Good Morning,\n\nI've been running a generalise linear mixed model using the glmmTMB package. My data is very large and zero inflated and this packaged worked really well following convergent issues using the traditional lme4 package.\n\nI've been recommended to check for the effect of outliers using Cook's distance, but none of the packages I can find (performance and influence.ME) work with glmmTMB models currently. Is anyone aware of any other methods I might be able to use to check for Cook's distance with glmmTMB objects?\n\nCheers\n\nMike\n\n\n\nMichael Williamson\nLondon NERC DTP Candidate\n\nEmail: michael.williamson at kcl.ac.uk<mailto:michael.williamson at kcl.ac.uk> Phone: +447764836592 Skype: mikejwilliamson Twitter: @mjw_marine\n\nMost recent paper:\nWilliamson, M. J., Tebbs, E., Dawson, T., Jacoby D. (2019) 'Satellite Remote Sensing in Shark and Ray Ecology, Conservation and Management', Frontiers in Marine Science, 6, 1-23. https://doi.org/10.3389/fmars.2019.00135<https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdoi.org%2F10.3389%2Ffmars.2019.00135&data=01%7C01%7Cmichael.williamson%40kcl.ac.uk%7Cebe89eb38f9f4638c3af08d6b381355f%7C8370cf1416f34c16b83c724071654356%7C0&sdata=RSgPw0Ar9R1JvA0YDYfJhDOdwUYfy7sh2vZs2t5tO94%3D&reserved=0>\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Good Morning,\n\nI've been running a generalise linear mixed model using the glmmTMB package. My data is very large and zero inflated and this packaged worked really well following convergent issues usi",
+      "thread_id": "thread-76e5ca0ea3bb",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-1ae75351e1ac",
+      "message_id": "<97615d64b6074d768058964146aaeae6@UM-MAIL3213.unimaas.nl>",
+      "from_name": "Viechtbauer, Wolfgang (SP)",
+      "from_email_hash": "bfe931aadd3cb7631b70e83086a082e314918464e0b2d0cbb3f72828d9937141",
+      "date": "2019-11-20T16:38:26Z",
+      "subject": "[R-sig-ME] Cook's distance for glmmTMB models",
+      "subject_clean": "Cook's distance for glmmTMB models",
+      "in_reply_to": "<DB7PR03MB45555EF1E0DB42C7AD7EFF04C24C0@DB7PR03MB4555.eurprd03.prod.outlook.com>",
+      "references": [
+        "<DB7PR03MB45555EF1E0DB42C7AD7EFF04C24C0@DB7PR03MB4555.eurprd03.prod.outlook.com>"
+      ],
+      "body_plain": "Dear Mike,\n\nI don't know about packages that will directly work with glmmTMB objects, but computing Cook's distances can be easily done by hand. Let b be the vector with the estimated fixed effects from the model and V(b) the corresponding var-cov matrix. You can extract these with fixef() and vcov() from your model. Now leave out either a single observation or a cluster of observations (e.g., all observations corresponding to an individual) and let b_{-i} denote the estimated fixed effects when fitting the data to this subset of the dataset. Then Cook's distances is simply\n\nD_i = (b - b_{-i})' V(b)^{-1} (b - b_{-i})\n\nNow rinse and repeat for every i, which is easily done in a loop. It might take a while to complete depending on how complex your model is.\n\nSome might compute D_i with V(b_{-i})^{-1} in place of V(b)^{-1}. Can be done easily at the same time, so you could do both and compare.\n\nBest,\nWolfgang\n\n-----Original Message-----\nFrom: R-sig-mixed-models [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Williamson, Michael via R-sig-mixed-models\nSent: Tuesday, 19 November, 2019 11:53\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] Cook's distance for glmmTMB models\n\nGood Morning,\n\nI've been running a generalise linear mixed model using the glmmTMB package. My data is very large and zero inflated and this packaged worked really well following convergent issues using the traditional lme4 package.\n\nI've been recommended to check for the effect of outliers using Cook's distance, but none of the packages I can find (performance and influence.ME) work with glmmTMB models currently. Is anyone aware of any other methods I might be able to use to check for Cook's distance with glmmTMB objects?\n\nCheers\n\nMike",
+      "body_snippet": "Dear Mike,\n\nI don't know about packages that will directly work with glmmTMB objects, but computing Cook's distances can be easily done by hand. Let b be the vector with the estimated fixed effects fr",
+      "thread_id": "thread-76e5ca0ea3bb",
+      "thread_depth": 1,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-d95e8514d64c",
+      "message_id": "<914700208.2770145.1574462744024@mail.yahoo.com>",
+      "from_name": "Nik Tuzov",
+      "from_email_hash": "2eb753e0d07232a14c408ed2188c503ec92c779c1ea116fbeae1972ca446fc5d",
+      "date": "2019-11-22T22:45:44Z",
+      "subject": "[R-sig-ME] Finding the best package for a mixed Poisson model",
+      "subject_clean": "Finding the best package for a mixed Poisson model",
+      "in_reply_to": null,
+      "references": [
+        "<914700208.2770145.1574462744024.ref@mail.yahoo.com>"
+      ],
+      "body_plain": "Hello:\n\nCouldyou help me get oriented among various packages to fit a mixedPoisson model. The goal is to find a relatively fast method that cantake at least two random factors, possibly with interaction, e.g.:\n\nY~ fixed part + A + B + A*B\n\nIhave looked at SAS GLIMMIX, lme4::glmer, glmmPQL, glmmTMB, andGLMMadaptive. I have stayed away from simulation/MCMC based methodsfor speed reasons. My questions are:\n\n1)Are there any more packages that are consistent with my objective?\n\n2)GLIMMIX (with default METHOD = RSPL option) and glmmPQL refer to thesame two papers: Wofinger, O?Connell, 1993 and Breslow, Clayton,1993. Does this mean that glmmPQL was meant to reproduce the defaultGLIMMIX? If yes, are they really consistent?\n\n3)This reference:\n\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#fitting-models-with-overdispersion\n\nclaimsthat previously lme4 had a functionality similar to glmmPQL but thenit was removed altogether because it was ?deemed unreliable?.That implies that the default estimation method in GLIMMIX is veryunreliable (see 2)). Is it really that bad? If yes, why didn?t SASpick a different default (or maybe they did it in some newer PROC)?\n\n4)Presently glmer uses Laplace or Gauss-Hermite quadrature, the latteronly if there is one random term in the model. How consistent is itwith the corresponding SAS options METHOD = LAPLACE and METHOD=QUAD ?\n\n5)GLMMadaptive can use the quadrature with more than one random term:\n\nhttps://stats.stackexchange.com/questions/403147/an-r-package-for-glmm-estimation-with-two-random-effects\n\nThedocumentation says that it?s based on the paper of Pinheiro &Bates, 1995, then why is it not available in glmer which is supportedby Bates? Is that because the GLMMadaptive results are unreliable?\n\n\n\n\nThanksin advance,\n\nNikTuzov\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello:\n\nCouldyou help me get oriented among various packages to fit a mixedPoisson model. The goal is to find a relatively fast method that cantake at least two random factors, possibly with interacti",
+      "thread_id": "thread-d95e8514d64c",
+      "thread_depth": 0,
+      "month": "2019-11"
+    },
+    {
+      "id": "msg-ead57475c478",
+      "message_id": "<CABghstRVVihVki1Kw305e9LK1z6Jf_fJDyqPszBdf=G2+rMbxw@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2019-11-22T19:34:21-05:00",
+      "subject": "[R-sig-ME] Finding the best package for a mixed Poisson model",
+      "subject_clean": "Finding the best package for a mixed Poisson model",
+      "in_reply_to": "<914700208.2770145.1574462744024@mail.yahoo.com>",
+      "references": [
+        "<914700208.2770145.1574462744024.ref@mail.yahoo.com>",
+        "<914700208.2770145.1574462744024@mail.yahoo.com>"
+      ],
+      "body_plain": "On Fri, Nov 22, 2019 at 5:46 PM Nik Tuzov <ntuzov at ntuzov.com> wrote:\n>\n>\n> Hello:\n>\n> Couldyou help me get oriented among various packages to fit a mixedPoisson model. The goal is to find a relatively fast method that cantake at least two random factors, possibly with interaction, e.g.:\n>\n> Y~ fixed part + A + B + A*B\n>\n> Ihave looked at SAS GLIMMIX, lme4::glmer, glmmPQL, glmmTMB, andGLMMadaptive. I have stayed away from simulation/MCMC based methodsfor speed reasons. My questions are:\n>\n> 1)Are there any more packages that are consistent with my objective?\n\n technically glmmPQL is a function within the MASS package.\n  If you're going to use SAS I might recommend PROC MIXED over GLIMMIX\n(see below).\n\n>\n> 2)GLIMMIX (with default METHOD = RSPL option) and glmmPQL refer to thesame two papers: Wofinger, O?Connell, 1993 and Breslow, Clayton,1993. Does this mean that glmmPQL was meant to reproduce the defaultGLIMMIX? If yes, are they really consistent?\n\n  I don't know if they're exactly the same, but they're implementing\nsimilar methods (I don't know all the options within GLIMMIX ...)\n\n>\n> 3)This reference:\n>\n> https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#fitting-models-with-overdispersion\n>\n> claimsthat previously lme4 had a functionality similar to glmmPQL but thenit was removed altogether because it was ?deemed unreliable?.That implies that the default estimation method in GLIMMIX is veryunreliable (see 2)). Is it really that bad? If yes, why didn?t SASpick a different default (or maybe they did it in some newer PROC)?\n\n  This is a bit of a long story.\n  (1) PQL is indeed a worse approximation in some limits (e.g. Poisson\nsamples with a small mean *and* small number of samples per group)\n[e.g. see the Breslow \"Whither PQL?\" paper].\n  (2) The developers noticed some weird results from PQL when\nimplemented in lme4, but these probably had less to do with PQL itself\nthan with the ways in which it interacted with the way that GLMMs are\notherwise implemented in lme4.  Because of #1, it was deemed less\nimportant.\n\n>\n> 4)Presently glmer uses Laplace or Gauss-Hermite quadrature, the latteronly if there is one random term in the model. How consistent is itwith the corresponding SAS options METHOD = LAPLACE and METHOD=QUAD ?\n\n   I didn't realize that GLIMMIX  had LAPLACE and QUAD methods, but\nyes, those sound similar to nAGQ=1 (default) and nAGQ>1 options in\nlme4.  (I don't know whether GLIMMIX does *adaptive* Gauss-Hermite\nquadrature, which is important ...)\n>\n> 5)GLMMadaptive can use the quadrature with more than one random term:\n>\n> https://stats.stackexchange.com/questions/403147/an-r-package-for-glmm-estimation-with-two-random-effects\n>\n> Thedocumentation says that it?s based on the paper of Pinheiro &Bates, 1995, then why is it not available in glmer which is supportedby Bates? Is that because the GLMMadaptive results are unreliable?\n\n   Because the glmer developers never got around to implementing it.\nWhile being able to do AGQ on arbitrarily many random effects is\ncertainly convenient, there's a relatively narrow set of problems for\nwhich AGQ on multiple REs is both useful (i.e. Laplace isn't good\nenough) *and* computationally feasible (the computational burden of\nAGQ increases rapidly with dimensionality/number of rEs).\n\n  My advice: try a few of these methods and see if the answers differ\nmuch, then choose the most convenient tool that seems adequate.  Most\nof the R packages have fairly similar interfaces, so it shouldn't be\ntoo hard to try a variety of them.\n\n> Thanksin advance,\n>\n> NikTuzov\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "On Fri, Nov 22, 2019 at 5:46 PM Nik Tuzov <ntuzov at ntuzov.com> wrote:\n>\n>\n> Hello:\n>\n> Couldyou help me get oriented among various packages to fit a mixedPoisson model. The goal is to find a relativ",
+      "thread_id": "thread-d95e8514d64c",
+      "thread_depth": 1,
+      "month": "2019-11"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-f9715bd06504",
+      "subject": "Your response to my R-sig-ME question",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2019-11-01T21:00:03-04:00",
+      "last_reply": "2019-11-01T21:00:03-04:00",
+      "root_message_id": "msg-f9715bd06504"
+    },
+    {
+      "id": "thread-d02e15ac764b",
+      "subject": "Doubtful significance in mixed effect model",
+      "message_count": 2,
+      "participants": [
+        "Chia-Yu Chen",
+        "Thierry Onkelinx"
+      ],
+      "started": "2019-11-02T19:40:15+01:00",
+      "last_reply": "2019-11-04T09:33:48+01:00",
+      "root_message_id": "msg-d02e15ac764b"
+    },
+    {
+      "id": "thread-e0cae7a02613",
+      "subject": "Your response to my R-sig-ME question",
+      "message_count": 1,
+      "participants": [
+        "Lenth, Russell V"
+      ],
+      "started": "2019-11-02T22:25:37+00:00",
+      "last_reply": "2019-11-02T22:25:37+00:00",
+      "root_message_id": "msg-e0cae7a02613"
+    },
+    {
+      "id": "thread-9286241e0540",
+      "subject": "Advice on repeated-measures mixed model (lmer)",
+      "message_count": 1,
+      "participants": [
+        "Thierry Onkelinx"
+      ],
+      "started": "2019-11-04T09:46:00+01:00",
+      "last_reply": "2019-11-04T09:46:00+01:00",
+      "root_message_id": "msg-9286241e0540"
+    },
+    {
+      "id": "thread-7f4d1b85f215",
+      "subject": "Doubtful significance in mixed effect model",
+      "message_count": 1,
+      "participants": [
+        "Diana Michl"
+      ],
+      "started": "2019-11-04T11:20:44+01:00",
+      "last_reply": "2019-11-04T11:20:44+01:00",
+      "root_message_id": "msg-7f4d1b85f215"
+    },
+    {
+      "id": "thread-00026dcb5c55",
+      "subject": "Subjecting data to differential equations deSolve",
+      "message_count": 2,
+      "participants": [
+        "Rolf Turner",
+        "Torsten Hauffe"
+      ],
+      "started": "2019-11-07T14:12:33+01:00",
+      "last_reply": "2019-11-08T11:01:50+13:00",
+      "root_message_id": "msg-00026dcb5c55"
+    },
+    {
+      "id": "thread-8fb99256ef2a",
+      "subject": "solve some differential equations with the deSolve",
+      "message_count": 1,
+      "participants": [
+        "Carl Von Ende"
+      ],
+      "started": "2019-11-08T16:56:40+00:00",
+      "last_reply": "2019-11-08T16:56:40+00:00",
+      "root_message_id": "msg-8fb99256ef2a"
+    },
+    {
+      "id": "thread-0675cfe3a6f6",
+      "subject": "mixed models with very few measurements by subject",
+      "message_count": 2,
+      "participants": [
+        "Thierry Onkelinx",
+        "Tim Richter-Heitmann"
+      ],
+      "started": "2019-11-08T17:03:33+01:00",
+      "last_reply": "2019-11-09T13:23:05+01:00",
+      "root_message_id": "msg-0675cfe3a6f6"
+    },
+    {
+      "id": "thread-fba51227e8cc",
+      "subject": "a question about partitioning effects",
+      "message_count": 2,
+      "participants": [
+        "John Haman",
+        "John Kingston"
+      ],
+      "started": "2019-11-10T13:15:48-05:00",
+      "last_reply": "2019-11-10T18:00:59-05:00",
+      "root_message_id": "msg-fba51227e8cc"
+    },
+    {
+      "id": "thread-db1fe6d5879b",
+      "subject": "R-sig-mixed-models Digest, Vol 155, Issue 8",
+      "message_count": 2,
+      "participants": [
+        "John Kingston",
+        "Voeten, C.C."
+      ],
+      "started": "2019-11-11T12:28:08-05:00",
+      "last_reply": "2019-11-11T19:47:34+00:00",
+      "root_message_id": "msg-db1fe6d5879b"
+    },
+    {
+      "id": "thread-9eb4080849c6",
+      "subject": "inconsistent results in two-way repeated measure analysis using mixed models",
+      "message_count": 1,
+      "participants": [
+        "Cristiano Alessandro"
+      ],
+      "started": "2019-11-13T15:01:44-06:00",
+      "last_reply": "2019-11-13T15:01:44-06:00",
+      "root_message_id": "msg-9eb4080849c6"
+    },
+    {
+      "id": "thread-2af59a159427",
+      "subject": "Massive difference in random effect's posterior mean between chains",
+      "message_count": 1,
+      "participants": [
+        "Ronan James Osullivan"
+      ],
+      "started": "2019-11-13T18:25:30+00:00",
+      "last_reply": "2019-11-13T18:25:30+00:00",
+      "root_message_id": "msg-2af59a159427"
+    },
+    {
+      "id": "thread-76e5ca0ea3bb",
+      "subject": "Cook's distance for glmmTMB models",
+      "message_count": 2,
+      "participants": [
+        "Viechtbauer, Wolfgang (SP)",
+        "Williamson, Michael"
+      ],
+      "started": "2019-11-19T10:52:38+00:00",
+      "last_reply": "2019-11-20T16:38:26+00:00",
+      "root_message_id": "msg-76e5ca0ea3bb"
+    },
+    {
+      "id": "thread-d95e8514d64c",
+      "subject": "Finding the best package for a mixed Poisson model",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Nik Tuzov"
+      ],
+      "started": "2019-11-22T22:45:44+00:00",
+      "last_reply": "2019-11-22T19:34:21-05:00",
+      "root_message_id": "msg-d95e8514d64c"
+    }
+  ]
+}

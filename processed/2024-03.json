@@ -1,0 +1,130 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2024-03",
+  "messages": [
+    {
+      "id": "msg-c546e7a1ebfa",
+      "message_id": "<a4f9a667-7de2-4d31-99cb-f36949136b60@uni-osnabrueck.de>",
+      "from_name": "Lukasz Stasielowicz",
+      "from_email_hash": "8e7698f28015f696c76c8036e33b7e8bcb33cb7948bf9a7b4b00d1a91ed2c1f0",
+      "date": "2024-03-07T13:34:18+01:00",
+      "subject": "[R-sig-ME] Testing a hypothesis that there was a change after a specific, time point",
+      "subject_clean": "Testing a hypothesis that there was a change after a specific, time point",
+      "in_reply_to": "<mailman.20273.7.1708426802.42772.r-sig-mixed-models@r-project.org>",
+      "references": [
+        "<mailman.20273.7.1708426802.42772.r-sig-mixed-models@r-project.org>"
+      ],
+      "body_plain": "Dear Santosh Srinivas,\n\nSince there are various ways to model transitions, I will link to an \narticle that describes several approaches. Perhaps you will find it helpful.\nBliese, P. D., & Lang, J. W. B. (2016). Understanding relative and \nabsolute change in discontinuous growth models: Coding alternatives and \nimplications for hypothesis testing. Organizational Research Methods, \n19(4), 562?592. https://doi.org/10.1177/1094428116633502\n\nDepending on your preferences and analytic choices, the interpretation \nof the coefficients changes. Some choices pertain to the modeling of the \ntrajectory. For example, one could model the trajectory before the \nprogram announcement, the trajectory after the program announcement, \nnon-linear trajectories, and the immediate effect of the program \nannouncement. One could also add random effects for the respective \nchange variables. Furthermore, one must decide whether the \npost-announcement coefficients are interpreted in absolute or relative \nterms (i.e., relative to the pre-announcement phase).\n\n\nBest wishes,\n-- \nLukasz Stasielowicz\nOsnabr?ck University\nInstitute for Psychology\nResearch methods, psychological assessment, and evaluation\nLise-Meitner-Stra?e 3\n49076 Osnabr?ck (Germany)\nTwitter: https://twitter.com/l_stasielowicz\nTel.: +49 541 969-7735\n\n\n\nOn 20.02.2024 12:00, r-sig-mixed-models-request at r-project.org wrote:\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n> \n> To subscribe or unsubscribe via the World Wide Web, visit\n> \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help' to\n> \tr-sig-mixed-models-request at r-project.org\n> \n> You can reach the person managing the list at\n> \tr-sig-mixed-models-owner at r-project.org\n> \n> When replying, please edit your Subject line so it is more specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n> \n> \n> Today's Topics:\n> \n>     1. Testing a hypothesis that there was a change after a specific\n>        time point (Santosh Srinivas)\n> \n> ----------------------------------------------------------------------\n> \n> Message: 1\n> Date: Mon, 19 Feb 2024 16:41:01 +0000\n> From: Santosh Srinivas <santosh.b.srinivas at outlook.com>\n> To: \"r-sig-mixed-models at r-project.org\"\n> \t<r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] Testing a hypothesis that there was a change after\n> \ta specific time point\n> Message-ID:\n> \t<SJ0PR05MB85191EF80DFE626E6900B81CC9512 at SJ0PR05MB8519.namprd05.prod.outlook.com>\n> \t\n> Content-Type: text/plain; charset=\"utf-8\"\n> \n> \n> Hello Members, I am writing to request your advice on how best to do hypothesis testing for our study.\n> \n> Our data looks as follows:\n> \n>> head(x)\n> # A tibble: 6 ? 7\n>    user_id  user_male  days log_days bool_program   dv1     dv2\n>    <chr>        <int> <int>    <dbl>        <dbl> <dbl>   <dbl>\n> 1 IDX_195          1  1581     7.37            1 0.150 0.00590\n> 2 IDX_949          1  1338     7.20            1 0.130 0.0348\n> 3 IDX_2428         1   577     6.36            0 0.160 0.0438\n> 4 IDX_2312         1   424     6.05            0 0.179 0.0364\n> 5 IDX_277          1   790     6.67            0 0.419 0.0515\n> 6 IDX_1029         1  1489     7.31            1 0.155 0.0219\n>>\n> \n> \n> Besides the gender of the user, we have data of users on dv1 and dv2 over 6 years, with the days variable ranging from 0 to 2190 (and log_days being its log transformation).\n> \n> We would like to test the hypothesis that a program announcement made on the day 850 caused a significant (potentially, gradual) change in dv1 and/or dv2 scores (regardless of the direction of change) for male and/or female users. The bool_program is set to 0 for days < 1118 and 1 otherwise.\n> \n> We are wondering what is the best way to conduct this test, given the hierarchical/nested nature of data.\n> \n> We have thus far taken the approach of using lmer:\n> \n>> m = lmer(\n> +   dv1 ~ user_male + bool_program * log_days + (1|user_id),\n> +   data = x\n> + )\n> \n>> summary(m)\n> Linear mixed model fit by REML. t-tests use Satterthwaite's method ['lmerModLmerTest']\n> Formula: dv1 ~ user_male + bool_program * log_days + (1 | user_id)\n>     Data: x\n> \n> REML criterion at convergence: -103411.7\n> \n> Scaled residuals:\n>      Min      1Q  Median      3Q     Max\n> -4.0430 -0.3797 -0.0443  0.2992 19.5088\n> \n> Random effects:\n>   Groups   Name        Variance  Std.Dev.\n>   user_id  (Intercept) 0.0004456 0.02111\n>   Residual             0.0034587 0.05881\n> Number of obs: 37137, groups:  user_id, 1012\n> \n> Fixed effects:\n>                          Estimate Std. Error         df t value Pr(>|t|)\n> (Intercept)            1.878e-01  5.318e-03  9.979e+03  35.310  < 2e-16 ***\n> user_male              2.018e-02  2.674e-03  7.157e+02   7.546 1.36e-13 ***\n> bool_program           1.036e-01  1.588e-02  3.713e+04   6.524 6.93e-11 ***\n> log_days              -6.641e-03  7.185e-04  3.713e+04  -9.243  < 2e-16 ***\n> bool_program:log_days -1.522e-02  2.177e-03  3.713e+04  -6.991 2.78e-12 ***\n> ---\n> Signif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n> \n> Correlation of Fixed Effects:\n>              (Intr) usr_ml bl_prg lg_dys\n> user_male   -0.471\n> bool_progrm -0.238 -0.017\n> log_days    -0.872  0.012  0.289\n> bl_prgrm:l_  0.268  0.018 -0.998 -0.329\n> \n>> interactions::sim_slopes(m, pred = log_days, modx = bool_program, digits = 3)\n> JOHNSON-NEYMAN INTERVAL\n> \n> When bool_program is OUTSIDE the interval [-0.672, -0.294], the slope of log_days is p < .05.\n> \n> Note: The range of observed values of bool_program is [0.000, 1.000]\n> \n> SIMPLE SLOPES ANALYSIS\n> Slope of log_days when bool_program = 0.000 (0):\n>      Est.    S.E.   t val.       p\n> -------- ------- -------- -------\n>    -0.007   0.001   -9.243   0.000\n> \n> Slope of log_days when bool_program = 1.000 (1):\n>      Est.    S.E.    t val.       p\n> -------- ------- --------- -------\n>    -0.022   0.002   -10.631   0.000\n> \n> We are not sure if the approach is right and whether we are specifying the days variable appropriately in lmer. We are also not sure if we should be using a more sophisticated change point approach. We came across some Rpackages such as changepoint, segmented, and strucchange. Are they more appropriate than lmer approach we have used?\n> \n> Request your advice.\n> \n> Thanks and kind regards\n> Srinivas\n> \n> \n> \n> \n> \n> \n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> \n> \n> \n> ------------------------------\n> \n> Subject: Digest Footer\n> \n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> ------------------------------\n> \n> End of R-sig-mixed-models Digest, Vol 206, Issue 8\n> **************************************************",
+      "body_snippet": "Dear Santosh Srinivas,\n\nSince there are various ways to model transitions, I will link to an \narticle that describes several approaches. Perhaps you will find it helpful.\nBliese, P. D., & Lang, J. W. ",
+      "thread_id": "thread-c546e7a1ebfa",
+      "thread_depth": 0,
+      "month": "2024-03"
+    },
+    {
+      "id": "msg-eaf1e4528737",
+      "message_id": "<CAE-NYYsjUOtUGFY+-DR3FWxn=jF13JyKofr-TQbZX4M=LYeSyw@mail.gmail.com>",
+      "from_name": "Ana Hernandez",
+      "from_email_hash": "ea9a649bd576e343dfb0ecd883526b04c5e280c72f2f19b1731889ebacd7c81f",
+      "date": "2024-03-11T15:56:28-04:00",
+      "subject": "[R-sig-ME] GLMM with only one predictor variable",
+      "subject_clean": "GLMM with only one predictor variable",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nIs it possible to run a GLMM with a random effects variable as the only\npredictor variable? Would it make sense to do this to assess the impact of\na single variable on the response variable?\n\nThank you,\nAna\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nIs it possible to run a GLMM with a random effects variable as the only\npredictor variable? Would it make sense to do this to assess the impact of\na single variable on the response variable",
+      "thread_id": "thread-eaf1e4528737",
+      "thread_depth": 0,
+      "month": "2024-03"
+    },
+    {
+      "id": "msg-afa55c8855f1",
+      "message_id": "<CAO7JsnQEUqeR+3cfaC5PLFU_vbTOFffSsz3=BmGgToxVpr+eWg@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "89476a056e319842d168c423118f2eaa6e0bc02098c9731588d78eefe5aca737",
+      "date": "2024-03-11T15:30:18-05:00",
+      "subject": "[R-sig-ME] GLMM with only one predictor variable",
+      "subject_clean": "GLMM with only one predictor variable",
+      "in_reply_to": "<CAE-NYYsjUOtUGFY+-DR3FWxn=jF13JyKofr-TQbZX4M=LYeSyw@mail.gmail.com>",
+      "references": [
+        "<CAE-NYYsjUOtUGFY+-DR3FWxn=jF13JyKofr-TQbZX4M=LYeSyw@mail.gmail.com>"
+      ],
+      "body_plain": "It is certainly possible to fit such a model.  The formula would be like\n\ny ~ 1 + (1 | grp)\n\nWe define the distribution of the random effects to have a mean of zero so\nthe (Intercept) term generated by the first 1 is needed to allow for a\nnonzero mean.\n\nYou may use such a model for screening but the advantage of being able to\nexamine the effect of one variable in the presence of multiple influences\non the response.\n\nOn Mon, Mar 11, 2024, 14:57 Ana Hernandez <anahmdlr at gmail.com> wrote:\n\n> Dear all,\n>\n> Is it possible to run a GLMM with a random effects variable as the only\n> predictor variable? Would it make sense to do this to assess the impact of\n> a single variable on the response variable?\n>\n> Thank you,\n> Ana\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n>\n> https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!Mak6IKo!KjBNHCSaUPpyxJ6fFDOkfhxSdA8IIeb1-VrEORYKrOyq7Ic9YVjX_YYNtSaC5plih7cChjrEca8vHAyy6A$\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "It is certainly possible to fit such a model.  The formula would be like\n\ny ~ 1 + (1 | grp)\n\nWe define the distribution of the random effects to have a mean of zero so\nthe (Intercept) term generated b",
+      "thread_id": "thread-eaf1e4528737",
+      "thread_depth": 1,
+      "month": "2024-03"
+    },
+    {
+      "id": "msg-3ac1c8a848bf",
+      "message_id": "<CAO7JsnQN7=8QkNxkGpfB9_ZOTVzHVGDCxTxruJwUxZYCgOH1nw@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "89476a056e319842d168c423118f2eaa6e0bc02098c9731588d78eefe5aca737",
+      "date": "2024-03-11T15:33:26-05:00",
+      "subject": "[R-sig-ME] GLMM with only one predictor variable",
+      "subject_clean": "GLMM with only one predictor variable",
+      "in_reply_to": "<CAO7JsnQEUqeR+3cfaC5PLFU_vbTOFffSsz3=BmGgToxVpr+eWg@mail.gmail.com>",
+      "references": [
+        "<CAE-NYYsjUOtUGFY+-DR3FWxn=jF13JyKofr-TQbZX4M=LYeSyw@mail.gmail.com>",
+        "<CAO7JsnQEUqeR+3cfaC5PLFU_vbTOFffSsz3=BmGgToxVpr+eWg@mail.gmail.com>"
+      ],
+      "body_plain": "Grr. I shouldn't try typing on a tablet.  The last sentence was supposed to\nsay something about allowing for multiple terms in the formula can provide\ninformation about the effect of a condition for accounting for other\nconditions.\n\nOn Mon, Mar 11, 2024, 15:30 Douglas Bates <dmbates at gmail.com> wrote:\n\n> It is certainly possible to fit such a model.  The formula would be like\n>\n> y ~ 1 + (1 | grp)\n>\n> We define the distribution of the random effects to have a mean of zero so\n> the (Intercept) term generated by the first 1 is needed to allow for a\n> nonzero mean.\n>\n> You may use such a model for screening but the advantage of being able to\n> examine the effect of one variable in the presence of multiple influences\n> on the response.\n>\n> On Mon, Mar 11, 2024, 14:57 Ana Hernandez <anahmdlr at gmail.com> wrote:\n>\n>> Dear all,\n>>\n>> Is it possible to run a GLMM with a random effects variable as the only\n>> predictor variable? Would it make sense to do this to assess the impact of\n>> a single variable on the response variable?\n>>\n>> Thank you,\n>> Ana\n>>\n>>         [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>>\n>> https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!Mak6IKo!KjBNHCSaUPpyxJ6fFDOkfhxSdA8IIeb1-VrEORYKrOyq7Ic9YVjX_YYNtSaC5plih7cChjrEca8vHAyy6A$\n>>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Grr. I shouldn't try typing on a tablet.  The last sentence was supposed to\nsay something about allowing for multiple terms in the formula can provide\ninformation about the effect of a condition for a",
+      "thread_id": "thread-eaf1e4528737",
+      "thread_depth": 2,
+      "month": "2024-03"
+    },
+    {
+      "id": "msg-67f94ef37b45",
+      "message_id": "<CAOE=hqKs9p-BoR8zMqPcRoxpfvRDxBMJV62z8TtuNeoVLgt=pg@mail.gmail.com>",
+      "from_name": "Yashree Mehta",
+      "from_email_hash": "9f111901fbc22fd3bfdf1d1593e82233d558e02fee1675a0445b911fdc1075c2",
+      "date": "2024-03-22T14:59:51+01:00",
+      "subject": "[R-sig-ME] Short panels",
+      "subject_clean": "Short panels",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nIs it that linear mixed models (random intercept models, specifically) are\nsuitable for short panels as compared to panel data models such as\nthe traditional fixed/random effects models?\n\nThis is in the context of the consistency of the estimated random effect.\nIt would help to get insight on this.\n\nThank you,\n\nRegards,\nYashree\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nIs it that linear mixed models (random intercept models, specifically) are\nsuitable for short panels as compared to panel data models such as\nthe traditional fixed/random effects models?\n\nThis is",
+      "thread_id": "thread-67f94ef37b45",
+      "thread_depth": 0,
+      "month": "2024-03"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-c546e7a1ebfa",
+      "subject": "Testing a hypothesis that there was a change after a specific, time point",
+      "message_count": 1,
+      "participants": [
+        "Lukasz Stasielowicz"
+      ],
+      "started": "2024-03-07T13:34:18+01:00",
+      "last_reply": "2024-03-07T13:34:18+01:00",
+      "root_message_id": "msg-c546e7a1ebfa"
+    },
+    {
+      "id": "thread-eaf1e4528737",
+      "subject": "GLMM with only one predictor variable",
+      "message_count": 3,
+      "participants": [
+        "Ana Hernandez",
+        "Douglas Bates"
+      ],
+      "started": "2024-03-11T15:56:28-04:00",
+      "last_reply": "2024-03-11T15:33:26-05:00",
+      "root_message_id": "msg-eaf1e4528737"
+    },
+    {
+      "id": "thread-67f94ef37b45",
+      "subject": "Short panels",
+      "message_count": 1,
+      "participants": [
+        "Yashree Mehta"
+      ],
+      "started": "2024-03-22T14:59:51+01:00",
+      "last_reply": "2024-03-22T14:59:51+01:00",
+      "root_message_id": "msg-67f94ef37b45"
+    }
+  ]
+}

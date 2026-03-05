@@ -1,0 +1,121 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2025-10",
+  "messages": [
+    {
+      "id": "msg-1dbdbccd0f20",
+      "message_id": "<SYBPR01MB71931FD613F66CAE2C94891198E6A@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+      "from_name": "Chris Howden",
+      "from_email_hash": "c01e2fadab9d76b087ffd84fce8fe92777964edcbf6bcd6f534a214c6e34d03d",
+      "date": "2025-10-01T04:11:28Z",
+      "subject": "[R-sig-ME] glmmTMB Zero-inflated Gamma GLMM",
+      "subject_clean": "glmmTMB Zero-inflated Gamma GLMM",
+      "in_reply_to": "<DM6PR01MB5898E3D5B0B48EB0CCCCDA76911AA@DM6PR01MB5898.prod.exchangelabs.com>",
+      "references": [
+        "<DM6PR01MB58985E99F36D88E71803BCB4911BA@DM6PR01MB5898.prod.exchangelabs.com>",
+        "<SYBPR01MB71934B46CAB66B5AC9B32DC8981BA@SYBPR01MB7193.ausprd01.prod.outlook.com>",
+        "<DM6PR01MB5898E3D5B0B48EB0CCCCDA76911AA@DM6PR01MB5898.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Hi Trent,\n\nYes, I believe it is the former as well.\n\nChris Howden B.Sc. (Hons)\nFounding Partner\nData Analysis, Modelling and Training\nEvidence Based Strategy/Policy Development, IP Commercialisation and Innovation\n(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>\n\nFrom: DENNIS, TRENT <dennis.tm.1 at pg.com>\nSent: Tuesday, 30 September 2025 11:02 PM\nTo: Chris Howden <chris at trickysolutions.com.au>; r-sig-mixed-models at r-project.org\nSubject: Re: glmmTMB Zero-inflated Gamma GLMM\n\nBusiness Use\n\n\nHi Chris,\n\n\nYou've made a great point, my ultimate goal is to simulate new individuals. I should have also reported the estimate of the subject variance component because this would serve as the variance when drawing new random intercepts from a normal distribution.\n\nMy real question was whether I draw normal rvs that get put into my linear predictor for the gamma, or if I draw normal rvs and these get added to my overall response separately from the gamma rv.\n\n\nI believe it is the former, but I have never read a textbook on the specifics of this topic and wanted to ask some experts. I know that in glmmTMB at least, when you use predict(model) and specify the type, they will bake the random intercepts for a given subject into the linear predictor for the component you fit them in (if you fit random subject in conditional gamma, it will put each subjects random intercept into the gamma linear predictor, same with zero component)...which would support the former of my two options above.\n\n\nTrent,\n\n\n________________________________\nFrom: Chris Howden <chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>>\nSent: Monday, September 29, 2025 7:13 PM\nTo: DENNIS, TRENT <dennis.tm.1 at pg.com<mailto:dennis.tm.1 at pg.com>>; r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org> <r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>>\nSubject: RE: glmmTMB Zero-inflated Gamma GLMM\n\n[EXTERNAL]\n\n\nHi Trent,\n\nI'm not familiar with glmmTMB, so take what I say here with a grain of salt!\n\nAssuming you are adding a random intercept (it looks like that's what yr doing). Then I think it depends on whether you want to simulate just those 3 individuals, or the population.\n\nIf its just those 3 individuals then wouldn't you add their BLUP to the overall intercept in the linear predictor? And after that simulate the gamma rv for each of these 3 individuals only?\n\nOn the other hand if you want to simulate new individuals than I think you'd draw their simulated \"BLUPS\" from an appropriate distribution (which I think is usually a normal distribution with mean = 0 and SD as per yr model) - and then continue as above?\n\nChris Howden B.Sc. (Hons)\nFounding Partner\nData Analysis, Modelling and Training\nEvidence Based Strategy/Policy Development, IP Commercialisation and Innovation\n(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>\n\n-----Original Message-----\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org<mailto:r-sig-mixed-models-bounces at r-project.org>> On Behalf Of DENNIS, TRENT via R-sig-mixed-models\nSent: Tuesday, 30 September 2025 7:15 AM\nTo: r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>\nSubject: [R-sig-ME] glmmTMB Zero-inflated Gamma GLMM\n\nBusiness Use\n\n\nHello,\n\nI am trying to simulate a response from a zero-inflated Gamma generalized linear mixed-effect model and have a question when it comes to the random effects. I am fitting the models with glmmTMB, using ziGamma as the family with a log link function.\n\nSay I fit the model with a random effect for subject (N=3 subjects) and 1 covariate (treatment), which I only include in the conditional Gamma model. Example code:\n\n  model <- glmmTMB(Lactobacillus_crispatus~Treatment+(1|Subject),\n                   ziformula = ~ 1,\n                   family = ziGamma(link=\"log\"),\n                   data=data)\n\n\n These are the coefficients I get:\n\nConditional model:\nIntercept: 1.5\nTreatment A: -1\n\nZero model:\nIntercept: 1.8\n\nRandom effects, conditional:\nSubject 1: -2\nSubject 2: 0.5\nSubject 3: 1\n\n\n\nWould you incorporate the random effects into the linear predictor for the Gamma component then simulate Gamma rv, or do the random effects get used to simulate a normal rv which is then added to the Gamma rv? (I also simultaneously simulate a binomial rv based on the proability an observation will be non-zero and multiply this by corresponding Gamma rv to complete the zero-inflated component).\n\nI have simplified my data for illustration sake. The real data is metagenomic species data with 23 subjects. Each subject was swabbed/sequenced at 7 visits and 8 anatomical sites per visit.\n\n\nAny info would be greatly appreciated.\n\nThank you,\n\n\n\n        [[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!NgSi4SaN6ydtRVQ-!xnUtAYJ9DWhuOK_-6LpOk9aBPtFCbFFTBAK7slm1k4eg8S2yXWon0hrc2y2ZmfXl7Qp0q4XJ2PpLf7JjP2duAQ$<https://urldefense.com/v3/__https:/stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!NgSi4SaN6ydtRVQ-!xnUtAYJ9DWhuOK_-6LpOk9aBPtFCbFFTBAK7slm1k4eg8S2yXWon0hrc2y2ZmfXl7Qp0q4XJ2PpLf7JjP2duAQ$>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Trent,\n\nYes, I believe it is the former as well.\n\nChris Howden B.Sc. (Hons)\nFounding Partner\nData Analysis, Modelling and Training\nEvidence Based Strategy/Policy Development, IP Commercialisation a",
+      "thread_id": "thread-1dbdbccd0f20",
+      "thread_depth": 0,
+      "month": "2025-10"
+    },
+    {
+      "id": "msg-a58566f6f3b2",
+      "message_id": "<CAEsSYzyrU=0ubqPwjURMs7UHz4xBFy83DSu2E6QQU7NnfC-g9A@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2025-10-10T15:11:30+01:00",
+      "subject": "[R-sig-ME] Bayesian Multilevel Modelling Using brms for Ecologists (BMME01)",
+      "subject_clean": "Bayesian Multilevel Modelling Using brms for Ecologists (BMME01)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Bayesian Multilevel Modelling Using *brms* for Ecologists (BMME01)\nwww.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01\n<https://www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01?utm_source=chatgpt.com>\n\n*Dates:* October 20?24 and 27?31, 2025\n*Format:* Live online course (4 hours per day)\n*Fee:* ?450 (standard) | ?400 (early bird for the first 5 registrations)\nSOLD OUT\n\nBayesian methods are rapidly becoming the standard for ecological data\nanalysis. They offer a flexible, transparent, and robust approach to\ndealing with uncertainty, hierarchical data structures, and complex\necological processes. If you work with ecological data and want to extend\nyour modelling skills beyond classical statistics, this course will give\nyou the tools and understanding to do so with confidence.\n\n*Bayesian Multilevel Modelling using brms for Ecologists (BMME01)* is an\nintensive 10-day live online course designed to provide ecologists,\nenvironmental scientists, and applied researchers with a solid grounding in\nBayesian hierarchical modelling using the *brms* package in R.\n\nOver the course of ten sessions, participants will be guided step by step\nthrough the key concepts and practical applications of Bayesian inference,\nwith a strong focus on real ecological examples. The course combines clear,\nstructured teaching with extensive hands-on coding and interpretation.\nCourse Overview\n\nParticipants will begin by reviewing the fundamentals of Bayesian\ninference?priors, posteriors, and credible intervals?before moving on to\nthe construction and interpretation of generalised linear and multilevel\nmodels. You will learn how to fit and diagnose models for a range of\necological data types, including continuous, count, binary, and\nzero-inflated data, as well as how to address common challenges such as\nspatial and temporal autocorrelation.\n\nThroughout, you will work with real-world datasets and gain practical\nexperience in coding models using *brms*, an R package that provides a\nuser-friendly interface to *Stan*, one of the most powerful Bayesian\ncomputation frameworks available. By the end of the course, you will have\nthe skills to build, diagnose, and interpret complex Bayesian models\nrelevant to your own ecological research.\nKey Topics Include\n\n   -\n\n   The foundations of Bayesian inference and model formulation\n   -\n\n   Understanding priors, posteriors, and credible intervals\n   -\n\n   Generalised linear models (GLMs) and extensions to hierarchical models\n   -\n\n   Random effects, nested structures, and partial pooling\n   -\n\n   Modelling count, binary, zero-inflated, and multivariate ecological data\n   -\n\n   Incorporating spatial and temporal structures\n   -\n\n   Model checking, convergence diagnostics, and posterior predictive checks\n   -\n\n   Interpreting and communicating uncertainty in ecological research\n\nWho Should Attend\n\nThis course is aimed at ecologists, environmental scientists, conservation\nbiologists, statisticians, and postgraduate researchers who already have a\nworking knowledge of R (data import, manipulation, and basic plotting) and\nwant to develop practical expertise in Bayesian multilevel modelling. No\nprior experience with Bayesian methods is required?concepts and techniques\nare introduced progressively, with plenty of guided practice and individual\nfeedback.\nWhy Choose This Course\n\n   -\n\n   Expert instruction from *Dr Niamh Mimnagh*, an experienced statistical\n   ecologist and educator\n   -\n\n   A carefully balanced mix of lectures, demonstrations, and hands-on coding\n   -\n\n   Small-group format encouraging discussion and individual support\n   -\n\n   All course materials, R scripts, and datasets provided\n   -\n\n   Access to recorded sessions for 30 days after the course\n   -\n\n   Certificate of attendance upon completion\n\nRegistration\n\nPlaces are limited to ensure an interactive learning experience. The early\nbird rate of ?400 applies to the first five registrants. Standard\nregistration is ?450.\n\nFor full details, schedule, and registration, visit:\nwww.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01\n<https://www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01?utm_source=chatgpt.com>\n\n-- \nOliver Hooker PhD.\nPR stats\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Bayesian Multilevel Modelling Using *brms* for Ecologists (BMME01)\nwww.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01\n<https://www.prstats.org/course/bayesian-multil",
+      "thread_id": "thread-a58566f6f3b2",
+      "thread_depth": 0,
+      "month": "2025-10"
+    },
+    {
+      "id": "msg-6fa27b5cb36c",
+      "message_id": "<1761067708.86737039@webmail.jimdo.com>",
+      "from_name": "i@io m@iii@g oii phys@ii@-courses@org",
+      "from_email_hash": "ca8ae7fca04226cbf7116003b962efbd86b9ffdf6a68e1a8cee80f656f89cb9c",
+      "date": "2025-10-21T19:28:28+02:00",
+      "subject": "[R-sig-ME] online course: Applied Bayesian Modelling with R-INLA: A Hands-on Introduction (27–31 October)",
+      "subject_clean": "online course: Applied Bayesian Modelling with R-INLA: A Hands-on Introduction (27–31 October)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nOnly a few seats remain for our upcoming Physalia online course ?Applied Bayesian Modelling with R-INLA: A Hands-on Introduction?, taking place from 27?31 October.\n \nCourse website: [ https://www.physalia-courses.org/courses-workshops/r-inla/ ]( https://www.physalia-courses.org/courses-workshops/r-inla/ )\n \nThis four-day hands-on workshop provides an accessible and applied introduction to Bayesian modelling using R-INLA, covering linear models, GLMs, GAMs, and GLMMs, with a strong focus on practical applications and interpretation.\n \n \nBest regards,\n \nCarlo\n \n \n \n \n--------------------\n\nCarlo Pecoraro, Ph.D\n\n\nPhysalia-courses DIRECTOR\n\ninfo at physalia-courses.org\n\nmobile: +49 17645230846\n\n[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nOnly a few seats remain for our upcoming Physalia online course ?Applied Bayesian Modelling with R-INLA: A Hands-on Introduction?, taking place from 27?31 October.\n \nCourse website: [ https",
+      "thread_id": "thread-6fa27b5cb36c",
+      "thread_depth": 0,
+      "month": "2025-10"
+    },
+    {
+      "id": "msg-3e2f8fbdcc98",
+      "message_id": "<d6409c22-4a6c-4fae-a85f-3a6b7cb6dfec@highstat.com>",
+      "from_name": "Alain Zuur",
+      "from_email_hash": "d43d2d185a788ccd19e7f5dd07ff6ab5885eda9aec644e0dbc37b2c770958942",
+      "date": "2025-10-23T07:03:21+01:00",
+      "subject": "[R-sig-ME] 4 hybrid stats courses in Australia",
+      "subject_clean": "4 hybrid stats courses in Australia",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "We?re pleased to announce four hybrid statistics courses in Australia in \nFebruary and March 2026.\n\nFormat: On-site and simultaneously online (live).\n\n*Hybrid (online and onsite) courses in Australia:*\n\n  * Introduction to linear mixed-effects models and GLMM with R. Murdoch\n    University, Perth. 9-13 February 2026.\n  * GLMs and GAMs with Spatial, Temporal, or Spatial-Temporal\n    Correlation using INLA.?Murdoch University, Perth. 16-20 February 2026.\n  * GLMs and GAMs with Spatial, Temporal, or Spatial-Temporal\n    Correlation using INLA. Deakin University, Melbourne. 23-27 February\n    2026. *7 onsite seats left!*\n  * Introduction to GAMM and GLMM with R (frequentist). - With GAM\n    applications to spatial, temporal, and spatial-temporal data -. JCU,\n    Townsville. 2-6 March 2026.\n\n\nFlyers and registration: www.highstat.com\n\nEarly registration is recommended\n\nKind regards,\n\nAlain\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "We?re pleased to announce four hybrid statistics courses in Australia in \nFebruary and March 2026.\n\nFormat: On-site and simultaneously online (live).\n\n*Hybrid (online and onsite) courses in Australia:",
+      "thread_id": "thread-3e2f8fbdcc98",
+      "thread_depth": 0,
+      "month": "2025-10"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-1dbdbccd0f20",
+      "subject": "glmmTMB Zero-inflated Gamma GLMM",
+      "message_count": 1,
+      "participants": [
+        "Chris Howden"
+      ],
+      "started": "2025-10-01T04:11:28+00:00",
+      "last_reply": "2025-10-01T04:11:28+00:00",
+      "root_message_id": "msg-1dbdbccd0f20"
+    },
+    {
+      "id": "thread-a58566f6f3b2",
+      "subject": "Bayesian Multilevel Modelling Using brms for Ecologists (BMME01)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2025-10-10T15:11:30+01:00",
+      "last_reply": "2025-10-10T15:11:30+01:00",
+      "root_message_id": "msg-a58566f6f3b2"
+    },
+    {
+      "id": "thread-6fa27b5cb36c",
+      "subject": "online course: Applied Bayesian Modelling with R-INLA: A Hands-on Introduction (27–31 October)",
+      "message_count": 1,
+      "participants": [
+        "i@io m@iii@g oii phys@ii@-courses@org"
+      ],
+      "started": "2025-10-21T19:28:28+02:00",
+      "last_reply": "2025-10-21T19:28:28+02:00",
+      "root_message_id": "msg-6fa27b5cb36c"
+    },
+    {
+      "id": "thread-3e2f8fbdcc98",
+      "subject": "4 hybrid stats courses in Australia",
+      "message_count": 1,
+      "participants": [
+        "Alain Zuur"
+      ],
+      "started": "2025-10-23T07:03:21+01:00",
+      "last_reply": "2025-10-23T07:03:21+01:00",
+      "root_message_id": "msg-3e2f8fbdcc98"
+    }
+  ]
+}

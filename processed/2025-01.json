@@ -1,0 +1,376 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2025-01",
+  "messages": [
+    {
+      "id": "msg-f516c1facb38",
+      "message_id": "<CH2PR20MB3189713A2E312D3BAF7E5049C9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+      "from_name": "Santosh Srinivas",
+      "from_email_hash": "281e1ab4d106f4a9877310600a6c13da30e0dbc2be10f7e8454a574ea167a9e8",
+      "date": "2025-01-02T14:08:01Z",
+      "subject": "[R-sig-ME] lme() - Error in recalc.corAR1",
+      "subject_clean": "lme() - Error in recalc.corAR1",
+      "in_reply_to": "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>",
+      "references": [
+        "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>"
+      ],
+      "body_plain": "Dear List Recipients, Hope this email finds you well.\n\nI am writing to request your help the below issue:\nError in recalc.corAR1(object[[i]], conLin): NA/NaN/Inf in foreign function call (arg 1)\n\nThis occurs when I run the following regression model:\n\nm =\n  lme(\n    y ~ x,\n    random = ~x|user_id,\n    correlation = corAR1(form = ~1|user_id),\n    weights = varExp(form = ~x),\n    method = 'REML',\n    na.action = na.omit,\n    data = df)\n\nI have uploaded the data here for reproducibility:\nhttps://drive.google.com/file/d/1kA5-T4zZ-f33gJgAsJ9AWMlK-YXAm65m/view?usp=sharing\n\nRequest your help with how to understand and fix this ussue.\n\nThanks & regards\nSantosh\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear List Recipients, Hope this email finds you well.\n\nI am writing to request your help the below issue:\nError in recalc.corAR1(object[[i]], conLin): NA/NaN/Inf in foreign function call (arg 1)\n\nThis",
+      "thread_id": "thread-f516c1facb38",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-7995e639e1db",
+      "message_id": "<a09f3878-b90e-46f6-96c8-933fc5102c74@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-02T11:23:17-05:00",
+      "subject": "[R-sig-ME] lme() - Error in recalc.corAR1",
+      "subject_clean": "lme() - Error in recalc.corAR1",
+      "in_reply_to": "<CH2PR20MB3189713A2E312D3BAF7E5049C9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+      "references": [
+        "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>",
+        "<CH2PR20MB3189713A2E312D3BAF7E5049C9142@CH2PR20MB3189.namprd20.prod.outlook.com>"
+      ],
+      "body_plain": "Incomplete solution: scaling x and y seems to help (this is a \nsurprisingly common solution for numerical problems, which lme is \nparticularly prone to for large  data sets.\n\n   However, I didn't try to fit the full model (500K observations); I \nused a random subsample of 10,000 points. You should try gradually \nincreasing the size of the subsample to see how the problem scales \n(i.e., will you have to wait 3 minutes or 3 days for the full answer?) \nand to see if you run into any other problems\n\nlibrary(dplyr) ## data manipulation -- could also be done in base R\nlibrary(nlme)\nlibrary(glmmTMB)\nlibrary(ggplot2); theme_set(theme_bw())\n\nset.seed(101)\n\ndd <- read.csv(\"r-sig-mixed-02jan.csv\")\n\n## add per-user time step indicator, and dummy group (for glmmTMB);\n##  scale x and y\ndd2 <- (dd\n     |> group_by(user_id)\n     |> mutate(step = factor(seq(n())))\n     |> ungroup()\n     |> mutate(xs = drop(scale(x)), ys = drop(scale(y)),\n               dummy = factor(1))\n)\n\n## subsample\ndds <- dd2[sample(nrow(dd2), size = 1e4),]\n\n\nggplot(dd, aes(x, y, group = user_id)) + geom_line(alpha = 0.2)\n\n\nsystem.time(m <- lme(\n     ys ~ xs,\n     random = ~xs|user_id,\n     correlation = corAR1(form = ~1|user_id),\n     weights = varExp(form = ~xs),\n     method = 'REML',\n     na.action = na.omit,\n     data = dds,\n     control = lmeControl(\n         maxIter = 1000, msMaxIter = 1000,\n         msVerbose = TRUE,\n         returnObject = TRUE  ## return result even w/ optimizer warning\n      )\n     )\n     )\n## 3 seconds\n\nThe \"singular convergence\" warning from nlminb is inscrutable but \npossibly ignorable. \nhttps://stackoverflow.com/questions/79110546/glmmtmb-convergence-messages\n\n\nLooking at the output, it seems that you will probably have to simplify \nyour model in any case -- there is a correlation of 0.999 between the \nrandom intercepts and slopes. The estimated AR1 coefficient is also very \nsmall\n\n\n## Try full data set. If the problem scales *linearly* (optimistic!)\n## then we should expect this to take ~ 150 seconds ...\n\nsystem.time(m2 <- update(m, data = dd2))\n\n\n   glmmTMB works too, and gets similar answers, but is much slower in \nthis case (6 minutes vs 3 seconds); turning on some parallelization \n*might* speed it up.\n\nsystem.time(m3 <- glmmTMB(ys ~ xs + (xs|user_id) + ar1(0 + step |user_id),\n         dispformula = ~0 + xs,  ## don't want a nugget in corAR1\n         REML = TRUE,\n         data = dds,\n         verbose = TRUE)\n         )\n\nfixef(m)\nfixef(m3)$cond\n\nVarCorr(m)\nVarCorr(m3)\n\n\nOn 2025-01-02 9:08 a.m., Santosh Srinivas wrote:\n> Dear List Recipients, Hope this email finds you well.\n> \n> I am writing to request your help the below issue:\n> Error in recalc.corAR1(object[[i]], conLin): NA/NaN/Inf in foreign function call (arg 1)\n> \n> This occurs when I run the following regression model:\n> \n> m =\n>    lme(\n>      y ~ x,\n>      random = ~x|user_id,\n>      correlation = corAR1(form = ~1|user_id),\n>      weights = varExp(form = ~x),\n>      method = 'REML',\n>      na.action = na.omit,\n>      data = df)\n> \n> I have uploaded the data here for reproducibility:\n> https://drive.google.com/file/d/1kA5-T4zZ-f33gJgAsJ9AWMlK-YXAm65m/view?usp=sharing\n> \n> Request your help with how to understand and fix this ussue.\n> \n> Thanks & regards\n> Santosh\n> \n> \n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "Incomplete solution: scaling x and y seems to help (this is a \nsurprisingly common solution for numerical problems, which lme is \nparticularly prone to for large  data sets.\n\n   However, I didn't try ",
+      "thread_id": "thread-f516c1facb38",
+      "thread_depth": 1,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-11f63e231231",
+      "message_id": "<CH2PR20MB31899F891F81516CBBF87C1BC9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+      "from_name": "Santosh Srinivas",
+      "from_email_hash": "281e1ab4d106f4a9877310600a6c13da30e0dbc2be10f7e8454a574ea167a9e8",
+      "date": "2025-01-02T16:41:18Z",
+      "subject": "[R-sig-ME] lme() - Error in recalc.corAR1",
+      "subject_clean": "lme() - Error in recalc.corAR1",
+      "in_reply_to": "<7678B7A8-196D-4FA9-B809-FB7416EDBF25.1@smtp-inbound1.duck.com>",
+      "references": [
+        "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>",
+        "<CH2PR20MB3189713A2E312D3BAF7E5049C9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+        "<a09f3878-b90e-46f6-96c8-933fc5102c74@gmail.com>",
+        "<7678B7A8-196D-4FA9-B809-FB7416EDBF25.1@smtp-inbound1.duck.com>"
+      ],
+      "body_plain": "Thank you very much, Dr. Bolker for such a detailed and quick response. Very much appreciate the troubleshooting steps\n\nI can confirm that in our earlier iteration when x and y were grand-mean entered (just as you have suggested below), the  lme model converged without any issues.\n\nHowever, we tried to fit the same model with this data where x and y are now centered within user_id. This change was done following the recommendations in the below paper:\nEnders, Craig K., and Davood Tofighi. 2007. ?Centering Predictor Variables in Cross-Sectional Multilevel Models: A New Look at an Old Issue.? Psychological Methods 12(2): 121?38. Doi:10.1037/1082-989X.12.2.121. https://osf.io/mt5z3/download\n\nNot sure why a lme model with centering at grand mean (CGM) works, but the one with centering within cluster (CWC) fails.\n\nWe are currently trying glmmTMB. It has been running for last 2-3 hours with CWC data. Hopefully the model converges.\n\nMany thanks, again!\n\nRegards\nSantosh\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces_at_r-project.org_santoshbsrinivas at duck.com> on behalf of Ben Bolker <bbolker_at_gmail.com_santoshbsrinivas at duck.com>\nSent: Thursday, January 2, 2025 5:23 PM\nTo: r-sig-mixed-models at r-project.org <r-sig-mixed-models_at_r-project.org_santoshbsrinivas at duck.com>\nSubject: Re: [R-sig-ME] lme() - Error in recalc.corAR1\n\nDuckDuckGo was unable to verify sender identity\n\n   Incomplete solution: scaling x and y seems to help (this is a\nsurprisingly common solution for numerical problems, which lme is\nparticularly prone to for large  data sets.\n\n   However, I didn't try to fit the full model (500K observations); I\nused a random subsample of 10,000 points. You should try gradually\nincreasing the size of the subsample to see how the problem scales\n(i.e., will you have to wait 3 minutes or 3 days for the full answer?)\nand to see if you run into any other problems\n\nlibrary(dplyr) ## data manipulation -- could also be done in base R\nlibrary(nlme)\nlibrary(glmmTMB)\nlibrary(ggplot2); theme_set(theme_bw())\n\nset.seed(101)\n\ndd <- read.csv(\"r-sig-mixed-02jan.csv\")\n\n## add per-user time step indicator, and dummy group (for glmmTMB);\n##  scale x and y\ndd2 <- (dd\n     |> group_by(user_id)\n     |> mutate(step = factor(seq(n())))\n     |> ungroup()\n     |> mutate(xs = drop(scale(x)), ys = drop(scale(y)),\n               dummy = factor(1))\n)\n\n## subsample\ndds <- dd2[sample(nrow(dd2), size = 1e4),]\n\n\nggplot(dd, aes(x, y, group = user_id)) + geom_line(alpha = 0.2)\n\n\nsystem.time(m <- lme(\n     ys ~ xs,\n     random = ~xs|user_id,\n     correlation = corAR1(form = ~1|user_id),\n     weights = varExp(form = ~xs),\n     method = 'REML',\n     na.action = na.omit,\n     data = dds,\n     control = lmeControl(\n         maxIter = 1000, msMaxIter = 1000,\n         msVerbose = TRUE,\n         returnObject = TRUE  ## return result even w/ optimizer warning\n      )\n     )\n     )\n## 3 seconds\n\nThe \"singular convergence\" warning from nlminb is inscrutable but\npossibly ignorable.\nhttps://stackoverflow.com/questions/79110546/glmmtmb-convergence-messages\n\n\nLooking at the output, it seems that you will probably have to simplify\nyour model in any case -- there is a correlation of 0.999 between the\nrandom intercepts and slopes. The estimated AR1 coefficient is also very\nsmall\n\n\n## Try full data set. If the problem scales *linearly* (optimistic!)\n## then we should expect this to take ~ 150 seconds ...\n\nsystem.time(m2 <- update(m, data = dd2))\n\n\n   glmmTMB works too, and gets similar answers, but is much slower in\nthis case (6 minutes vs 3 seconds); turning on some parallelization\n*might* speed it up.\n\nsystem.time(m3 <- glmmTMB(ys ~ xs + (xs|user_id) + ar1(0 + step |user_id),\n         dispformula = ~0 + xs,  ## don't want a nugget in corAR1\n         REML = TRUE,\n         data = dds,\n         verbose = TRUE)\n         )\n\nfixef(m)\nfixef(m3)$cond\n\nVarCorr(m)\nVarCorr(m3)\n\n\nOn 2025-01-02 9:08 a.m., Santosh Srinivas wrote:\n> Dear List Recipients, Hope this email finds you well.\n>\n> I am writing to request your help the below issue:\n> Error in recalc.corAR1(object[[i]], conLin): NA/NaN/Inf in foreign function call (arg 1)\n>\n> This occurs when I run the following regression model:\n>\n> m =\n>    lme(\n>      y ~ x,\n>      random = ~x|user_id,\n>      correlation = corAR1(form = ~1|user_id),\n>      weights = varExp(form = ~x),\n>      method = 'REML',\n>      na.action = na.omit,\n>      data = df)\n>\n> I have uploaded the data here for reproducibility:\n> https://drive.google.com/file/d/1kA5-T4zZ-f33gJgAsJ9AWMlK-YXAm65m/view?usp=sharing\n>\n> Request your help with how to understand and fix this ussue.\n>\n> Thanks & regards\n> Santosh\n>\n>\n>\n>\n>\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of\nworking hours.\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you very much, Dr. Bolker for such a detailed and quick response. Very much appreciate the troubleshooting steps\n\nI can confirm that in our earlier iteration when x and y were grand-mean entered",
+      "thread_id": "thread-11f63e231231",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-9f171c9ec63b",
+      "message_id": "<8bed6df4-4bf5-4f55-a01f-53a2881176da@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-02T21:49:01-05:00",
+      "subject": "[R-sig-ME] lme() - Error in recalc.corAR1",
+      "subject_clean": "lme() - Error in recalc.corAR1",
+      "in_reply_to": "<CH2PR20MB31899F891F81516CBBF87C1BC9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+      "references": [
+        "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>",
+        "<CH2PR20MB3189713A2E312D3BAF7E5049C9142@CH2PR20MB3189.namprd20.prod.outlook.com>",
+        "<a09f3878-b90e-46f6-96c8-933fc5102c74@gmail.com>",
+        "<7678B7A8-196D-4FA9-B809-FB7416EDBF25.1@smtp-inbound1.duck.com>",
+        "<CH2PR20MB31899F891F81516CBBF87C1BC9142@CH2PR20MB3189.namprd20.prod.outlook.com>"
+      ],
+      "body_plain": "OK. (It would have been helpful to have that context ...)\n\n   A couple of quick thoughts --\n\n* I would definitely suggest some benchmarking on smaller subsets, if \nyou have the time.\n\n* I can see why you don't have flexibility in centering, but *scaling* \n(which only changes the scale of the parameters, not anything about the \nconclusions) might also be numerically helpful. (It's unfortunate that \nR's scale() function conflates scaling and centering in its default \noptions ...)\n\n* The model fit I got on the smaller data set definitely suggested some \nmodel simplification would be reasonable ...\n\n   cheers\n    Ben Bolker\n\n\n\nOn 2025-01-02 11:41 a.m., Santosh Srinivas wrote:\n> Thank you very much, Dr. Bolker for such a detailed and quick response. Very much appreciate the troubleshooting steps\n> \n> I can confirm that in our earlier iteration when x and y were grand-mean entered (just as you have suggested below), the  lme model converged without any issues.\n> \n> However, we tried to fit the same model with this data where x and y are now centered within user_id. This change was done following the recommendations in the below paper:\n> Enders, Craig K., and Davood Tofighi. 2007. ?Centering Predictor Variables in Cross-Sectional Multilevel Models: A New Look at an Old Issue.? Psychological Methods 12(2): 121?38. Doi:10.1037/1082-989X.12.2.121. https://osf.io/mt5z3/download\n> \n> Not sure why a lme model with centering at grand mean (CGM) works, but the one with centering within cluster (CWC) fails.\n> \n> We are currently trying glmmTMB. It has been running for last 2-3 hours with CWC data. Hopefully the model converges.\n> \n> Many thanks, again!\n> \n> Regards\n> Santosh\n> ________________________________\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces_at_r-project.org_santoshbsrinivas at duck.com> on behalf of Ben Bolker <bbolker_at_gmail.com_santoshbsrinivas at duck.com>\n> Sent: Thursday, January 2, 2025 5:23 PM\n> To: r-sig-mixed-models at r-project.org <r-sig-mixed-models_at_r-project.org_santoshbsrinivas at duck.com>\n> Subject: Re: [R-sig-ME] lme() - Error in recalc.corAR1\n> \n> DuckDuckGo was unable to verify sender identity\n> \n>     Incomplete solution: scaling x and y seems to help (this is a\n> surprisingly common solution for numerical problems, which lme is\n> particularly prone to for large  data sets.\n> \n>     However, I didn't try to fit the full model (500K observations); I\n> used a random subsample of 10,000 points. You should try gradually\n> increasing the size of the subsample to see how the problem scales\n> (i.e., will you have to wait 3 minutes or 3 days for the full answer?)\n> and to see if you run into any other problems\n> \n> library(dplyr) ## data manipulation -- could also be done in base R\n> library(nlme)\n> library(glmmTMB)\n> library(ggplot2); theme_set(theme_bw())\n> \n> set.seed(101)\n> \n> dd <- read.csv(\"r-sig-mixed-02jan.csv\")\n> \n> ## add per-user time step indicator, and dummy group (for glmmTMB);\n> ##  scale x and y\n> dd2 <- (dd\n>       |> group_by(user_id)\n>       |> mutate(step = factor(seq(n())))\n>       |> ungroup()\n>       |> mutate(xs = drop(scale(x)), ys = drop(scale(y)),\n>                 dummy = factor(1))\n> )\n> \n> ## subsample\n> dds <- dd2[sample(nrow(dd2), size = 1e4),]\n> \n> \n> ggplot(dd, aes(x, y, group = user_id)) + geom_line(alpha = 0.2)\n> \n> \n> system.time(m <- lme(\n>       ys ~ xs,\n>       random = ~xs|user_id,\n>       correlation = corAR1(form = ~1|user_id),\n>       weights = varExp(form = ~xs),\n>       method = 'REML',\n>       na.action = na.omit,\n>       data = dds,\n>       control = lmeControl(\n>           maxIter = 1000, msMaxIter = 1000,\n>           msVerbose = TRUE,\n>           returnObject = TRUE  ## return result even w/ optimizer warning\n>        )\n>       )\n>       )\n> ## 3 seconds\n> \n> The \"singular convergence\" warning from nlminb is inscrutable but\n> possibly ignorable.\n> https://stackoverflow.com/questions/79110546/glmmtmb-convergence-messages\n> \n> \n> Looking at the output, it seems that you will probably have to simplify\n> your model in any case -- there is a correlation of 0.999 between the\n> random intercepts and slopes. The estimated AR1 coefficient is also very\n> small\n> \n> \n> ## Try full data set. If the problem scales *linearly* (optimistic!)\n> ## then we should expect this to take ~ 150 seconds ...\n> \n> system.time(m2 <- update(m, data = dd2))\n> \n> \n>     glmmTMB works too, and gets similar answers, but is much slower in\n> this case (6 minutes vs 3 seconds); turning on some parallelization\n> *might* speed it up.\n> \n> system.time(m3 <- glmmTMB(ys ~ xs + (xs|user_id) + ar1(0 + step |user_id),\n>           dispformula = ~0 + xs,  ## don't want a nugget in corAR1\n>           REML = TRUE,\n>           data = dds,\n>           verbose = TRUE)\n>           )\n> \n> fixef(m)\n> fixef(m3)$cond\n> \n> VarCorr(m)\n> VarCorr(m3)\n> \n> \n> On 2025-01-02 9:08 a.m., Santosh Srinivas wrote:\n>> Dear List Recipients, Hope this email finds you well.\n>>\n>> I am writing to request your help the below issue:\n>> Error in recalc.corAR1(object[[i]], conLin): NA/NaN/Inf in foreign function call (arg 1)\n>>\n>> This occurs when I run the following regression model:\n>>\n>> m =\n>>     lme(\n>>       y ~ x,\n>>       random = ~x|user_id,\n>>       correlation = corAR1(form = ~1|user_id),\n>>       weights = varExp(form = ~x),\n>>       method = 'REML',\n>>       na.action = na.omit,\n>>       data = df)\n>>\n>> I have uploaded the data here for reproducibility:\n>> https://drive.google.com/file/d/1kA5-T4zZ-f33gJgAsJ9AWMlK-YXAm65m/view?usp=sharing\n>>\n>> Request your help with how to understand and fix this ussue.\n>>\n>> Thanks & regards\n>> Santosh\n>>\n>>\n>>\n>>\n>>\n>>\n>>         [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n>   > E-mail is sent at my convenience; I don't expect replies outside of\n> working hours.\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \t[[alternative HTML version deleted]]\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "OK. (It would have been helpful to have that context ...)\n\n   A couple of quick thoughts --\n\n* I would definitely suggest some benchmarking on smaller subsets, if \nyou have the time.\n\n* I can see why ",
+      "thread_id": "thread-11f63e231231",
+      "thread_depth": 1,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-0290d177e31c",
+      "message_id": "<VI0PR02MB108295E53AB5C4E8DE4CC02CBCD1F2@VI0PR02MB10829.eurprd02.prod.outlook.com>",
+      "from_name": "Ricardo Jorge Soares Martins",
+      "from_email_hash": "2eeff6e80982d465e3ad5e32b56ec385c116d3ef3b19ecbcbf308f26c301ca38",
+      "date": "2025-01-13T12:39:56Z",
+      "subject": "[R-sig-ME] Help in selecting the correct mixed model for a randomized crossover study",
+      "subject_clean": "Help in selecting the correct mixed model for a randomized crossover study",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear everyone, hope you all have a great year first of all\n\nI am fairly new to R, but I'm going to have to use it for my first study, as my supervisor suggested me to use a mixed models analysis on my study.\n\nI am going to conduct a randomized crossover study where participants( about 24) are divided into 2 groups due to logistical constraints. The study involves participants performing 4 different exercise modalities( 4 conditions) in a randomized order, there is a total of 8 sessions, 2 for each exercise modality.\n\nThe aim of my study is to examine the differences in the demands of the 4 modalities, analyzing and comparing 3 repeated measures( heart rate ,lactate and rate of perceived exertion) between the 4 exercise modalities. Also to note, there is the age range of the participants which is quite wide so there is some variability expected between participants.\n\nGiven this setup, I am unsure about the best way to structure and use mixed models in R in this context, specifically what is the correct mixed-effects model to use in this case and also any further insights or considerations you believe I should need I'll be more then happy to listen!\n\nThank you in advance for the help, best regards to all\nRicardo\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear everyone, hope you all have a great year first of all\n\nI am fairly new to R, but I'm going to have to use it for my first study, as my supervisor suggested me to use a mixed models analysis on my",
+      "thread_id": "thread-0290d177e31c",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-d7f56a526d11",
+      "message_id": "<CACO6HRJNB4Q76fEqHLn11pf_DLaCpWGe8Cz4Yq1JzxdgwKEQYg@mail.gmail.com>",
+      "from_name": "Davide Nespoli",
+      "from_email_hash": "12041a107a521e70b6575527173714cae40124d478166e076ff839f24f1c18a7",
+      "date": "2025-01-14T13:14:05+01:00",
+      "subject": "[R-sig-ME] varIdent in glmmTMB?",
+      "subject_clean": "varIdent in glmmTMB?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear development team,\n\nthis is Davide Nespoli, researcher at the University of Florence (Italy).\nAfter building a zero-inflated negative binomial GLMM of the form:\n\nm<-glmmTMB(Time~Temperature*Sex+Position+(1|Individual),family=nbinom1(),\nziformula=~1, data=Perm)\n\nI have a good model, but with a bit of heteroschedasticity due to the\ndifferent levels of Temperature (which is a 3-level factor).\nI am wondering if it is possible to integrate a varIdent covariance\nstructure in the model.\nI have already tried\n\"+(1|Temperature), dispformula=~0,\"\nbut it doesn't work (neither for ZINB nor for ordered beta on proportional\ndata).\nIs there a way to integrate it in such a model in glmmTMB?\n\nThank you very much.\nBest regards,\n\n\n\n--\nDavide Nespoli, PhD\nDepartment of Biology\nUniversity of Florence\nvia Madonna del Piano 6, I-50019\nSesto Fiorentino (FI), Italy\nemail: davide.nespoli at unifi.it\nTel. +390554574722\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear development team,\n\nthis is Davide Nespoli, researcher at the University of Florence (Italy).\nAfter building a zero-inflated negative binomial GLMM of the form:\n\nm<-glmmTMB(Time~Temperature*Sex+Po",
+      "thread_id": "thread-d7f56a526d11",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-85889363fa10",
+      "message_id": "<1a86c9c0-29dc-46d4-ab2f-5f7a90768f79@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-14T09:18:36-05:00",
+      "subject": "[R-sig-ME] varIdent in glmmTMB?",
+      "subject_clean": "varIdent in glmmTMB?",
+      "in_reply_to": "<CACO6HRJNB4Q76fEqHLn11pf_DLaCpWGe8Cz4Yq1JzxdgwKEQYg@mail.gmail.com>",
+      "references": [
+        "<CACO6HRJNB4Q76fEqHLn11pf_DLaCpWGe8Cz4Yq1JzxdgwKEQYg@mail.gmail.com>"
+      ],
+      "body_plain": "The glmmTMB analogue of varIdent(form = ~ Temperature) would be\n\ndispformula = ~ Temperature\n\n   or (if you want the variance model to be parameterized as a \nlog-dispersion for each temperature rather than a log-dispersion for the \nfirst temperature level plus differences in log-dispersion)\n\n   dispformula = ~ 0 + Temperature\n\n   cheers\n    Ben Bolker\n\nOn 2025-01-14 7:14 a.m., Davide Nespoli wrote:\n> Dear development team,\n> \n> this is Davide Nespoli, researcher at the University of Florence (Italy).\n> After building a zero-inflated negative binomial GLMM of the form:\n> \n> m<-glmmTMB(Time~Temperature*Sex+Position+(1|Individual),family=nbinom1(),\n> ziformula=~1, data=Perm)\n> \n> I have a good model, but with a bit of heteroschedasticity due to the\n> different levels of Temperature (which is a 3-level factor).\n> I am wondering if it is possible to integrate a varIdent covariance\n> structure in the model.\n> I have already tried\n> \"+(1|Temperature), dispformula=~0,\"\n> but it doesn't work (neither for ZINB nor for ordered beta on proportional\n> data).\n> Is there a way to integrate it in such a model in glmmTMB?\n> \n> Thank you very much.\n> Best regards,\n> \n> \n> \n> --\n> Davide Nespoli, PhD\n> Department of Biology\n> University of Florence\n> via Madonna del Piano 6, I-50019\n> Sesto Fiorentino (FI), Italy\n> email: davide.nespoli at unifi.it\n> Tel. +390554574722\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "The glmmTMB analogue of varIdent(form = ~ Temperature) would be\n\ndispformula = ~ Temperature\n\n   or (if you want the variance model to be parameterized as a \nlog-dispersion for each temperature rather",
+      "thread_id": "thread-d7f56a526d11",
+      "thread_depth": 1,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-01b5e4b7c5e2",
+      "message_id": "<CAEsSYzxnjy_nQ+jUtCFJqq8V447bBcQz9FX+UU5BCRXoFUpJ+Q@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2025-01-15T13:06:25Z",
+      "subject": "[R-sig-ME] ONLINE COURSE – Introduction To Mixed Models Using R And Rstudio (IMMR09)",
+      "subject_clean": "ONLINE COURSE – Introduction To Mixed Models Using R And Rstudio (IMMR09)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "ONLINE COURSE ? Introduction To Mixed Models Using R And Rstudio (IMMR09)\n\nhttps://www.prstats.org/course/introduction-to-mixed-models-using-r-and-rstudio-immr09/\n\nUse discount code 'JAN25' to make the most of our Jan sale worth 20% off\nall courses\n\n11th - 13th march 2025\n\nInstructor - Dr. Rafael De Andrade Moral\n\nCOURSE OVERVIEW: This course provides a comprehensive practical and\ntheoretical introduction to multilevel models, also known as hierarchical\nor mixed effects models. We will focus primarily on multilevel linear\nmodels, but also cover multilevel generalized linear models. Likewise, we\nwill also describe Bayesian approaches to multilevel modelling. We will\nbegin by focusing on *random effects* multilevel models. These models make\nit clear how multilevel models are in fact models of models. In addition,\nrandom effects models serve as a solid basis for understanding mixed\neffects, i.e. fixed and random effects, models. In this coverage of random\neffects, we will also cover the important concepts of statistical shrinkage\nin the estimation of effects, as well as intraclass correlation. We then\nproceed to cover linear mixed effects models, particularly focusing on\nvarying intercept and/or varying slopes regression models. We will then\ncover further aspects of linear mixed effects models, including multilevel\nmodels for nested and crossed data data, and group level predictor\nvariables. Towards the end of the course we also cover generalized linear\nmixed models (GLMMs), how to accommodate overdispersion through\nindividual-level random effects, as well as Bayesian approaches to\nmultilevel levels using the brms R package.\n\nPlease email oliverhooker at prstatistics.com with any questions.\n\n\nJanuary\n*ONLINE COURSE ? Using Google Earth Engine in Ecological Studies (GEEE01)\nThis course will be delivered live*\n<https://www.prstats.org/course/using-google-earth-engine-in-ecological-studies-geee01/>\n*ONLINE COURSE ? Time Series Analysis and Forecasting using R and Rstudio\n(TSAF01) This course will be delivered live*\n<https://www.prstats.org/course/time-series-analysis-and-forecasting-using-r-and-rstudio-tsaf01/>\nFebruary\n*ONLINE COURSE ? Machine Vision using Python (MVUP01) This course will be\ndelivered live*\n<https://www.prstats.org/course/machine-vision-using-python-mvup01/>\n*ONLINE COURSE ? Machine Learning using Python (MLUP01) This course will be\ndelivered live*\n<https://www.prstats.org/course/machine-learning-using-python-mlup01/>\nONLINE COURSE ? Species Distribution Modelling With Bayesian Statistics\nUsing R (SDMB06) This course will be delivered live\n<https://www.prstats.org/course/online-course-species-distribution-modelling-with-bayesian-statistics-using-r-sdmb06/>\n*ONLINE COURSE ? Remote sensing data analysis and coding in R for ecology\n(RSDA01) This course will be delivered live*\n<https://www.prstats.org/course/remote-sensing-data-analysis-and-coding-in-r-for-ecology-rsda01/>\nONLINE COURSE ? Introduction to generalised linear models using R and\nRstudio (IGLM08) This course will be delivered live\n<https://www.prstats.org/course/introduction-to-generalised-linear-models-using-r-and-rstudio-iglm08/>\n*ONLINE COURSE ? Community Analytics in Ecology and Evolutionary Biology\nfor Beginners (CAFB01) This course will be delivered live*\n<https://www.prstats.org/course/community-analytics-in-ecology-and-evolutionary-biology-for-beginners-cafb01/>\nMarch\nONLINE COURSE ? Introduction To Mixed Models Using R And Rstudio (IMMR09)\nThis course will be delivered live\n<https://www.prstats.org/course/introduction-to-mixed-models-using-r-and-rstudio-immr09/>\nONLINE COURSE ? Stable Isotope Mixing Models using SIBER, SIAR, MixSIAR\n(SIMM11) This course will be delivered live\n<https://www.prstats.org/course/online-course-stable-isotope-mixing-models-using-siber-siar-mixsiar-simm11/>\nONLINE COURSE ? Multivariate Analysis Of Ecological Communities Using R\nWith The VEGAN package (VGNR07) This course will be delivered live\n<https://www.prstats.org/course/multivariate-analysis-of-ecological-communities-using-r-with-the-vegan-package-vgnr07/>\nMay\nONLINE COURSE ? Movement Ecology Using R(MOVE07) This course will be\ndelivered live\n<https://www.prstats.org/course/movement-ecology-using-rmove07/>\nJune\n*ONLINE COURSE ? Tidyverse for Ecologists and Evolutionary Biologists\n(TIDY01) This course will be delivered live*\n<https://www.prstats.org/course/online-course-tidyverse-for-ecologists-and-evolutionary-biologists-tidy01-this-course-will-be-delivered-live/>\n\n-- \nOliver Hooker PhD.\nPR stats\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "ONLINE COURSE ? Introduction To Mixed Models Using R And Rstudio (IMMR09)\n\nhttps://www.prstats.org/course/introduction-to-mixed-models-using-r-and-rstudio-immr09/\n\nUse discount code 'JAN25' to make th",
+      "thread_id": "thread-01b5e4b7c5e2",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-cb156f983cbd",
+      "message_id": "<CH0PR12MB5298D613FB7E49FC0B80BF1BC2E62@CH0PR12MB5298.namprd12.prod.outlook.com>",
+      "from_name": "Tempelman, Robert",
+      "from_email_hash": "faa35119676580912fade6cca57edf55e35d3777746687e5bfc619545dd359f1",
+      "date": "2025-01-21T19:33:32Z",
+      "subject": "[R-sig-ME] Fixing variance components in glmmTMB",
+      "subject_clean": "Fixing variance components in glmmTMB",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Has the latest version of glmmTMB remove the ability to fix variance components in a mixed model?  i.e. https://stackoverflow.com/questions/77585084/fix-variance-components-in-a-mixed-model-in-r-glmmtmb-or-sommer\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Has the latest version of glmmTMB remove the ability to fix variance components in a mixed model?  i.e. https://stackoverflow.com/questions/77585084/fix-variance-components-in-a-mixed-model-in-r-glmmt",
+      "thread_id": "thread-cb156f983cbd",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-7ddaab1acca0",
+      "message_id": "<9a132698-8a9f-4e05-a422-afd0e90b5a24@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-22T10:09:43-05:00",
+      "subject": "[R-sig-ME] Fixing variance components in glmmTMB",
+      "subject_clean": "Fixing variance components in glmmTMB",
+      "in_reply_to": "<CH0PR12MB5298D613FB7E49FC0B80BF1BC2E62@CH0PR12MB5298.namprd12.prod.outlook.com>",
+      "references": [
+        "<CH0PR12MB5298D613FB7E49FC0B80BF1BC2E62@CH0PR12MB5298.namprd12.prod.outlook.com>"
+      ],
+      "body_plain": "Not intentionally/not that I know of.  Is this approach not working \nfor you?  Can you provide a reproducible example of what you want to do \nand why it's not working, either here or on Stack Overflow or in the \nglmmTMB issues list?\n\n   cheers\n    Ben Bolker\n\nOn 2025-01-21 2:33 p.m., Tempelman, Robert wrote:\n> Has the latest version of glmmTMB remove the ability to fix variance components in a mixed model?  i.e. https://stackoverflow.com/questions/77585084/fix-variance-components-in-a-mixed-model-in-r-glmmtmb-or-sommer\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Not intentionally/not that I know of.  Is this approach not working \nfor you?  Can you provide a reproducible example of what you want to do \nand why it's not working, either here or on Stack Overflow",
+      "thread_id": "thread-cb156f983cbd",
+      "thread_depth": 1,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-6b2669621c93",
+      "message_id": "<CH0PR12MB5298B9AAFA50522B050BD875C2E12@CH0PR12MB5298.namprd12.prod.outlook.com>",
+      "from_name": "Tempelman, Robert",
+      "from_email_hash": "faa35119676580912fade6cca57edf55e35d3777746687e5bfc619545dd359f1",
+      "date": "2025-01-22T15:14:31Z",
+      "subject": "[R-sig-ME] Fixing variance components in glmmTMB",
+      "subject_clean": "Fixing variance components in glmmTMB",
+      "in_reply_to": "<9a132698-8a9f-4e05-a422-afd0e90b5a24@gmail.com>",
+      "references": [
+        "<CH0PR12MB5298D613FB7E49FC0B80BF1BC2E62@CH0PR12MB5298.namprd12.prod.outlook.com>",
+        "<9a132698-8a9f-4e05-a422-afd0e90b5a24@gmail.com>"
+      ],
+      "body_plain": "Got it working now...somebody passed onto me this nugget last night:\n\nAs of version 1.1.9<https://urldefense.com/v3/__https://cloud.r-project.org/web/packages/glmmTMB/news.html__;!!HXCxUKc!3__nPeuzixezIKH5upUs1PNx5jNLFsdcOqcwQWHN51gD4oFrwbgDeYztNRxll4gyEb7taAg9_BAvDR22KK2sHOPh$>, the argument corresponding to the residual variance (?betad?) is parameterized on the log-SD scale instead of the log-variance scale.   In version 1.1.10, this argument changed from ?betad? to ?betadisp?.\n\nI had \"betad\" in all of my older code.\n\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Ben Bolker <bbolker at gmail.com>\nSent: Wednesday, January 22, 2025 10:09 AM\nTo: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\nSubject: Re: [R-sig-ME] Fixing variance components in glmmTMB\n\n   Not intentionally/not that I know of.  Is this approach not working\nfor you?  Can you provide a reproducible example of what you want to do\nand why it's not working, either here or on Stack Overflow or in the\nglmmTMB issues list?\n\n   cheers\n    Ben Bolker\n\nOn 2025-01-21 2:33 p.m., Tempelman, Robert wrote:\n> Has the latest version of glmmTMB remove the ability to fix variance components in a mixed model?  i.e. https://urldefense.com/v3/__https://stackoverflow.com/questions/77585084/fix-variance-components-in-a-mixed-model-in-r-glmmtmb-or-sommer__;!!HXCxUKc!0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o-UAvt5UX4EQ3yV-1PGenM$\n>\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!HXCxUKc!0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o-UAvt5UX4EQ3yVpoWilJo$\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!HXCxUKc!0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o-UAvt5UX4EQ3yVpoWilJo$\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Got it working now...somebody passed onto me this nugget last night:\n\nAs of version 1.1.9<https://urldefense.com/v3/__https://cloud.r-project.org/web/packages/glmmTMB/news.html__;!!HXCxUKc!3__nPeuzixe",
+      "thread_id": "thread-cb156f983cbd",
+      "thread_depth": 2,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-0ac3033c712e",
+      "message_id": "<cc498cd3-5edf-4446-b51c-9d623b408e4a@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-22T10:44:54-05:00",
+      "subject": "[R-sig-ME] Fixing variance components in glmmTMB",
+      "subject_clean": "Fixing variance components in glmmTMB",
+      "in_reply_to": "<CH0PR12MB5298B9AAFA50522B050BD875C2E12@CH0PR12MB5298.namprd12.prod.outlook.com>",
+      "references": [
+        "<CH0PR12MB5298D613FB7E49FC0B80BF1BC2E62@CH0PR12MB5298.namprd12.prod.outlook.com>",
+        "<9a132698-8a9f-4e05-a422-afd0e90b5a24@gmail.com>",
+        "<CH0PR12MB5298B9AAFA50522B050BD875C2E12@CH0PR12MB5298.namprd12.prod.outlook.com>"
+      ],
+      "body_plain": "OK.\n\n   As you point out, both of these are in the NEWS: the change in \nvariance scale is admittedly something you just have to know/read about. \nThe change from 'betad' to 'betadisp' is something that it might be \npossible to flag with an informative error message ...\n\nOn 2025-01-22 10:14 a.m., Tempelman, Robert wrote:\n> Got it working now...somebody passed onto me this nugget last night:\n> \n> As of version 1.1.9 <https://urldefense.com/v3/__https://cloud.r- \n> project.org/web/packages/glmmTMB/news.html__;!!HXCxUKc! \n> 3__nPeuzixezIKH5upUs1PNx5jNLFsdcOqcwQWHN51gD4oFrwbgDeYztNRxll4gyEb7taAg9_BAvDR22KK2sHOPh$>, the argument corresponding to the residual variance (?betad?) is parameterized on the log-SD scale instead of the log-variance scale. ??In version 1.1.10, this argument changed from ?betad? to ?betadisp?.\n> \n> I had \"betad\" in all of my older code.\n> \n> ------------------------------------------------------------------------\n> *From:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on \n> behalf of Ben Bolker <bbolker at gmail.com>\n> *Sent:* Wednesday, January 22, 2025 10:09 AM\n> *To:* r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> *Subject:* Re: [R-sig-ME] Fixing variance components in glmmTMB\n>  ?? Not intentionally/not that I know of.? Is this approach not working\n> for you?? Can you provide a reproducible example of what you want to do\n> and why it's not working, either here or on Stack Overflow or in the\n> glmmTMB issues list?\n> \n>  ?? cheers\n>  ??? Ben Bolker\n> \n> On 2025-01-21 2:33 p.m., Tempelman, Robert wrote:\n>> Has the latest version of glmmTMB remove the ability to fix variance components in a mixed model?? i.e. https://urldefense.com/v3/__https://stackoverflow.com/ \n> questions/77585084/fix-variance-components-in-a-mixed-model-in-r- \n> glmmtmb-or-sommer__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yV-1PGenM$ <https://urldefense.com/v3/__https:// \n> stackoverflow.com/questions/77585084/fix-variance-components-in-a-mixed- \n> model-in-r-glmmtmb-or-sommer__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yV-1PGenM$>\n>> \n>> \n>>??????? [[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig- \n> mixed-models__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yVpoWilJo$ <https://urldefense.com/v3/__https://stat.ethz.ch/ \n> mailman/listinfo/r-sig-mixed-models__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yVpoWilJo$>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig- \n> mixed-models__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yVpoWilJo$ <https://urldefense.com/v3/__https://stat.ethz.ch/ \n> mailman/listinfo/r-sig-mixed-models__;!!HXCxUKc! \n> 0JqqzBv9yhXtOwmzXwSK3-59lOHI4g6zhLf-6JJ68JqDL9s1FxMJj8YE8o- \n> UAvt5UX4EQ3yVpoWilJo$>\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "OK.\n\n   As you point out, both of these are in the NEWS: the change in \nvariance scale is admittedly something you just have to know/read about. \nThe change from 'betad' to 'betadisp' is something tha",
+      "thread_id": "thread-cb156f983cbd",
+      "thread_depth": 3,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-bf2ebf14a6ac",
+      "message_id": "<YQXPR01MB52183DBA9FC2477C39340647CCE12@YQXPR01MB5218.CANPRD01.PROD.OUTLOOK.COM>",
+      "from_name": "Azadeh Aghaeeyan",
+      "from_email_hash": "8c183c8e50003afa292c25697b0879273dde8ca12b2718045b6a8b776b0bec73",
+      "date": "2025-01-23T00:10:23Z",
+      "subject": "[R-sig-ME] Seeking guidance on nonlinear mixed-effects modeling",
+      "subject_clean": "Seeking guidance on nonlinear mixed-effects modeling",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\nI am currently working on a project where I aim to use a mixed-effects modeling approach to estimate the parameters of a model. I am new to both R and mixed-effects modeling and would greatly appreciate any advice on which specific approaches or packages would be suitable for my work.\nHere is my model\nYij ~ NB(mu_{ij}, overdispersion)\nwhere\n mu_{ij} = a_i (exp(-k_i(j-1)) - exp(-k_i(j))) + (Wi - a_i)(exp(-p_iXi(j-1)-q_iZi(j-1)) - exp(-p_iXij-q_iZij))\nYij is the outcome variable  for group i, i=1,2,..,I, at time index j=1,2,..,J; Xij and Zij are two time-varying covariates for group i at time index j; Wi is a fixed covariate for group i,\na_i ~ ab_1, k_i ~ kb_2, p_i ~pb_3, q_i ~ qb_4, where a,k,p, and q are positive fixed-effects parameters, and b_l, l=1,2,3,4, are log-normal distributed.\n\nI do not have any prior assumptions on the overdispersion parameter.\n\nThank you in advance for your time\nBest Regards,\nNil\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello everyone,\nI am currently working on a project where I aim to use a mixed-effects modeling approach to estimate the parameters of a model. I am new to both R and mixed-effects modeling and would ",
+      "thread_id": "thread-bf2ebf14a6ac",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-3706e586fd82",
+      "message_id": "<e23bd348-3b13-4840-9cbd-8dbea50b1f83@gmail.com>",
+      "from_name": "David Sirl",
+      "from_email_hash": "9980eb67b436847500bda986aa827e20aecc35cd880d4bad917c3ea1304f022b",
+      "date": "2025-01-31T16:29:02Z",
+      "subject": "[R-sig-ME] Nonlinear mixed models with nlme::nlme() and lme4::nlmer()",
+      "subject_clean": "Nonlinear mixed models with nlme::nlme() and lme4::nlmer()",
+      "in_reply_to": "<aafcb4fc-653e-4d0d-8851-1841ebd36b5b@gmail.com>",
+      "references": [
+        "<AS4PR06MB85657C047306A352F7B4EB26C3222@AS4PR06MB8565.eurprd06.prod.outlook.com>",
+        "<aafcb4fc-653e-4d0d-8851-1841ebd36b5b@gmail.com>"
+      ],
+      "body_plain": "Hi all,\n\nFollowing up my email below about getting different results when fitting \nthe same model to the same data using nlme::nlme() and lme4::nlmer() \n[they agree fairly well on reported deviance, quartiles of residuals, \nestimated random effect variances and estimated fixed effects; but \ndiffer wildly on the standard errors and correlations associated with \nfixed effects]; I wonder if anyone has any suggestion/s for where or how \nI might be able to tempt someone to speculate what's going on please?\n\n(I am very willing to follow instructions / try things out to help \nfigure out what's happening; though due to other commitments I may be a \nfew days between opportunities to do so.)\n\nBest wishes,\nDave\n\n\nOn 21/11/2024 21:12, David Sirl wrote:\n>\n> Hi R-sig-mixed-models-ers,\n>\n> I'm fairly new to working with mixed models (and only have a couple of \n> years of working with R behind me) and have reason to want to fit some \n> nonlinear mixed models, so I'm working through the analysis of the \n> Soybean data that's in Sec 6.3 of Pinheiro & Bates' book \n> \"Mixed-Effects Models in S and S-plus\" (2000, Springer series on \n> Statistics & Computing).\n>\n> To help learn about these models I've been reproducing this analysis \n> using both nlme::nlme() (as P&B use, though in S rather than R) and \n> lme4::nlmer() (which I understand to have broadly similar \n> functionality but with better numerics in some places) and the results \n> from the two different packages agreed fairly well for the first \n> analyses I did. But now I have tried to fit a particular model (to the \n> same data) using these two methods and I get results that (i) suggest \n> I really am fitting the same model to the same data, (ii) in some \n> respects agree closely, but (iii) in other respects differ wildly.\n>\n> A couple of colleagues have checked my code and don't see any issues, \n> so I wonder if anyone here might be able to suggest what's going wrong \n> with either one of these functions (which I presume is not very \n> likely) or my use of these functions (presumably much more likely!) \n> please?\n>\n> I've set out what I've done below; and I'd be very grateful for any \n> suggestions that anyone can offer re what has gone wrong and where.\n>\n> Best wishes,\n> Dave\n>\n>\n> *A first sanity check*\n>\n> First I'll just write out the key parts of the calls I make to these \n> functions, in case I've been really daft and not noticed that my calls \n> should not be expected to fit the same model:\n>\n> nlme::nlme(weight ~ SSlogis(Time, Asym, xmid, scal),\n> ?????????? data = ...,\n> ?????????? fixed = Asym+xmid+scal~1,\n> ?????????? random = Asym~1,\n> ?????????? groups = ~Plot,\n> ?????????? start = ...)\n>\n> lme4::nlmer(weight ~ SSlogis(Time, Asym, xmid, scal) ~ (Asym + xmid + \n> scal) + (Asym|Plot),\n> ??????????? data = ...,\n> ??????????? start = ...)\n>\n>\n> *Some more detail*\n>\n> Assuming/hoping that the code above suggests that I am fitting the \n> same model with both methods, here's a bit more detail of the context, \n> what I'm trying to do and what's happening that suggests to me \n> something is going wrong.\n>\n> The dataset is Soybean (has \"weight\" recorded at 8-10 values of \"Time\" \n> for each of 48 values of the grouping factor \"Plot\") and the model I'm \n> trying to fit is of logistic growth using SSlogis(Time, Asym, xmid, \n> scal) with a random effect for Asym only (and fixed effects for all \n> three parameters).\n>\n> The starting parameter values I use are the (marginal) medians of the \n> parameter estimates for group-wise OLS fits of a logistic function to \n> the data for each Plot (fitted using nlme::olsList()) - I've omitted \n> this and entered the values explicitly here:\n>\n> startParams = c(Asym=19.813031, xmid=56.243394, scal=8.718537)\n>\n> fm3Soy.nlme =\n> nlme::nlme(weight ~ SSlogis(Time, Asym, xmid, scal),\n> ???????????? data = nlme::Soybean\n> ???????????? fixed = Asym+xmid+scal~1,\n> ???????????? random = Asym~1,\n> ???????????? groups = ~Plot,\n> ???????????? start = startParams)\n>\n>\n> fm3Soy.nlmer =\n> lme4::nlmer(weight ~ SSlogis(Time, Asym, xmid, scal) ~ (Asym + xmid + \n> scal) + (Asym|Plot),\n> ????????????? data = nlme::Soybean\n> ????????????? start = startParams)\n>\n> From the summary() of each fit I get what appear to be exactly the \n> same parameters being estimated / reported on, and they're very much \n> in agreement regarding likelihood/AIC/BIC values, variances of random \n> effects, point estimates of fixed effects. But they are qualitatively \n> very different in terms of standard errors and correlations for fixed \n> effects. The standard errors differ by a factor of ~100 and the \n> correlations are in the range 0.3 - 0.7 vs -0.3 - 0.0 and, based on \n> what I know of the data (and the output in P&B's book!)? I'm fairly \n> confident that the results from lme4::nlmer() which are incorrect.\n>\n> A further suggestion of things going wrong arises if I try to find CIs \n> for model parameters [using intervals(fm3Soy.nlme) and \n> confint(fm3Soy.nlmer)]. The latter gives an error message \"Error in \n> eval(expr, envir, enclos): step factor reduced below 0.001 without \n> reducing pwrss\" which I don't understand and for which my Google-ing \n> doesn't yield any help - I only see help for when this error arises in \n> fitting the model.\n>\n> Another possibly relevant point is that this is not a model that's \n> actually fitted in P&B (the first thing they do is deal with the \n> non-constant error variance). But even if some of the model \n> assumptions are violated I am still fitting the same model to the same \n> data, so I feel quite un-nerved by the big discrepancy in the results \n> from the two methods.\n>\n> The fits both seem reasonably good in the sense that the augmented \n> predictions [e.g. with nlme::augPred(fm3Soy.nlme, level=0:1) |> \n> plot()] for both methods agree with each other and, visually, agree \n> fairly well to the data. (It's only standard errors and correlations \n> of fixed effects that differ.)\n>\n> (I have also fitted the model in a Bayesian way using brms::brm() and \n> get results that are in keeping with those from nlme::nlme() above.)\n>\n> Thanks very much if you've read this far. I hope I've included all \n> relevant information to help track down what might be happening, but \n> if someone is interested in helping and would like some more \n> information then please do let me know.\n>\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nFollowing up my email below about getting different results when fitting \nthe same model to the same data using nlme::nlme() and lme4::nlmer() \n[they agree fairly well on reported deviance, q",
+      "thread_id": "thread-3706e586fd82",
+      "thread_depth": 0,
+      "month": "2025-01"
+    },
+    {
+      "id": "msg-4b86fe089e41",
+      "message_id": "<d3e0838b-8066-4842-8780-8d9565af3717@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2025-01-31T18:55:59-05:00",
+      "subject": "[R-sig-ME] Nonlinear mixed models with nlme::nlme() and lme4::nlmer()",
+      "subject_clean": "Nonlinear mixed models with nlme::nlme() and lme4::nlmer()",
+      "in_reply_to": "<e23bd348-3b13-4840-9cbd-8dbea50b1f83@gmail.com>",
+      "references": [
+        "<AS4PR06MB85657C047306A352F7B4EB26C3222@AS4PR06MB8565.eurprd06.prod.outlook.com>",
+        "<aafcb4fc-653e-4d0d-8851-1841ebd36b5b@gmail.com>",
+        "<e23bd348-3b13-4840-9cbd-8dbea50b1f83@gmail.com>"
+      ],
+      "body_plain": "Unfortunately nlmer needs help, and has needed it for a long time \nnow.  It does sound like nlmer is doing something weird; my best guess \nwithout spending any more time on it is that it's analogous to this \nproblem: https://github.com/lme4/lme4/issues/47\n\n    Are you willing to open an issue on the lme4 github site, which is a \nslightly better venue for this kind of bug-hunting?\n\nOn 2025-01-31 11:29 a.m., David Sirl wrote:\n> Hi all,\n> \n> Following up my email below about getting different results when fitting\n> the same model to the same data using nlme::nlme() and lme4::nlmer()\n> [they agree fairly well on reported deviance, quartiles of residuals,\n> estimated random effect variances and estimated fixed effects; but\n> differ wildly on the standard errors and correlations associated with\n> fixed effects]; I wonder if anyone has any suggestion/s for where or how\n> I might be able to tempt someone to speculate what's going on please?\n> \n> (I am very willing to follow instructions / try things out to help\n> figure out what's happening; though due to other commitments I may be a\n> few days between opportunities to do so.)\n> \n> Best wishes,\n> Dave\n> \n> \n> On 21/11/2024 21:12, David Sirl wrote:\n>>\n>> Hi R-sig-mixed-models-ers,\n>>\n>> I'm fairly new to working with mixed models (and only have a couple of\n>> years of working with R behind me) and have reason to want to fit some\n>> nonlinear mixed models, so I'm working through the analysis of the\n>> Soybean data that's in Sec 6.3 of Pinheiro & Bates' book\n>> \"Mixed-Effects Models in S and S-plus\" (2000, Springer series on\n>> Statistics & Computing).\n>>\n>> To help learn about these models I've been reproducing this analysis\n>> using both nlme::nlme() (as P&B use, though in S rather than R) and\n>> lme4::nlmer() (which I understand to have broadly similar\n>> functionality but with better numerics in some places) and the results\n>> from the two different packages agreed fairly well for the first\n>> analyses I did. But now I have tried to fit a particular model (to the\n>> same data) using these two methods and I get results that (i) suggest\n>> I really am fitting the same model to the same data, (ii) in some\n>> respects agree closely, but (iii) in other respects differ wildly.\n>>\n>> A couple of colleagues have checked my code and don't see any issues,\n>> so I wonder if anyone here might be able to suggest what's going wrong\n>> with either one of these functions (which I presume is not very\n>> likely) or my use of these functions (presumably much more likely!)\n>> please?\n>>\n>> I've set out what I've done below; and I'd be very grateful for any\n>> suggestions that anyone can offer re what has gone wrong and where.\n>>\n>> Best wishes,\n>> Dave\n>>\n>>\n>> *A first sanity check*\n>>\n>> First I'll just write out the key parts of the calls I make to these\n>> functions, in case I've been really daft and not noticed that my calls\n>> should not be expected to fit the same model:\n>>\n>> nlme::nlme(weight ~ SSlogis(Time, Asym, xmid, scal),\n>>  ?????????? data = ...,\n>>  ?????????? fixed = Asym+xmid+scal~1,\n>>  ?????????? random = Asym~1,\n>>  ?????????? groups = ~Plot,\n>>  ?????????? start = ...)\n>>\n>> lme4::nlmer(weight ~ SSlogis(Time, Asym, xmid, scal) ~ (Asym + xmid +\n>> scal) + (Asym|Plot),\n>>  ??????????? data = ...,\n>>  ??????????? start = ...)\n>>\n>>\n>> *Some more detail*\n>>\n>> Assuming/hoping that the code above suggests that I am fitting the\n>> same model with both methods, here's a bit more detail of the context,\n>> what I'm trying to do and what's happening that suggests to me\n>> something is going wrong.\n>>\n>> The dataset is Soybean (has \"weight\" recorded at 8-10 values of \"Time\"\n>> for each of 48 values of the grouping factor \"Plot\") and the model I'm\n>> trying to fit is of logistic growth using SSlogis(Time, Asym, xmid,\n>> scal) with a random effect for Asym only (and fixed effects for all\n>> three parameters).\n>>\n>> The starting parameter values I use are the (marginal) medians of the\n>> parameter estimates for group-wise OLS fits of a logistic function to\n>> the data for each Plot (fitted using nlme::olsList()) - I've omitted\n>> this and entered the values explicitly here:\n>>\n>> startParams = c(Asym=19.813031, xmid=56.243394, scal=8.718537)\n>>\n>> fm3Soy.nlme =\n>> nlme::nlme(weight ~ SSlogis(Time, Asym, xmid, scal),\n>>  ???????????? data = nlme::Soybean\n>>  ???????????? fixed = Asym+xmid+scal~1,\n>>  ???????????? random = Asym~1,\n>>  ???????????? groups = ~Plot,\n>>  ???????????? start = startParams)\n>>\n>>\n>> fm3Soy.nlmer =\n>> lme4::nlmer(weight ~ SSlogis(Time, Asym, xmid, scal) ~ (Asym + xmid +\n>> scal) + (Asym|Plot),\n>>  ????????????? data = nlme::Soybean\n>>  ????????????? start = startParams)\n>>\n>>  From the summary() of each fit I get what appear to be exactly the\n>> same parameters being estimated / reported on, and they're very much\n>> in agreement regarding likelihood/AIC/BIC values, variances of random\n>> effects, point estimates of fixed effects. But they are qualitatively\n>> very different in terms of standard errors and correlations for fixed\n>> effects. The standard errors differ by a factor of ~100 and the\n>> correlations are in the range 0.3 - 0.7 vs -0.3 - 0.0 and, based on\n>> what I know of the data (and the output in P&B's book!)? I'm fairly\n>> confident that the results from lme4::nlmer() which are incorrect.\n>>\n>> A further suggestion of things going wrong arises if I try to find CIs\n>> for model parameters [using intervals(fm3Soy.nlme) and\n>> confint(fm3Soy.nlmer)]. The latter gives an error message \"Error in\n>> eval(expr, envir, enclos): step factor reduced below 0.001 without\n>> reducing pwrss\" which I don't understand and for which my Google-ing\n>> doesn't yield any help - I only see help for when this error arises in\n>> fitting the model.\n>>\n>> Another possibly relevant point is that this is not a model that's\n>> actually fitted in P&B (the first thing they do is deal with the\n>> non-constant error variance). But even if some of the model\n>> assumptions are violated I am still fitting the same model to the same\n>> data, so I feel quite un-nerved by the big discrepancy in the results\n>> from the two methods.\n>>\n>> The fits both seem reasonably good in the sense that the augmented\n>> predictions [e.g. with nlme::augPred(fm3Soy.nlme, level=0:1) |>\n>> plot()] for both methods agree with each other and, visually, agree\n>> fairly well to the data. (It's only standard errors and correlations\n>> of fixed effects that differ.)\n>>\n>> (I have also fitted the model in a Bayesian way using brms::brm() and\n>> get results that are in keeping with those from nlme::nlme() above.)\n>>\n>> Thanks very much if you've read this far. I hope I've included all\n>> relevant information to help track down what might be happening, but\n>> if someone is interested in helping and would like some more\n>> information then please do let me know.\n>>\n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "Unfortunately nlmer needs help, and has needed it for a long time \nnow.  It does sound like nlmer is doing something weird; my best guess \nwithout spending any more time on it is that it's analogous t",
+      "thread_id": "thread-3706e586fd82",
+      "thread_depth": 1,
+      "month": "2025-01"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-f516c1facb38",
+      "subject": "lme() - Error in recalc.corAR1",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Santosh Srinivas"
+      ],
+      "started": "2025-01-02T14:08:01+00:00",
+      "last_reply": "2025-01-02T11:23:17-05:00",
+      "root_message_id": "msg-f516c1facb38"
+    },
+    {
+      "id": "thread-11f63e231231",
+      "subject": "lme() - Error in recalc.corAR1",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Santosh Srinivas"
+      ],
+      "started": "2025-01-02T16:41:18+00:00",
+      "last_reply": "2025-01-02T21:49:01-05:00",
+      "root_message_id": "msg-11f63e231231"
+    },
+    {
+      "id": "thread-0290d177e31c",
+      "subject": "Help in selecting the correct mixed model for a randomized crossover study",
+      "message_count": 1,
+      "participants": [
+        "Ricardo Jorge Soares Martins"
+      ],
+      "started": "2025-01-13T12:39:56+00:00",
+      "last_reply": "2025-01-13T12:39:56+00:00",
+      "root_message_id": "msg-0290d177e31c"
+    },
+    {
+      "id": "thread-d7f56a526d11",
+      "subject": "varIdent in glmmTMB?",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Davide Nespoli"
+      ],
+      "started": "2025-01-14T13:14:05+01:00",
+      "last_reply": "2025-01-14T09:18:36-05:00",
+      "root_message_id": "msg-d7f56a526d11"
+    },
+    {
+      "id": "thread-01b5e4b7c5e2",
+      "subject": "ONLINE COURSE – Introduction To Mixed Models Using R And Rstudio (IMMR09)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2025-01-15T13:06:25+00:00",
+      "last_reply": "2025-01-15T13:06:25+00:00",
+      "root_message_id": "msg-01b5e4b7c5e2"
+    },
+    {
+      "id": "thread-cb156f983cbd",
+      "subject": "Fixing variance components in glmmTMB",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Tempelman, Robert"
+      ],
+      "started": "2025-01-21T19:33:32+00:00",
+      "last_reply": "2025-01-22T10:44:54-05:00",
+      "root_message_id": "msg-cb156f983cbd"
+    },
+    {
+      "id": "thread-bf2ebf14a6ac",
+      "subject": "Seeking guidance on nonlinear mixed-effects modeling",
+      "message_count": 1,
+      "participants": [
+        "Azadeh Aghaeeyan"
+      ],
+      "started": "2025-01-23T00:10:23+00:00",
+      "last_reply": "2025-01-23T00:10:23+00:00",
+      "root_message_id": "msg-bf2ebf14a6ac"
+    },
+    {
+      "id": "thread-3706e586fd82",
+      "subject": "Nonlinear mixed models with nlme::nlme() and lme4::nlmer()",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "David Sirl"
+      ],
+      "started": "2025-01-31T16:29:02+00:00",
+      "last_reply": "2025-01-31T18:55:59-05:00",
+      "root_message_id": "msg-3706e586fd82"
+    }
+  ]
+}

@@ -1,0 +1,1006 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2021-11",
+  "messages": [
+    {
+      "id": "msg-50fc7e475155",
+      "message_id": "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-01T22:57:26-06:00",
+      "subject": "[R-sig-ME] zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI am running a mixed model using lmer like this:\n\nm2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML = FALSE)\n\nHere, prov is my random effect. But I have the result, where the random\nintercept of random effect is zero.\n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Prov     (Intercept) 0.00000  0.0000\n Residual             0.01149  0.1072\nNumber of obs: 54, groups:  Prov, 3\n\nShould I still run a mixed model using Prov as a random effect, or I run\nregression model here instead of mixed model by removing \"Prov\".\nMy data structure is like this:\n\n   Prov Year Incidence Severity\n  MB 2020 31.5 0.29\n  MB 2019 21.8 0.36\n  MB 2018 20.4 0.23\n  MB 2017 31.1 0.31\n  MB 2016 90.1 1.34\n  MB 2015 63.4 0.5\n  MB 2014 57.5 0.7\n  MB 2013 44.1 0.45\n  MB 2012 42.9 0.8\n  MB 2011 15.6 0.92\n  MB 2010 50.9 1.23\n  MB 2009 32.1 1.56\n  MB 2008 52.4 1.71\n  MB 2007 15.1       0.83\n  MB 2006 4.3       0.65\n  MB 2005 47.7 1.4\n  MB 2004 16.4 1.58\n  MB 2003 39.3 0.33\n  SK 2020 25.7 0.33\n  SK 2019 37.3 0.54\n  SK 2018 14.2 0.32\n  SK 2017 4.8        0.51\n  SK 2016 85.2 1.53\n  SK 2015 53.2 0.57\n  SK 2014 68.1        1.45\n  SK 2013 23.2 0.39\n  SK 2012 49.8 1.14\n  SK 2011 10.6 0.79\n  SK 2010 13.5 1.5\n  SK 2009 6.9       0.56\n  SK 2008 7.6 0.92\n  SK 2007 2.4 0.75\n  SK 2006 0.7 0.58\n  SK 2005 4.1 0.71\n  SK 2004 1.7 0.4\n  SK 2003 1.9 0.09\n  AB 2020 8 0.34\n  AB 2019 28.3 0.52\n  AB 2018 2.8 0.37\n  AB 2017 3.7 0.49\n  AB 2016 32.8 0.59\n  AB 2015 9.2 0.29\n  AB 2014 24.6 0.25\n  AB 2013 17.6 0.4\n  AB 2012 10.3 0.63\n  AB 2011 5.2 0.87\n  AB 2010 3.9 1.68\n  AB 2009 3.2 1.13\n  AB 2008 0.4 0.78\n  AB 2007 0.1 0.45\n  AB 2006 0.1 0.78\n  AB 2005 1.1 1.09\n  AB 2004 1.2 0.82\n  AB 2003 1.2 0.08\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI am running a mixed model using lmer like this:\n\nm2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML = FALSE)\n\nHere, prov is my random effect. But I have the result, where the ra",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-4995e5fe4a44",
+      "message_id": "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+      "from_name": "Carola Bloch",
+      "from_email_hash": "e8f6386c5c821bad16c74c9cae8600091038d10ddd36e1ba5835023c1b1691e5",
+      "date": "2021-11-02T06:11:06Z",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>"
+      ],
+      "body_plain": "Hi,\n\n\nthanks for sharing your problem. Concerning your first question, I would not recommend running a regular regression, as the data points in your sample are not independent and this would inflate the type 1 error rate.\n\n\nIn order to find out why the residual variance shows strange values, I would try some trouble shooting. You could run coef(m2) and check whether there are actually different intercepts for Prof. Second I would check the model assumptions, possibly there is a violation of the assumptions that affects model fit (I'd recommend performance::check_model()). Furthermore, how many factor levels does Prof have, I assume 3 according to your output? A small number of levels might be problematic, see Singman & Kellen, 2019*.\n\n\n*Singmann, H., & Kellen, D. (2019). An introduction to mixed models for experimental psychology. In New methods in cognitive psychology (pp. 4-31). Routledge.\n\n\nHope this helps!\n\n________________________________\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> im Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\nGesendet: Dienstag, 2. November 2021 05:57:26\nAn: r-sig-mixed-models at r-project.org\nBetreff: [R-sig-ME] zero variance and standard deviation in random effects\n\nHi,\n\nI am running a mixed model using lmer like this:\n\nm2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML = FALSE)\n\nHere, prov is my random effect. But I have the result, where the random\nintercept of random effect is zero.\n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Prov     (Intercept) 0.00000  0.0000\n Residual             0.01149  0.1072\nNumber of obs: 54, groups:  Prov, 3\n\nShould I still run a mixed model using Prov as a random effect, or I run\nregression model here instead of mixed model by removing \"Prov\".\nMy data structure is like this:\n\n   Prov Year Incidence Severity\n  MB 2020 31.5 0.29\n  MB 2019 21.8 0.36\n  MB 2018 20.4 0.23\n  MB 2017 31.1 0.31\n  MB 2016 90.1 1.34\n  MB 2015 63.4 0.5\n  MB 2014 57.5 0.7\n  MB 2013 44.1 0.45\n  MB 2012 42.9 0.8\n  MB 2011 15.6 0.92\n  MB 2010 50.9 1.23\n  MB 2009 32.1 1.56\n  MB 2008 52.4 1.71\n  MB 2007 15.1       0.83\n  MB 2006 4.3       0.65\n  MB 2005 47.7 1.4\n  MB 2004 16.4 1.58\n  MB 2003 39.3 0.33\n  SK 2020 25.7 0.33\n  SK 2019 37.3 0.54\n  SK 2018 14.2 0.32\n  SK 2017 4.8        0.51\n  SK 2016 85.2 1.53\n  SK 2015 53.2 0.57\n  SK 2014 68.1        1.45\n  SK 2013 23.2 0.39\n  SK 2012 49.8 1.14\n  SK 2011 10.6 0.79\n  SK 2010 13.5 1.5\n  SK 2009 6.9       0.56\n  SK 2008 7.6 0.92\n  SK 2007 2.4 0.75\n  SK 2006 0.7 0.58\n  SK 2005 4.1 0.71\n  SK 2004 1.7 0.4\n  SK 2003 1.9 0.09\n  AB 2020 8 0.34\n  AB 2019 28.3 0.52\n  AB 2018 2.8 0.37\n  AB 2017 3.7 0.49\n  AB 2016 32.8 0.59\n  AB 2015 9.2 0.29\n  AB 2014 24.6 0.25\n  AB 2013 17.6 0.4\n  AB 2012 10.3 0.63\n  AB 2011 5.2 0.87\n  AB 2010 3.9 1.68\n  AB 2009 3.2 1.13\n  AB 2008 0.4 0.78\n  AB 2007 0.1 0.45\n  AB 2006 0.1 0.78\n  AB 2005 1.1 1.09\n  AB 2004 1.2 0.82\n  AB 2003 1.2 0.08\n\n        [[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\n\nthanks for sharing your problem. Concerning your first question, I would not recommend running a regular regression, as the data points in your sample are not independent and this would inflate ",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-ff85f9b7c9a1",
+      "message_id": "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-02T07:57:19-06:00",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>"
+      ],
+      "body_plain": "Thanks a lot. My model is a random intercept model. But from the \"coef(m2)\"\ncommand, I have found the following results:\n\nProv      Intercept\n AB.       0.07346574\n MB.      0.07346574\n SK.       0.07346574\n\nThat means intercepts are identical for all three provinces. In this model,\nProv is the random effect that has three-level (AB, MB and SK). In this\ncase, what should I do? If I remove province, the model will not be then\nmixed model. But my data is repeated measures. I have also attached the\nplot by running the command ( performance::check_model()).\n\nOn Tue, Nov 2, 2021 at 12:11 AM Carola Bloch <carola.bloch at uk-koeln.de>\nwrote:\n\n> Hi,\n>\n>\n> thanks for sharing your problem. Concerning your first question, I would\n> not recommend running a regular regression, as the data points in your\n> sample are not independent and this would inflate the type 1 error rate.\n>\n>\n> In order to find out why the residual variance shows strange values, I\n> would try some trouble shooting. You could run coef(m2) and check whether\n> there are actually different intercepts for Prof. Second I would check\n> the model assumptions, possibly there is a violation of the assumptions\n> that affects model fit (I'd recommend performance::check_model()).\n> Furthermore, how many factor levels does Prof have, I assume 3 according\n> to your output? A small number of levels might be problematic, see\n> Singman & Kellen, 2019*.\n>\n>\n> *Singmann, H., & Kellen, D. (2019). An introduction to mixed models for\n> experimental psychology. In *New methods in cognitive psychology* (pp.\n> 4-31). Routledge.\n>\n>\n> Hope this helps!\n> ------------------------------\n> *Von:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> im\n> Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\n> *Gesendet:* Dienstag, 2. November 2021 05:57:26\n> *An:* r-sig-mixed-models at r-project.org\n> *Betreff:* [R-sig-ME] zero variance and standard deviation in random\n> effects\n>\n> Hi,\n>\n> I am running a mixed model using lmer like this:\n>\n> m2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML =\n> FALSE)\n>\n> Here, prov is my random effect. But I have the result, where the random\n> intercept of random effect is zero.\n>\n> Random effects:\n>  Groups   Name        Variance Std.Dev.\n>  Prov     (Intercept) 0.00000  0.0000\n>  Residual             0.01149  0.1072\n> Number of obs: 54, groups:  Prov, 3\n>\n> Should I still run a mixed model using Prov as a random effect, or I run\n> regression model here instead of mixed model by removing \"Prov\".\n> My data structure is like this:\n>\n>    Prov Year Incidence Severity\n>   MB 2020 31.5 0.29\n>   MB 2019 21.8 0.36\n>   MB 2018 20.4 0.23\n>   MB 2017 31.1 0.31\n>   MB 2016 90.1 1.34\n>   MB 2015 63.4 0.5\n>   MB 2014 57.5 0.7\n>   MB 2013 44.1 0.45\n>   MB 2012 42.9 0.8\n>   MB 2011 15.6 0.92\n>   MB 2010 50.9 1.23\n>   MB 2009 32.1 1.56\n>   MB 2008 52.4 1.71\n>   MB 2007 15.1       0.83\n>   MB 2006 4.3       0.65\n>   MB 2005 47.7 1.4\n>   MB 2004 16.4 1.58\n>   MB 2003 39.3 0.33\n>   SK 2020 25.7 0.33\n>   SK 2019 37.3 0.54\n>   SK 2018 14.2 0.32\n>   SK 2017 4.8        0.51\n>   SK 2016 85.2 1.53\n>   SK 2015 53.2 0.57\n>   SK 2014 68.1        1.45\n>   SK 2013 23.2 0.39\n>   SK 2012 49.8 1.14\n>   SK 2011 10.6 0.79\n>   SK 2010 13.5 1.5\n>   SK 2009 6.9       0.56\n>   SK 2008 7.6 0.92\n>   SK 2007 2.4 0.75\n>   SK 2006 0.7 0.58\n>   SK 2005 4.1 0.71\n>   SK 2004 1.7 0.4\n>   SK 2003 1.9 0.09\n>   AB 2020 8 0.34\n>   AB 2019 28.3 0.52\n>   AB 2018 2.8 0.37\n>   AB 2017 3.7 0.49\n>   AB 2016 32.8 0.59\n>   AB 2015 9.2 0.29\n>   AB 2014 24.6 0.25\n>   AB 2013 17.6 0.4\n>   AB 2012 10.3 0.63\n>   AB 2011 5.2 0.87\n>   AB 2010 3.9 1.68\n>   AB 2009 3.2 1.13\n>   AB 2008 0.4 0.78\n>   AB 2007 0.1 0.45\n>   AB 2006 0.1 0.78\n>   AB 2005 1.1 1.09\n>   AB 2004 1.2 0.82\n>   AB 2003 1.2 0.08\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-------------- next part --------------\nA non-text attachment was scrubbed...\nName: Rplot01.png\nType: image/png\nSize: 174452 bytes\nDesc: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20211102/3efa8e7b/attachment-0001.png>",
+      "body_snippet": "Thanks a lot. My model is a random intercept model. But from the \"coef(m2)\"\ncommand, I have found the following results:\n\nProv      Intercept\n AB.       0.07346574\n MB.      0.07346574\n SK.       0.07",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-9eab448dfcb3",
+      "message_id": "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+      "from_name": "Viechtbauer, Wolfgang (SP)",
+      "from_email_hash": "bfe931aadd3cb7631b70e83086a082e314918464e0b2d0cbb3f72828d9937141",
+      "date": "2021-11-02T14:57:44Z",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>"
+      ],
+      "body_plain": "When the variance is estimated to be zero, then this is identical to removing the random effect altogether. So whether you remove it or not will not make any difference. I would leave it in and just report the results you obtained. One can also use confint() then to obtain a CI for this variance component. While the estimate (and hence lower bound) are 0, the upper bound is likely to indicate that there could be (substantial) variance associated with this random effect.\n\nBest,\nWolfgang\n\n>-----Original Message-----\n>From: R-sig-mixed-models [mailto:r-sig-mixed-models-bounces at r-project.org] On\n>Behalf Of Tahsin Ferdous\n>Sent: Tuesday, 02 November, 2021 14:57\n>To: Carola Bloch; r-sig-mixed-models at r-project.org\n>Subject: Re: [R-sig-ME] zero variance and standard deviation in random effects\n>\n>Thanks a lot. My model is a random intercept model. But from the \"coef(m2)\"\n>command, I have found the following results:\n>\n>Prov      Intercept\n> AB.       0.07346574\n> MB.      0.07346574\n> SK.       0.07346574\n>\n>That means intercepts are identical for all three provinces. In this model,\n>Prov is the random effect that has three-level (AB, MB and SK). In this\n>case, what should I do? If I remove province, the model will not be then\n>mixed model. But my data is repeated measures. I have also attached the\n>plot by running the command ( performance::check_model()).\n>\n>On Tue, Nov 2, 2021 at 12:11 AM Carola Bloch <carola.bloch at uk-koeln.de>\n>wrote:\n>\n>> Hi,\n>>\n>> thanks for sharing your problem. Concerning your first question, I would\n>> not recommend running a regular regression, as the data points in your\n>> sample are not independent and this would inflate the type 1 error rate.\n>>\n>> In order to find out why the residual variance shows strange values, I\n>> would try some trouble shooting. You could run coef(m2) and check whether\n>> there are actually different intercepts for Prof. Second I would check\n>> the model assumptions, possibly there is a violation of the assumptions\n>> that affects model fit (I'd recommend performance::check_model()).\n>> Furthermore, how many factor levels does Prof have, I assume 3 according\n>> to your output? A small number of levels might be problematic, see\n>> Singman & Kellen, 2019*.\n>>\n>> *Singmann, H., & Kellen, D. (2019). An introduction to mixed models for\n>> experimental psychology. In *New methods in cognitive psychology* (pp.\n>> 4-31). Routledge.\n>>\n>> Hope this helps!\n>> ------------------------------\n>> *Von:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> im\n>> Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\n>> *Gesendet:* Dienstag, 2. November 2021 05:57:26\n>> *An:* r-sig-mixed-models at r-project.org\n>> *Betreff:* [R-sig-ME] zero variance and standard deviation in random\n>> effects\n>>\n>> Hi,\n>>\n>> I am running a mixed model using lmer like this:\n>>\n>> m2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML =\n>> FALSE)\n>>\n>> Here, prov is my random effect. But I have the result, where the random\n>> intercept of random effect is zero.\n>>\n>> Random effects:\n>>  Groups   Name        Variance Std.Dev.\n>>  Prov     (Intercept) 0.00000  0.0000\n>>  Residual             0.01149  0.1072\n>> Number of obs: 54, groups:  Prov, 3\n>>\n>> Should I still run a mixed model using Prov as a random effect, or I run\n>> regression model here instead of mixed model by removing \"Prov\".\n>> My data structure is like this:\n>>\n>>    Prov Year Incidence Severity\n>>   MB 2020 31.5 0.29\n>>   MB 2019 21.8 0.36\n>>   MB 2018 20.4 0.23\n>>   MB 2017 31.1 0.31\n>>   MB 2016 90.1 1.34\n>>   MB 2015 63.4 0.5\n>>   MB 2014 57.5 0.7\n>>   MB 2013 44.1 0.45\n>>   MB 2012 42.9 0.8\n>>   MB 2011 15.6 0.92\n>>   MB 2010 50.9 1.23\n>>   MB 2009 32.1 1.56\n>>   MB 2008 52.4 1.71\n>>   MB 2007 15.1       0.83\n>>   MB 2006 4.3       0.65\n>>   MB 2005 47.7 1.4\n>>   MB 2004 16.4 1.58\n>>   MB 2003 39.3 0.33\n>>   SK 2020 25.7 0.33\n>>   SK 2019 37.3 0.54\n>>   SK 2018 14.2 0.32\n>>   SK 2017 4.8        0.51\n>>   SK 2016 85.2 1.53\n>>   SK 2015 53.2 0.57\n>>   SK 2014 68.1        1.45\n>>   SK 2013 23.2 0.39\n>>   SK 2012 49.8 1.14\n>>   SK 2011 10.6 0.79\n>>   SK 2010 13.5 1.5\n>>   SK 2009 6.9       0.56\n>>   SK 2008 7.6 0.92\n>>   SK 2007 2.4 0.75\n>>   SK 2006 0.7 0.58\n>>   SK 2005 4.1 0.71\n>>   SK 2004 1.7 0.4\n>>   SK 2003 1.9 0.09\n>>   AB 2020 8 0.34\n>>   AB 2019 28.3 0.52\n>>   AB 2018 2.8 0.37\n>>   AB 2017 3.7 0.49\n>>   AB 2016 32.8 0.59\n>>   AB 2015 9.2 0.29\n>>   AB 2014 24.6 0.25\n>>   AB 2013 17.6 0.4\n>>   AB 2012 10.3 0.63\n>>   AB 2011 5.2 0.87\n>>   AB 2010 3.9 1.68\n>>   AB 2009 3.2 1.13\n>>   AB 2008 0.4 0.78\n>>   AB 2007 0.1 0.45\n>>   AB 2006 0.1 0.78\n>>   AB 2005 1.1 1.09\n>>   AB 2004 1.2 0.82\n>>   AB 2003 1.2 0.08",
+      "body_snippet": "When the variance is estimated to be zero, then this is identical to removing the random effect altogether. So whether you remove it or not will not make any difference. I would leave it in and just r",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 3,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-5b9d57fb971b",
+      "message_id": "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-02T11:20:25-04:00",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+        "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>"
+      ],
+      "body_plain": "I agree.  There is more discussion at\n\nhttp://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1\n\n   While I appreciate Carola Bloch's input, I think it's a little \nmisguided.  Having only three levels of the random effect is indeed \nproblematic, but it doesn't actually violate any assumptions of the \nmodel, and there isn't necessarily anything else wrong with the model -- \nit's just hard to estimate variance reliably from a sample of three. \n(See https://rpubs.com/bbolker/4187 for some simulated examples.) One \nstandard approach to this problem is to treat province as a *fixed* effect.\n\nOn 11/2/21 10:57 AM, Viechtbauer, Wolfgang (SP) wrote:\n> When the variance is estimated to be zero, then this is identical to removing the random effect altogether. So whether you remove it or not will not make any difference. I would leave it in and just report the results you obtained. One can also use confint() then to obtain a CI for this variance component. While the estimate (and hence lower bound) are 0, the upper bound is likely to indicate that there could be (substantial) variance associated with this random effect.\n> \n> Best,\n> Wolfgang\n> \n>> -----Original Message-----\n>> From: R-sig-mixed-models [mailto:r-sig-mixed-models-bounces at r-project.org] On\n>> Behalf Of Tahsin Ferdous\n>> Sent: Tuesday, 02 November, 2021 14:57\n>> To: Carola Bloch; r-sig-mixed-models at r-project.org\n>> Subject: Re: [R-sig-ME] zero variance and standard deviation in random effects\n>>\n>> Thanks a lot. My model is a random intercept model. But from the \"coef(m2)\"\n>> command, I have found the following results:\n>>\n>> Prov      Intercept\n>> AB.       0.07346574\n>> MB.      0.07346574\n>> SK.       0.07346574\n>>\n>> That means intercepts are identical for all three provinces. In this model,\n>> Prov is the random effect that has three-level (AB, MB and SK). In this\n>> case, what should I do? If I remove province, the model will not be then\n>> mixed model. But my data is repeated measures. I have also attached the\n>> plot by running the command ( performance::check_model()).\n>>\n>> On Tue, Nov 2, 2021 at 12:11 AM Carola Bloch <carola.bloch at uk-koeln.de>\n>> wrote:\n>>\n>>> Hi,\n>>>\n>>> thanks for sharing your problem. Concerning your first question, I would\n>>> not recommend running a regular regression, as the data points in your\n>>> sample are not independent and this would inflate the type 1 error rate.\n>>>\n>>> In order to find out why the residual variance shows strange values, I\n>>> would try some trouble shooting. You could run coef(m2) and check whether\n>>> there are actually different intercepts for Prof. Second I would check\n>>> the model assumptions, possibly there is a violation of the assumptions\n>>> that affects model fit (I'd recommend performance::check_model()).\n>>> Furthermore, how many factor levels does Prof have, I assume 3 according\n>>> to your output? A small number of levels might be problematic, see\n>>> Singman & Kellen, 2019*.\n>>>\n>>> *Singmann, H., & Kellen, D. (2019). An introduction to mixed models for\n>>> experimental psychology. In *New methods in cognitive psychology* (pp.\n>>> 4-31). Routledge.\n>>>\n>>> Hope this helps!\n>>> ------------------------------\n>>> *Von:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> im\n>>> Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\n>>> *Gesendet:* Dienstag, 2. November 2021 05:57:26\n>>> *An:* r-sig-mixed-models at r-project.org\n>>> *Betreff:* [R-sig-ME] zero variance and standard deviation in random\n>>> effects\n>>>\n>>> Hi,\n>>>\n>>> I am running a mixed model using lmer like this:\n>>>\n>>> m2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML =\n>>> FALSE)\n>>>\n>>> Here, prov is my random effect. But I have the result, where the random\n>>> intercept of random effect is zero.\n>>>\n>>> Random effects:\n>>>   Groups   Name        Variance Std.Dev.\n>>>   Prov     (Intercept) 0.00000  0.0000\n>>>   Residual             0.01149  0.1072\n>>> Number of obs: 54, groups:  Prov, 3\n>>>\n>>> Should I still run a mixed model using Prov as a random effect, or I run\n>>> regression model here instead of mixed model by removing \"Prov\".\n>>> My data structure is like this:\n>>>\n>>>     Prov Year Incidence Severity\n>>>    MB 2020 31.5 0.29\n>>>    MB 2019 21.8 0.36\n>>>    MB 2018 20.4 0.23\n>>>    MB 2017 31.1 0.31\n>>>    MB 2016 90.1 1.34\n>>>    MB 2015 63.4 0.5\n>>>    MB 2014 57.5 0.7\n>>>    MB 2013 44.1 0.45\n>>>    MB 2012 42.9 0.8\n>>>    MB 2011 15.6 0.92\n>>>    MB 2010 50.9 1.23\n>>>    MB 2009 32.1 1.56\n>>>    MB 2008 52.4 1.71\n>>>    MB 2007 15.1       0.83\n>>>    MB 2006 4.3       0.65\n>>>    MB 2005 47.7 1.4\n>>>    MB 2004 16.4 1.58\n>>>    MB 2003 39.3 0.33\n>>>    SK 2020 25.7 0.33\n>>>    SK 2019 37.3 0.54\n>>>    SK 2018 14.2 0.32\n>>>    SK 2017 4.8        0.51\n>>>    SK 2016 85.2 1.53\n>>>    SK 2015 53.2 0.57\n>>>    SK 2014 68.1        1.45\n>>>    SK 2013 23.2 0.39\n>>>    SK 2012 49.8 1.14\n>>>    SK 2011 10.6 0.79\n>>>    SK 2010 13.5 1.5\n>>>    SK 2009 6.9       0.56\n>>>    SK 2008 7.6 0.92\n>>>    SK 2007 2.4 0.75\n>>>    SK 2006 0.7 0.58\n>>>    SK 2005 4.1 0.71\n>>>    SK 2004 1.7 0.4\n>>>    SK 2003 1.9 0.09\n>>>    AB 2020 8 0.34\n>>>    AB 2019 28.3 0.52\n>>>    AB 2018 2.8 0.37\n>>>    AB 2017 3.7 0.49\n>>>    AB 2016 32.8 0.59\n>>>    AB 2015 9.2 0.29\n>>>    AB 2014 24.6 0.25\n>>>    AB 2013 17.6 0.4\n>>>    AB 2012 10.3 0.63\n>>>    AB 2011 5.2 0.87\n>>>    AB 2010 3.9 1.68\n>>>    AB 2009 3.2 1.13\n>>>    AB 2008 0.4 0.78\n>>>    AB 2007 0.1 0.45\n>>>    AB 2006 0.1 0.78\n>>>    AB 2005 1.1 1.09\n>>>    AB 2004 1.2 0.82\n>>>    AB 2003 1.2 0.08\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "I agree.  There is more discussion at\n\nhttp://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1\n\n   While I app",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 4,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-ef5243ba7218",
+      "message_id": "<a0a761b4a26149899cdcfca6fea50b66@uk-koeln.de>",
+      "from_name": "Carola Bloch",
+      "from_email_hash": "e8f6386c5c821bad16c74c9cae8600091038d10ddd36e1ba5835023c1b1691e5",
+      "date": "2021-11-02T15:52:57Z",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+        "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+        "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>"
+      ],
+      "body_plain": "Thank you for the clarification. I was recommending the assumption check as an independent step that I'd recommend to do in the course of trouble-shooting with mixed models. That was however not related to the aspect of small numbers of factor levels for random effects. Sorry if that was misguiding.\n\nBest regards,\nCarola\n\n\n-----Urspr?ngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im Auftrag von Ben Bolker\nGesendet: Dienstag, 2. November 2021 16:20\nAn: r-sig-mixed-models at r-project.org\nBetreff: Re: [R-sig-ME] zero variance and standard deviation in random effects\n\n   I agree.  There is more discussion at\n\nhttp://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1\n\n   While I appreciate Carola Bloch's input, I think it's a little misguided.  Having only three levels of the random effect is indeed problematic, but it doesn't actually violate any assumptions of the model, and there isn't necessarily anything else wrong with the model -- it's just hard to estimate variance reliably from a sample of three. \n(See https://rpubs.com/bbolker/4187 for some simulated examples.) One standard approach to this problem is to treat province as a *fixed* effect.\n\nOn 11/2/21 10:57 AM, Viechtbauer, Wolfgang (SP) wrote:\n> When the variance is estimated to be zero, then this is identical to removing the random effect altogether. So whether you remove it or not will not make any difference. I would leave it in and just report the results you obtained. One can also use confint() then to obtain a CI for this variance component. While the estimate (and hence lower bound) are 0, the upper bound is likely to indicate that there could be (substantial) variance associated with this random effect.\n> \n> Best,\n> Wolfgang\n> \n>> -----Original Message-----\n>> From: R-sig-mixed-models \n>> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Tahsin \n>> Ferdous\n>> Sent: Tuesday, 02 November, 2021 14:57\n>> To: Carola Bloch; r-sig-mixed-models at r-project.org\n>> Subject: Re: [R-sig-ME] zero variance and standard deviation in \n>> random effects\n>>\n>> Thanks a lot. My model is a random intercept model. But from the \"coef(m2)\"\n>> command, I have found the following results:\n>>\n>> Prov      Intercept\n>> AB.       0.07346574\n>> MB.      0.07346574\n>> SK.       0.07346574\n>>\n>> That means intercepts are identical for all three provinces. In this \n>> model, Prov is the random effect that has three-level (AB, MB and \n>> SK). In this case, what should I do? If I remove province, the model \n>> will not be then mixed model. But my data is repeated measures. I \n>> have also attached the plot by running the command ( performance::check_model()).\n>>\n>> On Tue, Nov 2, 2021 at 12:11 AM Carola Bloch \n>> <carola.bloch at uk-koeln.de>\n>> wrote:\n>>\n>>> Hi,\n>>>\n>>> thanks for sharing your problem. Concerning your first question, I \n>>> would not recommend running a regular regression, as the data points \n>>> in your sample are not independent and this would inflate the type 1 error rate.\n>>>\n>>> In order to find out why the residual variance shows strange values, \n>>> I would try some trouble shooting. You could run coef(m2) and check \n>>> whether there are actually different intercepts for Prof. Second I \n>>> would check the model assumptions, possibly there is a violation of \n>>> the assumptions that affects model fit (I'd recommend performance::check_model()).\n>>> Furthermore, how many factor levels does Prof have, I assume 3 \n>>> according to your output? A small number of levels might be \n>>> problematic, see Singman & Kellen, 2019*.\n>>>\n>>> *Singmann, H., & Kellen, D. (2019). An introduction to mixed models \n>>> for experimental psychology. In *New methods in cognitive psychology* (pp.\n>>> 4-31). Routledge.\n>>>\n>>> Hope this helps!\n>>> ------------------------------\n>>> *Von:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> \n>>> im Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\n>>> *Gesendet:* Dienstag, 2. November 2021 05:57:26\n>>> *An:* r-sig-mixed-models at r-project.org\n>>> *Betreff:* [R-sig-ME] zero variance and standard deviation in random \n>>> effects\n>>>\n>>> Hi,\n>>>\n>>> I am running a mixed model using lmer like this:\n>>>\n>>> m2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML \n>>> =\n>>> FALSE)\n>>>\n>>> Here, prov is my random effect. But I have the result, where the \n>>> random intercept of random effect is zero.\n>>>\n>>> Random effects:\n>>>   Groups   Name        Variance Std.Dev.\n>>>   Prov     (Intercept) 0.00000  0.0000\n>>>   Residual             0.01149  0.1072\n>>> Number of obs: 54, groups:  Prov, 3\n>>>\n>>> Should I still run a mixed model using Prov as a random effect, or I \n>>> run regression model here instead of mixed model by removing \"Prov\".\n>>> My data structure is like this:\n>>>\n>>>     Prov Year Incidence Severity\n>>>    MB 2020 31.5 0.29\n>>>    MB 2019 21.8 0.36\n>>>    MB 2018 20.4 0.23\n>>>    MB 2017 31.1 0.31\n>>>    MB 2016 90.1 1.34\n>>>    MB 2015 63.4 0.5\n>>>    MB 2014 57.5 0.7\n>>>    MB 2013 44.1 0.45\n>>>    MB 2012 42.9 0.8\n>>>    MB 2011 15.6 0.92\n>>>    MB 2010 50.9 1.23\n>>>    MB 2009 32.1 1.56\n>>>    MB 2008 52.4 1.71\n>>>    MB 2007 15.1       0.83\n>>>    MB 2006 4.3       0.65\n>>>    MB 2005 47.7 1.4\n>>>    MB 2004 16.4 1.58\n>>>    MB 2003 39.3 0.33\n>>>    SK 2020 25.7 0.33\n>>>    SK 2019 37.3 0.54\n>>>    SK 2018 14.2 0.32\n>>>    SK 2017 4.8        0.51\n>>>    SK 2016 85.2 1.53\n>>>    SK 2015 53.2 0.57\n>>>    SK 2014 68.1        1.45\n>>>    SK 2013 23.2 0.39\n>>>    SK 2012 49.8 1.14\n>>>    SK 2011 10.6 0.79\n>>>    SK 2010 13.5 1.5\n>>>    SK 2009 6.9       0.56\n>>>    SK 2008 7.6 0.92\n>>>    SK 2007 2.4 0.75\n>>>    SK 2006 0.7 0.58\n>>>    SK 2005 4.1 0.71\n>>>    SK 2004 1.7 0.4\n>>>    SK 2003 1.9 0.09\n>>>    AB 2020 8 0.34\n>>>    AB 2019 28.3 0.52\n>>>    AB 2018 2.8 0.37\n>>>    AB 2017 3.7 0.49\n>>>    AB 2016 32.8 0.59\n>>>    AB 2015 9.2 0.29\n>>>    AB 2014 24.6 0.25\n>>>    AB 2013 17.6 0.4\n>>>    AB 2012 10.3 0.63\n>>>    AB 2011 5.2 0.87\n>>>    AB 2010 3.9 1.68\n>>>    AB 2009 3.2 1.13\n>>>    AB 2008 0.4 0.78\n>>>    AB 2007 0.1 0.45\n>>>    AB 2006 0.1 0.78\n>>>    AB 2005 1.1 1.09\n>>>    AB 2004 1.2 0.82\n>>>    AB 2003 1.2 0.08\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n--\nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University Director, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thank you for the clarification. I was recommending the assumption check as an independent step that I'd recommend to do in the course of trouble-shooting with mixed models. That was however not relat",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 5,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-2a4f90018777",
+      "message_id": "<1252569631.2119.1635882827599@mail.yahoo.com>",
+      "from_name": "Mehdi Rezapour",
+      "from_email_hash": "f2076e6940293aa05d20134807d0fce765f44710081e9a2a37dd261e4cb5f9b3",
+      "date": "2021-11-02T19:53:47Z",
+      "subject": "[R-sig-ME] Fw: lme4 error",
+      "subject_clean": "lme4 error",
+      "in_reply_to": "<35053577.2123867.1635870324935@mail.yahoo.com>",
+      "references": [
+        "<1710671081.2125810.1635868844523.ref@mail.yahoo.com>",
+        "<1710671081.2125810.1635868844523@mail.yahoo.com>",
+        "<35053577.2123867.1635870324935@mail.yahoo.com>"
+      ],
+      "body_plain": "Dear Dr. Bolker,\n\nHope all is well.I am trying to understand the C code in lme4 by use of load_all function, which is loading the package and walk through C function.But when i am trying to load the package it gives me an error of \" error: Index is not a member of ?lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<double, 0, int> >::Base{aka ?Eigen::CholmodDecomposition<Eigen::SparseMatrix<double, 0, int>, 1>\"which is related to document \"lme4CholmodDecomposition.h\"Could you please tell me if you have any input?\nkind?regardsMahdi\n    \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Dr. Bolker,\n\nHope all is well.I am trying to understand the C code in lme4 by use of load_all function, which is loading the package and walk through C function.But when i am trying to load the p",
+      "thread_id": "thread-2a4f90018777",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-bd00d156b6e3",
+      "message_id": "<20211103125835.1a1fd952@rolf-Latitude-E7470>",
+      "from_name": "Rolf Turner",
+      "from_email_hash": "85365426fbf4496cfac2415de7f8b411ee0133e9a8b2316f8939adcd30c2a157",
+      "date": "2021-11-03T12:58:35+13:00",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+        "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+        "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>"
+      ],
+      "body_plain": "On Tue, 2 Nov 2021 11:20:25 -0400\nBen Bolker <bbolker at gmail.com> wrote:\n\n<SNIP>\n\n> -- it's just hard to estimate variance reliably from a sample of\n> three. (See\n> https://rpubs.com/bbolker/4187\n> for some simulated examples.) One standard approach to this problem\n> is to treat province as a *fixed* effect.\n\n<SNIP>\n\nTo me it makes little or no sense to treat \"province\" as a random\neffect in any case.  Conceivably Alberta, Saskatchewan and Manitoba\ncould have been chosen at random from the 10 provinces, but it sure\ndoesn't look like it.  Moreover drawing inferences about the\n\"population of provinces\" (which is the whole idea of random effects)\nwould be highly dubious, given the completely different nature of (e.g.\nPEI) from the three prairie provinces in the \"sample\".\n\nThe data set involves the three prairie provinces; inferences drawn can\nreally only apply to those provinces.  Ergo \"province\" is a fixed\neffect.\n\ncheers,\n\nRolf Turner\n\n-- \nHonorary Research Fellow\nDepartment of Statistics\nUniversity of Auckland\nPhone: +64-9-373-7599 ext. 88276",
+      "body_snippet": "On Tue, 2 Nov 2021 11:20:25 -0400\nBen Bolker <bbolker at gmail.com> wrote:\n\n<SNIP>\n\n> -- it's just hard to estimate variance reliably from a sample of\n> three. (See\n> https://rpubs.com/bbolker/4187\n> ",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 5,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-20c695e43db8",
+      "message_id": "<bbed9a37-5717-2777-d140-af0abeff826e@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-11-02T19:04:34-05:00",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<20211103125835.1a1fd952@rolf-Latitude-E7470>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+        "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+        "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>",
+        "<20211103125835.1a1fd952@rolf-Latitude-E7470>"
+      ],
+      "body_plain": "I think one useful case for treating small, closed populations as a\nrandom-effect is that you get the shrinkage/regularization. Of course,\nthe estimated variances will be nonsense. But the regularization may\nstill be useful for other things, cf. \"new style\" random effects:\n\nhttp://www.biostat.umn.edu/~hodges/PubH8492/Hodges-ClaytonREONsubToStatSci.pdf\n\nhttp://www.biostat.umn.edu/~hodges/PubH8492/Lectures_13.pdf\n\nOf course, this is the statistical equivalent of \"if you have to ask,\nyou can't afford it\" / \"shouldn't be using it\".\n\n(This is a general comment and _not_ advocating for any approach in this\nparticular case -- I haven't looked at the OP's problem enough to have\nany idea about which approach is suitable there.)\n\nPhillip\n\nOn 2/11/21 6:58 pm, Rolf Turner wrote:\n> \n> On Tue, 2 Nov 2021 11:20:25 -0400\n> Ben Bolker <bbolker at gmail.com> wrote:\n> \n> <SNIP>\n> \n>> -- it's just hard to estimate variance reliably from a sample of\n>> three. (See\n>> https://rpubs.com/bbolker/4187\n>> for some simulated examples.) One standard approach to this problem\n>> is to treat province as a *fixed* effect.\n> \n> <SNIP>\n> \n> To me it makes little or no sense to treat \"province\" as a random\n> effect in any case.  Conceivably Alberta, Saskatchewan and Manitoba\n> could have been chosen at random from the 10 provinces, but it sure\n> doesn't look like it.  Moreover drawing inferences about the\n> \"population of provinces\" (which is the whole idea of random effects)\n> would be highly dubious, given the completely different nature of (e.g.\n> PEI) from the three prairie provinces in the \"sample\".\n> \n> The data set involves the three prairie provinces; inferences drawn can\n> really only apply to those provinces.  Ergo \"province\" is a fixed\n> effect.\n> \n> cheers,\n> \n> Rolf Turner\n>",
+      "body_snippet": "I think one useful case for treating small, closed populations as a\nrandom-effect is that you get the shrinkage/regularization. Of course,\nthe estimated variances will be nonsense. But the regularizat",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 6,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-66f90f9b6632",
+      "message_id": "<33a22cbc-d790-1fd9-fa67-98157ab3bc76@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-02T21:09:47-04:00",
+      "subject": "[R-sig-ME] Fw: lme4 error",
+      "subject_clean": "lme4 error",
+      "in_reply_to": "<1252569631.2119.1635882827599@mail.yahoo.com>",
+      "references": [
+        "<1710671081.2125810.1635868844523.ref@mail.yahoo.com>",
+        "<1710671081.2125810.1635868844523@mail.yahoo.com>",
+        "<35053577.2123867.1635870324935@mail.yahoo.com>",
+        "<1252569631.2119.1635882827599@mail.yahoo.com>"
+      ],
+      "body_plain": "Assuming this is devtools::load_all() (please confirm? I'm not sure, \nas it doesn't that I know of \"walk through [the] C function\")\n\n  * I have no idea offhand\n  * it might help to reinstall Rcpp, RcppEigen, lme4 *from source* in \nthat order\n  * are you able to build the package from source and load it in the \nusual way?\n\n   cheers\n    Ben Bolker\n\nOn 11/2/21 3:53 PM, Mehdi Rezapour via R-sig-mixed-models wrote:\n> \n> \n>   Dear Dr. Bolker,\n> \n> Hope all is well.I am trying to understand the C code in lme4 by use of load_all function, which is loading the package and walk through C function.But when i am trying to load the package it gives me an error of \" error: Index is not a member of ?lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<double, 0, int> >::Base{aka ?Eigen::CholmodDecomposition<Eigen::SparseMatrix<double, 0, int>, 1>\"which is related to document \"lme4CholmodDecomposition.h\"Could you please tell me if you have any input?\n> kind?regardsMahdi\n>      \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Assuming this is devtools::load_all() (please confirm? I'm not sure, \nas it doesn't that I know of \"walk through [the] C function\")\n\n  * I have no idea offhand\n  * it might help to reinstall Rcpp, Rcp",
+      "thread_id": "thread-2a4f90018777",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-b4ff65de20b4",
+      "message_id": "<CAE5DuhtMqD5HFOPcvmwkCSSCc5Rq6SsSPfjLg64zPQCqu7k1Cg@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-02T22:46:07-06:00",
+      "subject": "[R-sig-ME]  zero variance and standard deviation in random effects",
+      "subject_clean": "zero variance and standard deviation in random effects",
+      "in_reply_to": "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>",
+      "references": [
+        "<CAE5DuhshgZxSjb_NJcMa_sABbOf_sMeKCJVZ0p_NzGDvrLk6AA@mail.gmail.com>",
+        "<ec9bab0e850540408103aa2d50c97a9b@uk-koeln.de>",
+        "<CAE5DuhuD6UFroaOBRVbaBrdohHGOhWe+v+dsTzNu6j=XCh0wgg@mail.gmail.com>",
+        "<97abfe2c760e4e719760ab01b7c9e810@UM-MAIL3214.unimaas.nl>",
+        "<aa725aca-cd6d-1bfd-6374-9a950b691729@gmail.com>"
+      ],
+      "body_plain": "Thanks a lot, everyone, for your valuable suggestion. I have run another\nmixed model that assumes the district as random effects; each district has\nvalues (yield) at different years. There are 12 districts; the data is\nrepeated measures. I get a very small variance for the districts\n(5.692e-17). I checked the coefficients of the model. The intercepts for\nall districts are the same. In this case, can I run a random intercept\nmixed model? Or, which model will be appropriate in this case? Can I run a\nregression model assuming year (2000 to 2018) and district ( 12 districts)\nas covariates?\n\nOn Tue, Nov 2, 2021 at 9:20 AM Ben Bolker <bbolker at gmail.com> wrote:\n\n>    I agree.  There is more discussion at\n>\n>\n> http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#singular-models-random-effect-variances-estimated-as-zero-or-correlations-estimated-as---1\n>\n>    While I appreciate Carola Bloch's input, I think it's a little\n> misguided.  Having only three levels of the random effect is indeed\n> problematic, but it doesn't actually violate any assumptions of the\n> model, and there isn't necessarily anything else wrong with the model --\n> it's just hard to estimate variance reliably from a sample of three.\n> (See https://rpubs.com/bbolker/4187 for some simulated examples.) One\n> standard approach to this problem is to treat province as a *fixed* effect.\n>\n> On 11/2/21 10:57 AM, Viechtbauer, Wolfgang (SP) wrote:\n> > When the variance is estimated to be zero, then this is identical to\n> removing the random effect altogether. So whether you remove it or not will\n> not make any difference. I would leave it in and just report the results\n> you obtained. One can also use confint() then to obtain a CI for this\n> variance component. While the estimate (and hence lower bound) are 0, the\n> upper bound is likely to indicate that there could be (substantial)\n> variance associated with this random effect.\n> >\n> > Best,\n> > Wolfgang\n> >\n> >> -----Original Message-----\n> >> From: R-sig-mixed-models [mailto:\n> r-sig-mixed-models-bounces at r-project.org] On\n> >> Behalf Of Tahsin Ferdous\n> >> Sent: Tuesday, 02 November, 2021 14:57\n> >> To: Carola Bloch; r-sig-mixed-models at r-project.org\n> >> Subject: Re: [R-sig-ME] zero variance and standard deviation in random\n> effects\n> >>\n> >> Thanks a lot. My model is a random intercept model. But from the\n> \"coef(m2)\"\n> >> command, I have found the following results:\n> >>\n> >> Prov      Intercept\n> >> AB.       0.07346574\n> >> MB.      0.07346574\n> >> SK.       0.07346574\n> >>\n> >> That means intercepts are identical for all three provinces. In this\n> model,\n> >> Prov is the random effect that has three-level (AB, MB and SK). In this\n> >> case, what should I do? If I remove province, the model will not be then\n> >> mixed model. But my data is repeated measures. I have also attached the\n> >> plot by running the command ( performance::check_model()).\n> >>\n> >> On Tue, Nov 2, 2021 at 12:11 AM Carola Bloch <carola.bloch at uk-koeln.de>\n> >> wrote:\n> >>\n> >>> Hi,\n> >>>\n> >>> thanks for sharing your problem. Concerning your first question, I\n> would\n> >>> not recommend running a regular regression, as the data points in your\n> >>> sample are not independent and this would inflate the type 1 error\n> rate.\n> >>>\n> >>> In order to find out why the residual variance shows strange values, I\n> >>> would try some trouble shooting. You could run coef(m2) and check\n> whether\n> >>> there are actually different intercepts for Prof. Second I would check\n> >>> the model assumptions, possibly there is a violation of the assumptions\n> >>> that affects model fit (I'd recommend performance::check_model()).\n> >>> Furthermore, how many factor levels does Prof have, I assume 3\n> according\n> >>> to your output? A small number of levels might be problematic, see\n> >>> Singman & Kellen, 2019*.\n> >>>\n> >>> *Singmann, H., & Kellen, D. (2019). An introduction to mixed models for\n> >>> experimental psychology. In *New methods in cognitive psychology* (pp.\n> >>> 4-31). Routledge.\n> >>>\n> >>> Hope this helps!\n> >>> ------------------------------\n> >>> *Von:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org>\n> im\n> >>> Auftrag von Tahsin Ferdous <tahsinferdousuofc at gmail.com>\n> >>> *Gesendet:* Dienstag, 2. November 2021 05:57:26\n> >>> *An:* r-sig-mixed-models at r-project.org\n> >>> *Betreff:* [R-sig-ME] zero variance and standard deviation in random\n> >>> effects\n> >>>\n> >>> Hi,\n> >>>\n> >>> I am running a mixed model using lmer like this:\n> >>>\n> >>> m2<-lmer( logSeverity~  Incidence+Year+ (1|Prov), data = prov1,REML =\n> >>> FALSE)\n> >>>\n> >>> Here, prov is my random effect. But I have the result, where the random\n> >>> intercept of random effect is zero.\n> >>>\n> >>> Random effects:\n> >>>   Groups   Name        Variance Std.Dev.\n> >>>   Prov     (Intercept) 0.00000  0.0000\n> >>>   Residual             0.01149  0.1072\n> >>> Number of obs: 54, groups:  Prov, 3\n> >>>\n> >>> Should I still run a mixed model using Prov as a random effect, or I\n> run\n> >>> regression model here instead of mixed model by removing \"Prov\".\n> >>> My data structure is like this:\n> >>>\n> >>>     Prov Year Incidence Severity\n> >>>    MB 2020 31.5 0.29\n> >>>    MB 2019 21.8 0.36\n> >>>    MB 2018 20.4 0.23\n> >>>    MB 2017 31.1 0.31\n> >>>    MB 2016 90.1 1.34\n> >>>    MB 2015 63.4 0.5\n> >>>    MB 2014 57.5 0.7\n> >>>    MB 2013 44.1 0.45\n> >>>    MB 2012 42.9 0.8\n> >>>    MB 2011 15.6 0.92\n> >>>    MB 2010 50.9 1.23\n> >>>    MB 2009 32.1 1.56\n> >>>    MB 2008 52.4 1.71\n> >>>    MB 2007 15.1       0.83\n> >>>    MB 2006 4.3       0.65\n> >>>    MB 2005 47.7 1.4\n> >>>    MB 2004 16.4 1.58\n> >>>    MB 2003 39.3 0.33\n> >>>    SK 2020 25.7 0.33\n> >>>    SK 2019 37.3 0.54\n> >>>    SK 2018 14.2 0.32\n> >>>    SK 2017 4.8        0.51\n> >>>    SK 2016 85.2 1.53\n> >>>    SK 2015 53.2 0.57\n> >>>    SK 2014 68.1        1.45\n> >>>    SK 2013 23.2 0.39\n> >>>    SK 2012 49.8 1.14\n> >>>    SK 2011 10.6 0.79\n> >>>    SK 2010 13.5 1.5\n> >>>    SK 2009 6.9       0.56\n> >>>    SK 2008 7.6 0.92\n> >>>    SK 2007 2.4 0.75\n> >>>    SK 2006 0.7 0.58\n> >>>    SK 2005 4.1 0.71\n> >>>    SK 2004 1.7 0.4\n> >>>    SK 2003 1.9 0.09\n> >>>    AB 2020 8 0.34\n> >>>    AB 2019 28.3 0.52\n> >>>    AB 2018 2.8 0.37\n> >>>    AB 2017 3.7 0.49\n> >>>    AB 2016 32.8 0.59\n> >>>    AB 2015 9.2 0.29\n> >>>    AB 2014 24.6 0.25\n> >>>    AB 2013 17.6 0.4\n> >>>    AB 2012 10.3 0.63\n> >>>    AB 2011 5.2 0.87\n> >>>    AB 2010 3.9 1.68\n> >>>    AB 2009 3.2 1.13\n> >>>    AB 2008 0.4 0.78\n> >>>    AB 2007 0.1 0.45\n> >>>    AB 2006 0.1 0.78\n> >>>    AB 2005 1.1 1.09\n> >>>    AB 2004 1.2 0.82\n> >>>    AB 2003 1.2 0.08\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> (Acting) Graduate chair, Mathematics & Statistics\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks a lot, everyone, for your valuable suggestion. I have run another\nmixed model that assumes the district as random effects; each district has\nvalues (yield) at different years. There are 12 dist",
+      "thread_id": "thread-50fc7e475155",
+      "thread_depth": 5,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-83cc6300cc71",
+      "message_id": "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-04T18:22:24-06:00",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\n\nI am analyzing repeated measures data. Both the mixed model and generalized\nestimating equation are appropriate for my data. In this case, how can I\ndecide that which one is better (LMM or GEE)? I know that GEE is a *marginal\nmodel*. It seeks to model a population average. Mixed-effect/Multilevel\nmodels are *subject-specific*, or *conditional*, models. Thanks.\n\n\nBest,\n\nTahsin\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\n\nI am analyzing repeated measures data. Both the mixed model and generalized\nestimating equation are appropriate for my data. In this case, how can I\ndecide that which one is better (LMM or G",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-de24277d1ea1",
+      "message_id": "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-04T20:38:24-04:00",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>"
+      ],
+      "body_plain": "I think that depends on what kind of questions you are asking ... ?? \n(If anyone wants to point to a great resource on marginal vs conditional \nmodels and when each type is appropriate, that would be great.  I know \nthis distinction is discussed in Agresti's _Categorical Data Analysis_ \nbook but I don't know if it goes into detail / gives examples about when \none would want either one ...)\n\nOn 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n> Hi all,\n> \n> \n> I am analyzing repeated measures data. Both the mixed model and generalized\n> estimating equation are appropriate for my data. In this case, how can I\n> decide that which one is better (LMM or GEE)? I know that GEE is a *marginal\n> model*. It seeks to model a population average. Mixed-effect/Multilevel\n> models are *subject-specific*, or *conditional*, models. Thanks.\n> \n> \n> Best,\n> \n> Tahsin\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "I think that depends on what kind of questions you are asking ... ?? \n(If anyone wants to point to a great resource on marginal vs conditional \nmodels and when each type is appropriate, that would be ",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-ec0d1db4aa82",
+      "message_id": "<14309503-E20C-4256-84BA-22C638F4D95C@uq.edu.au>",
+      "from_name": "Milani Chaloupka",
+      "from_email_hash": "8ccd57059a6572643c74dbadadf95008b1b0c5d50ef0279514757e1e84e41ea2",
+      "date": "2021-11-05T04:01:25Z",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+        "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>"
+      ],
+      "body_plain": "One useful reference is :\n\nMuff S, Held L, Keller L (2016) Marginal or conditional regression models for correlated non-normal data? Methods in Ecology and Evolution 7: 1514?1524. doi: 10.1111/2041-210X.12623\n\nMilani\n\n\n> On 5 Nov 2021, at 10:38 am, Ben Bolker <bbolker at gmail.com> wrote:\n> \n>   I think that depends on what kind of questions you are asking ... ?? (If anyone wants to point to a great resource on marginal vs conditional models and when each type is appropriate, that would be great.  I know this distinction is discussed in Agresti's _Categorical Data Analysis_ book but I don't know if it goes into detail / gives examples about when one would want either one ...)\n> \n> On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n>> Hi all,\n>> I am analyzing repeated measures data. Both the mixed model and generalized\n>> estimating equation are appropriate for my data. In this case, how can I\n>> decide that which one is better (LMM or GEE)? I know that GEE is a *marginal\n>> model*. It seeks to model a population average. Mixed-effect/Multilevel\n>> models are *subject-specific*, or *conditional*, models. Thanks.\n>> Best,\n>> Tahsin\n>> \t[[alternative HTML version deleted]]\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "One useful reference is :\n\nMuff S, Held L, Keller L (2016) Marginal or conditional regression models for correlated non-normal data? Methods in Ecology and Evolution 7: 1514?1524. doi: 10.1111/2041-21",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-16143550d91a",
+      "message_id": "<CAE5Duht+V7=ZVh3vAQVLqyPrbJSnmrijhGJbAvmqQ_ZZ95oz9A@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-04T23:07:13-06:00",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<14309503-E20C-4256-84BA-22C638F4D95C@uq.edu.au>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+        "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+        "<14309503-E20C-4256-84BA-22C638F4D95C@uq.edu.au>"
+      ],
+      "body_plain": "Dear all,\n\nThanks a lot.\n\nBest,\n\nTahsin\n\nOn Thu, Nov 4, 2021 at 10:02 PM Milani Chaloupka <m.chaloupka at uq.edu.au>\nwrote:\n\n> One useful reference is :\n>\n> Muff S, Held L, Keller L (2016) Marginal or conditional regression models\n> for correlated non-normal data? Methods in Ecology and Evolution 7:\n> 1514?1524. doi: 10.1111/2041-210X.12623\n>\n> Milani\n>\n>\n> > On 5 Nov 2021, at 10:38 am, Ben Bolker <bbolker at gmail.com> wrote:\n> >\n> >   I think that depends on what kind of questions you are asking ... ??\n> (If anyone wants to point to a great resource on marginal vs conditional\n> models and when each type is appropriate, that would be great.  I know this\n> distinction is discussed in Agresti's _Categorical Data Analysis_ book but\n> I don't know if it goes into detail / gives examples about when one would\n> want either one ...)\n> >\n> > On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n> >> Hi all,\n> >> I am analyzing repeated measures data. Both the mixed model and\n> generalized\n> >> estimating equation are appropriate for my data. In this case, how can I\n> >> decide that which one is better (LMM or GEE)? I know that GEE is a\n> *marginal\n> >> model*. It seeks to model a population average. Mixed-effect/Multilevel\n> >> models are *subject-specific*, or *conditional*, models. Thanks.\n> >> Best,\n> >> Tahsin\n> >>      [[alternative HTML version deleted]]\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nThanks a lot.\n\nBest,\n\nTahsin\n\nOn Thu, Nov 4, 2021 at 10:02 PM Milani Chaloupka <m.chaloupka at uq.edu.au>\nwrote:\n\n> One useful reference is :\n>\n> Muff S, Held L, Keller L (2016) Marginal or",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 3,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-4fa54e8e4711",
+      "message_id": "<CAE5DuhtopeZP8v031Y9D952kOQ1Z2CdgMKardiX1dXzw69hksw@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-04T23:10:28-06:00",
+      "subject": "[R-sig-ME] Mixed model for unbalanced data",
+      "subject_clean": "Mixed model for unbalanced data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nCan we use unbalanced data for the mixed model with nested random effects?\n\nBest,\n\nTahsin\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nCan we use unbalanced data for the mixed model with nested random effects?\n\nBest,\n\nTahsin\n\n\t[[alternative HTML version deleted]]",
+      "thread_id": "thread-4fa54e8e4711",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-40cbc48cd1ba",
+      "message_id": "<DE210BC8-89AF-45D8-8AE1-8C58AEBC6DF0@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "3e82959e6c3170d20b90b3474e06a7735050f3577859a428fb4cb57c245c4cab",
+      "date": "2021-11-05T11:51:54Z",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+        "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>"
+      ],
+      "body_plain": "This might be useful, although it's focussed on non-normal GLMMs, not LMMs. I read it a while ago, but I remember it being excellent:\n\nMarginal or conditional regression models for correlated non-normal data?\nStefanie Muff, Leonhard Held, Lukas F. Keller\nhttps://doi.org/10.1111/2041-210X.12623\n\n\"For normally distributed response variables, that is in linear regression, the choice between a marginal and a conditional formulation is not particularly delicate, because the interpretation of conditional and marginal linear regression models turns out to be equivalent. On the other hand, the choice is relevant for non-normal data, as the interpretation of conditional and marginal regression models is usually different.\"\n\n\nOn 05/11/2021, 00:38, \"R-sig-mixed-models on behalf of Ben Bolker\" <r-sig-mixed-models-bounces at r-project.org on behalf of bbolker at gmail.com> wrote:\n\n        I think that depends on what kind of questions you are asking ... ?? \n    (If anyone wants to point to a great resource on marginal vs conditional \n    models and when each type is appropriate, that would be great.  I know \n    this distinction is discussed in Agresti's _Categorical Data Analysis_ \n    book but I don't know if it goes into detail / gives examples about when \n    one would want either one ...)\n\n    On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n    > Hi all,\n    > \n    > \n    > I am analyzing repeated measures data. Both the mixed model and generalized\n    > estimating equation are appropriate for my data. In this case, how can I\n    > decide that which one is better (LMM or GEE)? I know that GEE is a *marginal\n    > model*. It seeks to model a population average. Mixed-effect/Multilevel\n    > models are *subject-specific*, or *conditional*, models. Thanks.\n    > \n    > \n    > Best,\n    > \n    > Tahsin\n    > \n    > \t[[alternative HTML version deleted]]\n    > \n    > _______________________________________________\n    > R-sig-mixed-models at r-project.org mailing list\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    >\n\n    _______________________________________________\n    R-sig-mixed-models at r-project.org mailing list\n    https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This might be useful, although it's focussed on non-normal GLMMs, not LMMs. I read it a while ago, but I remember it being excellent:\n\nMarginal or conditional regression models for correlated non-norm",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-c100e0ae5732",
+      "message_id": "<9067f07b-5ba5-9346-0f0b-3b340a821a34@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-11-05T08:22:11-05:00",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+        "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>"
+      ],
+      "body_plain": "Dimitris Rizopoulos covers this in his course slides:\n\nhttp://www.drizopoulos.com/courses/EMC/CE08.pdf\n\nThe slides might be a bit math heavy for end users, but big important\nassumptions and intuitions are called out in clear language.\n\n\n\nOn 4/11/21 7:38 pm, Ben Bolker wrote:\n> ?? I think that depends on what kind of questions you are asking ... ??\n> (If anyone wants to point to a great resource on marginal vs conditional\n> models and when each type is appropriate, that would be great.? I know\n> this distinction is discussed in Agresti's _Categorical Data Analysis_\n> book but I don't know if it goes into detail / gives examples about when\n> one would want either one ...)\n> \n> On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n>> Hi all,\n>>\n>>\n>> I am analyzing repeated measures data. Both the mixed model and\n>> generalized\n>> estimating equation are appropriate for my data. In this case, how can I\n>> decide that which one is better (LMM or GEE)? I know that GEE is a\n>> *marginal\n>> model*. It seeks to model a population average. Mixed-effect/Multilevel\n>> models are *subject-specific*, or *conditional*, models. Thanks.\n>>\n>>\n>> Best,\n>>\n>> Tahsin\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dimitris Rizopoulos covers this in his course slides:\n\nhttp://www.drizopoulos.com/courses/EMC/CE08.pdf\n\nThe slides might be a bit math heavy for end users, but big important\nassumptions and intuitions",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-1bf30f7b4e9b",
+      "message_id": "<434e4c2a-c4c4-1dc6-1392-88b4b4cd92e5@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-11-05T09:20:43-05:00",
+      "subject": "[R-sig-ME] Mixed model for unbalanced data",
+      "subject_clean": "Mixed model for unbalanced data",
+      "in_reply_to": "<CAE5DuhtopeZP8v031Y9D952kOQ1Z2CdgMKardiX1dXzw69hksw@mail.gmail.com>",
+      "references": [
+        "<CAE5DuhtopeZP8v031Y9D952kOQ1Z2CdgMKardiX1dXzw69hksw@mail.gmail.com>"
+      ],
+      "body_plain": "Yes.\n\nThere will of course be greater uncertainty for conditions/groups with\nless data.\n\nThe best way to see how this impacts your inference is to simulate\nbalanced and unbalanced data for your hypothesis and look at the\ndifference in estimates, standard errors, etc.\n\n\nOn 5/11/21 12:10 am, Tahsin Ferdous wrote:\n> Dear all,\n> \n> Can we use unbalanced data for the mixed model with nested random effects?\n> \n> Best,\n> \n> Tahsin\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Yes.\n\nThere will of course be greater uncertainty for conditions/groups with\nless data.\n\nThe best way to see how this impacts your inference is to simulate\nbalanced and unbalanced data for your hypoth",
+      "thread_id": "thread-4fa54e8e4711",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-a713d0650893",
+      "message_id": "<CO6PR11MB56027A32A3145B17B2E0917AEA8E9@CO6PR11MB5602.namprd11.prod.outlook.com>",
+      "from_name": "Muldoon, Ariel",
+      "from_email_hash": "deeb002ce4a1c499ebde154427b59750ad5a45182ea1fdcadf6b11db61387334",
+      "date": "2021-11-05T14:32:52Z",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": "<9067f07b-5ba5-9346-0f0b-3b340a821a34@phillipalday.com>",
+      "references": [
+        "<CAE5DuhuOSzD=haYtgR-u631RDei_9C1n8BVYnPwXvtqF0H0mzw@mail.gmail.com>",
+        "<739dc508-6a34-23e9-2f89-de0c926a4e51@gmail.com>",
+        "<9067f07b-5ba5-9346-0f0b-3b340a821a34@phillipalday.com>"
+      ],
+      "body_plain": "I remember enjoying the discussion of marginal vs conditional inference in Stroup's book Generalized Linear Mixed Models: Modern Concepts, Methods and Applications . It is not in front of me at the moment but I think this is covered chapter 3. He specifically discusses how the issue affects non-normal GLMM's and I believe he first shows an example of the non-issue in (normal) LMM vs GEE and then goes on to a binomial example. There is also a brief overview of when/why we might want conditional vs marginal inference (he seems to come down hard on the side of conditional).\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Phillip Alday <me at phillipalday.com>\nSent: Friday, November 5, 2021 6:22 AM\nTo: Ben Bolker <bbolker at gmail.com>; r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\nSubject: Re: [R-sig-ME] Mixed model vs GEE\n\n[This email originated from outside of OSU. Use caution with links and attachments.]\n\nDimitris Rizopoulos covers this in his course slides:\n\nhttps://nam04.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.drizopoulos.com%2Fcourses%2FEMC%2FCE08.pdf&amp;data=04%7C01%7Cariel.muldoon%40oregonstate.edu%7C38f85934acc948fe154d08d9a05f580f%7Cce6d05e13c5e4d6287a84c4a2713c113%7C0%7C0%7C637717154499841395%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=CqC3kwu%2FeyuX4n5n4kAD8ff69XKC2MWh%2BaWqjYUPwZo%3D&amp;reserved=0\n\nThe slides might be a bit math heavy for end users, but big important\nassumptions and intuitions are called out in clear language.\n\n\n\nOn 4/11/21 7:38 pm, Ben Bolker wrote:\n>    I think that depends on what kind of questions you are asking ... ??\n> (If anyone wants to point to a great resource on marginal vs conditional\n> models and when each type is appropriate, that would be great.  I know\n> this distinction is discussed in Agresti's _Categorical Data Analysis_\n> book but I don't know if it goes into detail / gives examples about when\n> one would want either one ...)\n>\n> On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n>> Hi all,\n>>\n>>\n>> I am analyzing repeated measures data. Both the mixed model and\n>> generalized\n>> estimating equation are appropriate for my data. In this case, how can I\n>> decide that which one is better (LMM or GEE)? I know that GEE is a\n>> *marginal\n>> model*. It seeks to model a population average. Mixed-effect/Multilevel\n>> models are *subject-specific*, or *conditional*, models. Thanks.\n>>\n>>\n>> Best,\n>>\n>> Tahsin\n>>\n>>     [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://nam04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cariel.muldoon%40oregonstate.edu%7C38f85934acc948fe154d08d9a05f580f%7Cce6d05e13c5e4d6287a84c4a2713c113%7C0%7C0%7C637717154499841395%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=xoVPM9dnKWBYmFHlA1mGu9fgWw%2B9NzpdY9FWWj%2BO1H4%3D&amp;reserved=0\n>>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://nam04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cariel.muldoon%40oregonstate.edu%7C38f85934acc948fe154d08d9a05f580f%7Cce6d05e13c5e4d6287a84c4a2713c113%7C0%7C0%7C637717154499851348%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=SJKHcYbKmFUExoGZaxtg43qddgoY%2BL56rEMhWlSnS6s%3D&amp;reserved=0\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://nam04.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cariel.muldoon%40oregonstate.edu%7C38f85934acc948fe154d08d9a05f580f%7Cce6d05e13c5e4d6287a84c4a2713c113%7C0%7C0%7C637717154499851348%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=SJKHcYbKmFUExoGZaxtg43qddgoY%2BL56rEMhWlSnS6s%3D&amp;reserved=0\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I remember enjoying the discussion of marginal vs conditional inference in Stroup's book Generalized Linear Mixed Models: Modern Concepts, Methods and Applications . It is not in front of me at the mo",
+      "thread_id": "thread-83cc6300cc71",
+      "thread_depth": 3,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-a5f0cc927d9b",
+      "message_id": "<37E4D09E-9CFF-484F-9013-F93B86D8B0FA@niu.edu>",
+      "from_name": "Carl Von Ende",
+      "from_email_hash": "cab5772d0e30cdad536b00448b266e28e6a2ed52616c871939b16c1ca9e686a0",
+      "date": "2021-11-06T22:34:02Z",
+      "subject": "[R-sig-ME] Mixed model vs GEE",
+      "subject_clean": "Mixed model vs GEE",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Two Wiley references  that specifically  GEE might be useful.  They both are listed in the References of the Muff et al. (2016) paper cited below in Message 1. \n\n1. Applied Longitudinal Analysis, 2nd Edition, 2011\nby Garrett Fitzmaurice, Nan Laird & James Ware'\n\nThen spend considerable time comparing LMM vs GEE\n\nhttps://content.sph.harvard.edu/fitzmaur/ala2e/\n\nThe software used primarily is SAS, but there are a few R programs on the above website.  \n\n2. Generalized Estimating Equations, 2nd Edition, 2013 \n\nThe authors use the R packages geepack, gee, and vags, as well Stata. \n\n\n?On 11/5/21, 9:31 AM, \"R-sig-mixed-models on behalf of r-sig-mixed-models-request at r-project.org\" <r-sig-mixed-models-bounces at r-project.org on behalf of r-sig-mixed-models-request at r-project.org> wrote:\n\n    Send R-sig-mixed-models mailing list submissions to\n    \tr-sig-mixed-models at r-project.org\n\n    To subscribe or unsubscribe via the World Wide Web, visit\n    \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    or, via email, send a message with subject or body 'help' to\n    \tr-sig-mixed-models-request at r-project.org\n\n    You can reach the person managing the list at\n    \tr-sig-mixed-models-owner at r-project.org\n\n    When replying, please edit your Subject line so it is more specific\n    than \"Re: Contents of R-sig-mixed-models digest...\"\n\n\n    Today's Topics:\n\n       1. Re: Mixed model vs GEE (Paul Johnson)\n       2. Re: Mixed model vs GEE (Phillip Alday)\n       3. Re: Mixed model for unbalanced data (Phillip Alday)\n\n    ----------------------------------------------------------------------\n\n    Message: 1\n    Date: Fri, 5 Nov 2021 11:51:54 +0000\n    From: Paul Johnson <paul.johnson at glasgow.ac.uk>\n    To: Ben Bolker <bbolker at gmail.com>, \"r-sig-mixed-models at r-project.org\"\n    \t<r-sig-mixed-models at r-project.org>\n    Subject: Re: [R-sig-ME] Mixed model vs GEE\n    Message-ID: <DE210BC8-89AF-45D8-8AE1-8C58AEBC6DF0 at glasgow.ac.uk>\n    Content-Type: text/plain; charset=\"utf-8\"\n\n    This might be useful, although it's focussed on non-normal GLMMs, not LMMs. I read it a while ago, but I remember it being excellent:\n\n    Marginal or conditional regression models for correlated non-normal data?\n    Stefanie Muff, Leonhard Held, Lukas F. Keller\n    https://doi.org/10.1111/2041-210X.12623\n\n    \"For normally distributed response variables, that is in linear regression, the choice between a marginal and a conditional formulation is not particularly delicate, because the interpretation of conditional and marginal linear regression models turns out to be equivalent. On the other hand, the choice is relevant for non-normal data, as the interpretation of conditional and marginal regression models is usually different.\"\n\n\n    On 05/11/2021, 00:38, \"R-sig-mixed-models on behalf of Ben Bolker\" <r-sig-mixed-models-bounces at r-project.org on behalf of bbolker at gmail.com> wrote:\n\n            I think that depends on what kind of questions you are asking ... ?? \n        (If anyone wants to point to a great resource on marginal vs conditional \n        models and when each type is appropriate, that would be great.  I know \n        this distinction is discussed in Agresti's _Categorical Data Analysis_ \n        book but I don't know if it goes into detail / gives examples about when \n        one would want either one ...)\n\n        On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n        > Hi all,\n        > \n        > \n        > I am analyzing repeated measures data. Both the mixed model and generalized\n        > estimating equation are appropriate for my data. In this case, how can I\n        > decide that which one is better (LMM or GEE)? I know that GEE is a *marginal\n        > model*. It seeks to model a population average. Mixed-effect/Multilevel\n        > models are *subject-specific*, or *conditional*, models. Thanks.\n        > \n        > \n        > Best,\n        > \n        > Tahsin\n        > \n        > \t[[alternative HTML version deleted]]\n        > \n        > _______________________________________________\n        > R-sig-mixed-models at r-project.org mailing list\n        > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n        >\n\n        _______________________________________________\n        R-sig-mixed-models at r-project.org mailing list\n        https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n    ------------------------------\n\n    Message: 2\n    Date: Fri, 5 Nov 2021 08:22:11 -0500\n    From: Phillip Alday <me at phillipalday.com>\n    To: Ben Bolker <bbolker at gmail.com>, r-sig-mixed-models at r-project.org\n    Subject: Re: [R-sig-ME] Mixed model vs GEE\n    Message-ID: <9067f07b-5ba5-9346-0f0b-3b340a821a34 at phillipalday.com>\n    Content-Type: text/plain; charset=\"utf-8\"\n\n    Dimitris Rizopoulos covers this in his course slides:\n\n    http://www.drizopoulos.com/courses/EMC/CE08.pdf\n\n    The slides might be a bit math heavy for end users, but big important\n    assumptions and intuitions are called out in clear language.\n\n\n\n    On 4/11/21 7:38 pm, Ben Bolker wrote:\n    >    I think that depends on what kind of questions you are asking ... ??\n    > (If anyone wants to point to a great resource on marginal vs conditional\n    > models and when each type is appropriate, that would be great.  I know\n    > this distinction is discussed in Agresti's _Categorical Data Analysis_\n    > book but I don't know if it goes into detail / gives examples about when\n    > one would want either one ...)\n    > \n    > On 11/4/21 8:22 PM, Tahsin Ferdous wrote:\n    >> Hi all,\n    >>\n    >>\n    >> I am analyzing repeated measures data. Both the mixed model and\n    >> generalized\n    >> estimating equation are appropriate for my data. In this case, how can I\n    >> decide that which one is better (LMM or GEE)? I know that GEE is a\n    >> *marginal\n    >> model*. It seeks to model a population average. Mixed-effect/Multilevel\n    >> models are *subject-specific*, or *conditional*, models. Thanks.\n    >>\n    >>\n    >> Best,\n    >>\n    >> Tahsin\n    >>\n    >>     [[alternative HTML version deleted]]\n    >>\n    >> _______________________________________________\n    >> R-sig-mixed-models at r-project.org mailing list\n    >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    >>\n    > \n    > _______________________________________________\n    > R-sig-mixed-models at r-project.org mailing list\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n\n    ------------------------------\n\n    Message: 3\n    Date: Fri, 5 Nov 2021 09:20:43 -0500\n    From: Phillip Alday <me at phillipalday.com>\n    To: Tahsin Ferdous <tahsinferdousuofc at gmail.com>,\n    \tr-sig-mixed-models at r-project.org, Ben Bolker <bbolker at gmail.com>\n    Subject: Re: [R-sig-ME] Mixed model for unbalanced data\n    Message-ID: <434e4c2a-c4c4-1dc6-1392-88b4b4cd92e5 at phillipalday.com>\n    Content-Type: text/plain; charset=\"utf-8\"\n\n    Yes.\n\n    There will of course be greater uncertainty for conditions/groups with\n    less data.\n\n    The best way to see how this impacts your inference is to simulate\n    balanced and unbalanced data for your hypothesis and look at the\n    difference in estimates, standard errors, etc.\n\n\n    On 5/11/21 12:10 am, Tahsin Ferdous wrote:\n    > Dear all,\n    > \n    > Can we use unbalanced data for the mixed model with nested random effects?\n    > \n    > Best,\n    > \n    > Tahsin\n    > \n    > \t[[alternative HTML version deleted]]\n    > \n    > _______________________________________________\n    > R-sig-mixed-models at r-project.org mailing list\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n    >\n\n\n\n\n    ------------------------------\n\n    Subject: Digest Footer\n\n    _______________________________________________\n    R-sig-mixed-models mailing list\n    R-sig-mixed-models at r-project.org\n    https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n    ------------------------------\n\n    End of R-sig-mixed-models Digest, Vol 179, Issue 8\n    **************************************************",
+      "body_snippet": "Two Wiley references  that specifically  GEE might be useful.  They both are listed in the References of the Muff et al. (2016) paper cited below in Message 1. \n\n1. Applied Longitudinal Analysis, 2nd ",
+      "thread_id": "thread-a5f0cc927d9b",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-015800e17cfe",
+      "message_id": "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-11-07T16:20:42-06:00",
+      "subject": "[R-sig-ME] Grouping variables technically suitable for modeling",
+      "subject_clean": "Grouping variables technically suitable for modeling",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Experts,\n\nApologies if this question has come up before. But I'm looking for\npublished references that provide guidance on when one or more grouping\nvariables that theoretically need to be random factors can also\n\"technically\" be used as random factors?\n\nFor example, I have heard for a grouping variable to be technically taken\nas a random factor, it needs to have at least 10 or so unique categories?\n(Any reference to confirm or disconfirm this?)\n\nFor example, I have heard for two grouping variables to be technically\ntaken as random factors, they each need to have a sufficiently different\nnumber of unique categories relative to the other one. Otherwise, their\nvariance components can't be distinguished from one another and thus only\none of them can be taken as random, not both (Any reference to confirm or\ndisconfirm this?)\n\nThanks,\nTim M\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Experts,\n\nApologies if this question has come up before. But I'm looking for\npublished references that provide guidance on when one or more grouping\nvariables that theoretically need to be random",
+      "thread_id": "thread-015800e17cfe",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-78eab47e4bda",
+      "message_id": "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+      "from_name": "Suresh N Neupane",
+      "from_email_hash": "367485ce15ebd8431952e0616fc2520f85d1717901ceac50699a9fabf0f31fb0",
+      "date": "2021-11-08T11:49:25Z",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\nI am using lme4 package to run a hierarchical logistic regression model (with random county effect) for my binomial dependent variable, COVID death (0/1). This is a very large dataset with ~ 8 million observations.\nI need to find the robust standard error but was not sure about any package. I tried robustlmm (although my DV is not continuous) and got this error when used MerDeriv (sandwich):\nError in UseMethod(\"estfun\") :\nno applicable method for 'estfun' applied to an object of class \"c('glmerMod', 'merMod')\"\nThe real tricky part is it takes several hours to compute because of the dataset length.\nAll I need is to get robust standard error values.\nI already fit the models:\nfit <- glmer(death ~ (1|county_fips_code) + IV).\nThank you so much,\nSuresh Neupane\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI am using lme4 package to run a hierarchical logistic regression model (with random county effect) for my binomial dependent variable, COVID death (0/1). This is a very large dataset with ~",
+      "thread_id": "thread-78eab47e4bda",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-c558848fb49d",
+      "message_id": "<PAXPR02MB7798D370AD8B329E178F9FBA92919@PAXPR02MB7798.eurprd02.prod.outlook.com>",
+      "from_name": "Fernando Pedro Bruna Quintas",
+      "from_email_hash": "bb6b04e8a7e0094cc54915de3f5055d02a4c604797ae8a91f8aa78be13463259",
+      "date": "2021-11-08T13:51:34Z",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+      "references": [
+        "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Hi,\n\nI have tried to do that with lme4 and the function tab_model() of pacakge sjPlot. That works for other types of models, but it did not worked for lme4. Try WeMix package, which mimic Stata?s mixed function.\n\nHowever, I have substantive doubts about this. Do  robust standard errors make sense in multilevel models?. For instance, using clustered standard errors is a way of introducing level-two correlations in OLS, but in hierarchical models we are already modelling that correlation. Additionally, there are more general doubts about that. See:\nhttps://www.nber.org/papers/w24003\n\nI would like to listen more thoughts about robust and clustered standard errors in multilevel models, both from the philosophical point of view and the practical one.\n\nBest,\n\nFernando Bruna\nDepartment of Economics\nUniversidade da Corunha, Spain.\n\n\n\n\n________________________________\nDe: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> en nombre de Suresh N Neupane via R-sig-mixed-models <r-sig-mixed-models at r-project.org>\nEnviado: lunes, 8 de noviembre de 2021 12:49\nPara: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\nAsunto: [R-sig-ME] Using Robust Standard Errors lme4\n\nDear all,\nI am using lme4 package to run a hierarchical logistic regression model (with random county effect) for my binomial dependent variable, COVID death (0/1). This is a very large dataset with ~ 8 million observations.\nI need to find the robust standard error but was not sure about any package. I tried robustlmm (although my DV is not continuous) and got this error when used MerDeriv (sandwich):\nError in UseMethod(\"estfun\") :\nno applicable method for 'estfun' applied to an object of class \"c('glmerMod', 'merMod')\"\nThe real tricky part is it takes several hours to compute because of the dataset length.\nAll I need is to get robust standard error values.\nI already fit the models:\nfit <- glmer(death ~ (1|county_fips_code) + IV).\nThank you so much,\nSuresh Neupane\n\n\n        [[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI have tried to do that with lme4 and the function tab_model() of pacakge sjPlot. That works for other types of models, but it did not worked for lme4. Try WeMix package, which mimic Stata?s mixe",
+      "thread_id": "thread-78eab47e4bda",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-c5675e76033e",
+      "message_id": "<6b8abdb3-b60d-8869-b0f7-43b7294e140a@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-08T20:34:35-05:00",
+      "subject": "[R-sig-ME] Grouping variables technically suitable for modeling",
+      "subject_clean": "Grouping variables technically suitable for modeling",
+      "in_reply_to": "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>",
+      "references": [
+        "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>"
+      ],
+      "body_plain": "This is a bit of a \"how long is a piece of string\" question ...\n\n\n   The \"5-6 levels of a grouping variable\" rule of thumb is quoted in \nvarious places: a variety of those references (Gelman and Hill 2006, \nK?ry and Royle 2015, Harrison et al 2018, Arnqvist 2020) are collected \nby Gomes \n(https://www.biorxiv.org/content/10.1101/2021.04.11.439357v2.full).\n\n   I sort of see what you mean by your second paragraph, but can you \ngive an example?\n\n\nOn 11/7/21 5:20 PM, Timothy MacKenzie wrote:\n> Dear Experts,\n> \n> Apologies if this question has come up before. But I'm looking for\n> published references that provide guidance on when one or more grouping\n> variables that theoretically need to be random factors can also\n> \"technically\" be used as random factors?\n> \n> For example, I have heard for a grouping variable to be technically taken\n> as a random factor, it needs to have at least 10 or so unique categories?\n> (Any reference to confirm or disconfirm this?)\n> \n> For example, I have heard for two grouping variables to be technically\n> taken as random factors, they each need to have a sufficiently different\n> number of unique categories relative to the other one. Otherwise, their\n> variance components can't be distinguished from one another and thus only\n> one of them can be taken as random, not both (Any reference to confirm or\n> disconfirm this?)\n> \n> Thanks,\n> Tim M\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "This is a bit of a \"how long is a piece of string\" question ...\n\n\n   The \"5-6 levels of a grouping variable\" rule of thumb is quoted in \nvarious places: a variety of those references (Gelman and Hill ",
+      "thread_id": "thread-015800e17cfe",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-b3aa83135750",
+      "message_id": "<001e01d7d54c$c87d13b0$59773b10$@uke.de>",
+      "from_name": "Daniel Lüdecke",
+      "from_email_hash": "49f60f793b43e8781cf853ec393ce29481c8d6b5a647f6763a150643bd313c75",
+      "date": "2021-11-09T10:32:58+01:00",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+      "references": [
+        "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Hi Suresh,\n\nyou could try the \"parameters\" package, which should (easily) return\ndifferent types of robust standard errors, including cluster-robust standard\nerrors for mixed models:\n\nhttps://easystats.github.io/parameters/articles/model_parameters_robust.html\n\nMaybe you try this out on a very small subset of your model to see if it\nworks. Also, since the \"model_parameters()\" function includes random effects\nvariances by default, you may set the effects-argument to \"fixed\" to speed\nup computation. The call to the function could then look like something like\nthis:\n\nmodel_parameters(\n  model,\n  effects = \"fixed\",\n  robust = TRUE,\n  vcov_estimation = \"CL\",\n  vcov_type = \"HC1\",\n  vcov_args = list(cluster = <your cluster variable from the data>)\n)\n\n\nBest\nDaniel\n\n-----Urspr?ngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\nAuftrag von Suresh N Neupane via R-sig-mixed-models\nGesendet: Montag, 8. November 2021 12:49\nAn: r-sig-mixed-models at r-project.org\nBetreff: [R-sig-ME] Using Robust Standard Errors lme4\n\nDear all,\nI am using lme4 package to run a hierarchical logistic regression model\n(with random county effect) for my binomial dependent variable, COVID death\n(0/1). This is a very large dataset with ~ 8 million observations.\nI need to find the robust standard error but was not sure about any package.\nI tried robustlmm (although my DV is not continuous) and got this error when\nused MerDeriv (sandwich):\nError in UseMethod(\"estfun\") :\nno applicable method for 'estfun' applied to an object of class\n\"c('glmerMod', 'merMod')\"\nThe real tricky part is it takes several hours to compute because of the\ndataset length.\nAll I need is to get robust standard error values.\nI already fit the models:\nfit <- glmer(death ~ (1|county_fips_code) + IV).\nThank you so much,\nSuresh Neupane\n\n\n\t[[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
+      "body_snippet": "Hi Suresh,\n\nyou could try the \"parameters\" package, which should (easily) return\ndifferent types of robust standard errors, including cluster-robust standard\nerrors for mixed models:\n\nhttps://easystat",
+      "thread_id": "thread-78eab47e4bda",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-d9e8fd5b704b",
+      "message_id": "<CADreqiw47aY_KRtHuPtRe8xbKOFZ27weX1c_yEBrcQC6W7Kp1Q@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-11-09T08:18:28-06:00",
+      "subject": "[R-sig-ME] Grouping variables technically suitable for modeling",
+      "subject_clean": "Grouping variables technically suitable for modeling",
+      "in_reply_to": "<6b8abdb3-b60d-8869-b0f7-43b7294e140a@gmail.com>",
+      "references": [
+        "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>",
+        "<6b8abdb3-b60d-8869-b0f7-43b7294e140a@gmail.com>"
+      ],
+      "body_plain": "Dear Ben,\n\nThank you for sharing the references regarding my first question.\n\nRegarding my second question, I simply mean if we have say ID1 and ID2,\nthen for ID2 to be distinguishably nested in ID1, it needs to have a\ndifferent unique categories relative to those of ID1.\n\nFor example, if ID1 has 120 unique categories and ID2 has 130\nunique categories nested in ID1, then the variance components for ID1 and\nID2 are not distinguishable from each other. As a result, only one of them\ncan be added as a random effect; either (1 | ID1) or (1 | |ID2), but not (1\n| ID1/ID2).\n\nIs this correct and is there a published reference confirming or\ndisconfirming this?\n\nThanks,\nTim M\n\nOn Mon, Nov 8, 2021 at 7:35 PM Ben Bolker <bbolker at gmail.com> wrote:\n\n>\n>     This is a bit of a \"how long is a piece of string\" question ...\n>\n>\n>    The \"5-6 levels of a grouping variable\" rule of thumb is quoted in\n> various places: a variety of those references (Gelman and Hill 2006,\n> K?ry and Royle 2015, Harrison et al 2018, Arnqvist 2020) are collected\n> by Gomes\n> (https://www.biorxiv.org/content/10.1101/2021.04.11.439357v2.full).\n>\n>    I sort of see what you mean by your second paragraph, but can you\n> give an example?\n>\n>\n> On 11/7/21 5:20 PM, Timothy MacKenzie wrote:\n> > Dear Experts,\n> >\n> > Apologies if this question has come up before. But I'm looking for\n> > published references that provide guidance on when one or more grouping\n> > variables that theoretically need to be random factors can also\n> > \"technically\" be used as random factors?\n> >\n> > For example, I have heard for a grouping variable to be technically taken\n> > as a random factor, it needs to have at least 10 or so unique categories?\n> > (Any reference to confirm or disconfirm this?)\n> >\n> > For example, I have heard for two grouping variables to be technically\n> > taken as random factors, they each need to have a sufficiently different\n> > number of unique categories relative to the other one. Otherwise, their\n> > variance components can't be distinguished from one another and thus only\n> > one of them can be taken as random, not both (Any reference to confirm or\n> > disconfirm this?)\n> >\n> > Thanks,\n> > Tim M\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Ben,\n\nThank you for sharing the references regarding my first question.\n\nRegarding my second question, I simply mean if we have say ID1 and ID2,\nthen for ID2 to be distinguishably nested in ID1, ",
+      "thread_id": "thread-015800e17cfe",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-f4577a09e535",
+      "message_id": "<CAJuCY5w03buCp-BqBOyA9BRd5wYn-YJew3DkB_f=Wo+PpLiooQ@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2021-11-09T16:02:59+01:00",
+      "subject": "[R-sig-ME] Grouping variables technically suitable for modeling",
+      "subject_clean": "Grouping variables technically suitable for modeling",
+      "in_reply_to": "<CADreqiw47aY_KRtHuPtRe8xbKOFZ27weX1c_yEBrcQC6W7Kp1Q@mail.gmail.com>",
+      "references": [
+        "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>",
+        "<6b8abdb3-b60d-8869-b0f7-43b7294e140a@gmail.com>",
+        "<CADreqiw47aY_KRtHuPtRe8xbKOFZ27weX1c_yEBrcQC6W7Kp1Q@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Timothy,\n\nI would expect in your example that the combined effect of ID1 and ID2 will\nbe more or less equally split over ID1 and ID2. As this would yield a lower\npenalty then attributing the effect fully to either ID1 or ID2. Hence the\nrandom effect variances of 1|ID1/ID2 will be a lot smaller than 1|ID1 or\n1|ID2.\n\nAs ID2 defines almost the same grouping as ID1, it doesn't make sense to\ninclude both of them in the model.\n\nI have no reference at hand for this. Just common sense.\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp di 9 nov. 2021 om 15:19 schreef Timothy MacKenzie <fswfswt at gmail.com>:\n\n> Dear Ben,\n>\n> Thank you for sharing the references regarding my first question.\n>\n> Regarding my second question, I simply mean if we have say ID1 and ID2,\n> then for ID2 to be distinguishably nested in ID1, it needs to have a\n> different unique categories relative to those of ID1.\n>\n> For example, if ID1 has 120 unique categories and ID2 has 130\n> unique categories nested in ID1, then the variance components for ID1 and\n> ID2 are not distinguishable from each other. As a result, only one of them\n> can be added as a random effect; either (1 | ID1) or (1 | |ID2), but not (1\n> | ID1/ID2).\n>\n> Is this correct and is there a published reference confirming or\n> disconfirming this?\n>\n> Thanks,\n> Tim M\n>\n> On Mon, Nov 8, 2021 at 7:35 PM Ben Bolker <bbolker at gmail.com> wrote:\n>\n> >\n> >     This is a bit of a \"how long is a piece of string\" question ...\n> >\n> >\n> >    The \"5-6 levels of a grouping variable\" rule of thumb is quoted in\n> > various places: a variety of those references (Gelman and Hill 2006,\n> > K?ry and Royle 2015, Harrison et al 2018, Arnqvist 2020) are collected\n> > by Gomes\n> > (https://www.biorxiv.org/content/10.1101/2021.04.11.439357v2.full).\n> >\n> >    I sort of see what you mean by your second paragraph, but can you\n> > give an example?\n> >\n> >\n> > On 11/7/21 5:20 PM, Timothy MacKenzie wrote:\n> > > Dear Experts,\n> > >\n> > > Apologies if this question has come up before. But I'm looking for\n> > > published references that provide guidance on when one or more grouping\n> > > variables that theoretically need to be random factors can also\n> > > \"technically\" be used as random factors?\n> > >\n> > > For example, I have heard for a grouping variable to be technically\n> taken\n> > > as a random factor, it needs to have at least 10 or so unique\n> categories?\n> > > (Any reference to confirm or disconfirm this?)\n> > >\n> > > For example, I have heard for two grouping variables to be technically\n> > > taken as random factors, they each need to have a sufficiently\n> different\n> > > number of unique categories relative to the other one. Otherwise, their\n> > > variance components can't be distinguished from one another and thus\n> only\n> > > one of them can be taken as random, not both (Any reference to confirm\n> or\n> > > disconfirm this?)\n> > >\n> > > Thanks,\n> > > Tim M\n> > >\n> > >       [[alternative HTML version deleted]]\n> > >\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > >\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Timothy,\n\nI would expect in your example that the combined effect of ID1 and ID2 will\nbe more or less equally split over ID1 and ID2. As this would yield a lower\npenalty then attributing the effe",
+      "thread_id": "thread-015800e17cfe",
+      "thread_depth": 3,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-88fd05122f6b",
+      "message_id": "<CADreqiwAE8-KhoUZ2PonOYrx4jvqFpfb87+3QXtJ6HQqje40Qg@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-11-09T11:30:49-06:00",
+      "subject": "[R-sig-ME] Grouping variables technically suitable for modeling",
+      "subject_clean": "Grouping variables technically suitable for modeling",
+      "in_reply_to": "<CAJuCY5w03buCp-BqBOyA9BRd5wYn-YJew3DkB_f=Wo+PpLiooQ@mail.gmail.com>",
+      "references": [
+        "<CADreqiwk+9DqbfmbGYDv4fq8jHWq9TGRxdB_b-G=uSkC_4bMNA@mail.gmail.com>",
+        "<6b8abdb3-b60d-8869-b0f7-43b7294e140a@gmail.com>",
+        "<CADreqiw47aY_KRtHuPtRe8xbKOFZ27weX1c_yEBrcQC6W7Kp1Q@mail.gmail.com>",
+        "<CAJuCY5w03buCp-BqBOyA9BRd5wYn-YJew3DkB_f=Wo+PpLiooQ@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Thierry,\n\nThat \"As ID2 defines almost the same grouping as ID1, it doesn't make\nsense to include both of them in the model.\" makes good sense.\n\nThanks!\nTim M\n\nOn Tue, Nov 9, 2021 at 9:03 AM Thierry Onkelinx\n<thierry.onkelinx at inbo.be> wrote:\n>\n> Dear Timothy,\n>\n> I would expect in your example that the combined effect of ID1 and ID2 will be more or less equally split over ID1 and ID2. As this would yield a lower penalty then attributing the effect fully to either ID1 or ID2. Hence the random effect variances of 1|ID1/ID2 will be a lot smaller than 1|ID1 or 1|ID2.\n>\n> As ID2 defines almost the same grouping as ID1, it doesn't make sense to include both of them in the model.\n>\n> I have no reference at hand for this. Just common sense.\n>\n> ir. Thierry Onkelinx\n> Statisticus / Statistician\n>\n> Vlaamse Overheid / Government of Flanders\n> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n> thierry.onkelinx at inbo.be\n> Havenlaan 88 bus 73, 1000 Brussel\n> www.inbo.be\n>\n> ///////////////////////////////////////////////////////////////////////////////////////////\n> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n> ///////////////////////////////////////////////////////////////////////////////////////////\n>\n>\n>\n>\n> Op di 9 nov. 2021 om 15:19 schreef Timothy MacKenzie <fswfswt at gmail.com>:\n>>\n>> Dear Ben,\n>>\n>> Thank you for sharing the references regarding my first question.\n>>\n>> Regarding my second question, I simply mean if we have say ID1 and ID2,\n>> then for ID2 to be distinguishably nested in ID1, it needs to have a\n>> different unique categories relative to those of ID1.\n>>\n>> For example, if ID1 has 120 unique categories and ID2 has 130\n>> unique categories nested in ID1, then the variance components for ID1 and\n>> ID2 are not distinguishable from each other. As a result, only one of them\n>> can be added as a random effect; either (1 | ID1) or (1 | |ID2), but not (1\n>> | ID1/ID2).\n>>\n>> Is this correct and is there a published reference confirming or\n>> disconfirming this?\n>>\n>> Thanks,\n>> Tim M\n>>\n>> On Mon, Nov 8, 2021 at 7:35 PM Ben Bolker <bbolker at gmail.com> wrote:\n>>\n>> >\n>> >     This is a bit of a \"how long is a piece of string\" question ...\n>> >\n>> >\n>> >    The \"5-6 levels of a grouping variable\" rule of thumb is quoted in\n>> > various places: a variety of those references (Gelman and Hill 2006,\n>> > K?ry and Royle 2015, Harrison et al 2018, Arnqvist 2020) are collected\n>> > by Gomes\n>> > (https://www.biorxiv.org/content/10.1101/2021.04.11.439357v2.full).\n>> >\n>> >    I sort of see what you mean by your second paragraph, but can you\n>> > give an example?\n>> >\n>> >\n>> > On 11/7/21 5:20 PM, Timothy MacKenzie wrote:\n>> > > Dear Experts,\n>> > >\n>> > > Apologies if this question has come up before. But I'm looking for\n>> > > published references that provide guidance on when one or more grouping\n>> > > variables that theoretically need to be random factors can also\n>> > > \"technically\" be used as random factors?\n>> > >\n>> > > For example, I have heard for a grouping variable to be technically taken\n>> > > as a random factor, it needs to have at least 10 or so unique categories?\n>> > > (Any reference to confirm or disconfirm this?)\n>> > >\n>> > > For example, I have heard for two grouping variables to be technically\n>> > > taken as random factors, they each need to have a sufficiently different\n>> > > number of unique categories relative to the other one. Otherwise, their\n>> > > variance components can't be distinguished from one another and thus only\n>> > > one of them can be taken as random, not both (Any reference to confirm or\n>> > > disconfirm this?)\n>> > >\n>> > > Thanks,\n>> > > Tim M\n>> > >\n>> > >       [[alternative HTML version deleted]]\n>> > >\n>> > > _______________________________________________\n>> > > R-sig-mixed-models at r-project.org mailing list\n>> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> > >\n>> >\n>> > _______________________________________________\n>> > R-sig-mixed-models at r-project.org mailing list\n>> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> >\n>>\n>>         [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Thierry,\n\nThat \"As ID2 defines almost the same grouping as ID1, it doesn't make\nsense to include both of them in the model.\" makes good sense.\n\nThanks!\nTim M\n\nOn Tue, Nov 9, 2021 at 9:03 AM Thier",
+      "thread_id": "thread-015800e17cfe",
+      "thread_depth": 4,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-83e4999af5ba",
+      "message_id": "<CAEvy2r0SZJS0=R8xXatuu1hpA2hMFgerPxt43m9HTP0fkK2oKA@mail.gmail.com>",
+      "from_name": "Farzad Keyhan",
+      "from_email_hash": "9b4875ee25b911b9caba37f7ffb9cba70ddcdcf920d2d700bb791cffd92925d3",
+      "date": "2021-11-09T12:36:54-06:00",
+      "subject": "[R-sig-ME] When a higher level can't be modeled due to one row",
+      "subject_clean": "When a higher level can't be modeled due to one row",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Colleagues,\n\nI initially posted my query on the meta-analysis SIG. But I realized\nmy question is related to multilevel modeling.\n\nBelow is my data structure. If in row # 3, \"measure\" was 2 (instead of\n1), then, I could model \"measure\" as a level above \"study\":\n\n (1 | measure / study / outcome)\n\nBut right now, because in study 2 (rows # 3 and 4) \"measure\" can vary,\n\"measure\" can't be considered a level above \"study\".\n\nOn the other hand, because \"measure\" varies only in one \"study\" level\n(i.e., study 2), I can't model \"measure\" as a crossed effect with\n\"study\" either:\n\n (1 | study / outcome) + (1 | measure)\n\nSo, to model \"measure\" as a random factor what can we do?\n\nBest,\nFred\n   measure  study  outcome\n   1              1          1\n   1              1          2\n# 1              2          1<--row #3\n   2              2          1\n   1              3          3\n   1              3          2\n   2              4          3\n   9              5          1\n   9              6          2",
+      "body_snippet": "Dear Colleagues,\n\nI initially posted my query on the meta-analysis SIG. But I realized\nmy question is related to multilevel modeling.\n\nBelow is my data structure. If in row # 3, \"measure\" was 2 (inste",
+      "thread_id": "thread-83e4999af5ba",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-70bf0f0e428d",
+      "message_id": "<CANiAikHG3g8J+z66e=fXjm2uxPNeq2c7Gg8k0fjomfzxwgWeMw@mail.gmail.com>",
+      "from_name": "Daniel Lüdecke",
+      "from_email_hash": "49f60f793b43e8781cf853ec393ce29481c8d6b5a647f6763a150643bd313c75",
+      "date": "2021-11-09T22:19:30+01:00",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": "<MWHPR0101MB3198819EF6CC17B29082EB70A3929@MWHPR0101MB3198.prod.exchangelabs.com>",
+      "references": [
+        "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+        "<001e01d7d54c$c87d13b0$59773b10$@uke.de>",
+        "<MWHPR0101MB3198819EF6CC17B29082EB70A3929@MWHPR0101MB3198.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Hi Suresh,\nI just tried to find an example with glmer(), but it indeed looks like the\nclubSandwich package only supports lmer() models, not glmer(). So my\nsuggested approach unfortunately doesn't seem to work.\n\nBest\nDaniel\n\nAm Di., 9. Nov. 2021 um 17:24 Uhr schrieb Suresh N Neupane <\nsneupane2 at student.gsu.edu>:\n\n> Hi Daniel,\n> Thank you so much for your suggestions. I tried that but it gives me an\n> error:\n>\n> Error in UseMethod(\"estfun\") :\n>   no applicable method for 'estfun' applied to an object of class\n> \"c('glmerMod', 'merMod')\"\n>\n> My DV is death (0/1) and IV other variables:\n> Model: (with random county effects):\n> fit <- glmer(death ~ (1|county_fips_code) +white + black + pop.density ,\n> family = binomial(\"logit\"), nAGQ=0, data = data.thesis)\n>  I tried the code you sent and used \"county_fips_code\" as my cluster\n> variable but it says did not find \"county_fips_code\".\n> I was able to use parameters::model_parameters(fit) to extract some info\n> (This is great!) such as;\n>  Parameter     |  Log-Odds |   SE |  95% CI |   z |     p\n>\n> Thank you so much again,\n> I'd really appreciate if you would have more input on this.\n> Sincerely,\n> Suresh\n>\n>\n>\n>\n> ------------------------------\n> *From:* Daniel L?decke <d.luedecke at uke.de>\n> *Sent:* Tuesday, November 9, 2021 4:32 AM\n> *To:* Suresh N Neupane <sneupane2 at student.gsu.edu>\n> *Cc:* r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> *Subject:* AW: [R-sig-ME] Using Robust Standard Errors lme4\n>\n> Hi Suresh,\n>\n> you could try the \"parameters\" package, which should (easily) return\n> different types of robust standard errors, including cluster-robust\n> standard\n> errors for mixed models:\n>\n>\n> https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Feasystats.github.io%2Fparameters%2Farticles%2Fmodel_parameters_robust.html&amp;data=04%7C01%7Csneupane2%40student.gsu.edu%7Ca99f7d4a171f419a724a08d9a363ee14%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637720471875578865%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=DOoXhh%2FzuFnNc6ZTAb9hry9%2FSB7QD%2F7bEYX%2BaHLQBhE%3D&amp;reserved=0\n>\n> Maybe you try this out on a very small subset of your model to see if it\n> works. Also, since the \"model_parameters()\" function includes random\n> effects\n> variances by default, you may set the effects-argument to \"fixed\" to speed\n> up computation. The call to the function could then look like something\n> like\n> this:\n>\n> model_parameters(\n>   model,\n>   effects = \"fixed\",\n>   robust = TRUE,\n>   vcov_estimation = \"CL\",\n>   vcov_type = \"HC1\",\n>   vcov_args = list(cluster = <your cluster variable from the data>)\n> )\n>\n>\n> Best\n> Daniel\n>\n> -----Urspr?ngliche Nachricht-----\n> Von: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\n> Auftrag von Suresh N Neupane via R-sig-mixed-models\n> Gesendet: Montag, 8. November 2021 12:49\n> An: r-sig-mixed-models at r-project.org\n> Betreff: [R-sig-ME] Using Robust Standard Errors lme4\n>\n> Dear all,\n> I am using lme4 package to run a hierarchical logistic regression model\n> (with random county effect) for my binomial dependent variable, COVID death\n> (0/1). This is a very large dataset with ~ 8 million observations.\n> I need to find the robust standard error but was not sure about any\n> package.\n> I tried robustlmm (although my DV is not continuous) and got this error\n> when\n> used MerDeriv (sandwich):\n> Error in UseMethod(\"estfun\") :\n> no applicable method for 'estfun' applied to an object of class\n> \"c('glmerMod', 'merMod')\"\n> The real tricky part is it takes several hours to compute because of the\n> dataset length.\n> All I need is to get robust standard error values.\n> I already fit the models:\n> fit <- glmer(death ~ (1|county_fips_code) + IV).\n> Thank you so much,\n> Suresh Neupane\n>\n>\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Suresh,\nI just tried to find an example with glmer(), but it indeed looks like the\nclubSandwich package only supports lmer() models, not glmer(). So my\nsuggested approach unfortunately doesn't seem",
+      "thread_id": "thread-70bf0f0e428d",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-2aedc8470159",
+      "message_id": "<CAFUVuJyhvfhWwCkbEq97zW=c7_5pHtvMo4kgXQBS4TtRBH3h4w@mail.gmail.com>",
+      "from_name": "James Pustejovsky",
+      "from_email_hash": "8e06b2f7b3c4fed4d29177cf04ef673e9a6723b661aa70c4ebd2fa8843e37a8a",
+      "date": "2021-11-09T16:44:44-06:00",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": "<CANiAikHG3g8J+z66e=fXjm2uxPNeq2c7Gg8k0fjomfzxwgWeMw@mail.gmail.com>",
+      "references": [
+        "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+        "<001e01d7d54c$c87d13b0$59773b10$@uke.de>",
+        "<MWHPR0101MB3198819EF6CC17B29082EB70A3929@MWHPR0101MB3198.prod.exchangelabs.com>",
+        "<CANiAikHG3g8J+z66e=fXjm2uxPNeq2c7Gg8k0fjomfzxwgWeMw@mail.gmail.com>"
+      ],
+      "body_plain": "I can confirm, clubSandwich does not currently support glmerMod\nobjects. It may be possible to implement methods for such models, but\nit will take some time. I welcome feedback on whether this would be of\nbroad interest, as well as expressions of interest if anyone would\nlike to contribute to implementation.\n\nJames\n\nOn Tue, Nov 9, 2021 at 3:20 PM Daniel L?decke <d.luedecke at uke.de> wrote:\n>\n> Hi Suresh,\n> I just tried to find an example with glmer(), but it indeed looks like the\n> clubSandwich package only supports lmer() models, not glmer(). So my\n> suggested approach unfortunately doesn't seem to work.\n>\n> Best\n> Daniel\n>\n> Am Di., 9. Nov. 2021 um 17:24 Uhr schrieb Suresh N Neupane <\n> sneupane2 at student.gsu.edu>:\n>\n> > Hi Daniel,\n> > Thank you so much for your suggestions. I tried that but it gives me an\n> > error:\n> >\n> > Error in UseMethod(\"estfun\") :\n> >   no applicable method for 'estfun' applied to an object of class\n> > \"c('glmerMod', 'merMod')\"\n> >\n> > My DV is death (0/1) and IV other variables:\n> > Model: (with random county effects):\n> > fit <- glmer(death ~ (1|county_fips_code) +white + black + pop.density ,\n> > family = binomial(\"logit\"), nAGQ=0, data = data.thesis)\n> >  I tried the code you sent and used \"county_fips_code\" as my cluster\n> > variable but it says did not find \"county_fips_code\".\n> > I was able to use parameters::model_parameters(fit) to extract some info\n> > (This is great!) such as;\n> >  Parameter     |  Log-Odds |   SE |  95% CI |   z |     p\n> >\n> > Thank you so much again,\n> > I'd really appreciate if you would have more input on this.\n> > Sincerely,\n> > Suresh\n> >\n> >\n> >\n> >\n> > ------------------------------\n> > *From:* Daniel L?decke <d.luedecke at uke.de>\n> > *Sent:* Tuesday, November 9, 2021 4:32 AM\n> > *To:* Suresh N Neupane <sneupane2 at student.gsu.edu>\n> > *Cc:* r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> > *Subject:* AW: [R-sig-ME] Using Robust Standard Errors lme4\n> >\n> > Hi Suresh,\n> >\n> > you could try the \"parameters\" package, which should (easily) return\n> > different types of robust standard errors, including cluster-robust\n> > standard\n> > errors for mixed models:\n> >\n> >\n> > https://nam12.safelinks.protection.outlook.com/?url=https%3A%2F%2Feasystats.github.io%2Fparameters%2Farticles%2Fmodel_parameters_robust.html&amp;data=04%7C01%7Csneupane2%40student.gsu.edu%7Ca99f7d4a171f419a724a08d9a363ee14%7C704d822c358a47849a1649e20b75f941%7C0%7C0%7C637720471875578865%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&amp;sdata=DOoXhh%2FzuFnNc6ZTAb9hry9%2FSB7QD%2F7bEYX%2BaHLQBhE%3D&amp;reserved=0\n> >\n> > Maybe you try this out on a very small subset of your model to see if it\n> > works. Also, since the \"model_parameters()\" function includes random\n> > effects\n> > variances by default, you may set the effects-argument to \"fixed\" to speed\n> > up computation. The call to the function could then look like something\n> > like\n> > this:\n> >\n> > model_parameters(\n> >   model,\n> >   effects = \"fixed\",\n> >   robust = TRUE,\n> >   vcov_estimation = \"CL\",\n> >   vcov_type = \"HC1\",\n> >   vcov_args = list(cluster = <your cluster variable from the data>)\n> > )\n> >\n> >\n> > Best\n> > Daniel\n> >\n> > -----Urspr?ngliche Nachricht-----\n> > Von: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\n> > Auftrag von Suresh N Neupane via R-sig-mixed-models\n> > Gesendet: Montag, 8. November 2021 12:49\n> > An: r-sig-mixed-models at r-project.org\n> > Betreff: [R-sig-ME] Using Robust Standard Errors lme4\n> >\n> > Dear all,\n> > I am using lme4 package to run a hierarchical logistic regression model\n> > (with random county effect) for my binomial dependent variable, COVID death\n> > (0/1). This is a very large dataset with ~ 8 million observations.\n> > I need to find the robust standard error but was not sure about any\n> > package.\n> > I tried robustlmm (although my DV is not continuous) and got this error\n> > when\n> > used MerDeriv (sandwich):\n> > Error in UseMethod(\"estfun\") :\n> > no applicable method for 'estfun' applied to an object of class\n> > \"c('glmerMod', 'merMod')\"\n> > The real tricky part is it takes several hours to compute because of the\n> > dataset length.\n> > All I need is to get robust standard error values.\n> > I already fit the models:\n> > fit <- glmer(death ~ (1|county_fips_code) + IV).\n> > Thank you so much,\n> > Suresh Neupane\n> >\n> >\n> --\n>\n> _____________________________________________________________________\n>\n> Universit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\n> Vorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n> _____________________________________________________________________\n>\n> SAVE PAPER - THINK BEFORE PRINTING\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I can confirm, clubSandwich does not currently support glmerMod\nobjects. It may be possible to implement methods for such models, but\nit will take some time. I welcome feedback on whether this would b",
+      "thread_id": "thread-70bf0f0e428d",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-486395190614",
+      "message_id": "<AM8PR04MB7843B84BE14BD8498AB5314BE8939@AM8PR04MB7843.eurprd04.prod.outlook.com>",
+      "from_name": "Dimitris Rizopoulos",
+      "from_email_hash": "f98f43a8ad7df72747466603ec1bc7fb20890f9917057a29e1c1d2ba079e480c",
+      "date": "2021-11-10T04:51:47Z",
+      "subject": "[R-sig-ME] Using Robust Standard Errors lme4",
+      "subject_clean": "Using Robust Standard Errors lme4",
+      "in_reply_to": "<CAFUVuJyhvfhWwCkbEq97zW=c7_5pHtvMo4kgXQBS4TtRBH3h4w@mail.gmail.com>",
+      "references": [
+        "<MWHPR0101MB31986D54DDD4BACBA61E4EBDA3919@MWHPR0101MB3198.prod.exchangelabs.com>",
+        "<001e01d7d54c$c87d13b0$59773b10$@uke.de>",
+        "<MWHPR0101MB3198819EF6CC17B29082EB70A3929@MWHPR0101MB3198.prod.exchangelabs.com>",
+        "<CANiAikHG3g8J+z66e=fXjm2uxPNeq2c7Gg8k0fjomfzxwgWeMw@mail.gmail.com>",
+        "<CAFUVuJyhvfhWwCkbEq97zW=c7_5pHtvMo4kgXQBS4TtRBH3h4w@mail.gmail.com>"
+      ],
+      "body_plain": "Robust standard errors are available is GLMMadaptive. For more info, see here: https://drizopoulos.github.io/GLMMadaptive/articles/Methods.html#detailed-output-confidence-intervals-covariance-matrix-of-the-mles-and-robust-standard-errors-1\n\nBest,\nDimitris\n\n\n??\nDimitris Rizopoulos\nProfessor of Biostatistics\nErasmus University Medical Center\nThe Netherlands\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of James Pustejovsky <jepusto at gmail.com>\nSent: Tuesday, November 9, 2021 11:44:44 PM\nTo: Daniel L?decke <d.luedecke at uke.de>\nCc: Suresh N Neupane <sneupane2 at student.gsu.edu>; r-sig-mixed-models <r-sig-mixed-models at r-project.org>\nSubject: Re: [R-sig-ME] Using Robust Standard Errors lme4\n\n\n\nWaarschuwing: Deze e-mail is afkomstig van buiten de organisatie. Klik niet op links en open geen bijlagen, tenzij u de afzender herkent en weet dat de inhoud veilig is.\nCaution: This email originated from outside of the organization. Do not click links or open attachments unless you recognize the sender and know the content is safe.\n\n\n\nI can confirm, clubSandwich does not currently support glmerMod\nobjects. It may be possible to implement methods for such models, but\nit will take some time. I welcome feedback on whether this would be of\nbroad interest, as well as expressions of interest if anyone would\nlike to contribute to implementation.\n\nJames\n\nOn Tue, Nov 9, 2021 at 3:20 PM Daniel L?decke <d.luedecke at uke.de> wrote:\n>\n> Hi Suresh,\n> I just tried to find an example with glmer(), but it indeed looks like the\n> clubSandwich package only supports lmer() models, not glmer(). So my\n> suggested approach unfortunately doesn't seem to work.\n>\n> Best\n> Daniel\n>\n> Am Di., 9. Nov. 2021 um 17:24 Uhr schrieb Suresh N Neupane <\n> sneupane2 at student.gsu.edu>:\n>\n> > Hi Daniel,\n> > Thank you so much for your suggestions. I tried that but it gives me an\n> > error:\n> >\n> > Error in UseMethod(\"estfun\") :\n> >   no applicable method for 'estfun' applied to an object of class\n> > \"c('glmerMod', 'merMod')\"\n> >\n> > My DV is death (0/1) and IV other variables:\n> > Model: (with random county effects):\n> > fit <- glmer(death ~ (1|county_fips_code) +white + black + pop.density ,\n> > family = binomial(\"logit\"), nAGQ=0, data = data.thesis)\n> >  I tried the code you sent and used \"county_fips_code\" as my cluster\n> > variable but it says did not find \"county_fips_code\".\n> > I was able to use parameters::model_parameters(fit) to extract some info\n> > (This is great!) such as;\n> >  Parameter     |  Log-Odds |   SE |  95% CI |   z |     p\n> >\n> > Thank you so much again,\n> > I'd really appreciate if you would have more input on this.\n> > Sincerely,\n> > Suresh\n> >\n> >\n> >\n> >\n> > ------------------------------\n> > *From:* Daniel L?decke <d.luedecke at uke.de>\n> > *Sent:* Tuesday, November 9, 2021 4:32 AM\n> > *To:* Suresh N Neupane <sneupane2 at student.gsu.edu>\n> > *Cc:* r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> > *Subject:* AW: [R-sig-ME] Using Robust Standard Errors lme4\n> >\n> > Hi Suresh,\n> >\n> > you could try the \"parameters\" package, which should (easily) return\n> > different types of robust standard errors, including cluster-robust\n> > standard\n> > errors for mixed models:\n> >\n> >\n> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Feasystats.github.io%2Fparameters%2Farticles%2Fmodel_parameters_robust.html&amp;data=04%7C01%7Cd.rizopoulos%40erasmusmc.nl%7C97ab93a935614522a3ef08d9a3d299dc%7C526638ba6af34b0fa532a1a511f4ac80%7C0%7C1%7C637720947192192478%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=EVr5Y257ErigeHaaeqjmOPQ1zka6ZQ%2BN%2BXxLIJUGarU%3D&amp;reserved=0\n> >\n> > Maybe you try this out on a very small subset of your model to see if it\n> > works. Also, since the \"model_parameters()\" function includes random\n> > effects\n> > variances by default, you may set the effects-argument to \"fixed\" to speed\n> > up computation. The call to the function could then look like something\n> > like\n> > this:\n> >\n> > model_parameters(\n> >   model,\n> >   effects = \"fixed\",\n> >   robust = TRUE,\n> >   vcov_estimation = \"CL\",\n> >   vcov_type = \"HC1\",\n> >   vcov_args = list(cluster = <your cluster variable from the data>)\n> > )\n> >\n> >\n> > Best\n> > Daniel\n> >\n> > -----Urspr?ngliche Nachricht-----\n> > Von: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\n> > Auftrag von Suresh N Neupane via R-sig-mixed-models\n> > Gesendet: Montag, 8. November 2021 12:49\n> > An: r-sig-mixed-models at r-project.org\n> > Betreff: [R-sig-ME] Using Robust Standard Errors lme4\n> >\n> > Dear all,\n> > I am using lme4 package to run a hierarchical logistic regression model\n> > (with random county effect) for my binomial dependent variable, COVID death\n> > (0/1). This is a very large dataset with ~ 8 million observations.\n> > I need to find the robust standard error but was not sure about any\n> > package.\n> > I tried robustlmm (although my DV is not continuous) and got this error\n> > when\n> > used MerDeriv (sandwich):\n> > Error in UseMethod(\"estfun\") :\n> > no applicable method for 'estfun' applied to an object of class\n> > \"c('glmerMod', 'merMod')\"\n> > The real tricky part is it takes several hours to compute because of the\n> > dataset length.\n> > All I need is to get robust standard error values.\n> > I already fit the models:\n> > fit <- glmer(death ~ (1|county_fips_code) + IV).\n> > Thank you so much,\n> > Suresh Neupane\n> >\n> >\n> --\n>\n> _____________________________________________________________________\n>\n> Universit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | https://eur01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwww.uke.de%2F&amp;data=04%7C01%7Cd.rizopoulos%40erasmusmc.nl%7C97ab93a935614522a3ef08d9a3d299dc%7C526638ba6af34b0fa532a1a511f4ac80%7C0%7C1%7C637720947192192478%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=2Qofa4o0G55DGO3qEkRD%2BD0CT7Fy2%2F9LA0ETWfHOAMU%3D&amp;reserved=0\n> Vorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n> _____________________________________________________________________\n>\n> SAVE PAPER - THINK BEFORE PRINTING\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cd.rizopoulos%40erasmusmc.nl%7C97ab93a935614522a3ef08d9a3d299dc%7C526638ba6af34b0fa532a1a511f4ac80%7C0%7C1%7C637720947192192478%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=Jk8XBNlm94jgM%2BkqHQdOex2XgWtbUbq658amvA0kGG0%3D&amp;reserved=0\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=04%7C01%7Cd.rizopoulos%40erasmusmc.nl%7C97ab93a935614522a3ef08d9a3d299dc%7C526638ba6af34b0fa532a1a511f4ac80%7C0%7C1%7C637720947192192478%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;sdata=Jk8XBNlm94jgM%2BkqHQdOex2XgWtbUbq658amvA0kGG0%3D&amp;reserved=0\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Robust standard errors are available is GLMMadaptive. For more info, see here: https://drizopoulos.github.io/GLMMadaptive/articles/Methods.html#detailed-output-confidence-intervals-covariance-matrix-o",
+      "thread_id": "thread-70bf0f0e428d",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-7717bfe60427",
+      "message_id": "<CAE5Duhsub2H6zUgNREL6m5xJ2xG6_vv-0nm2VxgFFhqD2qU0Xw@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-12T18:32:16-07:00",
+      "subject": "[R-sig-ME] GEE with gamma family and log link",
+      "subject_clean": "GEE with gamma family and log link",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am fitting a generalized estimating equation with gamma family and log\nlink. I am using GEE (geeglm function) from the R pcakage ?geepack? with\ngamma family and log link and unstructured correlation structure.\n\nHere, response variable or outcome is IFN_gamma_protein_pg_mg . Exposure is\nintervention or probiotic use. Another covariate is Timepoint.\n\n\n\nMy code and the output is as mentioned below.\n\nm8<geeglm(IFN_gamma_protein_pg_mg~Intervention+Timepoint,data=B,family=Gamma(link=log),id=\nParticipant_ID,corstr=\"exchangeable\")\n\nsummary(m8)\n\n\n\n\n* IFN_gamma_protein_pg_mg*\n\n*Predictors*\n\n*Estimates*\n\n*p*\n\n(Intercept)\n\n0.01\n\n*<0.001*\n\nIntervention [Probiotics]\n\n0.34\n\n*0.029*\n\nTimepoint [T2]\n\n0.99\n\n0.979\n\nTimepoint [T3]\n\n5.30\n\n0.059\n\nTimepoint [T4]\n\n0.48\n\n*0.039*\n\nTimepoint [T5]\n\n0.11\n\n*<0.001*\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nI am trying to interpret the coefficients as follows:\n\nFor every one-unit increase in the probiotic across the population, the log\naverage of IFN_gamma_protein increases by 0.34 units.\n\n\n\nThe exponentiated coefficient ( exp )= (exp(0.34)=1.41) is the factor by\nwhich the arithmetic mean outcome on the original scale multiplied, i.e.,\nwhen intervention is probiotic, for every one-unit increase in the\nprobiotic across the population, the average of IFN_gamma_protein on the\noriginal scale is 1.41 times higher compared to when intervention is\ncontrol within levels of other variable.\n\nSimilarly, for timepoint 2, the average of IFN_gamma_protein on the\noriginal scale is exp(  )= exp(0.99)= 2.69 times higher compared to\ntimepoint 1 within levels of other variable.\n\nFor time point 3, the average of IFN_gamma_protein on the original scale is\nexp(  )= exp(5.30)= 200.34 times higher compared to timepoint 1 within\nlevels of other variable.\n\nCan someone confirm me that I am in the right track in the interpretation\nof parameters?\n\nI am  posting here as I also want to fit a Gamma GLMM.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am fitting a generalized estimating equation with gamma family and log\nlink. I am using GEE (geeglm function) from the R pcakage ?geepack? with\ngamma family and log link and unstructured correlation",
+      "thread_id": "thread-7717bfe60427",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-9443449847ec",
+      "message_id": "<759c5b61-44e6-bbfb-5345-d6cd8f832cfe@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-15T10:27:16-05:00",
+      "subject": "[R-sig-ME] GEE with gamma family and log link",
+      "subject_clean": "GEE with gamma family and log link",
+      "in_reply_to": "<CAE5Duhsub2H6zUgNREL6m5xJ2xG6_vv-0nm2VxgFFhqD2qU0Xw@mail.gmail.com>",
+      "references": [
+        "<CAE5Duhsub2H6zUgNREL6m5xJ2xG6_vv-0nm2VxgFFhqD2qU0Xw@mail.gmail.com>"
+      ],
+      "body_plain": "Except for the details of conditional vs marginal effects (discussed \nin a previous thread), the interpretation of fixed effects of a model \nwith a log link (GLM(M), GEE, etc.) are not really a \nmixed-model-specific issue, but apply to any model with a log link.\n\n   Your interpretations below sound correct (although you say something \nabout \"multiplying the arithmetic mean\" by exp(beta); this is true, but \nit's also true that you would equivalently be multiplying any sensible \nlocation parameter (such as the geometric mean) by the same factor\n\nOn 11/12/21 8:32 PM, Tahsin Ferdous wrote:\n> I am fitting a generalized estimating equation with gamma family and log\n> link. I am using GEE (geeglm function) from the R pcakage ?geepack? with\n> gamma family and log link and unstructured correlation structure.\n> \n> Here, response variable or outcome is IFN_gamma_protein_pg_mg . Exposure is\n> intervention or probiotic use. Another covariate is Timepoint.\n> \n> My code and the output is as mentioned below.\n> \n> m8<geeglm(IFN_gamma_protein_pg_mg~Intervention+Timepoint,data=B,family=Gamma(link=log),id=\n> Participant_ID,corstr=\"exchangeable\")\n> \n> summary(m8)\n> \n> * IFN_gamma_protein_pg_mg*\n> \n> *Predictors*\n> \n> *Estimates*\n> \n> *p*\n> \n> (Intercept)\n> \n> 0.01\n> \n> *<0.001*\n> \n> Intervention [Probiotics]\n> \n> 0.34\n> \n> *0.029*\n> \n> Timepoint [T2]\n> \n> 0.99\n> \n> 0.979\n> \n> Timepoint [T3]\n> \n> 5.30\n> \n> 0.059\n> \n> Timepoint [T4]\n> \n> 0.48\n> \n> *0.039*\n> \n> Timepoint [T5]\n> \n> 0.11\n> \n> *<0.001*\n> \n\n> \n> \n> I am trying to interpret the coefficients as follows:\n> \n> For every one-unit increase in the probiotic across the population, the log\n> average of IFN_gamma_protein increases by 0.34 units.\n> \n> The exponentiated coefficient ( exp )= (exp(0.34)=1.41) is the factor by\n> which the arithmetic mean outcome on the original scale multiplied, i.e.,\n> when intervention is probiotic, for every one-unit increase in the\n> probiotic across the population, the average of IFN_gamma_protein on the\n> original scale is 1.41 times higher compared to when intervention is\n> control within levels of other variable.\n> \n> Similarly, for timepoint 2, the average of IFN_gamma_protein on the\n> original scale is exp(  )= exp(0.99)= 2.69 times higher compared to\n> timepoint 1 within levels of other variable.\n> \n> For time point 3, the average of IFN_gamma_protein on the original scale is\n> exp(  )= exp(5.30)= 200.34 times higher compared to timepoint 1 within\n> levels of other variable.\n> \n> Can someone confirm me that I am in the right track in the interpretation\n> of parameters?\n> \n> I am  posting here as I also want to fit a Gamma GLMM.\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "Except for the details of conditional vs marginal effects (discussed \nin a previous thread), the interpretation of fixed effects of a model \nwith a log link (GLM(M), GEE, etc.) are not really a \nmixed",
+      "thread_id": "thread-7717bfe60427",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-fd1830d126cc",
+      "message_id": "<CAEktutCGBazB6pnUuF7T2+3acdukzvKYdOCjKeygx1L+MV2w=Q@mail.gmail.com>",
+      "from_name": "Revathe Thillaikumar",
+      "from_email_hash": "cd5dd82bf68290e15a23732cdd44b68f2c6ca1b6a31ff27a0897a7c18964c2c6",
+      "date": "2021-11-19T09:52:54+05:30",
+      "subject": "[R-sig-ME] Help with specifying interaction term involving nested factor",
+      "subject_clean": "Help with specifying interaction term involving nested factor",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello all,\n\nI have a doubt regarding how to specify a Poisson model and NBM with nested\neffects using glmer, glmer.nb, and glmmTMB functions. I will explain the\nfactors below:\n\nX - response variable\nA - fixed factor\nB - random factor; nested within C\n\nI want to check the effect of A, B (nested within C), and the interaction\neffect: B (nested within C) * A. I understand that the nested random factor\ncan be specified as (1 | C/B), but I am not sure how the interaction term\nshould be specified.\n\nmF <- glmer(X ~ A + (1 | C/B) + (1 | C/B : A), family = \"poisson\", data = d)\n\nIf I run the above formula, the effect of C is computed twice, and I am not\ninterested in looking at that effect.\n\nCould someone please help me with this? Thank you very much.\n\n\nBest regards,\nRevathe\n\n--\nPhD student\nAnimal Behaviour and Sociogenetics lab\nEvolutionary and Organismal Biology Unit\nJawaharlal Nehru Centre for Advanced Scientific Research\nBengaluru\nIndia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\nI have a doubt regarding how to specify a Poisson model and NBM with nested\neffects using glmer, glmer.nb, and glmmTMB functions. I will explain the\nfactors below:\n\nX - response variable\nA",
+      "thread_id": "thread-fd1830d126cc",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-68433141ae46",
+      "message_id": "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-19T13:38:14-07:00",
+      "subject": "[R-sig-ME] Identifying link functions for gamma glmm",
+      "subject_clean": "Identifying link functions for gamma glmm",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am running a generalized linear mixed model with a gamma family. How can\nI understand which link function I should use (log link, identity link, or\ninverse link)? I tried to plot observed vs fitted values plots. But they\nlook similar? Should I look at AIC? If I fit a gamma glm, should I also\nlook at AIC to know which link function I should use in my model?\n\nIf I fit gamma GEE . should I look at QIC for choosing the appropriate\nmodel with link function?\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am running a generalized linear mixed model with a gamma family. How can\nI understand which link function I should use (log link, identity link, or\ninverse link)? I tried to plot observed vs fitted ",
+      "thread_id": "thread-68433141ae46",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-60d372f21d61",
+      "message_id": "<20211120130728.157b923a@rolf-Latitude-E7470>",
+      "from_name": "Rolf Turner",
+      "from_email_hash": "85365426fbf4496cfac2415de7f8b411ee0133e9a8b2316f8939adcd30c2a157",
+      "date": "2021-11-20T13:07:28+13:00",
+      "subject": "[R-sig-ME] Identifying link functions for gamma glmm",
+      "subject_clean": "Identifying link functions for gamma glmm",
+      "in_reply_to": "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>",
+      "references": [
+        "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>"
+      ],
+      "body_plain": "On Fri, 19 Nov 2021 13:38:14 -0700\nTahsin Ferdous <tahsinferdousuofc at gmail.com> wrote:\n\n> I am running a generalized linear mixed model with a gamma family.\n> How can I understand which link function I should use (log link,\n> identity link, or inverse link)? I tried to plot observed vs fitted\n> values plots. But they look similar? Should I look at AIC? If I fit a\n> gamma glm, should I also look at AIC to know which link function I\n> should use in my model?\n> \n> If I fit gamma GEE . should I look at QIC for choosing the appropriate\n> model with link function?\n\nI used a cross-validation approach, in a somewhat similar context.  I\ntried both leave-one-out and k-fold cross-validation, with moderate\nsuccess.  The complete story is complicated, and has an unsatisfactory\nending (I wound up getting answers that the client did not like!) so\nI shall not go into any more detail.\n\nOTOH if your plots \"look similar\", perhaps it doesn't really matter.\nCan you think of a criterion for deciding whether it *does* matter?\n\ncheers,\n\nRolf Turner\n\n-- \nHonorary Research Fellow\nDepartment of Statistics\nUniversity of Auckland\nPhone: +64-9-373-7599 ext. 88276",
+      "body_snippet": "On Fri, 19 Nov 2021 13:38:14 -0700\nTahsin Ferdous <tahsinferdousuofc at gmail.com> wrote:\n\n> I am running a generalized linear mixed model with a gamma family.\n> How can I understand which link functi",
+      "thread_id": "thread-68433141ae46",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-31beb263ca77",
+      "message_id": "<CANAwtjtVAwBzq7DHX9sP+XN0skET=eh+cdG2Ww5R-QZ1To0Pyg@mail.gmail.com>",
+      "from_name": "Vitor Vieira Vasconcelos",
+      "from_email_hash": "0d09e0861ea4d4562f5ee4304c97ddc5fbd9fd8a22c8dadcdc7962ff0c5de91e",
+      "date": "2021-11-19T21:21:31-03:00",
+      "subject": "[R-sig-ME] Multi-level models for nested variables in time dimension",
+      "subject_clean": "Multi-level models for nested variables in time dimension",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Good night, friends!\n\n     I have been seeing many multi-level models, using the mixed models'\nframework, that use groups nested in \"space\", such as students nested in\nclasses, which are nested in schools, and with independent variables for\neach of these spatial resolutions.\n    Then I was thinking whether we could use this same framework to model\nvariables nested in the time dimension. For example, if we have some\nvariables sampled at daily resolution, other variables at monthly\nresolution and others at year resolution, and we would like to use all them\nin the same model to predict a dependent variable at daily resolution.\n   Basically, I am just thinking about transposing the same framework from\n\"space\" dimension to \"time\" dimension, and not thinking yet about\nautocorrelation or other time-series analyses.\n    Do you think that these ideas make sense to you?\n\nBest regards,\nVitor Vieira Vasconcelos\n+55-31-99331-1593\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Good night, friends!\n\n     I have been seeing many multi-level models, using the mixed models'\nframework, that use groups nested in \"space\", such as students nested in\nclasses, which are nested in sch",
+      "thread_id": "thread-31beb263ca77",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-cfd56acb96d8",
+      "message_id": "<8ce5bb62-620f-ea0e-0852-4ccfb4cd7d4a@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-11-19T19:40:02-05:00",
+      "subject": "[R-sig-ME] Identifying link functions for gamma glmm",
+      "subject_clean": "Identifying link functions for gamma glmm",
+      "in_reply_to": "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>",
+      "references": [
+        "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>"
+      ],
+      "body_plain": "Most of the time I would suggest choosing link functions on \nscientific grounds, i.e. what scale makes sense for the expected \neffects? Link functions change the expected relationship with continuous \npredictors (do I expect the effects of predictors to be linear \n(identity), exponential (log), or hyperbolic (inverse)?) and change the \nmeaning of interactions (does the value of one variable change the \nexpected effect of the other additively (identity), proportionally \n(log), or ?? (inverse)).\n\n   I generally find that log links are more numerically stable (both \nidentity and inverse links can sometimes lead to negative predictions). \nLogs are also nice because they essentially split the difference between \nthe identity and inverse links.  If I have (say) responses that are time \nintervals, then analyzing on the identity scale describes additive \neffects on the time scale; analyzing on the inverse scale describes \nadditive effects on the rate or speed (1/time) of the response; \nanalyzing on the log scale describes proportional changes in *either* \ntime or rate (because log(time) = -1*log(1/time)).\n\n   My general procedure would be to use a log link and see if the \ndiagnostics detected any problems.\n\n   That said, you could use AIC or cross-validation if you are primarily \ninterested in prediction (and aren't worried about snooping). \nCross-validation will be slower but more reliable, *if* you are careful \nto maintain independence structure when you specify your training and \ntesting sets (i.e., you should sample by levels of your grouping \nvariable, not by individual observations)\n\n\nOn 11/19/21 3:38 PM, Tahsin Ferdous wrote:\n> I am running a generalized linear mixed model with a gamma family. How can\n> I understand which link function I should use (log link, identity link, or\n> inverse link)? I tried to plot observed vs fitted values plots. But they\n> look similar? Should I look at AIC? If I fit a gamma glm, should I also\n> look at AIC to know which link function I should use in my model?\n> \n> If I fit gamma GEE . should I look at QIC for choosing the appropriate\n> model with link function?\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "Most of the time I would suggest choosing link functions on \nscientific grounds, i.e. what scale makes sense for the expected \neffects? Link functions change the expected relationship with continuous ",
+      "thread_id": "thread-68433141ae46",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-a058ac2267ed",
+      "message_id": "<CAE5Duhv9KDKnJk8a2amaz-vixm9PYsV-+SJ2MwKBWMt7OsOxqg@mail.gmail.com>",
+      "from_name": "Tahsin Ferdous",
+      "from_email_hash": "37865fa7345e3d88a1f69a4e110fd6b4477430bea12538bb0404e74e87a75f20",
+      "date": "2021-11-19T18:18:56-07:00",
+      "subject": "[R-sig-ME] Identifying link functions for gamma glmm",
+      "subject_clean": "Identifying link functions for gamma glmm",
+      "in_reply_to": "<8ce5bb62-620f-ea0e-0852-4ccfb4cd7d4a@gmail.com>",
+      "references": [
+        "<CAE5Duhuum1OkkCgZvvwd+qEYb_-pXgSmn8ZHOy2rF-CssVEt9A@mail.gmail.com>",
+        "<8ce5bb62-620f-ea0e-0852-4ccfb4cd7d4a@gmail.com>"
+      ],
+      "body_plain": "Dear Dr Ben,\n\nThanks a lot for the valuable information. At first, I tried to fit a glm\nwith a log link. I attached the residual vs fitted plot of this model. I\nhave seen an outlier in the plot (I am not sure what is meant by 300 in\nthis plot?). Should we always look at the diagnostic plots (residual vs\nfitted) for glm, glmm or gee? If I run the model with the outlier, does it\ngive valid results?\n\nKindest regards,\n\nTahsin\n\nOn Fri, Nov 19, 2021 at 5:40 PM Ben Bolker <bbolker at gmail.com> wrote:\n\n>    Most of the time I would suggest choosing link functions on\n> scientific grounds, i.e. what scale makes sense for the expected\n> effects? Link functions change the expected relationship with continuous\n> predictors (do I expect the effects of predictors to be linear\n> (identity), exponential (log), or hyperbolic (inverse)?) and change the\n> meaning of interactions (does the value of one variable change the\n> expected effect of the other additively (identity), proportionally\n> (log), or ?? (inverse)).\n>\n>    I generally find that log links are more numerically stable (both\n> identity and inverse links can sometimes lead to negative predictions).\n> Logs are also nice because they essentially split the difference between\n> the identity and inverse links.  If I have (say) responses that are time\n> intervals, then analyzing on the identity scale describes additive\n> effects on the time scale; analyzing on the inverse scale describes\n> additive effects on the rate or speed (1/time) of the response;\n> analyzing on the log scale describes proportional changes in *either*\n> time or rate (because log(time) = -1*log(1/time)).\n>\n>    My general procedure would be to use a log link and see if the\n> diagnostics detected any problems.\n>\n>    That said, you could use AIC or cross-validation if you are primarily\n> interested in prediction (and aren't worried about snooping).\n> Cross-validation will be slower but more reliable, *if* you are careful\n> to maintain independence structure when you specify your training and\n> testing sets (i.e., you should sample by levels of your grouping\n> variable, not by individual observations)\n>\n>\n> On 11/19/21 3:38 PM, Tahsin Ferdous wrote:\n> > I am running a generalized linear mixed model with a gamma family. How\n> can\n> > I understand which link function I should use (log link, identity link,\n> or\n> > inverse link)? I tried to plot observed vs fitted values plots. But they\n> > look similar? Should I look at AIC? If I fit a gamma glm, should I also\n> > look at AIC to know which link function I should use in my model?\n> >\n> > If I fit gamma GEE . should I look at QIC for choosing the appropriate\n> > model with link function?\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> (Acting) Graduate chair, Mathematics & Statistics\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-------------- next part --------------\nA non-text attachment was scrubbed...\nName: Rplot 1.png\nType: image/png\nSize: 31426 bytes\nDesc: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20211119/13710482/attachment-0001.png>",
+      "body_snippet": "Dear Dr Ben,\n\nThanks a lot for the valuable information. At first, I tried to fit a glm\nwith a log link. I attached the residual vs fitted plot of this model. I\nhave seen an outlier in the plot (I am ",
+      "thread_id": "thread-68433141ae46",
+      "thread_depth": 2,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-49d32f7f3ee5",
+      "message_id": "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+      "from_name": "Bojana Dinic",
+      "from_email_hash": "cdeb92d17d4a188d60f3bcc53cc07ded8e23426438a5e771d2a20478375c4c35",
+      "date": "2021-11-26T08:41:26+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear colleagues,\n\n ??? I use linear mixed models with 1 random effect (subject), 2 fixed\n ??? factors (one? is between factor and another is repeated) and one \ncovariate, and\n ??? explore all main effects, 2-way interactions and one 3-way \ninteraction.\n ??? Regarding of used software, somewhere I get effect of intercept,\n ??? somewhere not. Reviewer asks to use p-adjustment for these\n ??? effects. My dilemma is should I apply p-correction for 7 tests or 8 \n(including\n ??? random intercept for subjects)?\n\n ??? The output do not contain F for random effect, but only variance.\n ??? Also, the output do not contain effect size. CIs are available only \nfor\n ??? betas as product of specific level of both fixed effects and \ncovariate, but\n ??? since I have 3 levels for between and 4 for repeated effects, the\n ??? output is not helpful + there is no possibility to change reference \ngroup.\n ??? Thus, I'm stuck with p-adjustment.\n\n ?? Any help is welcomed.\n ??? Thank you.\n\n-- \nKind regards,\nBojana Dinic",
+      "body_snippet": "Dear colleagues,\n\n ??? I use linear mixed models with 1 random effect (subject), 2 fixed\n ??? factors (one? is between factor and another is repeated) and one \ncovariate, and\n ??? explore all main eff",
+      "thread_id": "thread-49d32f7f3ee5",
+      "thread_depth": 0,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-f604cc1b8949",
+      "message_id": "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+      "from_name": "marKo",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2021-11-26T20:29:30+01:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>"
+      ],
+      "body_plain": "On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n> Dear colleagues,\n> \n>  ??? I use linear mixed models with 1 random effect (subject), 2 fixed\n>  ??? factors (one? is between factor and another is repeated) and one \n> covariate, and\n>  ??? explore all main effects, 2-way interactions and one 3-way \n> interaction.\n>  ??? Regarding of used software, somewhere I get effect of intercept,\n>  ??? somewhere not. Reviewer asks to use p-adjustment for these\n>  ??? effects. My dilemma is should I apply p-correction for 7 tests or 8 \n> (including\n>  ??? random intercept for subjects)?\n> \n>  ??? The output do not contain F for random effect, but only variance.\n>  ??? Also, the output do not contain effect size. CIs are available only \n> for\n>  ??? betas as product of specific level of both fixed effects and \n> covariate, but\n>  ??? since I have 3 levels for between and 4 for repeated effects, the\n>  ??? output is not helpful + there is no possibility to change reference \n> group.\n>  ??? Thus, I'm stuck with p-adjustment.\n> \n>  ?? Any help is welcomed.\n>  ??? Thank you.\n> \n\nAs I understand, p-values are somewhat unreliable (In LMM). As a \nsensible alternative maybe you could compute bootstrap CI and use that \nto infer about significance of specific effects (if i have understood \nyour problem correctly).\nI you use lme4 or nlme, this should not be a problem.\n\nYou ca use (for model  m)\n\nconfint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n\neven use some multi-core processing to speed thing up\n\nconfint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus = \nNo.of.CORES, nsim=No.of.SIMULATIONS)\n\nchange No.of.SIMULATIONS with the desired number of repetitions (1000 or so)\nchange No.of.CORES with the desired number of cores (depends of your \nmachine).\n\nHope it helps.\n\n\n-- \nMarko Ton?i?, PhD\nAssistant professor\nUniversity of Rijeka\nFaculty of Humanities and Social Sciences\nDepartment of Psychology\nSveucilisna avenija 4, 51000 Rijeka, CROATIA\ne-mail: mtoncic at ffri.uniri.hr",
+      "body_snippet": "On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n> Dear colleagues,\n> \n>  ??? I use linear mixed models with 1 random effect (subject), 2 fixed\n>  ??? factors (one? is between factor and another is repeate",
+      "thread_id": "thread-49d32f7f3ee5",
+      "thread_depth": 1,
+      "month": "2021-11"
+    },
+    {
+      "id": "msg-a2c7c2dbf5f5",
+      "message_id": "<CAPzcKfsgT+N4yhzGG5bkq-0LV=2jz45zn50MkW2R=Lu0NGQw=w@mail.gmail.com>",
+      "from_name": "Victoria Pattison-Willits",
+      "from_email_hash": "ff3d096e5f3618952a91386e5ea337458271d603c9291f453b181e9dc82df9e5",
+      "date": "2021-11-30T10:40:32-05:00",
+      "subject": "[R-sig-ME] p-correction for effects in LMM",
+      "subject_clean": "p-correction for effects in LMM",
+      "in_reply_to": "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>",
+      "references": [
+        "<814eac33-350c-f5e0-5d35-727451c5e519@gmail.com>",
+        "<82d6d954-9afc-df69-4000-a40184574bff@ffri.uniri.hr>"
+      ],
+      "body_plain": "Hi there\nThank you to the OP for sharing this question and I am following this\nthread as I was wondering which CIs were the best to go with for mixed\nmodels - I have been calculating three different types (Wald, Boot and\nProfile) and was not really sure for mixed models (in my case v similar an\nlmer with a nested random effect crossed with a second random effect and 8\nfixed effects (no interactive terms)). I have been on a massive learning\ncurve and so still a little hazy how the t approaches differ in their calc\nof  the CIs - I have been reporting the bootstrap CIs in my project\nalthough there was only a very small difference when plotted for all 3\nacross all my fixed effects. Just want to check in light of this question\nthis is the correct approach!\n\nOne also quick q related to OQ - how do you determine the number of CORES\nif I wanted to include that code - does it depend on processing speeds etc?\n\nCheers and this is my first question and I still am a relative novice so\nthanks in advance for patience with probably very simple questions! :)\n\nVicki PW\n\nOn Fri, Nov 26, 2021 at 2:30 PM marKo <mtoncic at ffri.uniri.hr> wrote:\n\n> On 26. 11. 2021. 08:41, Bojana Dinic wrote:\n> > Dear colleagues,\n> >\n> >      I use linear mixed models with 1 random effect (subject), 2 fixed\n> >      factors (one  is between factor and another is repeated) and one\n> > covariate, and\n> >      explore all main effects, 2-way interactions and one 3-way\n> > interaction.\n> >      Regarding of used software, somewhere I get effect of intercept,\n> >      somewhere not. Reviewer asks to use p-adjustment for these\n> >      effects. My dilemma is should I apply p-correction for 7 tests or 8\n> > (including\n> >      random intercept for subjects)?\n> >\n> >      The output do not contain F for random effect, but only variance.\n> >      Also, the output do not contain effect size. CIs are available only\n> > for\n> >      betas as product of specific level of both fixed effects and\n> > covariate, but\n> >      since I have 3 levels for between and 4 for repeated effects, the\n> >      output is not helpful + there is no possibility to change reference\n> > group.\n> >      Thus, I'm stuck with p-adjustment.\n> >\n> >     Any help is welcomed.\n> >      Thank you.\n> >\n>\n> As I understand, p-values are somewhat unreliable (In LMM). As a\n> sensible alternative maybe you could compute bootstrap CI and use that\n> to infer about significance of specific effects (if i have understood\n> your problem correctly).\n> I you use lme4 or nlme, this should not be a problem.\n>\n> You ca use (for model  m)\n>\n> confint(m, level=0.95, method=\"boot\", nsim=No.of.SIMULATIONS)\n>\n> even use some multi-core processing to speed thing up\n>\n> confint(m, level=0.95, method=\"boot\", parallel = \"multicore\", ncpus =\n> No.of.CORES, nsim=No.of.SIMULATIONS)\n>\n> change No.of.SIMULATIONS with the desired number of repetitions (1000 or\n> so)\n> change No.of.CORES with the desired number of cores (depends of your\n> machine).\n>\n> Hope it helps.\n>\n>\n> --\n> Marko Ton?i?, PhD\n> Assistant professor\n> University of Rijeka\n> Faculty of Humanities and Social Sciences\n> Department of Psychology\n> Sveucilisna avenija 4, 51000 Rijeka, CROATIA\n> e-mail: mtoncic at ffri.uniri.hr\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi there\nThank you to the OP for sharing this question and I am following this\nthread as I was wondering which CIs were the best to go with for mixed\nmodels - I have been calculating three different t",
+      "thread_id": "thread-49d32f7f3ee5",
+      "thread_depth": 2,
+      "month": "2021-11"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-50fc7e475155",
+      "subject": "zero variance and standard deviation in random effects",
+      "message_count": 9,
+      "participants": [
+        "Ben Bolker",
+        "Carola Bloch",
+        "Phillip Alday",
+        "Rolf Turner",
+        "Tahsin Ferdous",
+        "Viechtbauer, Wolfgang (SP)"
+      ],
+      "started": "2021-11-01T22:57:26-06:00",
+      "last_reply": "2021-11-02T22:46:07-06:00",
+      "root_message_id": "msg-50fc7e475155"
+    },
+    {
+      "id": "thread-2a4f90018777",
+      "subject": "lme4 error",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Mehdi Rezapour"
+      ],
+      "started": "2021-11-02T19:53:47+00:00",
+      "last_reply": "2021-11-02T21:09:47-04:00",
+      "root_message_id": "msg-2a4f90018777"
+    },
+    {
+      "id": "thread-83cc6300cc71",
+      "subject": "Mixed model vs GEE",
+      "message_count": 7,
+      "participants": [
+        "Ben Bolker",
+        "Milani Chaloupka",
+        "Muldoon, Ariel",
+        "Paul Johnson",
+        "Phillip Alday",
+        "Tahsin Ferdous"
+      ],
+      "started": "2021-11-04T18:22:24-06:00",
+      "last_reply": "2021-11-05T14:32:52+00:00",
+      "root_message_id": "msg-83cc6300cc71"
+    },
+    {
+      "id": "thread-4fa54e8e4711",
+      "subject": "Mixed model for unbalanced data",
+      "message_count": 2,
+      "participants": [
+        "Phillip Alday",
+        "Tahsin Ferdous"
+      ],
+      "started": "2021-11-04T23:10:28-06:00",
+      "last_reply": "2021-11-05T09:20:43-05:00",
+      "root_message_id": "msg-4fa54e8e4711"
+    },
+    {
+      "id": "thread-a5f0cc927d9b",
+      "subject": "Mixed model vs GEE",
+      "message_count": 1,
+      "participants": [
+        "Carl Von Ende"
+      ],
+      "started": "2021-11-06T22:34:02+00:00",
+      "last_reply": "2021-11-06T22:34:02+00:00",
+      "root_message_id": "msg-a5f0cc927d9b"
+    },
+    {
+      "id": "thread-015800e17cfe",
+      "subject": "Grouping variables technically suitable for modeling",
+      "message_count": 5,
+      "participants": [
+        "Ben Bolker",
+        "Thierry Onkelinx",
+        "Timothy MacKenzie"
+      ],
+      "started": "2021-11-07T16:20:42-06:00",
+      "last_reply": "2021-11-09T11:30:49-06:00",
+      "root_message_id": "msg-015800e17cfe"
+    },
+    {
+      "id": "thread-78eab47e4bda",
+      "subject": "Using Robust Standard Errors lme4",
+      "message_count": 3,
+      "participants": [
+        "Daniel Lüdecke",
+        "Fernando Pedro Bruna Quintas",
+        "Suresh N Neupane"
+      ],
+      "started": "2021-11-08T11:49:25+00:00",
+      "last_reply": "2021-11-09T10:32:58+01:00",
+      "root_message_id": "msg-78eab47e4bda"
+    },
+    {
+      "id": "thread-83e4999af5ba",
+      "subject": "When a higher level can't be modeled due to one row",
+      "message_count": 1,
+      "participants": [
+        "Farzad Keyhan"
+      ],
+      "started": "2021-11-09T12:36:54-06:00",
+      "last_reply": "2021-11-09T12:36:54-06:00",
+      "root_message_id": "msg-83e4999af5ba"
+    },
+    {
+      "id": "thread-70bf0f0e428d",
+      "subject": "Using Robust Standard Errors lme4",
+      "message_count": 3,
+      "participants": [
+        "Daniel Lüdecke",
+        "Dimitris Rizopoulos",
+        "James Pustejovsky"
+      ],
+      "started": "2021-11-09T22:19:30+01:00",
+      "last_reply": "2021-11-10T04:51:47+00:00",
+      "root_message_id": "msg-70bf0f0e428d"
+    },
+    {
+      "id": "thread-7717bfe60427",
+      "subject": "GEE with gamma family and log link",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Tahsin Ferdous"
+      ],
+      "started": "2021-11-12T18:32:16-07:00",
+      "last_reply": "2021-11-15T10:27:16-05:00",
+      "root_message_id": "msg-7717bfe60427"
+    },
+    {
+      "id": "thread-fd1830d126cc",
+      "subject": "Help with specifying interaction term involving nested factor",
+      "message_count": 1,
+      "participants": [
+        "Revathe Thillaikumar"
+      ],
+      "started": "2021-11-19T09:52:54+05:30",
+      "last_reply": "2021-11-19T09:52:54+05:30",
+      "root_message_id": "msg-fd1830d126cc"
+    },
+    {
+      "id": "thread-68433141ae46",
+      "subject": "Identifying link functions for gamma glmm",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Rolf Turner",
+        "Tahsin Ferdous"
+      ],
+      "started": "2021-11-19T13:38:14-07:00",
+      "last_reply": "2021-11-19T18:18:56-07:00",
+      "root_message_id": "msg-68433141ae46"
+    },
+    {
+      "id": "thread-31beb263ca77",
+      "subject": "Multi-level models for nested variables in time dimension",
+      "message_count": 1,
+      "participants": [
+        "Vitor Vieira Vasconcelos"
+      ],
+      "started": "2021-11-19T21:21:31-03:00",
+      "last_reply": "2021-11-19T21:21:31-03:00",
+      "root_message_id": "msg-31beb263ca77"
+    },
+    {
+      "id": "thread-49d32f7f3ee5",
+      "subject": "p-correction for effects in LMM",
+      "message_count": 3,
+      "participants": [
+        "Bojana Dinic",
+        "Victoria Pattison-Willits",
+        "marKo"
+      ],
+      "started": "2021-11-26T08:41:26+01:00",
+      "last_reply": "2021-11-30T10:40:32-05:00",
+      "root_message_id": "msg-49d32f7f3ee5"
+    }
+  ]
+}

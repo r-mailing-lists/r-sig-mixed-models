@@ -1,0 +1,41 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2014-09",
+  "messages": [
+    {
+      "id": "msg-bccdac17eb08",
+      "message_id": "<CAExDaCLxmEaMR4nxPvHFXRyta6vhwnBqioa8HLUhC5_CGXFq2Q@mail.gmail.com>",
+      "from_name": "Zhanyou Xu",
+      "from_email_hash": "2c70fc6580cc8fdadcb05b804a3012784ecd7fad6ef9df54e2a51bdf542840b3",
+      "date": "2014-09-30T19:05:53-05:00",
+      "subject": "[R-sig-ME] Fwd: [Lme4-authors] LME4 and Lmer model",
+      "subject_clean": "[Lme4-authors] LME4 and Lmer model",
+      "in_reply_to": "<CAF5_5cx-xOBndw2q9Sko=BBcx28sqM-SyLeeMAhkFu3FtVcLqw@mail.gmail.com>",
+      "references": [
+        "<A8B4A7C261862C4F9D1173A948685588100EE3BBAC@USETCMSXMB03.NAFTA.SYNGENTA.ORG>",
+        "<5429AD74.8060604@gmail.com>",
+        "<CAExDaCLyi+ARZpvX4S_GmYpzopKxCJryuB2BJBk2FT2Gj2qMNw@mail.gmail.com>",
+        "<CAF5_5cx-xOBndw2q9Sko=BBcx28sqM-SyLeeMAhkFu3FtVcLqw@mail.gmail.com>"
+      ],
+      "body_plain": "thanks for your quick response.\n\nwhat we want to do is:\n1: to calculate the BLUP for each individual within each group; and\n2: to calculate the BLUP across  all groups.\n\nIs there a way to do so just like the BY statement in SAS?\n\nThanks,\n\nZhanyou\n\n\nOn Tue, Sep 30, 2014 at 6:47 PM, Ken Beath <ken.beath at mq.edu.au> wrote:\n> The BY statement in SAS has nothing to do with BLUP, it simply runs an\n> analysis separately for each group defined by BY. The empirical BLUP\n> predicts the values of the random effect for each group taking into\n> consideration all the data.\n>\n> There is a command in SAS for extracting the random effect predictions which\n> I would hope gives the same results as ranef in R.\n>\n> Ken\n>\n> On 30 September 2014 07:19, Zhanyou Xu <zxuiowa at iastate.edu> wrote:\n>>\n>>  Dear Sir/Madam,\n>>\n>> We are running lmer to calculate Best Linear Unbiased prediction (BLUP),\n>> and we have 10 groups of data, each group has groupID and 42 individual.\n>> We want to get BLUP values for each individual material within each\n>> group. In SAS, there is a BY statement and we can get BLUP value for\n>> each individuals within a group. We are wondering whether there is a\n>> similar R code that we can calculate the BLUPs for each group similar\n>> like BY statement in SAS? Below is the R code we pare testing for your\n>> reference. Thank you very much in advance!\n>>\n>> Zhanyou\n>>\n>>\n>>\n>> ---------- Forwarded message ----------\n>> From: Ben Bolker <bbolker at gmail.com>\n>> Date: Mon, Sep 29, 2014 at 2:05 PM\n>> Subject: Re: [Lme4-authors] LME4 and Lmer model\n>> To: zhanyou.xu at syngenta.com,\n>> \"lme4-authors at lists.r-forge.r-project.org\"\n>> <lme4-authors at lists.r-forge.r-project.org>,\n>> marcia.almeida_de_macedo at syngenta.com, zxuiowa at iastate.edu,\n>> lme4-authors at r-forge.wu-wien.ac.at\n>>\n>>\n>> On 14-09-29 11:30 AM, zhanyou.xu at syngenta.com wrote:\n>> > Dear Ben and all LME4 authors,\n>> >\n>> > We are running lmer to calculate Best Linear Unbiased prediction (BLUP),\n>> > and we have 10 groups of data, each group has groupID and 42 individual.\n>> > We want to get BLUP values for each individual material within each\n>> > group. In SAS, there is a BY statement and we can get BLUP value for\n>> > each individuals within a group. We are wondering whether there is a\n>> > similar R code that we can calculate the BLUPs for each group similar\n>> > like by statement in SAS? Below is the R code we pare testing for your\n>> > reference. Thank you very much in advance!\n>> >\n>>\n>>\n>>     Take a look at ranef() and coef().  If you have further questions,\n>> could you please send them to r-sig-mixed-models at r-project.org ?\n>>\n>>   I can believe that \"%in%\" works as a nesting indicator, but it is more\n>> typical/I am more familiar with REPNO:HOSEID ...  (I'm also curious why\n>> you need to ignore the greater-than-1-level check ...)\n>>\n>>   thanks\n>>    Ben Bolker\n>>\n>>\n>> >\n>> > Zhanyou\n>> >\n>> >\n>> >\n>> >\n>> >\n>> > Milkvarcomp =  lmer(YGSMN~ (1|ANIMALID) + (1|HOSEID) +\n>> > (1|REPNO%in%HOSEID) + (1|MINRNG%in%HOSEID) +\n>> >\n>> >                 (1|MINROW%in%HOSEID)+\n>> > (1|ANIMALID:HOSEID),control=lmerControl(check.nlev.gtr.1=\"ignore\"),\n>> > data=Stage3Data)\n>> >\n>> >\n>> > ------------------------------------------------------------------------\n>> > /This message may contain confidential information. If you are not the\n>> > designated recipient, please notify the sender immediately, and delete\n>> > the original and any copies. Any use of the message by you is\n>> > prohibited./\n>> >\n>> >\n>> > _______________________________________________\n>> > Lme4-authors mailing list\n>> > Lme4-authors at lists.r-forge.r-project.org\n>> >\n>> > https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/lme4-authors\n>> >\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n>\n>\n> --\n>\n> Ken Beath\n> Lecturer\n> Statistics Department\n> MACQUARIE UNIVERSITY NSW 2109, Australia\n>\n> Phone: +61 (0)2 9850 8516\n>\n> Building E4A, room 526\n> http://stat.mq.edu.au/our_staff/staff_-_alphabetical/staff/beath,_ken/\n>\n> CRICOS Provider No 00002J\n> This message is intended for the addressee named and m...{{dropped:8}}",
+      "body_snippet": "thanks for your quick response.\n\nwhat we want to do is:\n1: to calculate the BLUP for each individual within each group; and\n2: to calculate the BLUP across  all groups.\n\nIs there a way to do so just l",
+      "thread_id": "thread-bccdac17eb08",
+      "thread_depth": 0,
+      "month": "2014-09"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-bccdac17eb08",
+      "subject": "[Lme4-authors] LME4 and Lmer model",
+      "message_count": 1,
+      "participants": [
+        "Zhanyou Xu"
+      ],
+      "started": "2014-09-30T19:05:53-05:00",
+      "last_reply": "2014-09-30T19:05:53-05:00",
+      "root_message_id": "msg-bccdac17eb08"
+    }
+  ]
+}

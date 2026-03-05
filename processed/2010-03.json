@@ -1,0 +1,95 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2010-03",
+  "messages": [
+    {
+      "id": "msg-20f87f73a3ce",
+      "message_id": "<Pine.LNX.4.64.1003311326250.6926@ilovebacon.org>",
+      "from_name": "Adam D. I. Kramer",
+      "from_email_hash": "364041366e6ac34ce452eb4dec93308c46e773998a5accbdca0baa6e2a2f65b7",
+      "date": "2010-03-31T16:38:04-07:00",
+      "subject": "[R-sig-ME] Increasing iteration limit / lmer bug",
+      "subject_clean": "Increasing iteration limit / lmer bug",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear colleagues,\n\n \tI am attempting to fit a model in this manner:\n\nl3 <- glmer(mug ~ condition*time +\n(time|cafe),family=binomial,data=data)\n\n...the model fails to fit, however, noting:\n\nIn mer_finalize(ans) : iteration limit reached without convergence (9)\n\n...so, of course, I read the man page for glmer and added\ncontrol=list(maxIter=3000). However, the program ran for the same amount of\ntime (about 10 minutes) and produced the same error (and, incidentally, the\nsame output).\n\nSo, I believe there to be a bug in glmer such that maxIter is not\nfunctioning.\n\nI then upped maxFN, too, (also to 3000) in case that was the problem, but\nfound no meaningful difference in the model produced or the time taken to\nfit the model.\n\nCould somebody recommend a workaround? I would like to fit this model.\n\n(running R 2.10.1, lme4 v. 0.999375-32)\n\nAlso, in case it matters, 'time' here is a categorical variable\nreperesenting several within-subjects timepoints--there are some other\n(unanswered) posts to this list in which people appear to have fairly\ncomplex within-subjects effects. Perhaps the issue is that the defaults\nwhich are in place are insufficiently high for moderately complex\nwithin-subjects models?\n\nCordially,\nAdam D. I. Kramer",
+      "body_snippet": "Dear colleagues,\n\n \tI am attempting to fit a model in this manner:\n\nl3 <- glmer(mug ~ condition*time +\n(time|cafe),family=binomial,data=data)\n\n...the model fails to fit, however, noting:\n\nIn mer_final",
+      "thread_id": "thread-20f87f73a3ce",
+      "thread_depth": 0,
+      "month": "2010-03"
+    },
+    {
+      "id": "msg-59a895a4b2b0",
+      "message_id": "<Pine.LNX.4.64.1003311712080.6926@ilovebacon.org>",
+      "from_name": "Adam D. I. Kramer",
+      "from_email_hash": "364041366e6ac34ce452eb4dec93308c46e773998a5accbdca0baa6e2a2f65b7",
+      "date": "2010-03-31T17:14:59-07:00",
+      "subject": "[R-sig-ME] Increasing iteration limit / lmer bug",
+      "subject_clean": "Increasing iteration limit / lmer bug",
+      "in_reply_to": "<Pine.LNX.4.64.1003311326250.6926@ilovebacon.org>",
+      "references": [
+        "<Pine.LNX.4.64.1003311326250.6926@ilovebacon.org>"
+      ],
+      "body_plain": "With apologies, after a lot of grepping around and reading pages on the\ninternet, yes, as you expected, my model is to blame.\n\nThat said, I think that it is quite appropriate for commands listed in the\n?help page to actually work or do what they say--in the below case, it is\nclear that maxIter is being ignored.\n\nIf it is the case that a \"valid\" or \"good\" or \"non-stupid\" model will easily\nbe fit with maxIter=300 and maxFN=900, then there is no reason to allow\nusers to think they have changed this value when they have not.\n\nCordially,\nAdam\n\nOn Wed, 31 Mar 2010, Adam D. I. Kramer wrote:\n\n> Dear colleagues,\n>\n> \tI am attempting to fit a model in this manner:\n>\n> l3 <- glmer(mug ~ condition*time +\n> (time|cafe),family=binomial,data=data)\n>\n> ...the model fails to fit, however, noting:\n>\n> In mer_finalize(ans) : iteration limit reached without convergence (9)\n>\n> ...so, of course, I read the man page for glmer and added\n> control=list(maxIter=3000). However, the program ran for the same amount of\n> time (about 10 minutes) and produced the same error (and, incidentally, the\n> same output).\n>\n> So, I believe there to be a bug in glmer such that maxIter is not\n> functioning.\n>\n> I then upped maxFN, too, (also to 3000) in case that was the problem, but\n> found no meaningful difference in the model produced or the time taken to\n> fit the model.\n>\n> Could somebody recommend a workaround? I would like to fit this model.\n>\n> (running R 2.10.1, lme4 v. 0.999375-32)\n>\n> Also, in case it matters, 'time' here is a categorical variable\n> reperesenting several within-subjects timepoints--there are some other\n> (unanswered) posts to this list in which people appear to have fairly\n> complex within-subjects effects. Perhaps the issue is that the defaults\n> which are in place are insufficiently high for moderately complex\n> within-subjects models?\n>\n> Cordially,\n> Adam D. I. Kramer\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "With apologies, after a lot of grepping around and reading pages on the\ninternet, yes, as you expected, my model is to blame.\n\nThat said, I think that it is quite appropriate for commands listed in th",
+      "thread_id": "thread-20f87f73a3ce",
+      "thread_depth": 1,
+      "month": "2010-03"
+    },
+    {
+      "id": "msg-75542d78ff9e",
+      "message_id": "<2F3CE3947B8D41C2B67BF6A531936CDB@lborger>",
+      "from_name": "Luca Borger",
+      "from_email_hash": "c5ae7db59c3ef56e6943cd5b6a477003c6694dec840957f5b8e088688be17d1b",
+      "date": "2010-03-31T22:32:30-04:00",
+      "subject": "[R-sig-ME] Increasing iteration limit / lmer bug",
+      "subject_clean": "Increasing iteration limit / lmer bug",
+      "in_reply_to": null,
+      "references": [
+        "<Pine.LNX.4.64.1003311326250.6926@ilovebacon.org>",
+        "<Pine.LNX.4.64.1003311712080.6926@ilovebacon.org>"
+      ],
+      "body_plain": "Hello,\n\nthis same issue has been reported quite recently (29 March 2010), Ben Bolker \nfound that there is indeed a bug and provided also a fix for it. Here is the \nlink to the mail archives:\n\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003547.html\n\n\nCheers,\n\nLuca\n\n\n----- Original Message ----- \nFrom: \"Adam D. I. Kramer\" <adik at ilovebacon.org>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Wednesday, March 31, 2010 8:14 PM\nSubject: Re: [R-sig-ME] Increasing iteration limit / lmer bug\n\n\n> With apologies, after a lot of grepping around and reading pages on the\n> internet, yes, as you expected, my model is to blame.\n>\n> That said, I think that it is quite appropriate for commands listed in the\n> ?help page to actually work or do what they say--in the below case, it is\n> clear that maxIter is being ignored.\n>\n> If it is the case that a \"valid\" or \"good\" or \"non-stupid\" model will \n> easily\n> be fit with maxIter=300 and maxFN=900, then there is no reason to allow\n> users to think they have changed this value when they have not.\n>\n> Cordially,\n> Adam\n>\n> On Wed, 31 Mar 2010, Adam D. I. Kramer wrote:\n>\n>> Dear colleagues,\n>>\n>> I am attempting to fit a model in this manner:\n>>\n>> l3 <- glmer(mug ~ condition*time +\n>> (time|cafe),family=binomial,data=data)\n>>\n>> ...the model fails to fit, however, noting:\n>>\n>> In mer_finalize(ans) : iteration limit reached without convergence (9)\n>>\n>> ...so, of course, I read the man page for glmer and added\n>> control=list(maxIter=3000). However, the program ran for the same amount \n>> of\n>> time (about 10 minutes) and produced the same error (and, incidentally, \n>> the\n>> same output).\n>>\n>> So, I believe there to be a bug in glmer such that maxIter is not\n>> functioning.\n>>\n>> I then upped maxFN, too, (also to 3000) in case that was the problem, but\n>> found no meaningful difference in the model produced or the time taken to\n>> fit the model.\n>>\n>> Could somebody recommend a workaround? I would like to fit this model.\n>>\n>> (running R 2.10.1, lme4 v. 0.999375-32)\n>>\n>> Also, in case it matters, 'time' here is a categorical variable\n>> reperesenting several within-subjects timepoints--there are some other\n>> (unanswered) posts to this list in which people appear to have fairly\n>> complex within-subjects effects. Perhaps the issue is that the defaults\n>> which are in place are insufficiently high for moderately complex\n>> within-subjects models?\n>>\n>> Cordially,\n>> Adam D. I. Kramer\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Hello,\n\nthis same issue has been reported quite recently (29 March 2010), Ben Bolker \nfound that there is indeed a bug and provided also a fix for it. Here is the \nlink to the mail archives:\n\nhttps://",
+      "thread_id": "thread-20f87f73a3ce",
+      "thread_depth": 2,
+      "month": "2010-03"
+    },
+    {
+      "id": "msg-e05ee0e84b4d",
+      "message_id": "<4BB40FE5.1060901@ufl.edu>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "e939ee505cc6d7a90d0153f4adc5952232fd23faf5cf21e6fd51dcdff5d5ae73",
+      "date": "2010-03-31T23:15:49-04:00",
+      "subject": "[R-sig-ME] Increasing iteration limit / lmer bug",
+      "subject_clean": "Increasing iteration limit / lmer bug",
+      "in_reply_to": "<2F3CE3947B8D41C2B67BF6A531936CDB@lborger>",
+      "references": [
+        "<Pine.LNX.4.64.1003311326250.6926@ilovebacon.org>",
+        "<Pine.LNX.4.64.1003311712080.6926@ilovebacon.org>",
+        "<2F3CE3947B8D41C2B67BF6A531936CDB@lborger>"
+      ],
+      "body_plain": "Furthermore, I think the patch has already been incorporated in the\ndevelopment (r-forge) version.\n\n Try\n\ninstall.packages(\"lme4\",repos=\"http://r-forge.r-project.org\")\n\nand see if that makes a difference.\n\nLuca Borger wrote:\n> Hello,\n> \n> this same issue has been reported quite recently (29 March 2010), Ben Bolker \n> found that there is indeed a bug and provided also a fix for it. Here is the \n> link to the mail archives:\n> \n> https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003547.html\n> \n> \n> Cheers,\n> \n> Luca\n> \n> \n> ----- Original Message ----- \n> From: \"Adam D. I. Kramer\" <adik at ilovebacon.org>\n> To: <r-sig-mixed-models at r-project.org>\n> Sent: Wednesday, March 31, 2010 8:14 PM\n> Subject: Re: [R-sig-ME] Increasing iteration limit / lmer bug\n> \n> \n>> With apologies, after a lot of grepping around and reading pages on the\n>> internet, yes, as you expected, my model is to blame.\n>>\n>> That said, I think that it is quite appropriate for commands listed in the\n>> ?help page to actually work or do what they say--in the below case, it is\n>> clear that maxIter is being ignored.\n>>\n>> If it is the case that a \"valid\" or \"good\" or \"non-stupid\" model will \n>> easily\n>> be fit with maxIter=300 and maxFN=900, then there is no reason to allow\n>> users to think they have changed this value when they have not.\n>>\n>> Cordially,\n>> Adam\n>>\n>> On Wed, 31 Mar 2010, Adam D. I. Kramer wrote:\n>>\n>>> Dear colleagues,\n>>>\n>>> I am attempting to fit a model in this manner:\n>>>\n>>> l3 <- glmer(mug ~ condition*time +\n>>> (time|cafe),family=binomial,data=data)\n>>>\n>>> ...the model fails to fit, however, noting:\n>>>\n>>> In mer_finalize(ans) : iteration limit reached without convergence (9)\n>>>\n>>> ...so, of course, I read the man page for glmer and added\n>>> control=list(maxIter=3000). However, the program ran for the same amount \n>>> of\n>>> time (about 10 minutes) and produced the same error (and, incidentally, \n>>> the\n>>> same output).\n>>>\n>>> So, I believe there to be a bug in glmer such that maxIter is not\n>>> functioning.\n>>>\n>>> I then upped maxFN, too, (also to 3000) in case that was the problem, but\n>>> found no meaningful difference in the model produced or the time taken to\n>>> fit the model.\n>>>\n>>> Could somebody recommend a workaround? I would like to fit this model.\n>>>\n>>> (running R 2.10.1, lme4 v. 0.999375-32)\n>>>\n>>> Also, in case it matters, 'time' here is a categorical variable\n>>> reperesenting several within-subjects timepoints--there are some other\n>>> (unanswered) posts to this list in which people appear to have fairly\n>>> complex within-subjects effects. Perhaps the issue is that the defaults\n>>> which are in place are insufficiently high for moderately complex\n>>> within-subjects models?\n>>>\n>>> Cordially,\n>>> Adam D. I. Kramer\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n-- \nBen Bolker\nAssociate professor, Biology Dep't, Univ. of Florida\nbolker at ufl.edu / people.biology.ufl.edu/bolker\nGPG key: people.biology.ufl.edu/bolker/benbolker-publickey.asc",
+      "body_snippet": "Furthermore, I think the patch has already been incorporated in the\ndevelopment (r-forge) version.\n\n Try\n\ninstall.packages(\"lme4\",repos=\"http://r-forge.r-project.org\")\n\nand see if that makes a differe",
+      "thread_id": "thread-20f87f73a3ce",
+      "thread_depth": 3,
+      "month": "2010-03"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-20f87f73a3ce",
+      "subject": "Increasing iteration limit / lmer bug",
+      "message_count": 4,
+      "participants": [
+        "Adam D. I. Kramer",
+        "Ben Bolker",
+        "Luca Borger"
+      ],
+      "started": "2010-03-31T16:38:04-07:00",
+      "last_reply": "2010-03-31T23:15:49-04:00",
+      "root_message_id": "msg-20f87f73a3ce"
+    }
+  ]
+}

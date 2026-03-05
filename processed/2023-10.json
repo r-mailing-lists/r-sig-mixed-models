@@ -1,0 +1,120 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2023-10",
+  "messages": [
+    {
+      "id": "msg-1abb1a6a962e",
+      "message_id": "<BY3PR06MB7907DBE7A767AD90A6CE1F04C9CFA@BY3PR06MB7907.namprd06.prod.outlook.com>",
+      "from_name": "Santosh Srinivas",
+      "from_email_hash": "281e1ab4d106f4a9877310600a6c13da30e0dbc2be10f7e8454a574ea167a9e8",
+      "date": "2023-10-08T15:32:31Z",
+      "subject": "[R-sig-ME] How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "subject_clean": "How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello list members,\n\nFor one of our papers, we are trying to understand if there is an equivalent of the following nlme::lme() specification in glmmTMB:\nm = lme(y ~ gender + time, data = df, random= ~1+time|id, correlation = corAR1(), weights = varExp(form = ~time))\n\nIn our case, time = 0, 1, 2, ....8, where year 2008 was converted to 0, 2009 to 1, and so on for all individuals. Not all individuals have data on all timepoints. They also may start at different timepoints.\n\n------------------------------------\nid --- y --- time --- gender\n------------------------------------\nab --- 0.2 --- 1 --- 2\nab --- 0.3 --- 2 --- 2\nac --- 0.5 --- 0 --- 1\nac --- 0.2 --- 1 --- 1\nac --- 0.7 --- 3 --- 1\nbd --- 0.3 --- 2 --- 2\nbd --- 0.2 --- 5 --- 2\nbd --- 0.3 --- 8 --- 2\n:\n:\n\nIn essence, we are wondering if it is possible to include a) first-order autoregressive structure, along with b) modeling heteroscedasticity as an exponent of the covariate instead of as a power function of the covariate in glmmTMB.\n\n>From the documentation, it appears that the below specification achieves the purpose:\nm_alt = glmmTMB(y ~ gender + time + ar1(0 + factor(time)|id) + (1|id), data= df, dispformula = ~factor(time))\n\nNot sure if our understanding of the model specification is right.\n\n\n  1.  Is ar1() as specified here equivalent to corAr1() above?\n  2.  Is dispformula = ~factor(time) equivalent to weights = varExp(form = ~time)?\n  3.  We are also unsure if we are messing up with factorizing time.\n\nRequest your expertise and help.\n\nThank you.\nsbs\n\n\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello list members,\n\nFor one of our papers, we are trying to understand if there is an equivalent of the following nlme::lme() specification in glmmTMB:\nm = lme(y ~ gender + time, data = df, random= ~",
+      "thread_id": "thread-1abb1a6a962e",
+      "thread_depth": 0,
+      "month": "2023-10"
+    },
+    {
+      "id": "msg-4bdc86f7a25f",
+      "message_id": "<8f562f61-83a7-4347-94c9-fb106f55cb06@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-10-08T12:49:07-04:00",
+      "subject": "[R-sig-ME]  How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "subject_clean": "How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "in_reply_to": "<BY3PR06MB7907DBE7A767AD90A6CE1F04C9CFA@BY3PR06MB7907.namprd06.prod.outlook.com>",
+      "references": [
+        "<BY3PR06MB7907DBE7A767AD90A6CE1F04C9CFA@BY3PR06MB7907.namprd06.prod.outlook.com>"
+      ],
+      "body_plain": "On 2023-10-08 11:32 a.m., Santosh Srinivas wrote:\n> Hello list members,\n> \n> For one of our papers, we are trying to understand if there is an equivalent of the following nlme::lme() specification in glmmTMB:\n> m = lme(y ~ gender + time, data = df, random= ~1+time|id, correlation = corAR1(), weights = varExp(form = ~time))\n> \n> In our case, time = 0, 1, 2, ....8, where year 2008 was converted to 0, 2009 to 1, and so on for all individuals. Not all individuals have data on all timepoints. They also may start at different timepoints.\n> \n> ------------------------------------\n> id --- y --- time --- gender\n> ------------------------------------\n> ab --- 0.2 --- 1 --- 2\n> ab --- 0.3 --- 2 --- 2\n> ac --- 0.5 --- 0 --- 1\n> ac --- 0.2 --- 1 --- 1\n> ac --- 0.7 --- 3 --- 1\n> bd --- 0.3 --- 2 --- 2\n> bd --- 0.2 --- 5 --- 2\n> bd --- 0.3 --- 8 --- 2\n> :\n> :\n> \n> In essence, we are wondering if it is possible to include a) first-order autoregressive structure, along with b) modeling heteroscedasticity as an exponent of the covariate instead of as a power function of the covariate in glmmTMB.\n> \n>  From the documentation, it appears that the below specification achieves the purpose:\n> m_alt = glmmTMB(y ~ gender + time + ar1(0 + factor(time)|id) + (1|id), data= df, dispformula = ~factor(time))\n> \n> Not sure if our understanding of the model specification is right.\n> \n> \n>    1.  Is ar1() as specified here equivalent to corAr1() above?\n>    2.  Is dispformula = ~factor(time) equivalent to weights = varExp(form = ~time)?\n>    3.  We are also unsure if we are messing up with factorizing time.\n\n\n   Almost.\n\n   1. Yes.\n   2. I don't think so. I think it should be dispformula = ~ time; the \ndispersion model uses a log link, so this should correspond to var = \nexp(a + b*time) = v0*exp(b*time), which should be the same as varExp\n   3. You should be using time as a factor in the ar1() specification \nbut numeric in the dispformula specification.\n\n   When in doubt, I'd recommend fitting both packages/formulations to a \nsmall made-up data set to see if they give answers that are identical \n(up to rounding errors/variation)\n\n> \n> Request your expertise and help.\n> \n> Thank you.\n> sbs\n> \n> \n> \n> \n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "On 2023-10-08 11:32 a.m., Santosh Srinivas wrote:\n> Hello list members,\n> \n> For one of our papers, we are trying to understand if there is an equivalent of the following nlme::lme() specification in ",
+      "thread_id": "thread-1abb1a6a962e",
+      "thread_depth": 1,
+      "month": "2023-10"
+    },
+    {
+      "id": "msg-2e8051f02ac6",
+      "message_id": "<BY3PR06MB7907A928C902C2C2A37865B6C9CFA@BY3PR06MB7907.namprd06.prod.outlook.com>",
+      "from_name": "Santosh Srinivas",
+      "from_email_hash": "281e1ab4d106f4a9877310600a6c13da30e0dbc2be10f7e8454a574ea167a9e8",
+      "date": "2023-10-08T17:03:24Z",
+      "subject": "[R-sig-ME]  How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "subject_clean": "How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "in_reply_to": "<8f562f61-83a7-4347-94c9-fb106f55cb06@gmail.com>",
+      "references": [
+        "<BY3PR06MB7907DBE7A767AD90A6CE1F04C9CFA@BY3PR06MB7907.namprd06.prod.outlook.com>",
+        "<8f562f61-83a7-4347-94c9-fb106f55cb06@gmail.com>"
+      ],
+      "body_plain": "Thank you so much for your kind help, Dr. Bolker. This is informative and timely advice.\n\nRegards,\nsbs\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Ben Bolker <bbolker at gmail.com>\nSent: Sunday, October 8, 2023 6:49 PM\nTo: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\nSubject: Re: [R-sig-ME] How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?\n\n\n\nOn 2023-10-08 11:32 a.m., Santosh Srinivas wrote:\n> Hello list members,\n>\n> For one of our papers, we are trying to understand if there is an equivalent of the following nlme::lme() specification in glmmTMB:\n> m = lme(y ~ gender + time, data = df, random= ~1+time|id, correlation = corAR1(), weights = varExp(form = ~time))\n>\n> In our case, time = 0, 1, 2, ....8, where year 2008 was converted to 0, 2009 to 1, and so on for all individuals. Not all individuals have data on all timepoints. They also may start at different timepoints.\n>\n> ------------------------------------\n> id --- y --- time --- gender\n> ------------------------------------\n> ab --- 0.2 --- 1 --- 2\n> ab --- 0.3 --- 2 --- 2\n> ac --- 0.5 --- 0 --- 1\n> ac --- 0.2 --- 1 --- 1\n> ac --- 0.7 --- 3 --- 1\n> bd --- 0.3 --- 2 --- 2\n> bd --- 0.2 --- 5 --- 2\n> bd --- 0.3 --- 8 --- 2\n> :\n> :\n>\n> In essence, we are wondering if it is possible to include a) first-order autoregressive structure, along with b) modeling heteroscedasticity as an exponent of the covariate instead of as a power function of the covariate in glmmTMB.\n>\n>  From the documentation, it appears that the below specification achieves the purpose:\n> m_alt = glmmTMB(y ~ gender + time + ar1(0 + factor(time)|id) + (1|id), data= df, dispformula = ~factor(time))\n>\n> Not sure if our understanding of the model specification is right.\n>\n>\n>    1.  Is ar1() as specified here equivalent to corAr1() above?\n>    2.  Is dispformula = ~factor(time) equivalent to weights = varExp(form = ~time)?\n>    3.  We are also unsure if we are messing up with factorizing time.\n\n\n   Almost.\n\n   1. Yes.\n   2. I don't think so. I think it should be dispformula = ~ time; the\ndispersion model uses a log link, so this should correspond to var =\nexp(a + b*time) = v0*exp(b*time), which should be the same as varExp\n   3. You should be using time as a factor in the ar1() specification\nbut numeric in the dispformula specification.\n\n   When in doubt, I'd recommend fitting both packages/formulations to a\nsmall made-up data set to see if they give answers that are identical\n(up to rounding errors/variation)\n\n>\n> Request your expertise and help.\n>\n> Thank you.\n> sbs\n>\n>\n>\n>\n>\n>\n>\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of\nworking hours.\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you so much for your kind help, Dr. Bolker. This is informative and timely advice.\n\nRegards,\nsbs\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-projec",
+      "thread_id": "thread-1abb1a6a962e",
+      "thread_depth": 2,
+      "month": "2023-10"
+    },
+    {
+      "id": "msg-4009d41fc10c",
+      "message_id": "<CAC+RVsSeSu3L8jF9Y=cZOiOQB30neTaxURKWTDOT4QntqbQzcg@mail.gmail.com>",
+      "from_name": "Werner Poschenrieder",
+      "from_email_hash": "bedaeb6ee92553417e81fe26bbaec7f33b943262660157bc07ebaa784b1e4f86",
+      "date": "2023-10-19T12:53:06+02:00",
+      "subject": "[R-sig-ME] glmmTMB model requires weights in prediction - what to supply",
+      "subject_clean": "glmmTMB model requires weights in prediction - what to supply",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Mixed-Models Community,\n\n\n\nI have to predict from a model of class glmmTMB that has been calibrated as\nfollows\n\n\n\nthe_formula = as.formula(\"used_avail ~ SHA_DI_cat +\nscale(forest_dist_raster) + scale(resid_dist_raster) +\nscale(woody_dist_raster) + scale(road_dist_raster) +\nscale(I(road_dist_raster^2)) + grassland + (1|study.area) + (1|IDyear)\")\n\n\n\ntmbmod = glmmTMB::glmmTMB(the_formula , data = group_df, weights = weight,\nfamily = binomial(link = \"logit\"), na.action = na.omit)\n\n\n\nI am surprised that prediction from that model using newdata does complain:\n\n\n\npredict(tmbmod, newdata = df_newdata, type = type, re.form = \"~0\", se.fit =\nT, allow.new.levels=TRUE)\n\nError in eval(extras, data, env) : object 'weight' not found\n\n\n\nwhere df_newdata includes any of the predictors, i.e. fixed and random\neffects. However, it does not include the column weight, as to my\nunderstanding weights are for giving the residual a particular weight in\nthe course of fitting the model.\n\nSuch a weight thus results in an according value of the resulting effects.\n\n\n\nWhat are weights for in prediction with glmmTMB, and thus, what value to\nset them to?\n\n\n\nThanks in advance, best\n\n\n\nWerner\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Mixed-Models Community,\n\n\n\nI have to predict from a model of class glmmTMB that has been calibrated as\nfollows\n\n\n\nthe_formula = as.formula(\"used_avail ~ SHA_DI_cat +\nscale(forest_dist_raster) + s",
+      "thread_id": "thread-4009d41fc10c",
+      "thread_depth": 0,
+      "month": "2023-10"
+    },
+    {
+      "id": "msg-4e109e3b6f95",
+      "message_id": "<fc2ee03e-82ed-4636-b827-8e4e794433c0@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-10-19T20:16:11-04:00",
+      "subject": "[R-sig-ME]  glmmTMB model requires weights in prediction - what to supply",
+      "subject_clean": "glmmTMB model requires weights in prediction - what to supply",
+      "in_reply_to": "<CAC+RVsSeSu3L8jF9Y=cZOiOQB30neTaxURKWTDOT4QntqbQzcg@mail.gmail.com>",
+      "references": [
+        "<CAC+RVsSeSu3L8jF9Y=cZOiOQB30neTaxURKWTDOT4QntqbQzcg@mail.gmail.com>"
+      ],
+      "body_plain": "It would probably be harmless to specify weight = 1 for the \nprediction.  I suspect this is just a side effect of the way that the \nprediction machinery works (I haven't looked). If you have a \nreproducible example, could you post this as an issue at the glmmTMB \nissues list?\n\nOn 2023-10-19 6:53 a.m., Werner Poschenrieder wrote:\n> Dear Mixed-Models Community,\n> \n> \n> \n> I have to predict from a model of class glmmTMB that has been calibrated as\n> follows\n> \n> \n> \n> the_formula = as.formula(\"used_avail ~ SHA_DI_cat +\n> scale(forest_dist_raster) + scale(resid_dist_raster) +\n> scale(woody_dist_raster) + scale(road_dist_raster) +\n> scale(I(road_dist_raster^2)) + grassland + (1|study.area) + (1|IDyear)\")\n> \n> \n> \n> tmbmod = glmmTMB::glmmTMB(the_formula , data = group_df, weights = weight,\n> family = binomial(link = \"logit\"), na.action = na.omit)\n> \n> \n> \n> I am surprised that prediction from that model using newdata does complain:\n> \n> \n> \n> predict(tmbmod, newdata = df_newdata, type = type, re.form = \"~0\", se.fit =\n> T, allow.new.levels=TRUE)\n> \n> Error in eval(extras, data, env) : object 'weight' not found\n> \n> \n> \n> where df_newdata includes any of the predictors, i.e. fixed and random\n> effects. However, it does not include the column weight, as to my\n> understanding weights are for giving the residual a particular weight in\n> the course of fitting the model.\n> \n> Such a weight thus results in an according value of the resulting effects.\n> \n> \n> \n> What are weights for in prediction with glmmTMB, and thus, what value to\n> set them to?\n> \n> \n> \n> Thanks in advance, best\n> \n> \n> \n> Werner\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "It would probably be harmless to specify weight = 1 for the \nprediction.  I suspect this is just a side effect of the way that the \nprediction machinery works (I haven't looked). If you have a \nreprod",
+      "thread_id": "thread-4009d41fc10c",
+      "thread_depth": 1,
+      "month": "2023-10"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-1abb1a6a962e",
+      "subject": "How to specify correlation structure along with modeling heteroskedasticity in glmmTMB?",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Santosh Srinivas"
+      ],
+      "started": "2023-10-08T15:32:31+00:00",
+      "last_reply": "2023-10-08T17:03:24+00:00",
+      "root_message_id": "msg-1abb1a6a962e"
+    },
+    {
+      "id": "thread-4009d41fc10c",
+      "subject": "glmmTMB model requires weights in prediction - what to supply",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Werner Poschenrieder"
+      ],
+      "started": "2023-10-19T12:53:06+02:00",
+      "last_reply": "2023-10-19T20:16:11-04:00",
+      "root_message_id": "msg-4009d41fc10c"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2013-06",
+  "messages": [
+    {
+      "id": "msg-ee7591a8180a",
+      "message_id": "<37EFC97028F3E44082ACC5CBEC0056301127930A@ICTS-S-MBX7.luna.kuleuven.be>",
+      "from_name": "Tom Wenseleers",
+      "from_email_hash": "708a47bc6fc5f37ff47d21d804d3c90f9f3f3d946eab6ed76dec8871c814914c",
+      "date": "2013-06-30T22:38:10Z",
+      "subject": "[R-sig-ME] Question on mixed model design to analyze microarray\tdata",
+      "subject_clean": "Question on mixed model design to analyze microarray\tdata",
+      "in_reply_to": "<loom.20130629T174242-532@post.gmane.org>",
+      "references": [
+        "<37EFC97028F3E44082ACC5CBEC00563011278C50@ICTS-S-MBX7.luna.kuleuven.be>",
+        "<loom.20130629T174242-532@post.gmane.org>"
+      ],
+      "body_plain": "Dear Ben,\nMany thanks for your message - after some experimentation I did indeed confirm that the correct specification in lmer was the one you mentioned, i.e. the correct code to get almost identical output as in SAS/glimmix was (as I thought it might be useful to share this for others I attach the datafile, and also the PDF with the original SAS analysis)\n\nmicroarray=read.csv(\"microarray_dataset1612_R.csv\",colClasses=c(rep(\"factor\",8),\"numeric\"))\nlibrary(lme4)\nlibrary(lmerTest)\n#options(contrasts = c(factor = \"contr.SAS\", ordered = \"contr.poly\")) # not sure if this would be necessary\nfit=lmer(log_intensity~(1|array/gene)+(1|array:pin)+(1|array:dip)+dye+trt+gene+dye:gene+trt:gene+pin, data=microarray) \nsummary(fit)\nanova(fit,ddf=\"Kenward-Roger\")\n\n(the degrees of freedom are slightly different though as in the SAS output, not sure why that is, but the p vals are practically identical)\n\nThe only remaining question I now have is how I could obtain the least square means, equivalent to the SAS code\nlsmeans trt*gene / slice=gene\nslicediff=gene\nslicedifftype=control('0' '2');\n(cf PDF in attachment)\n\nWould anyone happen to know perhaps how I could obtain these using package lsmeans? (I am new to that package, so apologies if this would happen to be trivial)\n\nCheers,\nTom\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Ben Bolker\nSent: 29 June 2013 17:58\nTo: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Question on mixed model design to analyze microarray data\n\nTom Wenseleers <Tom.Wenseleers at ...> writes:\n\n> \n> Dear all,\n> I was just trying to analyse some microarray gene expression data \n> using mixed models in R.\n> Based on the SAS code given here\n> http://support.sas.com/documentation/cdl/en/\n> statug/63033/HTML/default/viewer.htm#statug_hpmixed_sect035.htm\n\n (URL broken, sorry)\n\n>    proc hpmixed data=microarray;\n>       class marray dye trt gene pin dip;\n>       model log2i = dye trt gene dye*gene trt*gene pin;\n>       random marray marray*gene dip(marray) pin*marray;\n>       test trt;\n>    run;\n> \n> I wanted to try to run the equivalent model in R using lmer and then \n> test significance using lmerTest and/or lsmeans. Am I correct that the \n> correct syntax would be \n> lmer(log2i~dye+trt+gene+dye:gene+trt:gene+pin+(1|marray)+\n> (gene|marray)+(1|marray/dip)+(pin|marray), data=microarray) (gene has \n> about 10 000 levels and marray 10, would this run in lmer?)\n\n  I think you probably want a random effect of \n\n(1|marray) + (1|marray:gene) + (1|marray:pin)+(1|marray:dip)\n\nor equivalently\n\n(1|marray/gene) + (1|marray:pin) + (1|marray:dip)\n\n you almost certainly _don't_ want (gene|marray), which will try to fit correlations among gene effects by microarray (i.e a 10K by 10K correlation matrix), which will explode your computer.  At a quick read I'm not quite sure what distinction the SAS authors are making between \"X by Y\" and \"X within Y\": I would code \"X by Y\" as\n(1|X) + (1|Y) + (1|X:Y)  [ (1|X*Y) might work, but I haven't tried it ] and \"X within Y\" as (1|Y/X) or (1|Y) + (1|Y:X)\n> \n> Also, would it be possible in any way to allow variances across \n> treatment (trt) groups to be unequal? Or is that only possible in \n> nlme/lme?\n> (but that wouldn't allow for such complex random effect designs, \n> right?)\n\n  Not at present in lmer.  You might be able to code these random effects in nlme (see the relevant pages of Pinheiro & Bates 2000, referenced in http://glmm.wikidot.com/faq under \"Crossed random effects\", but lme4 is likely to be a lot faster.\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n-------------- next part --------------\nA non-text attachment was scrubbed...\nName: littell et al 2006_microarray example.pdf\nType: application/pdf\nSize: 148460 bytes\nDesc: littell et al 2006_microarray example.pdf\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130630/e9c2cba1/attachment-0001.pdf>",
+      "body_snippet": "Dear Ben,\nMany thanks for your message - after some experimentation I did indeed confirm that the correct specification in lmer was the one you mentioned, i.e. the correct code to get almost identical",
+      "thread_id": "thread-ee7591a8180a",
+      "thread_depth": 0,
+      "month": "2013-06"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-ee7591a8180a",
+      "subject": "Question on mixed model design to analyze microarray\tdata",
+      "message_count": 1,
+      "participants": [
+        "Tom Wenseleers"
+      ],
+      "started": "2013-06-30T22:38:10+00:00",
+      "last_reply": "2013-06-30T22:38:10+00:00",
+      "root_message_id": "msg-ee7591a8180a"
+    }
+  ]
+}

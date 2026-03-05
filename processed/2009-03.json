@@ -1,0 +1,92 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2009-03",
+  "messages": [
+    {
+      "id": "msg-84459c1ac7d0",
+      "message_id": "<OF7010B95F.EA6D0CF7-ON8525758A.008303B3-8525758A.008303B6@fordham.edu>",
+      "from_name": "HRISHIKESH D. VINOD",
+      "from_email_hash": "93a031fbcec4bfab21c710a633314ef26e0bf5e75988eb9ef11a87760cfad4e4",
+      "date": "2009-03-31T19:51:01-04:00",
+      "subject": "[R-sig-ME] R-conf. New York City, June 18-19, 2009, contribute your mixed-model R functions",
+      "subject_clean": "R-conf. New York City, June 18-19, 2009, contribute your mixed-model R functions",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi\nI believe that following info is of interest to your special interest group\nsince we welcome presentation of ideas (R-functions) dealing with\nmixed models which are often used in social sciences.\n\nConference on Quantitative Social Science Research Using R\n\nJune 18-19 (Thursday-Friday), 2009, Fordham University, 113 West 60th\nStreet, New York, NY. (next door to the Lincoln Center for Performing\nArts).\n\nConference website: http://www.cis.fordham.edu/QR2009\n\nThe conference offers opportunity to enthusiastic users of R (software and\nGraphics system) to important policy and research problems in social\nsciences to learn, meet and mingle.\n1) Speakers include authors of books and /or packages for R, published\nresearchers and editors of important journals in Statistics and social\nsciences: Andrew Gelman (Columbia), Kosuke Imai (Princeton), Roger Koenker\n(Illinois), Keith A. Markus (Columbia), Bruce D. McCullough (Drexel), H. D.\nVinod (Fordham), Achim Zeileis (Vienna)?\n2) The proceedings book will be published by Springer (publisher of Use R!\nseries) in 2009.\n3) Opportunity to present Replication / extension of published papers using\nR, poster session\n4) Opportunity to present new useful R functions (including teaching\nmaterial) poster session\n5) A tutorial cum refresher session teaching R will be given and useful\n\n\n\n\n\nHrishikesh (Rick) D. Vinod\nProfessor of Economics, Fordham University\nE-Mail: Vinod at fordham.edu  Tel 718-817-4065,\nSecretary 718-817-4048, Fax 718-817-3518\nWeb page:  http://www.fordham.edu/economics/vinod",
+      "body_snippet": "Hi\nI believe that following info is of interest to your special interest group\nsince we welcome presentation of ideas (R-functions) dealing with\nmixed models which are often used in social sciences.\n\n",
+      "thread_id": "thread-84459c1ac7d0",
+      "thread_depth": 0,
+      "month": "2009-03"
+    },
+    {
+      "id": "msg-5ff55ce48d58",
+      "message_id": "<c9ce82b00903311724n39b2ab2cv5250e4e98541fbbe@mail.gmail.com>",
+      "from_name": "Sundar Dorai-Raj",
+      "from_email_hash": "a4269326b27117802b49aaccfc432ea6e46560eff1bc6a101a01f0ab9e51bc3a",
+      "date": "2009-03-31T17:24:08-07:00",
+      "subject": "[R-sig-ME] Puzzled by simple example.",
+      "subject_clean": "Puzzled by simple example.",
+      "in_reply_to": "<D82F7938-6C25-40B2-A935-D39D9B0D46E5@auckland.ac.nz>",
+      "references": [
+        "<D82F7938-6C25-40B2-A935-D39D9B0D46E5@auckland.ac.nz>"
+      ],
+      "body_plain": "Hi, Rolf,\n\nSorry, but I can't absorb all your commentary below, but the\nfundamental problem I believe is your simulation is not reflected by\nthe model you are fitting with lmer (also, I don't use aov so I won't\ncomment there). Here's the simulation you want, which I hope will show\nyou what lmer is fitting:\n\nset.seed(42)\nBeta <- c(40,50,60,70)\nB  <- rnorm(20,0,2) ### note that length(B) = 20\nE  <- rnorm(80,0,0.25)\nht.dat <- data.frame(age=factor(rep(4:7,20)),child=factor(rep(1:20,each=4)))\nht.dat$y <- with(ht.dat, Beta[age] + B[child] + E)\n\nlibrary(lme4)\n# Fit with lmer():\nf1 <- lmer(y ~ 0 + age + (1|child),data=ht.dat)\n\nsummary(f1)\n<snip>\nRandom effects:\n Groups   Name        Variance Std.Dev.\n child    (Intercept) 6.888065 2.62451\n Residual             0.063592 0.25218\n</snip>\n\nHTH,\n\n--sundar\nOn Tue, Mar 31, 2009 at 4:31 PM, Rolf Turner <r.turner at auckland.ac.nz> wrote:\n>\n> I continue to struggle to understand the syntax of lmer() from the lme4\n> package.\n>\n> In an attempt to enlighten myself I simulated a rather simple data set. ?The\n> imagined scenario is children's heights (in cm.) at ages 4, 5, 6, and 7,\n> although\n> no attempt has been made to make the data realistic.\n>\n> Since the data are balanced, I thought I could check/compare the lmer()\n> results\n> with results produced by aov().\n>\n> The code I used is as follows:\n>\n> #\n> # Script scr.01\n> #\n>\n> # Generate the data. ?No attempt is made to make these\n> # data realistic.\n> set.seed(42)\n> Beta <- c(40,50,60,70)\n> B ?<- rnorm(80,0,2)\n> E ?<- rnorm(80,0,0.25)\n> Y ?<- Beta + B + E\n> ht.dat <-\n> data.frame(y=Y,age=factor(rep(4:7,20)),child=factor(rep(1:20,each=4)))\n>\n> # Fit with lmer():\n> f1 <- lmer(y ~ 0 + age + (1|child),data=ht.dat)\n>\n> # Fit with aov():\n> f2 <- aov(y ~ 0 + age + Error(child),data=ht.dat)\n>\n> # Clean up:\n> rm(Beta,B,E,Y)\n>\n> When one does summary(f1) one gets values of the estimates of the mean\n> heights\n> which are very close to the ``true'' values used to generate the data. ?I am\n> however\n> puzzled by the random effects estimates. ?These are:\n>\n> Random effects:\n> ?Groups ? Name ? ? ? ?Variance ? Std.Dev.\n> ?child ? ?(Intercept) 1.0362e-07 0.0003219\n> ?Residual ? ? ? ? ? ? 4.6663e+00 2.1601657\n> Number of obs: 80, groups: child, 20\n>\n> I thought at the ``child'' variance would be around 4 (the variance\n> used to simulate B) and that the residual variance would be around 0.0625\n> (the variance used to simulate E). ?This is clearly not so, so there is\n> clearly something I am misunderstanding here. ?I am not interpreting the\n> random effects results correctly. ?Can someone please point me in the\n> right direction?\n>\n> In particular, how can I extract estimates of the variance of B and E?\n>\n> I am assuming that the model I am fitting in both instances is\n>\n> ? ? ? ?y = X*Beta + Z*B + E\n>\n> where X = kronecker(One_20,I_4) and Z = kronecker(I_20,One_4), where I_k is\n> the\n> k-x-k identity and One_k is a k-x-1 matrix all of whose entries are 1.\n> Have I got this much right? ?(In the forgoing Beta is a 4-vector of fixed\n> effects\n> and B is a 20-vector of random effects.)\n>\n> I am even more puzzled by the results of aov() --- I cannot connect anything\n> with anything from these results. ?Where/how do I obtain estimates of the\n> variance of B and the variance of E? ?Where/how do I obtain estimates of the\n> fixed effects?\n>\n> If I do coeff(f2) I get\n>\n> child :\n> ? ?age4\n> 220.0565\n>\n> Within :\n> ? ? age4 ? ? ?age5 ? ? ?age6\n> -29.86516 -20.91547 -11.09382\n>\n> The ``Within'' coefficients are the differences age4 - age7, age5 - age7,\n> age6 - age7,\n> respectively. ?I don't understand the ``child'' coefficient (age4 =\n> 220.0565) at all.\n> Can anyone explain this to me?\n>\n> One other puzzlement: ?If one just types ``f2'' or ``print(f2)'' one gets\n> messages,\n> for stratum 1 (child) ``3 out of 4 effects not estimable / Estimable effects\n> are\n> balanced'', and for stratum 2 (Within) ``1 out of 4 effects not estimable /\n> Estimated\n> effects may be unbalanced'' ?Huh? ?What is going on? ?How could a design\n> possibly\n> be more balanced?\n>\n> I would be grateful for some enlightenment.\n>\n> ? ? ? ?cheers,\n>\n> ? ? ? ? ? ? ? ?Rolf Turner\n>\n> ######################################################################\n> Attention:\\ This e-mail message is privileged and confid...{{dropped:9}}\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Hi, Rolf,\n\nSorry, but I can't absorb all your commentary below, but the\nfundamental problem I believe is your simulation is not reflected by\nthe model you are fitting with lmer (also, I don't use aov ",
+      "thread_id": "thread-5ff55ce48d58",
+      "thread_depth": 0,
+      "month": "2009-03"
+    },
+    {
+      "id": "msg-bbd0d030e5ac",
+      "message_id": "<0BE438149FF2254DB4199E2682C8DFEB01D5023A@crcmail1.BCCRC.CA>",
+      "from_name": "Steven McKinney",
+      "from_email_hash": "44aa12668679bb305d8b993a0f1862867c6779e459c5c1b2cb7aae17c9887eeb",
+      "date": "2009-03-31T17:39:22-07:00",
+      "subject": "[R-sig-ME] Puzzled by simple example.",
+      "subject_clean": "Puzzled by simple example.",
+      "in_reply_to": "<6490_1238542396_1238542396_D82F7938-6C25-40B2-A935-D39D9B0D46E5@auckland.ac.nz>",
+      "references": [],
+      "body_plain": "Hi Rolf, \n\nQuick observation in-line below\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-\n> bounces at r-project.org] On Behalf Of Rolf Turner\n> Sent: Tuesday, March 31, 2009 4:31 PM\n> To: R-Sig Mixed-models\n> Subject: [R-sig-ME] Puzzled by simple example.\n> \n> \n> I continue to struggle to understand the syntax of lmer() from the\n> lme4 package.\n> \n> In an attempt to enlighten myself I simulated a rather simple data\n> set.  The\n> imagined scenario is children's heights (in cm.) at ages 4, 5, 6, and\n> 7, although\n> no attempt has been made to make the data realistic.\n> \n> Since the data are balanced, I thought I could check/compare the lmer\n> () results\n> with results produced by aov().\n> \n> The code I used is as follows:\n> \n> #\n> # Script scr.01\n> #\n> \n> # Generate the data.  No attempt is made to make these\n> # data realistic.\n> set.seed(42)\n> Beta <- c(40,50,60,70)\n> B  <- rnorm(80,0,2)\n> E  <- rnorm(80,0,0.25)\n> Y  <- Beta + B + E\n\nThis does not appear to contain a random effects component.\nThis just looks like average height data with two independent\ngaussian rv's added as noise (so in essence it's just an rnorm(80, 0,\nsqrt(4.0625)) random error).  This model should only need 20\nrnorm errors at the child level.  So it's a matter of getting\nthis model data constructed appropriately according to what\nyou outline below.  I'll try to get this done and post it,\nbut you or someone else may get there before I have time.\n\nAs I see it, this is why aov() is choking - there's no different\nerror structure at the whole child level.\n\nAlso note the following from the aov() help page\n\" The default 'contrasts' in R are not orthogonal contrasts, and aov and\nits helper functions will work better with such contrasts: see the\nexamples for how to select these. \"\n\nso you might need to set orthog contrasts first\n## Set orthogonal contrasts.\nop <- options(contrasts=c(\"contr.helmert\", \"contr.poly\"))\n\nHTH\n\nSteve McKinney\n\n\n> ht.dat <- data.frame(y=Y,age=factor(rep(4:7,20)),child=factor(rep\n> (1:20,each=4)))\n> \n> # Fit with lmer():\n> f1 <- lmer(y ~ 0 + age + (1|child),data=ht.dat)\n> \n> # Fit with aov():\n> f2 <- aov(y ~ 0 + age + Error(child),data=ht.dat)\n> \n> # Clean up:\n> rm(Beta,B,E,Y)\n> \n> When one does summary(f1) one gets values of the estimates of the\n> mean heights\n> which are very close to the ``true'' values used to generate the\n> data.  I am however\n> puzzled by the random effects estimates.  These are:\n> \n> Random effects:\n>   Groups   Name        Variance   Std.Dev.\n>   child    (Intercept) 1.0362e-07 0.0003219\n>   Residual             4.6663e+00 2.1601657\n> Number of obs: 80, groups: child, 20\n> \n> I thought at the ``child'' variance would be around 4 (the variance\n> used to simulate B) and that the residual variance would be around\n> 0.0625\n> (the variance used to simulate E).  This is clearly not so, so there\nis\n> clearly something I am misunderstanding here.  I am not interpreting\nthe\n> random effects results correctly.  Can someone please point me in the\n> right direction?\n> \n> In particular, how can I extract estimates of the variance of B and E?\n> \n> I am assuming that the model I am fitting in both instances is\n> \n> \ty = X*Beta + Z*B + E\n> \n> where X = kronecker(One_20,I_4) and Z = kronecker(I_20,One_4), where\n> I_k is the\n> k-x-k identity and One_k is a k-x-1 matrix all of whose entries are 1.\n> Have I got this much right?  (In the forgoing Beta is a 4-vector of\n> fixed effects\n> and B is a 20-vector of random effects.)\n> \n> I am even more puzzled by the results of aov() --- I cannot connect\n> anything\n> with anything from these results.  Where/how do I obtain estimates of\n> the\n> variance of B and the variance of E?  Where/how do I obtain estimates\n> of the\n> fixed effects?\n> \n> If I do coeff(f2) I get\n> \n> child :\n>      age4\n> 220.0565\n> \n> Within :\n>       age4      age5      age6\n> -29.86516 -20.91547 -11.09382\n> \n> The ``Within'' coefficients are the differences age4 - age7, age5 -\n> age7, age6 - age7,\n> respectively.  I don't understand the ``child'' coefficient (age4 =\n> 220.0565) at all.\n> Can anyone explain this to me?\n> \n> One other puzzlement:  If one just types ``f2'' or ``print(f2)'' one\n> gets messages,\n> for stratum 1 (child) ``3 out of 4 effects not estimable / Estimable\n> effects are\n> balanced'', and for stratum 2 (Within) ``1 out of 4 effects not\n> estimable / Estimated\n> effects may be unbalanced''  Huh?  What is going on?  How could a\n> design possibly\n> be more balanced?\n> \n> I would be grateful for some enlightenment.\n> \n> \tcheers,\n> \n> \t\tRolf Turner\n> \n> ######################################################################\n> Attention:\\ This e-mail message is privileged and\nconfid...{{dropped:9}}\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Rolf, \n\nQuick observation in-line below\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-\n> bounces at r-project.org] On Behalf Of Rolf T",
+      "thread_id": "thread-bbd0d030e5ac",
+      "thread_depth": 0,
+      "month": "2009-03"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-5ff55ce48d58",
+      "subject": "Puzzled by simple example.",
+      "message_count": 1,
+      "participants": [
+        "Sundar Dorai-Raj"
+      ],
+      "started": "2009-03-31T17:24:08-07:00",
+      "last_reply": "2009-03-31T17:24:08-07:00",
+      "root_message_id": "msg-5ff55ce48d58"
+    },
+    {
+      "id": "thread-bbd0d030e5ac",
+      "subject": "Puzzled by simple example.",
+      "message_count": 1,
+      "participants": [
+        "Steven McKinney"
+      ],
+      "started": "2009-03-31T17:39:22-07:00",
+      "last_reply": "2009-03-31T17:39:22-07:00",
+      "root_message_id": "msg-bbd0d030e5ac"
+    },
+    {
+      "id": "thread-84459c1ac7d0",
+      "subject": "R-conf. New York City, June 18-19, 2009, contribute your mixed-model R functions",
+      "message_count": 1,
+      "participants": [
+        "HRISHIKESH D. VINOD"
+      ],
+      "started": "2009-03-31T19:51:01-04:00",
+      "last_reply": "2009-03-31T19:51:01-04:00",
+      "root_message_id": "msg-84459c1ac7d0"
+    }
+  ]
+}

@@ -1,0 +1,424 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2022-09",
+  "messages": [
+    {
+      "id": "msg-fd23f6110c98",
+      "message_id": "<CA+QAJT5TZPCDEYxGsD1KVVRFZOAZ7joDTw7pcDgntq4nZjhXjQ@mail.gmail.com>",
+      "from_name": "Saâd HANANE",
+      "from_email_hash": "2bfdf5cd8c39505a9c2b0145873a23fe612377a29e667c6965fc7f6421ee6b1e",
+      "date": "2022-09-01T11:09:27+02:00",
+      "subject": "[R-sig-ME] Plot glmm full-average model",
+      "subject_clean": "Plot glmm full-average model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI'm performing a glmm modelling using the following script:\n\naa=read.table(\"tac.txt\", h=T)\nattach(aa)\nmod=glmer(p~x1+x2*a +x3*as.factor(y)+x4+x5+x6+(1|id), family=binomial,\ndata=aa)\nmodel.set <- dredge(mod, rank=\"AICc\")\nmo <- subset(model.set, !nested(.))\nmo\nwrite.csv2(mo,'moo.csv')\ntop.models <- get.models(mo, subset = delta <2)\ntop.models\nsummary(top.models)\nmod1<- model.avg(top.models,revised.var = TRUE, adjusted = TRUE, rank =\n\"AICc\")\nmod1\nsummary(mod1)\npred=predict(mod1, type=\"response\")\n\nI'm wondering if any one can help me to plot the \"p\" (probability of\npresence) according x1, x2*a, and x3*as.factor(y).\n\nbestmod (1) :  x1+ x2*a + x3 * as.factor(y)\nbestmod (2) :  x1+ x2*a\n\nThanks\n\n-- \nSa?d Hanane, PhD\nService d'?cologie, de Biodiversit? et de Conservation des Sols\nCentre de Recherche Foresti?re\nChariae Omar Ibn Al Khattab, BP 763, Rabat-Agdal/Maroc.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI'm performing a glmm modelling using the following script:\n\naa=read.table(\"tac.txt\", h=T)\nattach(aa)\nmod=glmer(p~x1+x2*a +x3*as.factor(y)+x4+x5+x6+(1|id), family=binomial,\ndata=aa)\nmodel.set <- ",
+      "thread_id": "thread-fd23f6110c98",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-e795b87c4eee",
+      "message_id": "<196aaeae-afa5-1c34-d78e-e2a8646b9bcc@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-09-01T20:55:18-04:00",
+      "subject": "[R-sig-ME]  Cannot grok the newdata argument in simulate.merMod(), package lme4",
+      "subject_clean": "Cannot grok the newdata argument in simulate.merMod(), package lme4",
+      "in_reply_to": "<20220805181019.7c10f198@rolf-Latitude-E7470>",
+      "references": [
+        "<20220805181019.7c10f198@rolf-Latitude-E7470>"
+      ],
+      "body_plain": "With apologies for delayed response.\n\n   The answer to the \"why doesn't roll-your-own match simulate()\" is on \nStack Overflow now: https://stackoverflow.com/a/73576691/190277. The \nshort answer is that the differences are harmless and caused by \ndifferences in the procedures used to pick multivariate Normal deviates \n(which give the same *distributions*, just not the same specific values \nfor any given realization/random number seed).\n\n   The answer to \"why doesn't simulate() + newdata do what I want\" is \nsimple **IF YOU KNOW THE ANSWER ALREADY**, which is that for binomial \nresponses, the number of trials per observation needs to be specified \nsomehow.  Your experience reflects arguably a bug in the code, the \ndocumentation, or the user interface design (or some combination), but \nthe solution is to specify something like\n\n   weights = rep(50, nrow(X))\n\nif (for example) you want all of the binomial samples to be out of 50. \nOr whatever makes sense for your application.  (And good for you for \npaying attention to the \"ominous warning\"!)\n\n   Hope that helps.\n\n  cheers\n    Ben Bolker\n\n\nOn 2022-08-05 2:10 a.m., Rolf Turner wrote:\n> \n> \n> I wish to assess, via simulation, the impact of certain aspects\n> of the experimental design on the precision of the estimates of\n> a rather intricate parameter, the details of which I won't go into.\n> \n> To this end I need to fit a model (generalised linear mixed model,\n> binomial family) to a data set, and then simulate other data sets,\n> reflecting a number of different experimental designs, from the given\n> fit.  I thought that the \"newdata\" argument of the simulate.merMod()\n> method would provide me with the means to accomplish my goal, but I\n> cannot get it to work.  I cannot properly comprehend the documentation\n> of the \"newdata\" argument in the help file.\n> \n> To start with, to make sure (???) that I understood what was going on\n> I just simulated a data set from a model fitted to the cbpp data,\n> using a \"roll-your-own\" procedure, and then re-did the simulation\n> using simulate.merMod().  I set seeds appropriately so that I would get\n> the same results, given that my roll-your-own procedure was correct.\n> After many false starts and excursions down blind alleys, I got the two\n> procedures to agree.  The details of what I did are to be found in the\n> attached sourceable script \"demo.txt\".\n> \n> I then attempted to effect simulations using a different data set \"X\"\n> (just including predictors, no responses) constructed according to\n> a different experimental design.\n> \n> I tried two different approaches.  The first approach:\n> \n> s.mer1 <- simulate(fit,newdata=X,allow.new.levels=TRUE)\n> \n> This produced an ominous warning:\n>> In wts - Y :\n>>    longer object length is not a multiple of shorter object length\n> \n> The second approach:\n> \n> newpar <- list(theta=getME(fit,\"theta\"),beta=getME(fit,\"beta\"))\n> set.seed(101)\n> s.mer2 <- simulate(~0+period +(1|herd),newdata=X,newparams=newpar)\n> \n> This produced warnings:\n> \n>> beta parameter vector not named: assuming same order as internal\n>> vector\n>> Warning message:\n>> In setParams(object, newparams) :\n>>    some parameters not specified in setParams()\n> \n> The first bit (\"beta parameter vector not named ...\") also happens if I\n> try to reproduce exactly an example given in the help, so perhaps I\n> should not be too worried by it.  The second bit is ominous (and to\n> me mysterious).\n> \n> The result of the first approach is incomprehensible to me, and bears\n> no relationship that I can discern to the results of a roll-your-own\n> approach that I also tried.  The result of the second approach is all\n> NAs, so something is clearly wrong.\n> \n> The details of what I did are given in the attached file\n> \"try.newdata.txt\".\n> \n> I would be ever-so-humbly grateful if someone could explain to me what\n> I am doing wrong in my attempts to use the \"newdata\" argument of\n> simulate.merMod().\n> \n> cheers,\n> \n> Rolf Turner\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "With apologies for delayed response.\n\n   The answer to the \"why doesn't roll-your-own match simulate()\" is on \nStack Overflow now: https://stackoverflow.com/a/73576691/190277. The \nshort answer is tha",
+      "thread_id": "thread-e795b87c4eee",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-b2d8de55fcc8",
+      "message_id": "<CAK6Av5K7Uwe3wRe41UAsxfSr4P=ve+31Z9RNr199G7YWriKNyw@mail.gmail.com>",
+      "from_name": "Nicolas Alfonso Verano Camacho",
+      "from_email_hash": "b956c697b6b8747698d72790affc2a41b8d42e70bc539b15fd0f9f5497c02e90",
+      "date": "2022-09-04T20:56:11-05:00",
+      "subject": "[R-sig-ME] model validation with weights",
+      "subject_clean": "model validation with weights",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi, my name is Nicolas and I have a question.\n\nReviewing the documentation for both gmmTMB and DHARMa, when you have\nweights (in my case the weight represents a repeated observation, I only\nuse fixed effects) it seems that gmmTMB ignores them. That said, it is not\nclear to me if I can use DHARMa to validate the models obtained with\nglmmTMB or how I could generate appropriate validation strategies in this\ncase.\n\nThank you very much for your help\n\n-- \n*Aviso legal:*?El contenido de este mensaje y los archivos adjuntos son \nconfidenciales y de uso exclusivo de la Universidad Nacional de Colombia. \nSe encuentran dirigidos s?lo para el uso del destinatario al cual van \nenviados. La reproducci?n, lectura y/o copia se encuentran prohibidas a \ncualquier persona diferente a este y puede ser ilegal. Si usted lo ha \nrecibido por error, inf?rmenos y elim?nelo de su correo. Los Datos \nPersonales ser?n tratados conforme a la Ley 1581 de 2012 y a nuestra \nPol?tica de Datos Personales que podr? consultar en la p?gina web?\nwww.unal.edu.co <http://www.unal.edu.co/>.*?*Las opiniones, informaciones, \nconclusiones y cualquier otro tipo de dato contenido en este correo \nelectr?nico, no relacionados con la actividad de la Universidad Nacional de \nColombia, se entender? como personales y de ninguna manera son avaladas por \nla Universidad.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi, my name is Nicolas and I have a question.\n\nReviewing the documentation for both gmmTMB and DHARMa, when you have\nweights (in my case the weight represents a repeated observation, I only\nuse fixed ",
+      "thread_id": "thread-b2d8de55fcc8",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-18d6238b47e6",
+      "message_id": "<CAKmKTvEKgHz09qxqGyGobXg8xC8XMWO928DrprPv54q4UzdOgQ@mail.gmail.com>",
+      "from_name": "Rafael Lima Oliveira",
+      "from_email_hash": "70888c63006c47cf91efa78eb71714139e9717a65333f557dbe922ecccb36295",
+      "date": "2022-09-06T10:04:04-03:00",
+      "subject": "[R-sig-ME] Random effect variance = zero",
+      "subject_clean": "Random effect variance = zero",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone. I have a dataset of  environmental variables\n(salinity, temperature, pH, dissolved oxygen, turbidity and depth) as\npredictors and as response variables fish densities and rarefied\nspecies richness.\n\nInitially, I run a Gamma-GLMM with log link function using as response\nvariable fish density and it came up with the error \"*Error in\npwrssUpdate(pp, resp, tol = tolPwrss, GQmat = GHrule(0L), compDev =\ncompDev, : pwrssUpdate did not converge in (maxit) iterations*\"\n\nAs suggested by Ben Bolker comments, I created two model as follow:\n\nm1 <- glm(Density ~ Locality +Salinity + Temperature +pH + DO +\nTurbidity + Depth, family= Gamma(link= log), data = dados)\n\nm2<- glmer(Density ~ Salinity + Temperature +pH + DO + Turbidity +\nDepth + (1 |Month) + (1|Locality/Site), family= Gamma(link= log), data\n= dados, start=list(fixef=coef(gama1)),\ncontrol=glmerControl(nAGQ0initStep=FALSE), verbose = 100)\n\nIn this case, the first model was fitted to get starting values.\n\nNow, I change my response variable and I'm using  Rarefied Species\nRichness. I used, initially, Poisson distribution to my count data\n(Richness). However, to avoid comparison bias caused by differences in\ntotal abundance among samples I'm using rarefied fish species richness\n(based on 10 individuals).\n\nWhen I run the model, this warning message appears repeatedly:\n\n- Boundary (singular) fit: see help('isSingular')\n\nWarning messages:\n1: In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n  Model failed to converge with max|grad| = 0.0529464 (tol = 0.002, component 1)\n2: In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n\nI'm using gamma distribution instead of Poisson to fit rarefied\nspecies richness. The summary output showed random-effect variance and\nStd.Dev values as zero.\n\nThe random-effect variances being estimated as zero indicates that my model\nshould be simplified? Should I remove the random effects terms without\nsubstantial loss of fidelity to the data? The Random structure that I\ncreated in my model account for my nested design, where: (1 |Month) account\nfor temporal variability of my dataset collected montly during 1 year and\n(1|Locality/Site) where a indicated that , spatially my data are nested, in\nthis case \"Site\" nested in \"Locality\".\n\nIf any anybody has any tips on this please give me a hand.\nHope you can understand it.\nThanks.\n\n-- \n*Rafael Lima Oliveira*\nDoutorando em Biologia Animal\nUniversidade Federal do Esp?rito Santo - UFES\nLaborat?rio de Ecologia de peixes marinhos - CEUNES/UFES\n*Contato:* (75) 98873-1548 / (27) 99526-3612\n*E-mail alternativo:* rafael.l.oliveira at edu.ufes.br\n*Curr?culo Lattes*:  http://lattes.cnpq.br/5215941704013482\n\n>)))?>               >)))?>               >)))?>                   >)))?>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello everyone. I have a dataset of  environmental variables\n(salinity, temperature, pH, dissolved oxygen, turbidity and depth) as\npredictors and as response variables fish densities and rarefied\nspec",
+      "thread_id": "thread-18d6238b47e6",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-a205f10e5e14",
+      "message_id": "<CA+uEwdYpm_p9-XZQg_rOxzKgca6Q7oRDGZq1dBPWshpxk_k+Bg@mail.gmail.com>",
+      "from_name": "Louc Yates",
+      "from_email_hash": "35ca5b36686c39644ace690b5057f3e9213fbf44c86997ea8e30d5a399b17fb1",
+      "date": "2022-09-09T12:12:03+01:00",
+      "subject": "[R-sig-ME] Bivariate MCMCglmm with uneven number of repeats",
+      "subject_clean": "Bivariate MCMCglmm with uneven number of repeats",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list,\n\nI would like to test for covariation between two traits, aggression (count\ndata, poisson distribution) and glucocorticoids (gaussian), using a\nbivariate MCMCglmm.\n\nDuring data collection, aggression assays were conducted immediately after\ncollection of samples for glucocorticoids. However, additional\nglucocorticoid samples were also collected without any aggression assays\nbeing collected. Therefore, I have more glucocorticoid values than I do\naggression scores. If possible, I would like to include all\nglucocorticoid values,\nrather than just the samples that were collected at the same time\naggression assays were performed.\n\nI have tried running a bivariate MCMCglmm using a wide data frame, where\neach row contains an aggression and glucocorticoid value (both collected at\nthe same time) and the remaining glucocorticoid values on rows that contain\nan NA where the paired aggression data should be. However, MCMCglmm will\nnot run models using this data format as it does not accept NAs.\n\nI have also restructured my data to a long/stacked format, where each row\ncontains information on a single trait (similar to the data structure\nneeded for the 'covu' method) and the model runs successfully and the\ndiagnostics look fine.\n\nMy question is: is running a bivariate model with an uneven number of\nrepeats for either trait statistically 'sound'? Am I unknowingly violating\nany assumptions? I only ask as I have not run bivariate models using this\ndata structure before and want to make sure it is fine to do it this way.\n\nBest wishes\nLou\n\n\nIn case this provides any useful info, below is an example of my prior\nspecification and model structure.\n\nprior <- list(G = list(G1 = list(V = diag(2), nu = 1.002), *#2-way var-cov\nmatrix of IndividualID for AGGRESSION + CORT*\n                                  G2 = list(V = diag(1), nu = 0.002), *#rand\neffect for TestChamber (fitted for AGGRESSION)*\n                                  G3 = list(V = diag(1), nu = 0.002),*#rand\neffect for BirthYear (fitted for CORT)*\n                                  G4 = list(V = diag(1), nu = 0.002)), *#rand\neffect for LabID (CORT)*\n                     R = list(R1 = list(V = diag(2), nu = 1.002)))  *#2-way\nvar-cov matrix of resid for AGGRESSION + CORT*\n\n\nm1<- MCMCglmm(Aggression.CORT.data ~ variable - 1 +\nat.level(variable, \"AGGRESSION\"):rescale(Sex) +\nat.level(variable, \"AGGRESSION\"):rescale(Age_years) +\nat.level(variable, \"CORT\"):rescale(Age_years),\nrandom = ~us(variable):IndividualID +\nus(at.level(variable,\"AGGRESSION\")):TestChamber+\nus(at.level(variable,\"CORT\")):BirthYear+\nus(at.level(variable,\"CORT\")):LabID,\nrcov = ~idh(variable):units,\nfamily = NULL, # specified already in the data\nprior = prior,\nnitt=5000000,\nburnin=50000,\nthin=500,\nverbose = FALSE,\npr=FALSE,\ndata = data)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list,\n\nI would like to test for covariation between two traits, aggression (count\ndata, poisson distribution) and glucocorticoids (gaussian), using a\nbivariate MCMCglmm.\n\nDuring data collection, ",
+      "thread_id": "thread-a205f10e5e14",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-ced13dbc25c2",
+      "message_id": "<3B9C2332-181C-4305-A181-6FBFE3324FB2@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "2e43a7af8f4daa87297a28457149e295b738b83f542c302ce576a405c1ae25e2",
+      "date": "2022-09-09T14:18:13Z",
+      "subject": "[R-sig-ME] Bivariate MCMCglmm with uneven number of repeats",
+      "subject_clean": "Bivariate MCMCglmm with uneven number of repeats",
+      "in_reply_to": "<CA+uEwdYpm_p9-XZQg_rOxzKgca6Q7oRDGZq1dBPWshpxk_k+Bg@mail.gmail.com>",
+      "references": [
+        "<CA+uEwdYpm_p9-XZQg_rOxzKgca6Q7oRDGZq1dBPWshpxk_k+Bg@mail.gmail.com>"
+      ],
+      "body_plain": "Hi Lou,\n\nDoing the analyses the way you have done - long format  - is statistically should and should give exactly the same answer as a wide format data set padded with NA?s. However, the long-format method is computationally more efficient, especially when the number of repeats is highly uneven between the traits.\n\nMCMCglmm should have accepted the wide format and padded NA?s, however - could you send me code/data/error-message so I can take a look?\n\nCheers,\n\nJarrod\n\n> On 9 Sep 2022, at 12:12, Louc Yates <louc.yates22 at gmail.com> wrote:\n>\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that the email is genuine and the content is safe.\n>\n> Dear list,\n>\n> I would like to test for covariation between two traits, aggression (count\n> data, poisson distribution) and glucocorticoids (gaussian), using a\n> bivariate MCMCglmm.\n>\n> During data collection, aggression assays were conducted immediately after\n> collection of samples for glucocorticoids. However, additional\n> glucocorticoid samples were also collected without any aggression assays\n> being collected. Therefore, I have more glucocorticoid values than I do\n> aggression scores. If possible, I would like to include all\n> glucocorticoid values,\n> rather than just the samples that were collected at the same time\n> aggression assays were performed.\n>\n> I have tried running a bivariate MCMCglmm using a wide data frame, where\n> each row contains an aggression and glucocorticoid value (both collected at\n> the same time) and the remaining glucocorticoid values on rows that contain\n> an NA where the paired aggression data should be. However, MCMCglmm will\n> not run models using this data format as it does not accept NAs.\n>\n> I have also restructured my data to a long/stacked format, where each row\n> contains information on a single trait (similar to the data structure\n> needed for the 'covu' method) and the model runs successfully and the\n> diagnostics look fine.\n>\n> My question is: is running a bivariate model with an uneven number of\n> repeats for either trait statistically 'sound'? Am I unknowingly violating\n> any assumptions? I only ask as I have not run bivariate models using this\n> data structure before and want to make sure it is fine to do it this way.\n>\n> Best wishes\n> Lou\n>\n>\n> In case this provides any useful info, below is an example of my prior\n> specification and model structure.\n>\n> prior <- list(G = list(G1 = list(V = diag(2), nu = 1.002), *#2-way var-cov\n> matrix of IndividualID for AGGRESSION + CORT*\n>                                  G2 = list(V = diag(1), nu = 0.002), *#rand\n> effect for TestChamber (fitted for AGGRESSION)*\n>                                  G3 = list(V = diag(1), nu = 0.002),*#rand\n> effect for BirthYear (fitted for CORT)*\n>                                  G4 = list(V = diag(1), nu = 0.002)), *#rand\n> effect for LabID (CORT)*\n>                     R = list(R1 = list(V = diag(2), nu = 1.002)))  *#2-way\n> var-cov matrix of resid for AGGRESSION + CORT*\n>\n>\n> m1<- MCMCglmm(Aggression.CORT.data ~ variable - 1 +\n> at.level(variable, \"AGGRESSION\"):rescale(Sex) +\n> at.level(variable, \"AGGRESSION\"):rescale(Age_years) +\n> at.level(variable, \"CORT\"):rescale(Age_years),\n> random = ~us(variable):IndividualID +\n> us(at.level(variable,\"AGGRESSION\")):TestChamber+\n> us(at.level(variable,\"CORT\")):BirthYear+\n> us(at.level(variable,\"CORT\")):LabID,\n> rcov = ~idh(variable):units,\n> family = NULL, # specified already in the data\n> prior = prior,\n> nitt=5000000,\n> burnin=50000,\n> thin=500,\n> verbose = FALSE,\n> pr=FALSE,\n> data = data)\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.",
+      "body_snippet": "Hi Lou,\n\nDoing the analyses the way you have done - long format  - is statistically should and should give exactly the same answer as a wide format data set padded with NA?s. However, the long-format ",
+      "thread_id": "thread-a205f10e5e14",
+      "thread_depth": 1,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-9ef31f505834",
+      "message_id": "<LO2P265MB3610FC72C63AE97791F3989FFB449@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+      "from_name": "Verena Hinze",
+      "from_email_hash": "5caf41c7d87487c8beb5a554774743d8f26a88a22711b66027b63cf07d33a979",
+      "date": "2022-09-12T17:41:56Z",
+      "subject": "[R-sig-ME] A question about multilevel models using the lmer package in R",
+      "subject_clean": "A question about multilevel models using the lmer package in R",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear mailing list at R-sig-mixed-models,\n\nI am a postdoctoral researcher at the University of Oxford (UK) and I am very interested in using multilevel growth analyses for my research.\nI have come across a lot of very helpful tutorials on the internet, recommending the lmer package.\nHowever, I have one question for which I didn't manage to find the answer yet, and I was wondering whether you might be able to point me in the right direction...\n\nSpecifically, I am interested in modelling three-level data (students nested within schools and within time). I am hoping to predict student outcomes by student-level and school-level predictors, and I have been using the lmer package in R to model the data.\n\nHowever, in the model output, I have noticed that sometimes the variance (for the student- or school-level intercepts or slopes) increases instead of decreases, compared to the simpler model without the respective predictor. This is contrary to what we would expect from ordinary regression analyses, where we expect the variance to decrease, if we add predictors to the model that help us to explain such variance.\n\nI was wondering what might be going on here? Have you encountered something similar before? And how could we evaluate the impact of a predictor on these student-/school-level intercepts and slopes in multi-level models instead?\n\nAny advice would be highly appreciated.\n\nWith many thanks and kind regards,\n\nVerena\n\nVerena Hinze\nPostdoctoral Research Fellow\nOxford Precision Psychiatry Lab\nUniversity of Oxford, Department of Psychiatry\nWarneford Lane, Oxford, OX3 7JX ?\nE: verena.hinze at psych.ox.ac.uk\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mailing list at R-sig-mixed-models,\n\nI am a postdoctoral researcher at the University of Oxford (UK) and I am very interested in using multilevel growth analyses for my research.\nI have come acro",
+      "thread_id": "thread-9ef31f505834",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-b03e1c12427e",
+      "message_id": "<CAKmKTvFpp1e=LHzyRDi1=Ar0pX2r+fRmHL_Ru=wwfVigq3+-2A@mail.gmail.com>",
+      "from_name": "Rafael Lima Oliveira",
+      "from_email_hash": "70888c63006c47cf91efa78eb71714139e9717a65333f557dbe922ecccb36295",
+      "date": "2022-09-13T11:25:08-03:00",
+      "subject": "[R-sig-ME] boundary (singular) fit and failure to converge",
+      "subject_clean": "boundary (singular) fit and failure to converge",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear mailing list at R-sig-mixed-models,\n\n\n\nI have a dataset of environmental variables (salinity, temperature, pH,\ndissolved oxygen, turbidity and depth) as predictors and as response\nvariables fish species richness.\n\n\n\nInitially, I ran a Poisson-GLMM and this is my model:\n\n\n\npoissonmodel<- glmer(Richness~ Salinity*Locality + Temperature*Locality +\npH*Locality + DO*Locality + Turbidity*Locality + Depth*Locality + (1\n|Month) + (1|Locality/Site), family=\"poisson\", data = dados)\n\n\n\nWarning message:\n\nIn checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n\n  Model failed to converge with max|grad| = 0.00485978 (tol = 0.002,\ncomponent 1)\n\n\n\nThe random-effect variances being estimated as zero (or close to 0)\nindicates that my model should be simplified? Should I remove the random\neffects terms without substantial loss of fidelity to the data?\n\n\n\nThe Random structure that I created in my model account for my nested\ndesign, where: (1 |Month) account for temporal variability of my dataset\ncollected monthly during 1 year and (1|Locality/Site) where indicated that,\nspatially my data are nested, in this case \"Site\" nested in \"Locality\".\n\n\n\nOverdispersion test to Poisson model indicated a dispersion rate of 1.632.\nOnce overdispersion is detected, I?m refitting my model with negative\nbinomial distribution (function ?glmer.nb) and variance of the random\neffects also was close to 0.\n\n\n\n*This is my negative binomial model:*\n\n\n\nbinomialmodel<- glmer.nb(Richness~ Locality + Salinity*Locality +\nTemperature*Locality + pH*Locality + DO*Locality + Turbidity*Locality +\nDepth*Locality + (1 |Month) + (1|Locality/Site), data = dados)\n\n\n\nAfter run my model some warnings appeared:\n\n\n\n*- boundary (singular) fit: see help('isSingular')*\n\n\n\nand two warnings about Convergence:\n\n\n\n*1:* In optTheta(g1, interval = interval, tol = tol, verbose = verbose,\nfailure to converge in 10000 evaluations\n\n*2:* In optTheta(g1, interval = interval, tol = tol, verbose = verbose,  :\nconvergence code 4 from Nelder_Mead: failure to converge in 10000\nevaluations\n\n\n\nThe random effects that I specified in my model are not really needed? If I\nremove the random effects, can I change the GLMM approach to GLM approach?\n\n\n\nIf anybody has any tips on this please give me a hand.\n\nHope you can understand it.\n\n\n\nWith many thanks and kind regards,\n\n\n\nRafael\n\n-- \n*Rafael Lima Oliveira*\nDoutorando em Biologia Animal\nUniversidade Federal do Esp?rito Santo - UFES\nLaborat?rio de Ecologia de peixes marinhos - CEUNES/UFES\n*Contato:* (75) 98873-1548 / (27) 99526-3612\n*E-mail alternativo:* rafael.l.oliveira at edu.ufes.br\n*Curr?culo Lattes*:  http://lattes.cnpq.br/5215941704013482\n\n>)))?>               >)))?>               >)))?>                   >)))?>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mailing list at R-sig-mixed-models,\n\n\n\nI have a dataset of environmental variables (salinity, temperature, pH,\ndissolved oxygen, turbidity and depth) as predictors and as response\nvariables fish ",
+      "thread_id": "thread-b03e1c12427e",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-5f15676c6671",
+      "message_id": "<LO2P265MB361066AC6537A33FD7515C4FFB479@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+      "from_name": "Verena Hinze",
+      "from_email_hash": "5caf41c7d87487c8beb5a554774743d8f26a88a22711b66027b63cf07d33a979",
+      "date": "2022-09-13T14:46:59Z",
+      "subject": "[R-sig-ME] A question about multilevel models using the lmer package in R",
+      "subject_clean": "A question about multilevel models using the lmer package in R",
+      "in_reply_to": "<LO2P265MB3610FC72C63AE97791F3989FFB449@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+      "references": [
+        "<LO2P265MB3610FC72C63AE97791F3989FFB449@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "Dear mailing list at R-sig-mixed-models,\n\nI am very interested in using multilevel growth analyses for my research.\nI have come across a lot of very helpful tutorials on the internet, recommending the lmer package.\nHowever, I have one question for which I didn't manage to find the answer yet, and I was wondering whether you might be able to point me in the right direction...\n\nSpecifically, I am interested in modelling three-level data (students nested within schools and within time). I am hoping to predict student outcomes by student-level and school-level predictors, and I have been using the lmer package in R to model the data.\n\nHowever, in the model output, I have noticed that sometimes the variance (for the student- or school-level intercepts or slopes) increases instead of decreases, compared to the simpler model without the respective predictor. This is contrary to what we would expect from ordinary regression analyses, where we expect the variance to decrease, if we add predictors to the model that help us to explain such variance.\n\nI was wondering what might be going on here? Have you encountered something similar before? And how could we evaluate the impact of a predictor on these student-/school-level intercepts and slopes in multi-level models instead?\n\nAny advice would be highly appreciated.\n\nWith many thanks and kind regards,\n\nVerena\n\nVerena Hinze\nPostdoctoral Research Fellow\nOxford Precision Psychiatry Lab\nUniversity of Oxford, Department of Psychiatry\nWarneford Lane, Oxford, OX3 7JX ?\nE: verena.hinze at psych.ox.ac.uk\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mailing list at R-sig-mixed-models,\n\nI am very interested in using multilevel growth analyses for my research.\nI have come across a lot of very helpful tutorials on the internet, recommending the",
+      "thread_id": "thread-9ef31f505834",
+      "thread_depth": 1,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-01b6448d6674",
+      "message_id": "<f50925a0-f635-5444-3983-81ce4ef60b4c@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-09-13T10:56:35-04:00",
+      "subject": "[R-sig-ME] A question about multilevel models using the lmer package in R",
+      "subject_clean": "A question about multilevel models using the lmer package in R",
+      "in_reply_to": "<LO2P265MB361066AC6537A33FD7515C4FFB479@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+      "references": [
+        "<LO2P265MB3610FC72C63AE97791F3989FFB449@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+        "<LO2P265MB361066AC6537A33FD7515C4FFB479@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "(This came through twice, for what it's worth.)\n\n   I can't immediately explain the phenomenon you observed (variance at \nan upper level increasing when a covariate is added), but I'm not \nshocked -- when there are multiple levels of variation, variation can \nshift among them in surprising ways.\n\n   Can you clarify/expand on what you mean by \"[evaluating] the impact \nof a predictor on student/school-level intercepts\"?\n\nOn 2022-09-13 10:46 a.m., Verena Hinze wrote:\n> Dear mailing list at R-sig-mixed-models,\n> \n> I am very interested in using multilevel growth analyses for my research.\n> I have come across a lot of very helpful tutorials on the internet, recommending the lmer package.\n> However, I have one question for which I didn't manage to find the answer yet, and I was wondering whether you might be able to point me in the right direction...\n> \n> Specifically, I am interested in modelling three-level data (students nested within schools and within time). I am hoping to predict student outcomes by student-level and school-level predictors, and I have been using the lmer package in R to model the data.\n> \n> However, in the model output, I have noticed that sometimes the variance (for the student- or school-level intercepts or slopes) increases instead of decreases, compared to the simpler model without the respective predictor. This is contrary to what we would expect from ordinary regression analyses, where we expect the variance to decrease, if we add predictors to the model that help us to explain such variance.\n> \n> I was wondering what might be going on here? Have you encountered something similar before? And how could we evaluate the impact of a predictor on these student-/school-level intercepts and slopes in multi-level models instead?\n> \n> Any advice would be highly appreciated.\n> \n> With many thanks and kind regards,\n> \n> Verena\n> \n> Verena Hinze\n> Postdoctoral Research Fellow\n> Oxford Precision Psychiatry Lab\n> University of Oxford, Department of Psychiatry\n> Warneford Lane, Oxford, OX3 7JX ?\n> E: verena.hinze at psych.ox.ac.uk\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "(This came through twice, for what it's worth.)\n\n   I can't immediately explain the phenomenon you observed (variance at \nan upper level increasing when a covariate is added), but I'm not \nshocked -- ",
+      "thread_id": "thread-9ef31f505834",
+      "thread_depth": 2,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-7a2c0a0c98c5",
+      "message_id": "<e3ddbeb6-6272-e086-8eda-89c61963c0ee@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-09-13T11:01:43-04:00",
+      "subject": "[R-sig-ME] boundary (singular) fit and failure to converge",
+      "subject_clean": "boundary (singular) fit and failure to converge",
+      "in_reply_to": "<CAKmKTvFpp1e=LHzyRDi1=Ar0pX2r+fRmHL_Ru=wwfVigq3+-2A@mail.gmail.com>",
+      "references": [
+        "<CAKmKTvFpp1e=LHzyRDi1=Ar0pX2r+fRmHL_Ru=wwfVigq3+-2A@mail.gmail.com>"
+      ],
+      "body_plain": "On 2022-09-13 10:25 a.m., Rafael Lima Oliveira wrote:\n> Dear mailing list at R-sig-mixed-models,\n> \n> \n> \n> I have a dataset of environmental variables (salinity, temperature, pH,\n> dissolved oxygen, turbidity and depth) as predictors and as response\n> variables fish species richness.\n> \n> \n> \n> Initially, I ran a Poisson-GLMM and this is my model:\n> \n> \n> \n> poissonmodel<- glmer(Richness~ Salinity*Locality + Temperature*Locality +\n> pH*Locality + DO*Locality + Turbidity*Locality + Depth*Locality + (1\n> |Month) + (1|Locality/Site), family=\"poisson\", data = dados)\n> \n> \n> \n> Warning message:\n> \n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n> \n>    Model failed to converge with max|grad| = 0.00485978 (tol = 0.002,\n> component 1)\n> \n> \n> \n> The random-effect variances being estimated as zero (or close to 0)\n> indicates that my model should be simplified? Should I remove the random\n> effects terms without substantial loss of fidelity to the data?\n\n   If you remove a term whose variance is estimated as zero, you're not \nlosing *any* fidelity to the data ... in general, the recommendation is \nthat terms that are fitted as singular probably indicate an \noverfitted/overly complex model (see e.g. Barr et al 2013 \"Keep it \nmaximal\", Matuschek et al 2017 \"Balancing Type I error\" -- both agree \nthat singular terms can be removed)\n\n> \n> \n> \n> The Random structure that I created in my model account for my nested\n> design, where: (1 |Month) account for temporal variability of my dataset\n> collected monthly during 1 year and (1|Locality/Site) where indicated that,\n> spatially my data are nested, in this case \"Site\" nested in \"Locality\".\n> \n> \n> \n> Overdispersion test to Poisson model indicated a dispersion rate of 1.632.\n> Once overdispersion is detected, I?m refitting my model with negative\n> binomial distribution (function ?glmer.nb) and variance of the random\n> effects also was close to 0.\n> \n> \n> \n> *This is my negative binomial model:*\n> \n> \n> \n> binomialmodel<- glmer.nb(Richness~ Locality + Salinity*Locality +\n> Temperature*Locality + pH*Locality + DO*Locality + Turbidity*Locality +\n> Depth*Locality + (1 |Month) + (1|Locality/Site), data = dados)\n> \n> \n> \n> After run my model some warnings appeared:\n> \n> \n> \n> *- boundary (singular) fit: see help('isSingular')*\n> \n> \n> \n> and two warnings about Convergence:\n> \n> \n> \n> *1:* In optTheta(g1, interval = interval, tol = tol, verbose = verbose,\n> failure to converge in 10000 evaluations\n> \n> *2:* In optTheta(g1, interval = interval, tol = tol, verbose = verbose,  :\n> convergence code 4 from Nelder_Mead: failure to converge in 10000\n> evaluations\n> \n> \n\n    You should definitely increase the number of function evaluations. \n(Not sure why this is using Nelder-Mead, which is usually *not* the most \nrobust of the available options ... ?)\n\n   You could also try glmmTMB, which is a bit faster/more robust when \nfitting negative binomial models.\n\n\n\n> \n> The random effects that I specified in my model are not really needed? If I\n> remove the random effects, can I change the GLMM approach to GLM approach?\n\n   If *all* of your REs have variance zero then yes, you probably won't \nlose anything by dropping back from GLMMs to GLMs.\n\n> \n> \n> \n> If anybody has any tips on this please give me a hand.\n> \n> Hope you can understand it.\n> \n> \n> \n> With many thanks and kind regards,\n> \n> \n> \n> Rafael\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "On 2022-09-13 10:25 a.m., Rafael Lima Oliveira wrote:\n> Dear mailing list at R-sig-mixed-models,\n> \n> \n> \n> I have a dataset of environmental variables (salinity, temperature, pH,\n> dissolved oxygen, ",
+      "thread_id": "thread-b03e1c12427e",
+      "thread_depth": 1,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-5c0cb9a5fc9d",
+      "message_id": "<090f5721-94dc-c7a2-5f6a-2ec02d075e55@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-09-14T10:30:37+02:00",
+      "subject": "[R-sig-ME] A question about multilevel models using the lmer package in R",
+      "subject_clean": "A question about multilevel models using the lmer package in R",
+      "in_reply_to": "<f50925a0-f635-5444-3983-81ce4ef60b4c@gmail.com>",
+      "references": [
+        "<LO2P265MB3610FC72C63AE97791F3989FFB449@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+        "<LO2P265MB361066AC6537A33FD7515C4FFB479@LO2P265MB3610.GBRP265.PROD.OUTLOOK.COM>",
+        "<f50925a0-f635-5444-3983-81ce4ef60b4c@gmail.com>"
+      ],
+      "body_plain": "This sounds a bit like Hedge's Reliability Paradox:\n\nHedge, C., Powell, G. & Sumner, P. The reliability paradox: Why robust\ncognitive tasks do not produce reliable individual differences. /Behav\nRes / *50*, 1166?1186 (2018). https://doi.org/10.3758/s13428-017-0935-1\n\nThere is also an older result due to Spearman about bias of variance\nestimates under certain conditions, though I can't recall the details\noff the top of my head.\n\n(sent a second time without PGP signing -- would it be possible to allow\nPGP to the allowed MIME types?)\n\nOn 9/13/22 16:56, Ben Bolker wrote:\n> ? (This came through twice, for what it's worth.)\n>\n> ? I can't immediately explain the phenomenon you observed (variance at\n> an upper level increasing when a covariate is added), but I'm not\n> shocked -- when there are multiple levels of variation, variation can\n> shift among them in surprising ways.\n>\n> ? Can you clarify/expand on what you mean by \"[evaluating] the impact\n> of a predictor on student/school-level intercepts\"?\n>\n> On 2022-09-13 10:46 a.m., Verena Hinze wrote:\n>> Dear mailing list at R-sig-mixed-models,\n>>\n>> I am very interested in using multilevel growth analyses for my\n>> research.\n>> I have come across a lot of very helpful tutorials on the internet,\n>> recommending the lmer package.\n>> However, I have one question for which I didn't manage to find the\n>> answer yet, and I was wondering whether you might be able to point me\n>> in the right direction...\n>>\n>> Specifically, I am interested in modelling three-level data (students\n>> nested within schools and within time). I am hoping to predict\n>> student outcomes by student-level and school-level predictors, and I\n>> have been using the lmer package in R to model the data.\n>>\n>> However, in the model output, I have noticed that sometimes the\n>> variance (for the student- or school-level intercepts or slopes)\n>> increases instead of decreases, compared to the simpler model without\n>> the respective predictor. This is contrary to what we would expect\n>> from ordinary regression analyses, where we expect the variance to\n>> decrease, if we add predictors to the model that help us to explain\n>> such variance.\n>>\n>> I was wondering what might be going on here? Have you encountered\n>> something similar before? And how could we evaluate the impact of a\n>> predictor on these student-/school-level intercepts and slopes in\n>> multi-level models instead?\n>>\n>> Any advice would be highly appreciated.\n>>\n>> With many thanks and kind regards,\n>>\n>> Verena\n>>\n>> Verena Hinze\n>> Postdoctoral Research Fellow\n>> Oxford Precision Psychiatry Lab\n>> University of Oxford, Department of Psychiatry\n>> Warneford Lane, Oxford, OX3 7JX ?\n>> E: verena.hinze at psych.ox.ac.uk\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "This sounds a bit like Hedge's Reliability Paradox:\n\nHedge, C., Powell, G. & Sumner, P. The reliability paradox: Why robust\ncognitive tasks do not produce reliable individual differences. /Behav\nRes /",
+      "thread_id": "thread-9ef31f505834",
+      "thread_depth": 3,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-1de052de2a3f",
+      "message_id": "<BL0PR04MB4563318A1040C288C6FCF690B94D9@BL0PR04MB4563.namprd04.prod.outlook.com>",
+      "from_name": "Sun, John",
+      "from_email_hash": "41e8272beabbc0b3b73e2dc4453ff421913ba053d9dc0f038734de7e30f6c264",
+      "date": "2022-09-19T18:53:53Z",
+      "subject": "[R-sig-ME] Is it possible to use newey-west (heteroscedasticity and autocorrelation consistent) standard errors using a generalized linear mixed-model or generalized estimating equation?",
+      "subject_clean": "Is it possible to use newey-west (heteroscedasticity and autocorrelation consistent) standard errors using a generalized linear mixed-model or generalized estimating equation?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All,\n\nI am writing to ask whether it is possible to obtain robust standard error corrections when using a generalized linear mixed model or generalized estimating equation via the Econometrics Newey-West method.\n\nI ask this because I think it is safer to assume that the generalized linear model in glmer or glmmTMB does not perform well when the errors have autocorrelation and heteroscedasticity and/or the random-effects have a non diagonal correlation structure.\n\nI am also concerned with generalized estimating equations in that the working-correlation which one uses to obtain standard errors for regression coefficients is a guess based on what I've read and there's no proof according to what I know that generalized estimating equation is robust to model errors having autocorrelation.\n\nBest regards,\nJohn\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear All,\n\nI am writing to ask whether it is possible to obtain robust standard error corrections when using a generalized linear mixed model or generalized estimating equation via the Econometrics Ne",
+      "thread_id": "thread-1de052de2a3f",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-82d1db2add55",
+      "message_id": "<BL0PR04MB456320091BFB3064A7ACCC64B9509@BL0PR04MB4563.namprd04.prod.outlook.com>",
+      "from_name": "Sun, John",
+      "from_email_hash": "41e8272beabbc0b3b73e2dc4453ff421913ba053d9dc0f038734de7e30f6c264",
+      "date": "2022-09-24T14:22:12Z",
+      "subject": "[R-sig-ME] Condition number of Hessian in glmmTMB",
+      "subject_clean": "Condition number of Hessian in glmmTMB",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All,\n\nI am writing to ask how to have glmmTMB package give me the condition number of the Hessian so I can diagnose whether I am losing to many significant figures when using a more complicated model.\n\nBest regards,\nJohn",
+      "body_snippet": "Dear All,\n\nI am writing to ask how to have glmmTMB package give me the condition number of the Hessian so I can diagnose whether I am losing to many significant figures when using a more complicated m",
+      "thread_id": "thread-82d1db2add55",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-c83ab8a8df94",
+      "message_id": "<BL0PR04MB4563778B131E342C305020ACB9509@BL0PR04MB4563.namprd04.prod.outlook.com>",
+      "from_name": "Sun, John",
+      "from_email_hash": "41e8272beabbc0b3b73e2dc4453ff421913ba053d9dc0f038734de7e30f6c264",
+      "date": "2022-09-24T16:25:39Z",
+      "subject": "[R-sig-ME] Find Hessian in MixCat and glmmTMB packages",
+      "subject_clean": "Find Hessian in MixCat and glmmTMB packages",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All,\n\nI am writing to ask how to find the hessian from these fitted objects to calculate the condition number of the hessian to diagnose loss of precision.\nPlease let me know if you know any information.\n\nlibrary(mixcat)\ndata(schizo)\nattach(schizo)\na<-npmlt(y~trt*sqrt(wk),formula.npo=~trt,random=~1+trt,id=id,k=2,EB=FALSE)\n\nlibrary(glmmTMB)\n(m1 <- glmmTMB(count ~ mined + (1|site),\n  zi=~mined,\n  family=poisson, data=Salamanders))\n\nI cannot find how to find the hessian from these fitted objects.\n\nBest regards,\nJohn",
+      "body_snippet": "Dear All,\n\nI am writing to ask how to find the hessian from these fitted objects to calculate the condition number of the hessian to diagnose loss of precision.\nPlease let me know if you know any info",
+      "thread_id": "thread-c83ab8a8df94",
+      "thread_depth": 0,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-4c5d40bbfe9e",
+      "message_id": "<62fc69c1-698f-2b94-aea4-4b5ec2e10a6f@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-09-24T18:58:41-04:00",
+      "subject": "[R-sig-ME] Find Hessian in MixCat and glmmTMB packages",
+      "subject_clean": "Find Hessian in MixCat and glmmTMB packages",
+      "in_reply_to": "<BL0PR04MB4563778B131E342C305020ACB9509@BL0PR04MB4563.namprd04.prod.outlook.com>",
+      "references": [
+        "<BL0PR04MB4563778B131E342C305020ACB9509@BL0PR04MB4563.namprd04.prod.outlook.com>"
+      ],
+      "body_plain": "From ?npmlt,\n\n## CVmat: the inverse of the observed information matrix of the model.\nrcond(solve(a$CVmat))\n\n   (this is the inverse condition number)\n\n\n  For glmmTMB: the Hessian isn't stored in the object, here is one way \nto compute it:\n\nhessian.glmmTMB <- function(fit) {\n     obj <- fit$obj\n     ee <- obj$env\n     pp <- ee$last.par.best\n     if (!is.null(r <- ee$random)) {\n         pp <- pp[-r]\n     }\n     h <- numDeriv::jacobian(obj$gr, pp)\n     return(h)\n}\nrcond(hessian.glmmTMB(m1))\n\n\nOn 2022-09-24 12:25 p.m., Sun, John wrote:\n> Dear All,\n> \n> I am writing to ask how to find the hessian from these fitted objects to calculate the condition number of the hessian to diagnose loss of precision.\n> Please let me know if you know any information.\n> \n> library(mixcat)\n> data(schizo)\n> attach(schizo)\n> a<-npmlt(y~trt*sqrt(wk),formula.npo=~trt,random=~1+trt,id=id,k=2,EB=FALSE)\n> \n> library(glmmTMB)\n> (m1 <- glmmTMB(count ~ mined + (1|site),\n>    zi=~mined,\n>    family=poisson, data=Salamanders))\n> \n> I cannot find how to find the hessian from these fitted objects.\n> \n> Best regards,\n> John\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "From ?npmlt,\n\n## CVmat: the inverse of the observed information matrix of the model.\nrcond(solve(a$CVmat))\n\n   (this is the inverse condition number)\n\n\n  For glmmTMB: the Hessian isn't stored in the o",
+      "thread_id": "thread-c83ab8a8df94",
+      "thread_depth": 1,
+      "month": "2022-09"
+    },
+    {
+      "id": "msg-e28225d00c9a",
+      "message_id": "<BL0PR04MB45631CDD8FD027FCA9650B7EB9539@BL0PR04MB4563.namprd04.prod.outlook.com>",
+      "from_name": "Sun, John",
+      "from_email_hash": "41e8272beabbc0b3b73e2dc4453ff421913ba053d9dc0f038734de7e30f6c264",
+      "date": "2022-09-25T15:11:06Z",
+      "subject": "[R-sig-ME] What does the \"effects\" vector from geepack fitted object mean?",
+      "subject_clean": "What does the \"effects\" vector from geepack fitted object mean?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All,\n\nI am writing to ask what the \" gee1[[\"effects\"]]\" vector calculates in the geepack package. \n\nlibrary(geepack)\ndata(dietox)\ndietox$Cu     <- as.factor(dietox$Cu)\nmf <- formula(Weight ~ Cu * (Time + I(Time^2) + I(Time^3)))\ngee1 <- geeglm(mf, data=dietox, id=Pig, family=poisson(\"identity\"), corstr=\"ar1\")\ngee1[[\"effects\"]]# a vector of the regression coefficients plus ~848 estimated \"effects\" that are not residuals. I have no idea what they mean.\nView(gee1)\n\nBest regards,\nJohn",
+      "body_snippet": "Dear All,\n\nI am writing to ask what the \" gee1[[\"effects\"]]\" vector calculates in the geepack package. \n\nlibrary(geepack)\ndata(dietox)\ndietox$Cu     <- as.factor(dietox$Cu)\nmf <- formula(Weight ~ Cu *",
+      "thread_id": "thread-e28225d00c9a",
+      "thread_depth": 0,
+      "month": "2022-09"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-fd23f6110c98",
+      "subject": "Plot glmm full-average model",
+      "message_count": 1,
+      "participants": [
+        "Saâd HANANE"
+      ],
+      "started": "2022-09-01T11:09:27+02:00",
+      "last_reply": "2022-09-01T11:09:27+02:00",
+      "root_message_id": "msg-fd23f6110c98"
+    },
+    {
+      "id": "thread-e795b87c4eee",
+      "subject": "Cannot grok the newdata argument in simulate.merMod(), package lme4",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2022-09-01T20:55:18-04:00",
+      "last_reply": "2022-09-01T20:55:18-04:00",
+      "root_message_id": "msg-e795b87c4eee"
+    },
+    {
+      "id": "thread-b2d8de55fcc8",
+      "subject": "model validation with weights",
+      "message_count": 1,
+      "participants": [
+        "Nicolas Alfonso Verano Camacho"
+      ],
+      "started": "2022-09-04T20:56:11-05:00",
+      "last_reply": "2022-09-04T20:56:11-05:00",
+      "root_message_id": "msg-b2d8de55fcc8"
+    },
+    {
+      "id": "thread-18d6238b47e6",
+      "subject": "Random effect variance = zero",
+      "message_count": 1,
+      "participants": [
+        "Rafael Lima Oliveira"
+      ],
+      "started": "2022-09-06T10:04:04-03:00",
+      "last_reply": "2022-09-06T10:04:04-03:00",
+      "root_message_id": "msg-18d6238b47e6"
+    },
+    {
+      "id": "thread-a205f10e5e14",
+      "subject": "Bivariate MCMCglmm with uneven number of repeats",
+      "message_count": 2,
+      "participants": [
+        "Jarrod Hadfield",
+        "Louc Yates"
+      ],
+      "started": "2022-09-09T12:12:03+01:00",
+      "last_reply": "2022-09-09T14:18:13+00:00",
+      "root_message_id": "msg-a205f10e5e14"
+    },
+    {
+      "id": "thread-9ef31f505834",
+      "subject": "A question about multilevel models using the lmer package in R",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Phillip Alday",
+        "Verena Hinze"
+      ],
+      "started": "2022-09-12T17:41:56+00:00",
+      "last_reply": "2022-09-14T10:30:37+02:00",
+      "root_message_id": "msg-9ef31f505834"
+    },
+    {
+      "id": "thread-b03e1c12427e",
+      "subject": "boundary (singular) fit and failure to converge",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Rafael Lima Oliveira"
+      ],
+      "started": "2022-09-13T11:25:08-03:00",
+      "last_reply": "2022-09-13T11:01:43-04:00",
+      "root_message_id": "msg-b03e1c12427e"
+    },
+    {
+      "id": "thread-1de052de2a3f",
+      "subject": "Is it possible to use newey-west (heteroscedasticity and autocorrelation consistent) standard errors using a generalized linear mixed-model or generalized estimating equation?",
+      "message_count": 1,
+      "participants": [
+        "Sun, John"
+      ],
+      "started": "2022-09-19T18:53:53+00:00",
+      "last_reply": "2022-09-19T18:53:53+00:00",
+      "root_message_id": "msg-1de052de2a3f"
+    },
+    {
+      "id": "thread-82d1db2add55",
+      "subject": "Condition number of Hessian in glmmTMB",
+      "message_count": 1,
+      "participants": [
+        "Sun, John"
+      ],
+      "started": "2022-09-24T14:22:12+00:00",
+      "last_reply": "2022-09-24T14:22:12+00:00",
+      "root_message_id": "msg-82d1db2add55"
+    },
+    {
+      "id": "thread-c83ab8a8df94",
+      "subject": "Find Hessian in MixCat and glmmTMB packages",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Sun, John"
+      ],
+      "started": "2022-09-24T16:25:39+00:00",
+      "last_reply": "2022-09-24T18:58:41-04:00",
+      "root_message_id": "msg-c83ab8a8df94"
+    },
+    {
+      "id": "thread-e28225d00c9a",
+      "subject": "What does the \"effects\" vector from geepack fitted object mean?",
+      "message_count": 1,
+      "participants": [
+        "Sun, John"
+      ],
+      "started": "2022-09-25T15:11:06+00:00",
+      "last_reply": "2022-09-25T15:11:06+00:00",
+      "root_message_id": "msg-e28225d00c9a"
+    }
+  ]
+}

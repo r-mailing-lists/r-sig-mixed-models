@@ -1,0 +1,624 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2007-05",
+  "messages": [
+    {
+      "id": "msg-7993c0343c31",
+      "message_id": "<200705081846.l48Ikq5J024124@mail.ucla.edu>",
+      "from_name": "shabnam shademan",
+      "from_email_hash": "a184f46dce4159598e37e078e40b328e1adfd19a7c98dc2df9211b7e733fe9e6",
+      "date": "2007-05-08T11:46:54-07:00",
+      "subject": "[R-sig-ME] comparing mixed models that share some factors",
+      "subject_clean": "comparing mixed models that share some factors",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20070508/c33cc9b8/attachment.pl>",
+      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20070508/c33cc9b8/attachment.pl>",
+      "thread_id": "thread-7993c0343c31",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-2345cb73bf23",
+      "message_id": "<83217d00705081812v58b2529bjecd11aec4ee1d4b4@mail.gmail.com>",
+      "from_name": "Seyed Reza Jafarzadeh",
+      "from_email_hash": "1c7aaa64041d9a085a930bf5e69f302e82059c181e1b5f84348533ea5c8d58bd",
+      "date": "2007-05-08T18:12:48-07:00",
+      "subject": "[R-sig-ME] comparing mixed models that share some factors",
+      "subject_clean": "comparing mixed models that share some factors",
+      "in_reply_to": "<200705081846.l48Ikq5J024124@mail.ucla.edu>",
+      "references": [
+        "<200705081846.l48Ikq5J024124@mail.ucla.edu>"
+      ],
+      "body_plain": "Hi,\n\nanova(model1, model2) will allow you to compare models with the same\nfixed effects, but different specifications of random effects. For\ncomparing two non-nested models (like your case) you can use AIC or\nBIC. Here is a good paper\n(http://www.mpi.nl/world/persons/private/baayen/publications/baayenDavidsonBates.pdf)\n\n\nReza\n\n\n\nOn 5/8/07, shabnam shademan <shademan at ucla.edu> wrote:\n> Hi all -\n>\n>\n>\n> I am unsophisticated user in need of some help.  I have a study in which I\n> have two random factors: subject and item.  I also have 3 fixed effects: 1.\n> X1 (continuous values), 2. Y (continuous values), and 3. Age (has two levels\n> \"young\" and \"old\").  My dependent variable is Z.\n>\n>\n>\n> I am using the following formula to predict the effect of each factor:\n>\n> fit1 <- lmer(Z ~Age * X1 * Y + (1 | Subject) + (1 | Stim), method = \"ML\",\n> data = d)\n>\n>\n>\n> furthermore, I have the option of using a different model (theoretical, not\n> statistical) in order to calculate values for X.  I will call this X2.  This\n> means that I could also get a fit in the following way:\n>\n> fit2 <- lmer(Z ~Age * X2 * Y + (1 | Subject) + (1 | Stim), method = \"ML\",\n> data = d)\n>\n>\n>\n>\n>\n> Here is the question:\n>\n> Is there anyway to compare fit1 and fit2?  would anova (fit1, fit2) be\n> appropriate in this case?  (if possible, would you be kind enough to give me\n> references on the answer?)\n>\n>\n>\n> Any help is greatly appreciated.\n>\n> -shabnam\n>\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Hi,\n\nanova(model1, model2) will allow you to compare models with the same\nfixed effects, but different specifications of random effects. For\ncomparing two non-nested models (like your case) you can us",
+      "thread_id": "thread-7993c0343c31",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-cb3adcdd72c6",
+      "message_id": "<1178717027.20901.18.camel@gsimpson.geog.ucl.ac.uk>",
+      "from_name": "Gavin Simpson",
+      "from_email_hash": "de29578fbbb79e6883c8203a1faebef3fddd10c08cc122f35e5ad109dc250099",
+      "date": "2007-05-09T14:23:47+01:00",
+      "subject": "[R-sig-ME] Specifying random effects in lme()",
+      "subject_clean": "Specifying random effects in lme()",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear List,\n\nI am modelling repeated measures data from 11 sites in the UK using\nlme() from the nlme package. I have the following call for a random\nintercept model with an AR1 error structure:\n\nmod <- lme(doc ~ temp + log.so4 + log.cl, random = ~ 1 | site,\n           correlation = corAR1(), data = hydro)\n\nI would like to fit a model that has random effects for log.so4 and\nlog.cl within site, so that I am fitting a random slop and intercept\nmodel --- we want the effect of log.so4 and log.cl to vary between sites\nand to compare the fits of the two models.\n\nIf I am following lmer() in lme4 correctly, I believe I could fit this\nmodel as:\n\nhydro.lmer <- lmer(doc ~ temp + log.so4 + log.cl +\n                   (log.so4 | site) + (log.cl | site),\n                   data = hydro)\n\nbut without the AR1 correlation.\n\nI am struggling to get the syntax correct for random in lme() to add\nrandom effects to log.so4 and log.cl. I have only managed to get a model\nwhere one of the coefficients (log.cl) also has a random effect.\n\nI would be most grateful if someone could explain how to fit the model\nin lme() by showing me the correct form for the random argument.\n\nMany thanks,\n\nGav\n\n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n Gavin Simpson                 [t] +44 (0)20 7679 0522\n ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/\n UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%",
+      "body_snippet": "Dear List,\n\nI am modelling repeated measures data from 11 sites in the UK using\nlme() from the nlme package. I have the following call for a random\nintercept model with an AR1 error structure:\n\nmod <-",
+      "thread_id": "thread-cb3adcdd72c6",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-3c422be2113c",
+      "message_id": "<87A0C64299B27148B40BE0DB83EDE2DBC66533@RSMAIL002.REG.SKANE.SE>",
+      "from_name": "Nilsson Fredrik X",
+      "from_email_hash": "80c125f3d4584036e923714a41d66cd179890735d5aa862f4290e12138d19472",
+      "date": "2007-05-09T16:58:16+02:00",
+      "subject": "[R-sig-ME] Specifying random effects in lme()",
+      "subject_clean": "Specifying random effects in lme()",
+      "in_reply_to": "<1178717027.20901.18.camel@gsimpson.geog.ucl.ac.uk>",
+      "references": [],
+      "body_plain": "Dear Gavin, \n\nIt SHOULD work if you add\nrandom = ~log.so4+log.cl|site\n\nI made a script which is able to do so, but perhaps the addition of this extra variability in your case over-specifies the model? \n\nHope this helps. Otherwise I suppose that you have to supply more details.\n\nCheers,\n\nFredrik\n--------------------------------------------------------------------------\nExample:\n\nnsite<-10\nnwithin<-10\nprosw<-nsite*nwithin\n\nconc<-vector(length=prosw)\ntemp<-rnorm(prosw)\nlog.so4<-seq(-5,5, length=nwithin)\nlog.cl<-rnorm(prosw)\nint<-17\nacl<-sqrt(2)\naso4<-21\natemp<- -14\nrho<--0.9\nfor (i in 1:nsite)\n{\nsf<-0.1*rnorm(1)\nsc<-2*rnorm(1)\nss<-rnorm(1)\nerr<-0.1*rnorm(1)\nfor (j in 1:nwithin)\n{\nconc[nwithin*(i-1)+j]<-sf +  int + (acl+sc)*log.cl[nwithin*(i-1)+j] + (aso4+ss)*log.so4[j] +\n                  atemp*temp[nwithin*(i-1)+j] + err\nerr<-err*rho + 0.1*rnorm(1)\n}\n}\n\ntemp<-rep(temp,nsite)\nlog.so4<-rep(log.so4, nsite)\nlog.cl<-rep(log.cl,nsite)\nsite<-rep(seq(1,nsite), each=nwithin)\n\nDF<-data.frame(conc,temp, log.so4, log.cl, site)\nDF$site<-as.factor(site)\n\nDFgd<-groupedData(conc~temp|site, data=DF)\nplot(DFgd)\n\nDF.lme<-lme(conc~log.so4+temp+log.cl, random=~log.so4+log.cl|site, data=DF)\nplot(ACF(DF.lme, resType=\"n\", form=~1|site, maxLag=floor(nwithin/2-.5)), alpha=0.05)\nDF2.lme<-update(DF.lme, correlation=corAR1(form=~1|site))\n\n\n\n-----Ursprungligt meddelande-----\nFr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Gavin Simpson\nSkickat: den 9 maj 2007 15:24\nTill: R-SIG-Mixed-Model\n?mne: [R-sig-ME] Specifying random effects in lme()\n\nDear List,\n\nI am modelling repeated measures data from 11 sites in the UK using\nlme() from the nlme package. I have the following call for a random\nintercept model with an AR1 error structure:\n\nmod <- lme(doc ~ temp + log.so4 + log.cl, random = ~ 1 | site,\n           correlation = corAR1(), data = hydro)\n\nI would like to fit a model that has random effects for log.so4 and\nlog.cl within site, so that I am fitting a random slop and intercept\nmodel --- we want the effect of log.so4 and log.cl to vary between sites\nand to compare the fits of the two models.\n\nIf I am following lmer() in lme4 correctly, I believe I could fit this\nmodel as:\n\nhydro.lmer <- lmer(doc ~ temp + log.so4 + log.cl +\n                   (log.so4 | site) + (log.cl | site),\n                   data = hydro)\n\nbut without the AR1 correlation.\n\nI am struggling to get the syntax correct for random in lme() to add\nrandom effects to log.so4 and log.cl. I have only managed to get a model\nwhere one of the coefficients (log.cl) also has a random effect.\n\nI would be most grateful if someone could explain how to fit the model\nin lme() by showing me the correct form for the random argument.\n\nMany thanks,\n\nGav\n\n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n Gavin Simpson                 [t] +44 (0)20 7679 0522\n ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/\n UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Gavin, \n\nIt SHOULD work if you add\nrandom = ~log.so4+log.cl|site\n\nI made a script which is able to do so, but perhaps the addition of this extra variability in your case over-specifies the model?",
+      "thread_id": "thread-cb3adcdd72c6",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-90f99792bbd6",
+      "message_id": "<s641f175.058@wpo.nerc.ac.uk>",
+      "from_name": "Mike Dunbar",
+      "from_email_hash": "76e8e4bc6d8fea8eb052eab91d5115e6bdf42cb813cdb5a90b254c7001b494ea",
+      "date": "2007-05-09T16:05:43+01:00",
+      "subject": "[R-sig-ME] Specifying random effects in lme()",
+      "subject_clean": "Specifying random effects in lme()",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Gav\n\nI don't know the answer to your question, but it may not be possible. If it is possible to specify it, then you may still run into problems fitting it. You're trying to fit quite a complex model here with two random slopes and an AR term, are you really sure your model needs to be that complicated? \n\nCan you fit the lmer model you mention? If so, is there evidence for autocorrelation of residuals?\n\ncheers\n\nMike\n\n\n\n\n>>> Gavin Simpson <gavin.simpson at ucl.ac.uk> 09/05/2007 14:23 >>>\nDear List,\n\nI am modelling repeated measures data from 11 sites in the UK using\nlme() from the nlme package. I have the following call for a random\nintercept model with an AR1 error structure:\n\nmod <- lme(doc ~ temp + log.so4 + log.cl, random = ~ 1 | site,\n           correlation = corAR1(), data = hydro)\n\nI would like to fit a model that has random effects for log.so4 and\nlog.cl within site, so that I am fitting a random slop and intercept\nmodel --- we want the effect of log.so4 and log.cl to vary between sites\nand to compare the fits of the two models.\n\nIf I am following lmer() in lme4 correctly, I believe I could fit this\nmodel as:\n\nhydro.lmer <- lmer(doc ~ temp + log.so4 + log.cl +\n                   (log.so4 | site) + (log.cl | site),\n                   data = hydro)\n\nbut without the AR1 correlation.\n\nI am struggling to get the syntax correct for random in lme() to add\nrandom effects to log.so4 and log.cl. I have only managed to get a model\nwhere one of the coefficients (log.cl) also has a random effect.\n\nI would be most grateful if someone could explain how to fit the model\nin lme() by showing me the correct form for the random argument.\n\nMany thanks,\n\nGav\n\n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n Gavin Simpson                 [t] +44 (0)20 7679 0522\n ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/ \n UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n-- \nThis message (and any attachments) is for the recipient only...{{dropped}}",
+      "body_snippet": "Gav\n\nI don't know the answer to your question, but it may not be possible. If it is possible to specify it, then you may still run into problems fitting it. You're trying to fit quite a complex model ",
+      "thread_id": "thread-90f99792bbd6",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-8b29ab807940",
+      "message_id": "<1178727636.20901.32.camel@gsimpson.geog.ucl.ac.uk>",
+      "from_name": "Gavin Simpson",
+      "from_email_hash": "de29578fbbb79e6883c8203a1faebef3fddd10c08cc122f35e5ad109dc250099",
+      "date": "2007-05-09T17:20:36+01:00",
+      "subject": "[R-sig-ME] Specifying random effects in lme()",
+      "subject_clean": "Specifying random effects in lme()",
+      "in_reply_to": "<s641f175.059@wpo.nerc.ac.uk>",
+      "references": [
+        "<s641f175.059@wpo.nerc.ac.uk>"
+      ],
+      "body_plain": "On Wed, 2007-05-09 at 16:05 +0100, Mike Dunbar wrote:\n> Gav\n> \n> I don't know the answer to your question, but it may not be possible.\n> If it is possible to specify it, then you may still run into problems\n> fitting it. You're trying to fit quite a complex model here with two\n> random slopes and an AR term, are you really sure your model needs to\n> be that complicated? \n\nHi Mike,\n\nThat's one of the things we want to test.\n\nThe random effects just take up an extra df or eleven. I have plenty to\nspare in the model, with many years data. For the extra 22 df used up,\ndoes the model fit significantly better using AIC/BIC and friends?\n\nI can fit the model in lmer very easily, converges nicely and quickly.\nBut I wanted to have the AR1 term in there to mop up some of the\nresidual autocorrelation in the error structure. There is some\nindication of autocorrelation in the residuals, and testing models\nwithout the AR term and with the AR show that the model with the AR term\nis a big improvement as measured by AIC, BIC and the likelihood ratio\ntest.\n\nThere is some evidence that the effects of the two covariates does\ndiffer amongst sites based on analysis of the model output from the\nmodel with only random intercepts. We'd like to test if the more complex\nmodel fits the data better.\n\nCheers Mike,\n\nG\n\n> \n> Can you fit the lmer model you mention? If so, is there evidence for\n> autocorrelation of residuals?\n> \n> cheers\n> \n> Mike\n> \n> \n> \n> \n> >>> Gavin Simpson <gavin.simpson at ucl.ac.uk> 09/05/2007 14:23 >>>\n> Dear List,\n> \n> I am modelling repeated measures data from 11 sites in the UK using\n> lme() from the nlme package. I have the following call for a random\n> intercept model with an AR1 error structure:\n> \n> mod <- lme(doc ~ temp + log.so4 + log.cl, random = ~ 1 | site,\n>            correlation = corAR1(), data = hydro)\n> \n> I would like to fit a model that has random effects for log.so4 and\n> log.cl within site, so that I am fitting a random slop and intercept\n> model --- we want the effect of log.so4 and log.cl to vary between sites\n> and to compare the fits of the two models.\n> \n> If I am following lmer() in lme4 correctly, I believe I could fit this\n> model as:\n> \n> hydro.lmer <- lmer(doc ~ temp + log.so4 + log.cl +\n>                    (log.so4 | site) + (log.cl | site),\n>                    data = hydro)\n> \n> but without the AR1 correlation.\n> \n> I am struggling to get the syntax correct for random in lme() to add\n> random effects to log.so4 and log.cl. I have only managed to get a model\n> where one of the coefficients (log.cl) also has a random effect.\n> \n> I would be most grateful if someone could explain how to fit the model\n> in lme() by showing me the correct form for the random argument.\n> \n> Many thanks,\n> \n> Gav\n> \n> -- \n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n>  Gavin Simpson                 [t] +44 (0)20 7679 0522\n>  ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n>  Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n>  Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/ \n>  UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk \n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n Gavin Simpson                 [t] +44 (0)20 7679 0522\n ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/\n UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%",
+      "body_snippet": "On Wed, 2007-05-09 at 16:05 +0100, Mike Dunbar wrote:\n> Gav\n> \n> I don't know the answer to your question, but it may not be possible.\n> If it is possible to specify it, then you may still run into pr",
+      "thread_id": "thread-8b29ab807940",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-7e1ae0b5c09f",
+      "message_id": "<1178732411.20901.42.camel@gsimpson.geog.ucl.ac.uk>",
+      "from_name": "Gavin Simpson",
+      "from_email_hash": "de29578fbbb79e6883c8203a1faebef3fddd10c08cc122f35e5ad109dc250099",
+      "date": "2007-05-09T18:40:10+01:00",
+      "subject": "[R-sig-ME] Specifying random effects in lme()",
+      "subject_clean": "Specifying random effects in lme()",
+      "in_reply_to": "<87A0C64299B27148B40BE0DB83EDE2DBC66533@RSMAIL002.REG.SKANE.SE>",
+      "references": [
+        "<87A0C64299B27148B40BE0DB83EDE2DBC66533@RSMAIL002.REG.SKANE.SE>"
+      ],
+      "body_plain": "On Wed, 2007-05-09 at 16:58 +0200, Nilsson Fredrik X wrote:\n> Dear Gavin, \n> \n> It SHOULD work if you add\n> random = ~log.so4+log.cl|site\n\nHi Nilsson,\n\nMany thanks for this. I had actually tried this but when I tried coef()\non the resulting model, I got what looked like only random effects for\nthe log.cl parameter. Now that I have looked at the resulting object\nmore closely after your email, I have noticed that the magnitudes of the\nrandom effects for log.so4 are very small indeed, and so when coef()\nprints the values for log.so4, they do all look constant, but only\nbecause they are printed to finite decimal places.\n\nI should look more closely next time!\n\nMany thanks, I now have some indication that the effect of log.cl does\nvary between sites, but not log.so4.\n\nAll the best,\n\nG\n\n> \n> I made a script which is able to do so, but perhaps the addition of\n> this extra variability in your case over-specifies the model? \n> \n> Hope this helps. Otherwise I suppose that you have to supply more details.\n> \n> Cheers,\n> \n> Fredrik\n> --------------------------------------------------------------------------\n> Example:\n> \n> nsite<-10\n> nwithin<-10\n> prosw<-nsite*nwithin\n> \n> conc<-vector(length=prosw)\n> temp<-rnorm(prosw)\n> log.so4<-seq(-5,5, length=nwithin)\n> log.cl<-rnorm(prosw)\n> int<-17\n> acl<-sqrt(2)\n> aso4<-21\n> atemp<- -14\n> rho<--0.9\n> for (i in 1:nsite)\n> {\n> sf<-0.1*rnorm(1)\n> sc<-2*rnorm(1)\n> ss<-rnorm(1)\n> err<-0.1*rnorm(1)\n> for (j in 1:nwithin)\n> {\n> conc[nwithin*(i-1)+j]<-sf +  int + (acl+sc)*log.cl[nwithin*(i-1)+j] + (aso4+ss)*log.so4[j] +\n>                   atemp*temp[nwithin*(i-1)+j] + err\n> err<-err*rho + 0.1*rnorm(1)\n> }\n> }\n> \n> temp<-rep(temp,nsite)\n> log.so4<-rep(log.so4, nsite)\n> log.cl<-rep(log.cl,nsite)\n> site<-rep(seq(1,nsite), each=nwithin)\n> \n> DF<-data.frame(conc,temp, log.so4, log.cl, site)\n> DF$site<-as.factor(site)\n> \n> DFgd<-groupedData(conc~temp|site, data=DF)\n> plot(DFgd)\n> \n> DF.lme<-lme(conc~log.so4+temp+log.cl, random=~log.so4+log.cl|site, data=DF)\n> plot(ACF(DF.lme, resType=\"n\", form=~1|site, maxLag=floor(nwithin/2-.5)), alpha=0.05)\n> DF2.lme<-update(DF.lme, correlation=corAR1(form=~1|site))\n> \n> \n> \n> -----Ursprungligt meddelande-----\n> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Gavin Simpson\n> Skickat: den 9 maj 2007 15:24\n> Till: R-SIG-Mixed-Model\n> ?mne: [R-sig-ME] Specifying random effects in lme()\n> \n> Dear List,\n> \n> I am modelling repeated measures data from 11 sites in the UK using\n> lme() from the nlme package. I have the following call for a random\n> intercept model with an AR1 error structure:\n> \n> mod <- lme(doc ~ temp + log.so4 + log.cl, random = ~ 1 | site,\n>            correlation = corAR1(), data = hydro)\n> \n> I would like to fit a model that has random effects for log.so4 and\n> log.cl within site, so that I am fitting a random slop and intercept\n> model --- we want the effect of log.so4 and log.cl to vary between sites\n> and to compare the fits of the two models.\n> \n> If I am following lmer() in lme4 correctly, I believe I could fit this\n> model as:\n> \n> hydro.lmer <- lmer(doc ~ temp + log.so4 + log.cl +\n>                    (log.so4 | site) + (log.cl | site),\n>                    data = hydro)\n> \n> but without the AR1 correlation.\n> \n> I am struggling to get the syntax correct for random in lme() to add\n> random effects to log.so4 and log.cl. I have only managed to get a model\n> where one of the coefficients (log.cl) also has a random effect.\n> \n> I would be most grateful if someone could explain how to fit the model\n> in lme() by showing me the correct form for the random argument.\n> \n> Many thanks,\n> \n> Gav\n> \n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n Gavin Simpson                 [t] +44 (0)20 7679 0522\n ECRC, UCL Geography,          [f] +44 (0)20 7679 0565\n Pearson Building,             [e] gavin.simpsonATNOSPAMucl.ac.uk\n Gower Street, London          [w] http://www.ucl.ac.uk/~ucfagls/\n UK. WC1E 6BT.                 [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%",
+      "body_snippet": "On Wed, 2007-05-09 at 16:58 +0200, Nilsson Fredrik X wrote:\n> Dear Gavin, \n> \n> It SHOULD work if you add\n> random = ~log.so4+log.cl|site\n\nHi Nilsson,\n\nMany thanks for this. I had actually tried this ",
+      "thread_id": "thread-cb3adcdd72c6",
+      "thread_depth": 2,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-b5741ffcd947",
+      "message_id": "<464241E1.6060908@iki.fi>",
+      "from_name": "Markus Jäntti",
+      "from_email_hash": "03ea68b97ef66cece02d1800806a05488453b86bcf6cc240c25acd1bc16ad65e",
+      "date": "2007-05-10T00:49:21+03:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All:\n\nI have been trying to get the coefficients from corAR1 objects in lme objects in \nthen lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something \nrather different that summary(object). I have tried to follow the various \nsummary. methods in the source code, but have kind of gotten lost. Would be \ngreatful if someone could point to a simple solution.\n\nIt would be helpful to manually extract the AR(1) coefficients, because I am \ndata sets consisting of very large cohorts of individuals. I extract the \ninformation I need from each estimated object and store them in small matrices. \nI have not been able to figure out a way to extract the AR(1) parameters, however.\n\nI include example code below, which produces the following results:\n > summary(fm2)\n<snip>\nCorrelation Structure: AR(1)\n  Formula: ~year | ind\n  Parameter estimate(s):\n   Phi\n0.424\n<snip>\n\nbut\n\n > coef(fm2$modelStruct$corStruct)\n[1] 0.906\n\nVersion info for nlme:\n\n > packageDescription(\"nlme\")\nPackage: nlme\nVersion: 3.1-80\nDate: 2007-03-30\nPriority: recommended\nTitle: Linear and Nonlinear Mixed Effects Models\nAuthor: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n         Bates <bates at stat.wisc.edu>, Saikat DebRoy\n         <saikat at stat.wisc.edu>, and Deepayan Sarkar\n         <deepayan at stat.wisc.edu>\nMaintainer: R-core <R-core at R-project.org>\nDescription: Fit and compare Gaussian linear and nonlinear\n         mixed-effects models.\nDepends: graphics, stats, R (>= 2.3.0)\nImports: lattice\nLazyLoad: yes\nLazyData: yes\nLicense: GPL version 2 or later\nPackaged: Fri Mar 30 07:37:02 2007; ripley\nBuilt: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n\nExample code:\n<code>\nlibrary(nlme)\n## number of time periods\nyears <- 5\n## individuals\nn <- 100\n\n## the random effects\na <- as.vector(sapply(rnorm(n), rep, years))\n\n## indicators for individuals\nind <- as.vector(sapply(1:n, rep, years))\nyear <- rep(1:years, n)\n\n## the white noise\nv <- rnorm(n*years)\n## the AR(1) parameter\nrho <- .5\n## generate the AR1 erroer\n## randomly draw the starting value of the AR(1) error for each unit\nu1 <- rnorm(n)\n## store values here:\nu <- numeric(n*years)\n## a counter:\nk <- 1\n## there has to be a much more elegant way to do this!\nfor(i in 1:n)\n   {\n     u[k] <- u1[i]\n     for(j in 2:years)\n       {\n         k <- k+1\n         u[k] <- rho*u[k-1] + v[k]\n       }\n     k <- k+1\n   }\n\n## the covariate\nx <- runif(n*years)\n## the intercept and slope\nb0 <- 10\nb1 <- 4\n## and the dependent variable\ny <- b0 + b1*x + a + u\n\ntest.d <- data.frame(y=y, x=x, ind=ind, year=year)\nrm(\"x\", \"y\", \"ind\", \"years\")\n\nfm1 <- lme(y ~ x, random = ~ 1 | ind,\n            data=test.d)\nsummary(fm1)\nfm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n            data=test.d)\nsummary(fm2)\ncoef(fm2$modelStruct$corStruct)\n</code>\n\n-- \nMarkus Jantti\nAbo Akademi University\nmarkus.jantti at iki.fi\nhttp://www.iki.fi/~mjantti",
+      "body_snippet": "Dear All:\n\nI have been trying to get the coefficients from corAR1 objects in lme objects in \nthen lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something \nrather different that sum",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-805bd093ab76",
+      "message_id": "<87A0C64299B27148B40BE0DB83EDE2DBC6657F@RSMAIL002.REG.SKANE.SE>",
+      "from_name": "Nilsson Fredrik X",
+      "from_email_hash": "80c125f3d4584036e923714a41d66cd179890735d5aa862f4290e12138d19472",
+      "date": "2007-05-10T11:50:55+02:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": "<464241E1.6060908@iki.fi>",
+      "references": [],
+      "body_plain": "Dear Markus,\n\nI don't realize why one gets these strange results and I would like to understand this too!\n\nBut here's a solution while waiting from the enlightenment:\n\nLook at:\nintervals(ModelwAR1.lme)$corStruct\n\nAnd then \n\nintervals(ModelwAR1.lme)$corStruct[2]\n\nis what you look for.\n\nCheers,\n\nFredrik\n\n-----Ursprungligt meddelande-----\nFr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Markus J?ntti\nSkickat: den 9 maj 2007 23:49\nTill: R-SIG-Mixed-Model\n?mne: [R-sig-ME] Extracting the coefficients from corStruct objects\n\nDear All:\n\nI have been trying to get the coefficients from corAR1 objects in lme objects in \nthen lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something \nrather different that summary(object). I have tried to follow the various \nsummary. methods in the source code, but have kind of gotten lost. Would be \ngreatful if someone could point to a simple solution.\n\nIt would be helpful to manually extract the AR(1) coefficients, because I am \ndata sets consisting of very large cohorts of individuals. I extract the \ninformation I need from each estimated object and store them in small matrices. \nI have not been able to figure out a way to extract the AR(1) parameters, however.\n\nI include example code below, which produces the following results:\n > summary(fm2)\n<snip>\nCorrelation Structure: AR(1)\n  Formula: ~year | ind\n  Parameter estimate(s):\n   Phi\n0.424\n<snip>\n\nbut\n\n > coef(fm2$modelStruct$corStruct)\n[1] 0.906\n\nVersion info for nlme:\n\n > packageDescription(\"nlme\")\nPackage: nlme\nVersion: 3.1-80\nDate: 2007-03-30\nPriority: recommended\nTitle: Linear and Nonlinear Mixed Effects Models\nAuthor: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n         Bates <bates at stat.wisc.edu>, Saikat DebRoy\n         <saikat at stat.wisc.edu>, and Deepayan Sarkar\n         <deepayan at stat.wisc.edu>\nMaintainer: R-core <R-core at R-project.org>\nDescription: Fit and compare Gaussian linear and nonlinear\n         mixed-effects models.\nDepends: graphics, stats, R (>= 2.3.0)\nImports: lattice\nLazyLoad: yes\nLazyData: yes\nLicense: GPL version 2 or later\nPackaged: Fri Mar 30 07:37:02 2007; ripley\nBuilt: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n\nExample code:\n<code>\nlibrary(nlme)\n## number of time periods\nyears <- 5\n## individuals\nn <- 100\n\n## the random effects\na <- as.vector(sapply(rnorm(n), rep, years))\n\n## indicators for individuals\nind <- as.vector(sapply(1:n, rep, years))\nyear <- rep(1:years, n)\n\n## the white noise\nv <- rnorm(n*years)\n## the AR(1) parameter\nrho <- .5\n## generate the AR1 erroer\n## randomly draw the starting value of the AR(1) error for each unit\nu1 <- rnorm(n)\n## store values here:\nu <- numeric(n*years)\n## a counter:\nk <- 1\n## there has to be a much more elegant way to do this!\nfor(i in 1:n)\n   {\n     u[k] <- u1[i]\n     for(j in 2:years)\n       {\n         k <- k+1\n         u[k] <- rho*u[k-1] + v[k]\n       }\n     k <- k+1\n   }\n\n## the covariate\nx <- runif(n*years)\n## the intercept and slope\nb0 <- 10\nb1 <- 4\n## and the dependent variable\ny <- b0 + b1*x + a + u\n\ntest.d <- data.frame(y=y, x=x, ind=ind, year=year)\nrm(\"x\", \"y\", \"ind\", \"years\")\n\nfm1 <- lme(y ~ x, random = ~ 1 | ind,\n            data=test.d)\nsummary(fm1)\nfm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n            data=test.d)\nsummary(fm2)\ncoef(fm2$modelStruct$corStruct)\n</code>\n\n-- \nMarkus Jantti\nAbo Akademi University\nmarkus.jantti at iki.fi\nhttp://www.iki.fi/~mjantti\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Markus,\n\nI don't realize why one gets these strange results and I would like to understand this too!\n\nBut here's a solution while waiting from the enlightenment:\n\nLook at:\nintervals(ModelwAR1.lme",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-533708b965b0",
+      "message_id": "<CCCF1634-5AB3-4203-AFDC-7702DA762E43@muohio.edu>",
+      "from_name": "Martin Henry H. Stevens",
+      "from_email_hash": "eabc2c7e982e8ba0851592b4308aaf766a2458866450d0476009d05230e500cc",
+      "date": "2007-05-10T13:51:20-04:00",
+      "subject": "[R-sig-ME] log Likelihood depends on contrasts?",
+      "subject_clean": "log Likelihood depends on contrasts?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi folks,\nI didn't realize log likelihood of a model depended on the particular  \nspecification of contrasts.\n\nExample\n\n > str(cake)\n'data.frame':\t270 obs. of  5 variables:\n$ replicate  : Factor w/ 15 levels \"1\",\"2\",\"3\",\"4\",..: 1 1 1 1 1 1 1  \n1 1 1 ...\n$ batch      : Factor w/ 3 levels \"1\",\"2\",\"3\": 1 1 1 1 1 1 2 2 2 2 ...\n$ recipe     : Factor w/ 3 levels \"1\",\"2\",\"3\": 1 1 1 1 1 1 2 2 2 2 ...\n$ temperature: Ord.factor w/ 6 levels \"175\"<\"185\"<\"195\"<..: 1 2 3 4 5  \n6 1 2 3 4 ...\n$ angle      : int  42 46 47 39 53 42 39 46 51 49 ...\n > options(contrasts=c(\"contr.treatment\", \"contr.poly\"))\n > mod.t <- lmer(angle ~ recipe + (1|batch), data=cake)\n > options(contrasts=c(\"contr.sum\", \"contr.poly\"))\n > mod.s <- lmer(angle ~ recipe + (1|batch), data=cake)\n > logLik(mod.t)\n'log Lik.' -947.82 (df=4)\n > logLik(mod.s)\n'log Lik.' -948.92 (df=4)\n >\n\nAny insight is appreciated.\n\nMany thanks,\nHank\n\n\nDr. Hank Stevens, Assistant Professor\n338 Pearson Hall\nBotany Department\nMiami University\nOxford, OH 45056\n\nOffice: (513) 529-4206\nLab: (513) 529-4262\nFAX: (513) 529-4243\nhttp://www.cas.muohio.edu/~stevenmh/\nhttp://www.muohio.edu/ecology/\nhttp://www.muohio.edu/botany/\n\n\"E Pluribus Unum\"",
+      "body_snippet": "Hi folks,\nI didn't realize log likelihood of a model depended on the particular  \nspecification of contrasts.\n\nExample\n\n > str(cake)\n'data.frame':\t270 obs. of  5 variables:\n$ replicate  : Factor w/ 15",
+      "thread_id": "thread-533708b965b0",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-f8195e483718",
+      "message_id": "<40e66e0b0705101224l724219f0y3ccbae6370de2fb2@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-10T14:24:06-05:00",
+      "subject": "[R-sig-ME] log Likelihood depends on contrasts?",
+      "subject_clean": "log Likelihood depends on contrasts?",
+      "in_reply_to": "<CCCF1634-5AB3-4203-AFDC-7702DA762E43@muohio.edu>",
+      "references": [
+        "<CCCF1634-5AB3-4203-AFDC-7702DA762E43@muohio.edu>"
+      ],
+      "body_plain": "On 5/10/07, Martin Henry H. Stevens <HStevens at muohio.edu> wrote:\n> Hi folks,\n> I didn't realize log likelihood of a model depended on the particular\n> specification of contrasts.\n>\n> Example\n>\n>  > str(cake)\n> 'data.frame':   270 obs. of  5 variables:\n> $ replicate  : Factor w/ 15 levels \"1\",\"2\",\"3\",\"4\",..: 1 1 1 1 1 1 1\n> 1 1 1 ...\n> $ batch      : Factor w/ 3 levels \"1\",\"2\",\"3\": 1 1 1 1 1 1 2 2 2 2 ...\n> $ recipe     : Factor w/ 3 levels \"1\",\"2\",\"3\": 1 1 1 1 1 1 2 2 2 2 ...\n> $ temperature: Ord.factor w/ 6 levels \"175\"<\"185\"<\"195\"<..: 1 2 3 4 5\n> 6 1 2 3 4 ...\n> $ angle      : int  42 46 47 39 53 42 39 46 51 49 ...\n>  > options(contrasts=c(\"contr.treatment\", \"contr.poly\"))\n>  > mod.t <- lmer(angle ~ recipe + (1|batch), data=cake)\n>  > options(contrasts=c(\"contr.sum\", \"contr.poly\"))\n>  > mod.s <- lmer(angle ~ recipe + (1|batch), data=cake)\n>  > logLik(mod.t)\n> 'log Lik.' -947.82 (df=4)\n>  > logLik(mod.s)\n> 'log Lik.' -948.92 (df=4)\n\n\nWhat you are seeing is the log-restricted-likelihood which does depend\nupon that parameterization used for the fixed effects, hence on the\ncontrasts used for a factor.  If you were to fit both models with\nmethod = \"ML\" then you would get the same value of the log-likelihood\nas shown in the enclosed.\n\nThe REML criterion does not always behave like a likelihood.  In\nparticular there is a term in the REML criterion that depends on the\nform of the model matrix for the fixed effects.\n\n(By the way, the model fit in your example doesn't make sense.  It\nappears that batch and recipe are the same factor and should not be\nincluded as a fixed effect and as a random effect.)\n-------------- next part --------------\n> getOption(\"contrasts\")\n[1] \"contr.treatment\"  \"contr.poly\"\n> logLik(fm1 <- lmer(angle ~ recipe + temp + (1|recipe:replicate), cake, method = \"ML\"))\n'log Lik.' -848.0789 (df=5)\n> options(contrasts = c(\"contr.sum\", \"contr.poly\"))\n> logLik(fm2 <- lmer(angle ~ recipe + temp + (1|recipe:replicate), cake, method = \"ML\"))\n'log Lik.' -848.0789 (df=5)",
+      "body_snippet": "On 5/10/07, Martin Henry H. Stevens <HStevens at muohio.edu> wrote:\n> Hi folks,\n> I didn't realize log likelihood of a model depended on the particular\n> specification of contrasts.\n>\n> Example\n>\n>  >",
+      "thread_id": "thread-533708b965b0",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-2e06175ec739",
+      "message_id": "<40e66e0b0705110729tb41590k744e4bec0d446da9@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-11T09:29:03-05:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": "<87A0C64299B27148B40BE0DB83EDE2DBC6657F@RSMAIL002.REG.SKANE.SE>",
+      "references": [
+        "<464241E1.6060908@iki.fi>",
+        "<87A0C64299B27148B40BE0DB83EDE2DBC6657F@RSMAIL002.REG.SKANE.SE>"
+      ],
+      "body_plain": "On 5/10/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n> Dear Markus,\n\n> I don't realize why one gets these strange results and I would like to understand this too!\n\nThe reason for the strange parameterization is that the nlme package\nalways uses unconstrained parameters for the optimization.  When the\nparameters have natural constraints it is necessary to transform them\nto produce unconstrained versions.\n\n> But here's a solution while waiting from the enlightenment:\n>\n> Look at:\n> intervals(ModelwAR1.lme)$corStruct\n>\n> And then\n>\n> intervals(ModelwAR1.lme)$corStruct[2]\n>\n> is what you look for.\n>\n> Cheers,\n>\n> Fredrik\n>\n> -----Ursprungligt meddelande-----\n> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Markus J?ntti\n> Skickat: den 9 maj 2007 23:49\n> Till: R-SIG-Mixed-Model\n> ?mne: [R-sig-ME] Extracting the coefficients from corStruct objects\n>\n> Dear All:\n>\n> I have been trying to get the coefficients from corAR1 objects in lme objects in\n> then lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something\n> rather different that summary(object). I have tried to follow the various\n> summary. methods in the source code, but have kind of gotten lost. Would be\n> greatful if someone could point to a simple solution.\n>\n> It would be helpful to manually extract the AR(1) coefficients, because I am\n> data sets consisting of very large cohorts of individuals. I extract the\n> information I need from each estimated object and store them in small matrices.\n> I have not been able to figure out a way to extract the AR(1) parameters, however.\n>\n> I include example code below, which produces the following results:\n>  > summary(fm2)\n> <snip>\n> Correlation Structure: AR(1)\n>   Formula: ~year | ind\n>   Parameter estimate(s):\n>    Phi\n> 0.424\n> <snip>\n>\n> but\n>\n>  > coef(fm2$modelStruct$corStruct)\n> [1] 0.906\n>\n> Version info for nlme:\n>\n>  > packageDescription(\"nlme\")\n> Package: nlme\n> Version: 3.1-80\n> Date: 2007-03-30\n> Priority: recommended\n> Title: Linear and Nonlinear Mixed Effects Models\n> Author: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n>          Bates <bates at stat.wisc.edu>, Saikat DebRoy\n>          <saikat at stat.wisc.edu>, and Deepayan Sarkar\n>          <deepayan at stat.wisc.edu>\n> Maintainer: R-core <R-core at R-project.org>\n> Description: Fit and compare Gaussian linear and nonlinear\n>          mixed-effects models.\n> Depends: graphics, stats, R (>= 2.3.0)\n> Imports: lattice\n> LazyLoad: yes\n> LazyData: yes\n> License: GPL version 2 or later\n> Packaged: Fri Mar 30 07:37:02 2007; ripley\n> Built: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n>\n> Example code:\n> <code>\n> library(nlme)\n> ## number of time periods\n> years <- 5\n> ## individuals\n> n <- 100\n>\n> ## the random effects\n> a <- as.vector(sapply(rnorm(n), rep, years))\n>\n> ## indicators for individuals\n> ind <- as.vector(sapply(1:n, rep, years))\n> year <- rep(1:years, n)\n>\n> ## the white noise\n> v <- rnorm(n*years)\n> ## the AR(1) parameter\n> rho <- .5\n> ## generate the AR1 erroer\n> ## randomly draw the starting value of the AR(1) error for each unit\n> u1 <- rnorm(n)\n> ## store values here:\n> u <- numeric(n*years)\n> ## a counter:\n> k <- 1\n> ## there has to be a much more elegant way to do this!\n> for(i in 1:n)\n>    {\n>      u[k] <- u1[i]\n>      for(j in 2:years)\n>        {\n>          k <- k+1\n>          u[k] <- rho*u[k-1] + v[k]\n>        }\n>      k <- k+1\n>    }\n>\n> ## the covariate\n> x <- runif(n*years)\n> ## the intercept and slope\n> b0 <- 10\n> b1 <- 4\n> ## and the dependent variable\n> y <- b0 + b1*x + a + u\n>\n> test.d <- data.frame(y=y, x=x, ind=ind, year=year)\n> rm(\"x\", \"y\", \"ind\", \"years\")\n>\n> fm1 <- lme(y ~ x, random = ~ 1 | ind,\n>             data=test.d)\n> summary(fm1)\n> fm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n>             data=test.d)\n> summary(fm2)\n> coef(fm2$modelStruct$corStruct)\n> </code>\n>\n> --\n> Markus Jantti\n> Abo Akademi University\n> markus.jantti at iki.fi\n> http://www.iki.fi/~mjantti\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 5/10/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n> Dear Markus,\n\n> I don't realize why one gets these strange results and I would like to understand this too!\n\nThe reason for the s",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 2,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-75ac7e6ea203",
+      "message_id": "<87A0C64299B27148B40BE0DB83EDE2DBC6661F@RSMAIL002.REG.SKANE.SE>",
+      "from_name": "Nilsson Fredrik X",
+      "from_email_hash": "80c125f3d4584036e923714a41d66cd179890735d5aa862f4290e12138d19472",
+      "date": "2007-05-11T16:48:16+02:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": "<40e66e0b0705110729tb41590k744e4bec0d446da9@mail.gmail.com>",
+      "references": [],
+      "body_plain": "> The reason for the strange parameterization is that the nlme package\n> always uses unconstrained parameters for the optimization.  When the\n> parameters have natural constraints it is necessary to transform them\n> to produce unconstrained versions.\n>\nIt would be interesting to know what the transformation is or how to find out. Is it tanh(x/2)?\n\nBest regards,\nFredrik\n\n>> But here's a solution while waiting from the enlightenment:\n>>\n>> Look at:\n>> intervals(ModelwAR1.lme)$corStruct\n>>\n>> And then\n>>\n>> intervals(ModelwAR1.lme)$corStruct[2]\n>>\n>> is what you look for.\n>>\n>> Cheers,\n>>\n>> Fredrik\n>>\n>> -----Ursprungligt meddelande-----\n>> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Markus J?ntti\n>> Skickat: den 9 maj 2007 23:49\n>> Till: R-SIG-Mixed-Model\n>> ?mne: [R-sig-ME] Extracting the coefficients from corStruct objects\n>>\n>> Dear All:\n>>\n>> I have been trying to get the coefficients from corAR1 objects in lme objects in\n>> then lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something\n>> rather different that summary(object). I have tried to follow the various\n>> summary. methods in the source code, but have kind of gotten lost. Would be\n>> greatful if someone could point to a simple solution.\n>>\n>> It would be helpful to manually extract the AR(1) coefficients, because I am\n>> data sets consisting of very large cohorts of individuals. I extract the\n>> information I need from each estimated object and store them in small matrices.\n>> I have not been able to figure out a way to extract the AR(1) parameters, however.\n>>\n>> I include example code below, which produces the following results:\n>>  > summary(fm2)\n>> <snip>\n>> Correlation Structure: AR(1)\n>>   Formula: ~year | ind\n>>   Parameter estimate(s):\n>>    Phi\n>> 0.424\n>> <snip>\n>>\n>> but\n>>\n>>  > coef(fm2$modelStruct$corStruct)\n>> [1] 0.906\n>>\n>> Version info for nlme:\n>>\n>>  > packageDescription(\"nlme\")\n>> Package: nlme\n>> Version: 3.1-80\n>> Date: 2007-03-30\n>> Priority: recommended\n>> Title: Linear and Nonlinear Mixed Effects Models\n>> Author: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n>>          Bates <bates at stat.wisc.edu>, Saikat DebRoy\n>>          <saikat at stat.wisc.edu>, and Deepayan Sarkar\n>>          <deepayan at stat.wisc.edu>\n>> Maintainer: R-core <R-core at R-project.org>\n>> Description: Fit and compare Gaussian linear and nonlinear\n>>          mixed-effects models.\n>> Depends: graphics, stats, R (>= 2.3.0)\n>> Imports: lattice\n>> LazyLoad: yes\n>> LazyData: yes\n>> License: GPL version 2 or later\n>> Packaged: Fri Mar 30 07:37:02 2007; ripley\n>> Built: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n>>\n>> Example code:\n>> <code>\n>> library(nlme)\n>> ## number of time periods\n>> years <- 5\n>> ## individuals\n>> n <- 100\n>>\n>> ## the random effects\n>> a <- as.vector(sapply(rnorm(n), rep, years))\n>>\n>> ## indicators for individuals\n>> ind <- as.vector(sapply(1:n, rep, years))\n>> year <- rep(1:years, n)\n>>\n>> ## the white noise\n>> v <- rnorm(n*years)\n>> ## the AR(1) parameter\n>> rho <- .5\n>> ## generate the AR1 erroer\n>> ## randomly draw the starting value of the AR(1) error for each unit\n>> u1 <- rnorm(n)\n>> ## store values here:\n>> u <- numeric(n*years)\n>> ## a counter:\n>> k <- 1\n>> ## there has to be a much more elegant way to do this!\n>> for(i in 1:n)\n>>    {\n>>      u[k] <- u1[i]\n>>      for(j in 2:years)\n>>        {\n>>          k <- k+1\n>>          u[k] <- rho*u[k-1] + v[k]\n>>        }\n>>      k <- k+1\n>>    }\n>>\n>> ## the covariate\n>> x <- runif(n*years)\n>> ## the intercept and slope\n>> b0 <- 10\n>> b1 <- 4\n>> ## and the dependent variable\n>> y <- b0 + b1*x + a + u\n>>\n>> test.d <- data.frame(y=y, x=x, ind=ind, year=year)\n>> rm(\"x\", \"y\", \"ind\", \"years\")\n>>\n>> fm1 <- lme(y ~ x, random = ~ 1 | ind,\n>>             data=test.d)\n>> summary(fm1)\n>> fm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n>>             data=test.d)\n>> summary(fm2)\n>> coef(fm2$modelStruct$corStruct)\n>> </code>\n>>\n>> --\n>> Markus Jantti\n>> Abo Akademi University\n>> markus.jantti at iki.fi\n>> http://www.iki.fi/~mjantti\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>",
+      "body_snippet": "> The reason for the strange parameterization is that the nlme package\n> always uses unconstrained parameters for the optimization.  When the\n> parameters have natural constraints it is necessary to t",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 3,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-973345b0f081",
+      "message_id": "<40e66e0b0705111316k23159a20u90e5566128f77a73@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-11T15:16:58-05:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": "<87A0C64299B27148B40BE0DB83EDE2DBC6661F@RSMAIL002.REG.SKANE.SE>",
+      "references": [
+        "<40e66e0b0705110729tb41590k744e4bec0d446da9@mail.gmail.com>",
+        "<87A0C64299B27148B40BE0DB83EDE2DBC6661F@RSMAIL002.REG.SKANE.SE>"
+      ],
+      "body_plain": "On 5/11/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n> > The reason for the strange parameterization is that the nlme package\n> > always uses unconstrained parameters for the optimization.  When the\n> > parameters have natural constraints it is necessary to transform them\n> > to produce unconstrained versions.\n\n> It would be interesting to know what the transformation is or how to find out. Is it tanh(x/2)?\n\nJust look at the code for corAR1. The unconstrained parameter is\nlog((1+r)/(1-r)).\n\n> Best regards,\n> Fredrik\n>\n> >> But here's a solution while waiting from the enlightenment:\n> >>\n> >> Look at:\n> >> intervals(ModelwAR1.lme)$corStruct\n> >>\n> >> And then\n> >>\n> >> intervals(ModelwAR1.lme)$corStruct[2]\n> >>\n> >> is what you look for.\n> >>\n> >> Cheers,\n> >>\n> >> Fredrik\n> >>\n> >> -----Ursprungligt meddelande-----\n> >> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Markus J?ntti\n> >> Skickat: den 9 maj 2007 23:49\n> >> Till: R-SIG-Mixed-Model\n> >> ?mne: [R-sig-ME] Extracting the coefficients from corStruct objects\n> >>\n> >> Dear All:\n> >>\n> >> I have been trying to get the coefficients from corAR1 objects in lme objects in\n> >> then lme package (3.1-80), but coef(obj$modelStruct$corStruct) returns something\n> >> rather different that summary(object). I have tried to follow the various\n> >> summary. methods in the source code, but have kind of gotten lost. Would be\n> >> greatful if someone could point to a simple solution.\n> >>\n> >> It would be helpful to manually extract the AR(1) coefficients, because I am\n> >> data sets consisting of very large cohorts of individuals. I extract the\n> >> information I need from each estimated object and store them in small matrices.\n> >> I have not been able to figure out a way to extract the AR(1) parameters, however.\n> >>\n> >> I include example code below, which produces the following results:\n> >>  > summary(fm2)\n> >> <snip>\n> >> Correlation Structure: AR(1)\n> >>   Formula: ~year | ind\n> >>   Parameter estimate(s):\n> >>    Phi\n> >> 0.424\n> >> <snip>\n> >>\n> >> but\n> >>\n> >>  > coef(fm2$modelStruct$corStruct)\n> >> [1] 0.906\n> >>\n> >> Version info for nlme:\n> >>\n> >>  > packageDescription(\"nlme\")\n> >> Package: nlme\n> >> Version: 3.1-80\n> >> Date: 2007-03-30\n> >> Priority: recommended\n> >> Title: Linear and Nonlinear Mixed Effects Models\n> >> Author: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n> >>          Bates <bates at stat.wisc.edu>, Saikat DebRoy\n> >>          <saikat at stat.wisc.edu>, and Deepayan Sarkar\n> >>          <deepayan at stat.wisc.edu>\n> >> Maintainer: R-core <R-core at R-project.org>\n> >> Description: Fit and compare Gaussian linear and nonlinear\n> >>          mixed-effects models.\n> >> Depends: graphics, stats, R (>= 2.3.0)\n> >> Imports: lattice\n> >> LazyLoad: yes\n> >> LazyData: yes\n> >> License: GPL version 2 or later\n> >> Packaged: Fri Mar 30 07:37:02 2007; ripley\n> >> Built: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n> >>\n> >> Example code:\n> >> <code>\n> >> library(nlme)\n> >> ## number of time periods\n> >> years <- 5\n> >> ## individuals\n> >> n <- 100\n> >>\n> >> ## the random effects\n> >> a <- as.vector(sapply(rnorm(n), rep, years))\n> >>\n> >> ## indicators for individuals\n> >> ind <- as.vector(sapply(1:n, rep, years))\n> >> year <- rep(1:years, n)\n> >>\n> >> ## the white noise\n> >> v <- rnorm(n*years)\n> >> ## the AR(1) parameter\n> >> rho <- .5\n> >> ## generate the AR1 erroer\n> >> ## randomly draw the starting value of the AR(1) error for each unit\n> >> u1 <- rnorm(n)\n> >> ## store values here:\n> >> u <- numeric(n*years)\n> >> ## a counter:\n> >> k <- 1\n> >> ## there has to be a much more elegant way to do this!\n> >> for(i in 1:n)\n> >>    {\n> >>      u[k] <- u1[i]\n> >>      for(j in 2:years)\n> >>        {\n> >>          k <- k+1\n> >>          u[k] <- rho*u[k-1] + v[k]\n> >>        }\n> >>      k <- k+1\n> >>    }\n> >>\n> >> ## the covariate\n> >> x <- runif(n*years)\n> >> ## the intercept and slope\n> >> b0 <- 10\n> >> b1 <- 4\n> >> ## and the dependent variable\n> >> y <- b0 + b1*x + a + u\n> >>\n> >> test.d <- data.frame(y=y, x=x, ind=ind, year=year)\n> >> rm(\"x\", \"y\", \"ind\", \"years\")\n> >>\n> >> fm1 <- lme(y ~ x, random = ~ 1 | ind,\n> >>             data=test.d)\n> >> summary(fm1)\n> >> fm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n> >>             data=test.d)\n> >> summary(fm2)\n> >> coef(fm2$modelStruct$corStruct)\n> >> </code>\n> >>\n> >> --\n> >> Markus Jantti\n> >> Abo Akademi University\n> >> markus.jantti at iki.fi\n> >> http://www.iki.fi/~mjantti\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n>",
+      "body_snippet": "On 5/11/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n> > The reason for the strange parameterization is that the nlme package\n> > always uses unconstrained parameters for the optimizat",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 4,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-09ef515070e8",
+      "message_id": "<464574AB.7040305@iki.fi>",
+      "from_name": "Markus Jäntti",
+      "from_email_hash": "03ea68b97ef66cece02d1800806a05488453b86bcf6cc240c25acd1bc16ad65e",
+      "date": "2007-05-12T11:02:51+03:00",
+      "subject": "[R-sig-ME] Extracting the coefficients from corStruct objects",
+      "subject_clean": "Extracting the coefficients from corStruct objects",
+      "in_reply_to": "<40e66e0b0705111316k23159a20u90e5566128f77a73@mail.gmail.com>",
+      "references": [
+        "<40e66e0b0705110729tb41590k744e4bec0d446da9@mail.gmail.com>",
+        "<87A0C64299B27148B40BE0DB83EDE2DBC6661F@RSMAIL002.REG.SKANE.SE>",
+        "<40e66e0b0705111316k23159a20u90e5566128f77a73@mail.gmail.com>"
+      ],
+      "body_plain": "Douglas Bates wrote:\n> On 5/11/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n>> > The reason for the strange parameterization is that the nlme package\n>> > always uses unconstrained parameters for the optimization.  When the\n>> > parameters have natural constraints it is necessary to transform them\n>> > to produce unconstrained versions.\n> \n>> It would be interesting to know what the transformation is or how to \n>> find out. Is it tanh(x/2)?\n> \n> Just look at the code for corAR1. The unconstrained parameter is\n> log((1+r)/(1-r)).\n\nSo for the AR1, the transform is  \"Fishers z-tranform\"?\n\nI was trying to figure this out by looking at the summary methods. Embarasingly, \nit never occurred to me to look in the corAR1 code itself.\n\nThanks for the help to both Fredrik and Doug.\n\nMarkus\n\n> \n>> Best regards,\n>> Fredrik\n>>\n>> >> But here's a solution while waiting from the enlightenment:\n>> >>\n>> >> Look at:\n>> >> intervals(ModelwAR1.lme)$corStruct\n>> >>\n>> >> And then\n>> >>\n>> >> intervals(ModelwAR1.lme)$corStruct[2]\n>> >>\n>> >> is what you look for.\n>> >>\n>> >> Cheers,\n>> >>\n>> >> Fredrik\n>> >>\n>> >> -----Ursprungligt meddelande-----\n>> >> Fr?n: r-sig-mixed-models-bounces at r-project.org \n>> [mailto:r-sig-mixed-models-bounces at r-project.org] F?r Markus J?ntti\n>> >> Skickat: den 9 maj 2007 23:49\n>> >> Till: R-SIG-Mixed-Model\n>> >> ?mne: [R-sig-ME] Extracting the coefficients from corStruct objects\n>> >>\n>> >> Dear All:\n>> >>\n>> >> I have been trying to get the coefficients from corAR1 objects in \n>> lme objects in\n>> >> then lme package (3.1-80), but coef(obj$modelStruct$corStruct) \n>> returns something\n>> >> rather different that summary(object). I have tried to follow the \n>> various\n>> >> summary. methods in the source code, but have kind of gotten lost. \n>> Would be\n>> >> greatful if someone could point to a simple solution.\n>> >>\n>> >> It would be helpful to manually extract the AR(1) coefficients, \n>> because I am\n>> >> data sets consisting of very large cohorts of individuals. I \n>> extract the\n>> >> information I need from each estimated object and store them in \n>> small matrices.\n>> >> I have not been able to figure out a way to extract the AR(1) \n>> parameters, however.\n>> >>\n>> >> I include example code below, which produces the following results:\n>> >>  > summary(fm2)\n>> >> <snip>\n>> >> Correlation Structure: AR(1)\n>> >>   Formula: ~year | ind\n>> >>   Parameter estimate(s):\n>> >>    Phi\n>> >> 0.424\n>> >> <snip>\n>> >>\n>> >> but\n>> >>\n>> >>  > coef(fm2$modelStruct$corStruct)\n>> >> [1] 0.906\n>> >>\n>> >> Version info for nlme:\n>> >>\n>> >>  > packageDescription(\"nlme\")\n>> >> Package: nlme\n>> >> Version: 3.1-80\n>> >> Date: 2007-03-30\n>> >> Priority: recommended\n>> >> Title: Linear and Nonlinear Mixed Effects Models\n>> >> Author: Jose Pinheiro <Jose.Pinheiro at pharma.novartis.com>, Douglas\n>> >>          Bates <bates at stat.wisc.edu>, Saikat DebRoy\n>> >>          <saikat at stat.wisc.edu>, and Deepayan Sarkar\n>> >>          <deepayan at stat.wisc.edu>\n>> >> Maintainer: R-core <R-core at R-project.org>\n>> >> Description: Fit and compare Gaussian linear and nonlinear\n>> >>          mixed-effects models.\n>> >> Depends: graphics, stats, R (>= 2.3.0)\n>> >> Imports: lattice\n>> >> LazyLoad: yes\n>> >> LazyData: yes\n>> >> License: GPL version 2 or later\n>> >> Packaged: Fri Mar 30 07:37:02 2007; ripley\n>> >> Built: R 2.5.0; i486-pc-linux-gnu; 2007-04-25 03:13:00; unix\n>> >>\n>> >> Example code:\n>> >> <code>\n>> >> library(nlme)\n>> >> ## number of time periods\n>> >> years <- 5\n>> >> ## individuals\n>> >> n <- 100\n>> >>\n>> >> ## the random effects\n>> >> a <- as.vector(sapply(rnorm(n), rep, years))\n>> >>\n>> >> ## indicators for individuals\n>> >> ind <- as.vector(sapply(1:n, rep, years))\n>> >> year <- rep(1:years, n)\n>> >>\n>> >> ## the white noise\n>> >> v <- rnorm(n*years)\n>> >> ## the AR(1) parameter\n>> >> rho <- .5\n>> >> ## generate the AR1 erroer\n>> >> ## randomly draw the starting value of the AR(1) error for each unit\n>> >> u1 <- rnorm(n)\n>> >> ## store values here:\n>> >> u <- numeric(n*years)\n>> >> ## a counter:\n>> >> k <- 1\n>> >> ## there has to be a much more elegant way to do this!\n>> >> for(i in 1:n)\n>> >>    {\n>> >>      u[k] <- u1[i]\n>> >>      for(j in 2:years)\n>> >>        {\n>> >>          k <- k+1\n>> >>          u[k] <- rho*u[k-1] + v[k]\n>> >>        }\n>> >>      k <- k+1\n>> >>    }\n>> >>\n>> >> ## the covariate\n>> >> x <- runif(n*years)\n>> >> ## the intercept and slope\n>> >> b0 <- 10\n>> >> b1 <- 4\n>> >> ## and the dependent variable\n>> >> y <- b0 + b1*x + a + u\n>> >>\n>> >> test.d <- data.frame(y=y, x=x, ind=ind, year=year)\n>> >> rm(\"x\", \"y\", \"ind\", \"years\")\n>> >>\n>> >> fm1 <- lme(y ~ x, random = ~ 1 | ind,\n>> >>             data=test.d)\n>> >> summary(fm1)\n>> >> fm2 <- lme(y ~ x, random = ~ 1 | ind, correlation=corAR1(form=~year),\n>> >>             data=test.d)\n>> >> summary(fm2)\n>> >> coef(fm2$modelStruct$corStruct)\n>> >> </code>\n>> >>\n>> >> --\n>> >> Markus Jantti\n>> >> Abo Akademi University\n>> >> markus.jantti at iki.fi\n>> >> http://www.iki.fi/~mjantti\n>> >>\n>> >> _______________________________________________\n>> >> R-sig-mixed-models at r-project.org mailing list\n>> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> >>\n>> >> _______________________________________________\n>> >> R-sig-mixed-models at r-project.org mailing list\n>> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> >>\n>>\n> \n\n\n-- \nMarkus Jantti\nAbo Akademi University\nmarkus.jantti at iki.fi\nhttp://www.iki.fi/~mjantti",
+      "body_snippet": "Douglas Bates wrote:\n> On 5/11/07, Nilsson Fredrik X <Fredrik.X.Nilsson at skane.se> wrote:\n>> > The reason for the strange parameterization is that the nlme package\n>> > always uses unconstrained par",
+      "thread_id": "thread-b5741ffcd947",
+      "thread_depth": 5,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-61b893d2c1f1",
+      "message_id": "<1179487144.464d8ba88eba6@webmail.ntnu.no>",
+      "from_name": "parn at nt.ntnu.no",
+      "from_email_hash": "1a36421a0068eae8594715d1a7e191144f471e52d0731f294c774b8e0c93cf8d",
+      "date": "2007-05-18T13:19:04+02:00",
+      "subject": "[R-sig-ME] post hoc tests following lmer",
+      "subject_clean": "post hoc tests following lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear lmer-users,\n\nI have struggled to find a good way to perform a post hoc test on the\nfixed factors in a mixed model using lmer. I found some threads on the\nR-list:\nhttp://www.nabble.com/investigating-interactions-with-mixed-models-tf3272509.html#a9099081\nhttp://www.nabble.com/How-to-use-lmer-function-and-multicomp-package--tf1730665.html#a4702360\n\n...but I am really curious if anyone have any additional thoughts on\nthis subject.\n\nI provide you some dummy data of 200 bird nests.\nThe male and female attending the nest could be either young or old.\nEach chick in a clutch could either have a disease or not.\nSome individuals occur in the data set several times and 'identity' of a\nbird is included as a random variable.\n\nI would like to test if the proportion of chicks that carries the\ndisease in a clutch depend on age of the male and female, and the\ninteraction thereof.\nAnd (hopefully) be able to perform a posthoc test of which\nage-combination of the parents that differs in proportion of sick\nchicks.\n\n\n# Dummy data\n\n# male age\nmale.age <- rep(c(\"Y\", \"O\"), c(100, 100))\n\n# female age\nfemale.age <- rep(c(\"Y\", \"O\", \"Y\", \"O\"), c(50, 50, 50, 50))\n\n# male id\n# 100 unique young males\nmale.id.y <- (1:100)\n\n# 70 unique old males, and 30 of the old captured before\nmale.id.o <- sample(c(sample(male.id.y, 30, replace=F), 101:170))\nmale.id <- c(male.id.y, male.id.o)\n\n# female id\nfemale.id.y <- 1:100\nfemale.id.o <- sample(c(sample(female.id.y, 40, replace=F), 101:160))\nfemale.id <- c(female.id.y[1:50], female.id.o[1:50],\nfemale.id.y[51:100], female.id.o[51:100])\n\n# clutch size\nclutch <- floor(rnorm(200, mean=9, sd=1.35))\n\n# number of chicks with disease in pairs with of a young male (ym) and a\n# young female (yf):\nn.epo.ym.yf <- rbinom(50, clutch[1:50], p=0.09)\n\n# and so on (different probabilities of disease in each combination of\nmale and female age.\nn.epo.ym.of <- rbinom(50, clutch[51:100], p=0.25)\nn.epo.om.yf <- rbinom(50, clutch[101:150], p=0.075)\nn.epo.om.of <- rbinom(50, clutch[151:200], p=0.06)\n\nn.epo <- c(n.epo.ym.yf, n.epo.ym.of, n.epo.om.yf, n.epo.om.of)\n\n# number of healthy offspring\nn.wpo <- clutch - n.epo\n\n\nep.data <- data.frame(male.id, female.id, male.age, female.age, clutch,\nn.epo, n.wpo)\n\n\n# create response variable\n# two-column matrix with the columns giving the numbers of 'successes'\n# (n.epo) and 'failures' (n.wpo)\n\ny <- cbind(n.epo, n.wpo)\n\n\n# plot proportion of epo in the clutch for the\n# different age combinations in pairs\n\np.epo <- n.epo/clutch\npairage <- as.factor(paste(male.age, female.age, sep=\"\"))\nplot(p.epo ~ pairage)\n\n\n\n# mixed model.\n# response: proportion epo in each clutch: y\n# fixed factors: male age, female age and the interaction thereof:\n# male.age*female.age\n# random factors: male.id, female.id\n\n\nmodel <- lmer(y ~ male.age*female.age + (1|male.id) + (1|female.id),\nfamily=binomial, data=ep.data)\nsummary(model)\n\n\nBut what would be the appropriate way to make a post hoc test of which\nage combinations that differs, an lmer-equivalent of\n'multicomp', perhaps an mcmcsamp-approach!?\n\n\nThanks in advance for any comments!\n\nBest regards,\n\nHenrik\n\n--",
+      "body_snippet": "Dear lmer-users,\n\nI have struggled to find a good way to perform a post hoc test on the\nfixed factors in a mixed model using lmer. I found some threads on the\nR-list:\nhttp://www.nabble.com/investigati",
+      "thread_id": "thread-61b893d2c1f1",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-5a12f28b44ba",
+      "message_id": "<D418B330-BD82-49C5-B9A1-6833EA5673DC@muohio.edu>",
+      "from_name": "Martin Henry H. Stevens",
+      "from_email_hash": "9bea28e7a1b8317ef7d60a8ebc886597ca71e1b6446dfeff48182b4a4b3c790e",
+      "date": "2007-05-18T08:38:21-04:00",
+      "subject": "[R-sig-ME] post hoc tests following lmer",
+      "subject_clean": "post hoc tests following lmer",
+      "in_reply_to": "<1179487144.464d8ba88eba6@webmail.ntnu.no>",
+      "references": [
+        "<1179487144.464d8ba88eba6@webmail.ntnu.no>"
+      ],
+      "body_plain": "Hi Henrik,\nSee the languageR package, and a paper by Baayen, Davidson and Bates  \n(submitted), at Baayen's web site. This may be helpful, as it gives a  \ncouple more bells-and-whistles.\n\nAlso, if I understand you correctly, you have two ages each of female  \nand male? How about creating no-intercept model, generating Bayesian  \ncredible intervals with mcmcsamp and HPDintervals and then comparing  \nthen comparing the four combinations that way? I would be interested  \nto here the thoughts of others on this.\nHank\nOn May 18, 2007, at 7:19 AM, parn at nt.ntnu.no wrote:\n\n> Dear lmer-users,\n>\n> I have struggled to find a good way to perform a post hoc test on the\n> fixed factors in a mixed model using lmer. I found some threads on the\n> R-list:\n> http://www.nabble.com/investigating-interactions-with-mixed-models- \n> tf3272509.html#a9099081\n> http://www.nabble.com/How-to-use-lmer-function-and-multicomp- \n> package--tf1730665.html#a4702360\n>\n> ...but I am really curious if anyone have any additional thoughts on\n> this subject.\n>\n> I provide you some dummy data of 200 bird nests.\n> The male and female attending the nest could be either young or old.\n> Each chick in a clutch could either have a disease or not.\n> Some individuals occur in the data set several times and 'identity'  \n> of a\n> bird is included as a random variable.\n>\n> I would like to test if the proportion of chicks that carries the\n> disease in a clutch depend on age of the male and female, and the\n> interaction thereof.\n> And (hopefully) be able to perform a posthoc test of which\n> age-combination of the parents that differs in proportion of sick\n> chicks.\n>\n>\n> # Dummy data\n>\n> # male age\n> male.age <- rep(c(\"Y\", \"O\"), c(100, 100))\n>\n> # female age\n> female.age <- rep(c(\"Y\", \"O\", \"Y\", \"O\"), c(50, 50, 50, 50))\n>\n> # male id\n> # 100 unique young males\n> male.id.y <- (1:100)\n>\n> # 70 unique old males, and 30 of the old captured before\n> male.id.o <- sample(c(sample(male.id.y, 30, replace=F), 101:170))\n> male.id <- c(male.id.y, male.id.o)\n>\n> # female id\n> female.id.y <- 1:100\n> female.id.o <- sample(c(sample(female.id.y, 40, replace=F), 101:160))\n> female.id <- c(female.id.y[1:50], female.id.o[1:50],\n> female.id.y[51:100], female.id.o[51:100])\n>\n> # clutch size\n> clutch <- floor(rnorm(200, mean=9, sd=1.35))\n>\n> # number of chicks with disease in pairs with of a young male (ym)  \n> and a\n> # young female (yf):\n> n.epo.ym.yf <- rbinom(50, clutch[1:50], p=0.09)\n>\n> # and so on (different probabilities of disease in each combination of\n> male and female age.\n> n.epo.ym.of <- rbinom(50, clutch[51:100], p=0.25)\n> n.epo.om.yf <- rbinom(50, clutch[101:150], p=0.075)\n> n.epo.om.of <- rbinom(50, clutch[151:200], p=0.06)\n>\n> n.epo <- c(n.epo.ym.yf, n.epo.ym.of, n.epo.om.yf, n.epo.om.of)\n>\n> # number of healthy offspring\n> n.wpo <- clutch - n.epo\n>\n>\n> ep.data <- data.frame(male.id, female.id, male.age, female.age,  \n> clutch,\n> n.epo, n.wpo)\n>\n>\n> # create response variable\n> # two-column matrix with the columns giving the numbers of 'successes'\n> # (n.epo) and 'failures' (n.wpo)\n>\n> y <- cbind(n.epo, n.wpo)\n>\n>\n> # plot proportion of epo in the clutch for the\n> # different age combinations in pairs\n>\n> p.epo <- n.epo/clutch\n> pairage <- as.factor(paste(male.age, female.age, sep=\"\"))\n> plot(p.epo ~ pairage)\n>\n>\n>\n> # mixed model.\n> # response: proportion epo in each clutch: y\n> # fixed factors: male age, female age and the interaction thereof:\n> # male.age*female.age\n> # random factors: male.id, female.id\n>\n>\n> model <- lmer(y ~ male.age*female.age + (1|male.id) + (1|female.id),\n> family=binomial, data=ep.data)\n> summary(model)\n>\n>\n> But what would be the appropriate way to make a post hoc test of which\n> age combinations that differs, an lmer-equivalent of\n> 'multicomp', perhaps an mcmcsamp-approach!?\n>\n>\n> Thanks in advance for any comments!\n>\n> Best regards,\n>\n> Henrik\n>\n> --\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Henrik,\nSee the languageR package, and a paper by Baayen, Davidson and Bates  \n(submitted), at Baayen's web site. This may be helpful, as it gives a  \ncouple more bells-and-whistles.\n\nAlso, if I un",
+      "thread_id": "thread-61b893d2c1f1",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-493797643c3f",
+      "message_id": "<465332D7.AD5C.0057.0@lshtm.ac.uk>",
+      "from_name": "Jonathan Bartlett",
+      "from_email_hash": "225638b4138b89387bbf6e0a9ef70ae09a22944294437b6e1753b9bcb61d5674",
+      "date": "2007-05-22T18:13:44+01:00",
+      "subject": "[R-sig-ME] Different variance estimates from lmer and lmer2",
+      "subject_clean": "Different variance estimates from lmer and lmer2",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all\n\nFor some mixed models, I get different variance estimates if I use lmer\ncompared to using lmer2. Is there a reason why the two commands are\ngiving quite different estimates?\n\nThe analysis below is from page 168 of \"Extending the linear model with\nR\" by Faraway, using the dataframe irrigation from the faraway package.\nStrangely, the results using lmer2 agree with the book, whereas lmer\ngives slightly different estimates.\n\nI have am running R 2.5.0 with lme4 version 0.99875-0 on WinXP.\n\nlmod <- lmer(yield ~ irrigation * variety + (1|field),data=irrigation)\n> summary(lmod)\nLinear mixed-effects model fit by REML \nFormula: yield ~ irrigation * variety + (1 | field) \n   Data: irrigation \n  AIC   BIC logLik MLdeviance REMLdeviance\n 63.4 70.35  -22.7      68.62         45.4\nRandom effects:\n Groups   Name        Variance Std.Dev.\n field    (Intercept) 15.5182  3.9393  \n Residual              2.1919  1.4805  \nnumber of obs: 16, groups: field, 8\n\n....\n\n> lmod <- lmer2(yield ~ irrigation * variety +\n(1|field),data=irrigation)\n> summary(lmod)\nLinear mixed-effects model fit by REML \nFormula: yield ~ irrigation * variety + (1 | field) \n   Data: irrigation \n  AIC   BIC logLik MLdeviance REMLdeviance\n 63.4 70.35 -22.70      68.61        45.39\nRandom effects:\n Groups   Name        Variance Std.Dev.\n field    (Intercept) 16.1991  4.0248  \n Residual              2.1076  1.4518  \nNumber of obs: 16, groups: field, 8\n\nlmer2, the book and Stata's xtmixed give the estimate of the random\nintercept SD as 4.02, whereas lmer gives it as 3.94.\n\nMy apologies if the reason for such differences is down to a mistake on\nmy part - I was unable to find any postings on the list regarding this\nissue.\n\nMany thanks\nJonathan\nLondon School of Hygiene and Tropical Medicine\nwww.lshtm.ac.uk",
+      "body_snippet": "Dear all\n\nFor some mixed models, I get different variance estimates if I use lmer\ncompared to using lmer2. Is there a reason why the two commands are\ngiving quite different estimates?\n\nThe analysis be",
+      "thread_id": "thread-493797643c3f",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-7b235cc8cdfa",
+      "message_id": "<40e66e0b0705221325m4b30df33t99759cab1d11acdb@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-22T15:25:51-05:00",
+      "subject": "[R-sig-ME] Different variance estimates from lmer and lmer2",
+      "subject_clean": "Different variance estimates from lmer and lmer2",
+      "in_reply_to": "<465332D7.AD5C.0057.0@lshtm.ac.uk>",
+      "references": [
+        "<465332D7.AD5C.0057.0@lshtm.ac.uk>"
+      ],
+      "body_plain": "On 5/22/07, Jonathan Bartlett <Jonathan.Bartlett at lshtm.ac.uk> wrote:\n\n\n> For some mixed models, I get different variance estimates if I use lmer\n> compared to using lmer2. Is there a reason why the two commands are\n> giving quite different estimates?\n\n> The analysis below is from page 168 of \"Extending the linear model with\n> R\" by Faraway, using the dataframe irrigation from the faraway package.\n> Strangely, the results using lmer2 agree with the book, whereas lmer\n> gives slightly different estimates.\n\n> I have am running R 2.5.0 with lme4 version 0.99875-0 on WinXP.\n\n> lmod <- lmer(yield ~ irrigation * variety + (1|field),data=irrigation)\n> > summary(lmod)\n> Linear mixed-effects model fit by REML\n> Formula: yield ~ irrigation * variety + (1 | field)\n>    Data: irrigation\n>   AIC   BIC logLik MLdeviance REMLdeviance\n>  63.4 70.35  -22.7      68.62         45.4\n> Random effects:\n>  Groups   Name        Variance Std.Dev.\n>  field    (Intercept) 15.5182  3.9393\n>  Residual              2.1919  1.4805\n> number of obs: 16, groups: field, 8\n>\n> ....\n>\n> > lmod <- lmer2(yield ~ irrigation * variety +\n> (1|field),data=irrigation)\n> > summary(lmod)\n> Linear mixed-effects model fit by REML\n> Formula: yield ~ irrigation * variety + (1 | field)\n>    Data: irrigation\n>   AIC   BIC logLik MLdeviance REMLdeviance\n>  63.4 70.35 -22.70      68.61        45.39\n> Random effects:\n>  Groups   Name        Variance Std.Dev.\n>  field    (Intercept) 16.1991  4.0248\n>  Residual              2.1076  1.4518\n> Number of obs: 16, groups: field, 8\n\nThese differences are just reflecting different parameterizations and\ndifferent convergence criteria for lmer and lmer2.  Notice that the\nREML deviance for the model fit by lmer2 is slightly smaller than that\nfit by lmer (45.39 vs 45.4).  If you add the optional argument control\n= list(msVerbose = 1) to the call to lmer and to lmer2 you will see\nthat lmer2 takes more iterations and, as shown above, produces a\nslightly better criterion for the fit.\n\nHaving said all this, I would note that a difference of 0.01 in the\ndeviance is not going to be in any way significant.  Essentially what\nall this is indicating is that the estimates of the variance\ncomponents are not very precisely determined.\n\nIt was probably after Julian fitted the models for his book that I\nmade the change in lmer to loosen the convergence criterion in lmer\nsomewhat.  In retrospect that may not have been a good idea.\n\n> lmer2, the book and Stata's xtmixed give the estimate of the random\n> intercept SD as 4.02, whereas lmer gives it as 3.94.\n>\n> My apologies if the reason for such differences is down to a mistake on\n> my part - I was unable to find any postings on the list regarding this\n> issue.\n>\n> Many thanks\n> Jonathan\n> London School of Hygiene and Tropical Medicine\n> www.lshtm.ac.uk\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 5/22/07, Jonathan Bartlett <Jonathan.Bartlett at lshtm.ac.uk> wrote:\n\n\n> For some mixed models, I get different variance estimates if I use lmer\n> compared to using lmer2. Is there a reason why the",
+      "thread_id": "thread-493797643c3f",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-f617045900da",
+      "message_id": "<46535906.7060405@pdf.com>",
+      "from_name": "Sundar Dorai-Raj",
+      "from_email_hash": "eb4f0e323f9635234e5ff005fe7540ae46dabead0ad239200296a4be11ef4f46",
+      "date": "2007-05-22T13:56:38-07:00",
+      "subject": "[R-sig-ME] incorrect weights type in lmer",
+      "subject_clean": "incorrect weights type in lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi, all,\n\nI'm receiving an error I don't understand regarding a weights argument \nto lmer. Here's an example:\n\nlibrary(lme4)\nset.seed(1)\ntmp.df <- expand.grid(A = factor(1:3), B = 1:3, C = 1:10)\ntmp.df$w <- as.integer(rpois(nrow(tmp.df), 50))\ntmp.df$p <- 0.5 + with(tmp.df, ifelse(B%%2, -0.1, 0.1))\ntmp.df$p <- with(tmp.df, p + ifelse(B%%2 & C%%2, -0.1, 0.1))\ntmp.df$y <- rbinom(nrow(tmp.df), tmp.df$w, tmp.df$p)/tmp.df$w\ntmp.df[2:3] <- lapply(tmp.df[2:3], factor)\nfit <- lmer(y ~ A + (1 | B) + (1 | B:C), tmp.df, binomial, weights = w)\n\nError in lmer(y ~ A + (1 | B) + (1 | B:C), tmp.df, binomial, weights = w) :\n\tobject `weights' of incorrect type\n\nWhat sort of object is lmer expecting for weights?\n\n\n > sessionInfo()\nR version 2.5.0 (2007-04-23)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United \nStates.1252;LC_MONETARY=English_United \nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] \"stats\"     \"graphics\"  \"grDevices\" \"utils\"     \"datasets\"  \"methods\"\n[7] \"base\"\n\nother attached packages:\n        lme4      Matrix     lattice\n\"0.99875-0\" \"0.99875-1\"    \"0.15-6\"\n\nThanks,\n\n--sundar",
+      "body_snippet": "Hi, all,\n\nI'm receiving an error I don't understand regarding a weights argument \nto lmer. Here's an example:\n\nlibrary(lme4)\nset.seed(1)\ntmp.df <- expand.grid(A = factor(1:3), B = 1:3, C = 1:10)\ntmp.d",
+      "thread_id": "thread-f617045900da",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-7ab2609b9fc2",
+      "message_id": "<40e66e0b0705221444l51cd5341r2664f81b87c60bb3@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-22T16:44:08-05:00",
+      "subject": "[R-sig-ME] incorrect weights type in lmer",
+      "subject_clean": "incorrect weights type in lmer",
+      "in_reply_to": "<46535906.7060405@pdf.com>",
+      "references": [
+        "<46535906.7060405@pdf.com>"
+      ],
+      "body_plain": "On 5/22/07, Sundar Dorai-Raj <sundar.dorai-raj at pdf.com> wrote:\n> Hi, all,\n>\n> I'm receiving an error I don't understand regarding a weights argument\n> to lmer. Here's an example:\n>\n> library(lme4)\n> set.seed(1)\n> tmp.df <- expand.grid(A = factor(1:3), B = 1:3, C = 1:10)\n> tmp.df$w <- as.integer(rpois(nrow(tmp.df), 50))\n> tmp.df$p <- 0.5 + with(tmp.df, ifelse(B%%2, -0.1, 0.1))\n> tmp.df$p <- with(tmp.df, p + ifelse(B%%2 & C%%2, -0.1, 0.1))\n> tmp.df$y <- rbinom(nrow(tmp.df), tmp.df$w, tmp.df$p)/tmp.df$w\n> tmp.df[2:3] <- lapply(tmp.df[2:3], factor)\n> fit <- lmer(y ~ A + (1 | B) + (1 | B:C), tmp.df, binomial, weights = w)\n>\n> Error in lmer(y ~ A + (1 | B) + (1 | B:C), tmp.df, binomial, weights = w) :\n>         object `weights' of incorrect type\n>\n> What sort of object is lmer expecting for weights?\n\nThanks for pointing out the problem, Sundar.  Although this is not\ndocumented the weights need to be double precision and you are using\nintegers.  Your example works with weights = as.double(w) or weights =\nas.numeric(w).\n\nMost of the time R will quietly coerce integers to numeric as needed\nbut not in this case.",
+      "body_snippet": "On 5/22/07, Sundar Dorai-Raj <sundar.dorai-raj at pdf.com> wrote:\n> Hi, all,\n>\n> I'm receiving an error I don't understand regarding a weights argument\n> to lmer. Here's an example:\n>\n> library(lme4)\n",
+      "thread_id": "thread-f617045900da",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-cf8c7ea58d8e",
+      "message_id": "<4653959F.1010908@pdf.com>",
+      "from_name": "Sundar Dorai-Raj",
+      "from_email_hash": "eb4f0e323f9635234e5ff005fe7540ae46dabead0ad239200296a4be11ef4f46",
+      "date": "2007-05-22T18:15:11-07:00",
+      "subject": "[R-sig-ME] Poor convergence when using binomial response",
+      "subject_clean": "Poor convergence when using binomial response",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI'm seeing poor convergence of a model using the binomial family. In one \ncase, I have a binomial response for which I use the 'weights' argument. \nIn a second case, I expand the binomial response to Bernoulli trials and \nrefit. Theoretically, they should be the same model. However, that does \nnot appear to be the case because the residual scale for the binomial \ncase is unbelievably large. Could someone (Prof. Bates) please help \ndiagnose this problem?\n\nAnd thank you so much for such wonderful software. I truly appreciate \nthe effort.\n\nThanks,\n\n--sundar\n\ntmp <- read.csv(url(\"http://sdorairaj.googlepages.com/tmp.csv\"))\ntmp[2:4] <- lapply(tmp[2:4], factor)\nlibrary(lme4)\nfit <- lmer(1 - y ~ z + (1 | A) + (1 | A:B), tmp,\n             binomial(\"cloglog\"), weights = as.numeric(w))\n## see below for expand.bin\ntmp2 <- expand.bin(tmp, \"x\", \"w\")\nfit2 <- lmer(x ~ z + (1 | A) + (1 | A:B), tmp2, binomial(\"cloglog\"))\n\nfit3 <- glm(1 - y ~ z, binomial(\"cloglog\"), tmp, w)\nfit4 <- glm(x ~ z, binomial(\"cloglog\"), tmp2)\n\ncbind(sapply(list(fit, fit2), fixef),\n       sapply(list(fit3, fit4), coef))\n#                  [,1]       [,2]       [,3]       [,4]\n#(Intercept) -2.8227711 -3.1247457 -2.8227711 -2.8227711\n#z2          -0.2680992 -0.2694113 -0.2680992 -0.2680992\n#z3           0.3109447  0.3233432  0.3109447  0.3109447\n\n\nexpand.bin <- function (data, x, n) {\n   char.x <- x\n   char.n <- n\n   x <- data[[x]]\n   n <- data[[n]]\n   i <- rep(seq(nrow(data)), n)\n   data <- data[i, , drop = FALSE]\n   expand <- function(z) c(rep(0, diff(z)), rep(1, z[1]))\n   x <- apply(cbind(x, n), 1, expand)\n   data[[char.x]] <- if(is.matrix(x)) c(x) else unlist(x)\n   row.names(data) <- seq(nrow(data))\n   data\n}\n\n > sessionInfo()\nR version 2.5.0 (2007-04-23)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United \nStates.1252;LC_MONETARY=English_United \nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] \"stats\"     \"graphics\"  \"grDevices\" \"utils\"     \"datasets\"  \"methods\"\n[7] \"base\"\n\nother attached packages:\n        lme4      Matrix     lattice\n\"0.99875-0\" \"0.99875-1\"    \"0.15-6\"",
+      "body_snippet": "Hi,\n\nI'm seeing poor convergence of a model using the binomial family. In one \ncase, I have a binomial response for which I use the 'weights' argument. \nIn a second case, I expand the binomial respons",
+      "thread_id": "thread-cf8c7ea58d8e",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-a802e0d0a808",
+      "message_id": "<40e66e0b0705230949q2da18af2y6aefac4de03accfd@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-05-23T11:49:05-05:00",
+      "subject": "[R-sig-ME] Poor convergence when using binomial response",
+      "subject_clean": "Poor convergence when using binomial response",
+      "in_reply_to": "<4653959F.1010908@pdf.com>",
+      "references": [
+        "<4653959F.1010908@pdf.com>"
+      ],
+      "body_plain": "Thanks for sending the example, Sundar, and also for the idea of the\nexpand.bin function.\n\nThere is a similar example in the lme4 package using the cbpp data\nset.  I modified your expand.bin function to apply to that example\nwith the enclosed results.  As you can see the parameter estimates in\nthis example are not exactly the same for the \"count out of\" form\nversus the \"expanded binary responses\" form but they are reasonably\nclose.  In general I would recommend using cbind(successes, failures)\nas the response rather than messing around with the weights.  I always\nmanage to confuse myself about what the weights should be and need to\ngo back to the cbind(successes, failures) form to check.\n\nAs always, it is a good idea to set control = list(msVerbose = 1) to\nsee exactly what is going on with the parameter estimates during the\niterations.\n\nI hope this helps.  If necessary I will look in more detail at your\nexample but I hope this is enough to get you started.\n\n\nOn 5/22/07, Sundar Dorai-Raj <sundar.dorai-raj at pdf.com> wrote:\n> Hi,\n>\n> I'm seeing poor convergence of a model using the binomial family. In one\n> case, I have a binomial response for which I use the 'weights' argument.\n> In a second case, I expand the binomial response to Bernoulli trials and\n> refit. Theoretically, they should be the same model. However, that does\n> not appear to be the case because the residual scale for the binomial\n> case is unbelievably large. Could someone (Prof. Bates) please help\n> diagnose this problem?\n>\n> And thank you so much for such wonderful software. I truly appreciate\n> the effort.\n>\n> Thanks,\n>\n> --sundar\n>\n> tmp <- read.csv(url(\"http://sdorairaj.googlepages.com/tmp.csv\"))\n> tmp[2:4] <- lapply(tmp[2:4], factor)\n> library(lme4)\n> fit <- lmer(1 - y ~ z + (1 | A) + (1 | A:B), tmp,\n>              binomial(\"cloglog\"), weights = as.numeric(w))\n> ## see below for expand.bin\n> tmp2 <- expand.bin(tmp, \"x\", \"w\")\n> fit2 <- lmer(x ~ z + (1 | A) + (1 | A:B), tmp2, binomial(\"cloglog\"))\n>\n> fit3 <- glm(1 - y ~ z, binomial(\"cloglog\"), tmp, w)\n> fit4 <- glm(x ~ z, binomial(\"cloglog\"), tmp2)\n>\n> cbind(sapply(list(fit, fit2), fixef),\n>        sapply(list(fit3, fit4), coef))\n> #                  [,1]       [,2]       [,3]       [,4]\n> #(Intercept) -2.8227711 -3.1247457 -2.8227711 -2.8227711\n> #z2          -0.2680992 -0.2694113 -0.2680992 -0.2680992\n> #z3           0.3109447  0.3233432  0.3109447  0.3109447\n>\n>\n> expand.bin <- function (data, x, n) {\n>    char.x <- x\n>    char.n <- n\n>    x <- data[[x]]\n>    n <- data[[n]]\n>    i <- rep(seq(nrow(data)), n)\n>    data <- data[i, , drop = FALSE]\n>    expand <- function(z) c(rep(0, diff(z)), rep(1, z[1]))\n>    x <- apply(cbind(x, n), 1, expand)\n>    data[[char.x]] <- if(is.matrix(x)) c(x) else unlist(x)\n>    row.names(data) <- seq(nrow(data))\n>    data\n> }\n>\n>  > sessionInfo()\n> R version 2.5.0 (2007-04-23)\n> i386-pc-mingw32\n>\n> locale:\n> LC_COLLATE=English_United States.1252;LC_CTYPE=English_United\n> States.1252;LC_MONETARY=English_United\n> States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n>\n> attached base packages:\n> [1] \"stats\"     \"graphics\"  \"grDevices\" \"utils\"     \"datasets\"  \"methods\"\n> [7] \"base\"\n>\n> other attached packages:\n>         lme4      Matrix     lattice\n> \"0.99875-0\" \"0.99875-1\"    \"0.15-6\"\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n-------------- next part --------------\nexpand.bin <- function(data, x, n)\n{\n    stopifnot(is.character(x), is.character(n),\n              length(x) == 1, length(n) == 1,\n              inherits(data, \"data.frame\"),\n              all(c(x, n) %in% names(data)))\n    nn <- as.integer(data[[n]])\n    ans <- data[rep.int(seq_along(nn), nn), ]\n    ans[[n]] <- NULL\n    xx <- as.integer(data[[x]])\n    ans[[x]] <- rep.int(rep.int(c(0,1), length(xx)),\n                        as.vector(matrix(c(nn - xx, xx), nrow = 2, byrow = TRUE)))\n    row.names(ans) <- seq(nrow(ans))\n    ans\n}\noptions(show.signif.stars = FALSE)\nlibrary(lme4)\nexample(cbpp)\nm3 <- lmer(incidence ~ period + (1|herd),\n           expand.bin(cbpp, \"incidence\", \"size\"), binomial)\nm3\n-------------- next part --------------\n\nR version 2.5.0 Patched (2007-05-23 r41687)\nCopyright (C) 2007 The R Foundation for Statistical Computing\nISBN 3-900051-07-0\n\nR is free software and comes with ABSOLUTELY NO WARRANTY.\nYou are welcome to redistribute it under certain conditions.\nType 'license()' or 'licence()' for distribution details.\n\n  Natural language support but running in an English locale\n\nR is a collaborative project with many contributors.\nType 'contributors()' for more information and\n'citation()' on how to cite R or R packages in publications.\n\nType 'demo()' for some demos, 'help()' for on-line help, or\n'help.start()' for an HTML browser interface to help.\nType 'q()' to quit R.\n\n[Previously saved workspace restored]\n\n> expand.bin <- function(data, x, n)\n+ {\n+     stopifnot(is.character(x), is.character(n),\n+               length(x) == 1, length(n) == 1,\n+               inherits(data, \"data.frame\"),\n+               all(c(x, n) %in% names(data)))\n+     nn <- as.integer(data[[n]])\n+     ans <- data[rep.int(seq_along(nn), nn), ]\n+     ans[[n]] <- NULL\n+     xx <- as.integer(data[[x]])\n+     ans[[x]] <- rep.int(rep.int(c(0,1), length(xx)),\n+                         as.vector(matrix(c(nn - xx, xx), nrow = 2, byrow = TRUE)))\n+     row.names(ans) <- seq(nrow(ans))\n+     ans\n+ }\n> options(show.signif.stars = FALSE)\n> library(lme4)\nLoading required package: Matrix\nLoading required package: lattice\n> example(cbpp)\n\ncbpp> ## response as a matrix\ncbpp> (m1 <- lmer(cbind(incidence, size - incidence) ~ period + (1 | herd),\ncbpp+             family = binomial, data = cbpp))\nGeneralized linear mixed model fit using Laplace \nFormula: cbind(incidence, size - incidence) ~ period + (1 | herd) \n   Data: cbpp \n Family: binomial(logit link)\n   AIC   BIC logLik deviance\n 110.1 120.2 -50.05    100.1\nRandom effects:\n Groups Name        Variance Std.Dev.\n herd   (Intercept) 0.41804  0.64656 \nnumber of obs: 56, groups: herd, 15\n\nEstimated scale (compare to  1 )  1.138075 \n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)\n(Intercept)  -1.3981     0.2287  -6.113 9.76e-10\nperiod2      -0.9959     0.3056  -3.259 0.001119\nperiod3      -1.1350     0.3266  -3.475 0.000510\nperiod4      -1.5798     0.4286  -3.686 0.000228\n\nCorrelation of Fixed Effects:\n        (Intr) perid2 perid3\nperiod2 -0.350              \nperiod3 -0.327  0.267       \nperiod4 -0.248  0.202  0.186\n\ncbpp> ## response as a vector of probabilities and usage of argument \"weights\"\ncbpp> m2 <- lmer(incidence / size ~ period + (1 | herd), weights = size,\ncbpp+            family = binomial, data = cbpp)\n\ncbpp> ## Confirm that these are equivalent:\ncbpp> stopifnot(all.equal(coef(m1), coef(m2)),\ncbpp+           all.equal(ranef(m1), ranef(m2)))\n> m3 <- lmer(incidence ~ period + (1|herd),\n+            expand.bin(cbpp, \"incidence\", \"size\"), binomial)\n> m3\nGeneralized linear mixed model fit using Laplace \nFormula: incidence ~ period + (1 | herd) \n   Data: expand.bin(cbpp, \"incidence\", \"size\") \n Family: binomial(logit link)\n AIC   BIC logLik deviance\n 565 588.7 -277.5      555\nRandom effects:\n Groups Name        Variance Std.Dev.\n herd   (Intercept) 0.41448  0.6438  \nnumber of obs: 842, groups: herd, 15\n\nEstimated scale (compare to  1 )  0.9832878 \n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)\n(Intercept)  -1.3984     0.2282  -6.129 8.86e-10\nperiod2      -0.9934     0.3054  -3.253 0.001144\nperiod3      -1.1332     0.3264  -3.471 0.000518\nperiod4      -1.5805     0.4287  -3.686 0.000227\n\nCorrelation of Fixed Effects:\n        (Intr) perid2 perid3\nperiod2 -0.351              \nperiod3 -0.328  0.267       \nperiod4 -0.248  0.202  0.186\n> \n> proc.time()\n   user  system elapsed \n  7.208   0.120   7.322",
+      "body_snippet": "Thanks for sending the example, Sundar, and also for the idea of the\nexpand.bin function.\n\nThere is a similar example in the lme4 package using the cbpp data\nset.  I modified your expand.bin function ",
+      "thread_id": "thread-cf8c7ea58d8e",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-f8ca284543cf",
+      "message_id": "<4654933B.3070908@pdf.com>",
+      "from_name": "Sundar Dorai-Raj",
+      "from_email_hash": "eb4f0e323f9635234e5ff005fe7540ae46dabead0ad239200296a4be11ef4f46",
+      "date": "2007-05-23T12:17:15-07:00",
+      "subject": "[R-sig-ME] Poor convergence when using binomial response",
+      "subject_clean": "Poor convergence when using binomial response",
+      "in_reply_to": "<40e66e0b0705230949q2da18af2y6aefac4de03accfd@mail.gmail.com>",
+      "references": [
+        "<4653959F.1010908@pdf.com>",
+        "<40e66e0b0705230949q2da18af2y6aefac4de03accfd@mail.gmail.com>"
+      ],
+      "body_plain": "Thanks for the quick reply. Here's an interesting twist.\n\n > # use cbind(failures, successes) which is appropriate\n > # with the 'cloglog' link but does not converge\n > fit <- lmer(cbind(x, w - x) ~ z + (1 | A) + (1 | A:B), tmp,\n+             binomial(\"cloglog\"), control = list(msVerbose = 1))\nrelative tolerance set to 5.56268464626788e-311\n > # now use cbind(sucesses, failures) which is\n > # inappropriate with the 'cloglog' link but does converge\n > fit <- lmer(cbind(w - x, x) ~ z + (1 | A) + (1 | A:B), tmp,\n+             binomial(\"cloglog\"), control = list(msVerbose = 1))\nrelative tolerance set to 1.23153502616496e-05\n   0:     811.99477:  1.04814 0.0876112 -0.111220 0.888889 0.110250\n...\n  36:     702.77184:  1.14326 0.0930921 -0.150606 0.0958980 0.0605783\n >\n\nSo it seems the tolerance level is too small and no steps are taken in \nnlminb. Using debug the problem seems to be in devLaplace.\n\nBrowse[1]> PQLpars\n(Intercept)          z2          z3\n  -2.8227711  -0.2680992   0.3109447   0.8888889   0.1102498\nBrowse[1]> devLaplace(PQLpars)\n[1] 1.797693e+308\nBrowse[1]> abs(0.01/devLaplace(PQLpars))\n[1] 5.562685e-311\n\nAlso, this isn't an urgent issue for me. I'm satisfied using the \nexpand.bin (thanks also for the modification) to do the analysis.\n\nThanks again,\n\n--sundar\n\nDouglas Bates said the following on 5/23/2007 9:49 AM:\n> Thanks for sending the example, Sundar, and also for the idea of the\n> expand.bin function.\n> \n> There is a similar example in the lme4 package using the cbpp data\n> set.  I modified your expand.bin function to apply to that example\n> with the enclosed results.  As you can see the parameter estimates in\n> this example are not exactly the same for the \"count out of\" form\n> versus the \"expanded binary responses\" form but they are reasonably\n> close.  In general I would recommend using cbind(successes, failures)\n> as the response rather than messing around with the weights.  I always\n> manage to confuse myself about what the weights should be and need to\n> go back to the cbind(successes, failures) form to check.\n> \n> As always, it is a good idea to set control = list(msVerbose = 1) to\n> see exactly what is going on with the parameter estimates during the\n> iterations.\n> \n> I hope this helps.  If necessary I will look in more detail at your\n> example but I hope this is enough to get you started.\n> \n> \n> On 5/22/07, Sundar Dorai-Raj <sundar.dorai-raj at pdf.com> wrote:\n>> Hi,\n>>\n>> I'm seeing poor convergence of a model using the binomial family. In one\n>> case, I have a binomial response for which I use the 'weights' argument.\n>> In a second case, I expand the binomial response to Bernoulli trials and\n>> refit. Theoretically, they should be the same model. However, that does\n>> not appear to be the case because the residual scale for the binomial\n>> case is unbelievably large. Could someone (Prof. Bates) please help\n>> diagnose this problem?\n>>\n>> And thank you so much for such wonderful software. I truly appreciate\n>> the effort.\n>>\n>> Thanks,\n>>\n>> --sundar\n>>\n>> tmp <- read.csv(url(\"http://sdorairaj.googlepages.com/tmp.csv\"))\n>> tmp[2:4] <- lapply(tmp[2:4], factor)\n>> library(lme4)\n>> fit <- lmer(1 - y ~ z + (1 | A) + (1 | A:B), tmp,\n>>              binomial(\"cloglog\"), weights = as.numeric(w))\n>> ## see below for expand.bin\n>> tmp2 <- expand.bin(tmp, \"x\", \"w\")\n>> fit2 <- lmer(x ~ z + (1 | A) + (1 | A:B), tmp2, binomial(\"cloglog\"))\n>>\n>> fit3 <- glm(1 - y ~ z, binomial(\"cloglog\"), tmp, w)\n>> fit4 <- glm(x ~ z, binomial(\"cloglog\"), tmp2)\n>>\n>> cbind(sapply(list(fit, fit2), fixef),\n>>        sapply(list(fit3, fit4), coef))\n>> #                  [,1]       [,2]       [,3]       [,4]\n>> #(Intercept) -2.8227711 -3.1247457 -2.8227711 -2.8227711\n>> #z2          -0.2680992 -0.2694113 -0.2680992 -0.2680992\n>> #z3           0.3109447  0.3233432  0.3109447  0.3109447\n>>\n>>\n>> expand.bin <- function (data, x, n) {\n>>    char.x <- x\n>>    char.n <- n\n>>    x <- data[[x]]\n>>    n <- data[[n]]\n>>    i <- rep(seq(nrow(data)), n)\n>>    data <- data[i, , drop = FALSE]\n>>    expand <- function(z) c(rep(0, diff(z)), rep(1, z[1]))\n>>    x <- apply(cbind(x, n), 1, expand)\n>>    data[[char.x]] <- if(is.matrix(x)) c(x) else unlist(x)\n>>    row.names(data) <- seq(nrow(data))\n>>    data\n>> }\n>>\n>>  > sessionInfo()\n>> R version 2.5.0 (2007-04-23)\n>> i386-pc-mingw32\n>>\n>> locale:\n>> LC_COLLATE=English_United States.1252;LC_CTYPE=English_United\n>> States.1252;LC_MONETARY=English_United\n>> States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n>>\n>> attached base packages:\n>> [1] \"stats\"     \"graphics\"  \"grDevices\" \"utils\"     \"datasets\"  \"methods\"\n>> [7] \"base\"\n>>\n>> other attached packages:\n>>         lme4      Matrix     lattice\n>> \"0.99875-0\" \"0.99875-1\"    \"0.15-6\"\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> ------------------------------------------------------------------------\n> \n> expand.bin <- function(data, x, n)\n> {\n>     stopifnot(is.character(x), is.character(n),\n>               length(x) == 1, length(n) == 1,\n>               inherits(data, \"data.frame\"),\n>               all(c(x, n) %in% names(data)))\n>     nn <- as.integer(data[[n]])\n>     ans <- data[rep.int(seq_along(nn), nn), ]\n>     ans[[n]] <- NULL\n>     xx <- as.integer(data[[x]])\n>     ans[[x]] <- rep.int(rep.int(c(0,1), length(xx)),\n>                         as.vector(matrix(c(nn - xx, xx), nrow = 2, byrow = TRUE)))\n>     row.names(ans) <- seq(nrow(ans))\n>     ans\n> }\n> options(show.signif.stars = FALSE)\n> library(lme4)\n> example(cbpp)\n> m3 <- lmer(incidence ~ period + (1|herd),\n>            expand.bin(cbpp, \"incidence\", \"size\"), binomial)\n> m3\n> \n> \n> ------------------------------------------------------------------------\n> \n> \n> R version 2.5.0 Patched (2007-05-23 r41687)\n> Copyright (C) 2007 The R Foundation for Statistical Computing\n> ISBN 3-900051-07-0\n> \n> R is free software and comes with ABSOLUTELY NO WARRANTY.\n> You are welcome to redistribute it under certain conditions.\n> Type 'license()' or 'licence()' for distribution details.\n> \n>   Natural language support but running in an English locale\n> \n> R is a collaborative project with many contributors.\n> Type 'contributors()' for more information and\n> 'citation()' on how to cite R or R packages in publications.\n> \n> Type 'demo()' for some demos, 'help()' for on-line help, or\n> 'help.start()' for an HTML browser interface to help.\n> Type 'q()' to quit R.\n> \n> [Previously saved workspace restored]\n> \n>> expand.bin <- function(data, x, n)\n> + {\n> +     stopifnot(is.character(x), is.character(n),\n> +               length(x) == 1, length(n) == 1,\n> +               inherits(data, \"data.frame\"),\n> +               all(c(x, n) %in% names(data)))\n> +     nn <- as.integer(data[[n]])\n> +     ans <- data[rep.int(seq_along(nn), nn), ]\n> +     ans[[n]] <- NULL\n> +     xx <- as.integer(data[[x]])\n> +     ans[[x]] <- rep.int(rep.int(c(0,1), length(xx)),\n> +                         as.vector(matrix(c(nn - xx, xx), nrow = 2, byrow = TRUE)))\n> +     row.names(ans) <- seq(nrow(ans))\n> +     ans\n> + }\n>> options(show.signif.stars = FALSE)\n>> library(lme4)\n> Loading required package: Matrix\n> Loading required package: lattice\n>> example(cbpp)\n> \n> cbpp> ## response as a matrix\n> cbpp> (m1 <- lmer(cbind(incidence, size - incidence) ~ period + (1 | herd),\n> cbpp+             family = binomial, data = cbpp))\n> Generalized linear mixed model fit using Laplace \n> Formula: cbind(incidence, size - incidence) ~ period + (1 | herd) \n>    Data: cbpp \n>  Family: binomial(logit link)\n>    AIC   BIC logLik deviance\n>  110.1 120.2 -50.05    100.1\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  herd   (Intercept) 0.41804  0.64656 \n> number of obs: 56, groups: herd, 15\n> \n> Estimated scale (compare to  1 )  1.138075 \n> \n> Fixed effects:\n>             Estimate Std. Error z value Pr(>|z|)\n> (Intercept)  -1.3981     0.2287  -6.113 9.76e-10\n> period2      -0.9959     0.3056  -3.259 0.001119\n> period3      -1.1350     0.3266  -3.475 0.000510\n> period4      -1.5798     0.4286  -3.686 0.000228\n> \n> Correlation of Fixed Effects:\n>         (Intr) perid2 perid3\n> period2 -0.350              \n> period3 -0.327  0.267       \n> period4 -0.248  0.202  0.186\n> \n> cbpp> ## response as a vector of probabilities and usage of argument \"weights\"\n> cbpp> m2 <- lmer(incidence / size ~ period + (1 | herd), weights = size,\n> cbpp+            family = binomial, data = cbpp)\n> \n> cbpp> ## Confirm that these are equivalent:\n> cbpp> stopifnot(all.equal(coef(m1), coef(m2)),\n> cbpp+           all.equal(ranef(m1), ranef(m2)))\n>> m3 <- lmer(incidence ~ period + (1|herd),\n> +            expand.bin(cbpp, \"incidence\", \"size\"), binomial)\n>> m3\n> Generalized linear mixed model fit using Laplace \n> Formula: incidence ~ period + (1 | herd) \n>    Data: expand.bin(cbpp, \"incidence\", \"size\") \n>  Family: binomial(logit link)\n>  AIC   BIC logLik deviance\n>  565 588.7 -277.5      555\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  herd   (Intercept) 0.41448  0.6438  \n> number of obs: 842, groups: herd, 15\n> \n> Estimated scale (compare to  1 )  0.9832878 \n> \n> Fixed effects:\n>             Estimate Std. Error z value Pr(>|z|)\n> (Intercept)  -1.3984     0.2282  -6.129 8.86e-10\n> period2      -0.9934     0.3054  -3.253 0.001144\n> period3      -1.1332     0.3264  -3.471 0.000518\n> period4      -1.5805     0.4287  -3.686 0.000227\n> \n> Correlation of Fixed Effects:\n>         (Intr) perid2 perid3\n> period2 -0.351              \n> period3 -0.328  0.267       \n> period4 -0.248  0.202  0.186\n>> proc.time()\n>    user  system elapsed \n>   7.208   0.120   7.322",
+      "body_snippet": "Thanks for the quick reply. Here's an interesting twist.\n\n > # use cbind(failures, successes) which is appropriate\n > # with the 'cloglog' link but does not converge\n > fit <- lmer(cbind(x, w - x) ~ z",
+      "thread_id": "thread-cf8c7ea58d8e",
+      "thread_depth": 2,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-aa8f5150eeaf",
+      "message_id": "<465C3A48.5000303@avignon.inra.fr>",
+      "from_name": "Olivier MARTIN",
+      "from_email_hash": "195671250f077eeb2e37f2b5d978c2cbc4b8cb2e95ea6fabf2ddccd49a2c816d",
+      "date": "2007-05-29T16:35:52+02:00",
+      "subject": "[R-sig-ME] exemples, tutorial on lmer",
+      "subject_clean": "exemples, tutorial on lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\nI have some difficulties to work with the function lmer from lme4\nDoes somebody have a tutorial or different examples to use this function?\n\nThanks,\nOliver.",
+      "body_snippet": "Hi all,\n\nI have some difficulties to work with the function lmer from lme4\nDoes somebody have a tutorial or different examples to use this function?\n\nThanks,\nOliver.",
+      "thread_id": "thread-aa8f5150eeaf",
+      "thread_depth": 0,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-66265c132a61",
+      "message_id": "<0F4D9CC0-FE4F-4DD6-A162-C865CDEADEEA@MUOhio.edu>",
+      "from_name": "Martin Henry H. Stevens",
+      "from_email_hash": "4b8618fe2c4546cb5d29cd863c2dd1049fcacc1225ae3481b28fb67dfa3ea076",
+      "date": "2007-05-29T11:08:13-04:00",
+      "subject": "[R-sig-ME] [R] exemples, tutorial on lmer",
+      "subject_clean": "exemples, tutorial on lmer",
+      "in_reply_to": "<465C3A48.5000303@avignon.inra.fr>",
+      "references": [
+        "<465C3A48.5000303@avignon.inra.fr>"
+      ],
+      "body_plain": "Hi Oliver,\nYou could start with R News 2005, no. 1. Also the PDF associated with  \nlme4, \"Implementation.pdf.\"\nHnak\nOn May 29, 2007, at 10:35 AM, Olivier MARTIN wrote:\n\n> Hi all,\n>\n> I have some difficulties to work with the function lmer from lme4\n> Does somebody have a tutorial or different examples to use this  \n> function?\n>\n> Thanks,\n> Oliver.\n>\n> ______________________________________________\n> R-help at stat.math.ethz.ch mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-help\n> PLEASE do read the posting guide http://www.R-project.org/posting- \n> guide.html\n> and provide commented, minimal, self-contained, reproducible code.\n\n\n\nDr. Hank Stevens, Assistant Professor\n338 Pearson Hall\nBotany Department\nMiami University\nOxford, OH 45056\n\nOffice: (513) 529-4206\nLab: (513) 529-4262\nFAX: (513) 529-4243\nhttp://www.cas.muohio.edu/~stevenmh/\nhttp://www.muohio.edu/ecology/\nhttp://www.muohio.edu/botany/\n\n\"E Pluribus Unum\"",
+      "body_snippet": "Hi Oliver,\nYou could start with R News 2005, no. 1. Also the PDF associated with  \nlme4, \"Implementation.pdf.\"\nHnak\nOn May 29, 2007, at 10:35 AM, Olivier MARTIN wrote:\n\n> Hi all,\n>\n> I have some diffi",
+      "thread_id": "thread-aa8f5150eeaf",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-cc665e6f6c38",
+      "message_id": "<3FC0430478C30B4A9AF0AFF7863418F130F173@BCMEVS6.ad.bcm.edu>",
+      "from_name": "Roberts, J. Kyle",
+      "from_email_hash": "88de96a6c2a9d0cf7c5c9055fcd25cf68d8edc8e6550db1c23d6252724ee7877",
+      "date": "2007-05-29T11:45:56-05:00",
+      "subject": "[R-sig-ME] exemples, tutorial on lmer",
+      "subject_clean": "exemples, tutorial on lmer",
+      "in_reply_to": "<465C3A48.5000303@avignon.inra.fr>",
+      "references": [],
+      "body_plain": "This is very short, but it is an excerpt from a chapter that I just wrote about software options for multilevel analysis.  Hope it helps,\nKyle\n\n\tThose who are familiar with the R programming language probably know it as the free open-sourced version of S-PLUS.  In fact, both packages are based on the S programming language and use commands that are remarkably similar in both form and execution.  R was originally written by Gentleman\nand Ihaka at the University of Auckland with the first version released in 2000.  The original goal of R was to make a \"leaner\" S language-based system which did not have the same memory hampering problems that S-PLUS had in its early stages of development.  As R has evolved, its strength has come\nin that it is a powerful free software package with a network of users who write code which is openly shared among other users.  Although S-PLUS supports more of a GUI (Graphical User Interface) design, recent programs in R such as R-Commander developed by John Fox (Fox, 2005) give it the same feel\nas the S-PLUS interface.\n\tAs the code for running a linear multilevel model in R is exactly the same as running the model in S-PLUS, it does not bear repeating here.  The nlme package run in R uses the same set of commands used by the nlme library in S-PLUS (available at http://cran.r-project.org/).  There are some\nsubtle differences, however.  First, R does not allow the user to run the plot(augPred(lme.object)) command to produce the graph seen in Figure 6.  This graph can still be produced, but it must be done with a groupedData object.  Second, the commands for running more complicated models like binary\nresponse models are different in R.  In S-PLUS, the correlatedData library is used to fit binary response models, whereas the lme4 package in R which is used to fit these models.\n\tRecently, new routines have been introduced to R that also allow for the fitting of multilevel models.  In addition to the nlme library, the Matrix package contains the routine \"lmer\" which is also capable of running these models.  This library is very similar to nlme in terms of its\nfunctionality, but the main benefit that it has is that the computations are based on analysis of sparse matrices.  This allows lmer to analyze data at much faster rates than previous versions of nlme (Bates, 2006a).\n\tThe lmer command syntax is slightly different than the nlme syntax.  In lmer  the command line takes the form:\nlmer(formula, data, family, method, control , start, subset, weights, na.action, offset, model, x, y, ...)\nA thorough description of all of the arguments in this command line can be obtained by typing ?lmer at any command prompt in R.  The format of the command line is mostly similar to lme, with the exception of the fact that lme splits the commands for the fixed and random parts of the command, where\nlmer simply has a single \"formula\" command line.  Part of the reasoning behind this change is because multilevel models are sometimes better thought of as single linear (in this case) equation in stead of a series of two equations (or levels) estimated separately (D. Bates, personal communication,\nApril 6, 2006).  Therefore, the syntax necessary to run the Roberts (2004) data would be:\n\tex1<-lmer(SCIENCE ~ URBAN + (URBAN|GROUP), example.data)\nThe above command line may be read as the variable \"SCIENCE\" being estimated by \"urban\" plus the random effects for both \"URBAN\" and for the intercept defined by the level-2 grouping variable \"GROUP\".  Just as with S-PLUS, if a three level model were to be specified with level-2 and level-3 grouping\nstructures of classrooms and schools, respectively (these are not real variables in the dataset, but meant as heuristic), the command line for this model would read:\n\tex1<-lmer(SCIENCE ~ URBAN + (URBAN|SCHOOL/CLASSROOM), example.data)\nTyping the command summary(ex1) will produce the following:\nLinear mixed-effects model fit by REML\nFormula: SCIENCE ~ URBAN + (URBAN | GROUP) \n   Data: example.data \n      AIC      BIC    logLik MLdeviance REMLdeviance\n 424.1713 442.6223 -206.0857   413.2216     412.1713\nRandom effects:\n Groups   Name        Variance  Std.Dev. Corr   \n GROUP    (Intercept) 113.60403 10.65852        \n          URBAN         0.25200  0.50200 -0.625 \n Residual               0.27066  0.52025        \n# of obs: 160, groups: GROUP, 16\n\nFixed effects:\n             Estimate Std. Error  DF t value  Pr(>|t|)    \n(Intercept)  22.39124    2.71703 158  8.2411 6.152e-14 ***\nURBAN        -0.86700    0.12981 158 -6.6790 3.884e-10 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 \n\nCorrelation of Fixed Effects:\n      (Intr)\nURBAN -0.641\n\tThis output is also remarkably similar to the lme output.  One notable difference is that the df has changed from previous versions of the package (see the S-PLUS output from above).  The reasoning behind this df change is a discussion that could easily take up another volume, and a problem\nthat probably won't be resolved in the near future.  For an interesting discussion of the problems related to df and p-values in multilevel models, see Bates (2006b).\n\tThe only disadvantage to using R, as opposed to S-PLUS, is that it doesn't support a graphical user interface (GUI) design.  However, even this drawback has been partially overcome with the development of the R-Commander program by Fox (2005).  Regardless, R is an extremely powerful package\nusing object oriented language.  Couple this with the fact that the software is free and R makes a very inviting package.  The one caveat is that this package, like S-PLUS, has a steep learning curve.  Learning new code is like learning a new language; but the payoff may well be worth the effort.\n\n***************************************\nJ. Kyle Roberts, Ph.D.\nBaylor College of Medicine\nCenter for Educational Outreach\nOne Baylor Plaza, MS:  BCM411\nHouston, TX   77030-3411\n713-798-6672 - 713-798-8201 Fax\njkrobert at bcm.edu\n***************************************\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Olivier MARTIN\nSent: Tuesday, May 29, 2007 9:36 AM\nTo: r-help at stat.math.ethz.ch; r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] exemples, tutorial on lmer\n\nHi all,\n\nI have some difficulties to work with the function lmer from lme4 Does somebody have a tutorial or different examples to use this function?\n\nThanks,\nOliver.\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This is very short, but it is an excerpt from a chapter that I just wrote about software options for multilevel analysis.  Hope it helps,\nKyle\n\n\tThose who are familiar with the R programming language ",
+      "thread_id": "thread-aa8f5150eeaf",
+      "thread_depth": 1,
+      "month": "2007-05"
+    },
+    {
+      "id": "msg-47524b4a269c",
+      "message_id": "<465C77A2.30190.21B91C2@bernd.weiss.uni-koeln.de>",
+      "from_name": "Bernd Weiss",
+      "from_email_hash": "ee0c858275c3aead75113bedb444aa7ec12b5a99503d272727d572b5e6430368",
+      "date": "2007-05-29T18:57:38+02:00",
+      "subject": "[R-sig-ME] [R] exemples, tutorial on lmer",
+      "subject_clean": "exemples, tutorial on lmer",
+      "in_reply_to": "<0F4D9CC0-FE4F-4DD6-A162-C865CDEADEEA@MUOhio.edu>",
+      "references": [
+        "<465C3A48.5000303@avignon.inra.fr>",
+        "<0F4D9CC0-FE4F-4DD6-A162-C865CDEADEEA@MUOhio.edu>"
+      ],
+      "body_plain": "Am 29 May 2007 um 11:08 hat Martin Henry H. Stevens geschrieben:\n\nFrom:           \t\"Martin Henry H. Stevens\" <HStevens at muohio.edu>\nDate sent:      \tTue, 29 May 2007 11:08:13 -0400\nTo:             \tOlivier MARTIN <olivier.martin at avignon.inra.fr>\nCopies to:      \tr-sig-mixed-models at r-project.org, r-\nhelp at stat.math.ethz.ch\nSubject:        \tRe: [R-sig-ME] [R] exemples, tutorial on lmer\n\n> Hi Oliver,\n> You could start with R News 2005, no. 1. Also the PDF associated with  \n> lme4, \"Implementation.pdf.\"\n> Hnak\n> On May 29, 2007, at 10:35 AM, Olivier MARTIN wrote:\n> \n> > Hi all,\n> >\n> > I have some difficulties to work with the function lmer from lme4\n> > Does somebody have a tutorial or different examples to use this  \n> > function?\n> >\n\nI found Baayen et al. \"Mixed-effects modeling with crossed random\neffects for subjects and items\" very useful. \n<http://www.mpi.nl/world/persons/private/baayen/publications/baayenDav\nidsonBates.pdf>. \n\nYou also might consider having a look at  \n<http://www.mpi.nl/world/persons/private/baayen/publications/baayenCUP\nstats.pdf>, pp. 263.\n\nHTH,\n\nBernd",
+      "body_snippet": "Am 29 May 2007 um 11:08 hat Martin Henry H. Stevens geschrieben:\n\nFrom:           \t\"Martin Henry H. Stevens\" <HStevens at muohio.edu>\nDate sent:      \tTue, 29 May 2007 11:08:13 -0400\nTo:             \t",
+      "thread_id": "thread-aa8f5150eeaf",
+      "thread_depth": 2,
+      "month": "2007-05"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-7993c0343c31",
+      "subject": "comparing mixed models that share some factors",
+      "message_count": 2,
+      "participants": [
+        "Seyed Reza Jafarzadeh",
+        "shabnam shademan"
+      ],
+      "started": "2007-05-08T11:46:54-07:00",
+      "last_reply": "2007-05-08T18:12:48-07:00",
+      "root_message_id": "msg-7993c0343c31"
+    },
+    {
+      "id": "thread-cb3adcdd72c6",
+      "subject": "Specifying random effects in lme()",
+      "message_count": 3,
+      "participants": [
+        "Gavin Simpson",
+        "Nilsson Fredrik X"
+      ],
+      "started": "2007-05-09T14:23:47+01:00",
+      "last_reply": "2007-05-09T18:40:10+01:00",
+      "root_message_id": "msg-cb3adcdd72c6"
+    },
+    {
+      "id": "thread-90f99792bbd6",
+      "subject": "Specifying random effects in lme()",
+      "message_count": 1,
+      "participants": [
+        "Mike Dunbar"
+      ],
+      "started": "2007-05-09T16:05:43+01:00",
+      "last_reply": "2007-05-09T16:05:43+01:00",
+      "root_message_id": "msg-90f99792bbd6"
+    },
+    {
+      "id": "thread-8b29ab807940",
+      "subject": "Specifying random effects in lme()",
+      "message_count": 1,
+      "participants": [
+        "Gavin Simpson"
+      ],
+      "started": "2007-05-09T17:20:36+01:00",
+      "last_reply": "2007-05-09T17:20:36+01:00",
+      "root_message_id": "msg-8b29ab807940"
+    },
+    {
+      "id": "thread-b5741ffcd947",
+      "subject": "Extracting the coefficients from corStruct objects",
+      "message_count": 6,
+      "participants": [
+        "Douglas Bates",
+        "Markus Jäntti",
+        "Nilsson Fredrik X"
+      ],
+      "started": "2007-05-10T00:49:21+03:00",
+      "last_reply": "2007-05-12T11:02:51+03:00",
+      "root_message_id": "msg-b5741ffcd947"
+    },
+    {
+      "id": "thread-533708b965b0",
+      "subject": "log Likelihood depends on contrasts?",
+      "message_count": 2,
+      "participants": [
+        "Douglas Bates",
+        "Martin Henry H. Stevens"
+      ],
+      "started": "2007-05-10T13:51:20-04:00",
+      "last_reply": "2007-05-10T14:24:06-05:00",
+      "root_message_id": "msg-533708b965b0"
+    },
+    {
+      "id": "thread-61b893d2c1f1",
+      "subject": "post hoc tests following lmer",
+      "message_count": 2,
+      "participants": [
+        "Martin Henry H. Stevens",
+        "parn at nt.ntnu.no"
+      ],
+      "started": "2007-05-18T13:19:04+02:00",
+      "last_reply": "2007-05-18T08:38:21-04:00",
+      "root_message_id": "msg-61b893d2c1f1"
+    },
+    {
+      "id": "thread-f617045900da",
+      "subject": "incorrect weights type in lmer",
+      "message_count": 2,
+      "participants": [
+        "Douglas Bates",
+        "Sundar Dorai-Raj"
+      ],
+      "started": "2007-05-22T13:56:38-07:00",
+      "last_reply": "2007-05-22T16:44:08-05:00",
+      "root_message_id": "msg-f617045900da"
+    },
+    {
+      "id": "thread-493797643c3f",
+      "subject": "Different variance estimates from lmer and lmer2",
+      "message_count": 2,
+      "participants": [
+        "Douglas Bates",
+        "Jonathan Bartlett"
+      ],
+      "started": "2007-05-22T18:13:44+01:00",
+      "last_reply": "2007-05-22T15:25:51-05:00",
+      "root_message_id": "msg-493797643c3f"
+    },
+    {
+      "id": "thread-cf8c7ea58d8e",
+      "subject": "Poor convergence when using binomial response",
+      "message_count": 3,
+      "participants": [
+        "Douglas Bates",
+        "Sundar Dorai-Raj"
+      ],
+      "started": "2007-05-22T18:15:11-07:00",
+      "last_reply": "2007-05-23T12:17:15-07:00",
+      "root_message_id": "msg-cf8c7ea58d8e"
+    },
+    {
+      "id": "thread-aa8f5150eeaf",
+      "subject": "exemples, tutorial on lmer",
+      "message_count": 4,
+      "participants": [
+        "Bernd Weiss",
+        "Martin Henry H. Stevens",
+        "Olivier MARTIN",
+        "Roberts, J. Kyle"
+      ],
+      "started": "2007-05-29T16:35:52+02:00",
+      "last_reply": "2007-05-29T18:57:38+02:00",
+      "root_message_id": "msg-aa8f5150eeaf"
+    }
+  ]
+}

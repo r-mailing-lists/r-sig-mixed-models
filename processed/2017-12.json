@@ -1,0 +1,939 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2017-12",
+  "messages": [
+    {
+      "id": "msg-5336af4d797c",
+      "message_id": "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "d0a0d3be9faaaa7660763903fb57c9a708d6938afbe7920f0f09ff6584a74866",
+      "date": "2017-12-01T01:58:23Z",
+      "subject": "[R-sig-ME] model specification in lmer",
+      "subject_clean": "model specification in lmer",
+      "in_reply_to": "<d31901d36a1d$d21406c0$763c1440$@gmail.com>",
+      "references": [
+        "<243401d36a0c$d9703e40$8c50bac0$@gmail.com>",
+        "<D14049CE02C4F54D95360EEC06CE45C50F7D04F0@SPMXM08.VUW.leidenuniv.nl>",
+        "<d31901d36a1d$d21406c0$763c1440$@gmail.com>"
+      ],
+      "body_plain": "Hi Silvia & CC,\n\n> model3=lme(Trait~Pop*Trt , data=data)\n\nshould be \n\n> model3=lm(Trait~Pop*Trt , data=data)\n\nI didn?t know you could test a random effect with anova(lmer(?, REML = FALSE), lm(?)). Is that valid when fitted with ML? \n\nI recommend reading http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html :\n\n\"With recent versions of lme4, goodness-of-fit (deviance) can be compared between (g)lmer and (g)lm models, although anova() must be called with the mixed ((g)lmer) model listed first. Keep in mind that LRT-based null hypothesis tests are conservative when the null value (such as ?2=0) is on the boundary of the feasible space; in the simplest case (single random effect variance), the p-value is approximately twice as large as it should be (Pinheiro and Bates 2000).\n\t? Consider not testing the significance of random effects. If the random effect is part of the experimental design, this procedure may be considered ?sacrificial pseudoreplication? (Hurlbert 1984). Using stepwise approaches to eliminate non-significant terms in order to squeeze more significance out of the remaining terms is dangerous in any case.\n\t? consider using the RLRsim package, which has a fast implementation of simulation-based tests of null hypotheses about zero variances, for simple tests. (However, it only applies to lmer models, and is a bit tricky to use for more complex models.)\"\n\n> model1=lmer(Trait~Pop*Trt + (Trt|Family), data=data)\n> model2=lmer(Trait~Pop*Trt + (1|Family), data=data)\n> model3=lme(Trait~Pop*Trt , data=data)\n> \n> anova(model1,model2) would provide significance for the interaction between\n> Family and Treatment.\n\nTo avoid confusion between random and fixed effects, it?s better not to call ?(Trt|Family)\" an interaction (even though it has a lot in common with an interaction). Pop:Trt is an interaction. The difference between (1|Family) and (Trt|Family) is that in the former only the intercept varies randomly between families, while in the latter the main effect of Trt also varies randomly between families. The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\n\nAnother simple way to test for a random effect in a lmer fit (if you still want to despite the advice quoted above) would be to use confint(fit) and see if the 95% CI for the family variance includes zero. I did a very quick-and-dirty permutation-based simulation to compare confint(?, method = \"profile\") with the anova(lmer, lm) test:\n\nlibrary(lme4)\nlibrary(nlme)\nsim.res <- \n  replicate(1000, {\n    Orthodont$Subject <- sample(Orthodont$Subject)\n    fm1 <- lmer(distance ~ age + (1 | Subject), data = Orthodont, REML = FALSE)\n    fm1.lm <- lm(distance ~ age, data = Orthodont)\n    c(LRT = anova(fm1, fm1.lm)[2, \"Pr(>Chisq)\"] < 0.05, \n      CI = confint(fm1, 1)[1] > 0)\n  })\ntable(sim.res[\"LRT\", ], sim.res[\"CI\", ])\n\nThe results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n       \n        FALSE TRUE\n  FALSE   982    0\n  TRUE      0   18\n\nI ran it a few more times and it was very consistent, ~2% false positives and 100% concordance.\n\nBest wishes,\nPaul\n\n\n\n> anova(model2, model3) would provide significance for the Family term.\n> \n> Is this correct?\n> \n> \n> Thank you so much again!!\n> \n> \n> \n> \n> \n> -----Mensaje original-----\n> De: Voeten, C.C. [mailto:c.c.voeten at hum.leidenuniv.nl] \n> Enviado el: jueves, 30 de noviembre de 2017 21:27\n> Para: silvia.matesanzgarcia at gmail.com; r-sig-mixed-models at r-project.org\n> Asunto: RE: [R-sig-ME] model specification in lmer\n> \n> There are various ways to do this. The most important thing to make sure of\n> is that the models you're comparing are both fitted either with or without\n> REML; you can't mix ML and REML fits (that will heavily bias your LRT in\n> favor of the ML model). You can fit the no-random-intercept model using\n> lm(), and use anova() to compare it with a random-intercept lmer model\n> fitted with REML=F. A (perhaps slightly better) alternative is to use gls()\n> from nlme to fit the no-random-intercept model using REML. You can then\n> manually calculate chi-square values like so:\n> \n>> library(nlme)\n>> library(lme4)\n> Loading required package: Matrix\n> \n> Attaching package: 'lme4'\n> \n> The following object is masked from 'package:nlme':\n> \n>    lmList\n> \n>> model1 <- gls(Reaction~Days,sleepstudy)\n>> model2 <- lmer(Reaction~Days + (1|Subject),sleepstudy) ( neg2ll1 <- \n>> -2*logLik(model1) )\n> 'log Lik.' 1893.664 (df=3)\n>> ( neg2ll2 <- -2*logLik(model2) )\n> 'log Lik.' 1786.465 (df=4)\n>> ( difference <- as.numeric(neg2ll2-neg2ll1) )\n> [1] -107.1986\n>> pchisq(difference,1)\n> [1] 0\n> \n> Good luck!\n> ________________________________________\n> Van: R-sig-mixed-models [r-sig-mixed-models-bounces at r-project.org] namens\n> silvia.matesanzgarcia at gmail.com [silvia.matesanzgarcia at gmail.com]\n> Verzonden: donderdag 30 november 2017 19:55\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] model specification in lmer\n> \n> Hello all\n> \n> I am attempting to fit a mixed model in lmer. I have an experimental design\n> with families nested within populations in two different treatments, and I\n> want to test the effects of Pop, Trt, and Pop:Trt as fixed factors, and\n> Family and Family*Trt as random factors.\n> \n> \n> \n> My full model would be:\n> \n> model1=lmer(Trait~Pop*Trt + (Trt|Family)\n> \n> I can then use:\n> \n> model2=lmer(Trait~Pop*Trt + (1|Family)\n> \n> and\n> \n> anova(model1, model2) would provide signification for the interaction term.\n> \n> \n> \n> I would need a third model with only the interaction term, so that I can\n> compare it to the full model and obtain significance for the family term.\n> But I can't figure out how to do this last part.\n> \n> \n> \n> Can I just compare model2 to a model with no random part?\n> \n> \n> \n> Thank you so much for your help in advance.\n> \n> \n> \n> \n>        [[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Silvia & CC,\n\n> model3=lme(Trait~Pop*Trt , data=data)\n\nshould be \n\n> model3=lm(Trait~Pop*Trt , data=data)\n\nI didn?t know you could test a random effect with anova(lmer(?, REML = FALSE), lm(?)). Is ",
+      "thread_id": "thread-5336af4d797c",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-6af225555148",
+      "message_id": "<0C0C6856-D4B7-45C9-9D3E-37C572950F27@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "d0a0d3be9faaaa7660763903fb57c9a708d6938afbe7920f0f09ff6584a74866",
+      "date": "2017-12-01T11:01:47Z",
+      "subject": "[R-sig-ME] model specification in lmer",
+      "subject_clean": "model specification in lmer",
+      "in_reply_to": "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>",
+      "references": [
+        "<243401d36a0c$d9703e40$8c50bac0$@gmail.com>",
+        "<D14049CE02C4F54D95360EEC06CE45C50F7D04F0@SPMXM08.VUW.leidenuniv.nl>",
+        "<d31901d36a1d$d21406c0$763c1440$@gmail.com>",
+        "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>"
+      ],
+      "body_plain": "> The results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n\nOn second thoughts, it does makes sense that the CI method is also conservative, because the null value is on the boundary so the 95% CI can only miss on one side. For a more formal explanation of this see Box 3 of Bolker et al. 2009 http://www.ncbi.nlm.nih.gov/pubmed/19185386 .\n\n\n\n> On 1 Dec 2017, at 01:58, Paul Johnson <paul.johnson at glasgow.ac.uk> wrote:\n> \n> Hi Silvia & CC,\n> \n>> model3=lme(Trait~Pop*Trt , data=data)\n> \n> should be \n> \n>> model3=lm(Trait~Pop*Trt , data=data)\n> \n> I didn?t know you could test a random effect with anova(lmer(?, REML = FALSE), lm(?)). Is that valid when fitted with ML? \n> \n> I recommend reading http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html :\n> \n> \"With recent versions of lme4, goodness-of-fit (deviance) can be compared between (g)lmer and (g)lm models, although anova() must be called with the mixed ((g)lmer) model listed first. Keep in mind that LRT-based null hypothesis tests are conservative when the null value (such as ?2=0) is on the boundary of the feasible space; in the simplest case (single random effect variance), the p-value is approximately twice as large as it should be (Pinheiro and Bates 2000).\n> \t? Consider not testing the significance of random effects. If the random effect is part of the experimental design, this procedure may be considered ?sacrificial pseudoreplication? (Hurlbert 1984). Using stepwise approaches to eliminate non-significant terms in order to squeeze more significance out of the remaining terms is dangerous in any case.\n> \t? consider using the RLRsim package, which has a fast implementation of simulation-based tests of null hypotheses about zero variances, for simple tests. (However, it only applies to lmer models, and is a bit tricky to use for more complex models.)\"\n> \n>> model1=lmer(Trait~Pop*Trt + (Trt|Family), data=data)\n>> model2=lmer(Trait~Pop*Trt + (1|Family), data=data)\n>> model3=lme(Trait~Pop*Trt , data=data)\n>> \n>> anova(model1,model2) would provide significance for the interaction between\n>> Family and Treatment.\n> \n> To avoid confusion between random and fixed effects, it?s better not to call ?(Trt|Family)\" an interaction (even though it has a lot in common with an interaction). Pop:Trt is an interaction. The difference between (1|Family) and (Trt|Family) is that in the former only the intercept varies randomly between families, while in the latter the main effect of Trt also varies randomly between families. The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\n> \n> Another simple way to test for a random effect in a lmer fit (if you still want to despite the advice quoted above) would be to use confint(fit) and see if the 95% CI for the family variance includes zero. I did a very quick-and-dirty permutation-based simulation to compare confint(?, method = \"profile\") with the anova(lmer, lm) test:\n> \n> library(lme4)\n> library(nlme)\n> sim.res <- \n>  replicate(1000, {\n>    Orthodont$Subject <- sample(Orthodont$Subject)\n>    fm1 <- lmer(distance ~ age + (1 | Subject), data = Orthodont, REML = FALSE)\n>    fm1.lm <- lm(distance ~ age, data = Orthodont)\n>    c(LRT = anova(fm1, fm1.lm)[2, \"Pr(>Chisq)\"] < 0.05, \n>      CI = confint(fm1, 1)[1] > 0)\n>  })\n> table(sim.res[\"LRT\", ], sim.res[\"CI\", ])\n> \n> The results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n> \n>        FALSE TRUE\n>  FALSE   982    0\n>  TRUE      0   18\n> \n> I ran it a few more times and it was very consistent, ~2% false positives and 100% concordance.\n> \n> Best wishes,\n> Paul\n> \n> \n> \n>> anova(model2, model3) would provide significance for the Family term.\n>> \n>> Is this correct?\n>> \n>> \n>> Thank you so much again!!\n>> \n>> \n>> \n>> \n>> \n>> -----Mensaje original-----\n>> De: Voeten, C.C. [mailto:c.c.voeten at hum.leidenuniv.nl] \n>> Enviado el: jueves, 30 de noviembre de 2017 21:27\n>> Para: silvia.matesanzgarcia at gmail.com; r-sig-mixed-models at r-project.org\n>> Asunto: RE: [R-sig-ME] model specification in lmer\n>> \n>> There are various ways to do this. The most important thing to make sure of\n>> is that the models you're comparing are both fitted either with or without\n>> REML; you can't mix ML and REML fits (that will heavily bias your LRT in\n>> favor of the ML model). You can fit the no-random-intercept model using\n>> lm(), and use anova() to compare it with a random-intercept lmer model\n>> fitted with REML=F. A (perhaps slightly better) alternative is to use gls()\n>> from nlme to fit the no-random-intercept model using REML. You can then\n>> manually calculate chi-square values like so:\n>> \n>>> library(nlme)\n>>> library(lme4)\n>> Loading required package: Matrix\n>> \n>> Attaching package: 'lme4'\n>> \n>> The following object is masked from 'package:nlme':\n>> \n>>   lmList\n>> \n>>> model1 <- gls(Reaction~Days,sleepstudy)\n>>> model2 <- lmer(Reaction~Days + (1|Subject),sleepstudy) ( neg2ll1 <- \n>>> -2*logLik(model1) )\n>> 'log Lik.' 1893.664 (df=3)\n>>> ( neg2ll2 <- -2*logLik(model2) )\n>> 'log Lik.' 1786.465 (df=4)\n>>> ( difference <- as.numeric(neg2ll2-neg2ll1) )\n>> [1] -107.1986\n>>> pchisq(difference,1)\n>> [1] 0\n>> \n>> Good luck!\n>> ________________________________________\n>> Van: R-sig-mixed-models [r-sig-mixed-models-bounces at r-project.org] namens\n>> silvia.matesanzgarcia at gmail.com [silvia.matesanzgarcia at gmail.com]\n>> Verzonden: donderdag 30 november 2017 19:55\n>> Aan: r-sig-mixed-models at r-project.org\n>> Onderwerp: [R-sig-ME] model specification in lmer\n>> \n>> Hello all\n>> \n>> I am attempting to fit a mixed model in lmer. I have an experimental design\n>> with families nested within populations in two different treatments, and I\n>> want to test the effects of Pop, Trt, and Pop:Trt as fixed factors, and\n>> Family and Family*Trt as random factors.\n>> \n>> \n>> \n>> My full model would be:\n>> \n>> model1=lmer(Trait~Pop*Trt + (Trt|Family)\n>> \n>> I can then use:\n>> \n>> model2=lmer(Trait~Pop*Trt + (1|Family)\n>> \n>> and\n>> \n>> anova(model1, model2) would provide signification for the interaction term.\n>> \n>> \n>> \n>> I would need a third model with only the interaction term, so that I can\n>> compare it to the full model and obtain significance for the family term.\n>> But I can't figure out how to do this last part.\n>> \n>> \n>> \n>> Can I just compare model2 to a model with no random part?\n>> \n>> \n>> \n>> Thank you so much for your help in advance.\n>> \n>> \n>> \n>> \n>>       [[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "> The results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n\nOn second though",
+      "thread_id": "thread-5336af4d797c",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-d7be2039f528",
+      "message_id": "<607e01d36a9d$4e31e9a0$ea95bce0$@gmail.com>",
+      "from_name": "silvia.matesanzgarcia at gmail.com",
+      "from_email_hash": "d7e201160a4e8d64122beaf7a6f8a9f6b5043994f9a7d5314fea5a105d249f20",
+      "date": "2017-12-01T13:09:57+01:00",
+      "subject": "[R-sig-ME] model specification in lmer",
+      "subject_clean": "model specification in lmer",
+      "in_reply_to": "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>",
+      "references": [
+        "<243401d36a0c$d9703e40$8c50bac0$@gmail.com>",
+        "<D14049CE02C4F54D95360EEC06CE45C50F7D04F0@SPMXM08.VUW.leidenuniv.nl>",
+        "<d31901d36a1d$d21406c0$763c1440$@gmail.com>",
+        "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>"
+      ],
+      "body_plain": "Thank you so much Paul for your detailed and helpful response.\n\nYes, sorry, there was a typo in the specification of model3. It should be lm instead of lme. I'm also aware of the conservatism of the LRT when comparing lmer and lm objects. \n\nCould you please provide clarification for this sentence? \"The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\"\n\nDo you mean the variance of the random slope of treatment? The main effect of Treatment is a fixed factor.\n\n\nThank you again.\n\nSilvia \n\n-----Mensaje original-----\nDe: Paul Johnson [mailto:paul.johnson at glasgow.ac.uk] \nEnviado el: viernes, 1 de diciembre de 2017 2:58\nPara: silvia.matesanzgarcia at gmail.com\nCC: Voeten, C.C. <c.c.voeten at hum.leidenuniv.nl>; r-sig-mixed-models at r-project.org\nAsunto: Re: [R-sig-ME] model specification in lmer\n\nHi Silvia & CC,\n\n> model3=lme(Trait~Pop*Trt , data=data)\n\nshould be \n\n> model3=lm(Trait~Pop*Trt , data=data)\n\nI didn?t know you could test a random effect with anova(lmer(?, REML = FALSE), lm(?)). Is that valid when fitted with ML? \n\nI recommend reading http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html :\n\n\"With recent versions of lme4, goodness-of-fit (deviance) can be compared between (g)lmer and (g)lm models, although anova() must be called with the mixed ((g)lmer) model listed first. Keep in mind that LRT-based null hypothesis tests are conservative when the null value (such as ?2=0) is on the boundary of the feasible space; in the simplest case (single random effect variance), the p-value is approximately twice as large as it should be (Pinheiro and Bates 2000).\n\t? Consider not testing the significance of random effects. If the random effect is part of the experimental design, this procedure may be considered ?sacrificial pseudoreplication? (Hurlbert 1984). Using stepwise approaches to eliminate non-significant terms in order to squeeze more significance out of the remaining terms is dangerous in any case.\n\t? consider using the RLRsim package, which has a fast implementation of simulation-based tests of null hypotheses about zero variances, for simple tests. (However, it only applies to lmer models, and is a bit tricky to use for more complex models.)\"\n\n> model1=lmer(Trait~Pop*Trt + (Trt|Family), data=data) \n> model2=lmer(Trait~Pop*Trt + (1|Family), data=data) \n> model3=lme(Trait~Pop*Trt , data=data)\n> \n> anova(model1,model2) would provide significance for the interaction \n> between Family and Treatment.\n\nTo avoid confusion between random and fixed effects, it?s better not to call ?(Trt|Family)\" an interaction (even though it has a lot in common with an interaction). Pop:Trt is an interaction. The difference between (1|Family) and (Trt|Family) is that in the former only the intercept varies randomly between families, while in the latter the main effect of Trt also varies randomly between families. The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\n\nAnother simple way to test for a random effect in a lmer fit (if you still want to despite the advice quoted above) would be to use confint(fit) and see if the 95% CI for the family variance includes zero. I did a very quick-and-dirty permutation-based simulation to compare confint(?, method = \"profile\") with the anova(lmer, lm) test:\n\nlibrary(lme4)\nlibrary(nlme)\nsim.res <-\n  replicate(1000, {\n    Orthodont$Subject <- sample(Orthodont$Subject)\n    fm1 <- lmer(distance ~ age + (1 | Subject), data = Orthodont, REML = FALSE)\n    fm1.lm <- lm(distance ~ age, data = Orthodont)\n    c(LRT = anova(fm1, fm1.lm)[2, \"Pr(>Chisq)\"] < 0.05, \n      CI = confint(fm1, 1)[1] > 0)\n  })\ntable(sim.res[\"LRT\", ], sim.res[\"CI\", ])\n\nThe results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n       \n        FALSE TRUE\n  FALSE   982    0\n  TRUE      0   18\n\nI ran it a few more times and it was very consistent, ~2% false positives and 100% concordance.\n\nBest wishes,\nPaul\n\n\n\n> anova(model2, model3) would provide significance for the Family term.\n> \n> Is this correct?\n> \n> \n> Thank you so much again!!\n> \n> \n> \n> \n> \n> -----Mensaje original-----\n> De: Voeten, C.C. [mailto:c.c.voeten at hum.leidenuniv.nl]\n> Enviado el: jueves, 30 de noviembre de 2017 21:27\n> Para: silvia.matesanzgarcia at gmail.com; \n> r-sig-mixed-models at r-project.org\n> Asunto: RE: [R-sig-ME] model specification in lmer\n> \n> There are various ways to do this. The most important thing to make \n> sure of is that the models you're comparing are both fitted either \n> with or without REML; you can't mix ML and REML fits (that will \n> heavily bias your LRT in favor of the ML model). You can fit the \n> no-random-intercept model using lm(), and use anova() to compare it \n> with a random-intercept lmer model fitted with REML=F. A (perhaps \n> slightly better) alternative is to use gls() from nlme to fit the \n> no-random-intercept model using REML. You can then manually calculate chi-square values like so:\n> \n>> library(nlme)\n>> library(lme4)\n> Loading required package: Matrix\n> \n> Attaching package: 'lme4'\n> \n> The following object is masked from 'package:nlme':\n> \n>    lmList\n> \n>> model1 <- gls(Reaction~Days,sleepstudy)\n>> model2 <- lmer(Reaction~Days + (1|Subject),sleepstudy) ( neg2ll1 <-\n>> -2*logLik(model1) )\n> 'log Lik.' 1893.664 (df=3)\n>> ( neg2ll2 <- -2*logLik(model2) )\n> 'log Lik.' 1786.465 (df=4)\n>> ( difference <- as.numeric(neg2ll2-neg2ll1) )\n> [1] -107.1986\n>> pchisq(difference,1)\n> [1] 0\n> \n> Good luck!\n> ________________________________________\n> Van: R-sig-mixed-models [r-sig-mixed-models-bounces at r-project.org] \n> namens silvia.matesanzgarcia at gmail.com \n> [silvia.matesanzgarcia at gmail.com]\n> Verzonden: donderdag 30 november 2017 19:55\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] model specification in lmer\n> \n> Hello all\n> \n> I am attempting to fit a mixed model in lmer. I have an experimental \n> design with families nested within populations in two different \n> treatments, and I want to test the effects of Pop, Trt, and Pop:Trt as \n> fixed factors, and Family and Family*Trt as random factors.\n> \n> \n> \n> My full model would be:\n> \n> model1=lmer(Trait~Pop*Trt + (Trt|Family)\n> \n> I can then use:\n> \n> model2=lmer(Trait~Pop*Trt + (1|Family)\n> \n> and\n> \n> anova(model1, model2) would provide signification for the interaction term.\n> \n> \n> \n> I would need a third model with only the interaction term, so that I \n> can compare it to the full model and obtain significance for the family term.\n> But I can't figure out how to do this last part.\n> \n> \n> \n> Can I just compare model2 to a model with no random part?\n> \n> \n> \n> Thank you so much for your help in advance.\n> \n> \n> \n> \n>        [[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thank you so much Paul for your detailed and helpful response.\n\nYes, sorry, there was a typo in the specification of model3. It should be lm instead of lme. I'm also aware of the conservatism of the L",
+      "thread_id": "thread-5336af4d797c",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-34062d80abef",
+      "message_id": "<714944A2-BDB9-4433-BD43-75245BF4F70E@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "d0a0d3be9faaaa7660763903fb57c9a708d6938afbe7920f0f09ff6584a74866",
+      "date": "2017-12-01T13:34:41Z",
+      "subject": "[R-sig-ME] model specification in lmer",
+      "subject_clean": "model specification in lmer",
+      "in_reply_to": "<607e01d36a9d$4e31e9a0$ea95bce0$@gmail.com>",
+      "references": [
+        "<243401d36a0c$d9703e40$8c50bac0$@gmail.com>",
+        "<D14049CE02C4F54D95360EEC06CE45C50F7D04F0@SPMXM08.VUW.leidenuniv.nl>",
+        "<d31901d36a1d$d21406c0$763c1440$@gmail.com>",
+        "<4C12812E-AA48-4E6E-A3D3-35821CCB6EB1@glasgow.ac.uk>",
+        "<607e01d36a9d$4e31e9a0$ea95bce0$@gmail.com>"
+      ],
+      "body_plain": "Hi Silvia,\n\n> Could you please provide clarification for this sentence? \"The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\"\n> \n> Do you mean the variance of the random slope of treatment? The main effect of Treatment is a fixed factor.\n\n\nYes, I meant the variance of the random slope. In the random slopes model, each family has its own treatment effect (slope), which is the sum of main effect of treatment (the mean Treatment slope across all families) and the family-specific random deviation from that mean slope. These deviations are drawn from a normal distribution with mean zero and a free variance parameter, which in the null random-intercept-only model is assumed to be zero. In the random slopes model, there is also a covariance between the random slope deviations and the random intercept deviations, which is zero in the null model.\n\nBest wishes,\nPaul\n\n\n\n> On 1 Dec 2017, at 12:09, silvia.matesanzgarcia at gmail.com wrote:\n> \n> Thank you so much Paul for your detailed and helpful response.\n> \n> Yes, sorry, there was a typo in the specification of model3. It should be lm instead of lme. I'm also aware of the conservatism of the LRT when comparing lmer and lm objects. \n> \n> Could you please provide clarification for this sentence? \"The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\"\n> \n> Do you mean the variance of the random slope of treatment? The main effect of Treatment is a fixed factor.\n> \n> \n> Thank you again.\n> \n> Silvia \n> \n> -----Mensaje original-----\n> De: Paul Johnson [mailto:paul.johnson at glasgow.ac.uk] \n> Enviado el: viernes, 1 de diciembre de 2017 2:58\n> Para: silvia.matesanzgarcia at gmail.com\n> CC: Voeten, C.C. <c.c.voeten at hum.leidenuniv.nl>; r-sig-mixed-models at r-project.org\n> Asunto: Re: [R-sig-ME] model specification in lmer\n> \n> Hi Silvia & CC,\n> \n>> model3=lme(Trait~Pop*Trt , data=data)\n> \n> should be \n> \n>> model3=lm(Trait~Pop*Trt , data=data)\n> \n> I didn?t know you could test a random effect with anova(lmer(?, REML = FALSE), lm(?)). Is that valid when fitted with ML? \n> \n> I recommend reading http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html :\n> \n> \"With recent versions of lme4, goodness-of-fit (deviance) can be compared between (g)lmer and (g)lm models, although anova() must be called with the mixed ((g)lmer) model listed first. Keep in mind that LRT-based null hypothesis tests are conservative when the null value (such as ?2=0) is on the boundary of the feasible space; in the simplest case (single random effect variance), the p-value is approximately twice as large as it should be (Pinheiro and Bates 2000).\n> \t? Consider not testing the significance of random effects. If the random effect is part of the experimental design, this procedure may be considered ?sacrificial pseudoreplication? (Hurlbert 1984). Using stepwise approaches to eliminate non-significant terms in order to squeeze more significance out of the remaining terms is dangerous in any case.\n> \t? consider using the RLRsim package, which has a fast implementation of simulation-based tests of null hypotheses about zero variances, for simple tests. (However, it only applies to lmer models, and is a bit tricky to use for more complex models.)\"\n> \n>> model1=lmer(Trait~Pop*Trt + (Trt|Family), data=data) \n>> model2=lmer(Trait~Pop*Trt + (1|Family), data=data) \n>> model3=lme(Trait~Pop*Trt , data=data)\n>> \n>> anova(model1,model2) would provide significance for the interaction \n>> between Family and Treatment.\n> \n> To avoid confusion between random and fixed effects, it?s better not to call ?(Trt|Family)\" an interaction (even though it has a lot in common with an interaction). Pop:Trt is an interaction. The difference between (1|Family) and (Trt|Family) is that in the former only the intercept varies randomly between families, while in the latter the main effect of Trt also varies randomly between families. The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are zero.\n> \n> Another simple way to test for a random effect in a lmer fit (if you still want to despite the advice quoted above) would be to use confint(fit) and see if the 95% CI for the family variance includes zero. I did a very quick-and-dirty permutation-based simulation to compare confint(?, method = \"profile\") with the anova(lmer, lm) test:\n> \n> library(lme4)\n> library(nlme)\n> sim.res <-\n>  replicate(1000, {\n>    Orthodont$Subject <- sample(Orthodont$Subject)\n>    fm1 <- lmer(distance ~ age + (1 | Subject), data = Orthodont, REML = FALSE)\n>    fm1.lm <- lm(distance ~ age, data = Orthodont)\n>    c(LRT = anova(fm1, fm1.lm)[2, \"Pr(>Chisq)\"] < 0.05, \n>      CI = confint(fm1, 1)[1] > 0)\n>  })\n> table(sim.res[\"LRT\", ], sim.res[\"CI\", ])\n> \n> The results were conservative (false positive rate of ~2%), which I expected for the LRT, but not for the CI, and completely concordant, presumably because both use the likelihood:\n> \n>        FALSE TRUE\n>  FALSE   982    0\n>  TRUE      0   18\n> \n> I ran it a few more times and it was very consistent, ~2% false positives and 100% concordance.\n> \n> Best wishes,\n> Paul\n> \n> \n> \n>> anova(model2, model3) would provide significance for the Family term.\n>> \n>> Is this correct?\n>> \n>> \n>> Thank you so much again!!\n>> \n>> \n>> \n>> \n>> \n>> -----Mensaje original-----\n>> De: Voeten, C.C. [mailto:c.c.voeten at hum.leidenuniv.nl]\n>> Enviado el: jueves, 30 de noviembre de 2017 21:27\n>> Para: silvia.matesanzgarcia at gmail.com; \n>> r-sig-mixed-models at r-project.org\n>> Asunto: RE: [R-sig-ME] model specification in lmer\n>> \n>> There are various ways to do this. The most important thing to make \n>> sure of is that the models you're comparing are both fitted either \n>> with or without REML; you can't mix ML and REML fits (that will \n>> heavily bias your LRT in favor of the ML model). You can fit the \n>> no-random-intercept model using lm(), and use anova() to compare it \n>> with a random-intercept lmer model fitted with REML=F. A (perhaps \n>> slightly better) alternative is to use gls() from nlme to fit the \n>> no-random-intercept model using REML. You can then manually calculate chi-square values like so:\n>> \n>>> library(nlme)\n>>> library(lme4)\n>> Loading required package: Matrix\n>> \n>> Attaching package: 'lme4'\n>> \n>> The following object is masked from 'package:nlme':\n>> \n>>   lmList\n>> \n>>> model1 <- gls(Reaction~Days,sleepstudy)\n>>> model2 <- lmer(Reaction~Days + (1|Subject),sleepstudy) ( neg2ll1 <-\n>>> -2*logLik(model1) )\n>> 'log Lik.' 1893.664 (df=3)\n>>> ( neg2ll2 <- -2*logLik(model2) )\n>> 'log Lik.' 1786.465 (df=4)\n>>> ( difference <- as.numeric(neg2ll2-neg2ll1) )\n>> [1] -107.1986\n>>> pchisq(difference,1)\n>> [1] 0\n>> \n>> Good luck!\n>> ________________________________________\n>> Van: R-sig-mixed-models [r-sig-mixed-models-bounces at r-project.org] \n>> namens silvia.matesanzgarcia at gmail.com \n>> [silvia.matesanzgarcia at gmail.com]\n>> Verzonden: donderdag 30 november 2017 19:55\n>> Aan: r-sig-mixed-models at r-project.org\n>> Onderwerp: [R-sig-ME] model specification in lmer\n>> \n>> Hello all\n>> \n>> I am attempting to fit a mixed model in lmer. I have an experimental \n>> design with families nested within populations in two different \n>> treatments, and I want to test the effects of Pop, Trt, and Pop:Trt as \n>> fixed factors, and Family and Family*Trt as random factors.\n>> \n>> \n>> \n>> My full model would be:\n>> \n>> model1=lmer(Trait~Pop*Trt + (Trt|Family)\n>> \n>> I can then use:\n>> \n>> model2=lmer(Trait~Pop*Trt + (1|Family)\n>> \n>> and\n>> \n>> anova(model1, model2) would provide signification for the interaction term.\n>> \n>> \n>> \n>> I would need a third model with only the interaction term, so that I \n>> can compare it to the full model and obtain significance for the family term.\n>> But I can't figure out how to do this last part.\n>> \n>> \n>> \n>> Can I just compare model2 to a model with no random part?\n>> \n>> \n>> \n>> Thank you so much for your help in advance.\n>> \n>> \n>> \n>> \n>>       [[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list \n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list \n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n>",
+      "body_snippet": "Hi Silvia,\n\n> Could you please provide clarification for this sentence? \"The null hypothesis being tested is that both the variance of the Trt effect and its covariance with the random intercept are z",
+      "thread_id": "thread-5336af4d797c",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-74839fe2b2fd",
+      "message_id": "<13D122FD-377D-4BFA-9109-3158DC251951@me.com>",
+      "from_name": "dorothy borowy",
+      "from_email_hash": "9f2d4af778553569f3a787f2deb31f1982e5842eb4407d3d9ce36439d5d039c9",
+      "date": "2017-12-01T21:28:02-05:00",
+      "subject": "[R-sig-ME] GLM question",
+      "subject_clean": "GLM question",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello,\n\nI have a question about GLMMs and it was recommended to me that I send my question to this group.  My question is below.  I appreciate your input. \n\n> I designed an experimental greenhouse study whereby I grew 67 plant\n> species from seeds collected from urban vacant land habitats in 2 soil\n> types (urban vacant lot and topsoil).  Each species was replicated 10\n> times (10 pots each w/ an individual plant) in each soil type. I\n> measured a suite of continuous traits (i.e. height at maturity,\n> % germination success, aboveground biomass, belowground biomass and\n> specific leaf area) on each individual for each species over the duration\n> of the study.  /\n> /\n> /\n> /My study question is based on understanding functional trait responses\n> of a pool of urban plant species to different soil environments. Because\n> trait responses can include both differences in mean values and/or\n> differences in the variances, and because these represent different\n> potential strategies for surviving in urban habitats, I would like to\n> test two types of models: the first is a model that tests the mean\n> differences between soil groups for each species (species is the unit of\n> replication) and the other testing differences in variance as response\n> variables.  I am unsure, however, how to structure the model and I\n> cannot find any studies that have done anything comparable--not to say\n> they do not exist. /\n> /\n> /\n> /I am considering designing 2 generalized linear models that have soil\n> and functional group (a separate factor that I have not described in\n> this email) as explanatory variables and mean difference and difference\n> in variance/SD for each species as the response variables.  My question is\n> as follows: /\n> /\n> /\n> /1) Is this possible and how would I structure each model? Specifically,\n> how do I represent mean differences and differences in variance,\n> separately?  As I mentioned, I am interested in capturing general trends\n> in mean and variance across all species.  Therefore, do I simply calculate and\n> compare effect size to capture mean differences (model 1) and F values\n> for a Levene?s test (or something comparable) (model 2)?  Or, because sp.\n> is the unit of rep., would I have the mean and variance/SD for each sp. as\n> the response for each model and include sp. as a nested random effect? \n\n> For example-\n> lmer ( trait_mean ~ functional_group + soil + (1|species))\n> lmer ( trait_var ~ ?)\n\nKind Regards,\n\n\n\nDorothy Borowy \nPhD Candidate\nDepartment of Geography and Environmental Systems\nUniversity of Maryland Baltimore County \nhttp://ges.umbc.edu <http://ges.umbc.edu/>\nwww.researchgate.net/Dorothy_Borowy <http://www.researchgate.net/profile/Dorothy_Borowy>\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI have a question about GLMMs and it was recommended to me that I send my question to this group.  My question is below.  I appreciate your input. \n\n> I designed an experimental greenhouse stu",
+      "thread_id": "thread-74839fe2b2fd",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-18061d0936ff",
+      "message_id": "<CAF5W3aT5fLfG4A6psA+y5RLsaucFaTDtyO3XNoBB_-pGpfkq7Q@mail.gmail.com>",
+      "from_name": "Juan Pablo Edwards Molina",
+      "from_email_hash": "c1e1e6666c2e2ac7ceff8699f830f48b79382729b142cab93e88aed61de4bcfd",
+      "date": "2017-12-05T12:58:00-03:00",
+      "subject": "[R-sig-ME] glm model with all zeros for one of the factor level",
+      "subject_clean": "glm model with all zeros for one of the factor level",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear List members:\n\nI performed two independent experiments (CRD) to test if a whitefly\nhas preference to infect with a virus: potatos, tomatos or peppers\n(target hosts, TH), wether if the virus was obtained from potato or\ntomato (source hosts, SH). So I released 100 white flyes (previously\ninfected with the virus from one or other SH) inside cages containing\n10 plants of each TH (30 total). This is how the data looks like:\n\nexp  SH    TH    cage    tot  posit\n\n1     tom    tom     1       10     4\n1     tom    bat      1       10     3\n1     tom    pep     1       10     0\n1     bat    tom      2       10     1\n1     bat    bat       2       10     2\n1     bat    pep      2       10     0\n\n2     tom    tom     3       10     6\n2     tom    bat      3       10     4\n2     tom    pep     3       10     0\n2     bat    tom      4       10     4\n2     bat    bat       4       10     0\n2     bat    pep      4       10     0\n\nThe issue I found here  is that pepper was not infected at all,\nhowever it was infected in another experiment without chance of TH\nchoice: i.e. I released infectious whiteflies inside cages containing\nthe same pepper genotyope and they present the typical virus disease\nsymptoms.\n\nSo, how should I consider modeling this data?\nZero-inflated negative binomial using the total plants as offset? Hurdle-model?\nShould I remove the pepper level for the model?\n\nAny help would be really helpful.\n\nJuan Edwards",
+      "body_snippet": "Dear List members:\n\nI performed two independent experiments (CRD) to test if a whitefly\nhas preference to infect with a virus: potatos, tomatos or peppers\n(target hosts, TH), wether if the virus was o",
+      "thread_id": "thread-18061d0936ff",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-dcdc96aea654",
+      "message_id": "<CAF37_Nft=r0f7yjW2kGrdW-iemrGKeSY-n5GKME7jknpaYxObw@mail.gmail.com>",
+      "from_name": "Bradley Carlson",
+      "from_email_hash": "de17e96907fcd9085761a78ff22642b246ccf090d4ddbc778219f6aaf7bb0099",
+      "date": "2017-12-05T11:50:01-05:00",
+      "subject": "[R-sig-ME] Choosing best approach for a crossover experiment",
+      "subject_clean": "Choosing best approach for a crossover experiment",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello all,\n\n\nI have data from a repeated measures, crossover experiment that goes a bit\nbeyond my experience. I wanted to be sure I was approaching the data in the\nright way. The sample size is small as this is an independent study project\nwith an undergraduate student, but we see some interesting patterns and I\nhope it holds up to a proper analysis. Pardon the length of the\nexplanation: I want to be clear about what the problems are.\n\n\nI'm trying to test whether snakes respond differently to certain odor cues.\nWe have 5 individual snakes. The first week, each snake was tested in 3\nsets of tests, with each set of tests on a different day. In each set, they\nwere exposed to all 4 cues in a randomized order (C B A D on day 1, then A\nB D C on day 2, etc.) Don't worry about order effects - that's not where\nI'm going with this. I expect the same snakes' behavior to be correlated\nboth across days (some snakes exhibit stronger responses reliably), and I\nexpect their behavior in response to the 4 different cues to be correlated\nwithin days (e.g., if they happen to be warmer on Monday, they might have a\nstronger response to all 4 cues). I don't necessarily expect this\nday-to-day variation to be correlated among individuals (I doubt Monday\nwould be a high response day for all snakes). What I care about are the\nwithin-subjects, within-date differences between the cues (do they reliably\nrespond more strongly to cue A than the other cues tested on the same day?)\n\n\n***My first question is what would be the proper formatting for a repeated\nmeasures analysis of this in lmer**.* I was torn between a few different\noptions:\n\n\nBehavior ~ Cue + (1|Subject) + (1|Date)   <--- Seems to assume that date\neffects are similar for all individuals\n\nBehavior ~ Cue + (1|Subject/Date)\n\nBehavior ~ Cue + (1|Subject:Date)\n\n\nAny advice on which of these are more appropriate for the structure of my\ndata?\n\n\nThe second issue is that I retested these same snakes in a second battery\nof tests. The structure is identical, except instead of the first 4 cues (A\nB C D), two cues were switched out for new ones (A B E F). I could perform\na separate analysis of the data from this battery of tests, using the best\nformat from the above data. However, since it is the same individual\nanimals, and since the A vs. B contrast is present in both batteries of\ntests, it would be nice to put all the data into a single analysis. This\nwould strengthen the A vs. B comparisons and seems more elegant than two\nseparate analyses. ***Are there any reasons I couldn't do this?*** The only\nthing I could think of would be that some pairwise comparisons would have\nnever actually been performed on the same day (e.g., C was part of the\nfirst battery of tests, and E was part of the second), but accounting for\ndate effects should control for this, I think.\n\n\nFinally, I was considering bootstrap analysis to generate CIs for testing\nnull hypotheses, as my data are hard to normalize with\ntransformations. ***Would\nthat eliminate the ability to do pairwise, post-hoc comparisons\n(using lsmeans or multcomp)?*** I'd like to know which cues are different\nfrom which. I could do this by re-running the analysis with each cue type\nas the reference level - then the effects reported would be pairwise with\nrespect to the reference cue, but this doesn't account for multiple\ncomparisons.\n\n\nThank you so much in advance for taking the time to wade through this and\noffer me any thoughts. I'd also be happy to send the data and have someone\nput together a script that seems reasonable to them, so I can learn the\nnuances of LMM a little better.\n\n\nBest,\n\nBrad\n\n\nAssistant Professor of Biology\n\nWabash College\n\nCrawfordsville, IN\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\n\nI have data from a repeated measures, crossover experiment that goes a bit\nbeyond my experience. I wanted to be sure I was approaching the data in the\nright way. The sample size is small ",
+      "thread_id": "thread-dcdc96aea654",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-9351ec06fa67",
+      "message_id": "<0b7ec366-1116-4ad9-9ddf-83dcf37c601c@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "d0a0d3be9faaaa7660763903fb57c9a708d6938afbe7920f0f09ff6584a74866",
+      "date": "2017-12-06T14:36:37Z",
+      "subject": "[R-sig-ME] glm model with all zeros for one of the factor level",
+      "subject_clean": "glm model with all zeros for one of the factor level",
+      "in_reply_to": "<CAF5W3aT5fLfG4A6psA+y5RLsaucFaTDtyO3XNoBB_-pGpfkq7Q@mail.gmail.com>",
+      "references": [
+        "<CAF5W3aT5fLfG4A6psA+y5RLsaucFaTDtyO3XNoBB_-pGpfkq7Q@mail.gmail.com>"
+      ],
+      "body_plain": "(This question is about GLMs rather than mixed models in R.)\n\nI recommend reading up on separation in logistic regression, where the proportion in any of the categories formed by the fixed effects is exactly 1 or 0, so that a maximum likelihood estimate of the log odds doesn't exists. The logistf package is the simplest way of dealing with this in R.\n\nGood luck,\nPaul\n\n\nSent from BlueMail<http://www.bluemail.me/r?b=11327>\nOn 5 Dec 2017, at 16:00, Juan Pablo Edwards Molina <edwardsmolina at gmail.com<mailto:edwardsmolina at gmail.com>> wrote:\n\nDear List members:\n\nI performed two independent experiments (CRD) to test if a whitefly\nhas preference to infect with a virus: potatos, tomatos or peppers\n(target hosts, TH), wether if the virus was obtained from potato or\ntomato (source hosts, SH). So I released 100 white flyes (previously\ninfected with the virus from one or other SH) inside cages containing\n10 plants of each TH (30 total). This is how the data looks like:\n\nexp  SH    TH    cage    tot  posit\n\n1     tom    tom     1       10     4\n1     tom    bat      1       10     3\n1     tom    pep     1       10     0\n1     bat    tom      2       10     1\n1     bat    bat       2       10     2\n1     bat    pep      2       10     0\n\n2     tom    tom     3       10     6\n2     tom    bat      3       10     4\n2     tom    pep     3       10     0\n2     bat    tom      4       10     4\n2     bat    bat       4       10     0\n2     bat    pep      4       10     0\n\nThe issue I found here  is that pepper was not infected at all,\nhowever it was infected in another experiment without chance of TH\nchoice: i.e. I released infectious whiteflies inside cages containing\nthe same pepper genotyope and they present the typical virus disease\nsymptoms.\n\nSo, how should I consider modeling this data?\nZero-inflated negative binomial using the total plants as offset? Hurdle-model?\nShould I remove the pepper level for the model?\n\nAny help would be really helpful.\n\nJuan Edwards\n\n________________________________\n\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "(This question is about GLMs rather than mixed models in R.)\n\nI recommend reading up on separation in logistic regression, where the proportion in any of the categories formed by the fixed effects is ",
+      "thread_id": "thread-18061d0936ff",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-4eef16e1c46b",
+      "message_id": "<ec7f1cc7-7db3-dffd-c34a-843bd899b3f3@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2017-12-06T09:53:36-05:00",
+      "subject": "[R-sig-ME] glm model with all zeros for one of the factor level",
+      "subject_clean": "glm model with all zeros for one of the factor level",
+      "in_reply_to": "<0b7ec366-1116-4ad9-9ddf-83dcf37c601c@glasgow.ac.uk>",
+      "references": [
+        "<CAF5W3aT5fLfG4A6psA+y5RLsaucFaTDtyO3XNoBB_-pGpfkq7Q@mail.gmail.com>",
+        "<0b7ec366-1116-4ad9-9ddf-83dcf37c601c@glasgow.ac.uk>"
+      ],
+      "body_plain": "Agreed. I added a section to the glmm FAQ giving guidance on how to to\nthis in the GLMM case:\nhttp://bbolker.github.io/mixedmodels-misc/ecostats_chap.html#digression-complete-separation\n\n\nOn 17-12-06 09:36 AM, Paul Johnson wrote:\n> (This question is about GLMs rather than mixed models in R.)\n> \n> I recommend reading up on separation in logistic regression, where\n> the proportion in any of the categories formed by the fixed effects\n> is exactly 1 or 0, so that a maximum likelihood estimate of the log\n> odds doesn't exists. The logistf package is the simplest way of\n> dealing with this in R.\n> \n> Good luck, Paul\n> \n> \n> Sent from BlueMail<http://www.bluemail.me/r?b=11327> On 5 Dec 2017,\n> at 16:00, Juan Pablo Edwards Molina\n> <edwardsmolina at gmail.com<mailto:edwardsmolina at gmail.com>> wrote:\n> \n> Dear List members:\n> \n> I performed two independent experiments (CRD) to test if a whitefly \n> has preference to infect with a virus: potatos, tomatos or peppers \n> (target hosts, TH), wether if the virus was obtained from potato or \n> tomato (source hosts, SH). So I released 100 white flyes (previously \n> infected with the virus from one or other SH) inside cages\n> containing 10 plants of each TH (30 total). This is how the data\n> looks like:\n> \n> exp  SH    TH    cage    tot  posit\n> \n> 1     tom    tom     1       10     4 1     tom    bat      1\n> 10     3 1     tom    pep     1       10     0 1     bat    tom\n> 2       10     1 1     bat    bat       2       10     2 1     bat\n> pep      2       10     0\n> \n> 2     tom    tom     3       10     6 2     tom    bat      3\n> 10     4 2     tom    pep     3       10     0 2     bat    tom\n> 4       10     4 2     bat    bat       4       10     0 2     bat\n> pep      4       10     0\n> \n> The issue I found here  is that pepper was not infected at all, \n> however it was infected in another experiment without chance of TH \n> choice: i.e. I released infectious whiteflies inside cages\n> containing the same pepper genotyope and they present the typical\n> virus disease symptoms.\n> \n> So, how should I consider modeling this data? Zero-inflated negative\n> binomial using the total plants as offset? Hurdle-model? Should I\n> remove the pepper level for the model?\n> \n> Any help would be really helpful.\n> \n> Juan Edwards\n> \n> ________________________________\n> \n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> [[alternative HTML version deleted]]\n> \n> _______________________________________________ \n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Agreed. I added a section to the glmm FAQ giving guidance on how to to\nthis in the GLMM case:\nhttp://bbolker.github.io/mixedmodels-misc/ecostats_chap.html#digression-complete-separation\n\n\nOn 17-12-06 ",
+      "thread_id": "thread-18061d0936ff",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-2e6534c1e684",
+      "message_id": "<CAF5W3aRGZGWQdEv-9x-jNuB26qBysZLD9bCoCHt++vA6eV2OGw@mail.gmail.com>",
+      "from_name": "Juan Pablo Edwards Molina",
+      "from_email_hash": "c1e1e6666c2e2ac7ceff8699f830f48b79382729b142cab93e88aed61de4bcfd",
+      "date": "2017-12-06T13:02:57-03:00",
+      "subject": "[R-sig-ME] glm model with all zeros for one of the factor level",
+      "subject_clean": "glm model with all zeros for one of the factor level",
+      "in_reply_to": "<ec7f1cc7-7db3-dffd-c34a-843bd899b3f3@gmail.com>",
+      "references": [
+        "<CAF5W3aT5fLfG4A6psA+y5RLsaucFaTDtyO3XNoBB_-pGpfkq7Q@mail.gmail.com>",
+        "<0b7ec366-1116-4ad9-9ddf-83dcf37c601c@glasgow.ac.uk>",
+        "<ec7f1cc7-7db3-dffd-c34a-843bd899b3f3@gmail.com>"
+      ],
+      "body_plain": "Thanks Ben and Paul... By the way, that was what actually happened\nafter fitting the glm:\n...huge Wald confidence intervals...(from glm FAQ).\nI will take a look on that section of glm FAQ.\nbest,\nJuan Edwards\nJuan\n\n\nOn Wed, Dec 6, 2017 at 11:53 AM, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>   Agreed. I added a section to the glmm FAQ giving guidance on how to to\n> this in the GLMM case:\n> http://bbolker.github.io/mixedmodels-misc/ecostats_chap.html#digression-complete-separation\n>\n>\n> On 17-12-06 09:36 AM, Paul Johnson wrote:\n>> (This question is about GLMs rather than mixed models in R.)\n>>\n>> I recommend reading up on separation in logistic regression, where\n>> the proportion in any of the categories formed by the fixed effects\n>> is exactly 1 or 0, so that a maximum likelihood estimate of the log\n>> odds doesn't exists. The logistf package is the simplest way of\n>> dealing with this in R.\n>>\n>> Good luck, Paul\n>>\n>>\n>> Sent from BlueMail<http://www.bluemail.me/r?b=11327> On 5 Dec 2017,\n>> at 16:00, Juan Pablo Edwards Molina\n>> <edwardsmolina at gmail.com<mailto:edwardsmolina at gmail.com>> wrote:\n>>\n>> Dear List members:\n>>\n>> I performed two independent experiments (CRD) to test if a whitefly\n>> has preference to infect with a virus: potatos, tomatos or peppers\n>> (target hosts, TH), wether if the virus was obtained from potato or\n>> tomato (source hosts, SH). So I released 100 white flyes (previously\n>> infected with the virus from one or other SH) inside cages\n>> containing 10 plants of each TH (30 total). This is how the data\n>> looks like:\n>>\n>> exp  SH    TH    cage    tot  posit\n>>\n>> 1     tom    tom     1       10     4 1     tom    bat      1\n>> 10     3 1     tom    pep     1       10     0 1     bat    tom\n>> 2       10     1 1     bat    bat       2       10     2 1     bat\n>> pep      2       10     0\n>>\n>> 2     tom    tom     3       10     6 2     tom    bat      3\n>> 10     4 2     tom    pep     3       10     0 2     bat    tom\n>> 4       10     4 2     bat    bat       4       10     0 2     bat\n>> pep      4       10     0\n>>\n>> The issue I found here  is that pepper was not infected at all,\n>> however it was infected in another experiment without chance of TH\n>> choice: i.e. I released infectious whiteflies inside cages\n>> containing the same pepper genotyope and they present the typical\n>> virus disease symptoms.\n>>\n>> So, how should I consider modeling this data? Zero-inflated negative\n>> binomial using the total plants as offset? Hurdle-model? Should I\n>> remove the pepper level for the model?\n>>\n>> Any help would be really helpful.\n>>\n>> Juan Edwards\n>>\n>> ________________________________\n>>\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Ben and Paul... By the way, that was what actually happened\nafter fitting the glm:\n...huge Wald confidence intervals...(from glm FAQ).\nI will take a look on that section of glm FAQ.\nbest,\nJuan ",
+      "thread_id": "thread-18061d0936ff",
+      "thread_depth": 3,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-71e7fb27e40e",
+      "message_id": "<CY4PR01MB2805596B5AD26BF133449AF2C6330@CY4PR01MB2805.prod.exchangelabs.com>",
+      "from_name": "Moore, James Roy",
+      "from_email_hash": "0dc85d3be73cd6343ae3b89a465d069e72bc8ae43e1c5ae303f29f9dcebf0009",
+      "date": "2017-12-07T23:34:48Z",
+      "subject": "[R-sig-ME] repeated measures and random effects question",
+      "subject_clean": "repeated measures and random effects question",
+      "in_reply_to": "<CY4PR01MB280539757B91848B7ECAE33AC6330@CY4PR01MB2805.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR01MB2805D6E6CCCAF6B8B26EC344C6330@CY4PR01MB2805.prod.exchangelabs.com>",
+        "<6bf66c89-784a-f39e-0224-4b85f14ac4f8@mcmaster.ca>",
+        "<CY4PR01MB280539757B91848B7ECAE33AC6330@CY4PR01MB2805.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Hello list, \n\nNot sure how to address a list, so let me know if I'm doing something wrong.  \n\nI'm having a difficult time wrapping my mind around how to account for repeated measures and random effects and was directed here.\n\nMy experimental design is:\n4 sites\n2 plots per site (control and treatment, 10m x 10m)\n8 subplots per plot (1m x 1m) \n3 years (each subplot sampled once per year every year)\n\nResponse variable: proportional plant cover\nPotential covariates/predictors: other proportional plant cover, herbivore damage\nThe treatment is herbivore removal so instead of using the factor treatment in the model I'm using proportional herbivore damage. \n\nI have to use a package specific for beta distribution with 0's but we can talk about this in the context of a glmm using lme4 since that is the syntax I'm most familiar with.  My limited understanding leads me to:\nPlant cover ~ herbivore damage + some covariates +(1|site)+(year|site/plot/subplot)\n\tRandom variation between sites and, to account for repeated measures, subplots nested within plot nested within site sampled at a yearly interval for \t3 years.\n\nAs an additional curiosity, is there any problem with excluding the treatment factor and using proportional herbivore damage instead? Also, since site is included in the second random term, is the first term still necessary.  There is definitely variation between sites.  \n\nThank you for any assistance you're able to provide,\nJames",
+      "body_snippet": "Hello list, \n\nNot sure how to address a list, so let me know if I'm doing something wrong.  \n\nI'm having a difficult time wrapping my mind around how to account for repeated measures and random effect",
+      "thread_id": "thread-71e7fb27e40e",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-8463e303f59e",
+      "message_id": "<CAJuCY5y6o52DtA1A+5c0GcZqRtPY9Ku7ohHpBFifq1Ov9O8poQ@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "939ccb0e8bbc2d0c7bbe22a43b9bdc551e1b9ce62c1e0af38d79ce042e5bddbe",
+      "date": "2017-12-11T11:42:08+01:00",
+      "subject": "[R-sig-ME] repeated measures and random effects question",
+      "subject_clean": "repeated measures and random effects question",
+      "in_reply_to": "<CY4PR01MB2805596B5AD26BF133449AF2C6330@CY4PR01MB2805.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR01MB2805D6E6CCCAF6B8B26EC344C6330@CY4PR01MB2805.prod.exchangelabs.com>",
+        "<6bf66c89-784a-f39e-0224-4b85f14ac4f8@mcmaster.ca>",
+        "<CY4PR01MB280539757B91848B7ECAE33AC6330@CY4PR01MB2805.prod.exchangelabs.com>",
+        "<CY4PR01MB2805596B5AD26BF133449AF2C6330@CY4PR01MB2805.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Dear James,\n\nYour models is too complex given the available data. The random part can be\nexpanded to (1 + year|site) + (1 + year|site:plot) + (1 +\nyear|site:plot:subplot). The number of data points for each level of the\nrandom effect groups are respectively 48, 24 and 3. I'm not comfortable\nfitting a linear trend through only 3 data points... Also consider\nhttp://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#should-i-treat-factor-xxx-as-fixed-or-random,\nespecially the last paragraph.\n\nI would strongly recommend that you consult a local statistician.\n\nBest regards,\n\n\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nKliniekstraat 25, B-1070 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n[image: Van 14 tot en met 19 december 2017 verhuizen we uit onze vestiging\nin Brussel naar het Herman Teirlinckgebouw op de site Thurn & Taxis. Vanaf\ndan ben je welkom op het nieuwe adres: Havenlaan 88 bus 73, 1000 Brussel.]\n<https://overheid.vlaanderen.be/mobiliteitsplan-herman-teirlinckgebouw>\nVan 14 tot en met 19 december 2017 verhuizen we uit onze vestiging in\nBrussel naar het Herman Teirlinckgebouw op de site Thurn & Taxis.\nVanaf dan ben je welkom op het nieuwe adres: Havenlaan 88 bus 73, 1000\nBrussel.\n\n///////////////////////////////////////////////////////////////////////////////////////////\n<https://www.inbo.be>\n\n2017-12-08 0:34 GMT+01:00 Moore, James Roy <jmoore25 at wsu.edu>:\n\n> Hello list,\n>\n> Not sure how to address a list, so let me know if I'm doing something\n> wrong.\n>\n> I'm having a difficult time wrapping my mind around how to account for\n> repeated measures and random effects and was directed here.\n>\n> My experimental design is:\n> 4 sites\n> 2 plots per site (control and treatment, 10m x 10m)\n> 8 subplots per plot (1m x 1m)\n> 3 years (each subplot sampled once per year every year)\n>\n> Response variable: proportional plant cover\n> Potential covariates/predictors: other proportional plant cover, herbivore\n> damage\n> The treatment is herbivore removal so instead of using the factor\n> treatment in the model I'm using proportional herbivore damage.\n>\n> I have to use a package specific for beta distribution with 0's but we can\n> talk about this in the context of a glmm using lme4 since that is the\n> syntax I'm most familiar with.  My limited understanding leads me to:\n> Plant cover ~ herbivore damage + some covariates +(1|site)+(year|site/plot/\n> subplot)\n>         Random variation between sites and, to account for repeated\n> measures, subplots nested within plot nested within site sampled at a\n> yearly interval for   3 years.\n>\n> As an additional curiosity, is there any problem with excluding the\n> treatment factor and using proportional herbivore damage instead? Also,\n> since site is included in the second random term, is the first term still\n> necessary.  There is definitely variation between sites.\n>\n> Thank you for any assistance you're able to provide,\n> James\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear James,\n\nYour models is too complex given the available data. The random part can be\nexpanded to (1 + year|site) + (1 + year|site:plot) + (1 +\nyear|site:plot:subplot). The number of data points fo",
+      "thread_id": "thread-71e7fb27e40e",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-53eded9bbae9",
+      "message_id": "<CAJuCY5xEtYeTW=kkCXWJ1DGrwR2eLwrYpvs-Kuurfj3scs7Miw@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "939ccb0e8bbc2d0c7bbe22a43b9bdc551e1b9ce62c1e0af38d79ce042e5bddbe",
+      "date": "2017-12-12T09:11:34+01:00",
+      "subject": "[R-sig-ME] Choosing best approach for a crossover experiment",
+      "subject_clean": "Choosing best approach for a crossover experiment",
+      "in_reply_to": "<CAF37_Nft=r0f7yjW2kGrdW-iemrGKeSY-n5GKME7jknpaYxObw@mail.gmail.com>",
+      "references": [
+        "<CAF37_Nft=r0f7yjW2kGrdW-iemrGKeSY-n5GKME7jknpaYxObw@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Bradley,\n\nFor your first question you could consider the combination of crossed\nand interaction random effects. (1|Subject) + (1|Date) +\n(1|Subject:Date) That might be overkill given that you have only 4\nobservations for each level of Subject:Date. Therefore I'd rather go\nfor (1|Subject) + (1|Date).\n\nFor the second one: though not the most efficient design to test 6\ntreatment, it seems reasonable to me to analyse them with a single\nmodel.\n\nFor the last question: What is hard to normalise? The response or the\nresiduals? Note that only the residuals are assumed to be normal.\n\nBest regards,\n\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE\nAND FOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nKliniekstraat 25, B-1070 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no\nmore than asking him to perform a post-mortem examination: he may be\nable to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does\nnot ensure that a reasonable answer can be extracted from a given body\nof data. ~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n\nVan 14 tot en met 19 december 2017 verhuizen we uit onze vestiging in\nBrussel naar het Herman Teirlinckgebouw op de site Thurn & Taxis.\nVanaf dan ben je welkom op het nieuwe adres: Havenlaan 88 bus 73, 1000 Brussel.\n\n///////////////////////////////////////////////////////////////////////////////////////////\n\n\n\n2017-12-05 17:50 GMT+01:00 Bradley Carlson <carbrae at gmail.com>:\n> Hello all,\n>\n>\n> I have data from a repeated measures, crossover experiment that goes a bit\n> beyond my experience. I wanted to be sure I was approaching the data in the\n> right way. The sample size is small as this is an independent study project\n> with an undergraduate student, but we see some interesting patterns and I\n> hope it holds up to a proper analysis. Pardon the length of the\n> explanation: I want to be clear about what the problems are.\n>\n>\n> I'm trying to test whether snakes respond differently to certain odor cues.\n> We have 5 individual snakes. The first week, each snake was tested in 3\n> sets of tests, with each set of tests on a different day. In each set, they\n> were exposed to all 4 cues in a randomized order (C B A D on day 1, then A\n> B D C on day 2, etc.) Don't worry about order effects - that's not where\n> I'm going with this. I expect the same snakes' behavior to be correlated\n> both across days (some snakes exhibit stronger responses reliably), and I\n> expect their behavior in response to the 4 different cues to be correlated\n> within days (e.g., if they happen to be warmer on Monday, they might have a\n> stronger response to all 4 cues). I don't necessarily expect this\n> day-to-day variation to be correlated among individuals (I doubt Monday\n> would be a high response day for all snakes). What I care about are the\n> within-subjects, within-date differences between the cues (do they reliably\n> respond more strongly to cue A than the other cues tested on the same day?)\n>\n>\n> ***My first question is what would be the proper formatting for a repeated\n> measures analysis of this in lmer**.* I was torn between a few different\n> options:\n>\n>\n> Behavior ~ Cue + (1|Subject) + (1|Date)   <--- Seems to assume that date\n> effects are similar for all individuals\n>\n> Behavior ~ Cue + (1|Subject/Date)\n>\n> Behavior ~ Cue + (1|Subject:Date)\n>\n>\n> Any advice on which of these are more appropriate for the structure of my\n> data?\n>\n>\n> The second issue is that I retested these same snakes in a second battery\n> of tests. The structure is identical, except instead of the first 4 cues (A\n> B C D), two cues were switched out for new ones (A B E F). I could perform\n> a separate analysis of the data from this battery of tests, using the best\n> format from the above data. However, since it is the same individual\n> animals, and since the A vs. B contrast is present in both batteries of\n> tests, it would be nice to put all the data into a single analysis. This\n> would strengthen the A vs. B comparisons and seems more elegant than two\n> separate analyses. ***Are there any reasons I couldn't do this?*** The only\n> thing I could think of would be that some pairwise comparisons would have\n> never actually been performed on the same day (e.g., C was part of the\n> first battery of tests, and E was part of the second), but accounting for\n> date effects should control for this, I think.\n>\n>\n> Finally, I was considering bootstrap analysis to generate CIs for testing\n> null hypotheses, as my data are hard to normalize with\n> transformations. ***Would\n> that eliminate the ability to do pairwise, post-hoc comparisons\n> (using lsmeans or multcomp)?*** I'd like to know which cues are different\n> from which. I could do this by re-running the analysis with each cue type\n> as the reference level - then the effects reported would be pairwise with\n> respect to the reference cue, but this doesn't account for multiple\n> comparisons.\n>\n>\n> Thank you so much in advance for taking the time to wade through this and\n> offer me any thoughts. I'd also be happy to send the data and have someone\n> put together a script that seems reasonable to them, so I can learn the\n> nuances of LMM a little better.\n>\n>\n> Best,\n>\n> Brad\n>\n>\n> Assistant Professor of Biology\n>\n> Wabash College\n>\n> Crawfordsville, IN\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Bradley,\n\nFor your first question you could consider the combination of crossed\nand interaction random effects. (1|Subject) + (1|Date) +\n(1|Subject:Date) That might be overkill given that you hav",
+      "thread_id": "thread-dcdc96aea654",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-fca327ea0943",
+      "message_id": "<DAB16A0903A9474491F9134DDC566BC873E5E245@CIO-TNC-D2MBX06.osuad.osu.edu>",
+      "from_name": "Sivakoff, Frances",
+      "from_email_hash": "976f704cfb9bbceb3840542f13214dcb4427653f58ac910096082579e2bf8a46",
+      "date": "2017-12-12T19:19:55Z",
+      "subject": "[R-sig-ME] Plotting partial residuals from a glmmADMB model",
+      "subject_clean": "Plotting partial residuals from a glmmADMB model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I would like to use ggplot2 to plot the partial residuals of an indicator (0 or 1) independent variable in a generalized linear mixed model fit with a \"nbinom1\" family using glmmadmb. My model has a response variable that is a count, 3 explanatory variables that are continuous, and 7 indicator variables that are 0 when a particular heavy metal is not detected and 1 when it is detected above a threshold value. I'd like to plot the partial residuals of the various independent variables. I think that the model below using the Owl data would be a good example data set for how to do this. The model below has a response variable that is a count, an explanatory variables that is continuous (arrivalTime), two categorical variables (FoodTreatment and SexParent), a random effect of Nest, and uses a \"nbinom1\" family.\n\n##Using the Owl Data\nom <- glmmadmb(SiblingNegotiation~FoodTreatment+ArrivalTime+SexParent+\n                 (1|Nest),family=\"nbinom1\",data=Owls)\n\nCould you please suggest a method for plotting the partial residuals of the explanatory variables.\n\nThank you,\nFrances\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I would like to use ggplot2 to plot the partial residuals of an indicator (0 or 1) independent variable in a generalized linear mixed model fit with a \"nbinom1\" family using glmmadmb. My model has a r",
+      "thread_id": "thread-fca327ea0943",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-4259f2738e45",
+      "message_id": "<CAPsE2jzpTq5d0MUDHvmAwbUuWC7P6ygBsh=J5nvXY4sbb03u9Q@mail.gmail.com>",
+      "from_name": "Julia Chacon Labella",
+      "from_email_hash": "eff9ed6cd7e292d2764aabd29c13613e9c5fe39c6ea96764e5c01ee058e32569",
+      "date": "2017-12-14T20:25:44+01:00",
+      "subject": "[R-sig-ME] testing significance of fixed factors in a mixed model",
+      "subject_clean": "testing significance of fixed factors in a mixed model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am sorry if I am asking a na?ve question or if that has been already\nasked many times. I am not an expert in mixed models at all, but want to\nunderstand and be confident about what I am doing.\n\nActually, I am analysing a data set of a experiment. I have several\ntreatments, a balance design, randomized by blocks, etc., and generally\nfollowing the recommendations of the FAQs by Bolker, what are really\nusefull (Thanks!). http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html\n\nBut, I am pretty confused about how to test the significance of fixed\nfactors in a mixed model.\nI find huge differences in the significance output when computing 1) Anova\nfrom the car package or 2) anova from lmerTest with KR or satterthwaite\napproaches (both, KR or Satterthwaite have similar results), or 3) a LRT\nvia anova. The biggest differences are found for car::Anova!\n\n* First, I am not sure if I should employ a LRT or a conditional F-test\n(lmerTest::anova, KR or satterthwaite approaches). Both results are pretty\nsimilar in my case, but conditional F-test seem to slightly be more\nconservative in my case. Can the F-test be somehow problematic in terms of\nstatistical power?\n\n* Second, in case of using lmerTest::anova, I am not completely sure if I\nshould used a type I or type III anova.  There is any reason for using type\nI anova in balanced designs?\n\nThanks in advance,\nJulia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am sorry if I am asking a na?ve question or if that has been already\nasked many times. I am not an expert in mixed models at all, but want to\nunderstand and be confident about what I am doing.\n\nActu",
+      "thread_id": "thread-4259f2738e45",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-cfcfc2d6b695",
+      "message_id": "<CABghstSC-oaqKeNH=XeS1Jys1av+zaY42b8WJ2gF3imZX5rH+w@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2017-12-14T21:51:34-05:00",
+      "subject": "[R-sig-ME] testing significance of fixed factors in a mixed model",
+      "subject_clean": "testing significance of fixed factors in a mixed model",
+      "in_reply_to": "<CAPsE2jzpTq5d0MUDHvmAwbUuWC7P6ygBsh=J5nvXY4sbb03u9Q@mail.gmail.com>",
+      "references": [
+        "<CAPsE2jzpTq5d0MUDHvmAwbUuWC7P6ygBsh=J5nvXY4sbb03u9Q@mail.gmail.com>"
+      ],
+      "body_plain": "Can you show us some of your output?\n\nIn general, an F-test will be more accurate than an LRT in cases where\nyou can figure out how to do it, because an LRT doesn't make any\nfinite-size corrections (what df values are you getting from\nKR/Satterthwaite)?\n\nThe thing you will have to think hardest about is which variables are\nconditioned on when testing, especially when you have interactions in\nyour model and are considering testing main effects.\n\nOn Thu, Dec 14, 2017 at 2:25 PM, Julia Chacon Labella\n<juliachacon at gmail.com> wrote:\n> I am sorry if I am asking a na?ve question or if that has been already\n> asked many times. I am not an expert in mixed models at all, but want to\n> understand and be confident about what I am doing.\n>\n> Actually, I am analysing a data set of a experiment. I have several\n> treatments, a balance design, randomized by blocks, etc., and generally\n> following the recommendations of the FAQs by Bolker, what are really\n> usefull (Thanks!). http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html\n>\n> But, I am pretty confused about how to test the significance of fixed\n> factors in a mixed model.\n> I find huge differences in the significance output when computing 1) Anova\n> from the car package or 2) anova from lmerTest with KR or satterthwaite\n> approaches (both, KR or Satterthwaite have similar results), or 3) a LRT\n> via anova. The biggest differences are found for car::Anova!\n>\n> * First, I am not sure if I should employ a LRT or a conditional F-test\n> (lmerTest::anova, KR or satterthwaite approaches). Both results are pretty\n> similar in my case, but conditional F-test seem to slightly be more\n> conservative in my case. Can the F-test be somehow problematic in terms of\n> statistical power?\n>\n> * Second, in case of using lmerTest::anova, I am not completely sure if I\n> should used a type I or type III anova.  There is any reason for using type\n> I anova in balanced designs?\n>\n> Thanks in advance,\n> Julia\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Can you show us some of your output?\n\nIn general, an F-test will be more accurate than an LRT in cases where\nyou can figure out how to do it, because an LRT doesn't make any\nfinite-size corrections (w",
+      "thread_id": "thread-4259f2738e45",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-261a18a8992f",
+      "message_id": "<CABghstRC62tAe7bRVMAGt05Piy6kUXweqKSAKkMsJje9fFvaNw@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2017-12-14T21:53:54-05:00",
+      "subject": "[R-sig-ME] Plotting partial residuals from a glmmADMB model",
+      "subject_clean": "Plotting partial residuals from a glmmADMB model",
+      "in_reply_to": "<DAB16A0903A9474491F9134DDC566BC873E5E245@CIO-TNC-D2MBX06.osuad.osu.edu>",
+      "references": [
+        "<DAB16A0903A9474491F9134DDC566BC873E5E245@CIO-TNC-D2MBX06.osuad.osu.edu>"
+      ],
+      "body_plain": "You'll have to find a way to make \"partial predictions\". I don't think\nthere's anything built in for this.  *Very* briefly, considering\nonly fixed effects, if you retrieve the X matrix\n(getME(fitted_model,\"X\")) and the fixed-effect parameters\n(fixef(fitted_model)),\nyou can drop any columns/parameters you want and do exp(X %*% beta)\nwith the remaining columns/parameters to get a prediction\nthat includes some but not all of the predictors. Subtracting the\nobserved value should get you the partial residuals ...\n\n\nOn Tue, Dec 12, 2017 at 2:19 PM, Sivakoff, Frances <sivakoff.3 at osu.edu> wrote:\n> I would like to use ggplot2 to plot the partial residuals of an indicator (0 or 1) independent variable in a generalized linear mixed model fit with a \"nbinom1\" family using glmmadmb. My model has a response variable that is a count, 3 explanatory variables that are continuous, and 7 indicator variables that are 0 when a particular heavy metal is not detected and 1 when it is detected above a threshold value. I'd like to plot the partial residuals of the various independent variables. I think that the model below using the Owl data would be a good example data set for how to do this. The model below has a response variable that is a count, an explanatory variables that is continuous (arrivalTime), two categorical variables (FoodTreatment and SexParent), a random effect of Nest, and uses a \"nbinom1\" family.\n>\n> ##Using the Owl Data\n> om <- glmmadmb(SiblingNegotiation~FoodTreatment+ArrivalTime+SexParent+\n>                  (1|Nest),family=\"nbinom1\",data=Owls)\n>\n> Could you please suggest a method for plotting the partial residuals of the explanatory variables.\n>\n> Thank you,\n> Frances\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "You'll have to find a way to make \"partial predictions\". I don't think\nthere's anything built in for this.  *Very* briefly, considering\nonly fixed effects, if you retrieve the X matrix\n(getME(fitted_m",
+      "thread_id": "thread-fca327ea0943",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-068c1e14f960",
+      "message_id": "<CA+kOGs-j+Bo5gbxOoY1NF062=rKtjTrExxAvU+66F9gVMdkCYQ@mail.gmail.com>",
+      "from_name": "Cate Ferrari",
+      "from_email_hash": "c16274d288285a045be6899eb125ee1c53a86b5d742d49ffc13eb3fc4f15ce03",
+      "date": "2017-12-16T14:31:22+01:00",
+      "subject": "[R-sig-ME] multinomial model with MCMCglmm",
+      "subject_clean": "multinomial model with MCMCglmm",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear members of the list\n I am writing you about a multinomial model I am currently trying to run\nusing  MCMCglmm.\n My data are about time budget behaviors, so I have different behaviors on\ndifferent individuals collected during a scan. In my model I added some\nfxed effects as age, season, area, and Id of the animal as random term.\nThe model run but when I have the summary I see that instead of having the\n6 behaviors that I have in the dataset, I have 5; so I guess the first (in\nalphabetic order) is retained as reference. But I don't want this to\nhappen, where am I wrong?\n\nAlso I would need to back transform the estimates for each behavior given\nin the summary , but I don't know how to do it.\n\nCan anyone give me some advices?\nThanks a lot in advance!\nCaterina\n\n\nBehaviors in the model:\nAgonistic, affiliative, others, foraging, looking, moving\n\n\nModel\n\nMarmotTB3.mcmc<-MCMCglmm(ATTIVITA2~trait-1+trait:ETA+trait:ZONA+trait:\nPERIODO,random=~us(trait)\n\n                         :MARMOTTA,rcov = ~ us(trait):units, family=\n\"categorical\",\n\n                         prior=prior, data=alta.dat,verbose=TRUE,nitt=130000,\nthin=100, burnin=30000)\n\n\nIterations = 30001:129901\n\nThinning interval = 100\n\nNumber of chains = 1\n\nSample size per chain = 1000\n\n\n1. Empirical mean and standard deviation for each variable,\n\nplus standard error of the mean:\n\n\n\n  Mean     SD Naive SE Time-series SE\n\ntraitATTIVITA2.AGONISTICO           -5.1953780 0.9464 0.029928\n0.23713\n\ntraitATTIVITA2.ALTRO                -6.2860308 0.8939 0.028268\n0.19988\n\ntraitATTIVITA2.FORAGING              0.9998039 0.3022 0.009555\n0.03373\n\ntraitATTIVITA2.LOOKING               0.7450175 0.3297 0.010425\n0.03146\n\ntraitATTIVITA2.MOVING               -0.9486360 0.3775 0.011938\n0.04533\n\n\ntraitATTIVITA2.AGONISTICO:ETA1       1.4235583 1.0277 0.032499\n0.27793\n\ntraitATTIVITA2.ALTRO:ETA1            0.3434346 0.8574 0.027113\n0.21602\n\ntraitATTIVITA2.FORAGING:ETA1        -0.2241162 0.2880 0.009107\n0.02506\n\ntraitATTIVITA2.LOOKING :ETA1        -0.6997858 0.3096 0.009792\n0.02601\n\ntraitATTIVITA2.MOVING:ETA1          -0.7655606 0.3917 0.012388\n0.05077\n\ntraitATTIVITA2.AGONISTICO:ETA2+      3.9285262 0.9196 0.029080\n0.24008\n\ntraitATTIVITA2.ALTRO:ETA2+           1.8530251 0.9014 0.028504\n0.23861\n\ntraitATTIVITA2.FORAGING:ETA2+        0.4938721 0.2772 0.008766\n0.02789\n\ntraitATTIVITA2.LOOKING :ETA2+        0.3984561 0.3102 0.009808\n0.02788\n\ntraitATTIVITA2.MOVING:ETA2+          0.5437561 0.3356 0.010612\n0.03101\n\ntraitATTIVITA2.AGONISTICO:ZONABASSA -0.7366481 0.6147 0.019437\n0.11113\n\ntraitATTIVITA2.ALTRO:ZONABASSA       1.5733998 0.5394 0.017056\n0.12034\n\ntraitATTIVITA2.FORAGING:ZONABASSA    0.1929651 0.2218 0.007013\n0.01844\n\ntraitATTIVITA2.LOOKING :ZONABASSA    0.2431249 0.2522 0.007975\n0.02239\n\ntraitATTIVITA2.MOVING:ZONABASSA      0.2652439 0.3282 0.010380\n0.05740\n\ntraitATTIVITA2.AGONISTICO:PERIODOB   0.8002443 0.3524 0.011143\n0.04702\n\ntraitATTIVITA2.ALTRO:PERIODOB        1.4053954 0.5840 0.018467\n0.14606\n\ntraitATTIVITA2.FORAGING:PERIODOB     0.4976160 0.1958 0.006192\n0.03157\n\ntraitATTIVITA2.LOOKING :PERIODOB     0.6249756 0.2100 0.006640\n0.02844\n\ntraitATTIVITA2.MOVING:PERIODOB       0.3089387 0.2710 0.008570\n0.04932\n\ntraitATTIVITA2.AGONISTICO:PERIODOC   0.7986439 0.4134 0.013073\n0.06651\n\ntraitATTIVITA2.ALTRO:PERIODOC        1.2147869 0.7173 0.022683\n0.20310\n\ntraitATTIVITA2.FORAGING:PERIODOC     1.5504290 0.1906 0.006029\n0.02575\n\ntraitATTIVITA2.LOOKING :PERIODOC     0.9520809 0.2049 0.006478\n0.02630\n\ntraitATTIVITA2.MOVING:PERIODOC      -0.0004336 0.2828 0.008943\n0.05482\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear members of the list\n I am writing you about a multinomial model I am currently trying to run\nusing  MCMCglmm.\n My data are about time budget behaviors, so I have different behaviors on\ndifferent ",
+      "thread_id": "thread-068c1e14f960",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-c187c7c67e0d",
+      "message_id": "<CAPsE2jzAJQmsoTM7-1iO8YZtMGTpzAPpu0tpn+S6cy0fL99VRA@mail.gmail.com>",
+      "from_name": "Julia Chacon Labella",
+      "from_email_hash": "eff9ed6cd7e292d2764aabd29c13613e9c5fe39c6ea96764e5c01ee058e32569",
+      "date": "2017-12-16T19:05:31+01:00",
+      "subject": "[R-sig-ME] testing significance of fixed factors in a mixed model",
+      "subject_clean": "testing significance of fixed factors in a mixed model",
+      "in_reply_to": "<CABghstSC-oaqKeNH=XeS1Jys1av+zaY42b8WJ2gF3imZX5rH+w@mail.gmail.com>",
+      "references": [
+        "<CAPsE2jzpTq5d0MUDHvmAwbUuWC7P6ygBsh=J5nvXY4sbb03u9Q@mail.gmail.com>",
+        "<CABghstSC-oaqKeNH=XeS1Jys1av+zaY42b8WJ2gF3imZX5rH+w@mail.gmail.com>"
+      ],
+      "body_plain": "Thank you very much for your quick answer. Here is the coding of the model:\n\nm1_y <- lmer(log(total_yield) ~ bench +  dom + MoMix + Divalias + fgalias +\n               dom:MoMix + dom:Divalias + dom:fgalias+\n         fgcomb + dom:fgcomb + MoMix:fgcomb + Divalias:fgcomb +\nfgalias:fgcomb+\n         dom:MoMix:fgcomb + dom:Divalias:fgcomb + dom:fgalias:fgcomb+\n              (1|spcomb),\n            data=data_wo_s)\n\nbench: three levels (a,b,c)\ndom: has two levels (c and w)\nNow I have the treatments. This is like a tree, where I test three\nvariables that are included in the previous one.\nMoMix: has two levels (mono and mix)\n    Divalias: has two levels (2 and 4). This two levels are available\nwithin Mix\n       Fgalias: has two levels (1 and 2). This two are only and are\nincluded within level 2 in Divalias\nSo these three are not orthogonal.\nfgcomb has 9 levels.\nIn the random part I have spcomb that are species combinations and have\nmany levels.\nI copied the summary of the model at the end of the email.\n\nNOW, the anovas!\n> anova(m1_y, ddf=\"Kenward-Roger\", type=1)\n\nAnalysis of Variance Table of type I  with  Kenward-Roger\napproximation for degrees of freedom\n                  Sum Sq  Mean Sq NumDF   DenDF F.value    Pr(>F)\nbench            0.00037 0.000187     2 143.957  0.0043    0.9957\ndom              0.02235 0.022345     1 297.576  0.5147    0.4737\nMoMix            0.09241 0.092411     1  32.982  2.1288    0.1540\nDivalias         0.01255 0.012553     1  37.111  0.2892    0.5940\nfgalias          0.00956 0.009564     1  32.410  0.2203    0.6419\nfgcomb           2.15832 0.269790     8  34.559  6.2148 5.608e-05 ***\ndom:MoMix        0.11248 0.112478     1 298.040  2.5910    0.1085\ndom:Divalias     0.00017 0.000174     1 297.846  0.0040    0.9495\ndom:fgalias      0.09687 0.096866     1 298.607  2.2314    0.1363\ndom:fgcomb       0.58166 0.072707     8 294.133  1.6749    0.1040\nMoMix:fgcomb     0.02578 0.008592     3  32.124  0.1979    0.8970\ndom:MoMix:fgcomb 0.21952 0.073172     3 292.107  1.6856    0.1702\n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\nThis is the output when I do a type I anova in lmerTest. I was doing a type\nI anova, because I wanted to \"eliminate\" or control the effect of bench.\nSo, the other factors are tested after and there is less variance to be\nexplained, that is less from the benches of the greenhouse. But, now I am\nnot sure if this is the best way to proceed.\nBecause Type I test the terms in the order of appearance and the way it\ncalculates the sum of squares, you only get the combined effect of the\nfactor and the below ones. So...with a Type I anova I am not going to see\nthe effect of each single factor (isn't it?).\nNow I think I should go for a type II. But, not completely sure about that\nand as you will see the output is completely different.\n\nHere the type 2.\n\n> anova(m1_y, ddf=\"Kenward-Roger\", type=2)\nAnalysis of Variance Table of type II  with  Kenward-Roger\napproximation for degrees of freedom\n                  Sum Sq Mean Sq NumDF   DenDF F.value    Pr(>F)\nbench            0.14694 0.07347     2 299.947  1.6924  0.185832\ndom              0.01050 0.01050     1 292.202  0.2419  0.623175\nMoMix            0.01389 0.01389     1  32.110  0.3199  0.575592\nDivalias         0.31910 0.31910     1  32.219  7.3508  0.010660 *\nfgalias          0.52884 0.52884     1  32.650 12.1823  0.001405 **\nfgcomb           2.16056 0.27007     8  34.559  6.2213 5.556e-05 ***\ndom:MoMix        0.00350 0.00350     1 292.154  0.0806  0.776621\ndom:Divalias     0.24601 0.24601     1 292.329  5.6670  0.017928 *\ndom:fgalias      0.26688 0.26688     1 292.277  6.1477  0.013722 *\ndom:fgcomb       0.58182 0.07273     8 292.227  1.6753  0.103916\nMoMix:fgcomb     0.02578 0.00859     3  32.124  0.1979  0.897033\ndom:MoMix:fgcomb 0.21952 0.07317     3 292.107  1.6856  0.170192\n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\n\nI am interested in the main effects but also in the interactions, of\ncourse. So, should I test this with a type II or type I anova?\nI was also wondering if there is any way of escaping from this, hahaha, was\nwondering if going to a Confidence interval approach is a much more elegant\nway of solving this...\n\nThanks so much. I am so sorry for the long email.\nJulia\n\n---------------------------------------------------------------------------------------\nsummary(m1_y)\n\nREML criterion at convergence: 66.4\n\nScaled residuals:\n     Min       1Q   Median       3Q      Max\n-2.72351 -0.57177  0.07539  0.58399  2.81317\n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n spcomb   (Intercept) 0.07007  0.2647\n Residual             0.04341  0.2084\nNumber of obs: 361, groups:  spcomb, 52\n\nFixed effects:\n                        Estimate Std. Error        df t value Pr(>|t|)\n(Intercept)              2.58512    0.27555  35.22000   9.382 4.12e-11 ***\nbenchb                   0.05650    0.03070 301.72000   1.840  0.06669 .\nbenchc                   0.03420    0.03058 301.94000   1.118  0.26441\ndomw                    -0.25077    0.10469 292.80000  -2.395  0.01723 *\nMoMixMon                -0.11301    0.33789  35.40000  -0.334  0.74001\nDivalias4                0.61797    0.28504  35.74000   2.168  0.03690 *\nfgalias2                 0.88760    0.31157  36.85000   2.849  0.00714 **\nfgcombc4                 1.11869    0.38961  35.20000   2.871  0.00688 **\nfgcombfb                 0.36312    0.38871  34.88000   0.934  0.35663\nfgcomblg                 0.73868    0.38870  34.87000   1.900  0.06567 .\nfgcombc4c3              -0.22859    0.20748  45.19000  -1.102  0.27639\nfgcombfbc3              -0.55140    0.20666  44.50000  -2.668  0.01060 *\nfgcombfbc4              -0.17922    0.20698  44.78000  -0.866  0.39117\nfgcombfblg              -0.30621    0.20665  44.50000  -1.482  0.14544\nfgcomblgc3              -0.63072    0.20743  45.15000  -3.041  0.00392 **\ndomw:MoMixMon            0.05878    0.13489 292.76000   0.436  0.66331\ndomw:Divalias4           0.27973    0.11750 292.99000   2.381  0.01792 *\ndomw:fgalias2            0.33864    0.13657 292.94000   2.480  0.01372 *\ndomw:fgcombc4            0.16957    0.14999 292.71000   1.131  0.25917\ndomw:fgcombfb            0.33597    0.14769 292.75000   2.275  0.02364 *\ndomw:fgcomblg            0.36547    0.14753 292.73000   2.477  0.01380 *\ndomw:fgcombc4c3          0.06844    0.12378 293.12000   0.553  0.58072\ndomw:fgcombfbc3         -0.04844    0.12231 292.95000  -0.396  0.69237\ndomw:fgcombfbc4          0.04190    0.12282 293.02000   0.341  0.73323\ndomw:fgcombfblg         -0.07774    0.12201 292.92000  -0.637  0.52449\ndomw:fgcomblgc3         -0.13964    0.12339 293.12000  -1.132  0.25871\nMoMixMon:fgcombc4       -0.02594    0.47926  35.82000  -0.054  0.95713\nMoMixMon:fgcombfb        0.23764    0.47830  35.53000   0.497  0.62236\nMoMixMon:fgcomblg       -0.10096    0.47803  35.45000  -0.211  0.83395\ndomw:MoMixMon:fgcombc4   0.14393    0.19339 292.73000   0.744  0.45732\ndomw:MoMixMon:fgcombfb  -0.21472    0.19170 292.77000  -1.120  0.26360\ndomw:MoMixMon:fgcomblg  -0.22705    0.19048 292.72000  -1.192  0.23424\n\n\n\n2017-12-15 3:51 GMT+01:00 Ben Bolker <bbolker at gmail.com>:\n\n> Can you show us some of your output?\n>\n> In general, an F-test will be more accurate than an LRT in cases where\n> you can figure out how to do it, because an LRT doesn't make any\n> finite-size corrections (what df values are you getting from\n> KR/Satterthwaite)?\n>\n> The thing you will have to think hardest about is which variables are\n> conditioned on when testing, especially when you have interactions in\n> your model and are considering testing main effects.\n>\n> On Thu, Dec 14, 2017 at 2:25 PM, Julia Chacon Labella\n> <juliachacon at gmail.com> wrote:\n> > I am sorry if I am asking a na?ve question or if that has been already\n> > asked many times. I am not an expert in mixed models at all, but want to\n> > understand and be confident about what I am doing.\n> >\n> > Actually, I am analysing a data set of a experiment. I have several\n> > treatments, a balance design, randomized by blocks, etc., and generally\n> > following the recommendations of the FAQs by Bolker, what are really\n> > usefull (Thanks!). http://bbolker.github.io/\n> mixedmodels-misc/glmmFAQ.html\n> >\n> > But, I am pretty confused about how to test the significance of fixed\n> > factors in a mixed model.\n> > I find huge differences in the significance output when computing 1)\n> Anova\n> > from the car package or 2) anova from lmerTest with KR or satterthwaite\n> > approaches (both, KR or Satterthwaite have similar results), or 3) a LRT\n> > via anova. The biggest differences are found for car::Anova!\n> >\n> > * First, I am not sure if I should employ a LRT or a conditional F-test\n> > (lmerTest::anova, KR or satterthwaite approaches). Both results are\n> pretty\n> > similar in my case, but conditional F-test seem to slightly be more\n> > conservative in my case. Can the F-test be somehow problematic in terms\n> of\n> > statistical power?\n> >\n> > * Second, in case of using lmerTest::anova, I am not completely sure if I\n> > should used a type I or type III anova.  There is any reason for using\n> type\n> > I anova in balanced designs?\n> >\n> > Thanks in advance,\n> > Julia\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nJulia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you very much for your quick answer. Here is the coding of the model:\n\nm1_y <- lmer(log(total_yield) ~ bench +  dom + MoMix + Divalias + fgalias +\n               dom:MoMix + dom:Divalias + dom:f",
+      "thread_id": "thread-4259f2738e45",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-d49d6c851599",
+      "message_id": "<CAKHcBHqvpXU7ApdBoPLeedhJ3EV40BDKpTUFLEGXu95tM3X2gA@mail.gmail.com>",
+      "from_name": "M West",
+      "from_email_hash": "a874e362355ccd3fa6674c554f36d528bbcee40db8924689b485f72f40b52eb1",
+      "date": "2017-12-17T15:01:12-06:00",
+      "subject": "[R-sig-ME] Mixed effects model with unbalanced repeated measures across blocks",
+      "subject_clean": "Mixed effects model with unbalanced repeated measures across blocks",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello,\n\nI would like to double check that my model is 'OK'.\nI am analyzing whether the density of nests differed across four different\nforests. Design: I repeatedly sampled transects in the same four forests\nthroughout the breeding season (May - September). The question here is not\nwhether the density of nests differed each month (which is what most\nexamples I've found tend to ask), but I need to make sure to account for\nthe autocorrelation from repeatedly sampling each forest (i.e., each\ntransect at each forest).\n\nThis design is unbalanced: some sites were only sampled for 2 months,\nothers were sampled all 5 months and some sites have more transects\ncompared to others (to account for differences in the length of edges of\nthe forest). I don't know how to account for this unbalanced design.\n\nThe output is included.\n\nMany thanks in advance\n~M\n\n\nmodel <- with(data, glmer(Number_of_Nests ~ Forest + Week +\n(1|Forest:TransectID), family = poisson, data=data))\nsummary(model)\nanova(model, Type = 'II')\n\n\nHere is the output:\n\n\nGeneralized linear mixed model fit by maximum likelihood (Laplace\nApproximation) ['glmerMod']\n Family: poisson  ( log )\nFormula: Number_of_Nests ~ Forest+ Month + (1 | Forest:TransectID)\n Data: data\n\n     AIC      BIC   logLik deviance df.resid\n   555.1    577.1   -267.5    535.1       57\n\nScaled residuals:\n    Min      1Q  Median      3Q     Max\n-5.8501 -1.3650 -0.0699  0.9217  4.9935\n\nRandom effects:\n Groups          Name        Variance Std.Dev.\nForest:TransectID (Intercept) 0.5939   0.7707\nNumber of obs: 67, groups:  Forest:TransectID, 19\n\nFixed effects:\n               Estimate Std. Error z value Pr(>|z|)\n(Intercept)     1.64503    0.54558   3.015 0.002568 **\nForestA     1.03360    0.60045   1.721 0.085182 .\nForestB         -0.44092    0.72516  -0.608 0.543171\nForestC          1.90743    0.78368   2.434 0.014935 *\nMonthMay       0.30640    0.08737   3.507 0.000453 ***\nMonthJune      -1.11313    0.13132  -8.477  < 2e-16 ***\nMonthJuly  -2.63123    0.25254 -10.419  < 2e-16 ***\nMonthAugust   -1.34959    0.17249  -7.824 5.11e-15 ***\nMonthSeptember -1.34612    0.72723  -1.851 0.064168 .\n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI would like to double check that my model is 'OK'.\nI am analyzing whether the density of nests differed across four different\nforests. Design: I repeatedly sampled transects in the same four ",
+      "thread_id": "thread-d49d6c851599",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-5a9e2fbd9a1b",
+      "message_id": "<CA+i+nCr4=PiTq9KWDmWkwJPQ7acreY65O9M0J=dLQwyX=3UZwg@mail.gmail.com>",
+      "from_name": "Rodrigo Malavazi Corder",
+      "from_email_hash": "5275143cde39662936f5c7682dbe09f160245330b7a3e02957f29a066d409fe4",
+      "date": "2017-12-17T20:53:24-02:00",
+      "subject": "[R-sig-ME] Package glmmADMB",
+      "subject_clean": "Package glmmADMB",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear,\n\nI am not able to install glmmADMB package. I have already tried different\noptions, but none of them have worked. Please, find below the error message\nfrom R after trying to install it. May you please help me?\n\nThank you in advance.\n\nGreetings,\nRodrigo Corder\n\n\n> install.packages(\"R2admb\")\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  unable to access index for repository\nhttps://vps.fmvz.usp.br/CRAN/src/contrib:\n  cannot download all files\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  unable to access index for repository\nhttps://vps.fmvz.usp.br/CRAN/src/contrib:\n  cannot download all files\nWarning in install.packages :\n  package ?R2admb? is not available (for R version 3.3.2)\nWarning in install.packages :\n  URL '\nhttps://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3/PACKAGES.gz':\nstatus was 'Couldn't connect to server'\nWarning in install.packages :\n  URL '\nhttps://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3/PACKAGES':\nstatus was 'Couldn't connect to server'\nWarning in install.packages :\n  unable to access index for repository\nhttps://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3:\n  cannot download all files\n> install.packages(\"glmmADMB\",\n+                  repos=c(\"http://glmmadmb.r-forge.r-project.org/repos\",\n+                          getOption(\"repos\")),\n+                  type=\"source\")\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  unable to access index for repository\nhttps://vps.fmvz.usp.br/CRAN/src/contrib:\n  cannot download all files\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n'Couldn't connect to server'\nWarning in install.packages :\n  unable to access index for repository\nhttps://vps.fmvz.usp.br/CRAN/src/contrib:\n  cannot download all files\nWarning in install.packages :\n  dependency ?R2admb? is not available\ntrying URL '\nhttp://glmmadmb.r-forge.r-project.org/repos/src/contrib/glmmADMB_0.8.3.3.tar.gz\n'\nContent type 'application/x-gzip' length 9391177 bytes (9.0 MB)\n==================================================\ndownloaded 9.0 MB\n\nERROR: dependency ?R2admb? is not available for package ?glmmADMB?\n* removing\n?/Library/Frameworks/R.framework/Versions/3.3/Resources/library/glmmADMB?\nWarning in install.packages :\n  installation of package ?glmmADMB? had non-zero exit status\n\nThe downloaded source packages are in\n\n?/private/var/folders/7z/jc6r58_d49l5bgq1xf3k7smw0000gn/T/RtmpkTptDB/downloaded_packages?\n> library(glmmADMB)\nError in library(glmmADMB) : there is no package called ?glmmADMB?\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear,\n\nI am not able to install glmmADMB package. I have already tried different\noptions, but none of them have worked. Please, find below the error message\nfrom R after trying to install it. May you ",
+      "thread_id": "thread-5a9e2fbd9a1b",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-30dcf7352373",
+      "message_id": "<0bcbdfe0-5206-67c5-c6a9-bd65ee765b32@uni-bremen.de>",
+      "from_name": "Tim Richter-Heitmann",
+      "from_email_hash": "a0ebe399b17b2ef2d4e287d3872cff2d38860cb723c00e303745ab09f6b990a6",
+      "date": "2017-12-18T16:55:22+01:00",
+      "subject": "[R-sig-ME] Mixed Models in a very basic replication design",
+      "subject_clean": "Mixed Models in a very basic replication design",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Group,\n\ni am to plan a very basic factorial greenhouse experiment, and this time \ni will first ask for statistical advise before execution :).\n\nIt will encompass two treatment types with two levels each, two sampling \ndates with five replicates each, resulting in 2 x 2 x 2 x 5 = 40 samples.\n\nI guess, this is a basic three way ANOVA (~ Treatment A * Treatment B * \nTime). However, the arrangement of the replicates in the greenhouse will \nbe randomized. I have only a limited understanding of mixed models, \nobviously, but does the randomized location of the plant also requires \nthe introduction of a random effect (~ Treatment A * Treatment B * Time \n+ (1|Location)?. How do i best code location in this case?\n\nThank you!\n\n-- \nTim Richter-Heitmann\n\nUniversity of Bremen\nMicrobial Ecophysiology Group (AG Friedrich)\nFB02 - Biologie/Chemie\nLeobener Stra?e (NW2 A2130)\nD-28359 Bremen\nTel.: 0049(0)421 218-63062\nFax: 0049(0)421 218-63069",
+      "body_snippet": "Dear Group,\n\ni am to plan a very basic factorial greenhouse experiment, and this time \ni will first ask for statistical advise before execution :).\n\nIt will encompass two treatment types with two leve",
+      "thread_id": "thread-30dcf7352373",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-1a0477a41eb0",
+      "message_id": "<7939CDA2-60B1-4C33-829C-CD995FE45719@mac.com>",
+      "from_name": "Peter Claussen",
+      "from_email_hash": "d79df1c4f45b59831e0e5f32a0bfb00c94544da753cf8ced27f18923775b0ea4",
+      "date": "2017-12-18T11:31:26-06:00",
+      "subject": "[R-sig-ME] Mixed Models in a very basic replication design",
+      "subject_clean": "Mixed Models in a very basic replication design",
+      "in_reply_to": "<0bcbdfe0-5206-67c5-c6a9-bd65ee765b32@uni-bremen.de>",
+      "references": [
+        "<0bcbdfe0-5206-67c5-c6a9-bd65ee765b32@uni-bremen.de>"
+      ],
+      "body_plain": "Tim,\n\nThis is more a question of experimental design, but I can answer a bit relevant to mixed models.\n\nIn a greenhouse, environmental variation should be negligible and can typically be ignored. In some cases, the variance is so small that it results in a negative estimate from ANOVA. This is most apparent when you have a Location F-ratio less than 1. Briefly, the F-ratio is calculated with an error variance in the denominator, and that same variance plus another source of variance in the numerator, i.e. (EMS + t*Location MS)/EMS. If the ratio is less than 1, then Location MS must be negative.\n\nIf this occurs, and you fit the model using lmer and formula  = ~ Treatment A * Treatment B * Time + (1|Location) , you would expect the estimate of Location to be 0, since it would be constrained to be non-negative. If that happens, you can drop location from the model an fit as a CRD using the three-way ANOVA.\n\nHowever, you also include time in the model. Is this a repeated measures design? If so, then you might want to fit to a mixed model with Pot (or equivalent) as a random effect.\n\nCheers,\n\nPeter Claussen\nBiometrician\nGylling Data Management, Inc.\nBrookings, SD 57006-4605 USA\nTel. No.: +1 605 692-4021\nWebsite: www.gdmdata.com <http://www.gdmdata.com/>\n\n> On Dec 18, 2017, at 9:55 AM, Tim Richter-Heitmann <trichter at uni-bremen.de> wrote:\n> \n> Dear Group,\n> \n> i am to plan a very basic factorial greenhouse experiment, and this time i will first ask for statistical advise before execution :).\n> \n> It will encompass two treatment types with two levels each, two sampling dates with five replicates each, resulting in 2 x 2 x 2 x 5 = 40 samples.\n> \n> I guess, this is a basic three way ANOVA (~ Treatment A * Treatment B * Time). However, the arrangement of the replicates in the greenhouse will be randomized. I have only a limited understanding of mixed models, obviously, but does the randomized location of the plant also requires the introduction of a random effect (~ Treatment A * Treatment B * Time + (1|Location)?. How do i best code location in this case?\n> \n> Thank you!\n> \n> -- \n> Tim Richter-Heitmann\n> \n> University of Bremen\n> Microbial Ecophysiology Group (AG Friedrich)\n> FB02 - Biologie/Chemie\n> Leobener Stra?e (NW2 A2130)\n> D-28359 Bremen\n> Tel.: 0049(0)421 218-63062\n> Fax: 0049(0)421 218-63069\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Tim,\n\nThis is more a question of experimental design, but I can answer a bit relevant to mixed models.\n\nIn a greenhouse, environmental variation should be negligible and can typically be ignored. In s",
+      "thread_id": "thread-30dcf7352373",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-70d5e092f426",
+      "message_id": "<e5ac286a-4351-ecfb-3fa0-7dc103b15c76@uni-bremen.de>",
+      "from_name": "Tim Richter-Heitmann",
+      "from_email_hash": "a0ebe399b17b2ef2d4e287d3872cff2d38860cb723c00e303745ab09f6b990a6",
+      "date": "2017-12-18T19:13:39+01:00",
+      "subject": "[R-sig-ME] Mixed Models in a very basic replication design",
+      "subject_clean": "Mixed Models in a very basic replication design",
+      "in_reply_to": "<7939CDA2-60B1-4C33-829C-CD995FE45719@mac.com>",
+      "references": [
+        "<0bcbdfe0-5206-67c5-c6a9-bd65ee765b32@uni-bremen.de>",
+        "<7939CDA2-60B1-4C33-829C-CD995FE45719@mac.com>"
+      ],
+      "body_plain": "Peter,\n\nthank you very much. That was a very elucidating answer.\nIf i may elaborate on the issue of time a bit more, because i am also a \nbit clueless here.\nWill the selection of appropriate modelling approaches be a matter of if \nwe disrupt the plants (e.g. harvesting soil) or not (e.g. measuring \nheight or surface areas)? Or is it just to account for possibly \nindividual intercepts for individual plants?\nThe plants will be grown from surface-sterilized seeds in homogenized \nstarting soils.\n\nAlso, how would i encode the factor \"Pot\"? Just in as many levels as i \nhave pots?\n\nThank you again very much, Tim\n\n\nOn 18.12.2017 18:31, Peter Claussen wrote:\n> Tim,\n>\n> This is more a question of experimental design, but I can answer a bit \n> relevant to mixed models.\n>\n> In a greenhouse, environmental variation should be negligible and can \n> typically be ignored. In some cases, the variance is so small that it \n> results in a negative estimate from ANOVA. This is most apparent when \n> you have a Location F-ratio less than 1. Briefly, the F-ratio is \n> calculated with an error variance in the denominator, and that same \n> variance plus another source of variance in the numerator, i.e. (EMS + \n> t*Location MS)/EMS. If the ratio is less than 1, then Location MS must \n> be negative.\n>\n> If this occurs, and you fit the model using lmer and formula ?= ~ \n> Treatment A * Treatment B * Time + (1|Location) , you would expect the \n> estimate of Location to be 0, since it would be constrained to be \n> non-negative. If that happens, you can drop location from the model an \n> fit as a CRD using the three-way ANOVA.\n>\n> However, you also include time in the model. Is this a repeated \n> measures design? If so, then you might want to fit to a mixed model \n> with Pot (or equivalent) as a random effect.\n>\n> Cheers,\n>\n> Peter Claussen\n> Biometrician\n> Gylling Data Management, Inc.\n> Brookings, SD 57006-4605 USA\n> Tel. No.: +1 605 692-4021\n> Website:www.gdmdata.com <http://www.gdmdata.com/>\n>\n> \t\n>\n>> On Dec 18, 2017, at 9:55 AM, Tim Richter-Heitmann \n>> <trichter at uni-bremen.de <mailto:trichter at uni-bremen.de>> wrote:\n>>\n>> Dear Group,\n>>\n>> i am to plan a very basic factorial greenhouse experiment, and this \n>> time i will first ask for statistical advise before execution :).\n>>\n>> It will encompass two treatment types with two levels each, two \n>> sampling dates with five replicates each, resulting in 2 x 2 x 2 x 5 \n>> = 40 samples.\n>>\n>> I guess, this is a basic three way ANOVA (~ Treatment A * Treatment B \n>> * Time). However, the arrangement of the replicates in the greenhouse \n>> will be randomized. I have only a limited understanding of mixed \n>> models, obviously, but does the randomized location of the plant also \n>> requires the introduction of a random effect (~ Treatment A * \n>> Treatment B * Time + (1|Location)?. How do i best code location in \n>> this case?\n>>\n>> Thank you!\n>>\n>> -- \n>> Tim Richter-Heitmann\n>>\n>> University of Bremen\n>> Microbial Ecophysiology Group (AG Friedrich)\n>> FB02 - Biologie/Chemie\n>> Leobener Stra?e (NW2 A2130)\n>> D-28359 Bremen\n>> Tel.: 0049(0)421 218-63062\n>> Fax: 0049(0)421 218-63069\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org \n>> <mailto:R-sig-mixed-models at r-project.org> mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-- \nDr. Tim Richter-Heitmann\n\nUniversity of Bremen\nMicrobial Ecophysiology Group (AG Friedrich)\nFB02 - Biologie/Chemie\nLeobener Stra?e (NW2 A2130)\nD-28359 Bremen\nTel.: 0049(0)421 218-63062\nFax: 0049(0)421 218-63069",
+      "body_snippet": "Peter,\n\nthank you very much. That was a very elucidating answer.\nIf i may elaborate on the issue of time a bit more, because i am also a \nbit clueless here.\nWill the selection of appropriate modelling",
+      "thread_id": "thread-30dcf7352373",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-7de227102ee4",
+      "message_id": "<A5663A16-C837-4EDB-A069-BD2B65142B0F@mac.com>",
+      "from_name": "Peter Claussen",
+      "from_email_hash": "d79df1c4f45b59831e0e5f32a0bfb00c94544da753cf8ced27f18923775b0ea4",
+      "date": "2017-12-18T14:06:54-06:00",
+      "subject": "[R-sig-ME] Mixed Models in a very basic replication design",
+      "subject_clean": "Mixed Models in a very basic replication design",
+      "in_reply_to": "<e5ac286a-4351-ecfb-3fa0-7dc103b15c76@uni-bremen.de>",
+      "references": [
+        "<0bcbdfe0-5206-67c5-c6a9-bd65ee765b32@uni-bremen.de>",
+        "<7939CDA2-60B1-4C33-829C-CD995FE45719@mac.com>",
+        "<e5ac286a-4351-ecfb-3fa0-7dc103b15c76@uni-bremen.de>"
+      ],
+      "body_plain": "Tim,\n\nThere may be many reasons that different pots would respond to treatment uniquely. \n\nIf you plant a number of seeds, will you have 100% germination in each pot? Could differences in percent germination (say, root density) affect soil responses - both in initial measurements (independent intercept) or response over time (independent slope)?\n\nIf you have one plant per plot, can you be sure all plants are genetically or physiologically identically, and respond the same to treatments over time? Or do you need to account for the fact that you?re drawing seed from a random population? I had a problem like this years ago, doing a field trial with a soybean variety that was still a segregating population.\n\nHow you code ?Pot? depends on how you execute the experiment. If you have 2 levels of A and 2 levels of B, replicated 5 times, then you should have 2*2*5=20  pots, assume the 2 time measurements are take twice from the same pot. Then you could write an ANOVA model of the form\n\naov( ~  Treatment A * Treatment B * Time + Replicate + Error(Treatment A : Treatment B : Replicate))\n\n since the combination of A,B and Rep uniquely identify Pot. Otherwise, you could assign a id to each pot. \n\nMyself, I would run something like\n\naov( ~  Treatment A * Treatment B * Time + Replicate +  Replicate:Treatment + A:Treatment B)\n\nIf (Treatment A * Treatment B * Replicate) not significant, relative to EMS, then I would recalculate using \n\naov( ~  Treatment A * Treatment B * Time)\n\nIt?s not unreasonable for Replicate effects to be 0, and this analysis would give you a bit more error df and a non-significant test suggests that Treatment A:Treatment B:Replicate MS == EMS, so there is only one error term needed for treatment comparisons.\n\nIf (Treatment A * Treatment B * Replicate) is significant, you can?t compare two pairs of comparisons taken from different pots (say, A1B1 at time 2 vs A1B2 at time 2) with the same error term that you use for two pairs of comparisons take from the same pot (A1B1 at time 1 vs A1B1 at time 2). That error is easier to get correct using lme or lmer and (1 | Replicate / Pot). I would run\n\naov( ~  Treatment A * Treatment B * Time + Replicate + Error(Treatment A : Treatment B : Replicate))\n\njust to get a convenient set of F-test for A and B effects.\n\nIf (Treatment A : Treatment B : Time) interaction is significant, then you might consider comparing (1 | Replicate / Pot) vs (Time | Replicate / Pot). You could just code (Time | Pot) from the start, but I tend to be conservative when moving beyond a simple AOV. On the face of it, this appears to be a standard repeated-measures-as-split-plot design, so I would plan for an ANOVA, but allow for a mixed-model approach if the data warrant.\n\nWorking on a similar problem, I?m using something like\n\nlme(assessment1 ~ Treatment A * Treatment B * Time, random= ~ 1 | Replicate / Pot)\n\nas the default mixed model repeated-measure-as-split-plot analysis, then comparing to different correlated error models (i.e. correlation=corAR1()). With only 2 time points, you won?t need to worry about correlated errors, but it might be useful if you end up taking more measurements.\n\nOne caveat. If you end up with missing pots. then you should most certainly skip the AOV calculations and start with a mixed model.\n\nCheers,\n\nPeter\n\n> On Dec 18, 2017, at 12:13 PM, Tim Richter-Heitmann <trichter at uni-bremen.de> wrote:\n> \n> Peter,\n> \n> thank you very much. That was a very elucidating answer.\n> If i may elaborate on the issue of time a bit more, because i am also a bit clueless here.\n> Will the selection of appropriate modelling approaches be a matter of if we disrupt the plants (e.g. harvesting soil) or not (e.g. measuring height or surface areas)? Or is it just to account for possibly individual intercepts for individual plants?\n> The plants will be grown from surface-sterilized seeds in homogenized starting soils.\n> \n> Also, how would i encode the factor \"Pot\"? Just in as many levels as i have pots?\n> \n> Thank you again very much, Tim\n> \n> \n> On 18.12.2017 18:31, Peter Claussen wrote:\n>> Tim,\n>> \n>> This is more a question of experimental design, but I can answer a bit relevant to mixed models.\n>> \n>> In a greenhouse, environmental variation should be negligible and can typically be ignored. In some cases, the variance is so small that it results in a negative estimate from ANOVA. This is most apparent when you have a Location F-ratio less than 1. Briefly, the F-ratio is calculated with an error variance in the denominator, and that same variance plus another source of variance in the numerator, i.e. (EMS + t*Location MS)/EMS. If the ratio is less than 1, then Location MS must be negative.\n>> \n>> If this occurs, and you fit the model using lmer and formula  = ~ Treatment A * Treatment B * Time + (1|Location) , you would expect the estimate of Location to be 0, since it would be constrained to be non-negative. If that happens, you can drop location from the model an fit as a CRD using the three-way ANOVA.\n>> \n>> However, you also include time in the model. Is this a repeated measures design? If so, then you might want to fit to a mixed model with Pot (or equivalent) as a random effect.\n>> \n>> Cheers,\n>> \n>> Peter Claussen\n>> Biometrician\n>> Gylling Data Management, Inc.\n>> Brookings, SD 57006-4605 USA\n>> Tel. No.: +1 605 692-4021\n>> Website:www.gdmdata.com <http://www.gdmdata.com/> <http://www.gdmdata.com/ <http://www.gdmdata.com/>>\n>> \n>> \t\n>> \n>>> On Dec 18, 2017, at 9:55 AM, Tim Richter-Heitmann <trichter at uni-bremen.de <mailto:trichter at uni-bremen.de> <mailto:trichter at uni-bremen.de <mailto:trichter at uni-bremen.de>>> wrote:\n>>> \n>>> Dear Group,\n>>> \n>>> i am to plan a very basic factorial greenhouse experiment, and this time i will first ask for statistical advise before execution :).\n>>> \n>>> It will encompass two treatment types with two levels each, two sampling dates with five replicates each, resulting in 2 x 2 x 2 x 5 = 40 samples.\n>>> \n>>> I guess, this is a basic three way ANOVA (~ Treatment A * Treatment B * Time). However, the arrangement of the replicates in the greenhouse will be randomized. I have only a limited understanding of mixed models, obviously, but does the randomized location of the plant also requires the introduction of a random effect (~ Treatment A * Treatment B * Time + (1|Location)?. How do i best code location in this case?\n>>> \n>>> Thank you!\n>>> \n>>> -- \n>>> Tim Richter-Heitmann\n>>> \n>>> University of Bremen\n>>> Microbial Ecophysiology Group (AG Friedrich)\n>>> FB02 - Biologie/Chemie\n>>> Leobener Stra?e (NW2 A2130)\n>>> D-28359 Bremen\n>>> Tel.: 0049(0)421 218-63062\n>>> Fax: 0049(0)421 218-63069\n>>> \n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org> <mailto:R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org>> mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>> \n> \n> -- \n> Dr. Tim Richter-Heitmann\n> \n> University of Bremen\n> Microbial Ecophysiology Group (AG Friedrich)\n> FB02 - Biologie/Chemie\n> Leobener Stra?e (NW2 A2130)\n> D-28359 Bremen\n> Tel.: 0049(0)421 218-63062\n> Fax: 0049(0)421 218-63069\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Tim,\n\nThere may be many reasons that different pots would respond to treatment uniquely. \n\nIf you plant a number of seeds, will you have 100% germination in each pot? Could differences in percent germ",
+      "thread_id": "thread-30dcf7352373",
+      "thread_depth": 3,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-245cfba0ade6",
+      "message_id": "<24D12F7F-847C-49B1-8194-0036A7895340@glasgow.ac.uk>",
+      "from_name": "Paul Johnson",
+      "from_email_hash": "d0a0d3be9faaaa7660763903fb57c9a708d6938afbe7920f0f09ff6584a74866",
+      "date": "2017-12-19T12:47:52Z",
+      "subject": "[R-sig-ME] Package glmmADMB",
+      "subject_clean": "Package glmmADMB",
+      "in_reply_to": "<CA+i+nCr4=PiTq9KWDmWkwJPQ7acreY65O9M0J=dLQwyX=3UZwg@mail.gmail.com>",
+      "references": [
+        "<CA+i+nCr4=PiTq9KWDmWkwJPQ7acreY65O9M0J=dLQwyX=3UZwg@mail.gmail.com>"
+      ],
+      "body_plain": "Have you tried the glmmTMB package? I understand that Ben Bolker et al. are developing it as a replacement for glmmADMB. I?ve found it to be flexible*, robust, and very fast, much faster than glmmADMB (which I found unusable on large data sets), but sometimes even faster than glmer**. I?ve never had reason to use glmmADMB since finding glmmTMB. However watch out for differences between glmmTMB and glmer etc ? read the Details of the glmmTMB help. There are occasional issues as expected in a new-ish package, but the developers are very active and these tend to be dealt with quickly. On the whole this is already an extremely really useful package, mainly because it can quickly fit complex (= beyond glmer) GLMMs to large data sets where glmmADMB would fail or at best take hours (a huge thank you to the developers).\n\n*https://cran.r-project.org/web/packages/glmmTMB/vignettes/glmmTMB.pdf\n\"--Poisson, binomial, negative binomial (NB1 and NB2 parameterizations), Gamma, Beta, Gaussian; truncated Poisson and negative binomial\n--zero-inflation with fixed and random-effects components; hurdle models via truncated Poisson/NB\n--diagonal, compound-symmetric, or unstructured random effects variance-covariance matrices; first-order autoregressive (AR1) variance structures\"\n\n**E.g. binomial GLMM fitted to ~70K binary obs (of which ~700 are 1s) with 25 fixed effects and 2 crossed random effects (on an old Mac with 2.7 GHz Intel Core i7):\nglmmTMB: 2.9 min\nglmer: 29.4 min, but still didn?t *quite* converge (even with 'optimizer = \"bobyqa\"', which often helps). Log-likelihood 0.1 units below glmmTMB, so very close, and the estimates were very similar. Also I find that convergence warnings in glmer and glmer.nb are more sensitive than in glmmTMB.\n\n\n> On 17 Dec 2017, at 22:53, Rodrigo Malavazi Corder <rodrigo.corder at usp.br> wrote:\n> \n> Dear,\n> \n> I am not able to install glmmADMB package. I have already tried different\n> options, but none of them have worked. Please, find below the error message\n> from R after trying to install it. May you please help me?\n> \n> Thank you in advance.\n> \n> Greetings,\n> Rodrigo Corder\n> \n> \n>> install.packages(\"R2admb\")\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  unable to access index for repository\n> https://vps.fmvz.usp.br/CRAN/src/contrib:\n>  cannot download all files\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  unable to access index for repository\n> https://vps.fmvz.usp.br/CRAN/src/contrib:\n>  cannot download all files\n> Warning in install.packages :\n>  package ?R2admb? is not available (for R version 3.3.2)\n> Warning in install.packages :\n>  URL '\n> https://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3/PACKAGES.gz':\n> status was 'Couldn't connect to server'\n> Warning in install.packages :\n>  URL '\n> https://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3/PACKAGES':\n> status was 'Couldn't connect to server'\n> Warning in install.packages :\n>  unable to access index for repository\n> https://vps.fmvz.usp.br/CRAN/bin/macosx/mavericks/contrib/3.3:\n>  cannot download all files\n>> install.packages(\"glmmADMB\",\n> +                  repos=c(\"http://glmmadmb.r-forge.r-project.org/repos\",\n> +                          getOption(\"repos\")),\n> +                  type=\"source\")\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  unable to access index for repository\n> https://vps.fmvz.usp.br/CRAN/src/contrib:\n>  cannot download all files\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES.gz': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  URL 'https://vps.fmvz.usp.br/CRAN/src/contrib/PACKAGES': status was\n> 'Couldn't connect to server'\n> Warning in install.packages :\n>  unable to access index for repository\n> https://vps.fmvz.usp.br/CRAN/src/contrib:\n>  cannot download all files\n> Warning in install.packages :\n>  dependency ?R2admb? is not available\n> trying URL '\n> http://glmmadmb.r-forge.r-project.org/repos/src/contrib/glmmADMB_0.8.3.3.tar.gz\n> '\n> Content type 'application/x-gzip' length 9391177 bytes (9.0 MB)\n> ==================================================\n> downloaded 9.0 MB\n> \n> ERROR: dependency ?R2admb? is not available for package ?glmmADMB?\n> * removing\n> ?/Library/Frameworks/R.framework/Versions/3.3/Resources/library/glmmADMB?\n> Warning in install.packages :\n>  installation of package ?glmmADMB? had non-zero exit status\n> \n> The downloaded source packages are in\n> \n> ?/private/var/folders/7z/jc6r58_d49l5bgq1xf3k7smw0000gn/T/RtmpkTptDB/downloaded_packages?\n>> library(glmmADMB)\n> Error in library(glmmADMB) : there is no package called ?glmmADMB?\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Have you tried the glmmTMB package? I understand that Ben Bolker et al. are developing it as a replacement for glmmADMB. I?ve found it to be flexible*, robust, and very fast, much faster than glmmADMB",
+      "thread_id": "thread-5a9e2fbd9a1b",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-113902f186e2",
+      "message_id": "<de994891-577f-4aec-1994-e89b8279d17e@gmail.com>",
+      "from_name": "Walid Mawass",
+      "from_email_hash": "006135f439533670c351bb59119c994f8ed2788c624830e5cf3705f3da13a4a2",
+      "date": "2017-12-19T11:26:41-05:00",
+      "subject": "[R-sig-ME] indirect maternal genetic effects",
+      "subject_clean": "indirect maternal genetic effects",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\n\nI am trying to model direct genetic effects and indirect maternal \ngenetic effects on infant survival, using MCMCglmm. From what I know and \nunderstood from the ASReml code on how to model this, I should include \nthe identity of my focal individual (\"animal\") to estimate the direct \ngenetic effect, include the identity of his mother (\"dam\") to estimate \nthe maternal environment effect and then add another variable which \nshould represent the genetic effect of the mother on the focal \nindividual. I assumed that I should add the same \"dam\" variable but give \nit its own incidence matrix through ginverse(), but I am not sure about \nthis. I would appreciate some help on how to code this relationship.\n\nThank you\n\n-- \nWalid Mawass\n\nM.Sc. of Cellular and Molecular Biology\n\nPopulation Genetics Laboratory\n\nUniversity of Qu?bec at Trois-Rivi?res\n3351, boul. des Forges, C.P. 500\nTrois-Rivi?res (Qu?bec) G9A 5H7\nTelephone: 819-376-5011 poste 3384",
+      "body_snippet": "Hello everyone,\n\nI am trying to model direct genetic effects and indirect maternal \ngenetic effects on infant survival, using MCMCglmm. From what I know and \nunderstood from the ASReml code on how to ",
+      "thread_id": "thread-113902f186e2",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-eb17202102df",
+      "message_id": "<CAMMrp0XVYORjTzU9dNhq6rsahYxn0nn0X6_AwS2AAs699tjqhg@mail.gmail.com>",
+      "from_name": "Slawomir Wierzchon",
+      "from_email_hash": "289172f94aed9b6bbfcd641bc0e815bc9061378608898aff1d6125490f0899b0",
+      "date": "2017-12-19T19:35:47+01:00",
+      "subject": "[R-sig-ME] repeated measurements of continuous predictors and continuous response variable",
+      "subject_clean": "repeated measurements of continuous predictors and continuous response variable",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nI would greatly appreciate receiving exhaustive answer to the next question:\n\nMy data consist of one response variable and three predictors, say\n\nId           y                     x1              x2           x3\n1    2,29757646    1,522746484    6,1504    1,81651712\n1    2,460906175    2,072253268    7,0467    1,952559422\n1    2,561146752    1,69296991    4,8555    1,580112083\n2    2,542671567    1,419124506    11,5181    2,443919711\n2    2,47840973    1,254903533    10,2239    2,324728117\n3    2,409638554    2,168676486    14,7873    2,693768704\n4    2,577905082    2,290613721    22,1847    3,099402862\n4    2,771908643    1,98419636    18,5161    2,918640624\n5    2,137096774    1,166644699    5,1028    1,629789409\n\nThus there are repeated measurements, and each item (Id) has been subjected\nto a diverse number of measurements. I?m interested in finding linear\nrelationship y = a0 + a1*x1 + a2*x2 + a3*x3.\n\nMy questions are:\n\n(a) Can I use complete pooling (i.e. ignore Id?s) to solve my problem? Or\nshould I use lmer routine? If so, is it sufficient to call it as lmer(y ~\nx1+x2+x3 + (1|Id)?\n\n(b)  How can I apply Friedman's ?Multivariate Adaptive Regression Splines?\nto such problems? That is I'm looking for an R package solving such\nproblems.\n\nBest regards,\n\nSlawomir\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI would greatly appreciate receiving exhaustive answer to the next question:\n\nMy data consist of one response variable and three predictors, say\n\nId           y                     x1      ",
+      "thread_id": "thread-eb17202102df",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-cfa29dd16c93",
+      "message_id": "<DAB16A0903A9474491F9134DDC566BC873E63F47@CIO-TNC-D2MBX06.osuad.osu.edu>",
+      "from_name": "Sivakoff, Frances",
+      "from_email_hash": "976f704cfb9bbceb3840542f13214dcb4427653f58ac910096082579e2bf8a46",
+      "date": "2017-12-19T20:42:22Z",
+      "subject": "[R-sig-ME] Plotting partial residuals from a glmmADMB model",
+      "subject_clean": "Plotting partial residuals from a glmmADMB model",
+      "in_reply_to": "<CABghstRC62tAe7bRVMAGt05Piy6kUXweqKSAKkMsJje9fFvaNw@mail.gmail.com>",
+      "references": [
+        "<DAB16A0903A9474491F9134DDC566BC873E5E245@CIO-TNC-D2MBX06.osuad.osu.edu>",
+        "<CABghstRC62tAe7bRVMAGt05Piy6kUXweqKSAKkMsJje9fFvaNw@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Dr. Bolker,\n Thank you very much for your response. After trying to implement your suggestion, I'm unfortunately stuck. It appears that the getME function does not work with glmmADMB. I get the following error message:\n\nError in UseMethod(\"getME\") : \n  no applicable method for 'getME' applied to an object of class \"glmmadmb\"\n\nA potential work around to this may be to use the \"predict\" function, which can generate the components, but I'm not sure if this is equivalent. Also, I'm having trouble following the steps that you outlined in your email to generate the partial residuals. Would you be willing to work through how to generate the partial residuals for the fixed effect \"FoodTreatment\" in the model below that uses the Owl data set?\n\n ##Using the Owl Data\nom <- glmmadmb(SiblingNegotiation~FoodTreatment+ArrivalTime+SexParent+ (1|Nest),family=\"nbinom1\",data=Owls)\n\nThank you,\nFrances\n\n-----Original Message-----\nFrom: Ben Bolker [mailto:bbolker at gmail.com] \nSent: Thursday, December 14, 2017 9:54 PM\nTo: Sivakoff, Frances <sivakoff.3 at osu.edu>\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Plotting partial residuals from a glmmADMB model\n\nYou'll have to find a way to make \"partial predictions\". I don't think there's anything built in for this.  *Very* briefly, considering only fixed effects, if you retrieve the X matrix\n(getME(fitted_model,\"X\")) and the fixed-effect parameters (fixef(fitted_model)), you can drop any columns/parameters you want and do exp(X %*% beta) with the remaining columns/parameters to get a prediction that includes some but not all of the predictors. Subtracting the observed value should get you the partial residuals ...\n\n\nOn Tue, Dec 12, 2017 at 2:19 PM, Sivakoff, Frances <sivakoff.3 at osu.edu> wrote:\n> I would like to use ggplot2 to plot the partial residuals of an indicator (0 or 1) independent variable in a generalized linear mixed model fit with a \"nbinom1\" family using glmmadmb. My model has a response variable that is a count, 3 explanatory variables that are continuous, and 7 indicator variables that are 0 when a particular heavy metal is not detected and 1 when it is detected above a threshold value. I'd like to plot the partial residuals of the various independent variables. I think that the model below using the Owl data would be a good example data set for how to do this. The model below has a response variable that is a count, an explanatory variables that is continuous (arrivalTime), two categorical variables (FoodTreatment and SexParent), a random effect of Nest, and uses a \"nbinom1\" family.\n>\n> ##Using the Owl Data\n> om <- glmmadmb(SiblingNegotiation~FoodTreatment+ArrivalTime+SexParent+\n>                  (1|Nest),family=\"nbinom1\",data=Owls)\n>\n> Could you please suggest a method for plotting the partial residuals of the explanatory variables.\n>\n> Thank you,\n> Frances\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Dr. Bolker,\n Thank you very much for your response. After trying to implement your suggestion, I'm unfortunately stuck. It appears that the getME function does not work with glmmADMB. I get the f",
+      "thread_id": "thread-fca327ea0943",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-1beb7d7c53a5",
+      "message_id": "<003301d3797a$33014a90$9903dfb0$@gmail.com>",
+      "from_name": "Silvia Matesanz García",
+      "from_email_hash": "d7e201160a4e8d64122beaf7a6f8a9f6b5043994f9a7d5314fea5a105d249f20",
+      "date": "2017-12-20T11:06:26+01:00",
+      "subject": "[R-sig-ME] Significance of fixed factors using glmer",
+      "subject_clean": "Significance of fixed factors using glmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all\n\nI?m fitting a model where the response variable is Flowering (0, the plant\ndidn?t flower; 1, the plant did flower). I?m using glmer with a binomial\ndistribution. I?m trying to obtain the significance of fixed factors. I?ve\ntried lmerTest:anova and car:Anova but neither seem to provide p-values. \n\nIs there a way to do this? \n\n \n\nThanks!\n\n \n\n----------------------------------------------------------------------------\n-------\n\nDra. Silvia Matesanz \n\nInvestigadora Ram?n y Cajal. \n\n?rea de Biodiversidad y Conservaci?n. \n\nUniversidad Rey Juan Carlos\n\n <http://silviamatesanzgarc.wix.com/silviamatesanz>\nhttp://silviamatesanzgarc.wix.com/silviamatesanz\n\n <https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es>\nhttps://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es \n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all\n\nI?m fitting a model where the response variable is Flowering (0, the plant\ndidn?t flower; 1, the plant did flower). I?m using glmer with a binomial\ndistribution. I?m trying to obtain the signi",
+      "thread_id": "thread-1beb7d7c53a5",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-8dbcac48db5f",
+      "message_id": "<ACD1644AA6C67E4FBD0C350625508EC836739AD9@FHSDB4H16-2.csu.mcmaster.ca>",
+      "from_name": "Fox, John",
+      "from_email_hash": "26b3c2bfbc5587a1119fc93e98ed6834f6847804a317ae5707e7442251474735",
+      "date": "2017-12-20T14:43:40Z",
+      "subject": "[R-sig-ME] Significance of fixed factors using glmer",
+      "subject_clean": "Significance of fixed factors using glmer",
+      "in_reply_to": "<9191_1513780495_vBKEYtCT023959_003301d3797a$33014a90$9903dfb0$@gmail.com>",
+      "references": [
+        "<9191_1513780495_vBKEYtCT023959_003301d3797a$33014a90$9903dfb0$@gmail.com>"
+      ],
+      "body_plain": "Dear Silvia,\n\nBoth lmerTest::anova() and car::Anova() print p-values, so you'll have to provide more information -- ideally a reproducible example demonstrating the problem, or at least the problematic output with p-values absent.\n\nBest,\n John\n\n-----------------------------\nJohn Fox, Professor Emeritus\nMcMaster University\nHamilton, Ontario, Canada\nWeb: socialsciences.mcmaster.ca/jfox/\n\n\n\n> -----Original Message-----\n> From: R-sig-mixed-models [mailto:r-sig-mixed-models-bounces at r-project.org]\n> On Behalf Of Silvia Matesanz Garc?a\n> Sent: Wednesday, December 20, 2017 5:06 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] Significance of fixed factors using glmer\n> \n> Hi all\n> \n> I m fitting a model where the response variable is Flowering (0, the plant didn t\n> flower; 1, the plant did flower). I m using glmer with a binomial distribution. I\n> m trying to obtain the significance of fixed factors. I ve tried lmerTest:anova\n> and car:Anova but neither seem to provide p-values.\n> \n> Is there a way to do this?\n> \n> \n> \n> Thanks!\n> \n> \n> \n> ----------------------------------------------------------------------------\n> -------\n> \n> Dra. Silvia Matesanz\n> \n> Investigadora Ram n y Cajal.\n> \n>  rea de Biodiversidad y Conservaci n.\n> \n> Universidad Rey Juan Carlos\n> \n>  <http://silviamatesanzgarc.wix.com/silviamatesanz>\n> http://silviamatesanzgarc.wix.com/silviamatesanz\n> \n>  <https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es>\n> https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es\n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Silvia,\n\nBoth lmerTest::anova() and car::Anova() print p-values, so you'll have to provide more information -- ideally a reproducible example demonstrating the problem, or at least the problemati",
+      "thread_id": "thread-8dbcac48db5f",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-88af273274f8",
+      "message_id": "<CAMMrp0Xzwa5h5TRZw8_f-hQf1Fq0rry1r9d2U1=hMGJMKqtBEQ@mail.gmail.com>",
+      "from_name": "Slawomir Wierzchon",
+      "from_email_hash": "d7f3923d9538420ab6a3c1fba8bff4e768416884ffe507f527815b0068d05022",
+      "date": "2017-12-20T22:05:45+01:00",
+      "subject": "[R-sig-ME] repeated measurements of continuous predictors and continuous response variable",
+      "subject_clean": "repeated measurements of continuous predictors and continuous response variable",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nI would greatly appreciate receiving serious and exhaustive answer to the\nnext question:\n\nMy data consist of one response variable and three predictors, say\n\nId           y                     x1              x2           x3\n1    2,29757646    1,522746484    6,1504    1,81651712\n1    2,460906175    2,072253268    7,0467    1,952559422\n1    2,561146752    1,69296991    4,8555    1,580112083\n2    2,542671567    1,419124506    11,5181    2,443919711\n2    2,47840973    1,254903533    10,2239    2,324728117\n3    2,409638554    2,168676486    14,7873    2,693768704\n4    2,577905082    2,290613721    22,1847    3,099402862\n4    2,771908643    1,98419636    18,5161    2,918640624\n5    2,137096774    1,166644699    5,1028    1,629789409\n\nThus there are repeated measurements, and each item (Id) has been subjected\nto a diverse number of measurements. I?m interested in finding linear\nrelationship y = a0 + a1*x1 + a2*x2 + a3*x3.\n\nMy questions are:\n\n(a) Can I use complete pooling to solve my problem, i.e. simply can I use\nlm(y ~x1+x2+x3)? Or should I use lmer routine? If so, is it sufficient to\ncall it as lmer(y ~ x1+x2+x3 + (1|Id)?\n\n(b)  How can I apply Friedman's ?Multivariate Adaptive Regression Splines?\nto such problems? That is I'm looking for an R package solving such\nproblems.\n\nBest regards,\nSlawomir\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI would greatly appreciate receiving serious and exhaustive answer to the\nnext question:\n\nMy data consist of one response variable and three predictors, say\n\nId           y                 ",
+      "thread_id": "thread-88af273274f8",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-d7c880e058ba",
+      "message_id": "<CANYHYTRYFuMDv=xTt7pPOnqGZR5vpfdXW-jouhrHfuWo4xwj9Q@mail.gmail.com>",
+      "from_name": "Joshua Rosenberg",
+      "from_email_hash": "b5d5fa702d36cd2e6f9058aec9b7af29270492db75c4ae4f136507b8f507129b",
+      "date": "2017-12-20T17:10:11-05:00",
+      "subject": "[R-sig-ME] Use of pbkrtest to calculate Kenward-Roger approximation degrees of freedom",
+      "subject_clean": "Use of pbkrtest to calculate Kenward-Roger approximation degrees of freedom",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi R-sig-mixed-models,\n\nI'm trying to use the pbkrtest package to calculate Kenward-Roger\napproximation degrees of freedom for fixed effects coefficients estimated\nusing the lmer() function from the lme4 package.\n\nI've been able to use, for example, the function pbkrtest::get_Lb_ddf().\nHere is how I am using it:\n\nlibrary(lme4)\nlibrary(pbkrtest)\nfm1 <- lmer(Reaction ~ Days + (Days| Subject), sleepstudy)\nget_Lb_ddf(fm1, lme4::fixef(fm1))\n\nMy understanding is that this function returns the \"\ndenominator degrees of freedom\n,\" which, if I understand correctly, apply to the *overall model*, rather\nto specific coefficients, in part because get_Lb_ddf() returns a single\nvalue whether there are coefficients associated with zero, one, or more\nthan one predictors. I'm sorry if this is a novice question with respect to\ncalculating degrees of freedom in general (and calculating them with this,\nKenward-Roger, approach).\n\nAny advice pointing me in the right direction is much appreciated.\n\nJosh\n\n-- \nJoshua Rosenberg, Ph.D. Candidate\nEducational Psychology & Educational Technology\nMichigan State University\nhttp://jmichaelrosenberg.com\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi R-sig-mixed-models,\n\nI'm trying to use the pbkrtest package to calculate Kenward-Roger\napproximation degrees of freedom for fixed effects coefficients estimated\nusing the lmer() function from the l",
+      "thread_id": "thread-d7c880e058ba",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-6f41c0b0d63c",
+      "message_id": "<4737E17E7C8C3C4A8B5C1CE5346371D49FEDC2CC@EXCH06S.adqimr.ad.lan>",
+      "from_name": "David Duffy",
+      "from_email_hash": "073314ccdcf0ab60976bf305cae92a07441776d1e2dc9e5a4d6dacdbd25a2ae5",
+      "date": "2017-12-21T02:28:15Z",
+      "subject": "[R-sig-ME] repeated measurements of continuous predictors and continuous response variable",
+      "subject_clean": "repeated measurements of continuous predictors and continuous response variable",
+      "in_reply_to": "<CAMMrp0Xzwa5h5TRZw8_f-hQf1Fq0rry1r9d2U1=hMGJMKqtBEQ@mail.gmail.com>",
+      "references": [
+        "<CAMMrp0Xzwa5h5TRZw8_f-hQf1Fq0rry1r9d2U1=hMGJMKqtBEQ@mail.gmail.com>"
+      ],
+      "body_plain": "> (a) should I use lmer routine? \nYes\n> If so, is it sufficient to call it as lmer(y ~ x1+x2+x3 + (1|Id)?\nAs a start\n> (b)  How can I apply Friedman's ?Multivariate Adaptive Regression Splines?\n> to such problems? That is I'm looking for an R package solving such\n> problems.\nConsider GAMMs eg\nlibrary(mgcv)\ngamm( y ~ te(x1,x2,x3), list(Id=~1))",
+      "body_snippet": "> (a) should I use lmer routine? \nYes\n> If so, is it sufficient to call it as lmer(y ~ x1+x2+x3 + (1|Id)?\nAs a start\n> (b)  How can I apply Friedman's ?Multivariate Adaptive Regression Splines?\n> to s",
+      "thread_id": "thread-88af273274f8",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-73f19efd8f1c",
+      "message_id": "<CAMMrp0Xnzk-QBvpASToa4CrTAd0_tv24XpwutHcjogMS-Vecbg@mail.gmail.com>",
+      "from_name": "Slawomir Wierzchon",
+      "from_email_hash": "d7f3923d9538420ab6a3c1fba8bff4e768416884ffe507f527815b0068d05022",
+      "date": "2017-12-21T07:05:44+01:00",
+      "subject": "[R-sig-ME] repeated measurements of continuous predictors and continuous response variable",
+      "subject_clean": "repeated measurements of continuous predictors and continuous response variable",
+      "in_reply_to": "<4737E17E7C8C3C4A8B5C1CE5346371D49FEDC2CC@EXCH06S.adqimr.ad.lan>",
+      "references": [
+        "<CAMMrp0Xzwa5h5TRZw8_f-hQf1Fq0rry1r9d2U1=hMGJMKqtBEQ@mail.gmail.com>",
+        "<4737E17E7C8C3C4A8B5C1CE5346371D49FEDC2CC@EXCH06S.adqimr.ad.lan>"
+      ],
+      "body_plain": "Thanks!\n\n21 gru 2017 03:28 \"David Duffy\" <David.Duffy at qimrberghofer.edu.au>\nnapisa?(a):\n\n>\n> > (a) should I use lmer routine?\n> Yes\n> > If so, is it sufficient to call it as lmer(y ~ x1+x2+x3 + (1|Id)?\n> As a start\n> > (b)  How can I apply Friedman's ?Multivariate Adaptive Regression\n> Splines?\n> > to such problems? That is I'm looking for an R package solving such\n> > problems.\n> Consider GAMMs eg\n> library(mgcv)\n> gamm( y ~ te(x1,x2,x3), list(Id=~1))\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks!\n\n21 gru 2017 03:28 \"David Duffy\" <David.Duffy at qimrberghofer.edu.au>\nnapisa?(a):\n\n>\n> > (a) should I use lmer routine?\n> Yes\n> > If so, is it sufficient to call it as lmer(y ~ x1+x2+x3 + (1|",
+      "thread_id": "thread-88af273274f8",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-7ccb06641768",
+      "message_id": "<CAPsE2jyWoc+58g0ubc7+vewbDVXpcNNMk7rZXQ580iK7gnbAQA@mail.gmail.com>",
+      "from_name": "Julia Chacon Labella",
+      "from_email_hash": "eff9ed6cd7e292d2764aabd29c13613e9c5fe39c6ea96764e5c01ee058e32569",
+      "date": "2017-12-21T11:03:20+01:00",
+      "subject": "[R-sig-ME] Significance of fixed factors using glmer",
+      "subject_clean": "Significance of fixed factors using glmer",
+      "in_reply_to": "<ACD1644AA6C67E4FBD0C350625508EC836739AD9@FHSDB4H16-2.csu.mcmaster.ca>",
+      "references": [
+        "<9191_1513780495_vBKEYtCT023959_003301d3797a$33014a90$9903dfb0$@gmail.com>",
+        "<ACD1644AA6C67E4FBD0C350625508EC836739AD9@FHSDB4H16-2.csu.mcmaster.ca>"
+      ],
+      "body_plain": "Hi Silvia,\n\nIf you have previously loaded other packages like afex package, then\nlmerTest cannot work properly and does not give you the p-values.\nTry to detach the other packages if it is the case, and let see if it works\nnow.\n\nExample: detach(\"package:afex\", unload=TRUE)\n\nOr...you can restart your R session and load only the packages you need.\nBut I would try detach first.\n\nHope it works!\nJulia\n\n\n2017-12-20 15:43 GMT+01:00 Fox, John <jfox at mcmaster.ca>:\n\n> Dear Silvia,\n>\n> Both lmerTest::anova() and car::Anova() print p-values, so you'll have to\n> provide more information -- ideally a reproducible example demonstrating\n> the problem, or at least the problematic output with p-values absent.\n>\n> Best,\n>  John\n>\n> -----------------------------\n> John Fox, Professor Emeritus\n> McMaster University\n> Hamilton, Ontario, Canada\n> Web: socialsciences.mcmaster.ca/jfox/\n>\n>\n>\n> > -----Original Message-----\n> > From: R-sig-mixed-models [mailto:r-sig-mixed-models-\n> bounces at r-project.org]\n> > On Behalf Of Silvia Matesanz Garc?a\n> > Sent: Wednesday, December 20, 2017 5:06 AM\n> > To: r-sig-mixed-models at r-project.org\n> > Subject: [R-sig-ME] Significance of fixed factors using glmer\n> >\n> > Hi all\n> >\n> > I m fitting a model where the response variable is Flowering (0, the\n> plant didn t\n> > flower; 1, the plant did flower). I m using glmer with a binomial\n> distribution. I\n> > m trying to obtain the significance of fixed factors. I ve tried\n> lmerTest:anova\n> > and car:Anova but neither seem to provide p-values.\n> >\n> > Is there a way to do this?\n> >\n> >\n> >\n> > Thanks!\n> >\n> >\n> >\n> > ------------------------------------------------------------\n> ----------------\n> > -------\n> >\n> > Dra. Silvia Matesanz\n> >\n> > Investigadora Ram n y Cajal.\n> >\n> >  rea de Biodiversidad y Conservaci n.\n> >\n> > Universidad Rey Juan Carlos\n> >\n> >  <http://silviamatesanzgarc.wix.com/silviamatesanz>\n> > http://silviamatesanzgarc.wix.com/silviamatesanz\n> >\n> >  <https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es>\n> > https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es\n> >\n> >\n> >\n> >\n> >       [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n\n-- \nJulia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Silvia,\n\nIf you have previously loaded other packages like afex package, then\nlmerTest cannot work properly and does not give you the p-values.\nTry to detach the other packages if it is the case, a",
+      "thread_id": "thread-8dbcac48db5f",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-35631d1f5dc4",
+      "message_id": "<27ccc648-569f-d88b-7cd0-db81d88572c9@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "527cee51b3dc4b85fe0614d589e46cfa59c2cfe2c7303efdb52e1af422dab0a8",
+      "date": "2017-12-21T13:28:56Z",
+      "subject": "[R-sig-ME] indirect maternal genetic effects",
+      "subject_clean": "indirect maternal genetic effects",
+      "in_reply_to": "<de994891-577f-4aec-1994-e89b8279d17e@gmail.com>",
+      "references": [
+        "<de994891-577f-4aec-1994-e89b8279d17e@gmail.com>"
+      ],
+      "body_plain": "Hi,\n\nYou are correct. You are need to associate the inverse with both terms:\n\ninvA<-inverseA(ped)$Ainv\n\n\nm1<-MCMCglmm(..., random=~dam+animal, ginverse=list(animal=invA, dam=invA),  ...)\n\nif you want to estimate the direct-maternal genetic covariance you need:\n\n\nm2<-MCMCglmm(..., random=~str(dam+animal), ginverse=list(animal=invA, dam=invA),  ...)\n\nCheers,\n\nJarrod\n  \n\n\nOn 19/12/2017 16:26, Walid Mawass wrote:\n> Hello everyone,\n>\n> I am trying to model direct genetic effects and indirect maternal \n> genetic effects on infant survival, using MCMCglmm. From what I know \n> and understood from the ASReml code on how to model this, I should \n> include the identity of my focal individual (\"animal\") to estimate the \n> direct genetic effect, include the identity of his mother (\"dam\") to \n> estimate the maternal environment effect and then add another variable \n> which should represent the genetic effect of the mother on the focal \n> individual. I assumed that I should add the same \"dam\" variable but \n> give it its own incidence matrix through ginverse(), but I am not sure \n> about this. I would appreciate some help on how to code this \n> relationship.\n>\n> Thank you\n>\n\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20171221/8d35b1bc/attachment.ksh>",
+      "body_snippet": "Hi,\n\nYou are correct. You are need to associate the inverse with both terms:\n\ninvA<-inverseA(ped)$Ainv\n\n\nm1<-MCMCglmm(..., random=~dam+animal, ginverse=list(animal=invA, dam=invA),  ...)\n\nif you want ",
+      "thread_id": "thread-113902f186e2",
+      "thread_depth": 1,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-c426a0d008e6",
+      "message_id": "<CABghstTeWV+9DcsKPKhPcM=kM7s0j=qs85PXLG52Fog=Kp5upg@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2017-12-21T09:01:39-05:00",
+      "subject": "[R-sig-ME] Significance of fixed factors using glmer",
+      "subject_clean": "Significance of fixed factors using glmer",
+      "in_reply_to": "<CAPsE2jyWoc+58g0ubc7+vewbDVXpcNNMk7rZXQ580iK7gnbAQA@mail.gmail.com>",
+      "references": [
+        "<9191_1513780495_vBKEYtCT023959_003301d3797a$33014a90$9903dfb0$@gmail.com>",
+        "<ACD1644AA6C67E4FBD0C350625508EC836739AD9@FHSDB4H16-2.csu.mcmaster.ca>",
+        "<CAPsE2jyWoc+58g0ubc7+vewbDVXpcNNMk7rZXQ580iK7gnbAQA@mail.gmail.com>"
+      ],
+      "body_plain": "Julia: that's interesting, but can you be more specific? I *never* get\np-values with a single-argument anova(),\nbut I do get p-values with car::Anova or other methods suggested below:\n\n[1] lmerTest_2.0-36 afex_0.18-0     lsmeans_2.27-61 lme4_1.1-15\n[5] Matrix_1.2-12\n\n  Suggestions for improving the text in ?lme4::pvalues will be warmly\nappreciated.\n\n  cheers\n   Ben Bolker\n\n\n\n\nlibrary(afex)\nlibrary(lmerTest)\nlibrary(car)\ndata(\"cbpp\",package=\"lme4\")\ng1 <- glmer(cbind(incidence, size-incidence) ~ period + (1|herd),\n    family=binomial,data=cbpp)\nlme4:::anova.merMod(g1) ## no p-values\nanova(g1)  ## from lmerTest: no p-values\nfind(\"anova\")\n## [1] \"package:lmerTest\" \"package:stats\"\nsummary(g1) ## Wald p-values\nAnova(g1)  ## Wald (type II) p-values\ndrop1(g1,test=\"Chisq\")\nmixed(cbind(incidence, size-incidence) ~ period + (1|herd),\n      family=binomial,data=cbpp, method=\"LRT\")\nsessionInfo()\n\n\n\n\nOn Thu, Dec 21, 2017 at 5:03 AM, Julia Chacon Labella\n<juliachacon at gmail.com> wrote:\n> Hi Silvia,\n>\n> If you have previously loaded other packages like afex package, then\n> lmerTest cannot work properly and does not give you the p-values.\n> Try to detach the other packages if it is the case, and let see if it works\n> now.\n>\n> Example: detach(\"package:afex\", unload=TRUE)\n>\n> Or...you can restart your R session and load only the packages you need.\n> But I would try detach first.\n>\n> Hope it works!\n> Julia\n>\n>\n> 2017-12-20 15:43 GMT+01:00 Fox, John <jfox at mcmaster.ca>:\n>\n>> Dear Silvia,\n>>\n>> Both lmerTest::anova() and car::Anova() print p-values, so you'll have to\n>> provide more information -- ideally a reproducible example demonstrating\n>> the problem, or at least the problematic output with p-values absent.\n>>\n>> Best,\n>>  John\n>>\n>> -----------------------------\n>> John Fox, Professor Emeritus\n>> McMaster University\n>> Hamilton, Ontario, Canada\n>> Web: socialsciences.mcmaster.ca/jfox/\n>>\n>>\n>>\n>> > -----Original Message-----\n>> > From: R-sig-mixed-models [mailto:r-sig-mixed-models-\n>> bounces at r-project.org]\n>> > On Behalf Of Silvia Matesanz Garc?a\n>> > Sent: Wednesday, December 20, 2017 5:06 AM\n>> > To: r-sig-mixed-models at r-project.org\n>> > Subject: [R-sig-ME] Significance of fixed factors using glmer\n>> >\n>> > Hi all\n>> >\n>> > I m fitting a model where the response variable is Flowering (0, the\n>> plant didn t\n>> > flower; 1, the plant did flower). I m using glmer with a binomial\n>> distribution. I\n>> > m trying to obtain the significance of fixed factors. I ve tried\n>> lmerTest:anova\n>> > and car:Anova but neither seem to provide p-values.\n>> >\n>> > Is there a way to do this?\n>> >\n>> >\n>> >\n>> > Thanks!\n>> >\n>> >\n>> >\n>> > ------------------------------------------------------------\n>> ----------------\n>> > -------\n>> >\n>> > Dra. Silvia Matesanz\n>> >\n>> > Investigadora Ram n y Cajal.\n>> >\n>> >  rea de Biodiversidad y Conservaci n.\n>> >\n>> > Universidad Rey Juan Carlos\n>> >\n>> >  <http://silviamatesanzgarc.wix.com/silviamatesanz>\n>> > http://silviamatesanzgarc.wix.com/silviamatesanz\n>> >\n>> >  <https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es>\n>> > https://scholar.google.es/citations?user=6xRDyPAAAAAJ&hl=es\n>> >\n>> >\n>> >\n>> >\n>> >       [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n>\n>\n> --\n> Julia\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Julia: that's interesting, but can you be more specific? I *never* get\np-values with a single-argument anova(),\nbut I do get p-values with car::Anova or other methods suggested below:\n\n[1] lmerTest_2.",
+      "thread_id": "thread-8dbcac48db5f",
+      "thread_depth": 2,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-406d9a0e6c1c",
+      "message_id": "<CANYHYTSYWoRidNFc+OzCFeHtKdZpWJmMPzg7b5O4SjQbxbKY5Q@mail.gmail.com>",
+      "from_name": "Joshua Rosenberg",
+      "from_email_hash": "4fed82b1e94002519f5985240a007f34b0a7cc23ef3d2662bb162ac093be3542",
+      "date": "2017-12-21T09:51:43-05:00",
+      "subject": "[R-sig-ME] Use of pbkrtest to calculate Kenward-Roger approximated degrees of freedom",
+      "subject_clean": "Use of pbkrtest to calculate Kenward-Roger approximated degrees of freedom",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\n\nI'm trying to use the pbkrtest package to calculate Kenward-Roger\napproximation degrees of freedom for fixed effects coefficients estimated\nusing the lmer() function from the lme4 package.\n\nI've been able to use, for example, the function pbkrtest::get_Lb_ddf().\nHere is how I am using it:\n\nlibrary(lme4)\nlibrary(pbkrtest)\nfm1 <- lmer(Reaction ~ Days + (Days| Subject), sleepstudy)\nget_Lb_ddf(fm1, lme4::fixef(fm1))\n\n\nMy understanding is that this function returns the \"denominator degrees of\nfreedom,\" which, if I understand correctly, apply to the *overall model*,\nrather to specific coefficients, in part because get_Lb_ddf() returns a\nsingle value whether there are coefficients associated with zero, one, or\nmore than one predictors. I\n\n'm sorry if this is a novice question with respect to calculating degrees\nof freedom in general (and calculating them with this, Kenward-Roger,\napproach)! Thanks for any thoughts or suggestions for how to think about\ncalculating degrees of freedom using this - or another, better - approach.\n\nJosh\n\n\n-- \nJoshua Rosenberg, Ph.D. Candidate\nEducational Psychology\n&\n Educational Technology\nMichigan State University\nhttp://jmichaelrosenberg.com\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nI'm trying to use the pbkrtest package to calculate Kenward-Roger\napproximation degrees of freedom for fixed effects coefficients estimated\nusing the lmer() function from the lme4 packag",
+      "thread_id": "thread-406d9a0e6c1c",
+      "thread_depth": 0,
+      "month": "2017-12"
+    },
+    {
+      "id": "msg-7923f93f9076",
+      "message_id": "<CANYHYTQUygGRXws+o=EStzZLj99f9VNTpNdK9srbVJwNOatJng@mail.gmail.com>",
+      "from_name": "Joshua Rosenberg",
+      "from_email_hash": "4fed82b1e94002519f5985240a007f34b0a7cc23ef3d2662bb162ac093be3542",
+      "date": "2017-12-26T16:38:05Z",
+      "subject": "[R-sig-ME] Use of pbkrtest to calculate Kenward-Roger approximated degrees of freedom",
+      "subject_clean": "Use of pbkrtest to calculate Kenward-Roger approximated degrees of freedom",
+      "in_reply_to": "<CANYHYTSYWoRidNFc+OzCFeHtKdZpWJmMPzg7b5O4SjQbxbKY5Q@mail.gmail.com>",
+      "references": [
+        "<CANYHYTSYWoRidNFc+OzCFeHtKdZpWJmMPzg7b5O4SjQbxbKY5Q@mail.gmail.com>"
+      ],
+      "body_plain": "Hi all, in case any others find this useful, here's the approach I've\npursued, borrowing from the source code for the summary() method function\nin lmerTest:\n\nlibrary(purrr)\nlibrary(lme4)\nlibrary(pbkrtest)\n\nfm1 <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)\n\nget_kr_df <- function(model_object) {\n    L <- diag(rep(1, length(fixef(model_object))))\n    L <- as.data.frame(L)\n    out <- purrr::map_dbl(L, pbkrtest::get_Lb_ddf, object = model_object)\n    names(out) <- names(fixef(model_object))\n    out\n}\n\nget_kr_df(m1)\n\nOn Thu, Dec 21, 2017 at 9:51 AM Joshua Rosenberg <\njmichaelrosenberg at gmail.com> wrote:\n\n> Hi everyone,\n>\n> I'm trying to use the pbkrtest package to calculate Kenward-Roger\n> approximation degrees of freedom for fixed effects coefficients estimated\n> using the lmer() function from the lme4 package.\n>\n> I've been able to use, for example, the function pbkrtest::get_Lb_ddf().\n> Here is how I am using it:\n>\n> library(lme4)\n> library(pbkrtest)\n> fm1 <- lmer(Reaction ~ Days + (Days| Subject), sleepstudy)\n> get_Lb_ddf(fm1, lme4::fixef(fm1))\n>\n>\n> My understanding is that this function returns the \"denominator degrees of\n> freedom,\" which, if I understand correctly, apply to the *overall model*,\n> rather to specific coefficients, in part because get_Lb_ddf() returns a\n> single value whether there are coefficients associated with zero, one, or\n> more than one predictors. I\n>\n> 'm sorry if this is a novice question with respect to calculating degrees\n> of freedom in general (and calculating them with this, Kenward-Roger,\n> approach)! Thanks for any thoughts or suggestions for how to think about\n> calculating degrees of freedom using this - or another, better - approach.\n>\n> Josh\n>\n>\n> --\n> Joshua Rosenberg, Ph.D. Candidate\n> Educational Psychology\n> &\n>  Educational Technology\n> Michigan State University\n> http://jmichaelrosenberg.com\n>\n-- \nJoshua Rosenberg, Ph.D. Candidate\nEducational Psychology ?&? Educational Technology\nMichigan State University\nhttp://jmichaelrosenberg.com\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all, in case any others find this useful, here's the approach I've\npursued, borrowing from the source code for the summary() method function\nin lmerTest:\n\nlibrary(purrr)\nlibrary(lme4)\nlibrary(pbkrt",
+      "thread_id": "thread-406d9a0e6c1c",
+      "thread_depth": 1,
+      "month": "2017-12"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-5336af4d797c",
+      "subject": "model specification in lmer",
+      "message_count": 4,
+      "participants": [
+        "Paul Johnson",
+        "silvia.matesanzgarcia at gmail.com"
+      ],
+      "started": "2017-12-01T01:58:23+00:00",
+      "last_reply": "2017-12-01T13:34:41+00:00",
+      "root_message_id": "msg-5336af4d797c"
+    },
+    {
+      "id": "thread-74839fe2b2fd",
+      "subject": "GLM question",
+      "message_count": 1,
+      "participants": [
+        "dorothy borowy"
+      ],
+      "started": "2017-12-01T21:28:02-05:00",
+      "last_reply": "2017-12-01T21:28:02-05:00",
+      "root_message_id": "msg-74839fe2b2fd"
+    },
+    {
+      "id": "thread-dcdc96aea654",
+      "subject": "Choosing best approach for a crossover experiment",
+      "message_count": 2,
+      "participants": [
+        "Bradley Carlson",
+        "Thierry Onkelinx"
+      ],
+      "started": "2017-12-05T11:50:01-05:00",
+      "last_reply": "2017-12-12T09:11:34+01:00",
+      "root_message_id": "msg-dcdc96aea654"
+    },
+    {
+      "id": "thread-18061d0936ff",
+      "subject": "glm model with all zeros for one of the factor level",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Juan Pablo Edwards Molina",
+        "Paul Johnson"
+      ],
+      "started": "2017-12-05T12:58:00-03:00",
+      "last_reply": "2017-12-06T13:02:57-03:00",
+      "root_message_id": "msg-18061d0936ff"
+    },
+    {
+      "id": "thread-71e7fb27e40e",
+      "subject": "repeated measures and random effects question",
+      "message_count": 2,
+      "participants": [
+        "Moore, James Roy",
+        "Thierry Onkelinx"
+      ],
+      "started": "2017-12-07T23:34:48+00:00",
+      "last_reply": "2017-12-11T11:42:08+01:00",
+      "root_message_id": "msg-71e7fb27e40e"
+    },
+    {
+      "id": "thread-fca327ea0943",
+      "subject": "Plotting partial residuals from a glmmADMB model",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Sivakoff, Frances"
+      ],
+      "started": "2017-12-12T19:19:55+00:00",
+      "last_reply": "2017-12-19T20:42:22+00:00",
+      "root_message_id": "msg-fca327ea0943"
+    },
+    {
+      "id": "thread-4259f2738e45",
+      "subject": "testing significance of fixed factors in a mixed model",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Julia Chacon Labella"
+      ],
+      "started": "2017-12-14T20:25:44+01:00",
+      "last_reply": "2017-12-16T19:05:31+01:00",
+      "root_message_id": "msg-4259f2738e45"
+    },
+    {
+      "id": "thread-068c1e14f960",
+      "subject": "multinomial model with MCMCglmm",
+      "message_count": 1,
+      "participants": [
+        "Cate Ferrari"
+      ],
+      "started": "2017-12-16T14:31:22+01:00",
+      "last_reply": "2017-12-16T14:31:22+01:00",
+      "root_message_id": "msg-068c1e14f960"
+    },
+    {
+      "id": "thread-d49d6c851599",
+      "subject": "Mixed effects model with unbalanced repeated measures across blocks",
+      "message_count": 1,
+      "participants": [
+        "M West"
+      ],
+      "started": "2017-12-17T15:01:12-06:00",
+      "last_reply": "2017-12-17T15:01:12-06:00",
+      "root_message_id": "msg-d49d6c851599"
+    },
+    {
+      "id": "thread-5a9e2fbd9a1b",
+      "subject": "Package glmmADMB",
+      "message_count": 2,
+      "participants": [
+        "Paul Johnson",
+        "Rodrigo Malavazi Corder"
+      ],
+      "started": "2017-12-17T20:53:24-02:00",
+      "last_reply": "2017-12-19T12:47:52+00:00",
+      "root_message_id": "msg-5a9e2fbd9a1b"
+    },
+    {
+      "id": "thread-30dcf7352373",
+      "subject": "Mixed Models in a very basic replication design",
+      "message_count": 4,
+      "participants": [
+        "Peter Claussen",
+        "Tim Richter-Heitmann"
+      ],
+      "started": "2017-12-18T16:55:22+01:00",
+      "last_reply": "2017-12-18T14:06:54-06:00",
+      "root_message_id": "msg-30dcf7352373"
+    },
+    {
+      "id": "thread-113902f186e2",
+      "subject": "indirect maternal genetic effects",
+      "message_count": 2,
+      "participants": [
+        "Jarrod Hadfield",
+        "Walid Mawass"
+      ],
+      "started": "2017-12-19T11:26:41-05:00",
+      "last_reply": "2017-12-21T13:28:56+00:00",
+      "root_message_id": "msg-113902f186e2"
+    },
+    {
+      "id": "thread-eb17202102df",
+      "subject": "repeated measurements of continuous predictors and continuous response variable",
+      "message_count": 1,
+      "participants": [
+        "Slawomir Wierzchon"
+      ],
+      "started": "2017-12-19T19:35:47+01:00",
+      "last_reply": "2017-12-19T19:35:47+01:00",
+      "root_message_id": "msg-eb17202102df"
+    },
+    {
+      "id": "thread-1beb7d7c53a5",
+      "subject": "Significance of fixed factors using glmer",
+      "message_count": 1,
+      "participants": [
+        "Silvia Matesanz García"
+      ],
+      "started": "2017-12-20T11:06:26+01:00",
+      "last_reply": "2017-12-20T11:06:26+01:00",
+      "root_message_id": "msg-1beb7d7c53a5"
+    },
+    {
+      "id": "thread-8dbcac48db5f",
+      "subject": "Significance of fixed factors using glmer",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Fox, John",
+        "Julia Chacon Labella"
+      ],
+      "started": "2017-12-20T14:43:40+00:00",
+      "last_reply": "2017-12-21T09:01:39-05:00",
+      "root_message_id": "msg-8dbcac48db5f"
+    },
+    {
+      "id": "thread-d7c880e058ba",
+      "subject": "Use of pbkrtest to calculate Kenward-Roger approximation degrees of freedom",
+      "message_count": 1,
+      "participants": [
+        "Joshua Rosenberg"
+      ],
+      "started": "2017-12-20T17:10:11-05:00",
+      "last_reply": "2017-12-20T17:10:11-05:00",
+      "root_message_id": "msg-d7c880e058ba"
+    },
+    {
+      "id": "thread-88af273274f8",
+      "subject": "repeated measurements of continuous predictors and continuous response variable",
+      "message_count": 3,
+      "participants": [
+        "David Duffy",
+        "Slawomir Wierzchon"
+      ],
+      "started": "2017-12-20T22:05:45+01:00",
+      "last_reply": "2017-12-21T07:05:44+01:00",
+      "root_message_id": "msg-88af273274f8"
+    },
+    {
+      "id": "thread-406d9a0e6c1c",
+      "subject": "Use of pbkrtest to calculate Kenward-Roger approximated degrees of freedom",
+      "message_count": 2,
+      "participants": [
+        "Joshua Rosenberg"
+      ],
+      "started": "2017-12-21T09:51:43-05:00",
+      "last_reply": "2017-12-26T16:38:05+00:00",
+      "root_message_id": "msg-406d9a0e6c1c"
+    }
+  ]
+}

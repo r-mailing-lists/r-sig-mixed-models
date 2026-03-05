@@ -1,0 +1,778 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2021-10",
+  "messages": [
+    {
+      "id": "msg-16dff55749fb",
+      "message_id": "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-10-04T09:12:03-04:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+      "references": [
+        "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>"
+      ],
+      "body_plain": "On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n> Hi,\n> \n> I'm running a piecewise SEM with 3 component models:\n> \n> lmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n> \n> glmer(response variable2 ~ predictors + (1| Point) + (1|Year), family =\n> \"binomial\", input_table)\n> \n> glmer(response variable3 ~ predictors + (1| Point) + (1|Year), family =\n> \"binomial\", input_table)\n> \n> Because sampling involved visiting 18 points in spring of 2018 and again in\n> spring of 2019, I specified samping point and year as random effects.\n\n   If there are only two years, it's not surprising that you'll get \nestimates of zero variance for (1|Year).  I would probably make Year a \nfixed effect.\n\n> \n> When I run the model, this warning message appears:\n> Check model convergence: log-likelihood estimates lead to negative\n> Chi-squared!\n\n   I can't find this warning message anywhere, even in the development \nbranch of piecewiseSEM:\n\nhttps://github.com/jslefche/piecewiseSEM/search?q=convergence\n\n??\n\n> \n> This message also appears:\n> boundary (singular) fit: see ?isSingular\n> \n>  From what I've read about the second message, it could be due to random\n> effect variance estimates of zero. I checked and this happens in the 1st\n> and 3rd component models. In the 1st model \"Point\" has zero variance, and\n> in the 3rd model \"Year\" has zero variance.\n> \n> My first question is (and I apologize in advance if this is silly to ask)\n> whether this means that there's not really an effect coming from Point in\n> component model 1 and from Year in component model 2? If so, would it be\n> possible to remove those random effects to end up with:\n> \n> lmer(Response variable1 ~ Predictors + (1|Year), input_table)\n> \n> glmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family =\n> \"binomial\", input_table)\n> \n> glmer(Response variable3 ~ Predictors + (1| Point), family = \"binomial\",\n> input_table)\n\n   Seems reasonable.\n> \n> My second question is whether the warning \"Check model convergence:\n> log-likelihood estimates lead to negative Chi-squared!\" is related to these\n> singularity issues?\n> \n> Oh and I am using the development version of the piecewise SEM package\n> installed using devtools. This is because this version provides additional\n> standardized coefficients for GLMM.\n> \n> \n> Thanks!\n> \n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\nGraduate chair, Mathematics & Statistics",
+      "body_snippet": "On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n> Hi,\n> \n> I'm running a piecewise SEM with 3 component models:\n> \n> lmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n> \n> glmer(",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-73a740bd6cd5",
+      "message_id": "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+      "from_name": "Sasha Vasconcelos",
+      "from_email_hash": "04ac26f11df8608e78f711edc409b880a7cebb0e8114e1de399f79cad2284ab2",
+      "date": "2021-10-04T15:05:25+01:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI'm running a piecewise SEM with 3 component models:\n\nlmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n\nglmer(response variable2 ~ predictors + (1| Point) + (1|Year), family =\n\"binomial\", input_table)\n\nglmer(response variable3 ~ predictors + (1| Point) + (1|Year), family =\n\"binomial\", input_table)\n\nBecause sampling involved visiting 18 points in spring of 2018 and again in\nspring of 2019, I specified samping point and year as random effects.\n\nWhen I run the model, this warning message appears:\nCheck model convergence: log-likelihood estimates lead to negative\nChi-squared!\n\nThis message also appears:\nboundary (singular) fit: see ?isSingular\n\n>From what I've read about the second message, it could be due to random\neffect variance estimates of zero. I checked and this happens in the 1st\nand 3rd component models. In the 1st model \"Point\" has zero variance, and\nin the 3rd model \"Year\" has zero variance.\n\nMy first question is (and I apologize in advance if this is silly to ask)\nwhether this means that there's not really an effect coming from Point in\ncomponent model 1 and from Year in component model 2? If so, would it be\npossible to remove those random effects to end up with:\n\nlmer(Response variable1 ~ Predictors + (1|Year), input_table)\n\nglmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family =\n\"binomial\", input_table)\n\nglmer(Response variable3 ~ Predictors + (1| Point), family = \"binomial\",\ninput_table)\n\nMy second question is whether the warning \"Check model convergence:\nlog-likelihood estimates lead to negative Chi-squared!\" is related to these\nsingularity issues?\n\nOh and I am using the development version of the piecewise SEM package\ninstalled using devtools. This is because this version provides additional\nstandardized coefficients for GLMM.\n\n\nThanks!\n\n\n-- \nSasha Vasconcelos\n\nPhD student\nCIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\nAssociate Laboratory\nInstituto Superior de Agronomia\nTapada da Ajuda\n1349-017 Lisbon, Portugal\n\nResearchGate <https://www.researchgate.net/profile/Sasha_Vasconcelos>\nResearcherID\n<https://publons.com/researcher/2593829/sasha-vasconcelos/publications/>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI'm running a piecewise SEM with 3 component models:\n\nlmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n\nglmer(response variable2 ~ predictors + (1| Point) + (1|Year), fam",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-647252b34916",
+      "message_id": "<CAF08B3gfD1btXipyo8wdO9LNQmdHTBFTaavGRVYvOHjqdyDaaA@mail.gmail.com>",
+      "from_name": "Sasha Vasconcelos",
+      "from_email_hash": "04ac26f11df8608e78f711edc409b880a7cebb0e8114e1de399f79cad2284ab2",
+      "date": "2021-10-04T15:23:11+01:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>",
+      "references": [
+        "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+        "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>"
+      ],
+      "body_plain": "If there are only two years, it's not surprising that you'll get\nestimates of zero variance for (1|Year).  I would probably make Year a\nfixed effect.\nI also tried that, leaving only Point as a random effect. But I still get\nthe singularity warning. Could it be that the sample size is simply too\nsmall to handle any sort of random structure..?\n\n\n   I can't find this warning message anywhere, even in the development\nbranch of piecewiseSEM:\n\nhttps://github.com/jslefche/piecewiseSEM/search?q=convergence\n\n??\n\n I also haven't been able to find anything about that warning message\nanywhere, so I've posted this same question to\njslefche <https://github.com/jslefche>/piecewiseSEM\n<https://github.com/jslefche/piecewiseSEM> on github and am hoping for an\nanswer soon.\n\nOn Mon, 4 Oct 2021 at 14:16, Ben Bolker <bbolker at gmail.com> wrote:\n\n>\n>\n> On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n> > Hi,\n> >\n> > I'm running a piecewise SEM with 3 component models:\n> >\n> > lmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n> >\n> > glmer(response variable2 ~ predictors + (1| Point) + (1|Year), family =\n> > \"binomial\", input_table)\n> >\n> > glmer(response variable3 ~ predictors + (1| Point) + (1|Year), family =\n> > \"binomial\", input_table)\n> >\n> > Because sampling involved visiting 18 points in spring of 2018 and again\n> in\n> > spring of 2019, I specified samping point and year as random effects.\n>\n>    If there are only two years, it's not surprising that you'll get\n> estimates of zero variance for (1|Year).  I would probably make Year a\n> fixed effect.\n>\n> >\n> > When I run the model, this warning message appears:\n> > Check model convergence: log-likelihood estimates lead to negative\n> > Chi-squared!\n>\n>    I can't find this warning message anywhere, even in the development\n> branch of piecewiseSEM:\n>\n> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n>\n> ??\n>\n> >\n> > This message also appears:\n> > boundary (singular) fit: see ?isSingular\n> >\n> >  From what I've read about the second message, it could be due to random\n> > effect variance estimates of zero. I checked and this happens in the 1st\n> > and 3rd component models. In the 1st model \"Point\" has zero variance, and\n> > in the 3rd model \"Year\" has zero variance.\n> >\n> > My first question is (and I apologize in advance if this is silly to ask)\n> > whether this means that there's not really an effect coming from Point in\n> > component model 1 and from Year in component model 2? If so, would it be\n> > possible to remove those random effects to end up with:\n> >\n> > lmer(Response variable1 ~ Predictors + (1|Year), input_table)\n> >\n> > glmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family =\n> > \"binomial\", input_table)\n> >\n> > glmer(Response variable3 ~ Predictors + (1| Point), family = \"binomial\",\n> > input_table)\n>\n>    Seems reasonable.\n> >\n> > My second question is whether the warning \"Check model convergence:\n> > log-likelihood estimates lead to negative Chi-squared!\" is related to\n> these\n> > singularity issues?\n> >\n> > Oh and I am using the development version of the piecewise SEM package\n> > installed using devtools. This is because this version provides\n> additional\n> > standardized coefficients for GLMM.\n> >\n> >\n> > Thanks!\n> >\n> >\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> Graduate chair, Mathematics & Statistics\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n-- \nSasha Vasconcelos\n\nPhD student\nCIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\nAssociate Laboratory\nInstituto Superior de Agronomia\nTapada da Ajuda\n1349-017 Lisbon, Portugal\n\nResearchGate <https://www.researchgate.net/profile/Sasha_Vasconcelos>\nResearcherID\n<https://publons.com/researcher/2593829/sasha-vasconcelos/publications/>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "If there are only two years, it's not surprising that you'll get\nestimates of zero variance for (1|Year).  I would probably make Year a\nfixed effect.\nI also tried that, leaving only Point as a random ",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 2,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-a3ee4430a02f",
+      "message_id": "<CABghstTb5f8xvcKD14q+COnJQxgXREtUmJX8kRS1q6AW9bq-DQ@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-10-04T15:12:41-04:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": "<CAF08B3j2L63_fY2AR2PnmN5Petr7tRs2O0nnFeGOX4xSeHBW9A@mail.gmail.com>",
+      "references": [
+        "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+        "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>",
+        "<CAF08B3gfD1btXipyo8wdO9LNQmdHTBFTaavGRVYvOHjqdyDaaA@mail.gmail.com>",
+        "<CAF08B3j2L63_fY2AR2PnmN5Petr7tRs2O0nnFeGOX4xSeHBW9A@mail.gmail.com>"
+      ],
+      "body_plain": "From whom? Is piecewiseSEM really the only package you're using? It\ndisconcerts me that I can't locate the error message in any source\ncode I've found so far.\n\nOn Mon, Oct 4, 2021 at 3:04 PM Sasha Vasconcelos\n<sasha.m.vasconcelos at gmail.com> wrote:\n>\n> Hi again,\n>\n> Just an update. I received this reply about the strange warning (Check model convergence: log-likelihood estimates lead to negative Chi-squared!)\n>\n> Yes, the convergence issues will lead to non-observable Chi-squared. If you remove those random components with variance close to 0, it should help.\n>\n>\n>\n> On Mon, 4 Oct 2021 at 15:23, Sasha Vasconcelos <sasha.m.vasconcelos at gmail.com> wrote:\n>>\n>> If there are only two years, it's not surprising that you'll get\n>> estimates of zero variance for (1|Year).  I would probably make Year a\n>> fixed effect.\n>> I also tried that, leaving only Point as a random effect. But I still get the singularity warning. Could it be that the sample size is simply too small to handle any sort of random structure..?\n>>\n>>\n>>    I can't find this warning message anywhere, even in the development\n>> branch of piecewiseSEM:\n>>\n>> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n>>\n>> ??\n>>\n>>  I also haven't been able to find anything about that warning message anywhere, so I've posted this same question to\n>>\n>> jslefche/piecewiseSEM on github and am hoping for an answer soon.\n>>\n>>\n>>\n>> On Mon, 4 Oct 2021 at 14:16, Ben Bolker <bbolker at gmail.com> wrote:\n>>>\n>>>\n>>>\n>>> On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n>>> > Hi,\n>>> >\n>>> > I'm running a piecewise SEM with 3 component models:\n>>> >\n>>> > lmer(response variable1 ~ predictors + (1|Point) + (1|Year), input_table)\n>>> >\n>>> > glmer(response variable2 ~ predictors + (1| Point) + (1|Year), family =\n>>> > \"binomial\", input_table)\n>>> >\n>>> > glmer(response variable3 ~ predictors + (1| Point) + (1|Year), family =\n>>> > \"binomial\", input_table)\n>>> >\n>>> > Because sampling involved visiting 18 points in spring of 2018 and again in\n>>> > spring of 2019, I specified samping point and year as random effects.\n>>>\n>>>    If there are only two years, it's not surprising that you'll get\n>>> estimates of zero variance for (1|Year).  I would probably make Year a\n>>> fixed effect.\n>>>\n>>> >\n>>> > When I run the model, this warning message appears:\n>>> > Check model convergence: log-likelihood estimates lead to negative\n>>> > Chi-squared!\n>>>\n>>>    I can't find this warning message anywhere, even in the development\n>>> branch of piecewiseSEM:\n>>>\n>>> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n>>>\n>>> ??\n>>>\n>>> >\n>>> > This message also appears:\n>>> > boundary (singular) fit: see ?isSingular\n>>> >\n>>> >  From what I've read about the second message, it could be due to random\n>>> > effect variance estimates of zero. I checked and this happens in the 1st\n>>> > and 3rd component models. In the 1st model \"Point\" has zero variance, and\n>>> > in the 3rd model \"Year\" has zero variance.\n>>> >\n>>> > My first question is (and I apologize in advance if this is silly to ask)\n>>> > whether this means that there's not really an effect coming from Point in\n>>> > component model 1 and from Year in component model 2? If so, would it be\n>>> > possible to remove those random effects to end up with:\n>>> >\n>>> > lmer(Response variable1 ~ Predictors + (1|Year), input_table)\n>>> >\n>>> > glmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family =\n>>> > \"binomial\", input_table)\n>>> >\n>>> > glmer(Response variable3 ~ Predictors + (1| Point), family = \"binomial\",\n>>> > input_table)\n>>>\n>>>    Seems reasonable.\n>>> >\n>>> > My second question is whether the warning \"Check model convergence:\n>>> > log-likelihood estimates lead to negative Chi-squared!\" is related to these\n>>> > singularity issues?\n>>> >\n>>> > Oh and I am using the development version of the piecewise SEM package\n>>> > installed using devtools. This is because this version provides additional\n>>> > standardized coefficients for GLMM.\n>>> >\n>>> >\n>>> > Thanks!\n>>> >\n>>> >\n>>>\n>>> --\n>>> Dr. Benjamin Bolker\n>>> Professor, Mathematics & Statistics and Biology, McMaster University\n>>> Director, School of Computational Science and Engineering\n>>> Graduate chair, Mathematics & Statistics\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>\n>>\n>> --\n>> Sasha Vasconcelos\n>>\n>> PhD student\n>> CIBIO/InBIO, Research Center in Biodiversity and Genetic Resources, Associate Laboratory\n>> Instituto Superior de Agronomia\n>> Tapada da Ajuda\n>> 1349-017 Lisbon, Portugal\n>>\n>> ResearchGate\n>> ResearcherID\n>>\n>\n>\n> --\n> Sasha Vasconcelos\n>\n> PhD student\n> CIBIO/InBIO, Research Center in Biodiversity and Genetic Resources, Associate Laboratory\n> Instituto Superior de Agronomia\n> Tapada da Ajuda\n> 1349-017 Lisbon, Portugal\n>\n> ResearchGate\n> ResearcherID\n>",
+      "body_snippet": "From whom? Is piecewiseSEM really the only package you're using? It\ndisconcerts me that I can't locate the error message in any source\ncode I've found so far.\n\nOn Mon, Oct 4, 2021 at 3:04 PM Sasha Vas",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 4,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-06180864e58d",
+      "message_id": "<CAF08B3j2L63_fY2AR2PnmN5Petr7tRs2O0nnFeGOX4xSeHBW9A@mail.gmail.com>",
+      "from_name": "Sasha Vasconcelos",
+      "from_email_hash": "04ac26f11df8608e78f711edc409b880a7cebb0e8114e1de399f79cad2284ab2",
+      "date": "2021-10-04T21:03:18+01:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": "<CAF08B3gfD1btXipyo8wdO9LNQmdHTBFTaavGRVYvOHjqdyDaaA@mail.gmail.com>",
+      "references": [
+        "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+        "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>",
+        "<CAF08B3gfD1btXipyo8wdO9LNQmdHTBFTaavGRVYvOHjqdyDaaA@mail.gmail.com>"
+      ],
+      "body_plain": "Hi again,\n\nJust an update. I received this reply about the strange warning (Check\nmodel convergence: log-likelihood estimates lead to negative Chi-squared!)\n\nYes, the convergence issues will lead to non-observable Chi-squared. If you\nremove those random components with variance close to 0, it should help.\n\n\n\nOn Mon, 4 Oct 2021 at 15:23, Sasha Vasconcelos <\nsasha.m.vasconcelos at gmail.com> wrote:\n\n> If there are only two years, it's not surprising that you'll get\n> estimates of zero variance for (1|Year).  I would probably make Year a\n> fixed effect.\n> I also tried that, leaving only Point as a random effect. But I still get\n> the singularity warning. Could it be that the sample size is simply too\n> small to handle any sort of random structure..?\n>\n>\n>    I can't find this warning message anywhere, even in the development\n> branch of piecewiseSEM:\n>\n> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n>\n> ??\n>\n>  I also haven't been able to find anything about that warning message\n> anywhere, so I've posted this same question to\n> jslefche <https://github.com/jslefche>/piecewiseSEM\n> <https://github.com/jslefche/piecewiseSEM> on github and am hoping for an\n> answer soon.\n>\n> On Mon, 4 Oct 2021 at 14:16, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>>\n>>\n>> On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n>> > Hi,\n>> >\n>> > I'm running a piecewise SEM with 3 component models:\n>> >\n>> > lmer(response variable1 ~ predictors + (1|Point) + (1|Year),\n>> input_table)\n>> >\n>> > glmer(response variable2 ~ predictors + (1| Point) + (1|Year), family =\n>> > \"binomial\", input_table)\n>> >\n>> > glmer(response variable3 ~ predictors + (1| Point) + (1|Year), family =\n>> > \"binomial\", input_table)\n>> >\n>> > Because sampling involved visiting 18 points in spring of 2018 and\n>> again in\n>> > spring of 2019, I specified samping point and year as random effects.\n>>\n>>    If there are only two years, it's not surprising that you'll get\n>> estimates of zero variance for (1|Year).  I would probably make Year a\n>> fixed effect.\n>>\n>> >\n>> > When I run the model, this warning message appears:\n>> > Check model convergence: log-likelihood estimates lead to negative\n>> > Chi-squared!\n>>\n>>    I can't find this warning message anywhere, even in the development\n>> branch of piecewiseSEM:\n>>\n>> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n>>\n>> ??\n>>\n>> >\n>> > This message also appears:\n>> > boundary (singular) fit: see ?isSingular\n>> >\n>> >  From what I've read about the second message, it could be due to random\n>> > effect variance estimates of zero. I checked and this happens in the 1st\n>> > and 3rd component models. In the 1st model \"Point\" has zero variance,\n>> and\n>> > in the 3rd model \"Year\" has zero variance.\n>> >\n>> > My first question is (and I apologize in advance if this is silly to\n>> ask)\n>> > whether this means that there's not really an effect coming from Point\n>> in\n>> > component model 1 and from Year in component model 2? If so, would it be\n>> > possible to remove those random effects to end up with:\n>> >\n>> > lmer(Response variable1 ~ Predictors + (1|Year), input_table)\n>> >\n>> > glmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family =\n>> > \"binomial\", input_table)\n>> >\n>> > glmer(Response variable3 ~ Predictors + (1| Point), family = \"binomial\",\n>> > input_table)\n>>\n>>    Seems reasonable.\n>> >\n>> > My second question is whether the warning \"Check model convergence:\n>> > log-likelihood estimates lead to negative Chi-squared!\" is related to\n>> these\n>> > singularity issues?\n>> >\n>> > Oh and I am using the development version of the piecewise SEM package\n>> > installed using devtools. This is because this version provides\n>> additional\n>> > standardized coefficients for GLMM.\n>> >\n>> >\n>> > Thanks!\n>> >\n>> >\n>>\n>> --\n>> Dr. Benjamin Bolker\n>> Professor, Mathematics & Statistics and Biology, McMaster University\n>> Director, School of Computational Science and Engineering\n>> Graduate chair, Mathematics & Statistics\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n> --\n> Sasha Vasconcelos\n>\n> PhD student\n> CIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\n> Associate Laboratory\n> Instituto Superior de Agronomia\n> Tapada da Ajuda\n> 1349-017 Lisbon, Portugal\n>\n> ResearchGate <https://www.researchgate.net/profile/Sasha_Vasconcelos>\n> ResearcherID\n> <https://publons.com/researcher/2593829/sasha-vasconcelos/publications/>\n>\n>\n\n-- \nSasha Vasconcelos\n\nPhD student\nCIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\nAssociate Laboratory\nInstituto Superior de Agronomia\nTapada da Ajuda\n1349-017 Lisbon, Portugal\n\nResearchGate <https://www.researchgate.net/profile/Sasha_Vasconcelos>\nResearcherID\n<https://publons.com/researcher/2593829/sasha-vasconcelos/publications/>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi again,\n\nJust an update. I received this reply about the strange warning (Check\nmodel convergence: log-likelihood estimates lead to negative Chi-squared!)\n\nYes, the convergence issues will lead to n",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 3,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-ebe7ccd49eac",
+      "message_id": "<CAF08B3gc+wRFa4omCfHNUL9+BbSckOtzNV_FkCdg7fyYGehGiQ@mail.gmail.com>",
+      "from_name": "Sasha Vasconcelos",
+      "from_email_hash": "04ac26f11df8608e78f711edc409b880a7cebb0e8114e1de399f79cad2284ab2",
+      "date": "2021-10-04T21:20:20+01:00",
+      "subject": "[R-sig-ME] Issue with boundary (singular) fit: see ?isSingular",
+      "subject_clean": "Issue with boundary (singular) fit: see ?isSingular",
+      "in_reply_to": "<CABghstTb5f8xvcKD14q+COnJQxgXREtUmJX8kRS1q6AW9bq-DQ@mail.gmail.com>",
+      "references": [
+        "<CAF08B3iWYHzsiVSHUyTCSgg-nbG2dX6nv0D3QW7PPAm+yGvAnA@mail.gmail.com>",
+        "<0e42048d-d240-74cc-61b5-c12582ca1f71@gmail.com>",
+        "<CAF08B3gfD1btXipyo8wdO9LNQmdHTBFTaavGRVYvOHjqdyDaaA@mail.gmail.com>",
+        "<CAF08B3j2L63_fY2AR2PnmN5Petr7tRs2O0nnFeGOX4xSeHBW9A@mail.gmail.com>",
+        "<CABghstTb5f8xvcKD14q+COnJQxgXREtUmJX8kRS1q6AW9bq-DQ@mail.gmail.com>"
+      ],
+      "body_plain": "It was from Jon Lefcheck. Yes piecewiseSEM is the only package I'm using.\n\nSasha\n\nOn Mon, 4 Oct 2021 at 20:12, Ben Bolker <bbolker at gmail.com> wrote:\n\n>   From whom? Is piecewiseSEM really the only package you're using? It\n> disconcerts me that I can't locate the error message in any source\n> code I've found so far.\n>\n> On Mon, Oct 4, 2021 at 3:04 PM Sasha Vasconcelos\n> <sasha.m.vasconcelos at gmail.com> wrote:\n> >\n> > Hi again,\n> >\n> > Just an update. I received this reply about the strange warning (Check\n> model convergence: log-likelihood estimates lead to negative Chi-squared!)\n> >\n> > Yes, the convergence issues will lead to non-observable Chi-squared. If\n> you remove those random components with variance close to 0, it should help.\n> >\n> >\n> >\n> > On Mon, 4 Oct 2021 at 15:23, Sasha Vasconcelos <\n> sasha.m.vasconcelos at gmail.com> wrote:\n> >>\n> >> If there are only two years, it's not surprising that you'll get\n> >> estimates of zero variance for (1|Year).  I would probably make Year a\n> >> fixed effect.\n> >> I also tried that, leaving only Point as a random effect. But I still\n> get the singularity warning. Could it be that the sample size is simply too\n> small to handle any sort of random structure..?\n> >>\n> >>\n> >>    I can't find this warning message anywhere, even in the development\n> >> branch of piecewiseSEM:\n> >>\n> >> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n> >>\n> >> ??\n> >>\n> >>  I also haven't been able to find anything about that warning message\n> anywhere, so I've posted this same question to\n> >>\n> >> jslefche/piecewiseSEM on github and am hoping for an answer soon.\n> >>\n> >>\n> >>\n> >> On Mon, 4 Oct 2021 at 14:16, Ben Bolker <bbolker at gmail.com> wrote:\n> >>>\n> >>>\n> >>>\n> >>> On 10/4/21 10:05 AM, Sasha Vasconcelos wrote:\n> >>> > Hi,\n> >>> >\n> >>> > I'm running a piecewise SEM with 3 component models:\n> >>> >\n> >>> > lmer(response variable1 ~ predictors + (1|Point) + (1|Year),\n> input_table)\n> >>> >\n> >>> > glmer(response variable2 ~ predictors + (1| Point) + (1|Year),\n> family =\n> >>> > \"binomial\", input_table)\n> >>> >\n> >>> > glmer(response variable3 ~ predictors + (1| Point) + (1|Year),\n> family =\n> >>> > \"binomial\", input_table)\n> >>> >\n> >>> > Because sampling involved visiting 18 points in spring of 2018 and\n> again in\n> >>> > spring of 2019, I specified samping point and year as random effects.\n> >>>\n> >>>    If there are only two years, it's not surprising that you'll get\n> >>> estimates of zero variance for (1|Year).  I would probably make Year a\n> >>> fixed effect.\n> >>>\n> >>> >\n> >>> > When I run the model, this warning message appears:\n> >>> > Check model convergence: log-likelihood estimates lead to negative\n> >>> > Chi-squared!\n> >>>\n> >>>    I can't find this warning message anywhere, even in the development\n> >>> branch of piecewiseSEM:\n> >>>\n> >>> https://github.com/jslefche/piecewiseSEM/search?q=convergence\n> >>>\n> >>> ??\n> >>>\n> >>> >\n> >>> > This message also appears:\n> >>> > boundary (singular) fit: see ?isSingular\n> >>> >\n> >>> >  From what I've read about the second message, it could be due to\n> random\n> >>> > effect variance estimates of zero. I checked and this happens in the\n> 1st\n> >>> > and 3rd component models. In the 1st model \"Point\" has zero\n> variance, and\n> >>> > in the 3rd model \"Year\" has zero variance.\n> >>> >\n> >>> > My first question is (and I apologize in advance if this is silly to\n> ask)\n> >>> > whether this means that there's not really an effect coming from\n> Point in\n> >>> > component model 1 and from Year in component model 2? If so, would\n> it be\n> >>> > possible to remove those random effects to end up with:\n> >>> >\n> >>> > lmer(Response variable1 ~ Predictors + (1|Year), input_table)\n> >>> >\n> >>> > glmer(Response variable2 ~Predictors + (1| Point) + (1|Year), family\n> =\n> >>> > \"binomial\", input_table)\n> >>> >\n> >>> > glmer(Response variable3 ~ Predictors + (1| Point), family =\n> \"binomial\",\n> >>> > input_table)\n> >>>\n> >>>    Seems reasonable.\n> >>> >\n> >>> > My second question is whether the warning \"Check model convergence:\n> >>> > log-likelihood estimates lead to negative Chi-squared!\" is related\n> to these\n> >>> > singularity issues?\n> >>> >\n> >>> > Oh and I am using the development version of the piecewise SEM\n> package\n> >>> > installed using devtools. This is because this version provides\n> additional\n> >>> > standardized coefficients for GLMM.\n> >>> >\n> >>> >\n> >>> > Thanks!\n> >>> >\n> >>> >\n> >>>\n> >>> --\n> >>> Dr. Benjamin Bolker\n> >>> Professor, Mathematics & Statistics and Biology, McMaster University\n> >>> Director, School of Computational Science and Engineering\n> >>> Graduate chair, Mathematics & Statistics\n> >>>\n> >>> _______________________________________________\n> >>> R-sig-mixed-models at r-project.org mailing list\n> >>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >>\n> >>\n> >> --\n> >> Sasha Vasconcelos\n> >>\n> >> PhD student\n> >> CIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\n> Associate Laboratory\n> >> Instituto Superior de Agronomia\n> >> Tapada da Ajuda\n> >> 1349-017 Lisbon, Portugal\n> >>\n> >> ResearchGate\n> >> ResearcherID\n> >>\n> >\n> >\n> > --\n> > Sasha Vasconcelos\n> >\n> > PhD student\n> > CIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\n> Associate Laboratory\n> > Instituto Superior de Agronomia\n> > Tapada da Ajuda\n> > 1349-017 Lisbon, Portugal\n> >\n> > ResearchGate\n> > ResearcherID\n> >\n>\n\n\n-- \nSasha Vasconcelos\n\nPhD student\nCIBIO/InBIO, Research Center in Biodiversity and Genetic Resources,\nAssociate Laboratory\nInstituto Superior de Agronomia\nTapada da Ajuda\n1349-017 Lisbon, Portugal\n\nResearchGate <https://www.researchgate.net/profile/Sasha_Vasconcelos>\nResearcherID\n<https://publons.com/researcher/2593829/sasha-vasconcelos/publications/>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "It was from Jon Lefcheck. Yes piecewiseSEM is the only package I'm using.\n\nSasha\n\nOn Mon, 4 Oct 2021 at 20:12, Ben Bolker <bbolker at gmail.com> wrote:\n\n>   From whom? Is piecewiseSEM really the only ",
+      "thread_id": "thread-73a740bd6cd5",
+      "thread_depth": 5,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-a4e1d24ce3af",
+      "message_id": "<CADreqiwQs=Ts9x=XwN4B-knHtH8zRzwybYRyfxE9phOmqjx8hg@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-10-05T22:20:00-05:00",
+      "subject": "[R-sig-ME] Random slopes for categorical variables",
+      "subject_clean": "Random slopes for categorical variables",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello All,\n\nI had a basic question. For continuous variables (X) killing the\nintercept in the random part kills the correlation between random\neffects (intercepts and slopes):\n\n(0 + X | ID)\n\nBut for categorical variables (CAT) killing the intercept actually\nallows for all levels of CAT (including the reference level) to be\ncorrelated that is:\n\n(0 + CAT | ID) estimates more correlations than (CAT | ID)\n\nAm I correct?\n\nThanks,\nTim M",
+      "body_snippet": "Hello All,\n\nI had a basic question. For continuous variables (X) killing the\nintercept in the random part kills the correlation between random\neffects (intercepts and slopes):\n\n(0 + X | ID)\n\nBut for c",
+      "thread_id": "thread-a4e1d24ce3af",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-9967548855dd",
+      "message_id": "<5bc75a4d-bf86-8274-b6de-9f9043b59e98@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-10-05T22:23:23-05:00",
+      "subject": "[R-sig-ME] Random slopes for categorical variables",
+      "subject_clean": "Random slopes for categorical variables",
+      "in_reply_to": "<CADreqiwQs=Ts9x=XwN4B-knHtH8zRzwybYRyfxE9phOmqjx8hg@mail.gmail.com>",
+      "references": [
+        "<CADreqiwQs=Ts9x=XwN4B-knHtH8zRzwybYRyfxE9phOmqjx8hg@mail.gmail.com>"
+      ],
+      "body_plain": "Yes.\n\nWell, to be more precise 0 + CAT and 1 + CAT estimate different\ncontrasts and so the correlation you're estimating correspond to\nwhatever contrast comes out.\n\nSame deal for 1 + CAT with sum vs treatment vs. Helmert coding.\n\nOn 5/10/21 10:20 pm, Timothy MacKenzie wrote:\n> Hello All,\n> \n> I had a basic question. For continuous variables (X) killing the\n> intercept in the random part kills the correlation between random\n> effects (intercepts and slopes):\n> \n> (0 + X | ID)\n> \n> But for categorical variables (CAT) killing the intercept actually\n> allows for all levels of CAT (including the reference level) to be\n> correlated that is:\n> \n> (0 + CAT | ID) estimates more correlations than (CAT | ID)\n> \n> Am I correct?\n> \n> Thanks,\n> Tim M\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Yes.\n\nWell, to be more precise 0 + CAT and 1 + CAT estimate different\ncontrasts and so the correlation you're estimating correspond to\nwhatever contrast comes out.\n\nSame deal for 1 + CAT with sum vs t",
+      "thread_id": "thread-a4e1d24ce3af",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-26c7c7b800a7",
+      "message_id": "<CADreqixPnrHEsuJhvgst7ZaTw9+npLe7czR7XCdYLoytycjNbg@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-10-05T22:39:17-05:00",
+      "subject": "[R-sig-ME] Random slopes for categorical variables",
+      "subject_clean": "Random slopes for categorical variables",
+      "in_reply_to": "<5bc75a4d-bf86-8274-b6de-9f9043b59e98@phillipalday.com>",
+      "references": [
+        "<CADreqiwQs=Ts9x=XwN4B-knHtH8zRzwybYRyfxE9phOmqjx8hg@mail.gmail.com>",
+        "<5bc75a4d-bf86-8274-b6de-9f9043b59e98@phillipalday.com>"
+      ],
+      "body_plain": "Sure, what if CAT has 2 levels, given R's default dummy coding, what\nis the difference between (1 + CAT | ID) and (0 + CAT | ID), then?\n\nOn Tue, Oct 5, 2021 at 10:23 PM Phillip Alday <me at phillipalday.com> wrote:\n>\n> Yes.\n>\n> Well, to be more precise 0 + CAT and 1 + CAT estimate different\n> contrasts and so the correlation you're estimating correspond to\n> whatever contrast comes out.\n>\n> Same deal for 1 + CAT with sum vs treatment vs. Helmert coding.\n>\n> On 5/10/21 10:20 pm, Timothy MacKenzie wrote:\n> > Hello All,\n> >\n> > I had a basic question. For continuous variables (X) killing the\n> > intercept in the random part kills the correlation between random\n> > effects (intercepts and slopes):\n> >\n> > (0 + X | ID)\n> >\n> > But for categorical variables (CAT) killing the intercept actually\n> > allows for all levels of CAT (including the reference level) to be\n> > correlated that is:\n> >\n> > (0 + CAT | ID) estimates more correlations than (CAT | ID)\n> >\n> > Am I correct?\n> >\n> > Thanks,\n> > Tim M\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >",
+      "body_snippet": "Sure, what if CAT has 2 levels, given R's default dummy coding, what\nis the difference between (1 + CAT | ID) and (0 + CAT | ID), then?\n\nOn Tue, Oct 5, 2021 at 10:23 PM Phillip Alday <me at phillipald",
+      "thread_id": "thread-a4e1d24ce3af",
+      "thread_depth": 2,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-f09894cb3e26",
+      "message_id": "<CADreqiyCV+-odWWm9jWPx+ywNYu_RMzGGFvOHpX2YSJAsJF+zQ@mail.gmail.com>",
+      "from_name": "Timothy MacKenzie",
+      "from_email_hash": "f1b750656812a6096cd40fe82ba3b072a8eb667689b09d41f4acd1d3bd98c373",
+      "date": "2021-10-05T22:44:25-05:00",
+      "subject": "[R-sig-ME] Random slopes for categorical variables",
+      "subject_clean": "Random slopes for categorical variables",
+      "in_reply_to": "<CADreqixPnrHEsuJhvgst7ZaTw9+npLe7czR7XCdYLoytycjNbg@mail.gmail.com>",
+      "references": [
+        "<CADreqiwQs=Ts9x=XwN4B-knHtH8zRzwybYRyfxE9phOmqjx8hg@mail.gmail.com>",
+        "<5bc75a4d-bf86-8274-b6de-9f9043b59e98@phillipalday.com>",
+        "<CADreqixPnrHEsuJhvgst7ZaTw9+npLe7czR7XCdYLoytycjNbg@mail.gmail.com>"
+      ],
+      "body_plain": "My point is when we use (0 + CAT | ID) we get the pure coef. for each\nlevel of CAT not any contrast. So, here we simply, I think, get the\ndifference in pure coef. of each level of CAT across levels of ID.\n\nOn Tue, Oct 5, 2021 at 10:39 PM Timothy MacKenzie <fswfswt at gmail.com> wrote:\n>\n> Sure, what if CAT has 2 levels, given R's default dummy coding, what\n> is the difference between (1 + CAT | ID) and (0 + CAT | ID), then?\n>\n> On Tue, Oct 5, 2021 at 10:23 PM Phillip Alday <me at phillipalday.com> wrote:\n> >\n> > Yes.\n> >\n> > Well, to be more precise 0 + CAT and 1 + CAT estimate different\n> > contrasts and so the correlation you're estimating correspond to\n> > whatever contrast comes out.\n> >\n> > Same deal for 1 + CAT with sum vs treatment vs. Helmert coding.\n> >\n> > On 5/10/21 10:20 pm, Timothy MacKenzie wrote:\n> > > Hello All,\n> > >\n> > > I had a basic question. For continuous variables (X) killing the\n> > > intercept in the random part kills the correlation between random\n> > > effects (intercepts and slopes):\n> > >\n> > > (0 + X | ID)\n> > >\n> > > But for categorical variables (CAT) killing the intercept actually\n> > > allows for all levels of CAT (including the reference level) to be\n> > > correlated that is:\n> > >\n> > > (0 + CAT | ID) estimates more correlations than (CAT | ID)\n> > >\n> > > Am I correct?\n> > >\n> > > Thanks,\n> > > Tim M\n> > >\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > >",
+      "body_snippet": "My point is when we use (0 + CAT | ID) we get the pure coef. for each\nlevel of CAT not any contrast. So, here we simply, I think, get the\ndifference in pure coef. of each level of CAT across levels of",
+      "thread_id": "thread-a4e1d24ce3af",
+      "thread_depth": 3,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-f8558dc7fb32",
+      "message_id": "<CACgv6yW-+-as0iGvSe01oHYYuuqpkWi+hLmBQ30OHQ5sh3rjeQ@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2021-10-06T00:43:58-05:00",
+      "subject": "[R-sig-ME] Comparing two models with different sample sizes",
+      "subject_clean": "Comparing two models with different sample sizes",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Colleagues,\n\nI had to remove three extremely outlying (in terms of residuals, cook's\ndistances, and hat values) observations from my model.\n\nNow, can I compare the fit of my initial model that has three more\nobservations with my outlier-corrected model using AICc?\n\nThanks,\nSimon\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Colleagues,\n\nI had to remove three extremely outlying (in terms of residuals, cook's\ndistances, and hat values) observations from my model.\n\nNow, can I compare the fit of my initial model that ha",
+      "thread_id": "thread-f8558dc7fb32",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-2ab3a29a6626",
+      "message_id": "<CAJuCY5w0xF9b4pxU8rUFcv-mare36y-kaekpeGKBA7wOm_Na4Q@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2021-10-06T09:24:25+02:00",
+      "subject": "[R-sig-ME] Comparing two models with different sample sizes",
+      "subject_clean": "Comparing two models with different sample sizes",
+      "in_reply_to": "<CACgv6yW-+-as0iGvSe01oHYYuuqpkWi+hLmBQ30OHQ5sh3rjeQ@mail.gmail.com>",
+      "references": [
+        "<CACgv6yW-+-as0iGvSe01oHYYuuqpkWi+hLmBQ30OHQ5sh3rjeQ@mail.gmail.com>"
+      ],
+      "body_plain": "No. The likelihood of a model is given the data. Only compare models based\non the same data. Therefore make sure there are no missing values in the\ncovariates when comparing models. When na.action = na.omit the model will\nsilently ignore observations with missing values a covariate.\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp wo 6 okt. 2021 om 07:44 schreef Simon Harmel <sim.harmel at gmail.com>:\n\n> Dear Colleagues,\n>\n> I had to remove three extremely outlying (in terms of residuals, cook's\n> distances, and hat values) observations from my model.\n>\n> Now, can I compare the fit of my initial model that has three more\n> observations with my outlier-corrected model using AICc?\n>\n> Thanks,\n> Simon\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "No. The likelihood of a model is given the data. Only compare models based\non the same data. Therefore make sure there are no missing values in the\ncovariates when comparing models. When na.action = n",
+      "thread_id": "thread-f8558dc7fb32",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-ae6b1a454121",
+      "message_id": "<CAO_UFABE3v+LUjnx5puh-4Kj9mbqhD+HpvEoWK8tCv89icVSZA@mail.gmail.com>",
+      "from_name": "Isaac Kookhyun Yoo",
+      "from_email_hash": "5c2d51690dc8ea713c713e795ae0339785ff934abb80b41d25c8cf08b00f75dd",
+      "date": "2021-10-06T11:51:44-04:00",
+      "subject": "[R-sig-ME] \"pdCompSymm\" function in R package \"nlme\"",
+      "subject_clean": "\"pdCompSymm\" function in R package \"nlme\"",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nI am a graduate student. I have a question about pdCompSymm.\npdCompSymm can be used for compound symmetry matrix only (All the variances\nare equal and all the covariances are equal.)\n\nAre there any functions for unequal variances or unequal covariances matrix?\n\nThank you in advance.\n\nIsaac\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI am a graduate student. I have a question about pdCompSymm.\npdCompSymm can be used for compound symmetry matrix only (All the variances\nare equal and all the covariances are equal.)\n\nAre t",
+      "thread_id": "thread-ae6b1a454121",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-b7afaaf9d25d",
+      "message_id": "<67580e7b-efe7-29b0-f9e3-42919494590b@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-10-06T12:09:49-04:00",
+      "subject": "[R-sig-ME] \"pdCompSymm\" function in R package \"nlme\"",
+      "subject_clean": "\"pdCompSymm\" function in R package \"nlme\"",
+      "in_reply_to": "<CAO_UFABE3v+LUjnx5puh-4Kj9mbqhD+HpvEoWK8tCv89icVSZA@mail.gmail.com>",
+      "references": [
+        "<CAO_UFABE3v+LUjnx5puh-4Kj9mbqhD+HpvEoWK8tCv89icVSZA@mail.gmail.com>"
+      ],
+      "body_plain": "Here are the available matrix classes available in nlme:\n\nlibrary(nlme)\napropos(\"^pd[^f]\")\n  [1] \"pdBlocked\"   \"pdCompSymm\"  \"pdConstruct\" \"pdDiag\"      \"pdIdent\"\n  [6] \"pdLogChol\"   \"pdMat\"       \"pdMatrix\"    \"pdNatural\"   \"pdSymm\"\n\n?pdClasses\n\n\n  Unfortunately, I don't think there's anything useful in there:\n\npdIdent is a multiple of the identity matrix, pdDiag is (heterogeneous) \ndiagonal.\n\nI believe pdNatural, pdLogChol, pdSymm represent different \nparameterizations for the general positive-definite (\"unstructured\") \ncorrelation matrix.\n\n   So \"equal correlations but heterogeneous variances\" doesn't appear to \nbe an option.\n\n   The MCMCglmm package has more options.\n   glmmTMB offers a 'heterogeneous compound symmetric\" but *not* (at \npresent) a *homogeneous compound symmetric\" option (although that could \nbe achieved without too much difficulty by using the 'map' parameter to \nset some parameters equal ...)\n\nOn 10/6/21 11:51 AM, Isaac Kookhyun Yoo wrote:\n> Dear all,\n> \n> I am a graduate student. I have a question about pdCompSymm.\n> pdCompSymm can be used for compound symmetry matrix only (All the variances\n> are equal and all the covariances are equal.)\n> \n> Are there any functions for unequal variances or unequal covariances matrix?\n> \n> Thank you in advance.\n> \n> Isaac\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\nGraduate chair, Mathematics & Statistics",
+      "body_snippet": "Here are the available matrix classes available in nlme:\n\nlibrary(nlme)\napropos(\"^pd[^f]\")\n  [1] \"pdBlocked\"   \"pdCompSymm\"  \"pdConstruct\" \"pdDiag\"      \"pdIdent\"\n  [6] \"pdLogChol\"   \"pdMat\"       \"pd",
+      "thread_id": "thread-ae6b1a454121",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-386e4d22545a",
+      "message_id": "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>",
+      "from_name": "董龙伟",
+      "from_email_hash": "362a942368078d34668bec984de398bbb5c171dda2b0688dbca7b98f22245cb2",
+      "date": "2021-10-08T19:11:21+08:00",
+      "subject": "[R-sig-ME] QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "subject_clean": "QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear friends\n\nHope you are in good health. Recently, I want to calculate the parameters and effect size of the random effect from the the mixed-linear models. I am still confused about the the parameters and effect size by using the R software. Would you give me some help?\nBest wishes to you and your team.\n\nLongwei\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear friends\n\nHope you are in good health. Recently, I want to calculate the parameters and effect size of the random effect from the the mixed-linear models. I am still confused about the the paramet",
+      "thread_id": "thread-386e4d22545a",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-8f26b09cb684",
+      "message_id": "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2021-10-08T16:32:59-05:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Colleagues,\n\nI have a 'factor' predictor called 'type' (with 4 levels). In the\nrandom part, I have used `||` so the levels of 'type' can't correlate\nwith each other.\n\nBut I wonder why still correlations are reported in the output?\nThanks, Simon\n\nlmer(y~type + (type || ID), data = data)\n\nRandom effects:\n Groups   Name  Std.Dev. Corr\n ID     type0 0.4276\n          type1 0.7012   0.81\n          type2 0.7115   0.72 0.97\n          type3 0.7655   0.83 1.00 0.98",
+      "body_snippet": "Dear Colleagues,\n\nI have a 'factor' predictor called 'type' (with 4 levels). In the\nrandom part, I have used `||` so the levels of 'type' can't correlate\nwith each other.\n\nBut I wonder why still corre",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-3f111bb3c7aa",
+      "message_id": "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-10-08T16:46:24-05:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+      "references": [
+        "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>"
+      ],
+      "body_plain": "This is a well-documented issue: || doesn't zero correlations between a\ncategorical variable's levels. As far as I know, there are\nsoftware-development/technical reasons for this, not statistical ones.\n\nThe afex package has an implementation that zeroes everything out.\n\nOn 8/10/21 4:32 pm, Simon Harmel wrote:\n> Dear Colleagues,\n> \n> I have a 'factor' predictor called 'type' (with 4 levels). In the\n> random part, I have used `||` so the levels of 'type' can't correlate\n> with each other.\n> \n> But I wonder why still correlations are reported in the output?\n> Thanks, Simon\n> \n> lmer(y~type + (type || ID), data = data)\n> \n> Random effects:\n>  Groups   Name  Std.Dev. Corr\n>  ID     type0 0.4276\n>           type1 0.7012   0.81\n>           type2 0.7115   0.72 0.97\n>           type3 0.7655   0.83 1.00 0.98\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "This is a well-documented issue: || doesn't zero correlations between a\ncategorical variable's levels. As far as I know, there are\nsoftware-development/technical reasons for this, not statistical ones",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-261cdd8f6a5f",
+      "message_id": "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2021-10-08T17:07:08-05:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>",
+      "references": [
+        "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+        "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>"
+      ],
+      "body_plain": "Thank you, this is extremely helpful to know. You mentioned it's well\ndocumented, any possible links to share?\n\nAlso, does nlme::lme() behave in the same manner in this regard?\n\nOn Fri, Oct 8, 2021 at 4:46 PM Phillip Alday <me at phillipalday.com> wrote:\n>\n> This is a well-documented issue: || doesn't zero correlations between a\n> categorical variable's levels. As far as I know, there are\n> software-development/technical reasons for this, not statistical ones.\n>\n> The afex package has an implementation that zeroes everything out.\n>\n> On 8/10/21 4:32 pm, Simon Harmel wrote:\n> > Dear Colleagues,\n> >\n> > I have a 'factor' predictor called 'type' (with 4 levels). In the\n> > random part, I have used `||` so the levels of 'type' can't correlate\n> > with each other.\n> >\n> > But I wonder why still correlations are reported in the output?\n> > Thanks, Simon\n> >\n> > lmer(y~type + (type || ID), data = data)\n> >\n> > Random effects:\n> >  Groups   Name  Std.Dev. Corr\n> >  ID     type0 0.4276\n> >           type1 0.7012   0.81\n> >           type2 0.7115   0.72 0.97\n> >           type3 0.7655   0.83 1.00 0.98\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >",
+      "body_snippet": "Thank you, this is extremely helpful to know. You mentioned it's well\ndocumented, any possible links to share?\n\nAlso, does nlme::lme() behave in the same manner in this regard?\n\nOn Fri, Oct 8, 2021 at",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 2,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-c9e025e8d7c8",
+      "message_id": "<9ee31082e6c906cf74124822dc541933b72ee41e.camel@gmail.com>",
+      "from_name": "ji@verissimo m@iii@g oii gm@ii@com",
+      "from_email_hash": "3e26eb9d8ffeeb8c005882a3f0a50a6273d7905340cf90adb8d0ef5b8e51097b",
+      "date": "2021-10-09T00:01:46+01:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>",
+      "references": [
+        "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+        "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>",
+        "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>"
+      ],
+      "body_plain": "You can also convert your factor to (three) numerical predictors,\naccording to its contrasts.\nIn that case, the double bar will remove the correlation parameters.\n\nThis is well explained by Reinhold Kliegl here:\nhttps://rpubs.com/Reinhold/22193\nJo?o\nOn Fri, 2021-10-08 at 17:07 -0500, Simon Harmel wrote:\n> Thank you, this is extremely helpful to know. You mentioned it's\n> welldocumented, any possible links to share?\n> Also, does nlme::lme() behave in the same manner in this regard?\n> On Fri, Oct 8, 2021 at 4:46 PM Phillip Alday <me at phillipalday.com>\n> wrote:\n> > This is a well-documented issue: || doesn't zero correlations\n> > between acategorical variable's levels. As far as I know, there\n> > aresoftware-development/technical reasons for this, not statistical\n> > ones.\n> > The afex package has an implementation that zeroes everything out.\n> > On 8/10/21 4:32 pm, Simon Harmel wrote:\n> > > Dear Colleagues,\n> > > I have a 'factor' predictor called 'type' (with 4 levels). In\n> > > therandom part, I have used `||` so the levels of 'type' can't\n> > > correlatewith each other.\n> > > But I wonder why still correlations are reported in the\n> > > output?Thanks, Simon\n> > > lmer(y~type + (type || ID), data = data)\n> > > Random effects: Groups   Name  Std.Dev. Corr ID     type0\n> > > 0.4276          type1 0.7012   0.81          type2 0.7115   0.72\n> > > 0.97          type3 0.7655   0.83 1.00 0.98\n> > > _______________________________________________R-sig-mixed-\n> > > models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > > \n> \n> _______________________________________________R-sig-mixed-models at r-\n> project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "You can also convert your factor to (three) numerical predictors,\naccording to its contrasts.\nIn that case, the double bar will remove the correlation parameters.\n\nThis is well explained by Reinhold K",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 3,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-75367ec988c1",
+      "message_id": "<d82cee35-5181-6ff9-331e-8f0e69196258@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2021-10-08T22:46:48-05:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>",
+      "references": [
+        "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+        "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>",
+        "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>"
+      ],
+      "body_plain": "On 10/8/21 17:07, Simon Harmel wrote:\n> Thank you, this is extremely helpful to know. You mentioned it's well\n> documented, any possible links to share?\n\nThe lme4 documentation, e.g.\n\nhttps://www.rdocumentation.org/packages/lme4/versions/1.1-27.1/topics/lmer\n\n> (Because of the way it is implemented, the ||||-syntax /works only for\n> design matrices containing numeric (continuous) predictors/; to fit\n> models with independent categorical effects, see |dummy\n> <https://www.rdocumentation.org/link/dummy?package=lme4&version=1.1-27.1>|\n> or the |lmer_alt| function from the afex package.)\n\n> Also, does nlme::lme() behave in the same manner in this regard?\n\nI am unaware of nlme supporting the double-bar syntax at all, but\nspecifing the correlation structure to be diagonal (pdDiagonal? it's\nbeen a while) will force all correlations to zero.\n\n\n>\n> On Fri, Oct 8, 2021 at 4:46 PM Phillip Alday <me at phillipalday.com> wrote:\n>> This is a well-documented issue: || doesn't zero correlations between a\n>> categorical variable's levels. As far as I know, there are\n>> software-development/technical reasons for this, not statistical ones.\n>>\n>> The afex package has an implementation that zeroes everything out.\n>>\n>> On 8/10/21 4:32 pm, Simon Harmel wrote:\n>>> Dear Colleagues,\n>>>\n>>> I have a 'factor' predictor called 'type' (with 4 levels). In the\n>>> random part, I have used `||` so the levels of 'type' can't correlate\n>>> with each other.\n>>>\n>>> But I wonder why still correlations are reported in the output?\n>>> Thanks, Simon\n>>>\n>>> lmer(y~type + (type || ID), data = data)\n>>>\n>>> Random effects:\n>>>  Groups   Name  Std.Dev. Corr\n>>>  ID     type0 0.4276\n>>>           type1 0.7012   0.81\n>>>           type2 0.7115   0.72 0.97\n>>>           type3 0.7655   0.83 1.00 0.98\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>",
+      "body_snippet": "On 10/8/21 17:07, Simon Harmel wrote:\n> Thank you, this is extremely helpful to know. You mentioned it's well\n> documented, any possible links to share?\n\nThe lme4 documentation, e.g.\n\nhttps://www.rdoc",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 3,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-4891735ca24b",
+      "message_id": "<CACgv6yW2NAmPgwxis5QU_8GhB=t=r5xS83WK05kAd09r9K4YJA@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2021-10-08T22:48:53-05:00",
+      "subject": "[R-sig-ME] Why || doesn't zero out the correlations in lmer",
+      "subject_clean": "Why || doesn't zero out the correlations in lmer",
+      "in_reply_to": "<d82cee35-5181-6ff9-331e-8f0e69196258@phillipalday.com>",
+      "references": [
+        "<CACgv6yWY1MhqZ61mQO-BJLyJZwLdW60S+tx_FN+DtfMbtF0t+w@mail.gmail.com>",
+        "<1a3e04f2-d028-edac-cd47-03ef9beb70e2@phillipalday.com>",
+        "<CACgv6yWC0JeyQAa5T0wLKj9mH1HpiOeHTVu2BEOjqn+Y8dBTpw@mail.gmail.com>",
+        "<d82cee35-5181-6ff9-331e-8f0e69196258@phillipalday.com>"
+      ],
+      "body_plain": "Thank you all for the informative comments.\n\nSimon\n\nOn Fri, Oct 8, 2021 at 10:46 PM Phillip Alday <me at phillipalday.com> wrote:\n>\n>\n> On 10/8/21 17:07, Simon Harmel wrote:\n> > Thank you, this is extremely helpful to know. You mentioned it's well\n> > documented, any possible links to share?\n>\n> The lme4 documentation, e.g.\n>\n> https://www.rdocumentation.org/packages/lme4/versions/1.1-27.1/topics/lmer\n>\n> > (Because of the way it is implemented, the ||||-syntax /works only for\n> > design matrices containing numeric (continuous) predictors/; to fit\n> > models with independent categorical effects, see |dummy\n> > <https://www.rdocumentation.org/link/dummy?package=lme4&version=1.1-27.1>|\n> > or the |lmer_alt| function from the afex package.)\n>\n> > Also, does nlme::lme() behave in the same manner in this regard?\n>\n> I am unaware of nlme supporting the double-bar syntax at all, but\n> specifing the correlation structure to be diagonal (pdDiagonal? it's\n> been a while) will force all correlations to zero.\n>\n>\n> >\n> > On Fri, Oct 8, 2021 at 4:46 PM Phillip Alday <me at phillipalday.com> wrote:\n> >> This is a well-documented issue: || doesn't zero correlations between a\n> >> categorical variable's levels. As far as I know, there are\n> >> software-development/technical reasons for this, not statistical ones.\n> >>\n> >> The afex package has an implementation that zeroes everything out.\n> >>\n> >> On 8/10/21 4:32 pm, Simon Harmel wrote:\n> >>> Dear Colleagues,\n> >>>\n> >>> I have a 'factor' predictor called 'type' (with 4 levels). In the\n> >>> random part, I have used `||` so the levels of 'type' can't correlate\n> >>> with each other.\n> >>>\n> >>> But I wonder why still correlations are reported in the output?\n> >>> Thanks, Simon\n> >>>\n> >>> lmer(y~type + (type || ID), data = data)\n> >>>\n> >>> Random effects:\n> >>>  Groups   Name  Std.Dev. Corr\n> >>>  ID     type0 0.4276\n> >>>           type1 0.7012   0.81\n> >>>           type2 0.7115   0.72 0.97\n> >>>           type3 0.7655   0.83 1.00 0.98\n> >>>\n> >>> _______________________________________________\n> >>> R-sig-mixed-models at r-project.org mailing list\n> >>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>>",
+      "body_snippet": "Thank you all for the informative comments.\n\nSimon\n\nOn Fri, Oct 8, 2021 at 10:46 PM Phillip Alday <me at phillipalday.com> wrote:\n>\n>\n> On 10/8/21 17:07, Simon Harmel wrote:\n> > Thank you, this is ext",
+      "thread_id": "thread-8f26b09cb684",
+      "thread_depth": 4,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-5b01e10daf0a",
+      "message_id": "<20211010213514.1beebce4@rolf-Latitude-E7470>",
+      "from_name": "Rolf Turner",
+      "from_email_hash": "85365426fbf4496cfac2415de7f8b411ee0133e9a8b2316f8939adcd30c2a157",
+      "date": "2021-10-10T21:35:14+13:00",
+      "subject": "[R-sig-ME] QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "subject_clean": "QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "in_reply_to": "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>",
+      "references": [
+        "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>"
+      ],
+      "body_plain": "On Fri, 8 Oct 2021 19:11:21 +0800\n??? <donglw17 at lzu.edu.cn> wrote:\n\n> Dear friends\n> \n> Hope you are in good health. Recently, I want to calculate the\n> parameters and effect size of the random effect from the the\n> mixed-linear models. I am still confused about the the parameters and\n> effect size by using the R software. Would you give me some help?\n> Best wishes to you and your team.\n> \n> Longwei\n\nThis question is far too vague for anyone to have any hope of\nformulating a useful reply.\n\ncheers,\n\nRolf Turner\n\n-- \nHonorary Research Fellow\nDepartment of Statistics\nUniversity of Auckland\nPhone: +64-9-373-7599 ext. 88276",
+      "body_snippet": "On Fri, 8 Oct 2021 19:11:21 +0800\n??? <donglw17 at lzu.edu.cn> wrote:\n\n> Dear friends\n> \n> Hope you are in good health. Recently, I want to calculate the\n> parameters and effect size of the random eff",
+      "thread_id": "thread-386e4d22545a",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-2a1d88ba925b",
+      "message_id": "<03AFDC0B-90A3-42F3-8772-D700565A8100@prodigy.net.mx>",
+      "from_name": "Salvador Sánchez-Colón",
+      "from_email_hash": "181158bd964af5a21c1952be85cb1cba0729242bcd1befebcf46e5b1b91205a0",
+      "date": "2021-10-10T10:40:43-05:00",
+      "subject": "[R-sig-ME] QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "subject_clean": "QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "in_reply_to": "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>",
+      "references": [
+        "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>"
+      ],
+      "body_plain": "Hi Longwei,\n\nI have found this reference extremely useful to understand Generalized Linear Mixed Models and their implementation in R:\n\nhttps://www.springer.com/gp/book/9780387874579\n\nBest regards,\n\nSalvador \n\n\n> On 8 Oct 2021, at 8:27, ??? <donglw17 at lzu.edu.cn> wrote:\n> \n> ?Dear friends\n> \n> Hope you are in good health. Recently, I want to calculate the parameters and effect size of the random effect from the the mixed-linear models. I am still confused about the the parameters and effect size by using the R software. Would you give me some help?\n> Best wishes to you and your team.\n> \n> Longwei\n> \n>    [[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Longwei,\n\nI have found this reference extremely useful to understand Generalized Linear Mixed Models and their implementation in R:\n\nhttps://www.springer.com/gp/book/9780387874579\n\nBest regards,\n\nS",
+      "thread_id": "thread-386e4d22545a",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-e1cf2be4b7e6",
+      "message_id": "<20211011093632.46bee0c7@rolf-Latitude-E7470>",
+      "from_name": "Rolf Turner",
+      "from_email_hash": "85365426fbf4496cfac2415de7f8b411ee0133e9a8b2316f8939adcd30c2a157",
+      "date": "2021-10-11T09:36:32+13:00",
+      "subject": "[R-sig-ME]  QUESTIONS ABOUT THE PARAMETERS AND EFFECT SIZE OF THR RANDOM EFFECT IN MIXED LINEAR MODEL",
+      "subject_clean": "QUESTIONS ABOUT THE PARAMETERS AND EFFECT SIZE OF THR RANDOM EFFECT IN MIXED LINEAR MODEL",
+      "in_reply_to": "<492f65a1.15766.17c69dd8027.Coremail.donglw17@lzu.edu.cn>",
+      "references": [
+        "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>",
+        "<20211010213514.1beebce4@rolf-Latitude-E7470>",
+        "<492f65a1.15766.17c69dd8027.Coremail.donglw17@lzu.edu.cn>"
+      ],
+      "body_plain": "On Sun, 10 Oct 2021 19:01:36 +0800\n??? <donglw17 at lzu.edu.cn> wrote:\n\n> Dear Rolf Turner and other friends\n> \n> Thank you for friendly help, and sorry for the vague expression.\n> I build the mixed linear model using the lme4, for example\n> \n> f1 =lmer(y~x1+x2+x3+(1|r1)+(1|r2),data = dat)\n> Note: x1, x2 and x3 are fixed factors, r1 and r2 is the random\n> factors. the code and the data been loaded as an attachment\n> \n> My questions is how to calculate the parameters and effect size of\n> the random effect (r1 and r2). Best wishes to you.\n\nRandom effects are not parameters; they are (as the name would imply)\nrandom variables.   The ranef()  function from lme4 will extract the\nmodes of the instances of these random variables, associated with your\nmodel.  The function VarCorr() will provide estimates of the standard\ndeviations of these random variables.\n\nI know next to nothing about effect sizes, so I do not have the\nexpertise to explore your question any further.  Others on\nthe r-sig-mixed-models list will have such expertise, but unfortunately\nthe attachment that you sent will not have gone through to the list.\nThe list mail-handler strips most attachments from email (as a security\nmeasure.\n\nMoreover the \"code and result.txt\" file in the zip archive that I\nreceived was empty --- which is not much use.\n\nInstead of a zip archive you should send your data and code as separate\ntext files (with a .txt extension) --- these should go through.  Or you\ncould simply include your code in the body of the email, and include\nthe data as well (as long as the data set is not too huge), using\ndput().\n\ncheers,\n\nRolf Turner\n\n-- \nHonorary Research Fellow\nDepartment of Statistics\nUniversity of Auckland\nPhone: +64-9-373-7599 ext. 88276",
+      "body_snippet": "On Sun, 10 Oct 2021 19:01:36 +0800\n??? <donglw17 at lzu.edu.cn> wrote:\n\n> Dear Rolf Turner and other friends\n> \n> Thank you for friendly help, and sorry for the vague expression.\n> I build the mixed l",
+      "thread_id": "thread-e1cf2be4b7e6",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-716fa3729a74",
+      "message_id": "<CAHftDbjRkhY5n9GXEV2Eq6S3w3wapbF1amOePUq+L0qSr4obbA@mail.gmail.com>",
+      "from_name": "sree datta",
+      "from_email_hash": "6cbe3919893bfc40241fb2b4c9e107a0787a1f671dc8ce3a9332e7c7deab9261",
+      "date": "2021-10-10T22:25:04-04:00",
+      "subject": "[R-sig-ME] QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "subject_clean": "QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "in_reply_to": "<03AFDC0B-90A3-42F3-8772-D700565A8100@prodigy.net.mx>",
+      "references": [
+        "<31684f57.143c5.17c5f99b5b8.Coremail.donglw17@lzu.edu.cn>",
+        "<03AFDC0B-90A3-42F3-8772-D700565A8100@prodigy.net.mx>"
+      ],
+      "body_plain": "Hi\n\nPlease see the link below about fitting Linear Mixed Effects models in R\nusing \"lme4\" package by Doublas Bates, the author of \"lme4\".\n\nhttp://mirrors.nics.utk.edu/cran/web/packages/lme4/vignettes/lmer.pdf\n\nAnother nice conceptual introduction / tutorial on linear mixed effects by\nBodo Winter using \"lme4\" in R:\n\nhttps://jontalle.web.engr.illinois.edu/MISC/lme4/bw_LME_tutorial.pdf\n\n\n\nOn Sun, Oct 10, 2021 at 11:41 AM Salvador S?nchez-Col?n <\nsalvadorsanchezcolon at prodigy.net.mx> wrote:\n\n> Hi Longwei,\n>\n> I have found this reference extremely useful to understand Generalized\n> Linear Mixed Models and their implementation in R:\n>\n> https://www.springer.com/gp/book/9780387874579\n>\n> Best regards,\n>\n> Salvador\n>\n>\n> > On 8 Oct 2021, at 8:27, ??? <donglw17 at lzu.edu.cn> wrote:\n> >\n> > ?Dear friends\n> >\n> > Hope you are in good health. Recently, I want to calculate the\n> parameters and effect size of the random effect from the the mixed-linear\n> models. I am still confused about the the parameters and effect size by\n> using the R software. Would you give me some help?\n> > Best wishes to you and your team.\n> >\n> > Longwei\n> >\n> >    [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi\n\nPlease see the link below about fitting Linear Mixed Effects models in R\nusing \"lme4\" package by Doublas Bates, the author of \"lme4\".\n\nhttp://mirrors.nics.utk.edu/cran/web/packages/lme4/vignettes/",
+      "thread_id": "thread-386e4d22545a",
+      "thread_depth": 2,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-20037efa7e3a",
+      "message_id": "<CAHmzXO5a6nQnST-zMS=ypNr9m3Fe=iRdnWVb+-YCc6Esixws6Q@mail.gmail.com>",
+      "from_name": "Gang Chen",
+      "from_email_hash": "6a628480c048223e22461398449fbc9310419b17530dd52d1b45196166294171",
+      "date": "2021-10-11T07:27:07-04:00",
+      "subject": "[R-sig-ME] Recovering correlations",
+      "subject_clean": "Recovering correlations",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I'm trying to recover the correlations in a multivariate dataset. Let me\nfirst start with a trivariate case.\n\nrequire(MASS); require(lme4)\n\n# trivariate case\n\nr1 <- 0.5               # correlation value to be recovered\n\nns <- 200               # number of samples\n\nS1 <- matrix(c(1,r1,0,  # correlation structure of trivariate data\n\n               r1,1,0,\n\n               0,0,1), nrow=3, ncol=3)\n\n# simulated trivariate data\n\ndat <- data.frame(f = c(rep(paste0('P',1:ns), 2), paste0('S',1:ns)),\n\n                  y = c(mvrnorm(n=ns, mu=c(0, 0, 0), Sigma=S1)))\n\n\nNow I can construct the following model\n\n\nm1 <- lmer(y ~ 1 + (1|f), data=dat)\n\n\nThen with the variances from the random effects in summary(m1)\n\n\nsummary(m1)\n\n\nRandom effects:\n\n Groups   Name        Variance Std.Dev.\n\n f        (Intercept) 0.4996   0.7068\n\n Residual             0.4907   0.7005\n\n\nI can recover the correlation r1:\n\n\ntmp <- unlist(lapply(VarCorr(m1), `[`, 1))\n\n# recover the correlation r1\n\ntmp/(tmp+attr(VarCorr(m1), \"sc\")^2)\n\n\nLet's switch to a pentavariate case:\n\n# pentavariate case\n\nr1 <- 0.2; r2 <- 0.8        # correlation value to be recovered\n\nns <- 200                   # number of samples\n\nS  <- matrix(c(1,r1,0,0,0,  # correlation structure of pentavariate data\n\n               r1,1,0,0,0,  # the first and second variables are correlated\n\n               0,0,1,r2,0,  # the third and fourth variables are correlated\n\n               0,0,r2,1,0,\n\n               0,0,0,0,1), nrow=5,ncol=5)\n\n# simulated data\n\ndat <- data.frame(f = c(rep(paste0('P',1:ns), 2), rep(paste0('T',1:ns), 2),\npaste0('S',1:ns)),\n\n                  R=c(rep('P',2*ns), rep('T',2*ns), rep('S', ns)),\n\n                  y = c(mvrnorm(n=ns, mu=rep(0,5), Sigma=S)))\n\ndat$R1 <- as.numeric(dat$R=='P')   # dummy code the first and second\nvariables (r1)\n\ndat$R2 <- as.numeric(dat$R=='T')   # dummy code the third and fourth\nvariables (r2)\n\nI have thought about the following models\n\nm2 <- lmer(y ~ 1 + (0+R1|f) + (0+R2|f), data=dat)\n\nm3 <- lmer(y ~ 1 + (1|f) + (0+R2|f), data=dat)\n\nbut I've been struggling to figure out a way to recover the correlations r1\nand r2 with the variances from the random effects based on the models m2\nand m3.\n\nOf course I could use a workaround solution by reducing the\npentavariate data into two trivariate cases:\n\n# workaround solution\n\nm4 <- lmer(y ~ 1 + (1|f), data=dat[dat$R2!=1,]) # recover r1 like model m1\nabove\n\nm5 <- lmer(y ~ 1 + (1|f), data=dat[dat$R1!=1,]) # recover r2 like model m1\nabove\n\nHowever, I would really like to find a way to recover r1 and r2 directly\nusing models like m2 and m3. Suggestions?\n\nThanks,\nGang Chen\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I'm trying to recover the correlations in a multivariate dataset. Let me\nfirst start with a trivariate case.\n\nrequire(MASS); require(lme4)\n\n# trivariate case\n\nr1 <- 0.5               # correlation val",
+      "thread_id": "thread-20037efa7e3a",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-3792b8467af5",
+      "message_id": "<CAEyHP-1P4EbOWwCCVbi2azWJ256DBLD6Ah-UK4vFNDN72e2fnw@mail.gmail.com>",
+      "from_name": "Javier Moreira",
+      "from_email_hash": "a988e29d98c83c29f2a3c6d2f2f75218a39711bc22c145c05b5ab5ac59c09199",
+      "date": "2021-10-11T20:18:05-03:00",
+      "subject": "[R-sig-ME] comparing GLS residuals with lme + correlation=corExp(form=~1, nugget=T) residuals",
+      "subject_clean": "comparing GLS residuals with lme + correlation=corExp(form=~1, nugget=T) residuals",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "hi,\ni'm trying to make a comparison between a series of models, and I'm trying\nto understand how to find the autocorrelation that the lme + correlation\nmodel removed.\nIs the solution to just use type=\"normalized\"? if I do this I'm getting the\nfinal residuals ( with the already subtract spatial ) or the residuals\nwithout considering spatial autocorrelation?\n\nif anybody has struggled with the same, I could use some help.\nthanks a lot!\ngreat forum!\n\ngreatings\n\n-- \nJavier Moreira de Souza\nIngeniero Agr?nomo\n099 406 006\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "hi,\ni'm trying to make a comparison between a series of models, and I'm trying\nto understand how to find the autocorrelation that the lme + correlation\nmodel removed.\nIs the solution to just use type=",
+      "thread_id": "thread-3792b8467af5",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-ffb7fad5794c",
+      "message_id": "<4c35c0b0-eec1-ecc2-b9a8-eadaf1c59f7e@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-10-11T19:28:22-04:00",
+      "subject": "[R-sig-ME] comparing GLS residuals with lme + correlation=corExp(form=~1, nugget=T) residuals",
+      "subject_clean": "comparing GLS residuals with lme + correlation=corExp(form=~1, nugget=T) residuals",
+      "in_reply_to": "<CAEyHP-1P4EbOWwCCVbi2azWJ256DBLD6Ah-UK4vFNDN72e2fnw@mail.gmail.com>",
+      "references": [
+        "<CAEyHP-1P4EbOWwCCVbi2azWJ256DBLD6Ah-UK4vFNDN72e2fnw@mail.gmail.com>"
+      ],
+      "body_plain": "Yes, that should be correct. type=\"normalized\" should get you the \nresiduals corrected for autocorrelation and heteroscedasticity (if it's \nin the model).  A lot of people (including me!) routinely get confused \nbecause the default residuals are \"response\" (i.e. accounting for \nneither heterosced. nor correlation).\n\nOn 10/11/21 7:18 PM, Javier Moreira wrote:\n> hi,\n> i'm trying to make a comparison between a series of models, and I'm trying\n> to understand how to find the autocorrelation that the lme + correlation\n> model removed.\n> Is the solution to just use type=\"normalized\"? if I do this I'm getting the\n> final residuals ( with the already subtract spatial ) or the residuals\n> without considering spatial autocorrelation?\n> \n> if anybody has struggled with the same, I could use some help.\n> thanks a lot!\n> great forum!\n> \n> greatings\n>",
+      "body_snippet": "Yes, that should be correct. type=\"normalized\" should get you the \nresiduals corrected for autocorrelation and heteroscedasticity (if it's \nin the model).  A lot of people (including me!) routinely ge",
+      "thread_id": "thread-3792b8467af5",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-8f9d5dff03d4",
+      "message_id": "<CAOtvA4td_=VyD1YtWkf_56-_LAvR2uK8kGmKjejro4AJyGze5A@mail.gmail.com>",
+      "from_name": "Di Zeng",
+      "from_email_hash": "9f0c9d674ea161dcb6ccfdbc7786ffb2937450f9aaebd07dcd5da7263913bd83",
+      "date": "2021-10-21T18:32:00-07:00",
+      "subject": "[R-sig-ME] Predictor standardized transformation in GLMM",
+      "subject_clean": "Predictor standardized transformation in GLMM",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nMy colleagues and I have a question when we use the generalized linear\nmixed models to analyze our data:\n\n# Creating an example dataset\n\ngroup <- factor(c('A','A','A','B','B','C','D'))#Random effects\ny <- c(1:7)\nx1 <- c(6,6,6,5,5,4,3)\nx2 <- c(11,11,11,5,5,6,8)\n\n\nBecause the predictors (x1, x2) have different units, we need to\nstandardize them before running our models. There are two ways to conduct\nthis standardized transformation.\n\nFirst, standardizing x1, x2 directly, like:\n\nscale(dt$x1)\nscale(dt$x2)\n\nSecond, standardizing x1, x2 based on unique group, like:\n\nscale(unique(dt$x1))\nscale(unique(dt$x2))\n\n\nWe wonder which way is reasonable? In my own idea, we should use the second\none. Because data points in the same group are non-independent replication\nin read dataset.\n\nCould you mind giving us some suggestions or ideas on this problem?\n\nThanks very much,\n\nDi\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nMy colleagues and I have a question when we use the generalized linear\nmixed models to analyze our data:\n\n# Creating an example dataset\n\ngroup <- factor(c('A','A','A','B','B','C','D'))#Rand",
+      "thread_id": "thread-8f9d5dff03d4",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-9427262c70b2",
+      "message_id": "<a0f0335a-a983-3e0f-e20f-e52858638013@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2021-10-21T21:44:20-04:00",
+      "subject": "[R-sig-ME] Predictor standardized transformation in GLMM",
+      "subject_clean": "Predictor standardized transformation in GLMM",
+      "in_reply_to": "<CAOtvA4td_=VyD1YtWkf_56-_LAvR2uK8kGmKjejro4AJyGze5A@mail.gmail.com>",
+      "references": [
+        "<CAOtvA4td_=VyD1YtWkf_56-_LAvR2uK8kGmKjejro4AJyGze5A@mail.gmail.com>"
+      ],
+      "body_plain": "The first way is more standard and makes more sense to me.\n\n   Note that standardizing variables doesn't make any difference to the \n*statistical* results; it may improve the computational stability of the \nmodel, and it definitely changes the interpretation of the parameters.\n\n   I understand the meaning of the parameters in the first case: \"what \nis the expected change in log-odds of the outcome for a 1-SD change in \npredictor x1, holding everything else fixed\"?  I'm not so sure how I \nwould interpret \"1 SD of the unique values of x1\", but if you can (and \ncan explain it!), and that version makes more sense, then you should go \nahead and use it.\n\n   The structure of your example seems a bit odd -- is this a nested \ndesign, i.e. the predictors only vary across levels of the \nrandom-effects grouping factor, not within them?  In that case (if your \nreal data follow the same structure), you would probably be better \ncollapsing the values rather than dealing with the complexities of a \nrandom-effect linear regression - in other words,\n\n   y <- c(mean(1:3), mean(4:5), 6, 7)\n   x1 <- c(6,5,4,3)\n   x2 <- c(11, 5, 6, 8)\n\nlm(y~x1 + x2, weights=c(3,2,1,1))\n\n  (see Murtaugh, \"Simplicity and complexity in ecological data analysis\")\n\nOn 10/21/21 9:32 PM, Di Zeng wrote:\n> Dear all,\n> \n> My colleagues and I have a question when we use the generalized linear\n> mixed models to analyze our data:\n> \n> # Creating an example dataset\n> \n> group <- factor(c('A','A','A','B','B','C','D'))#Random effects\n> y <- c(1:7)\n> x1 <- c(6,6,6,5,5,4,3)\n> x2 <- c(11,11,11,5,5,6,8)\n> \n> \n> Because the predictors (x1, x2) have different units, we need to\n> standardize them before running our models. There are two ways to conduct\n> this standardized transformation.\n> \n> First, standardizing x1, x2 directly, like:\n> \n> scale(dt$x1)\n> scale(dt$x2)\n> \n> Second, standardizing x1, x2 based on unique group, like:\n> \n> scale(unique(dt$x1))\n> scale(unique(dt$x2))\n> \n> \n> We wonder which way is reasonable? In my own idea, we should use the second\n> one. Because data points in the same group are non-independent replication\n> in read dataset.\n> \n> Could you mind giving us some suggestions or ideas on this problem?\n> \n> Thanks very much,\n> \n> Di\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\nGraduate chair, Mathematics & Statistics",
+      "body_snippet": "The first way is more standard and makes more sense to me.\n\n   Note that standardizing variables doesn't make any difference to the \n*statistical* results; it may improve the computational stability o",
+      "thread_id": "thread-8f9d5dff03d4",
+      "thread_depth": 1,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-64ce359f0a54",
+      "message_id": "<CAOtvA4vAypjVQf4OBZeEof1W=e+vRpDik4eCTdmmthrCsgsndA@mail.gmail.com>",
+      "from_name": "Di Zeng",
+      "from_email_hash": "9f0c9d674ea161dcb6ccfdbc7786ffb2937450f9aaebd07dcd5da7263913bd83",
+      "date": "2021-10-23T02:34:57Z",
+      "subject": "[R-sig-ME] Predictor standardized transformation in GLMM",
+      "subject_clean": "Predictor standardized transformation in GLMM",
+      "in_reply_to": "<mailman.19458.9.1634896802.54623.r-sig-mixed-models@r-project.org>",
+      "references": [
+        "<mailman.19458.9.1634896802.54623.r-sig-mixed-models@r-project.org>"
+      ],
+      "body_plain": "Hi?Dr. Benjamin Bolker,\n\nI got it.\n\nThanks so much for your ideas and suggestions.\n\nCheers,\n\nDi\n\n\n> ------------------------------\n>\n> Message: 2\n> Date: Thu, 21 Oct 2021 21:44:20 -0400\n> From: Ben Bolker\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Predictor standardized transformation in GLMM\n> Message-ID:\n> Content-Type: text/plain; charset=\"utf-8\"; Format=\"flowed\"\n>\n> The first way is more standard and makes more sense to me.\n>\n> Note that standardizing variables doesn't make any difference to the\n> *statistical* results; it may improve the computational stability of the\n> model, and it definitely changes the interpretation of the parameters.\n>\n> I understand the meaning of the parameters in the first case: \"what\n> is the expected change in log-odds of the outcome for a 1-SD change in\n> predictor x1, holding everything else fixed\"? I'm not so sure how I\n> would interpret \"1 SD of the unique values of x1\", but if you can (and\n> can explain it!), and that version makes more sense, then you should go\n> ahead and use it.\n>\n> The structure of your example seems a bit odd -- is this a nested\n> design, i.e. the predictors only vary across levels of the\n> random-effects grouping factor, not within them? In that case (if your\n> real data follow the same structure), you would probably be better\n> collapsing the values rather than dealing with the complexities of a\n> random-effect linear regression - in other words,\n>\n> y <- c(mean(1:3), mean(4:5), 6, 7)\n> x1 <- c(6,5,4,3)\n> x2 <- c(11, 5, 6, 8)\n>\n> lm(y~x1 + x2, weights=c(3,2,1,1))\n>\n> (see Murtaugh, \"Simplicity and complexity in ecological data analysis?)\n>\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> Graduate chair, Mathematics & Statistics\n>\n>\n>\n>\n> ------------------------------\n>\n> Subject: Digest Footer\n>\n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> ------------------------------\n>\n> End of R-sig-mixed-models Digest, Vol 178, Issue 12\n> ***************************************************\n>",
+      "body_snippet": "Hi?Dr. Benjamin Bolker,\n\nI got it.\n\nThanks so much for your ideas and suggestions.\n\nCheers,\n\nDi\n\n\n> ------------------------------\n>\n> Message: 2\n> Date: Thu, 21 Oct 2021 21:44:20 -0400\n> From: Ben Bo",
+      "thread_id": "thread-64ce359f0a54",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-5a56d63c491b",
+      "message_id": "<CAEsSYzxisxKLuhnesCeDsciC_9hwm+gOf+WW0P+yiUyfhx8LMQ@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2021-10-26T15:12:57+01:00",
+      "subject": "[R-sig-ME] Model selection and model simplification (MSMS02)",
+      "subject_clean": "Model selection and model simplification (MSMS02)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Model selection and model simplification (MSMS02)\n\nhttps://www.prstatistics.com/course/model-selection-and-model-simplification-msms02/\n24 November 2021 - 25 November 2021\nCourse Overview:\n\nThis two day course covers the important and general topics of statistical\nmodel building, model evaluation, model selection, model comparison, model\nsimplification, and model averaging. These topics are vitally important to\nalmost every type of statistical analysis, yet these topics are often\npoorly or incompletely understood. We begin by considering the fundamental\nissue of how to measure model fit and a model?s predictive performance, and\ndiscuss a wide range of other major model fit measurement concepts like\nlikelihood, log likelihood, deviance, residual sums of squares etc. We then\nturn to nested model comparison, particularly in general and generalized\nlinear models, and their mixed effects counterparts. We then consider the\nkey concept of out-of-sample predictive performance, and discuss\nover-fitting or how excellent fits to the observed data can lead to very\npoor generalization performance. As part of this discussion of\nout-of-sample generalization, we introduce leave-one-out cross-validation\nand Akaike Information Criterion (AIC). We then cover general concepts and\nmethods related to variable selection, including stepwise regression, ridge\nregression, Lasso, and elastic nets. Following this, we turn to model\naveraging, which is an arguably always preferable alternative to model\nselection. Finally, we cover Bayesian methods of model comparison. Here, we\ndescribe how Bayesian methods allow us to easily compare completely\ndistinct statistical models using a common metric. We also describe how\nBayesian methods allow us to fit all the candidate models of potential\ninterest, including cases were traditional methods fail.\n\nTHIS IS ONE COURSE IN OUR R SERIES ? LOOK OUT FOR COURSES WITH THE SAME\nCOURSE IMAGE TO FIND MORE IN THIS SERIES\nEmail oliverhooker at prstatistics.com with any questions\nUp-coming courses\n\n*GIS AND REMOTE SENSING ANALYSES WITH R (GARM01)*\n\nOnline (live and recorded) 14th February 2022 - 18th February 2022\n\n?400 reduced from ?450\n\nhttps://www.prstatistics.com/course/gis-and-remote-sensing-analyses-with-r-garm01/\n\n*ADAPTING TO THE RECENT CHANGES IN R SPATIAL PACKAGES (SF, TERRA, PROJ\nLIBRARY) (PROJ02)*\n\nOnline (live and recorded) 13th January 2022 - 14th January 2022\n\n?275 reduced from ?300\n\nhttps://www.prstatistics.com/course/adapting-to-the-recent-changes-in-r-spatial-packages-sf-terra-proj-library-proj02/\n\n\n*BIOACOUSTICS FOR ECOLOGISTS: HARDWARE, SURVEY DESIGN AND DATA ANALYSIS\n(BIAC02)*\n\nOnline (live and recorded) 22nd March 2022 - 24th March 2022\n\n?280 reduced from ?350\n\nhttps://www.prstatistics.com/course/bioacoustics-for-ecologists-hardware-survey-design-and-data-analysis-biac02/\n\n\n\n*MULTIVARIATE ANALYSIS OF ECOLOGICAL COMMUNITIES IN R WITH THE VEGAN\nPACKAGE (VGNR04)*\n\n12th September 2022 - 16th September 2022\n\n?400 reduced from ?480\n\nhttps://www.prstatistics.com/course/multivariate-analysis-of-ecological-communities-in-r-with-the-vegan-package-vgnr04/\n\n\n\n*TIME SERIES DATA ANALYSIS (TSDA01)*\n\nOnline (live and recorded) 14 December 2021 - 17 December 2021\n\n?400 reduced from ?450\n\nhttps://www.prstatistics.com/course/time-series-data-analysis-tsda01/\n\n\n\n*STABLE ISOTOPE MIXING MODELS USING SIBER, SIAR, MIXSIAR (SIMM08)*\n\nOnline (live and recorded) 1st February 2022 - 4th February 2022\n\n?430 reduced from ?480\n\nhttps://www.prstatistics.com/course/stable-isotope-mixing-models-using-r-simm08/\n\n\n\n*BAYESIAN DATA ANALYSIS (BADA01)*\n\nOnline (live and recorded) 10th January 2022 - 14th January 2022\n\n?375 reduced from ?450\n\nhttps://www.prstatistics.com/course/bayesian-data-analysis-bada01/\n\n\n\n*INTRODUCTION TO STAN FOR BAYESIAN DATA ANALYSIS (ISBD01)*\n\nOnline (live and recorded) 18th January 2022 - 20th January 2022\n\n?200 reduced from ?275.00\n\nhttps://www.prstatistics.com/course/introduction-to-stan-for-bayesian-data-analysis-isbd01/\n\n\n\n*MAKING BEAUTIFUL AND EFFECTIVE MAPS IN R (MAPR03)*\n\nOnline (live and recorded) 9th February 2022 - 10th February 2022\n\n?275 reduced from ?300.00\n\nhttps://www.prstatistics.com/course/making-beautiful-and-effective-maps-in-r-mapr03/\n\n*ADVANCES IN SPATIAL ANALYSIS OF MULTIVARIATE ECOLOGICAL DATA: THEORY AND\nPRACTICE (MVSP04)*\n\nOnline (pre-recorded with live support) 25th April 2022 - 29th April 2022\n\n?375 reduced from ?400\n\nhttps://www.prstatistics.com/course/advances-in-spatial-analysis-of-multivariate-ecological-data-theory-and-practice-mvsp04/\n\n\n\n*FREE RECORDED 1 DAY INTRO TO R AND R STUDIO (FIRR01) *\n\nOnline (recorded) 29 October 2021\n\nFree\n\nhttps://www.prstatistics.com/course/free-1-day-intro-to-r-and-r-studio-firr01/\n\n\n\n*INTRODUCTION TO GENERALISED LINEAR MODELS USING R AND RSTUDIO (IGLM04)*\n\nOnline (live and recorded) 3 November 2021 - 4 November 2021\n\n?200 reduced from ?275.00\n\nhttps://www.prstatistics.com/course/introduction-to-generalised-linear-models-using-r-and-rstudio-iglm04/\n\n*INTRODUCTION TO MIXED MODELS USING R AND RSTUDIO (IMMR05)*\n\nOnline (live and recorded) 10 November 2021 - 11 November 2021\n\n?200 reduced from ?275.00\n\nhttps://www.prstatistics.com/course/introduction-to-mixed-models-using-r-and-rstudio-immr05/\n\n*INTRODUCTION TO MACHINE LEARNING AND DEEP LEARNING USING R (IMDL02) *\n\nOnline (live and recorded) 17 November 2021 - 18 November 2021\n\n?200 reduced from ?275.00\n\nhttps://www.prstatistics.com/course/introduction-to-machine-learning-and-deep-learning-using-r-imdl02/\n\n*MODEL SELECTION AND MODEL SIMPLIFICATION (MSMS02)*\n\nOnline (live and recorded) 24 November 2021 - 25 November 2021\n\n?200 reduced from ?275.00\n\nhttps://www.prstatistics.com/course/model-selection-and-model-simplification-msms02/\n\n\n\n*SPECIES DISTRIBUTION MODELLING WITH BAYESIAN STATISTICS IN R (SDMB03)*\n\nOnline (live and recorded) 6 December 2021 - 10 December 2021\n\nhttps://www.prstatistics.com/course/species-distribution-modelling-with-bayesian-statistics-in-r-sdmb03/\n\n\n\n*SPECIES DISTRIBUTION MODELING USING R (SDMR04)*\n\nOnline (live and recorded) 2nd February 2022 - 10th February 2022\n\nhttps://www.prstatistics.com/course/species-distribution-modeling-using-r-sdmr04/\n\n\n\n*INTRODUCTION TO ECO-PHYLOGENETICS AND COMPARATIVE ANALYSES USING R\n(ECPH01)*\n\nOnline (live and recorded) 7th February 2022 - 11th February 2022\n\nhttps://www.prstatistics.com/course/introduction-to-eco-phylogenetics-and-comparative-analyses-using-r-ecph01/\n\n\n\n*FUNCTIONAL ECOLOGY FROM ORGANISM TO ECOSYSTEM: THEORY AND COMPUTATION\n(FEER02)*\n\nOnline (live and recorded) 5th September 2022 - 9th September 2022\nhttps://www.prstatistics.com/course/functional-ecology-from-organism-to-ecosystem-theory-and-computation-feer02/\n-- \n\n-- \nOliver Hooker PhD.\nPR statistics\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Model selection and model simplification (MSMS02)\n\nhttps://www.prstatistics.com/course/model-selection-and-model-simplification-msms02/\n24 November 2021 - 25 November 2021\nCourse Overview:\n\nThis two d",
+      "thread_id": "thread-5a56d63c491b",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-967b84cba5bf",
+      "message_id": "<CAC41oroSZimN2U3hJmDZRJ7Wupgt9OvYo33owC1C-vddvqf2qA@mail.gmail.com>",
+      "from_name": "Clemens von Wulffen",
+      "from_email_hash": "2ac3d77cbc20a32dfde9335f9b92910ff916c18d1e05b4a149f30acb34bc516f",
+      "date": "2021-10-30T14:47:23+02:00",
+      "subject": "[R-sig-ME] Power calculation three way interaction",
+      "subject_clean": "Power calculation three way interaction",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello Team,\n\nI was wondering if anyone here has an answer to my question:\n\nI am conducting a *power calculation* to find the required sample size\nfor *binomial\nGLMER *study.\nShort description of experiment: Participants rate *120 statements* as *true\nor false.* Half of the statements have been repeated previously (in an\nexposure task). The subjects are placed into three groups (*1 control and 2\ntreatments* groups called: affect reattribution and fluency reattribution).\nThese groups also get additional information during the second phase (the\nsecond 60 statements to be judged from the 120 overall). We are trying to\nsee now *if the varying additional information* given to the two\ntreatment groups* changes the likelihood to rate a statement as true in the\nsecond phase.*\n\nI have gained parameters for my simulation from a mixture of pilot data and\nprevious study (since pilot data only has a results for one group).\n\nOne of the aims of the study is to get results for a *three way interaction\nbetween status of repetition (new or repeated), judgement phase (1 or 2),\nand condition (group control, af-reat, and flu-reat). *\n\nI was wondering now how and *if I need to specify the three way interaction\nin any specific way for my power calculation other than simply plugging the\nvariables for IV's and for the random effects? *\n\nglmer(dv ~ fluency_reat * status.t * judge.t +\n                  affect_reat * status.t * judge.t  +\n                  (1 | subj) + (1 | item) , data = data,\n             family = binomial(link = \"logit\"))\n\nfor clarification: since there are three condition groups --> the formula\ngets repeated for each treatment group.\n\nI have my code attached to this email. I personally thought that I have\nspecified everything and can just run it, but my supervisor said I need to\nspecify the three way interaction previously. I just am  not sure how to.\n\nIf anyone has had this question before and has some thoughts on it, I would\nhighly appreciate it.\n\nCheers,\n\nClemens",
+      "body_snippet": "Hello Team,\n\nI was wondering if anyone here has an answer to my question:\n\nI am conducting a *power calculation* to find the required sample size\nfor *binomial\nGLMER *study.\nShort description of exper",
+      "thread_id": "thread-967b84cba5bf",
+      "thread_depth": 0,
+      "month": "2021-10"
+    },
+    {
+      "id": "msg-eeebf659a0f7",
+      "message_id": "<0553fea4785241ab851acde2a2c47e4b@unige.ch>",
+      "from_name": "Julian Gaviria Lopez",
+      "from_email_hash": "c8ba90449bbeb7195571ea927cf30c3fecd5054a3f04f74bd2b788e7e62b8df7",
+      "date": "2021-10-30T19:21:21Z",
+      "subject": "[R-sig-ME] Power calculation three way interaction",
+      "subject_clean": "Power calculation three way interaction",
+      "in_reply_to": "<CAC41oroSZimN2U3hJmDZRJ7Wupgt9OvYo33owC1C-vddvqf2qA@mail.gmail.com>",
+      "references": [
+        "<CAC41oroSZimN2U3hJmDZRJ7Wupgt9OvYo33owC1C-vddvqf2qA@mail.gmail.com>"
+      ],
+      "body_plain": "Hi Clemens,\n\n\nThe following tutorials might be helpful:\n\n\nhttps://doi.org/10.1177/2515245920965119\n\nhttps://doi.org/10.3758/s13428-021-01546-0\n\n\nHope it helps, best wishes.\n\n\nJulian Gaviria\nNeurology and Imaging of cognition lab (Labnic)\nUniversity of Geneva. Campus Biotech.\n9 Chemin des Mines, 1202 Geneva, CH\nTel: +41 22 379 0380\nEmail: Julian.GaviriaLopez at unige.ch\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Clemens von Wulffen <clemens.wulffen at gmail.com>\nSent: Saturday, October 30, 2021 2:47:23 PM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] Power calculation three way interaction\n\nHello Team,\n\nI was wondering if anyone here has an answer to my question:\n\nI am conducting a *power calculation* to find the required sample size\nfor *binomial\nGLMER *study.\nShort description of experiment: Participants rate *120 statements* as *true\nor false.* Half of the statements have been repeated previously (in an\nexposure task). The subjects are placed into three groups (*1 control and 2\ntreatments* groups called: affect reattribution and fluency reattribution).\nThese groups also get additional information during the second phase (the\nsecond 60 statements to be judged from the 120 overall). We are trying to\nsee now *if the varying additional information* given to the two\ntreatment groups* changes the likelihood to rate a statement as true in the\nsecond phase.*\n\nI have gained parameters for my simulation from a mixture of pilot data and\nprevious study (since pilot data only has a results for one group).\n\nOne of the aims of the study is to get results for a *three way interaction\nbetween status of repetition (new or repeated), judgement phase (1 or 2),\nand condition (group control, af-reat, and flu-reat). *\n\nI was wondering now how and *if I need to specify the three way interaction\nin any specific way for my power calculation other than simply plugging the\nvariables for IV's and for the random effects? *\n\nglmer(dv ~ fluency_reat * status.t * judge.t +\n                  affect_reat * status.t * judge.t  +\n                  (1 | subj) + (1 | item) , data = data,\n             family = binomial(link = \"logit\"))\n\nfor clarification: since there are three condition groups --> the formula\ngets repeated for each treatment group.\n\nI have my code attached to this email. I personally thought that I have\nspecified everything and can just run it, but my supervisor said I need to\nspecify the three way interaction previously. I just am  not sure how to.\n\nIf anyone has had this question before and has some thoughts on it, I would\nhighly appreciate it.\n\nCheers,\n\nClemens\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Clemens,\n\n\nThe following tutorials might be helpful:\n\n\nhttps://doi.org/10.1177/2515245920965119\n\nhttps://doi.org/10.3758/s13428-021-01546-0\n\n\nHope it helps, best wishes.\n\n\nJulian Gaviria\nNeurology ",
+      "thread_id": "thread-967b84cba5bf",
+      "thread_depth": 1,
+      "month": "2021-10"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-73a740bd6cd5",
+      "subject": "Issue with boundary (singular) fit: see ?isSingular",
+      "message_count": 6,
+      "participants": [
+        "Ben Bolker",
+        "Sasha Vasconcelos"
+      ],
+      "started": "2021-10-04T15:05:25+01:00",
+      "last_reply": "2021-10-04T21:20:20+01:00",
+      "root_message_id": "msg-73a740bd6cd5"
+    },
+    {
+      "id": "thread-a4e1d24ce3af",
+      "subject": "Random slopes for categorical variables",
+      "message_count": 4,
+      "participants": [
+        "Phillip Alday",
+        "Timothy MacKenzie"
+      ],
+      "started": "2021-10-05T22:20:00-05:00",
+      "last_reply": "2021-10-05T22:44:25-05:00",
+      "root_message_id": "msg-a4e1d24ce3af"
+    },
+    {
+      "id": "thread-f8558dc7fb32",
+      "subject": "Comparing two models with different sample sizes",
+      "message_count": 2,
+      "participants": [
+        "Simon Harmel",
+        "Thierry Onkelinx"
+      ],
+      "started": "2021-10-06T00:43:58-05:00",
+      "last_reply": "2021-10-06T09:24:25+02:00",
+      "root_message_id": "msg-f8558dc7fb32"
+    },
+    {
+      "id": "thread-ae6b1a454121",
+      "subject": "\"pdCompSymm\" function in R package \"nlme\"",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Isaac Kookhyun Yoo"
+      ],
+      "started": "2021-10-06T11:51:44-04:00",
+      "last_reply": "2021-10-06T12:09:49-04:00",
+      "root_message_id": "msg-ae6b1a454121"
+    },
+    {
+      "id": "thread-8f26b09cb684",
+      "subject": "Why || doesn't zero out the correlations in lmer",
+      "message_count": 6,
+      "participants": [
+        "Phillip Alday",
+        "Simon Harmel",
+        "ji@verissimo m@iii@g oii gm@ii@com"
+      ],
+      "started": "2021-10-08T16:32:59-05:00",
+      "last_reply": "2021-10-08T22:48:53-05:00",
+      "root_message_id": "msg-8f26b09cb684"
+    },
+    {
+      "id": "thread-386e4d22545a",
+      "subject": "QUESTIONS ABOUT MIXED-LINEAR MODELS",
+      "message_count": 4,
+      "participants": [
+        "Rolf Turner",
+        "Salvador Sánchez-Colón",
+        "sree datta",
+        "董龙伟"
+      ],
+      "started": "2021-10-08T19:11:21+08:00",
+      "last_reply": "2021-10-10T22:25:04-04:00",
+      "root_message_id": "msg-386e4d22545a"
+    },
+    {
+      "id": "thread-20037efa7e3a",
+      "subject": "Recovering correlations",
+      "message_count": 1,
+      "participants": [
+        "Gang Chen"
+      ],
+      "started": "2021-10-11T07:27:07-04:00",
+      "last_reply": "2021-10-11T07:27:07-04:00",
+      "root_message_id": "msg-20037efa7e3a"
+    },
+    {
+      "id": "thread-e1cf2be4b7e6",
+      "subject": "QUESTIONS ABOUT THE PARAMETERS AND EFFECT SIZE OF THR RANDOM EFFECT IN MIXED LINEAR MODEL",
+      "message_count": 1,
+      "participants": [
+        "Rolf Turner"
+      ],
+      "started": "2021-10-11T09:36:32+13:00",
+      "last_reply": "2021-10-11T09:36:32+13:00",
+      "root_message_id": "msg-e1cf2be4b7e6"
+    },
+    {
+      "id": "thread-3792b8467af5",
+      "subject": "comparing GLS residuals with lme + correlation=corExp(form=~1, nugget=T) residuals",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Javier Moreira"
+      ],
+      "started": "2021-10-11T20:18:05-03:00",
+      "last_reply": "2021-10-11T19:28:22-04:00",
+      "root_message_id": "msg-3792b8467af5"
+    },
+    {
+      "id": "thread-8f9d5dff03d4",
+      "subject": "Predictor standardized transformation in GLMM",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Di Zeng"
+      ],
+      "started": "2021-10-21T18:32:00-07:00",
+      "last_reply": "2021-10-21T21:44:20-04:00",
+      "root_message_id": "msg-8f9d5dff03d4"
+    },
+    {
+      "id": "thread-64ce359f0a54",
+      "subject": "Predictor standardized transformation in GLMM",
+      "message_count": 1,
+      "participants": [
+        "Di Zeng"
+      ],
+      "started": "2021-10-23T02:34:57+00:00",
+      "last_reply": "2021-10-23T02:34:57+00:00",
+      "root_message_id": "msg-64ce359f0a54"
+    },
+    {
+      "id": "thread-5a56d63c491b",
+      "subject": "Model selection and model simplification (MSMS02)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2021-10-26T15:12:57+01:00",
+      "last_reply": "2021-10-26T15:12:57+01:00",
+      "root_message_id": "msg-5a56d63c491b"
+    },
+    {
+      "id": "thread-967b84cba5bf",
+      "subject": "Power calculation three way interaction",
+      "message_count": 2,
+      "participants": [
+        "Clemens von Wulffen",
+        "Julian Gaviria Lopez"
+      ],
+      "started": "2021-10-30T14:47:23+02:00",
+      "last_reply": "2021-10-30T19:21:21+00:00",
+      "root_message_id": "msg-967b84cba5bf"
+    }
+  ]
+}

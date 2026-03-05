@@ -1,0 +1,563 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2022-01",
+  "messages": [
+    {
+      "id": "msg-3190bfddb35d",
+      "message_id": "<CACw+TfccqXaGjEpjcBcv1q-a9XmdTwL7Hm=mVX6ZJkZwMpo3TA@mail.gmail.com>",
+      "from_name": "Cátia Ferreira De Oliveira",
+      "from_email_hash": "111d18e89acd3d2149ccdd323e4b4b1c5b5b6671bbeb00689b133e572481db77",
+      "date": "2022-01-06T01:10:42Z",
+      "subject": "[R-sig-ME] lmer - individual slopes",
+      "subject_clean": "lmer - individual slopes",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello,\n\nI hope you had a lovely winter break.\nI am interested in extracting the individual slopes for an experimental\ndesign where individuals are asked to do a task with two conditions -\ncongruent and incongruent. These participants are also divided into groups\n- sleep or awake. Should I consider group allocation in the model? The\nindividual slopes are extracted so that we can check whether the rate of\nlearning is stable across sessions.\nShould we use:\n\na) lmer(Response times ~ Congruency + Group + (Congruency| Participant)\n\nOr is it ok to just have it as:\n\nb) lmer(Response times ~ Congruency + (Congruency| Participant)\n\nThanks\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI hope you had a lovely winter break.\nI am interested in extracting the individual slopes for an experimental\ndesign where individuals are asked to do a task with two conditions -\ncongruent an",
+      "thread_id": "thread-3190bfddb35d",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-39067409de12",
+      "message_id": "<689de883-2a3f-dbe6-79c5-1760c32dad48@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-01-05T20:23:21-05:00",
+      "subject": "[R-sig-ME] lmer - individual slopes",
+      "subject_clean": "lmer - individual slopes",
+      "in_reply_to": "<CACw+TfccqXaGjEpjcBcv1q-a9XmdTwL7Hm=mVX6ZJkZwMpo3TA@mail.gmail.com>",
+      "references": [
+        "<CACw+TfccqXaGjEpjcBcv1q-a9XmdTwL7Hm=mVX6ZJkZwMpo3TA@mail.gmail.com>"
+      ],
+      "body_plain": "On 1/5/22 8:10 PM, C?tia Ferreira De Oliveira via R-sig-mixed-models wrote:\n> Hello,\n> \n> I hope you had a lovely winter break.\n> I am interested in extracting the individual slopes for an experimental\n> design where individuals are asked to do a task with two conditions -\n> congruent and incongruent. These participants are also divided into groups\n> - sleep or awake. Should I consider group allocation in the model? The\n> individual slopes are extracted so that we can check whether the rate of\n> learning is stable across sessions.\n> Should we use:\n> \n> a) lmer(Response times ~ Congruency + Group + (Congruency| Participant)\n> \n> Or is it ok to just have it as:\n> \n> b) lmer(Response times ~ Congruency + (Congruency| Participant)\n> \n> Thanks\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n   I don't see why you wouldn't use Congruency*Group as your fixed \neffect?  The more accurately you can estimate the population-level \neffects in the fixed-effect part of the model, the less is left for the \nrandom effects component to explain, which in turn makes it more likely \nthat the distribution will conform to the assumption of normality.\n\n   For example, suppose (retreating from a random-slopes model to a \nrandom-intercept model) that you had a treatment, ttt, with two levels \nand  a large effect, with subjects allocated to one treatment or the \nother (a nested design).  If you fitted\n\n   lmer(response ~ 1 + (1|subject)\n\nthe distribution of subject-level effects would be strongly bimodal, \nsince it would have to account for the treatment effect as well, whereas\n\n   lmer(response ~ ttt + (1|subject)\n\nwould move the signal into the fixed effect and allow the random effect \nto capture the smaller (and possibly Normal) subject-level effects.",
+      "body_snippet": "On 1/5/22 8:10 PM, C?tia Ferreira De Oliveira via R-sig-mixed-models wrote:\n> Hello,\n> \n> I hope you had a lovely winter break.\n> I am interested in extracting the individual slopes for an experimenta",
+      "thread_id": "thread-3190bfddb35d",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-da5032869124",
+      "message_id": "<d8463cd93bfe4e1255f151b59bdb3e4b23cadb99.camel@gmail.com>",
+      "from_name": "ji@verissimo m@iii@g oii gm@ii@com",
+      "from_email_hash": "3e26eb9d8ffeeb8c005882a3f0a50a6273d7905340cf90adb8d0ef5b8e51097b",
+      "date": "2022-01-06T08:25:37+01:00",
+      "subject": "[R-sig-ME] lmer - individual slopes",
+      "subject_clean": "lmer - individual slopes",
+      "in_reply_to": "<689de883-2a3f-dbe6-79c5-1760c32dad48@gmail.com>",
+      "references": [
+        "<CACw+TfccqXaGjEpjcBcv1q-a9XmdTwL7Hm=mVX6ZJkZwMpo3TA@mail.gmail.com>",
+        "<689de883-2a3f-dbe6-79c5-1760c32dad48@gmail.com>"
+      ],
+      "body_plain": "Hi C?tia,\n\nTo follow-up on Ben's answer,\n\nNote that in the model Ben suggested (with the interaction), the by-\nParticipant random effects for Congruency will be deviations relative\nto the mean Congruency effect in each group, I believe.\nSo similar random-effect adjustments (from ranef) for participants in\ndifferent groups may actually correspond to different predicted\nindividual slopes, depending on the effect of Congruency in each group.\n\nIn contrast, in your models (both a and b, I think), the by-Participant \nrandom effects for Congruency will be deviations from the mean\nCongruency effect estimated across all participants.\n(the two models would differ in the interpretation of their random\nintercept adjustments, though)\n\nJo?o\n\nOn Wed, 2022-01-05 at 20:23 -0500, Ben Bolker wrote:\n> On 1/5/22 8:10 PM, C?tia Ferreira De Oliveira via R-sig-mixed-models\n> wrote:\n> > Hello,\n> > I hope you had a lovely winter break.I am interested in extracting\n> > the individual slopes for an experimentaldesign where individuals\n> > are asked to do a task with two conditions -congruent and\n> > incongruent. These participants are also divided into groups- sleep\n> > or awake. Should I consider group allocation in the model?\n> > Theindividual slopes are extracted so that we can check whether the\n> > rate oflearning is stable across sessions.Should we use:\n> > a) lmer(Response times ~ Congruency + Group + (Congruency|\n> > Participant)\n> > Or is it ok to just have it as:\n> > b) lmer(Response times ~ Congruency + (Congruency| Participant)\n> > Thanks\n> > \t[[alternative HTML version deleted]]\n> > _______________________________________________R-sig-mixed-\n> > models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > \n> \n>    I don't see why you wouldn't use Congruency*Group as your fixed\n> effect?  The more accurately you can estimate the population-level\n> effects in the fixed-effect part of the model, the less is left for\n> the random effects component to explain, which in turn makes it more\n> likely that the distribution will conform to the assumption of\n> normality.\n>    For example, suppose (retreating from a random-slopes model to a\n> random-intercept model) that you had a treatment, ttt, with two\n> levels and  a large effect, with subjects allocated to one treatment\n> or the other (a nested design).  If you fitted\n>    lmer(response ~ 1 + (1|subject)\n> the distribution of subject-level effects would be strongly bimodal,\n> since it would have to account for the treatment effect as well,\n> whereas\n>    lmer(response ~ ttt + (1|subject)\n> would move the signal into the fixed effect and allow the random\n> effect to capture the smaller (and possibly Normal) subject-level\n> effects.\n> _______________________________________________R-sig-mixed-models at r-\n> project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi C?tia,\n\nTo follow-up on Ben's answer,\n\nNote that in the model Ben suggested (with the interaction), the by-\nParticipant random effects for Congruency will be deviations relative\nto the mean Congrue",
+      "thread_id": "thread-3190bfddb35d",
+      "thread_depth": 2,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-37e7df09ad0b",
+      "message_id": "<SY4P282MB1915DFE575981A6B5AF184D7D64E9@SY4P282MB1915.AUSP282.PROD.OUTLOOK.COM>",
+      "from_name": "Kim Colyvas",
+      "from_email_hash": "2fe491c6abff9f37fb70676895fbfed81af591a0680079c6cb8fdf303cf72185",
+      "date": "2022-01-08T23:29:19Z",
+      "subject": "[R-sig-ME] glmmTMB spatial model - modified distance calculation",
+      "subject_clean": "glmmTMB spatial model - modified distance calculation",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am assisting a researcher investigating the number of species with deficient data (conservation assessors are unable to allocate a species to a threat status category) for many countries around the world and examining covariates that might explain some of the variation between countries. I have been fitting a negative binomial (nb) model using glmmTMB with a spatial term based on (longitude,latitude) coordinates.\n\nThe default distance function in R is dist (from the stats package) is satisfactory for most work where relatively smaller distances were involved. Our country data however covers the whole globe and the default cartesian distance calculation used by the dist function I think differs too much from the more correct great circle distance approach that takes spherical geometry into account.\nSee Fig 1 in the cloud folder at the link below for a comparison of the two methods. The upper half of the sideways V shape pattern in the graph is because the default cartesian calculation doesn't allow for points on the globe being more than 180 deg of longitude apart in which case the shorter of the two possible distances between two points should be used. The great circle approach does this as well as allowing for the curvature of the earth's surface.\n\nI decided to write an alternative distance function that mimicked the built-in dist function hoping it would be used by glmmTMB and the spatial correlation function would be determined on the great circle distances. I am writing because I don't think this has worked. I would appreciate suggestions for how to get glmmTMB to use the alternative distances in determining the spatial correlation function.\n\nAt this link I have provided the essentials of my code to allow replication of my work.\nhttps://1drv.ms/u/s!AhpuyzHadR1ag_tZI15yXnkuFJL9Yw?e=s6tAZq\nIt contains\n- my code for the replacement distance function which draws on the great circle distance functions provided in the geosphere package (dist_gc.R)\n- the code for calculating the distances by the two methods and comparing them and then fitting the nb models by both methods and how I evaluated the correlograms for the models by both methods which was part of what led me to think that glmmTMB was not using the alternative distance function (dist_repex.R)\n- 3 figures - Fig 1 showing the comparison between methods, and Fig 2,3 the correlograms from the two models.\n\nRe how I implemented the replacement of the built-in distance method with the great circle calculations.\nThe comparison between methods in Fig 1 was part of satisfying myself that the method I was using was replacing the default distance function with my own. Although this worked in this simple test I am wondering what more I need to do to get glmmTMB to pick up the new function.\n\n> # Built in distance function in R - from the stats package\n> d1=dist(lonlat1)\n> # Replacement distance function to calculate great circle distances using the Cosine formula\n> dist = function(x) {\n+   dist_gc(x,columns_to_retain=10)\n+ }\n> # Confirm presence of 2 functions with name dist\n> getAnywhere(dist)\n2 differing objects matching 'dist' were found\nin the following places\n  .GlobalEnv\n  package:stats\n  namespace:stats\nUse [] to view one of them\n> # Now try the replacement function as if it was the built-in function using the built-in function name\n> # It takes precedence over the dist function in the stats module\n> d7 = dist(lonlat1)\n> #  They don't agree in that there is no straight line\nThis is the plot in Figure 1\n> plot(d1 ~ d7,main=\"Compare replacement distance function with built in\",\n+      xlab=\"Great circle\",ylab=\"Cartesian\")\n\n\nI then fitted the same model twice as follows - first step - remove my new function\n> rm(dist, envir=.GlobalEnv)\n>\n> # Confirm presence of only 1 function with name dist\n> getAnywhere(dist)\nA single object matching 'dist' was found\nIt was found in the following places\n  package:stats\n  namespace:stats\n\nFitted the model and as the only distance function present was the default this model should have used cartesian coordinates.\n# Fit spatial model using the default distance function\nnb2_cart <- glmmTMB(total ~ log_pop + I(log_pop^2) + exp(pos + 0 | group), data=species1, family = nbinom1())\n\n> summary(nb2_cart)$coefficients$cond\n                Estimate  Std. Error   z value     Pr(>|z|)\n(Intercept)   4.15405063 0.515443090  8.059184 7.680550e-16\nlog_pop      -0.24664756 0.072544883 -3.399930 6.740300e-04\nI(log_pop^2)  0.01558456 0.002724543  5.720062 1.064851e-08\n\nI then changed the distance calculation method\n> # Redefine the distance function to calculate great circle distances\n> dist = function(x) {\n+   dist_gc(x,columns_to_retain=10)\n+ }\n>\n> # Confirming that 2 dist functions are present again\n> getAnywhere(dist)\n2 differing objects matching 'dist' were found\nin the following places\n  .GlobalEnv\n  package:stats\n  namespace:stats\nUse [] to view one of them\n> getAnywhere(dist)[1]\nfunction(x) {\n  dist_gc(x,columns_to_retain=10)\n}\n\nI expected that as had occurred in my simple comparison of distance functions above that glmmTMB would use the new distance function in the modelling. The summary of the model coefficients however was exactly the same. I would have expected with a different spatial function that the estimates and SEs would differ. They didn't so I assumed that my replacement distance function was not being used by glmmTMB.\n\n> summary(nb2_gc)$coefficients$cond\n                Estimate  Std. Error   z value     Pr(>|z|)\n(Intercept)   4.15405063 0.515443090  8.059184 7.680550e-16\nlog_pop      -0.24664756 0.072544883 -3.399930 6.740300e-04\nI(log_pop^2)  0.01558456 0.002724543  5.720062 1.064851e-08\n\nI used some very helpful code at this link to plot the correlograms from the 2 models.\nhttps://datascienceplus.com/spatial-regression-in-r-part-1-spamm-vs-glmmtmb/\nFig 2 was as expected and if my new distance function had worked Fig 3 should have been similar - a perfect curve with no points deviating from the smooth function, except the function might have had a different shape.\n\nI checked the call to the distance function in the glmmTMB R code and there was no specific call like stats::dist, so I thought my replacement function should have worked.\n# Lines 748-750 in glmmTMB source code show the distance function being used\n#   else if(ss[i] %in% c(\"exp\", \"gau\", \"mat\")){\n#   coords <- parseNumLevels(reTrms$cnms[[i]])\n#   tmp$dist <- as.matrix( dist(coords) )\n\nA couple of other questions.\n\na) When fitting the nb model the warning below was given.\nAn interpretation of this would be appreciated.\n\nWarning message:\nIn (function (start, objective, gradient = NULL, hessian = NULL,  :\n  NA/NaN function evaluation\n\nb) Is there any way to obtain the parameters of the fitted spatial correlation function?\n\nThanks for reading this long email,\nMr Kim Colyvas\nCasual research assistant specialising in statistical help\nUniversity of Newcastle\nAUSTRALIA\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am assisting a researcher investigating the number of species with deficient data (conservation assessors are unable to allocate a species to a threat status category) for many countries around the ",
+      "thread_id": "thread-37e7df09ad0b",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-de241a52ef9f",
+      "message_id": "<f0ac42759a024455bed9e020b531cf21@Exch2-3.slu.se>",
+      "from_name": "Adriaan de Jong",
+      "from_email_hash": "f4a49ddf79a2e049b5d309dab9f8016d8312e4518a282e4b0eae3a437e262766",
+      "date": "2022-01-12T10:30:36Z",
+      "subject": "[R-sig-ME] How to include multiple temporal processes in one model?",
+      "subject_clean": "How to include multiple temporal processes in one model?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nPresent:\na 25 year series of count data of individuals of one migratory bird species observed from my driver's seat (2815 counts from the same c. 20 km road transect). The dataset includes the variables: Year, Month, Day, Hour, Minute (5 min precision), (driving)Direction and Count(result) (sample below).\n\nObjectives:\n1. Has there been a trend in the numbers over the years?\n2. How do the numbers generally vary over the breeding season? (I live in northern Sweden and the breeding/observation season is April-August)\nI have no intentions to make predictions for neither future developments (temporal extrapolation) nor other transects (spatial extrapolation).\n\nProblems/limitations:\na. The sampling has been opportunistic (which was a main point because no extra effort was needed) and thus, unevenly spread over the hours of the day with more counts in the morning and late afternoon (most are from commuting to work).\nb. The distribution of the timing over the day has varied over the years.\nc. The dataset contains a significant proportion (43%) of zero counts, especially during the early and late parts of the breeding season.\nd. The number of transect counts has varied over the years (range 66-167, but no clear trend over the years)\ne. The direction of driving has an impact on what can be seen (non-flat landscape) and thus, needs to be included as a covariate (random effect?)\n(I can provide graphs of frequency distributions if needed)\n\nMy question is:\nHow should I include the three temporal factors (year, time of season and time of day) and driving direction in the logistic models for the two different objectives?\n\nThanks in advance for your suggestions and comments.\nCheers,\nAdjan\n\nAdriaan \"Adjan\" de Jong\nAssociate professor\nDept of Wildlife, Fish, and Environmental Studies\nSwedish University of Agricultural Sciences\n\nData structure (fake numbers)\nYearMonthDayHourMinuteDirectionCount\n199742591505\n1997514153510\n1997515745016\n.\n.\n20218281000\n\nPS. I understand I have to combine the Mont and Day, and the Hour and Minute variables into two new variables for Time of season and Time of day..\n\n---\nN?r du skickar e-post till SLU s? inneb?r detta att SLU behandlar dina personuppgifter. F?r att l?sa mer om hur detta g?r till, klicka h?r <https://www.slu.se/om-slu/kontakta-slu/personuppgifter/>\nE-mailing SLU will result in SLU processing your personal data. For more information on how this is done, click here <https://www.slu.se/en/about-slu/contact-slu/personal-data/>",
+      "body_snippet": "Hi,\n\nPresent:\na 25 year series of count data of individuals of one migratory bird species observed from my driver's seat (2815 counts from the same c. 20 km road transect). The dataset includes the va",
+      "thread_id": "thread-de241a52ef9f",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-87d29ee78bf3",
+      "message_id": "<CAJuCY5wU-Zdag-0DZToC1ELDPgFDHO8tnuHEb2bzCy1-agyLfQ@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2022-01-12T13:51:43+01:00",
+      "subject": "[R-sig-ME]  How to include multiple temporal processes in one model?",
+      "subject_clean": "How to include multiple temporal processes in one model?",
+      "in_reply_to": "<f0ac42759a024455bed9e020b531cf21@Exch2-3.slu.se>",
+      "references": [
+        "<f0ac42759a024455bed9e020b531cf21@Exch2-3.slu.se>"
+      ],
+      "body_plain": "Dear Adriaan,\n\nYou could get some inspiration from our analysis on the breeding bird\nsurvey data. The report is in Dutch. Your name increases my posterior\nbelief that you understand Dutch ;-)\n\na/b/e) I expect a strong correlation between time of day and direction. I'd\nonly keep the direction. Time of day probably won't provide that much more\ninformation and requires a more complex model.\nc) We tried to avoid structural zeros as much as possible by defining a\nrelevant subset of location and within the season. E.g. if we hardly\never find a species in forests, then exclude the forested sites for that\nspecies. Or ignore the first period of the season when the species is known\nto arrive late in the season.\nd) This shouldn't be a big issue. It will affect the uncertainty on the\nyear estimates.\n\nWe modeled the year effect as a first order random walk per stratum. In\nyour case I'd consider a first order random walk along the year and a\nsecond order random walk along the day of year.\n\nOnkelinx, T. *et al.* (2021). Trends op basis van de Algemene\nBroedvogelmonitoring Vlaanderen (ABV). Rapporten van het Instituut voor\nNatuur- en Bosonderzoek 2021 (14). Instituut voor Natuur- en Bosonderzoek,\nBrussel. DOI: <https://inbo.github.io/abv-rapport/2020/#>\nhttps://doi.org/10.21436/inbor.34162521\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp wo 12 jan. 2022 om 11:31 schreef Adriaan de Jong <Adriaan.de.Jong at slu.se\n>:\n\n> Hi,\n>\n> Present:\n> a 25 year series of count data of individuals of one migratory bird\n> species observed from my driver's seat (2815 counts from the same c. 20 km\n> road transect). The dataset includes the variables: Year, Month, Day, Hour,\n> Minute (5 min precision), (driving)Direction and Count(result) (sample\n> below).\n>\n> Objectives:\n> 1. Has there been a trend in the numbers over the years?\n> 2. How do the numbers generally vary over the breeding season? (I live in\n> northern Sweden and the breeding/observation season is April-August)\n> I have no intentions to make predictions for neither future developments\n> (temporal extrapolation) nor other transects (spatial extrapolation).\n>\n> Problems/limitations:\n> a. The sampling has been opportunistic (which was a main point because no\n> extra effort was needed) and thus, unevenly spread over the hours of the\n> day with more counts in the morning and late afternoon (most are from\n> commuting to work).\n> b. The distribution of the timing over the day has varied over the years.\n> c. The dataset contains a significant proportion (43%) of zero counts,\n> especially during the early and late parts of the breeding season.\n> d. The number of transect counts has varied over the years (range 66-167,\n> but no clear trend over the years)\n> e. The direction of driving has an impact on what can be seen (non-flat\n> landscape) and thus, needs to be included as a covariate (random effect?)\n> (I can provide graphs of frequency distributions if needed)\n>\n> My question is:\n> How should I include the three temporal factors (year, time of season and\n> time of day) and driving direction in the logistic models for the two\n> different objectives?\n>\n> Thanks in advance for your suggestions and comments.\n> Cheers,\n> Adjan\n>\n> Adriaan \"Adjan\" de Jong\n> Associate professor\n> Dept of Wildlife, Fish, and Environmental Studies\n> Swedish University of Agricultural Sciences\n>\n> Data structure (fake numbers)\n> YearMonthDayHourMinuteDirectionCount\n> 199742591505\n> 1997514153510\n> 1997515745016\n> .\n> .\n> 20218281000\n>\n> PS. I understand I have to combine the Mont and Day, and the Hour and\n> Minute variables into two new variables for Time of season and Time of day..\n>\n> ---\n> N?r du skickar e-post till SLU s? inneb?r detta att SLU behandlar dina\n> personuppgifter. F?r att l?sa mer om hur detta g?r till, klicka h?r <\n> https://www.slu.se/om-slu/kontakta-slu/personuppgifter/>\n> E-mailing SLU will result in SLU processing your personal data. For more\n> information on how this is done, click here <\n> https://www.slu.se/en/about-slu/contact-slu/personal-data/>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Adriaan,\n\nYou could get some inspiration from our analysis on the breeding bird\nsurvey data. The report is in Dutch. Your name increases my posterior\nbelief that you understand Dutch ;-)\n\na/b/e) ",
+      "thread_id": "thread-de241a52ef9f",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-ad748dbbb974",
+      "message_id": "<CAJByKzrQy3UXwr7Sk8ZszLxyD3OyyR-PCosLr91jT+ncWsgQTg@mail.gmail.com>",
+      "from_name": "Zach Simpson",
+      "from_email_hash": "df2a00e6b6562de359f1e86e96a5cb935b7451f579b203f9a99c0d8115ea66af",
+      "date": "2022-01-12T11:06:50-08:00",
+      "subject": "[R-sig-ME]  How to include multiple temporal processes in one model?",
+      "subject_clean": "How to include multiple temporal processes in one model?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "On Wed, 12 Jan 2022, Adriaan de Jong wrote:\n\nHi,\n>\n> Present:\n> a 25 year series of count data of individuals of one migratory bird\n> species observed from my driver's seat (2815 counts from the same c. 20 km\n> road transect). The dataset includes the variables: Year, Month, Day, Hour,\n> Minute (5 min precision), (driving)Direction and Count(result) (sample\n> below).\n>\n> Objectives:\n> 1. Has there been a trend in the numbers over the years?\n> 2. How do the numbers generally vary over the breeding season? (I live in\n> northern Sweden and the breeding/observation season is April-August)\n> I have no intentions to make predictions for neither future developments\n> (temporal extrapolation) nor other transects (spatial extrapolation).\n>\n> Problems/limitations:\n> a. The sampling has been opportunistic (which was a main point because no\n> extra effort was needed) and thus, unevenly spread over the hours of the\n> day with more counts in the morning and late afternoon (most are from\n> commuting to work).\n> b. The distribution of the timing over the day has varied over the years.\n> c. The dataset contains a significant proportion (43%) of zero counts,\n> especially during the early and late parts of the breeding season.\n> d. The number of transect counts has varied over the years (range 66-167,\n> but no clear trend over the years)\n> e. The direction of driving has an impact on what can be seen (non-flat\n> landscape) and thus, needs to be included as a covariate (random effect?)\n> (I can provide graphs of frequency distributions if needed)\n>\n> My question is:\n> How should I include the three temporal factors (year, time of season and\n> time of day) and driving direction in the logistic models for the two\n> different objectives?\n>\n> Thanks in advance for your suggestions and comments.\n> Cheers,\n> Adjan\n>\n> Adriaan \"Adjan\" de Jong\n> Associate professor\n> Dept of Wildlife, Fish, and Environmental Studies\n> Swedish University of Agricultural Sciences\n>\n> Data structure (fake numbers)\n> YearMonthDayHourMinuteDirectionCount\n> 199742591505\n> 1997514153510\n> 1997515745016\n> .\n> .\n> 20218281000\n>\n> PS. I understand I have to combine the Mont and Day, and the Hour and\n> Minute variables into two new variables for Time of season and Time of day..\n>\n> ---\n> N?r du skickar e-post till SLU s? inneb?r detta att SLU behandlar dina\n> personuppgifter. F?r att l?sa mer om hur detta g?r till, klicka h?r <\n> https://www.slu.se/om-slu/kontakta-slu/personuppgifter/>\n> E-mailing SLU will result in SLU processing your personal data. For more\n> information on how this is done, click here <\n> https://www.slu.se/en/about-slu/contact-slu/personal-data/>\n\n\nHi Adjan,\n\nAt the moment, I can offer some suggestions on how to include the different\ntemporal trends (the first part of your question) for such a model via a\nGAM. It could go something like the following:\n\nlibrary(tidyverse)\nlibrary(lubridate) # helps with time objects\nlibrary(hms) # for time of day objects\nlibrary(mgcv) # all things GAM\n\n## fake data -- not entirely sure I parsed it correctly\nfake_data <- tibble(\n  date_time = ymd_hm(c(\n    \"1997-4-25 09:15\", \"1997-5-14 15:35\",\n    \"1997-5-15 7:45\", \"2021-8-28 10:00\"\n  )),\n  direction = c(0, 1, 1, 0),\n  count = c(5, 0, 6, 0)\n)\n\n## create new time variables, in numeric form but still interpretable\n\n# helper function to convert Date's to decimal years (e.g. June 2021 ~=\n2021.5)\ndec_year_from_date <- function(date){\n  require(lubridate)\n  dec_year = year(date) + (yday(date)/(ifelse(leap_year(date), 366, 365)))\n  return(dec_year)\n}\n\nfake_data <- fake_data %>%\n  mutate(\n    DOY = yday(date_time), # day-of-year variable (1 to 366)\n    time_of_day_s = as.numeric(as_hms(date_time)), # time-of-day variable\n    time_of_day_h = time_of_day_s / (60 * 60), # in decimal h\n    dec_year = dec_year_from_date(date_time)\n  ) %>%\n  select(date_time, dec_year, DOY, time_of_day_h, direction, count)\n\n# structure now looks like:\nhead(fake_data)\n\n## # A tibble: 4 x 6\n##   date_time           dec_year   DOY time_of_day_h direction count\n##   <dttm>                 <dbl> <dbl>         <dbl>     <dbl> <dbl>\n## 1 1997-04-25 09:15:00    1997.315   115          9.25         0     5\n## 2 1997-05-14 15:35:00    1997.367  134         15.6          1     0\n## 3 1997-05-15 07:45:00    1997.370   135          7.75         1     6\n## 4 2021-08-28 10:00:00    2022.658   240         10            0     0\n\nThen you could use some different smooth terms within a GAM for each of the\ntemporal trends: a default smooth term for the long term trend and\ncubic-cyclic splines (bs = 'cc') for the cyclical terms (season and time of\nday). The following could be something to get started with:\n\n# # GAM formula for yearly trend\n# gam(count ~ direction +\n#       s(dec_year) + # long-term trend\n#       s(DOY, bs = 'cc') + # seasonal trend\n#       s(time_of_day_h, bs = 'cc') # time of day trend\n#     knots = list(DOY = c(1, 366), time_of_day_h = c(0, 24))\n#     family = ??\n#     data = fake_data\n#     )\n\nI've no expertise with count data (particularly with lots of zeros), so I\nleave the family and link function up to you and the list.\nOther terms (e.g., a random-effect for transect? - via s(transect, bs =\n're')) and interactions could be built in. Perhaps seasonal trend varies\nacross years. Driving direction could be included as a 'by' variable in the\nsmooth terms as well to create factor smooth interactions. E.g. s(DOY, by =\ndirection, bs = 'cc') would create a seasonal smooth term that is\nconditional on the driving direction.\n\nHope this helps,\nZach\n\n-- \nZach Simpson\nPost-doc, Dept. Agronomy\nIowa State University\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "On Wed, 12 Jan 2022, Adriaan de Jong wrote:\n\nHi,\n>\n> Present:\n> a 25 year series of count data of individuals of one migratory bird\n> species observed from my driver's seat (2815 counts from the same ",
+      "thread_id": "thread-ad748dbbb974",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-36e75e4ff1c0",
+      "message_id": "<CACgv6yVhoDkYg2y6yf91Ba9_cULXhjs8OLnqtayWJSFEE+yZ2Q@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2022-01-13T20:25:09-06:00",
+      "subject": "[R-sig-ME] nlme::gls() outputting behavior for missing data",
+      "subject_clean": "nlme::gls() outputting behavior for missing data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear All,\n\nIn my `data` below, some combinations of `teaching_level:time` are missing.\n\nWhen I use `nlme::gls()`, such missingness causes singularity, hence an\nerror stopping the entire model from being fit.\n\nWhen I use `lm()`, such missingness causes NA only for the missing\ncombinations, but the model fits fine.\n\nI wonder which behavior is more reasonable, specifically, assuming the\nmodel specification is 100% accurate:\n\n1- Is the `gls()` error really related to singularity or missingness?\n2- NA coefficients aside, are the non-NA coefficients of `lm()` valid?\n3- Is there a way for `gls()` to output the results like lm() and not stop?\n\nThank you,\nSimon\n\n######## Reproducible code:\n\nlibrary(nlme)\n\ndata <- read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/1.csv\")\n\nres1 <- lm(gi ~ 0 + teaching_level*time, data = data, na.action = \"na.omit\")\n\nsummary(res1)\nCoefficients: (3 not defined because of singularities)\n                                          Estimate Std. Error t value\nPr(>|t|)\n.\n.\n.\nteaching_levelelementary:timePost-test 2        NA         NA      NA\nNA\nteaching_levelmixed:timePost-test 2             NA         NA      NA\nNA\nteaching_levelsecondary:timePost-test 3        NA         NA      NA\nNA\n\n\nres2 <- gls(gi ~ 0 + teaching_level:time, data = data, na.action =\n\"na.omit\")\n\nError: computed \"gls\" fit is singular, rank 10\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear All,\n\nIn my `data` below, some combinations of `teaching_level:time` are missing.\n\nWhen I use `nlme::gls()`, such missingness causes singularity, hence an\nerror stopping the entire model from bei",
+      "thread_id": "thread-36e75e4ff1c0",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-589242068fd8",
+      "message_id": "<CAPmBuzH7nWHfhKjb685fKS0k8ih0zTq_Evi2iU2L+RipfOpKyA@mail.gmail.com>",
+      "from_name": "Sijia Huang",
+      "from_email_hash": "afbeb01dbc9e74e90db07f463fd2135d7e055b594eaf4a5fd4e46e58cfbb3aaf",
+      "date": "2022-01-18T11:09:36-05:00",
+      "subject": "[R-sig-ME] Mixed effect model with lme4",
+      "subject_clean": "Mixed effect model with lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\n\nI am trying to fit a mixed effect model using lme4. The random effect part\nof the model is kind of tricky:\n\ndelta_{1s}*(alpha_i + beta_i * d_{t=0,i=1})\n\nIn which *delta_1s* is the random effect and are multiplied by the\nquantities in the parentheses. The *alpha_i* and *beta_i* are parameters\nthat need to be estimated, while the d_t=0,i=1 is a dummy variable.\n\nI wonder if this model can be specified with lme4 syntax. Thank you!\n\n\nBest,\nSijia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nI am trying to fit a mixed effect model using lme4. The random effect part\nof the model is kind of tricky:\n\ndelta_{1s}*(alpha_i + beta_i * d_{t=0,i=1})\n\nIn which *delta_1s* is the random",
+      "thread_id": "thread-589242068fd8",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-403f988c41a6",
+      "message_id": "<CAJuCY5ygzSYzE+0a531FpVeMu9WN-LTzD-HsPhSYgkiCVn2-JA@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2022-01-19T08:50:31+01:00",
+      "subject": "[R-sig-ME] Mixed effect model with lme4",
+      "subject_clean": "Mixed effect model with lme4",
+      "in_reply_to": "<CAPmBuzH7nWHfhKjb685fKS0k8ih0zTq_Evi2iU2L+RipfOpKyA@mail.gmail.com>",
+      "references": [
+        "<CAPmBuzH7nWHfhKjb685fKS0k8ih0zTq_Evi2iU2L+RipfOpKyA@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Sijia,\n\nI think you want (1 + d | delta). Keep in mind that this will fit a\ndifferent alpha_i and beta_i for every level of the random effect.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp di 18 jan. 2022 om 17:10 schreef Sijia Huang <huangsjcc at gmail.com>:\n\n> Hi everyone,\n>\n> I am trying to fit a mixed effect model using lme4. The random effect part\n> of the model is kind of tricky:\n>\n> delta_{1s}*(alpha_i + beta_i * d_{t=0,i=1})\n>\n> In which *delta_1s* is the random effect and are multiplied by the\n> quantities in the parentheses. The *alpha_i* and *beta_i* are parameters\n> that need to be estimated, while the d_t=0,i=1 is a dummy variable.\n>\n> I wonder if this model can be specified with lme4 syntax. Thank you!\n>\n>\n> Best,\n> Sijia\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Sijia,\n\nI think you want (1 + d | delta). Keep in mind that this will fit a\ndifferent alpha_i and beta_i for every level of the random effect.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / S",
+      "thread_id": "thread-589242068fd8",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-01578b862b9d",
+      "message_id": "<AM0PR01MB38128036BC224463DC75E58D985A9@AM0PR01MB3812.eurprd01.prod.exchangelabs.com>",
+      "from_name": "Mathias Emil Kaae",
+      "from_email_hash": "fa616aee8f42787a4128bdf68fb51730213f2225698f06fd51ca7a61ae8b66be",
+      "date": "2022-01-20T09:29:45Z",
+      "subject": "[R-sig-ME] Problems with warnings",
+      "subject_clean": "Problems with warnings",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "To whom it concerns,\n\nI am using the package glmmTMB to fit a mixed model with interactions using the beta-binomial distribution. I am trying to model plant cover data for specific species in a habitat using a randomized block design with five blocks and 16 plots within them. The question is: are this plant species increasing/decreasing its cover within different plots as a result of different treatments?\n\nAs I see it, I only get non-significant results (which is fine). However, I do get this warning when using the package glmmTMB:\n\nWarning message:\nIn getReStruc(reTrms, ss, aa, reXterms, fr) :\nAR1 not meaningful with intercept\n\nShould I worry, and how can I solve this?\n\nI have attached the code and a subset of the data.\n\nMathias Emil Kaae\nPhD student, Aarhus University\nInstitut for Ecoscience\nVejls?vej 25, 8600 Silkeborg\nMobil nr.: + 45 61 72 14 01\nE-mail: mek at bios.au.dk<mailto:mek at bios.au.dk>",
+      "body_snippet": "To whom it concerns,\n\nI am using the package glmmTMB to fit a mixed model with interactions using the beta-binomial distribution. I am trying to model plant cover data for specific species in a habita",
+      "thread_id": "thread-01578b862b9d",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-354500501f8b",
+      "message_id": "<6C66E809-152A-491B-8A6B-B6ACB755B6DA@gmail.com>",
+      "from_name": "Mollie Brooks",
+      "from_email_hash": "5d5ab7c364ea155beb47542e3f3572a54c3783f3add3f0c6b72a5b445c2259a2",
+      "date": "2022-01-21T14:19:26+01:00",
+      "subject": "[R-sig-ME] Problems with warnings",
+      "subject_clean": "Problems with warnings",
+      "in_reply_to": "<AM0PR01MB38128036BC224463DC75E58D985A9@AM0PR01MB3812.eurprd01.prod.exchangelabs.com>",
+      "references": [
+        "<AM0PR01MB38128036BC224463DC75E58D985A9@AM0PR01MB3812.eurprd01.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Your attachments were removed by the system, so I can?t see the code. \n\nIt sounds like you might need to add `+0` in your random effect specification.\nHave you looked at the AR(1) documentation in this vignette?\nhttps://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html <https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html>\nThere it shows the term ar1(times + 0 | group)\n\ncheers,\nMollie\n\n> On 20 Jan 2022, at 10.29, Mathias Emil Kaae <mek at ecos.au.dk> wrote:\n> \n> To whom it concerns,\n> \n> I am using the package glmmTMB to fit a mixed model with interactions using the beta-binomial distribution. I am trying to model plant cover data for specific species in a habitat using a randomized block design with five blocks and 16 plots within them. The question is: are this plant species increasing/decreasing its cover within different plots as a result of different treatments?\n> \n> As I see it, I only get non-significant results (which is fine). However, I do get this warning when using the package glmmTMB:\n> \n> Warning message:\n> In getReStruc(reTrms, ss, aa, reXterms, fr) :\n> AR1 not meaningful with intercept\n> \n> Should I worry, and how can I solve this?\n> \n> I have attached the code and a subset of the data.\n> \n> Mathias Emil Kaae\n> PhD student, Aarhus University\n> Institut for Ecoscience\n> Vejls?vej 25, 8600 Silkeborg\n> Mobil nr.: + 45 61 72 14 01\n> E-mail: mek at bios.au.dk<mailto:mek at bios.au.dk>\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Your attachments were removed by the system, so I can?t see the code. \n\nIt sounds like you might need to add `+0` in your random effect specification.\nHave you looked at the AR(1) documentation in thi",
+      "thread_id": "thread-01578b862b9d",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-53db2cc83199",
+      "message_id": "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+      "from_name": "Dries Debeer",
+      "from_email_hash": "ad5fbdae32e7bb882541b5af7909962b0d6e5026ef6d7e81d4ffafb74ffe3710",
+      "date": "2022-01-25T17:04:53Z",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear,\n\n\nI have a question about comparing the fit of GLMM with different link functions/families.\n\nFor instance, can the deviance or the AIC be used to compare the fit of probit and logit with the same parametrization?\n\nprobit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"probit\"))\nlogit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"logit\"))\n\n\nAnd is this also possible when the distributional assumptions are different? For instance:\n\ngamma_model <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = Gamma(link = \"inverse\"))\ninverse_gauss <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = inverse.gaussian(link = \"1/mu^2\"))\n\n\nThank you!\nDries Debeer\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear,\n\n\nI have a question about comparing the fit of GLMM with different link functions/families.\n\nFor instance, can the deviance or the AIC be used to compare the fit of probit and logit with the sam",
+      "thread_id": "thread-53db2cc83199",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-cd4884a0b576",
+      "message_id": "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-01-25T11:56:15-06:00",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>"
+      ],
+      "body_plain": "On 25/1/22 11:04 am, Dries Debeer via R-sig-mixed-models wrote:\n> Dear,\n> \n> \n> I have a question about comparing the fit of GLMM with different link functions/families.\n> \n> For instance, can the deviance or the AIC be used to compare the fit of probit and logit with the same parametrization?\n> \n> probit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"probit\"))\n> logit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"logit\"))\n\nThis is a surprisingly tough question, in my opinion. Neither the AIC\nnor the deviance depend on the link itself, so in theory, you could\ncompare them ... but these models are not nested, and comparing\nnon-nested models is generally a tricky problem.  That said, probit and\nlogit models will tend to give very similar results in terms of\npredictions/fit to the data. The bigger difference is how you interpret\ncoefficients, so I would chose between probit and logit based on desired\ninterpretation.\n\nFor other families/links, the comparison can get even more difficult.\nFor example, if you compare an inverse link with an identity link, then\nyou are comparing two very different albeit related quantities -- like\ncomparing a model of \"speed\" vs \"time\".\n\n> \n> \n> And is this also possible when the distributional assumptions are different? For instance:\n> \n> gamma_model <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = Gamma(link = \"inverse\"))\n> inverse_gauss <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = inverse.gaussian(link = \"1/mu^2\"))\n\nNot really, no. Both the deviance and the AIC are functions of the log\nlikelihood and the choice of family corresponds to a choice of\nlikelihood, so you're comparing different things.\n\nDepending on what you're going for, looking at predictive power of the\nmodels directly -- such as looking at mean squared or mean absolute\nerror computed with cross validation -- might work.\n\nThat said, the choice of family is a statement about your assumptions\nand prior beliefs about the data. In a Bayesian context, McElreath has\ndescribed this as a \"prior about the data\" in Statistical Rethinking.\nGelman et al have also noted that the prior can only be understood in\nthe context of the likelihood -- all hinting at the core idea here,\nnamely that the family is an assumption about the conditional\ndistribution of your data (or equivalently, about the the distribution\nof the error/noise in your data).\n\nMy previous point about the choice of link changing interpretation also\nholds for changes in link accompanying changes in family -- the\nstatements you can make about your data based on an inverse link vs an\ninverse square link are different.\n\nI would be happy to hear other opinions here.\n\nHope that helps,\nPhillip\n\n> \n> Thank you!\n> Dries Debeer\n> \n> \n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 25/1/22 11:04 am, Dries Debeer via R-sig-mixed-models wrote:\n> Dear,\n> \n> \n> I have a question about comparing the fit of GLMM with different link functions/families.\n> \n> For instance, can the dev",
+      "thread_id": "thread-53db2cc83199",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-f4f5312472fc",
+      "message_id": "<BL0PR02MB553731643D7D7A0822883498DF5F9@BL0PR02MB5537.namprd02.prod.outlook.com>",
+      "from_name": "Vinícius Carneiro de Souza",
+      "from_email_hash": "bfb25f77cd438ee31b2871dc57463d86bbcc0c0683774f207aadce1377050dc5",
+      "date": "2022-01-25T22:56:41Z",
+      "subject": "[R-sig-ME] Fitting linear mixed-effects models",
+      "subject_clean": "Fitting linear mixed-effects models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am trying to fit a linear model using the lmer function from data collected from literature from multiple studies.\nThe response variable is the average daily gain of swine and the predictor is the different methionine sources in the different diets, which is a factor with 4 levels (4 different methionine sources)\n\nMy original model is below, which includes a random intercept for study effect:\n\n#Z_ADG_g is the average daily gain\n#MM_Type_met is the methionine source factor\n#CO_Intra_Trial is the publication ID\n\nADGmod <- lmer(Z_ADG_g~MM_Type_met+(1|CO_Intra_Trial), data=ErmDat3, weight=ADG_wt, REML = FALSE)\n\nsummary(ADGmod)\n\nI would like to look what would be the effect of considering that each methionine source tested has a different/separate intercept. I was reading a book chapter from Bates et al. and found a table with some syntaxes that could work to specifying different intercepts for each methionine source, but it is not working. The model still has only one intercept.\n\nI tried the following model:\n\nADGmod <- lmer(Z_ADG_g~MM_Type_met+(1|CO_Intra_Trial)+(1|CO_Intra_Trial:MM_Type_met), data=ErmDat3, weight=ADG_wt, REML = FALSE)\n\nsummary(ADGmod)\n\nDoes anyone know if it is even possible what I am trying to do?\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am trying to fit a linear model using the lmer function from data collected from literature from multiple studies.\nThe response variable is the average daily gain of swine and the predictor is the d",
+      "thread_id": "thread-f4f5312472fc",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-a21a26b12d51",
+      "message_id": "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-01-25T21:09:09-05:00",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>"
+      ],
+      "body_plain": "I mostly agree.\n\n   I would say that in general it's OK to compare models with different \nlinks, families, etc. via AIC *as long as you don't explicitly transform \nthe response variable* -- i.e. you have to be careful comparing\n\n  lm(log(y) ~ ....)\n\nwith\n\n   lm(y ~ ...)\n\n(you need a Jacobian term in the AIC expression to account for the \nchange in scaling of the density), but comparing basically\n\n   glm(y ~ ... , family = <anything>)\n\nshould be OK. That said, there is a strong minority view (Phillip may \nbelong to this group) that says that using AIC to compare non-nested \nmodels is *not* OK: e.g. see \nhttps://stats.stackexchange.com/questions/116935/comparing-non-nested-models-with-aic/116951#116951\nhttps://mathoverflow.net/questions/249448/use-of-akaike-information-criterion-with-nonnested-models\n\n  (Unfortunately, really understanding why this should or should not \nwork depends, I think, on understanding the rates of convergence of \ncertain asymptotic expressions ...)\n\n   I completely agree with Phillip on the rest, though, which is to say \nthat you should think about **why** you want to test all these different \ncases. It's unlikely you're going to be able to frame *scientific* \nhypotheses in terms of these different models (\"is it better to measure \nconsumption in gallons per mile or miles per gallon?\"). If you're purely \ninterested in prediction, then I think AIC will often be an adequate \napproximation to something based on cross-validation (but it would be \ngood to check with CV). On the other hand, if you're purely interested \nin prediction you might want to move in the direction of nonparametric \nmodels such as GAMs, which should make many of the distinctions between \nlinks irrelevant ...\n\n\n\n\nOn 1/25/22 12:56 PM, Phillip Alday wrote:\n> \n> On 25/1/22 11:04 am, Dries Debeer via R-sig-mixed-models wrote:\n>> Dear,\n>>\n>>\n>> I have a question about comparing the fit of GLMM with different link functions/families.\n>>\n>> For instance, can the deviance or the AIC be used to compare the fit of probit and logit with the same parametrization?\n>>\n>> probit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"probit\"))\n>> logit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data, family = binomial(link = \"logit\"))\n> \n> This is a surprisingly tough question, in my opinion. Neither the AIC\n> nor the deviance depend on the link itself, so in theory, you could\n> compare them ... but these models are not nested, and comparing\n> non-nested models is generally a tricky problem.  That said, probit and\n> logit models will tend to give very similar results in terms of\n> predictions/fit to the data. The bigger difference is how you interpret\n> coefficients, so I would chose between probit and logit based on desired\n> interpretation.\n> \n> For other families/links, the comparison can get even more difficult.\n> For example, if you compare an inverse link with an identity link, then\n> you are comparing two very different albeit related quantities -- like\n> comparing a model of \"speed\" vs \"time\".\n> \n>>\n>>\n>> And is this also possible when the distributional assumptions are different? For instance:\n>>\n>> gamma_model <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = Gamma(link = \"inverse\"))\n>> inverse_gauss <- glmer(X ~ A + B + C*D + (A | subjects), data = data, family = inverse.gaussian(link = \"1/mu^2\"))\n> \n> Not really, no. Both the deviance and the AIC are functions of the log\n> likelihood and the choice of family corresponds to a choice of\n> likelihood, so you're comparing different things.\n> \n> Depending on what you're going for, looking at predictive power of the\n> models directly -- such as looking at mean squared or mean absolute\n> error computed with cross validation -- might work.\n> \n> That said, the choice of family is a statement about your assumptions\n> and prior beliefs about the data. In a Bayesian context, McElreath has\n> described this as a \"prior about the data\" in Statistical Rethinking.\n> Gelman et al have also noted that the prior can only be understood in\n> the context of the likelihood -- all hinting at the core idea here,\n> namely that the family is an assumption about the conditional\n> distribution of your data (or equivalently, about the the distribution\n> of the error/noise in your data).\n> \n> My previous point about the choice of link changing interpretation also\n> holds for changes in link accompanying changes in family -- the\n> statements you can make about your data based on an inverse link vs an\n> inverse square link are different.\n> \n> I would be happy to hear other opinions here.\n> \n> Hope that helps,\n> Phillip\n> \n>>\n>> Thank you!\n>> Dries Debeer\n>>\n>>\n>>\n>>\n>>\n>>\n>> \t[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "I mostly agree.\n\n   I would say that in general it's OK to compare models with different \nlinks, families, etc. via AIC *as long as you don't explicitly transform \nthe response variable* -- i.e. you h",
+      "thread_id": "thread-53db2cc83199",
+      "thread_depth": 2,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-6caf755c5a71",
+      "message_id": "<AM7PR09MB40713E81B4504BDB10EDF424E8209@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+      "from_name": "Dries Debeer",
+      "from_email_hash": "ad5fbdae32e7bb882541b5af7909962b0d6e5026ef6d7e81d4ffafb74ffe3710",
+      "date": "2022-01-26T07:29:49Z",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+        "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>"
+      ],
+      "body_plain": "Dear Ben and Philliip, \n\nThank you for your response and the pointers to the discussion! \n\nThe reason for asking was finding the best fitting model for response times in an experimental setting. I agree that theoretical/scientific arguments for choosing models can outweigh purely maximizing the fit.\n\nDries\n\n> -----Original Message-----\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On\n> Behalf Of Ben Bolker\n> Sent: woensdag 26 januari 2022 3:09\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] compare fit of GLMM with different link/family\n> \n>    I mostly agree.\n> \n>    I would say that in general it's OK to compare models with different links,\n> families, etc. via AIC *as long as you don't explicitly transform the response\n> variable* -- i.e. you have to be careful comparing\n> \n>   lm(log(y) ~ ....)\n> \n> with\n> \n>    lm(y ~ ...)\n> \n> (you need a Jacobian term in the AIC expression to account for the change in\n> scaling of the density), but comparing basically\n> \n>    glm(y ~ ... , family = <anything>)\n> \n> should be OK. That said, there is a strong minority view (Phillip may belong to\n> this group) that says that using AIC to compare non-nested models is *not*\n> OK: e.g. see\n> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstats.\n> stackexchange.com%2Fquestions%2F116935%2Fcomparing-non-nested-\n> models-with-\n> aic%2F116951%23116951&amp;data=04%7C01%7CDries.Debeer%40ugent.be\n> %7Cc4b9f930b96b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a178624\n> 1b99c%7C1%7C0%7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8e\n> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D\n> %7C3000&amp;sdata=5hbi6AF92Duw953axcH%2FMBHtjd9piahD7lk5mUdSH\n> wU%3D&amp;reserved=0\n> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fmath\n> overflow.net%2Fquestions%2F249448%2Fuse-of-akaike-information-\n> criterion-with-nonnested-\n> models&amp;data=04%7C01%7CDries.Debeer%40ugent.be%7Cc4b9f930b96\n> b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a1786241b99c%7C1%7C0\n> %7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA\n> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;s\n> data=MmI5p%2Bq8Is9MwO86Jtp2q5Aq0KsAspYIwpLMWlBud%2F8%3D&am\n> p;reserved=0\n> \n>   (Unfortunately, really understanding why this should or should not work\n> depends, I think, on understanding the rates of convergence of certain\n> asymptotic expressions ...)\n> \n>    I completely agree with Phillip on the rest, though, which is to say that you\n> should think about **why** you want to test all these different cases. It's\n> unlikely you're going to be able to frame *scientific* hypotheses in terms of\n> these different models (\"is it better to measure consumption in gallons per\n> mile or miles per gallon?\"). If you're purely interested in prediction, then I\n> think AIC will often be an adequate approximation to something based on\n> cross-validation (but it would be good to check with CV). On the other hand,\n> if you're purely interested in prediction you might want to move in the\n> direction of nonparametric models such as GAMs, which should make many\n> of the distinctions between links irrelevant ...\n> \n> \n> \n> \n> On 1/25/22 12:56 PM, Phillip Alday wrote:\n> >\n> > On 25/1/22 11:04 am, Dries Debeer via R-sig-mixed-models wrote:\n> >> Dear,\n> >>\n> >>\n> >> I have a question about comparing the fit of GLMM with different link\n> functions/families.\n> >>\n> >> For instance, can the deviance or the AIC be used to compare the fit of\n> probit and logit with the same parametrization?\n> >>\n> >> probit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data,\n> >> family = binomial(link = \"probit\")) logit_model <- glmer(Y ~ A + B +\n> >> C*D + (A | subjects), data = data, family = binomial(link = \"logit\"))\n> >\n> > This is a surprisingly tough question, in my opinion. Neither the AIC\n> > nor the deviance depend on the link itself, so in theory, you could\n> > compare them ... but these models are not nested, and comparing\n> > non-nested models is generally a tricky problem.  That said, probit\n> > and logit models will tend to give very similar results in terms of\n> > predictions/fit to the data. The bigger difference is how you\n> > interpret coefficients, so I would chose between probit and logit\n> > based on desired interpretation.\n> >\n> > For other families/links, the comparison can get even more difficult.\n> > For example, if you compare an inverse link with an identity link,\n> > then you are comparing two very different albeit related quantities --\n> > like comparing a model of \"speed\" vs \"time\".\n> >\n> >>\n> >>\n> >> And is this also possible when the distributional assumptions are\n> different? For instance:\n> >>\n> >> gamma_model <- glmer(X ~ A + B + C*D + (A | subjects), data = data,\n> >> family = Gamma(link = \"inverse\")) inverse_gauss <- glmer(X ~ A + B +\n> >> C*D + (A | subjects), data = data, family = inverse.gaussian(link =\n> >> \"1/mu^2\"))\n> >\n> > Not really, no. Both the deviance and the AIC are functions of the log\n> > likelihood and the choice of family corresponds to a choice of\n> > likelihood, so you're comparing different things.\n> >\n> > Depending on what you're going for, looking at predictive power of the\n> > models directly -- such as looking at mean squared or mean absolute\n> > error computed with cross validation -- might work.\n> >\n> > That said, the choice of family is a statement about your assumptions\n> > and prior beliefs about the data. In a Bayesian context, McElreath has\n> > described this as a \"prior about the data\" in Statistical Rethinking.\n> > Gelman et al have also noted that the prior can only be understood in\n> > the context of the likelihood -- all hinting at the core idea here,\n> > namely that the family is an assumption about the conditional\n> > distribution of your data (or equivalently, about the the distribution\n> > of the error/noise in your data).\n> >\n> > My previous point about the choice of link changing interpretation\n> > also holds for changes in link accompanying changes in family -- the\n> > statements you can make about your data based on an inverse link vs an\n> > inverse square link are different.\n> >\n> > I would be happy to hear other opinions here.\n> >\n> > Hope that helps,\n> > Phillip\n> >\n> >>\n> >> Thank you!\n> >> Dries Debeer\n> >>\n> >>\n> >>\n> >>\n> >>\n> >>\n> >> \t[[alternative HTML version deleted]]\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >>\n> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsta\n> >> t.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n> models&amp;data=04%7C01%\n> >>\n> 7CDries.Debeer%40ugent.be%7Cc4b9f930b96b4395259808d9e070fd71%7Cd7\n> 811c\n> >>\n> deecef496c8f91a1786241b99c%7C1%7C0%7C637787598905000528%7CUnkno\n> wn%7CT\n> >>\n> WFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLC\n> JXVC\n> >>\n> I6Mn0%3D%7C3000&amp;sdata=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFq\n> tL6Xbb1D\n> >> dVl4%3D&amp;reserved=0\n> >>\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat\n> > .ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n> models&amp;data=04%7C01%7C\n> >\n> Dries.Debeer%40ugent.be%7Cc4b9f930b96b4395259808d9e070fd71%7Cd781\n> 1cdee\n> >\n> cef496c8f91a1786241b99c%7C1%7C0%7C637787598905000528%7CUnknown\n> %7CTWFpb\n> >\n> GZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI\n> 6Mn0\n> >\n> %3D%7C3000&amp;sdata=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFqtL6Xb\n> b1DdVl4%3\n> > D&amp;reserved=0\n> >\n> \n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> (Acting) Graduate chair, Mathematics & Statistics\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.e\n> thz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n> models&amp;data=04%7C01%7CDries.Debeer%40ugent.be%7Cc4b9f930b96\n> b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a1786241b99c%7C1%7C0\n> %7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA\n> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;s\n> data=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFqtL6Xbb1DdVl4%3D&amp;re\n> served=0",
+      "body_snippet": "Dear Ben and Philliip, \n\nThank you for your response and the pointers to the discussion! \n\nThe reason for asking was finding the best fitting model for response times in an experimental setting. I agr",
+      "thread_id": "thread-53db2cc83199",
+      "thread_depth": 3,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-b99e52973b81",
+      "message_id": "<CAJuCY5wi30J7PeqXwLA-x23UdFz58bPqfzyVqZAgsc4Nxvms6g@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2022-01-26T17:01:11+01:00",
+      "subject": "[R-sig-ME] Fitting linear mixed-effects models",
+      "subject_clean": "Fitting linear mixed-effects models",
+      "in_reply_to": "<BL0PR02MB553731643D7D7A0822883498DF5F9@BL0PR02MB5537.namprd02.prod.outlook.com>",
+      "references": [
+        "<BL0PR02MB553731643D7D7A0822883498DF5F9@BL0PR02MB5537.namprd02.prod.outlook.com>"
+      ],
+      "body_plain": "Do you want a random effect for methionine source at the study level? That\ncould work with the alternative model you specified. However, that assumes\nthat you have multiple records for every combination of study and\nmethionine source. I would expect that you have only one record for each of\nthose combinations.\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp di 25 jan. 2022 om 23:57 schreef Vin?cius Carneiro de Souza <\nvinicius2042 at hotmail.com>:\n\n> I am trying to fit a linear model using the lmer function from data\n> collected from literature from multiple studies.\n> The response variable is the average daily gain of swine and the predictor\n> is the different methionine sources in the different diets, which is a\n> factor with 4 levels (4 different methionine sources)\n>\n> My original model is below, which includes a random intercept for study\n> effect:\n>\n> #Z_ADG_g is the average daily gain\n> #MM_Type_met is the methionine source factor\n> #CO_Intra_Trial is the publication ID\n>\n> ADGmod <- lmer(Z_ADG_g~MM_Type_met+(1|CO_Intra_Trial), data=ErmDat3,\n> weight=ADG_wt, REML = FALSE)\n>\n> summary(ADGmod)\n>\n> I would like to look what would be the effect of considering that each\n> methionine source tested has a different/separate intercept. I was reading\n> a book chapter from Bates et al. and found a table with some syntaxes that\n> could work to specifying different intercepts for each methionine source,\n> but it is not working. The model still has only one intercept.\n>\n> I tried the following model:\n>\n> ADGmod <-\n> lmer(Z_ADG_g~MM_Type_met+(1|CO_Intra_Trial)+(1|CO_Intra_Trial:MM_Type_met),\n> data=ErmDat3, weight=ADG_wt, REML = FALSE)\n>\n> summary(ADGmod)\n>\n> Does anyone know if it is even possible what I am trying to do?\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Do you want a random effect for methionine source at the study level? That\ncould work with the alternative model you specified. However, that assumes\nthat you have multiple records for every combinati",
+      "thread_id": "thread-f4f5312472fc",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-e2c0ca60e5cc",
+      "message_id": "<55fb8647-b184-0bba-3e5c-f399342ce63d@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-01-26T19:12:43-05:00",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<25073.33190.950579.366630@chmusic.org>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+        "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+        "<25073.33190.950579.366630@chmusic.org>"
+      ],
+      "body_plain": "On 1/26/22 12:15 PM, Don Cohen wrote:\n> \n> not sure this should be sent to r-sig-mixed-models at r-project.org,\n> feel free to post it there if so\n> \n>   >    I would say that in general it's OK to compare models with different\n>   > links, families, etc. via AIC *as long as you don't explicitly transform\n>   > the response variable* -- i.e. you have to be careful comparing\n>   >\n>   >   lm(log(y) ~ ....)\n>   >\n>   > with\n>   >\n>   >    lm(y ~ ...)\n>   >\n>   > (you need a Jacobian term in the AIC expression to account for the\n>   > change in scaling of the density), but comparing basically\n> \n> This doesn't make any sense to me.\n> There are only two parts to AIC, log liklihood and a parameter\n> correction.  What does this transform have to do with either?\n> If you get a better loglik for the transformed version I'd just\n> say that model fits the data better.\n> (Whereas the parameter correction has to do with what you think\n> makes a model better outside of fit to data, and is more subjective.)\n> \n> Actually I do have a complaint about loglik -- I think it would\n> be fixed by really computing the probability of response given\n> inputs, and that this could be done pretty easily by simply\n> admitting that the responses are not exact measurements, and\n> changing them to ranges or at worst distributions.  Could THAT\n> be related to the transform problem?  If so then this seems like\n> a solution.\n> \n> Perhaps you can give me a reference to what I'm missing.\n> I also don't see what nested models have to do with this.\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "On 1/26/22 12:15 PM, Don Cohen wrote:\n> \n> not sure this should be sent to r-sig-mixed-models at r-project.org,\n> feel free to post it there if so\n> \n>   >    I would say that in general it's OK to co",
+      "thread_id": "thread-e2c0ca60e5cc",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-b013b6d834c3",
+      "message_id": "<6c9236cf-6b3b-37bb-43ce-b1a33b40cf81@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-01-26T23:58:17-06:00",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<55fb8647-b184-0bba-3e5c-f399342ce63d@gmail.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+        "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+        "<25073.33190.950579.366630@chmusic.org>",
+        "<55fb8647-b184-0bba-3e5c-f399342ce63d@gmail.com>"
+      ],
+      "body_plain": "(resending without a digital signature)\n\n@Don: I think the part you're missing is that the likelihood depends on\nthe data and if you transform the data (e.g. via log), then you've\nchanged the data and now have a different likelihood. A little bit more\nprecisely: the likelihood of the model is the probability of the\nparameters _conditional_ on the data.[*] For linear transformations of\nthe data, everything is fine, but for nonlinear transformations, you\nneed to take into account the distortion they introduce on the parameter\nspace, which is what the Jacobian does. Digging down a bit deeper, the\nlikelihood is ultimately an integral and any transformation of the data\ncorresponds to a change of variables in that integral. For nonlinear\ntransformations, that means you now have a Jacobian to deal with. (For\nlinear transformations, you can still be off by a multiplicative\nconstant, but that doesn't matter for finding the location of the\noptimum, i.e. the parameters corresponding to the maximum likelihood.)\n\nThe \"exact measurements\" issue is, in the usual interpretation,\ntypically taken to be handled by treating the response as a distribution\nand the inexactness there is part of the probability. There are some\ntypes of models that can take estimated uncertainties around the\nresponse into account -- this is more uncommon in the physical sciences\nwhere measurements instruments have a well-calibrated uncertainty. But\nthis does come up in things like meta-analysis, where the response is\nactually previous estimates and associated uncertainty. (For the\npredictor variables, erorrs-within-measurement is a very different\nstory, at least on the frequentist side of things.) Your proposal of\nchanging everything to be a distribution corresponds well to the\nBayesian idea that basically everything is a random variable in the\ntechnical sense, and you can chose many levels down you to model that. \n\nMy apologies to the math stats crowd; I know I've been not particularly\nrigorous, but I was hoping to convey the general intuition.\n\n[*] There's some fine print here if we're talking about the likelihood\nas a score function or a conditional probability, but the fine print\ndoesn't matter for the argument at hand.\n\nOn 1/26/22 18:12, Ben Bolker wrote:\n>\n>\n> On 1/26/22 12:15 PM, Don Cohen wrote:\n>>\n>> not sure this should be sent to r-sig-mixed-models at r-project.org,\n>> feel free to post it there if so\n>>\n>> ? >??? I would say that in general it's OK to compare models with\n>> different\n>> ? > links, families, etc. via AIC *as long as you don't explicitly\n>> transform\n>> ? > the response variable* -- i.e. you have to be careful comparing\n>> ? >\n>> ? >?? lm(log(y) ~ ....)\n>> ? >\n>> ? > with\n>> ? >\n>> ? >??? lm(y ~ ...)\n>> ? >\n>> ? > (you need a Jacobian term in the AIC expression to account for the\n>> ? > change in scaling of the density), but comparing basically\n>>\n>> This doesn't make any sense to me.\n>> There are only two parts to AIC, log liklihood and a parameter\n>> correction.? What does this transform have to do with either?\n>> If you get a better loglik for the transformed version I'd just\n>> say that model fits the data better.\n>> (Whereas the parameter correction has to do with what you think\n>> makes a model better outside of fit to data, and is more subjective.)\n>>\n>> Actually I do have a complaint about loglik -- I think it would\n>> be fixed by really computing the probability of response given\n>> inputs, and that this could be done pretty easily by simply\n>> admitting that the responses are not exact measurements, and\n>> changing them to ranges or at worst distributions.? Could THAT\n>> be related to the transform problem?? If so then this seems like\n>> a solution.\n>>\n>> Perhaps you can give me a reference to what I'm missing.\n>> I also don't see what nested models have to do with this.\n>",
+      "body_snippet": "(resending without a digital signature)\n\n@Don: I think the part you're missing is that the likelihood depends on\nthe data and if you transform the data (e.g. via log), then you've\nchanged the data and",
+      "thread_id": "thread-e2c0ca60e5cc",
+      "thread_depth": 1,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-610f3bc96c8a",
+      "message_id": "<16b0c567-a763-0d2f-ba92-e8cf9033453e@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-01-27T00:09:14-06:00",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<AM7PR09MB40713E81B4504BDB10EDF424E8209@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+        "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+        "<AM7PR09MB40713E81B4504BDB10EDF424E8209@AM7PR09MB4071.eurprd09.prod.outlook.com>"
+      ],
+      "body_plain": "Oh, have you been reading the Lo and Andrews paper\n(https://doi.org/10.3389/fpsyg.2015.01171)? I've developed a little bit\nof a reputation for my skepticism regarding that paper. :)\n\n(On a purely practical point, I'll note that that paper discusses using\na gamma family model with identity link, but those often have\nconvergence issues in my experience, even beyond my philosophical points\nbelow.)\n\nTo refine my previous comments a bit: I think AIC is as good as anything\nelse for comparing non-nested models, but that it's generally just very\nhard to compare non-nested models without a domain- or even\nproblem-specific notion about what's \"better\". For nested models, we\ncan often ignore the difficulty of \"how much better is a meaningful\ndifference?\" by using the likelihood-ratio test and the conventional\nsignificance framework, but that's not without problems. In other words,\nmy whole skepticism here is a mixture of \"what do we mean by 'better'?\"\nand \"are we doing anything that my inner mathematician would be\nuncomfortable with?\".\n\nThere is a fair amount of work looking for the \"ideal\" model of response\ntime -- what family, what link function, should we transform the\nresponse time (e.g. log transform), etc. For me, it really depends on\nwhat your hypothesis is like -- each of these choices corresponds to\ndifferent hypotheses and different assumptions. For example, if you\nassume that your experimental manipulation will have multiplicative\neffects, then log-transforming your responses times seems reasonable\nbecause additive effects on the log scale correspond to multiplicative\neffects on the original scale. But this goes both ways: if you're\nlog-transforming \"just\" to address skew (e.g. the long right tail you\noften see in RT experiments), then you're still changing the precise\nhypothesis being tested. If you're using a non-identity link function,\nthen there is still a transformation going on, just in a different place\n(which impacts whether the residual error is also transformed).\nSimilarly, your choice of model family reflects both an assumption about\nthe general shape of the conditional (~error) distribution and how you\nweigh errors. (This point also ties into the use of e.g. the Student-t\ndistribution as a model family in robust statistics.)\n\nTo bring it back around, the questions I would ask myself are:\n- What model structure best encodes my hypotheses?\n- After fitting that model, does that model capture the overall\nstructure of my data? If not, then that's already a rejection of the\nexact formulation of my hypotheses, but it might still be good to some\nexplorative work looking at other model formulations as a way to update\nmy hypotheses for the next experiment.\n\nThis is also where people worry about violating model assumptions --\nwhether a particular violation is bad depends on what you're looking at.\nFor example, heavier than normal tails will make your standard errors a\nbit misleading, but usually won't mess up your estimates too much. But a\nstrong skew might mean that your estimates aren't good representations\nof your data -- much in the same that the mean is often not a good\nsummary of strongly skewed data (e.g., mean vs. median income as\nmeasures of typical incomes).\n\nIf's not already very clear, I often think of models as quantitative\nsummaries of data. A good summary depends on pulling out the important\nbits and the important bits are always dependent on your ultimate\n(inferential) goals. :)\n\nAlso, since you're looking at RT, two more specific hints/tips. :)\n- Reinhold Kliegl has pointed me towards using speed (i.e. 1/RT) instead\nof reaction time (I think he's basing this on Box-Cox transformations),\nand I've often been quite happily surprised by how well this works. The\ninversion handles the long tails nicely and speed is easier to interpret\nthan log RT. And we often speak of things in terms of speed anyway,\ne.g., we expect participants to be faster in one condition than another.\n\n- Check out Jonas Lindel?v's great write-up on RT distribution:\nhttp://lindeloev.net/shiny/rt/. It also really covers a few different\ntypes of common hypotheses and how these can appear as distributions. I\nwould also like to note that I've had some RT experiments where the RT\nwas -- to the disbelief of the reviewers -- well represented by a normal\ndistribution when the right covariates were included. :)\n\nI hope that helps!\nBest,\nPhillip\n\n\n\nOn 26/1/22 1:29 am, Dries Debeer via R-sig-mixed-models wrote:\n> Dear Ben and Philliip, \n> \n> Thank you for your response and the pointers to the discussion! \n> \n> The reason for asking was finding the best fitting model for response times in an experimental setting. I agree that theoretical/scientific arguments for choosing models can outweigh purely maximizing the fit.\n> \n> Dries\n> \n>> -----Original Message-----\n>> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On\n>> Behalf Of Ben Bolker\n>> Sent: woensdag 26 januari 2022 3:09\n>> To: r-sig-mixed-models at r-project.org\n>> Subject: Re: [R-sig-ME] compare fit of GLMM with different link/family\n>>\n>>    I mostly agree.\n>>\n>>    I would say that in general it's OK to compare models with different links,\n>> families, etc. via AIC *as long as you don't explicitly transform the response\n>> variable* -- i.e. you have to be careful comparing\n>>\n>>   lm(log(y) ~ ....)\n>>\n>> with\n>>\n>>    lm(y ~ ...)\n>>\n>> (you need a Jacobian term in the AIC expression to account for the change in\n>> scaling of the density), but comparing basically\n>>\n>>    glm(y ~ ... , family = <anything>)\n>>\n>> should be OK. That said, there is a strong minority view (Phillip may belong to\n>> this group) that says that using AIC to compare non-nested models is *not*\n>> OK: e.g. see\n>> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstats.\n>> stackexchange.com%2Fquestions%2F116935%2Fcomparing-non-nested-\n>> models-with-\n>> aic%2F116951%23116951&amp;data=04%7C01%7CDries.Debeer%40ugent.be\n>> %7Cc4b9f930b96b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a178624\n>> 1b99c%7C1%7C0%7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8e\n>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D\n>> %7C3000&amp;sdata=5hbi6AF92Duw953axcH%2FMBHtjd9piahD7lk5mUdSH\n>> wU%3D&amp;reserved=0\n>> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fmath\n>> overflow.net%2Fquestions%2F249448%2Fuse-of-akaike-information-\n>> criterion-with-nonnested-\n>> models&amp;data=04%7C01%7CDries.Debeer%40ugent.be%7Cc4b9f930b96\n>> b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a1786241b99c%7C1%7C0\n>> %7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA\n>> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;s\n>> data=MmI5p%2Bq8Is9MwO86Jtp2q5Aq0KsAspYIwpLMWlBud%2F8%3D&am\n>> p;reserved=0\n>>\n>>   (Unfortunately, really understanding why this should or should not work\n>> depends, I think, on understanding the rates of convergence of certain\n>> asymptotic expressions ...)\n>>\n>>    I completely agree with Phillip on the rest, though, which is to say that you\n>> should think about **why** you want to test all these different cases. It's\n>> unlikely you're going to be able to frame *scientific* hypotheses in terms of\n>> these different models (\"is it better to measure consumption in gallons per\n>> mile or miles per gallon?\"). If you're purely interested in prediction, then I\n>> think AIC will often be an adequate approximation to something based on\n>> cross-validation (but it would be good to check with CV). On the other hand,\n>> if you're purely interested in prediction you might want to move in the\n>> direction of nonparametric models such as GAMs, which should make many\n>> of the distinctions between links irrelevant ...\n>>\n>>\n>>\n>>\n>> On 1/25/22 12:56 PM, Phillip Alday wrote:\n>>>\n>>> On 25/1/22 11:04 am, Dries Debeer via R-sig-mixed-models wrote:\n>>>> Dear,\n>>>>\n>>>>\n>>>> I have a question about comparing the fit of GLMM with different link\n>> functions/families.\n>>>>\n>>>> For instance, can the deviance or the AIC be used to compare the fit of\n>> probit and logit with the same parametrization?\n>>>>\n>>>> probit_model <- glmer(Y ~ A + B + C*D + (A | subjects), data = data,\n>>>> family = binomial(link = \"probit\")) logit_model <- glmer(Y ~ A + B +\n>>>> C*D + (A | subjects), data = data, family = binomial(link = \"logit\"))\n>>>\n>>> This is a surprisingly tough question, in my opinion. Neither the AIC\n>>> nor the deviance depend on the link itself, so in theory, you could\n>>> compare them ... but these models are not nested, and comparing\n>>> non-nested models is generally a tricky problem.  That said, probit\n>>> and logit models will tend to give very similar results in terms of\n>>> predictions/fit to the data. The bigger difference is how you\n>>> interpret coefficients, so I would chose between probit and logit\n>>> based on desired interpretation.\n>>>\n>>> For other families/links, the comparison can get even more difficult.\n>>> For example, if you compare an inverse link with an identity link,\n>>> then you are comparing two very different albeit related quantities --\n>>> like comparing a model of \"speed\" vs \"time\".\n>>>\n>>>>\n>>>>\n>>>> And is this also possible when the distributional assumptions are\n>> different? For instance:\n>>>>\n>>>> gamma_model <- glmer(X ~ A + B + C*D + (A | subjects), data = data,\n>>>> family = Gamma(link = \"inverse\")) inverse_gauss <- glmer(X ~ A + B +\n>>>> C*D + (A | subjects), data = data, family = inverse.gaussian(link =\n>>>> \"1/mu^2\"))\n>>>\n>>> Not really, no. Both the deviance and the AIC are functions of the log\n>>> likelihood and the choice of family corresponds to a choice of\n>>> likelihood, so you're comparing different things.\n>>>\n>>> Depending on what you're going for, looking at predictive power of the\n>>> models directly -- such as looking at mean squared or mean absolute\n>>> error computed with cross validation -- might work.\n>>>\n>>> That said, the choice of family is a statement about your assumptions\n>>> and prior beliefs about the data. In a Bayesian context, McElreath has\n>>> described this as a \"prior about the data\" in Statistical Rethinking.\n>>> Gelman et al have also noted that the prior can only be understood in\n>>> the context of the likelihood -- all hinting at the core idea here,\n>>> namely that the family is an assumption about the conditional\n>>> distribution of your data (or equivalently, about the the distribution\n>>> of the error/noise in your data).\n>>>\n>>> My previous point about the choice of link changing interpretation\n>>> also holds for changes in link accompanying changes in family -- the\n>>> statements you can make about your data based on an inverse link vs an\n>>> inverse square link are different.\n>>>\n>>> I would be happy to hear other opinions here.\n>>>\n>>> Hope that helps,\n>>> Phillip\n>>>\n>>>>\n>>>> Thank you!\n>>>> Dries Debeer\n>>>>\n>>>>\n>>>>\n>>>>\n>>>>\n>>>>\n>>>> \t[[alternative HTML version deleted]]\n>>>>\n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>>\n>> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fsta\n>>>> t.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n>> models&amp;data=04%7C01%\n>>>>\n>> 7CDries.Debeer%40ugent.be%7Cc4b9f930b96b4395259808d9e070fd71%7Cd7\n>> 811c\n>>>>\n>> deecef496c8f91a1786241b99c%7C1%7C0%7C637787598905000528%7CUnkno\n>> wn%7CT\n>>>>\n>> WFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLC\n>> JXVC\n>>>>\n>> I6Mn0%3D%7C3000&amp;sdata=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFq\n>> tL6Xbb1D\n>>>> dVl4%3D&amp;reserved=0\n>>>>\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat\n>>> .ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n>> models&amp;data=04%7C01%7C\n>>>\n>> Dries.Debeer%40ugent.be%7Cc4b9f930b96b4395259808d9e070fd71%7Cd781\n>> 1cdee\n>>>\n>> cef496c8f91a1786241b99c%7C1%7C0%7C637787598905000528%7CUnknown\n>> %7CTWFpb\n>>>\n>> GZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI\n>> 6Mn0\n>>>\n>> %3D%7C3000&amp;sdata=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFqtL6Xb\n>> b1DdVl4%3\n>>> D&amp;reserved=0\n>>>\n>>\n>> --\n>> Dr. Benjamin Bolker\n>> Professor, Mathematics & Statistics and Biology, McMaster University\n>> Director, School of Computational Science and Engineering\n>> (Acting) Graduate chair, Mathematics & Statistics\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://eur03.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.e\n>> thz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-\n>> models&amp;data=04%7C01%7CDries.Debeer%40ugent.be%7Cc4b9f930b96\n>> b4395259808d9e070fd71%7Cd7811cdeecef496c8f91a1786241b99c%7C1%7C0\n>> %7C637787598905000528%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjA\n>> wMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000&amp;s\n>> data=TMlKe3iOp2AqihyZIUF31KM7Tk%2B%2FkFqtL6Xbb1DdVl4%3D&amp;re\n>> served=0\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Oh, have you been reading the Lo and Andrews paper\n(https://doi.org/10.3389/fpsyg.2015.01171)? I've developed a little bit\nof a reputation for my skepticism regarding that paper. :)\n\n(On a purely prac",
+      "thread_id": "thread-53db2cc83199",
+      "thread_depth": 4,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-a7f7bdbd303d",
+      "message_id": "<CACCU-vOHJAA2+qdtoZwO4wZZs+OUZX3n6asrjMpC3a36RfFJ8w@mail.gmail.com>",
+      "from_name": "Chao Liu",
+      "from_email_hash": "eb6a7eeab677b0afb10412d3e5d340d2c2dc8daad197d1233993e95d835d02b2",
+      "date": "2022-01-27T13:00:00-05:00",
+      "subject": "[R-sig-ME] Simulate type I error",
+      "subject_clean": "Simulate type I error",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear R-sig-mixed-models community,\n\nI would like to simulate type I error for a random-effects model I\ngenerated.\n\nThe statistic of interest is standard deviations of the random intercept\nand random slope. Specifically, for random intercept, H_{0}: lambda_{0} =2\nand H_{1}: lambda_{0} not equal to 2; for random slope, H_{0}: lambda_{1}\n=1 and H_{1}: lambda_{1} not equal to 1. I assume the test would be a\nlikelihood ratio test but please correct me if I am wrong. How do I assess\ntype I error for the random-effects model I specified below:\n\nset.seed(323)\n#The following code is to specify the structure and parameters of the\nrandom-effects model\ndtfunc = function(nsub){\n  time = 0:9\n  rt = c()\n  time.all = rep(time, nsub)\n  subid.all = as.factor(rep(1:nsub, each = length(time)))\n\n  # Step 1:  Specify the lambdas.\n  G = matrix(c(2^2, 0, 0, 1^2), nrow = 2)\n  int.mean = 251\n  slope.mean = 10\n  sub.ints.slopes = mvrnorm(nsub, c(int.mean, slope.mean), G)\n  sub.ints = sub.ints.slopes[,1]\n  time.slopes = sub.ints.slopes[,2]\n\n  # Step 2:  Use the intercepts and slopes to generate RT data\n  sigma = 30\n  for (i in 1:nsub){\n    rt.vec = sub.ints[i] + time.slopes[i]*time + rnorm(length(time), sd =\nsigma)\n    rt = c(rt, rt.vec)\n  }\n\n  dat = data.frame(rt, time.all, subid.all)\n  return(dat)\n}\n\n#Here I run one random-effects model\nset.seed(10)\ndat = dtfunc(16)\nlmer(rt~time.all + (1+time.all |subid.all), dat)\n\nAssuming the test for significance is likelihood ratio test and so in the\nend, I want to see if I run the test 1000 times, what is the probability of\nrejecting the null hypothesis when it is TRUE. Also, how do I plot the\nbehavior of type I error if I change the values of standard deviations?\n\nAny help is appreciated!\n\nBest,\n\nChao\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear R-sig-mixed-models community,\n\nI would like to simulate type I error for a random-effects model I\ngenerated.\n\nThe statistic of interest is standard deviations of the random intercept\nand random s",
+      "thread_id": "thread-a7f7bdbd303d",
+      "thread_depth": 0,
+      "month": "2022-01"
+    },
+    {
+      "id": "msg-9914d9f4ef6d",
+      "message_id": "<25075.4768.580057.25339@chmusic.org>",
+      "from_name": "Don Cohen",
+      "from_email_hash": "20692068e981e1d7a46929b34c0fb83de92a96c2a7ebd00c1974d9dd4696612a",
+      "date": "2022-01-27T21:46:08Z",
+      "subject": "[R-sig-ME] compare fit of GLMM with different link/family",
+      "subject_clean": "compare fit of GLMM with different link/family",
+      "in_reply_to": "<9271f2f3-058c-e545-58b5-44b17c51752a@phillipalday.com>",
+      "references": [
+        "<AM7PR09MB4071367C2403250F0E3C712BE85F9@AM7PR09MB4071.eurprd09.prod.outlook.com>",
+        "<c70ab33d-f723-9a5b-e3bd-8e279c0f5b24@phillipalday.com>",
+        "<897f0d62-1868-b987-45b7-d06f1fb7733a@gmail.com>",
+        "<25073.33190.950579.366630@chmusic.org>",
+        "<55fb8647-b184-0bba-3e5c-f399342ce63d@gmail.com>",
+        "<9271f2f3-058c-e545-58b5-44b17c51752a@phillipalday.com>"
+      ],
+      "body_plain": "Phillip Alday writes:\n\n > @Don: I think the part you're missing is that the likelihood\n > depends on the data and if you transform the data (e.g. via log),\n > then you've changed the data and now have a different likelihood.\n\nI'm not sure what you mean by changing the data, but the fact that\nyou change the likelihood seems to be just as true for any other \nchange to the model.\n log(output) ~ input\nand\n output ~ input\nare two different models just like they're both different from\n output ~ input^2\n\n > precisely: the likelihood of the model is the probability of the\n > parameters _conditional_ on the data.[*]\n\n[I assume by parameters you mean what I call the output (dependent variable)\nand by the data you mean what I call the inputs - the independent variables)]\nBut this gets back to my argument below that the likelihood is not really\nthe same as probability...\n\n > For linear transformations of the data, everything is fine,\n\nBut my example above with input^2 was not a linear transformation of the \ndata, was it?  You don't think it's fair to compare loglik of\n output ~ input  with that of  ouput ~ input^2  ?\nOh, I guess not - that's your argument about nested models.\nBut I also don't understand that.\n\nIt seems to me that conditional probability of output given model and\ninput is a measure of how well the output fits the input+model and it\nmakes sense even to compare that even for different combinations of\ninput, output, model.  I see that more rows of data will inevitably\nreduce that probability, so perhaps a good measure would be to divide\nlog of prob by #rows, i.e., average log of probability per row.\n\n > but for nonlinear transformations, you need to take into account\n > the distortion they introduce on the parameter space, which is what\n > the Jacobian does. Digging down a bit deeper, the likelihood is\n > ultimately an integral and any transformation of the data\n\nI thought the likelihood was computed by just evaluating the PDF.\nIs that necessarily an integral ?  Is that related to your \ndescription of treating the response as a distribution?\n\nWhat you write above does not convey to me exactly what problem is\nbeing solved or how it's being solved, but I get the feeling that your\ntransformation might be the same thing I was complaining about.\nSee what you think:\n\nMy complaint is illustrated by the fact that the loglik can be\npositive - because the pdf can be > 1.  Whereas the actual probability\ncould be computed by changing the output value to a range and taking\nthe difference between the values of the cdf at the two ends of the\nrange (maybe you'd call that integration).  If you did that, say, for\nan output of 1.23, which I'd require you to change to an interval, say\n[1.225 - 1.235], then in order to compare the REAL probability (rather\nthan the likelihood) of this model to that of another model using\nlog(output), the interval would become [log(1.225) - log(1.235)],\nright?  Does that seem to correspond to your correction?\n\n > (For linear transformations, you can still be off by a\n > multiplicative constant, but that doesn't matter for finding the\n > location of the optimum, i.e. the parameters corresponding to the\n > maximum likelihood.)\n\nAgain I might not be following you, but I think this may be related to\nthe fact that loglik can be positive -- which means to me that even\nthough you've found the optimal estimates, your loglik is NOT a\nreasonable estimate of the PROBABILITY of the output given the input +\nmodel.  And for model comparison I would want the log of the\nprobability, not something that could be off by some (arbitrarily\nlarge) constant that might be different for different models.\n\nSo if loglik is computed as I think it is, then it's questionable\nwhether it can be compared between different models at all, whereas\nif log prob were computed as I describe, then it would make sense to\ncompare it for any two models, even if the output were transformed.\n\nI hope that makes sense?\n\nOr, of course, tell me where I've gone wrong.",
+      "body_snippet": "Phillip Alday writes:\n\n > @Don: I think the part you're missing is that the likelihood\n > depends on the data and if you transform the data (e.g. via log),\n > then you've changed the data and now have",
+      "thread_id": "thread-9914d9f4ef6d",
+      "thread_depth": 0,
+      "month": "2022-01"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-3190bfddb35d",
+      "subject": "lmer - individual slopes",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Cátia Ferreira De Oliveira",
+        "ji@verissimo m@iii@g oii gm@ii@com"
+      ],
+      "started": "2022-01-06T01:10:42+00:00",
+      "last_reply": "2022-01-06T08:25:37+01:00",
+      "root_message_id": "msg-3190bfddb35d"
+    },
+    {
+      "id": "thread-37e7df09ad0b",
+      "subject": "glmmTMB spatial model - modified distance calculation",
+      "message_count": 1,
+      "participants": [
+        "Kim Colyvas"
+      ],
+      "started": "2022-01-08T23:29:19+00:00",
+      "last_reply": "2022-01-08T23:29:19+00:00",
+      "root_message_id": "msg-37e7df09ad0b"
+    },
+    {
+      "id": "thread-de241a52ef9f",
+      "subject": "How to include multiple temporal processes in one model?",
+      "message_count": 2,
+      "participants": [
+        "Adriaan de Jong",
+        "Thierry Onkelinx"
+      ],
+      "started": "2022-01-12T10:30:36+00:00",
+      "last_reply": "2022-01-12T13:51:43+01:00",
+      "root_message_id": "msg-de241a52ef9f"
+    },
+    {
+      "id": "thread-ad748dbbb974",
+      "subject": "How to include multiple temporal processes in one model?",
+      "message_count": 1,
+      "participants": [
+        "Zach Simpson"
+      ],
+      "started": "2022-01-12T11:06:50-08:00",
+      "last_reply": "2022-01-12T11:06:50-08:00",
+      "root_message_id": "msg-ad748dbbb974"
+    },
+    {
+      "id": "thread-36e75e4ff1c0",
+      "subject": "nlme::gls() outputting behavior for missing data",
+      "message_count": 1,
+      "participants": [
+        "Simon Harmel"
+      ],
+      "started": "2022-01-13T20:25:09-06:00",
+      "last_reply": "2022-01-13T20:25:09-06:00",
+      "root_message_id": "msg-36e75e4ff1c0"
+    },
+    {
+      "id": "thread-589242068fd8",
+      "subject": "Mixed effect model with lme4",
+      "message_count": 2,
+      "participants": [
+        "Sijia Huang",
+        "Thierry Onkelinx"
+      ],
+      "started": "2022-01-18T11:09:36-05:00",
+      "last_reply": "2022-01-19T08:50:31+01:00",
+      "root_message_id": "msg-589242068fd8"
+    },
+    {
+      "id": "thread-01578b862b9d",
+      "subject": "Problems with warnings",
+      "message_count": 2,
+      "participants": [
+        "Mathias Emil Kaae",
+        "Mollie Brooks"
+      ],
+      "started": "2022-01-20T09:29:45+00:00",
+      "last_reply": "2022-01-21T14:19:26+01:00",
+      "root_message_id": "msg-01578b862b9d"
+    },
+    {
+      "id": "thread-53db2cc83199",
+      "subject": "compare fit of GLMM with different link/family",
+      "message_count": 5,
+      "participants": [
+        "Ben Bolker",
+        "Dries Debeer",
+        "Phillip Alday"
+      ],
+      "started": "2022-01-25T17:04:53+00:00",
+      "last_reply": "2022-01-27T00:09:14-06:00",
+      "root_message_id": "msg-53db2cc83199"
+    },
+    {
+      "id": "thread-f4f5312472fc",
+      "subject": "Fitting linear mixed-effects models",
+      "message_count": 2,
+      "participants": [
+        "Thierry Onkelinx",
+        "Vinícius Carneiro de Souza"
+      ],
+      "started": "2022-01-25T22:56:41+00:00",
+      "last_reply": "2022-01-26T17:01:11+01:00",
+      "root_message_id": "msg-f4f5312472fc"
+    },
+    {
+      "id": "thread-e2c0ca60e5cc",
+      "subject": "compare fit of GLMM with different link/family",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Phillip Alday"
+      ],
+      "started": "2022-01-26T19:12:43-05:00",
+      "last_reply": "2022-01-26T23:58:17-06:00",
+      "root_message_id": "msg-e2c0ca60e5cc"
+    },
+    {
+      "id": "thread-a7f7bdbd303d",
+      "subject": "Simulate type I error",
+      "message_count": 1,
+      "participants": [
+        "Chao Liu"
+      ],
+      "started": "2022-01-27T13:00:00-05:00",
+      "last_reply": "2022-01-27T13:00:00-05:00",
+      "root_message_id": "msg-a7f7bdbd303d"
+    },
+    {
+      "id": "thread-9914d9f4ef6d",
+      "subject": "compare fit of GLMM with different link/family",
+      "message_count": 1,
+      "participants": [
+        "Don Cohen"
+      ],
+      "started": "2022-01-27T21:46:08+00:00",
+      "last_reply": "2022-01-27T21:46:08+00:00",
+      "root_message_id": "msg-9914d9f4ef6d"
+    }
+  ]
+}

@@ -1,0 +1,531 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2020-08",
+  "messages": [
+    {
+      "id": "msg-c1b1a2b60254",
+      "message_id": "<CA+6N3yU16LWsOS8L96ng8rZT1sWYLZyNrB2XzW3a7xBi3h5vMQ@mail.gmail.com>",
+      "from_name": "Alessandra Bielli",
+      "from_email_hash": "bf6905c932dc9fa57c86787302a6ec2d4c89f83888f289de5cda611070c59e1c",
+      "date": "2020-08-01T12:09:40-06:00",
+      "subject": "[R-sig-ME] GLMM hurdle model for continuous data -Truncated negative binomial family in glmmTMB?",
+      "subject_clean": "GLMM hurdle model for continuous data -Truncated negative binomial family in glmmTMB?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear List\n\nI have posted the question below on Cross Validated as well, where you can\nfind the image of the diagnostics plots.\nhttps://stats.stackexchange.com/questions/481109/truncated-negative-binomial-hurdle-model-for-continuous-data-glmmtmb\n\n\n\nI am running a hurdle model using the glmmTMB function. My dependent\nvariable is continuous and >= 0. I was looking for a function that would\nallow me to model the binary response in a logistic regression (i.e the\nzero inflated model) and the non-zero response in a Gamma (log) regression\n(i.e the conditional model). However, the glmmTMB function does not allow\nto use the gamma family.\n\nI have two questions:\n\n   1.\n\n   is there a function that allows to run a GLMM with gamma family? I tried\n   to write my own code to have these two models but I am not sure about how\n   to predict and calculate CIs.\n   2.\n\n   Is it appropriate to use a truncated negative binomial family for the\n   conditional (non-zero values) model? I ran the model:\n\nhpm_nb <- glmmTMB(percapita_dia ~ Tipo_residuo + (1|Trip_ID),\nzi=~Tipo_residuo, all, family=truncated_nbinom2)\n\nThe diagnostics plots look good and model predictions are reasonable. Is it\nstill wrong to have a truncated negative binomial family?\n\nThanks for your help,\n\nAlessandra\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear List\n\nI have posted the question below on Cross Validated as well, where you can\nfind the image of the diagnostics plots.\nhttps://stats.stackexchange.com/questions/481109/truncated-negative-binom",
+      "thread_id": "thread-c1b1a2b60254",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a5f5ddebce9c",
+      "message_id": "<bfe3b523-6cb5-5fae-7130-7c9e3418bb20@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2020-08-01T19:05:52-04:00",
+      "subject": "[R-sig-ME] GLMM hurdle model for continuous data -Truncated negative binomial family in glmmTMB?",
+      "subject_clean": "GLMM hurdle model for continuous data -Truncated negative binomial family in glmmTMB?",
+      "in_reply_to": "<CA+6N3yU16LWsOS8L96ng8rZT1sWYLZyNrB2XzW3a7xBi3h5vMQ@mail.gmail.com>",
+      "references": [
+        "<CA+6N3yU16LWsOS8L96ng8rZT1sWYLZyNrB2XzW3a7xBi3h5vMQ@mail.gmail.com>"
+      ],
+      "body_plain": "? Responded on CV.? Short answer: glmmTMB does have a 'ziGamma' family \nthat should allow a zero-hurdle Gamma model ...\n\nOn 8/1/20 2:09 PM, Alessandra Bielli wrote:\n> Dear List\n>\n> I have posted the question below on Cross Validated as well, where you can\n> find the image of the diagnostics plots.\n> https://stats.stackexchange.com/questions/481109/truncated-negative-binomial-hurdle-model-for-continuous-data-glmmtmb\n>\n>\n>\n> I am running a hurdle model using the glmmTMB function. My dependent\n> variable is continuous and >= 0. I was looking for a function that would\n> allow me to model the binary response in a logistic regression (i.e the\n> zero inflated model) and the non-zero response in a Gamma (log) regression\n> (i.e the conditional model). However, the glmmTMB function does not allow\n> to use the gamma family.\n>\n> I have two questions:\n>\n>     1.\n>\n>     is there a function that allows to run a GLMM with gamma family? I tried\n>     to write my own code to have these two models but I am not sure about how\n>     to predict and calculate CIs.\n>     2.\n>\n>     Is it appropriate to use a truncated negative binomial family for the\n>     conditional (non-zero values) model? I ran the model:\n>\n> hpm_nb <- glmmTMB(percapita_dia ~ Tipo_residuo + (1|Trip_ID),\n> zi=~Tipo_residuo, all, family=truncated_nbinom2)\n>\n> The diagnostics plots look good and model predictions are reasonable. Is it\n> still wrong to have a truncated negative binomial family?\n>\n> Thanks for your help,\n>\n> Alessandra\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "? Responded on CV.? Short answer: glmmTMB does have a 'ziGamma' family \nthat should allow a zero-hurdle Gamma model ...\n\nOn 8/1/20 2:09 PM, Alessandra Bielli wrote:\n> Dear List\n>\n> I have posted the q",
+      "thread_id": "thread-c1b1a2b60254",
+      "thread_depth": 1,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-1ae419cfefda",
+      "message_id": "<CAEsSYzyrnq6Fwp9Sk9G-9z78DDsfJgRuoNn9c9-CGkUA3_jeLA@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2020-08-03T20:23:47+01:00",
+      "subject": "[R-sig-ME] ONLINE COURSE – Introduction to mixed models using R and Rstudio (IMMR02)",
+      "subject_clean": "ONLINE COURSE – Introduction to mixed models using R and Rstudio (IMMR02)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "ONLINE COURSE ? Introduction to mixed models using R and Rstudio\n(IMMR02) This course will be delivered live\n\nhttps://www.psstatistics.com/course/introduction-to-mixed-models-using-r-and-rstudio-immr02/\n\n6 August 2020 - 7 August 2020\n\nTIME ZONE ? Western European Time +1 ? however all sessions will be\nrecorded and made available allowing attendees from different time\nzones to follow a day behind with an additional 1/2 days support after\nthe official course finish date (please email\noliverhooker at psstatistics.com for full details or to discuss how we\ncan accommodate you).\n\nCourse Overview:\n\nIn this two day course, we provide a comprehensive practical and\ntheoretical introduction to multilevel models, also known as\nhierarchical or mixed effects models. We will focus primarily on\nmultilevel linear models, but also cover multilevel generalized linear\nmodels. Likewise, we will also describe Bayesian approaches to\nmultilevel modelling. On Day 1, we will begin by focusing on random\neffects multilevel models. These models make it clear how multilevel\nmodels are in fact models of models. In addition, random effects\nmodels serve as a solid basis for understanding mixed effects, i.e.\nfixed and random effects, models. In this coverage of random effects,\nwe will also cover the important concepts of statistical shrinkage in\nthe estimation of effects, as well as intraclass correlation. We then\nproceed to cover linear mixed effects models, particularly focusing on\nvarying intercept and/or varying slopes regresssion models. On Day 2,\nwe cover further aspects of linear mixed effects models, including\nmultilevel models for nested and crossed data data, and group level\npredictor variables. On Day 2, we also cover Bayesian approaches to\nmultilevel levels using the brms R package.\n\nPlease email oliverhooker at psstatistics.com with any questions\n\n\n\n-- \nOliver Hooker PhD.\nPR statistics\n\n2020 publications;\nParallelism in eco-morphology and gene expression despite variable\nevolutionary and genomic backgrounds in a Holarctic fish. PLOS\nGENETICS (2020). IN PRESS\n\nwww.PRstatistics.com\nfacebook.com/PRstatistics/\ntwitter.com/PRstatistics\n\n53 Morrison Street\nGlasgow\nG5 8LB\n+44 (0) 7966500340\n+44 (0) 7966500340",
+      "body_snippet": "ONLINE COURSE ? Introduction to mixed models using R and Rstudio\n(IMMR02) This course will be delivered live\n\nhttps://www.psstatistics.com/course/introduction-to-mixed-models-using-r-and-rstudio-immr0",
+      "thread_id": "thread-1ae419cfefda",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-e1ad9d40a069",
+      "message_id": "<e813a061-85ee-44d9-cf4a-2b8600be3ae5@mpi.nl>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "fafc857548eb60de9d1a2fb567bdcde580c689bb979d9eb416fd7987558bfed0",
+      "date": "2020-08-10T17:44:34+02:00",
+      "subject": "[R-sig-ME] nlme bug ?",
+      "subject_clean": "nlme bug ?",
+      "in_reply_to": "<50076891-C35E-49B9-AC63-19A0561F84C0@ucl.ac.uk>",
+      "references": [
+        "<50076891-C35E-49B9-AC63-19A0561F84C0@ucl.ac.uk>"
+      ],
+      "body_plain": "This could be a bug, but I would check two related things first:\n\n1. Have you tried plotting a profile plot of the likelihood?\n\n2. Have you tried? different starting values?\n\nIn my limited experience, these types of models can be surprisingly\nsensitive to starting values.\n\nPhillip\n\nOn 29/7/20 7:01 pm, Cole, Tim wrote:\n> My sitar package fits the Lindstrom-Beath growth curve model, which varies the slope of the fitted spline curve y by scaling x.\n>\n> The model generally works well, but it fails in the simplest case, with a 1 df spline curve corresponding to a linear regression. The noddy example below fits a random intercept a and scaling factor c, with regression slope s1. The fitnlme function is called 20 times and the values hardly change, and then it produces nonsense numbers and fails.\n>\n> Might this be a bug? It works fine with 2+ df for the spline curve.\n>\n> Thanks for your thoughts.\n>\n> Tim Cole\n>\n> ``` r\n> # install.packages('sitar')\n> # also uses splines and nlme\n> suppressMessages(library(dplyr))\n>\n> dat <- sitar::heights %>%\n>   select(x = 'age', y = 'height', id = 'id') %>%\n>   mutate(x = scale(x, TRUE, FALSE))\n>\n> start <- lm(y ~ splines::ns(x), data = dat)$coef\n> (start <- c(s1 = start[[2]], a = start[[1]], c = 0))\n> #>        s1         a         c\n> #>  56.82702 128.76694   0.00000\n>\n> fitnlme <- function(x, s1, a, c) {\n>   print(unique(s1))\n>   print(unique(a))\n>   print(unique(c))\n>   a + drop(s1 * splines::ns(x * exp(c)))\n> }\n>\n> nlme::nlme(y ~ fitnlme(x, s1, a, c), fixed = s1 + a + c ~ 1, random = a + c ~ 1 | id, start = start, data = dat)\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 1.490116e-08\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 1.490116e-08\n> #> Warning in nlme.formula(y ~ fitnlme(x, s1, a, c), fixed = s1 + a + c ~ 1, :\n> #> Iteration 1, LME step: nlminb() did not converge (code = 1). PORT message: false\n> #> convergence (8)\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 1.490116e-08\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 0\n> #> [1] 56.82702\n> #> [1] 128.7669\n> #> [1] 1.490116e-08\n> #> [1] 48.22096\n> #>  [1] 134.7411 130.4434 125.1878 134.2582 139.3737 132.7397 120.4782 128.5690\n> #>  [9] 137.1287 125.7633 136.5816 131.8558\n> #>  [1]  168940.88  664404.25 1336620.21  242694.18 -481809.06  256605.51\n> #>  [7] 1934638.21  901713.94 -251016.54 1287590.98  -99830.76  482104.58\n> #> Error in qr.default(t(const)): NA/NaN/Inf in foreign function call (arg 1)\n> ```\n>\n> <sup>Created on 2020-07-29 by the [reprex package](https://reprex.tidyverse.org) (v0.3.0)</sup>\n>\n> --\n> Population Policy and Practice\n> UCL Great Ormond Street Institute of Child Health,\n> 30 Guilford Street, London WC1N 1EH, UK\n>\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This could be a bug, but I would check two related things first:\n\n1. Have you tried plotting a profile plot of the likelihood?\n\n2. Have you tried? different starting values?\n\nIn my limited experience,",
+      "thread_id": "thread-e1ad9d40a069",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-23889b525cf1",
+      "message_id": "<0d48ebbc-0b21-6c64-44e7-483f7b89f7d6@mpi.nl>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "fafc857548eb60de9d1a2fb567bdcde580c689bb979d9eb416fd7987558bfed0",
+      "date": "2020-08-11T20:58:25+02:00",
+      "subject": "[R-sig-ME] nlme bug ?",
+      "subject_clean": "nlme bug ?",
+      "in_reply_to": "<5B776195-64E4-4208-8ABB-EF6223A065D9@ucl.ac.uk>",
+      "references": [
+        "<50076891-C35E-49B9-AC63-19A0561F84C0@ucl.ac.uk>",
+        "<e813a061-85ee-44d9-cf4a-2b8600be3ae5@mpi.nl>",
+        "<5B776195-64E4-4208-8ABB-EF6223A065D9@ucl.ac.uk>"
+      ],
+      "body_plain": "For the lme4 model fit with REML, you can get something comparable to\nwait nlme calles the log-likelihood by dividing the REML criterion by\n-2. (There have been a number of exchanges on this list, even in the\nlast year, about the problems of REML vs. _the_ likelihood, so I won't\ngo there, but just note that I can feel the Mathematical Powers That Be\nlooking disappointingly over my shoulder while I brush these problems\naside.)\n\nOn my machine that gives me:\n\nnlme: -315.0308\n\nlme: -313.6868\n\nlmer: -313.6868\n\nThese are all quite similar and the corresponding coefficient values are\nquite similar, so any differences are related to rounding issues and\nmachine-level variation in the nonlinear optimizer (which doesn't refer\nto nlme here, but rather all of these tools actually fit the model).? (I\ndon't fully understand all the implementation details of the optimizers\nthemselves, but I have seen them take a different number of iterations\nto fit the same model on different machines with ostensibly identical\nsoftware versions.) The slightly better fit returned by the linear\nmethods on my machine should generally be preferred -- but if your\ninferences are sensitive to such small differences, you probably have\nbigger problems. ;)\n\nIn other words, I wouldn't worry.\n\n\nPhillip\n\n\nOn 11/8/20 3:35 pm, Cole, Tim wrote:\n>\n> Thanks Phillip for your thoughts.\n>\n> ?\n>\n> Thinking about it some more, I realise there is a redundancy which\n> explains why it fails. The construct\n>\n> ?\n>\n> a + drop(s1 * splines::ns(x * exp(c)))\n>\n> ?\n>\n> involves three parameters a, s1 and c, whereas it is a linear model\n> with intercept and slope and ought to have just two, i.e.\n>\n> ?\n>\n> a + x * b.\n>\n> ?\n>\n> This leads to another curiosity. This simpler model fits fine in nlme,\n> but unexpectedly it is not identical to the equivalent model fitted in\n> lme or lme4 ? see below. The mean relative difference between fitted\n> values is 1000 times greater for nlme vs lme than for lme vs lme4.\n>\n> ?\n>\n> Is this simply a rounding issue, or are the nlme and lme models\n> genuinely different, and if so, in what way?\n>\n> ?\n>\n> Thanks,\n>\n> Tim\n>\n> ?\n>\n> ``` r\n>\n> # install.packages('sitar')\n>\n> suppressMessages({library(dplyr)\n>\n> ? library(sitar)\n>\n> ? library(lme4)\n>\n> })\n>\n> ?\n>\n> dat <- heights %>%\n>\n> ? mutate(x = scale(age, scale = FALSE)) %>%\n>\n> ? select(x, y = height, id)\n>\n> ?\n>\n> start <- setNames(lm(y ~ x, data = dat)$coef, c('a', 'b'))\n>\n> ?\n>\n> fitnlme <- function(x, a, b) {a + x * b}\n>\n> ?\n>\n> nlme1 <- nlme(y ~ fitnlme(x, a, b), fixed = a + b ~ 1, random = a + b\n> ~ 1 | id, start = start, data = dat)\n>\n> ?\n>\n> lme1 <- lme(y ~ x, random = ~ x | id, data = dat)\n>\n> lmer1 <- lmer(y ~ x + (x | id), data = dat)\n>\n> ?\n>\n> all.equal(fitted(nlme1), fitted(lme1), check.attributes = FALSE)\n>\n> #> [1] \"Mean relative difference: 9.603422e-05\"\n>\n> all.equal(fitted(lme1), fitted(lmer1), check.attributes = FALSE)\n>\n> #> [1] \"Mean relative difference: 4.880377e-08\"\n>\n> ```\n>\n> ?\n>\n> <sup>Created on 2020-08-11 by the [reprex\n> package](https://reprex.tidyverse.org) (v0.3.0)</sup>\n>\n> --\n>\n> Population Policy and Practice\n>\n> UCL Great Ormond Street Institute of Child Health,\n>\n> 30 Guilford Street, London WC1N 1EH, UK\n>\n> ?\n>\n> ?\n>\n> *From: *Phillip Alday <phillip.alday at mpi.nl>\n> *Date: *Monday, 10 August 2020 at 16:44\n> *To: *\"Cole, Tim\" <tim.cole at ucl.ac.uk>,\n> \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\n> *Subject: *Re: [R-sig-ME] nlme bug ?\n>\n> ?\n>\n> This could be a bug, but I would check two related things first:\n>\n> ?\n>\n> 1. Have you tried plotting a profile plot of the likelihood?\n>\n> ?\n>\n> 2. Have you tried? different starting values?\n>\n> ?\n>\n> In my limited experience, these types of models can be surprisingly\n>\n> sensitive to starting values.\n>\n> ?\n>\n> Phillip\n>\n> ?\n>\n> On 29/7/20 7:01 pm, Cole, Tim wrote:\n>\n>     My sitar package fits the Lindstrom-Beath growth curve model,\n>     which varies the slope of the fitted spline curve y by scaling x.\n>\n>     ?\n>\n>     The model generally works well, but it fails in the simplest case,\n>     with a 1 df spline curve corresponding to a linear regression. The\n>     noddy example below fits a random intercept a and scaling factor\n>     c, with regression slope s1. The fitnlme function is called 20\n>     times and the values hardly change, and then it produces nonsense\n>     numbers and fails.\n>\n>     ?\n>\n>     Might this be a bug? It works fine with 2+ df for the spline curve.\n>\n>     ?\n>\n>     Thanks for your thoughts.\n>\n>     ?\n>\n>     Tim Cole\n>\n>     ?\n>\n>     ``` r\n>\n>     # install.packages('sitar')\n>\n>     # also uses splines and nlme\n>\n>     suppressMessages(library(dplyr))\n>\n>     ?\n>\n>     dat <- sitar::heights %>%\n>\n>     ?? select(x = 'age', y = 'height', id = 'id') %>%\n>\n>     ?? mutate(x = scale(x, TRUE, FALSE))\n>\n>     ?\n>\n>     start <- lm(y ~ splines::ns(x), data = dat)$coef\n>\n>     (start <- c(s1 = start[[2]], a = start[[1]], c = 0))\n>\n>     #>????????s1???????? a???????? c\n>\n>     #>??56.82702 128.76694?? 0.00000\n>\n>     ?\n>\n>     fitnlme <- function(x, s1, a, c) {\n>\n>     ?? print(unique(s1))\n>\n>     ?? print(unique(a))\n>\n>     ?? print(unique(c))\n>\n>     ?? a + drop(s1 * splines::ns(x * exp(c)))\n>\n>     }\n>\n>     ?\n>\n>     nlme::nlme(y ~ fitnlme(x, s1, a, c), fixed = s1 + a + c ~ 1,\n>     random = a + c ~ 1 | id, start = start, data = dat)\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 1.490116e-08\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 1.490116e-08\n>\n>     #> Warning in nlme.formula(y ~ fitnlme(x, s1, a, c), fixed = s1 +\n>     a + c ~ 1, :\n>\n>     #> Iteration 1, LME step: nlminb() did not converge (code = 1).\n>     PORT message: false\n>\n>     #> convergence (8)\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 1.490116e-08\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 0\n>\n>     #> [1] 56.82702\n>\n>     #> [1] 128.7669\n>\n>     #> [1] 1.490116e-08\n>\n>     #> [1] 48.22096\n>\n>     #>??[1] 134.7411 130.4434 125.1878 134.2582 139.3737 132.7397\n>     120.4782 128.5690\n>\n>     #>??[9] 137.1287 125.7633 136.5816 131.8558\n>\n>     #>??[1]??168940.88??664404.25 1336620.21??242694.18\n>     -481809.06??256605.51\n>\n>     #>??[7] 1934638.21??901713.94 -251016.54\n>     1287590.98??-99830.76??482104.58\n>\n>     #> Error in qr.default(t(const)): NA/NaN/Inf in foreign function\n>     call (arg 1)\n>\n>     ```\n>\n>     ?\n>\n>     <sup>Created on 2020-07-29 by the [reprex\n>     package](https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Freprex.tidyverse.org%2F&amp;data=02%7C01%7C%7Ca6498670eae541e3863a08d83d444fe4%7C1faf88fea9984c5b93c9210a11d9a5c2%7C0%7C1%7C637326710909416681&amp;sdata=9iBQs56VTomb9EAJzND9ku7%2BSgZoohwwdJWxKQ%2Bi0Pc%3D&amp;reserved=0)\n>     (v0.3.0)</sup>\n>\n>     ?\n>\n>     --\n>\n>     Population Policy and Practice\n>\n>     UCL Great Ormond Street Institute of Child Health,\n>\n>     30 Guilford Street, London WC1N 1EH, UK\n>\n>     ?\n>\n>     ?\n>\n>     ?????????? [[alternative HTML version deleted]]\n>\n>     ?\n>\n>     _______________________________________________\n>\n>     R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>\n>     https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fstat.ethz.ch%2Fmailman%2Flistinfo%2Fr-sig-mixed-models&amp;data=02%7C01%7C%7Ca6498670eae541e3863a08d83d444fe4%7C1faf88fea9984c5b93c9210a11d9a5c2%7C0%7C1%7C637326710909416681&amp;sdata=te3VRPkQ3lk8Db6%2Frsdsl1py6dbbjWA2LIO2neTsWgc%3D&amp;reserved=0\n>\n> ?\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "For the lme4 model fit with REML, you can get something comparable to\nwait nlme calles the log-likelihood by dividing the REML criterion by\n-2. (There have been a number of exchanges on this list, eve",
+      "thread_id": "thread-23889b525cf1",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a67b924a886c",
+      "message_id": "<b81bd9a4-f78b-45ef-7cc8-f0a4e53f8bec@uvm.edu>",
+      "from_name": "Ramiro Barrantes",
+      "from_email_hash": "521f41ac6e516772fa028297f1bcc44ee6387f9e7be8f0a6c6d71e5fff1fda1d",
+      "date": "2020-08-12T10:56:04-04:00",
+      "subject": "[R-sig-ME] Huge speed performance difference when using non-trivial fixed effects in NLMER vs NLME",
+      "subject_clean": "Huge speed performance difference when using non-trivial fixed effects in NLMER vs NLME",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Following Ben Bolker's methodology (described here \nhttps://rpubs.com/bbolker/3423) I incorporated non-trivial fixed effects \nin NLMER for a four-parameter logistic. ? I placed a reproducible \nexample here: https://rpubs.com/ramirob/648103\n\nTo summarize the question, if we have a dataset with individuals in \ngroups where we have group-specific fixed effects, NLME's performance \nremains the same:\n\n## [1] \"NLME Time Required for data2Groups: 0.0458040237426758\"\n\nfit3Groups <- fitNLME(data3Groups,initialValues3Groups)\n\n## [1] \"NLME Time Required for data3Groups: 0.0375699996948242\"\n\nfit4Groups <- fitNLME(data4Groups,initialValues4Groups)\n\n## [1] \"NLME Time Required for data4Groups: 0.0526559352874756\"\n\nfit5Groups <- fitNLME(data5Groups,initialValues5Groups)\n\n## [1] \"NLME Time Required for data5Groups: 0.0502560138702393\"\n\nBut when we do the analogous thing in NLMER, the performance increases \nwith increasing number of groups:\n\n## [1] \"Time required for the data2Groups: 0.404773950576782\"\n\nfitNlmer3Groups <- fitNlmer(data3Groups, initialValues3Groups)\n\n## [1] \"Time required for the data3Groups: 0.579570055007935\"\n\nfitNlmer4Groups <- fitNlmer(data4Groups, initialValues4Groups)\n\n## [1] \"Time required for the data4Groups: 0.957509994506836\"\n\nfitNlmer5Groups <- fitNlmer(data5Groups, initialValues5Groups)\n\n## [1] \"Time required for the data5Groups: 1.68412184715271\"\n\nIn addition, NLMER is much slower in general.? This is just a short \nexample, but for more complicated cases the differences in performance \nare huge (minutes vs seconds).\n\nIs NLMER \"worth the wait\" (e.g. less fragile, better convergence, etc) \nwhen trying to do non-trivial fixed effects? Is there a better \nmethodology than the one described by Ben Bolker back in 2013?\n\nAny insight appreciated.? Again, you can see a reproducible example here \nhttps://rpubs.com/ramirob/648103\nThank you!\n\n-- \nRamiro Barrantes Reynolds, Ph.D.\nBioinformatics Research Associate, Microbiology & Molecular Genetics\nVermont Integrative Genomics Resource\nUniversity of Vermont\nBurlington, VT 05405\nhttps://www.med.uvm.edu/vigr/bioinformatics\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Following Ben Bolker's methodology (described here \nhttps://rpubs.com/bbolker/3423) I incorporated non-trivial fixed effects \nin NLMER for a four-parameter logistic. ? I placed a reproducible \nexample",
+      "thread_id": "thread-a67b924a886c",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-e7f81d0a2f53",
+      "message_id": "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+      "from_name": "Sidoti, Salvatore A.",
+      "from_email_hash": "421c389b19615a3f389f5053829409b8e1fb2ea2ff08b7b583a1d1a1f08c541c",
+      "date": "2020-08-18T03:32:35Z",
+      "subject": "[R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "To begin with, I'm not a fan of cross-posting. However, I posted my question on Stack Exchange more than two weeks ago, but I have yet to receive a sufficient answer:\n\nhttps://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit\n \nHere's what I've learned since then (hopefully):\n \n1) ICC of a CLMM:\nComputed like this:\n(variance of the random effect) / (variance of the random effect + 1) If this is correct, I would love to see a reference/citation for it.\n \n2) 95% Confidence Interval for the ICC from a CLMM Model To my current understanding, a confidence interval for an ICC is only obtainable via simulation. I've conducted simulations with GLMM model objects ('lme4' package) and the bootMer() function. Unfortunately, bootMer() will not accept a CLMM model ('ordinal' package).\n \n3) Model Fit of a CLMM\nAssuming that the model converges without incident, the model summary includes a condition number of the Hessian ('cond.H'). This value should be below 10^4 for a \"good fit\". This is straightforward enough. However, I am not as sure about the value for 'max.grad', which needs to be \"well below 1\". The question is, to what magnitude should max.grad < 1 for a decent model fit? My reference is linked below (Christensen, 2019), but it does not elaborate further on this point:\n \nhttps://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636\n \n3) Effect Size of a CLMM\nThe random variable's effect is determined by a comparison between the full model to a model with only the fixed effects via the anova() function. I found this information on the 'rcompanion' package website:\n \nhttps://rcompanion.org/handbook/G_12.html\n \nThe output of this particular anova() will include a value named 'LR.stat', the likelihood ratio statistic. The LR.stat is twice the difference of each log-likelihood (absolute value) of the respective models. Is LR.stat the mixed-model version of an \"effect size\"? If so, how does one determine if the effect is small, large, in-between, etc?\n\nCheers,\nSal\n\nSalvatore A. Sidoti\nPhD Candidate\nBehavioral Ecology\nThe Ohio State University",
+      "body_snippet": "To begin with, I'm not a fan of cross-posting. However, I posted my question on Stack Exchange more than two weeks ago, but I have yet to receive a sufficient answer:\n\nhttps://stats.stackexchange.com/",
+      "thread_id": "thread-e7f81d0a2f53",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-742458ae4d42",
+      "message_id": "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+      "from_name": "Juho Kristian Ruohonen",
+      "from_email_hash": "2fb4cb5db8837715d8ab52d7abc8445867d23353248f4f2820ff0542a51bdf06",
+      "date": "2020-08-19T16:35:00+03:00",
+      "subject": "[R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>"
+      ],
+      "body_plain": "Just voicing two thoughts as a non-statistician:\n\n1. Why do you feel you need a mixed model in the first place? It looks to\nme like every Individual is contributing the same number of responses (i.e.\n4). Thus, the individual-specific effects can be assumed to cancel each\nother out, and no random effect is needed.\n2. Why complicate things with a non-canonical link function? It looks to me\nlike a standard ordinal logistic regression model, with fixed effects only,\nwould do the job for you. Guides and textbooks abound on how to assess the\nfit of such models.\n\nBest,\n\nJ\n\nke 19. elok. 2020 klo 14.44 Sidoti, Salvatore A. (\nsidoti.23 at buckeyemail.osu.edu) kirjoitti:\n\n> To begin with, I'm not a fan of cross-posting. However, I posted my\n> question on Stack Exchange more than two weeks ago, but I have yet to\n> receive a sufficient answer:\n>\n>\n> https://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit\n>\n> Here's what I've learned since then (hopefully):\n>\n> 1) ICC of a CLMM:\n> Computed like this:\n> (variance of the random effect) / (variance of the random effect + 1) If\n> this is correct, I would love to see a reference/citation for it.\n>\n> 2) 95% Confidence Interval for the ICC from a CLMM Model To my current\n> understanding, a confidence interval for an ICC is only obtainable via\n> simulation. I've conducted simulations with GLMM model objects ('lme4'\n> package) and the bootMer() function. Unfortunately, bootMer() will not\n> accept a CLMM model ('ordinal' package).\n>\n> 3) Model Fit of a CLMM\n> Assuming that the model converges without incident, the model summary\n> includes a condition number of the Hessian ('cond.H'). This value should be\n> below 10^4 for a \"good fit\". This is straightforward enough. However, I am\n> not as sure about the value for 'max.grad', which needs to be \"well below\n> 1\". The question is, to what magnitude should max.grad < 1 for a decent\n> model fit? My reference is linked below (Christensen, 2019), but it does\n> not elaborate further on this point:\n>\n>\n> https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636\n>\n> 3) Effect Size of a CLMM\n> The random variable's effect is determined by a comparison between the\n> full model to a model with only the fixed effects via the anova() function.\n> I found this information on the 'rcompanion' package website:\n>\n> https://rcompanion.org/handbook/G_12.html\n>\n> The output of this particular anova() will include a value named\n> 'LR.stat', the likelihood ratio statistic. The LR.stat is twice the\n> difference of each log-likelihood (absolute value) of the respective\n> models. Is LR.stat the mixed-model version of an \"effect size\"? If so, how\n> does one determine if the effect is small, large, in-between, etc?\n>\n> Cheers,\n> Sal\n>\n> Salvatore A. Sidoti\n> PhD Candidate\n> Behavioral Ecology\n> The Ohio State University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Just voicing two thoughts as a non-statistician:\n\n1. Why do you feel you need a mixed model in the first place? It looks to\nme like every Individual is contributing the same number of responses (i.e.\n",
+      "thread_id": "thread-e7f81d0a2f53",
+      "thread_depth": 1,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-5246148fb49c",
+      "message_id": "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "from_name": "Sidoti, Salvatore A.",
+      "from_email_hash": "421c389b19615a3f389f5053829409b8e1fb2ea2ff08b7b583a1d1a1f08c541c",
+      "date": "2020-08-19T14:09:47Z",
+      "subject": "[R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+        "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>"
+      ],
+      "body_plain": "The example you see on Stack Exchange employs a toy data set which mimics the structure of my real data, but not the distributions. It turns out that the statistical contribution of each animal in my study is quite profound, so a mixed model is essential in my case.\n\nSalvatore Sidoti\nPhD Candidate\nDepartment of Evolution, Ecology & Organismal Biology\nThe Ohio State University\nColumbus, OH USA\n\n________________________________\nFrom: Juho Kristian Ruohonen <juho.kristian.ruohonen at gmail.com>\nSent: Wednesday, August 19, 2020, 9:35 AM\nTo: Sidoti, Salvatore A.\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit\n\nJust voicing two thoughts as a non-statistician:\n\n1. Why do you feel you need a mixed model in the first place? It looks to me like every Individual is contributing the same number of responses (i.e. 4). Thus, the individual-specific effects can be assumed to cancel each other out, and no random effect is needed.\n2. Why complicate things with a non-canonical link function? It looks to me like a standard ordinal logistic regression model, with fixed effects only, would do the job for you. Guides and textbooks abound on how to assess the fit of such models.\n\nBest,\n\nJ\n\nke 19. elok. 2020 klo 14.44 Sidoti, Salvatore A. (sidoti.23 at buckeyemail.osu.edu<mailto:sidoti.23 at buckeyemail.osu.edu>) kirjoitti:\nTo begin with, I'm not a fan of cross-posting. However, I posted my question on Stack Exchange more than two weeks ago, but I have yet to receive a sufficient answer:\n\nhttps://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit<https://urldefense.com/v3/__https://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6iZNEz0M$>\n\nHere's what I've learned since then (hopefully):\n\n1) ICC of a CLMM:\nComputed like this:\n(variance of the random effect) / (variance of the random effect + 1) If this is correct, I would love to see a reference/citation for it.\n\n2) 95% Confidence Interval for the ICC from a CLMM Model To my current understanding, a confidence interval for an ICC is only obtainable via simulation. I've conducted simulations with GLMM model objects ('lme4' package) and the bootMer() function. Unfortunately, bootMer() will not accept a CLMM model ('ordinal' package).\n\n3) Model Fit of a CLMM\nAssuming that the model converges without incident, the model summary includes a condition number of the Hessian ('cond.H'). This value should be below 10^4 for a \"good fit\". This is straightforward enough. However, I am not as sure about the value for 'max.grad', which needs to be \"well below 1\". The question is, to what magnitude should max.grad < 1 for a decent model fit? My reference is linked below (Christensen, 2019), but it does not elaborate further on this point:\n\nhttps://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636<https://urldefense.com/v3/__https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR65za2Jag$>\n\n3) Effect Size of a CLMM\nThe random variable's effect is determined by a comparison between the full model to a model with only the fixed effects via the anova() function. I found this information on the 'rcompanion' package website:\n\nhttps://rcompanion.org/handbook/G_12.html<https://urldefense.com/v3/__https://rcompanion.org/handbook/G_12.html__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6uPeTzGc$>\n\nThe output of this particular anova() will include a value named 'LR.stat', the likelihood ratio statistic. The LR.stat is twice the difference of each log-likelihood (absolute value) of the respective models. Is LR.stat the mixed-model version of an \"effect size\"? If so, how does one determine if the effect is small, large, in-between, etc?\n\nCheers,\nSal\n\nSalvatore A. Sidoti\nPhD Candidate\nBehavioral Ecology\nThe Ohio State University\n\n_______________________________________________\nR-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models<https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6KhTBL3M$>\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "The example you see on Stack Exchange employs a toy data set which mimics the structure of my real data, but not the distributions. It turns out that the statistical contribution of each animal in my ",
+      "thread_id": "thread-e7f81d0a2f53",
+      "thread_depth": 2,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-e4ceadac956a",
+      "message_id": "<CAG_dBVfxbRzs3tw_oHjdnbMo=Q3Yjc4dGvMZYCtHZfvNHrspgw@mail.gmail.com>",
+      "from_name": "Juho Kristian Ruohonen",
+      "from_email_hash": "2fb4cb5db8837715d8ab52d7abc8445867d23353248f4f2820ff0542a51bdf06",
+      "date": "2020-08-19T18:53:35+03:00",
+      "subject": "[R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+        "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+        "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>"
+      ],
+      "body_plain": "And does the number of observations per animal vary? And if so, how many\nobservations are there per animal? If that number is sufficiently large, a\nstandard GLM with a fixed effect for animal ID might be enough.\n\nAs for the LRT statistic for the random effect, no it is not an effect\nsize. AFAIK, \"effect size\" is rarely talked about with random effects. What\nI would view as the closest thing to the \"effect size\" of a random effect\nis simply the random-effect SD, which reflects how much an \"average\"\nindividual/animal/cluster is estimated to deviate from the overall mean.\nThe ICC depends on this quantity, so the ICC could perhaps also be viewed\nas a kind of \"random effect size\". But I couldn't tell you how the ICC is\ncalculated because that depends on the specifics of the cauchit link\nfunction, with which I am not familiar. There are some link functions (such\nas the probit) for which it is indeed as simple as SD^2 / (SD^2 + 1).\n\nBest,\n\nJ\n\n\n\nke 19. elok. 2020 klo 17.09 Sidoti, Salvatore A. (\nsidoti.23 at buckeyemail.osu.edu) kirjoitti:\n\n> The example you see on Stack Exchange employs a toy data set which mimics\n> the structure of my real data, but not the distributions. It turns out that\n> the statistical contribution of each animal in my study is quite profound,\n> so a mixed model is essential in my case.\n>\n> Salvatore Sidoti\n> PhD Candidate\n> Department of Evolution, Ecology & Organismal Biology\n> The Ohio State University\n> Columbus, OH USA\n>\n> ------------------------------\n> *From:* Juho Kristian Ruohonen <juho.kristian.ruohonen at gmail.com>\n> *Sent:* Wednesday, August 19, 2020, 9:35 AM\n> *To:* Sidoti, Salvatore A.\n> *Cc:* r-sig-mixed-models at r-project.org\n> *Subject:* Re: [R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit\n>\n> Just voicing two thoughts as a non-statistician:\n>\n> 1. Why do you feel you need a mixed model in the first place? It looks to\n> me like every Individual is contributing the same number of responses (i.e.\n> 4). Thus, the individual-specific effects can be assumed to cancel each\n> other out, and no random effect is needed.\n> 2. Why complicate things with a non-canonical link function? It looks to\n> me like a standard ordinal logistic regression model, with fixed effects\n> only, would do the job for you. Guides and textbooks abound on how to\n> assess the fit of such models.\n>\n> Best,\n>\n> J\n>\n> ke 19. elok. 2020 klo 14.44 Sidoti, Salvatore A. (\n> sidoti.23 at buckeyemail.osu.edu) kirjoitti:\n>\n>> To begin with, I'm not a fan of cross-posting. However, I posted my\n>> question on Stack Exchange more than two weeks ago, but I have yet to\n>> receive a sufficient answer:\n>>\n>>\n>> https://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit\n>> <https://urldefense.com/v3/__https://stats.stackexchange.com/questions/479600/data-with-ordinal-responses-calculate-icc-assessing-model-fit__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6iZNEz0M$>\n>>\n>> Here's what I've learned since then (hopefully):\n>>\n>> 1) ICC of a CLMM:\n>> Computed like this:\n>> (variance of the random effect) / (variance of the random effect + 1) If\n>> this is correct, I would love to see a reference/citation for it.\n>>\n>> 2) 95% Confidence Interval for the ICC from a CLMM Model To my current\n>> understanding, a confidence interval for an ICC is only obtainable via\n>> simulation. I've conducted simulations with GLMM model objects ('lme4'\n>> package) and the bootMer() function. Unfortunately, bootMer() will not\n>> accept a CLMM model ('ordinal' package).\n>>\n>> 3) Model Fit of a CLMM\n>> Assuming that the model converges without incident, the model summary\n>> includes a condition number of the Hessian ('cond.H'). This value should be\n>> below 10^4 for a \"good fit\". This is straightforward enough. However, I am\n>> not as sure about the value for 'max.grad', which needs to be \"well below\n>> 1\". The question is, to what magnitude should max.grad < 1 for a decent\n>> model fit? My reference is linked below (Christensen, 2019), but it does\n>> not elaborate further on this point:\n>>\n>>\n>> https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636\n>> <https://urldefense.com/v3/__https://documentcloud.adobe.com/link/track?uri=urn:aaid:scds:US:b6a61fe2-b851-49ce-b8b1-cd760d290636__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR65za2Jag$>\n>>\n>> 3) Effect Size of a CLMM\n>> The random variable's effect is determined by a comparison between the\n>> full model to a model with only the fixed effects via the anova() function.\n>> I found this information on the 'rcompanion' package website:\n>>\n>> https://rcompanion.org/handbook/G_12.html\n>> <https://urldefense.com/v3/__https://rcompanion.org/handbook/G_12.html__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6uPeTzGc$>\n>>\n>> The output of this particular anova() will include a value named\n>> 'LR.stat', the likelihood ratio statistic. The LR.stat is twice the\n>> difference of each log-likelihood (absolute value) of the respective\n>> models. Is LR.stat the mixed-model version of an \"effect size\"? If so, how\n>> does one determine if the effect is small, large, in-between, etc?\n>>\n>> Cheers,\n>> Sal\n>>\n>> Salvatore A. Sidoti\n>> PhD Candidate\n>> Behavioral Ecology\n>> The Ohio State University\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> <https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!KGKeukY!nOrbsi1ZjRJ1NgSNVsN8cyWBHD9f41iFHEvxXTqax6B_qnbhSquQQbwMHrEvhqWEvwR6KhTBL3M$>\n>>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "And does the number of observations per animal vary? And if so, how many\nobservations are there per animal? If that number is sufficiently large, a\nstandard GLM with a fixed effect for animal ID might",
+      "thread_id": "thread-e7f81d0a2f53",
+      "thread_depth": 3,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-8eaf060253f3",
+      "message_id": "<c5b85e4f07b648b29e6b12cc59317563@qimrberghofer.edu.au>",
+      "from_name": "David Duffy",
+      "from_email_hash": "d17806e5763e310c9c28e60cd0a3594090d3fbcf32f227baf205da4efdecb88d",
+      "date": "2020-08-20T02:58:37Z",
+      "subject": "[R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+        "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+        "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>"
+      ],
+      "body_plain": "> It turns out that the statistical contribution of each animal in my study is quite \n> profound, so a mixed model is essential in my case.\n\nDo you really need the cauchit? What does the distribution across 9 levels of the trait\nlook like? We regularly fit ordinal mixed models in genetic contexts, and one rule of thumb is that if there are more than 5 levels, then treating the variable as continuous usually gives much the same answers as the ordinal model, but interpretation of effects, variance explained etc is a lot more straightforward. Aside from residuals, one can get model goodness-of-fit chi-squares from the pairwise (and higher order) contingency tables (predicted v. observed) eg Visit1 v. Visit2 summed across all subjects (where the probit model parameters are the 8 thresholds and 1 polychoric correlation, so you have 64-9 degrees of freedom for whether a latent bivariate normal fits).\n\nCheers, David Duffy.",
+      "body_snippet": "> It turns out that the statistical contribution of each animal in my study is quite \n> profound, so a mixed model is essential in my case.\n\nDo you really need the cauchit? What does the distribution ",
+      "thread_id": "thread-e7f81d0a2f53",
+      "thread_depth": 3,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-ab91f0190061",
+      "message_id": "<DM5PR0101MB308296310ECEA2920A7A5B29AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "from_name": "Sidoti, Salvatore A.",
+      "from_email_hash": "421c389b19615a3f389f5053829409b8e1fb2ea2ff08b7b583a1d1a1f08c541c",
+      "date": "2020-08-20T03:18:49Z",
+      "subject": "[R-sig-ME] FW:  CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<DM5PR0101MB30825365A0DC45DFCD0D4C02AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+        "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+        "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>",
+        "<c5b85e4f07b648b29e6b12cc59317563@qimrberghofer.edu.au>",
+        "<DM5PR0101MB30825365A0DC45DFCD0D4C02AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>"
+      ],
+      "body_plain": "The 'cauchit' link was used in the example for stability. The other distributions that are available in the package produced warnings. My \"real\" data set uses the 'loglog' link for the clmm().\n\nThe distribution across the 9 levels appears rather haphazard, which dissuaded me from trying a GLMM:\n\nhttps://photos.app.goo.gl/8BtBa9N6PtqbZ1fM8\n\nCheers,\nSal\n\n-----Original Message-----\nFrom: David Duffy <David.Duffy at qimrberghofer.edu.au>\nSent: Wednesday, August 19, 2020 10:59 PM\nTo: Sidoti, Salvatore A. <sidoti.23 at buckeyemail.osu.edu>\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] CLMM: Calculate ICC & Assessing Model Fit\n\n> It turns out that the statistical contribution of each animal in my \n> study is quite profound, so a mixed model is essential in my case.\n\nDo you really need the cauchit? What does the distribution across 9 levels of the trait look like? We regularly fit ordinal mixed models in genetic contexts, and one rule of thumb is that if there are more than 5 levels, then treating the variable as continuous usually gives much the same answers as the ordinal model, but interpretation of effects, variance explained etc is a lot more straightforward. Aside from residuals, one can get model goodness-of-fit chi-squares from the pairwise (and higher order) contingency tables (predicted v. observed) eg Visit1 v. Visit2 summed across all subjects (where the probit model parameters are the 8 thresholds and 1 polychoric correlation, so you have 64-9 degrees of freedom for whether a latent bivariate normal fits).\n\nCheers, David Duffy.",
+      "body_snippet": "The 'cauchit' link was used in the example for stability. The other distributions that are available in the package produced warnings. My \"real\" data set uses the 'loglog' link for the clmm().\n\nThe di",
+      "thread_id": "thread-ab91f0190061",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-0a10c5ac6b9e",
+      "message_id": "<879c5817-2428-cfc8-b4cc-353108e9dd64@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2020-08-22T15:03:49-04:00",
+      "subject": "[R-sig-ME] Better Scientific Software (BSSw) Fellowship Program",
+      "subject_clean": "Better Scientific Software (BSSw) Fellowship Program",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "? I can't apply for this (\"Applicants must be affiliated with a \nU.S.-based institution that is able to receive funding from the U.S. \nDepartment of Energy\"), but maybe someone here can...(seems like \nfellowships are generally given to somewhat more technical/strategic \napproaches (\"Automating testing in scientific software\", \"Improving the \nreliability and performance of numerical software\"), but maybe they'd be \ninterested in statistical computing?\n\nhttps://bssw.io/blog_posts/applications-open-for-the-2021-bssw-fellowship-program",
+      "body_snippet": "? I can't apply for this (\"Applicants must be affiliated with a \nU.S.-based institution that is able to receive funding from the U.S. \nDepartment of Energy\"), but maybe someone here can...(seems like ",
+      "thread_id": "thread-0a10c5ac6b9e",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-4de1c488f48c",
+      "message_id": "<a9573a85cac442a19cee5eacb0411eee@qimrberghofer.edu.au>",
+      "from_name": "David Duffy",
+      "from_email_hash": "d17806e5763e310c9c28e60cd0a3594090d3fbcf32f227baf205da4efdecb88d",
+      "date": "2020-08-23T07:14:46Z",
+      "subject": "[R-sig-ME] FW:  CLMM: Calculate ICC & Assessing Model Fit",
+      "subject_clean": "CLMM: Calculate ICC & Assessing Model Fit",
+      "in_reply_to": "<DM5PR0101MB308296310ECEA2920A7A5B29AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>",
+      "references": [
+        "<CY4PR0101MB30797B2FE57EE36D0F734BA1AB5C0@CY4PR0101MB3079.prod.exchangelabs.com>",
+        "<CAG_dBVc_pMU31p-+JTLyu1ZxJ+r_8xt9UvbbKUNqrPhsPOQRSA@mail.gmail.com>",
+        "<DM5PR0101MB3082784A259835A88E81E2F6AB5D0@DM5PR0101MB3082.prod.exchangelabs.com>",
+        "<c5b85e4f07b648b29e6b12cc59317563@qimrberghofer.edu.au>",
+        "<DM5PR0101MB30825365A0DC45DFCD0D4C02AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>",
+        "<DM5PR0101MB308296310ECEA2920A7A5B29AB5A0@DM5PR0101MB3082.prod.exchangelabs.com>"
+      ],
+      "body_plain": "> The distribution across the 9 levels appears rather haphazard, which dissuaded me from trying a GLMM:\n\nMaybe. A certain amount of that can be soaked up by different intervals between thresholds in the probit-normal - floor and ceiling effects on your scale for the most extreme categories is one example. The equivalent of this for an ordinary LMM is an inverse-normal transformation of the scores (normit/rankit). This sometimes seems a bit lazy to me, but as I commented earlier, you may end up with similar results to the more elaborate models. Worth doing in parallel, at least.\nCheers, David Duffy.",
+      "body_snippet": "> The distribution across the 9 levels appears rather haphazard, which dissuaded me from trying a GLMM:\n\nMaybe. A certain amount of that can be soaked up by different intervals between thresholds in t",
+      "thread_id": "thread-ab91f0190061",
+      "thread_depth": 1,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a2130650e6a5",
+      "message_id": "<CAAU+Bjkc0DVMK8pG+4cxURF+v5p0e1a7=QJqpZwQJ1_TNbD1=g@mail.gmail.com>",
+      "from_name": "Michal Kahn",
+      "from_email_hash": "264282020ae65ef8dc8b3125ec4f453944ac0e8b8e99d994b8203e7b7b72bbaa",
+      "date": "2020-08-23T20:20:47+09:30",
+      "subject": "[R-sig-ME] Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "subject_clean": "Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello there! I am running a mixed model in lmer, testing the effects of\nCovid restrictions on sleep, comparing 2 cohorts of individuals- one from\n2019 and one from 2020, coded 0/1 (between subjects). Each individual was\nmeasured repeatedly for ~130 consecutive nights, and each row in the\ndataset represents a single night. I also have a binary Lockdown IV, where\neach night is coded 0/1 to indicate if it was before/after restrictions\nwere imposed in 2020 (and the equivalent dates for 2019). Finally, I have a\nDayOfWeek IV, where each night is coded 0/1 to indicate if it represents a\nweekday/weekend night. The simplified dataset looks something like:\n\n[image: enter image description here] <https://i.stack.imgur.com/Ouuhw.png>\n\nMy hypotheses are: (1) there will be a Cohort by Lockdown interaction\neffect on sleep; and (2) there will be a Cohort by Lockdown by DayOfWeek\ninteraction effect on sleep.\n\nFor hypothesis 1, I ran:\n\nmod1<- lmer(sleep ~ Cohort*Lockdown + (1|Subject) + (1|Date), data = COVID,\nREML=FALSE)\n\nResults seem reasonable, but I think I am not accounting for random slopes.\nI have tried to model the slopes as follows, but the model failed to\nconverge.\n\nmod2<- lmer(sleep ~ Cohort*Lockdown + (Lockdown|Subject), data = COVID,\nREML=FALSE)\n\nAs for the 2nd hypothesis, if I understand correctly, nights are nested\nwithin DayOfWeek, which are crossed with Lockdown (since each level of\nLockdown includes both weekdays and weekends). I tried the following code,\nbut am getting a singular fit warning (boundary (singular) fit: see\n?isSingular)\n\nmod3<- lmer(sleep ~ Cohort * Lockdown * DayOfWeek + (1|DayOfWeek/date),\ndata = COVID, REML=FALSE)\n\nCould anyone direct me as to what should be changed in these models? Many\nthanks in advance for your help!\nMika\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello there! I am running a mixed model in lmer, testing the effects of\nCovid restrictions on sleep, comparing 2 cohorts of individuals- one from\n2019 and one from 2020, coded 0/1 (between subjects). ",
+      "thread_id": "thread-a2130650e6a5",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-5b3bff3a7f42",
+      "message_id": "<FA9D61F1-F12E-4D14-A699-8F894F788A83@gmail.com>",
+      "from_name": "Mollie Brooks",
+      "from_email_hash": "5d5ab7c364ea155beb47542e3f3572a54c3783f3add3f0c6b72a5b445c2259a2",
+      "date": "2020-08-26T16:15:50+02:00",
+      "subject": "[R-sig-ME]  Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "subject_clean": "Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "in_reply_to": "<CAAU+Bjkc0DVMK8pG+4cxURF+v5p0e1a7=QJqpZwQJ1_TNbD1=g@mail.gmail.com>",
+      "references": [
+        "<CAAU+Bjkc0DVMK8pG+4cxURF+v5p0e1a7=QJqpZwQJ1_TNbD1=g@mail.gmail.com>"
+      ],
+      "body_plain": "I?m guessing that the problem with mod3 could be another instance of confusion with nested effects. \n\nAs originally written, the random effects in mod3 are\n(1|DayOfWeek/date) = (1|DayOfWeek) + (1| DayOfWeek:date)\nThe second term doesn?t make sense to me when each date can only be accompanied by either 0 or 1 for DayOfWeek.\n\nMaybe you want (1|Subject) + (1|Date) in mod3. That model could address both hypotheses.\n\ncheers,\nMollie\n\n> On 23Aug 2020, at 12:50, Michal Kahn <michalkahn10 at gmail.com> wrote:\n> \n> Hello there! I am running a mixed model in lmer, testing the effects of\n> Covid restrictions on sleep, comparing 2 cohorts of individuals- one from\n> 2019 and one from 2020, coded 0/1 (between subjects). Each individual was\n> measured repeatedly for ~130 consecutive nights, and each row in the\n> dataset represents a single night. I also have a binary Lockdown IV, where\n> each night is coded 0/1 to indicate if it was before/after restrictions\n> were imposed in 2020 (and the equivalent dates for 2019). Finally, I have a\n> DayOfWeek IV, where each night is coded 0/1 to indicate if it represents a\n> weekday/weekend night. The simplified dataset looks something like:\n> \n> [image: enter image description here] <https://i.stack.imgur.com/Ouuhw.png>\n> \n> My hypotheses are: (1) there will be a Cohort by Lockdown interaction\n> effect on sleep; and (2) there will be a Cohort by Lockdown by DayOfWeek\n> interaction effect on sleep.\n> \n> For hypothesis 1, I ran:\n> \n> mod1<- lmer(sleep ~ Cohort*Lockdown + (1|Subject) + (1|Date), data = COVID,\n> REML=FALSE)\n> \n> Results seem reasonable, but I think I am not accounting for random slopes.\n> I have tried to model the slopes as follows, but the model failed to\n> converge.\n> \n> mod2<- lmer(sleep ~ Cohort*Lockdown + (Lockdown|Subject), data = COVID,\n> REML=FALSE)\n> \n> As for the 2nd hypothesis, if I understand correctly, nights are nested\n> within DayOfWeek, which are crossed with Lockdown (since each level of\n> Lockdown includes both weekdays and weekends). I tried the following code,\n> but am getting a singular fit warning (boundary (singular) fit: see\n> ?isSingular)\n> \n> mod3<- lmer(sleep ~ Cohort * Lockdown * DayOfWeek + (1|DayOfWeek/date),\n> data = COVID, REML=FALSE)\n> \n> Could anyone direct me as to what should be changed in these models? Many\n> thanks in advance for your help!\n> Mika\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I?m guessing that the problem with mod3 could be another instance of confusion with nested effects. \n\nAs originally written, the random effects in mod3 are\n(1|DayOfWeek/date) = (1|DayOfWeek) + (1| Day",
+      "thread_id": "thread-a2130650e6a5",
+      "thread_depth": 1,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-3e337d110ab7",
+      "message_id": "<CAJuCY5wR93gQUOmvYLOfKuiwUs_Cu8HMDaYfM_sv4fHu=jKF5g@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2020-08-26T16:57:36+02:00",
+      "subject": "[R-sig-ME]  Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "subject_clean": "Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "in_reply_to": "<FA9D61F1-F12E-4D14-A699-8F894F788A83@gmail.com>",
+      "references": [
+        "<CAAU+Bjkc0DVMK8pG+4cxURF+v5p0e1a7=QJqpZwQJ1_TNbD1=g@mail.gmail.com>",
+        "<FA9D61F1-F12E-4D14-A699-8F894F788A83@gmail.com>"
+      ],
+      "body_plain": "Dear Mollie,\n\nI agree that (1| DayOfWeek:date) doesn't make sense and it is better to use\n(1|Date). IMHO it might be sensible to include DayOfWeek in the model.\n(1|DayOfWeek) + (1|Date) or DayOfWeek + (1|Date). So either as random\neffect or as fixed effect. Having a factor both as fixed and random\nintercept is nonsense. Given there are only 7 days in week, I'd use\nDayOfWeek rather as a fixed effect.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp wo 26 aug. 2020 om 16:16 schreef Mollie Brooks <mollieebrooks at gmail.com>:\n\n> I?m guessing that the problem with mod3 could be another instance of\n> confusion with nested effects.\n>\n> As originally written, the random effects in mod3 are\n> (1|DayOfWeek/date) = (1|DayOfWeek) + (1| DayOfWeek:date)\n> The second term doesn?t make sense to me when each date can only be\n> accompanied by either 0 or 1 for DayOfWeek.\n>\n> Maybe you want (1|Subject) + (1|Date) in mod3. That model could address\n> both hypotheses.\n>\n> cheers,\n> Mollie\n>\n> > On 23Aug 2020, at 12:50, Michal Kahn <michalkahn10 at gmail.com> wrote:\n> >\n> > Hello there! I am running a mixed model in lmer, testing the effects of\n> > Covid restrictions on sleep, comparing 2 cohorts of individuals- one from\n> > 2019 and one from 2020, coded 0/1 (between subjects). Each individual was\n> > measured repeatedly for ~130 consecutive nights, and each row in the\n> > dataset represents a single night. I also have a binary Lockdown IV,\n> where\n> > each night is coded 0/1 to indicate if it was before/after restrictions\n> > were imposed in 2020 (and the equivalent dates for 2019). Finally, I\n> have a\n> > DayOfWeek IV, where each night is coded 0/1 to indicate if it represents\n> a\n> > weekday/weekend night. The simplified dataset looks something like:\n> >\n> > [image: enter image description here] <\n> https://i.stack.imgur.com/Ouuhw.png>\n> >\n> > My hypotheses are: (1) there will be a Cohort by Lockdown interaction\n> > effect on sleep; and (2) there will be a Cohort by Lockdown by DayOfWeek\n> > interaction effect on sleep.\n> >\n> > For hypothesis 1, I ran:\n> >\n> > mod1<- lmer(sleep ~ Cohort*Lockdown + (1|Subject) + (1|Date), data =\n> COVID,\n> > REML=FALSE)\n> >\n> > Results seem reasonable, but I think I am not accounting for random\n> slopes.\n> > I have tried to model the slopes as follows, but the model failed to\n> > converge.\n> >\n> > mod2<- lmer(sleep ~ Cohort*Lockdown + (Lockdown|Subject), data = COVID,\n> > REML=FALSE)\n> >\n> > As for the 2nd hypothesis, if I understand correctly, nights are nested\n> > within DayOfWeek, which are crossed with Lockdown (since each level of\n> > Lockdown includes both weekdays and weekends). I tried the following\n> code,\n> > but am getting a singular fit warning (boundary (singular) fit: see\n> > ?isSingular)\n> >\n> > mod3<- lmer(sleep ~ Cohort * Lockdown * DayOfWeek + (1|DayOfWeek/date),\n> > data = COVID, REML=FALSE)\n> >\n> > Could anyone direct me as to what should be changed in these models? Many\n> > thanks in advance for your help!\n> > Mika\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Mollie,\n\nI agree that (1| DayOfWeek:date) doesn't make sense and it is better to use\n(1|Date). IMHO it might be sensible to include DayOfWeek in the model.\n(1|DayOfWeek) + (1|Date) or DayOfWeek +",
+      "thread_id": "thread-a2130650e6a5",
+      "thread_depth": 2,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a487dc51643c",
+      "message_id": "<1AAE1F08-E176-4F79-AC1A-F0FDC883920D@gmail.com>",
+      "from_name": "Mollie Brooks",
+      "from_email_hash": "5d5ab7c364ea155beb47542e3f3572a54c3783f3add3f0c6b72a5b445c2259a2",
+      "date": "2020-08-26T17:05:00+02:00",
+      "subject": "[R-sig-ME]  Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "subject_clean": "Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "in_reply_to": "<CAJuCY5wR93gQUOmvYLOfKuiwUs_Cu8HMDaYfM_sv4fHu=jKF5g@mail.gmail.com>",
+      "references": [
+        "<CAAU+Bjkc0DVMK8pG+4cxURF+v5p0e1a7=QJqpZwQJ1_TNbD1=g@mail.gmail.com>",
+        "<FA9D61F1-F12E-4D14-A699-8F894F788A83@gmail.com>",
+        "<CAJuCY5wR93gQUOmvYLOfKuiwUs_Cu8HMDaYfM_sv4fHu=jKF5g@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Thierry,\n\nThe name \"DayOfWeek\" isn?t totally obvious as it means more like \"weekend\" and takes values of 0 or 1. So it could only be a fixed effect.\n\ncheers,\nMollie\n\n> On 26Aug 2020, at 16:57, Thierry Onkelinx <thierry.onkelinx at inbo.be> wrote:\n> \n> Dear Mollie,\n> \n> I agree that (1| DayOfWeek:date) doesn't make sense and it is better to use (1|Date). IMHO it might be sensible to include DayOfWeek in the model. (1|DayOfWeek) + (1|Date) or DayOfWeek + (1|Date). So either as random effect or as fixed effect. Having a factor both as fixed and random intercept is nonsense. Given there are only 7 days in week, I'd use DayOfWeek rather as a fixed effect.\n> \n> Best regards,\n> \n> ir. Thierry Onkelinx\n> Statisticus / Statistician\n> \n> Vlaamse Overheid / Government of Flanders\n> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance \n> thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>\n> Havenlaan 88 bus 73, 1000 Brussel\n> www.inbo.be <http://www.inbo.be/>\n> \n> ///////////////////////////////////////////////////////////////////////////////////////////\n> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n> ///////////////////////////////////////////////////////////////////////////////////////////\n> \n>  <https://www.inbo.be/>\n> \n> \n> Op wo 26 aug. 2020 om 16:16 schreef Mollie Brooks <mollieebrooks at gmail.com <mailto:mollieebrooks at gmail.com>>:\n> I?m guessing that the problem with mod3 could be another instance of confusion with nested effects. \n> \n> As originally written, the random effects in mod3 are\n> (1|DayOfWeek/date) = (1|DayOfWeek) + (1| DayOfWeek:date)\n> The second term doesn?t make sense to me when each date can only be accompanied by either 0 or 1 for DayOfWeek.\n> \n> Maybe you want (1|Subject) + (1|Date) in mod3. That model could address both hypotheses.\n> \n> cheers,\n> Mollie\n> \n> > On 23Aug 2020, at 12:50, Michal Kahn <michalkahn10 at gmail.com <mailto:michalkahn10 at gmail.com>> wrote:\n> > \n> > Hello there! I am running a mixed model in lmer, testing the effects of\n> > Covid restrictions on sleep, comparing 2 cohorts of individuals- one from\n> > 2019 and one from 2020, coded 0/1 (between subjects). Each individual was\n> > measured repeatedly for ~130 consecutive nights, and each row in the\n> > dataset represents a single night. I also have a binary Lockdown IV, where\n> > each night is coded 0/1 to indicate if it was before/after restrictions\n> > were imposed in 2020 (and the equivalent dates for 2019). Finally, I have a\n> > DayOfWeek IV, where each night is coded 0/1 to indicate if it represents a\n> > weekday/weekend night. The simplified dataset looks something like:\n> > \n> > [image: enter image description here] <https://i.stack.imgur.com/Ouuhw.png <https://i.stack.imgur.com/Ouuhw.png>>\n> > \n> > My hypotheses are: (1) there will be a Cohort by Lockdown interaction\n> > effect on sleep; and (2) there will be a Cohort by Lockdown by DayOfWeek\n> > interaction effect on sleep.\n> > \n> > For hypothesis 1, I ran:\n> > \n> > mod1<- lmer(sleep ~ Cohort*Lockdown + (1|Subject) + (1|Date), data = COVID,\n> > REML=FALSE)\n> > \n> > Results seem reasonable, but I think I am not accounting for random slopes.\n> > I have tried to model the slopes as follows, but the model failed to\n> > converge.\n> > \n> > mod2<- lmer(sleep ~ Cohort*Lockdown + (Lockdown|Subject), data = COVID,\n> > REML=FALSE)\n> > \n> > As for the 2nd hypothesis, if I understand correctly, nights are nested\n> > within DayOfWeek, which are crossed with Lockdown (since each level of\n> > Lockdown includes both weekdays and weekends). I tried the following code,\n> > but am getting a singular fit warning (boundary (singular) fit: see\n> > ?isSingular)\n> > \n> > mod3<- lmer(sleep ~ Cohort * Lockdown * DayOfWeek + (1|DayOfWeek/date),\n> > data = COVID, REML=FALSE)\n> > \n> > Could anyone direct me as to what should be changed in these models? Many\n> > thanks in advance for your help!\n> > Mika\n> > \n> >       [[alternative HTML version deleted]]\n> > \n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org> mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Thierry,\n\nThe name \"DayOfWeek\" isn?t totally obvious as it means more like \"weekend\" and takes values of 0 or 1. So it could only be a fixed effect.\n\ncheers,\nMollie\n\n> On 26Aug 2020, at 16:57, Th",
+      "thread_id": "thread-a2130650e6a5",
+      "thread_depth": 3,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-3b92af0b74c5",
+      "message_id": "<CAENiVe9FtWLGtCYgedjL7v+8rtQ=98tDMkQH0bHtv7Y_uvhE1g@mail.gmail.com>",
+      "from_name": "Guillaume Adeux",
+      "from_email_hash": "52f711dc46ca0c8d4684af8108ffce063399d9aac09468ca2ebcd4257f59731a",
+      "date": "2020-08-28T14:40:24+02:00",
+      "subject": "[R-sig-ME] glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "subject_clean": "glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\n\nI am currently exploring the relationship between weed biomass during the\nfallow period and cover crop productivity (in interaction with tillage\ntype, nitrogen fertilization, and cover crop species, as imposed by the\n3-way factorial experimental design).\nThis results in a highly complex model which I wish to reduce to achieve\nparsimony.\nHence, I fitted the full model with glmer as:\n\nmod_full_CC=glmer(dry_bio_weeds_m2+0.001~\n*block+year*scale(dry_bio_cover_m2)*tillage*N*CC*\n+(1|block:tillage)+(1|block:tillage:N)+(1|block:tillage:N:CC)+(1|block:year)+(1|block:year:tillage)+(1|block:year:tillage:N)+(1|block:year:tillage:N:CC),family=gaussian(link=\"log\"),control=glmerControl(optimizer=\"nloptwrap\",optCtrl=list(algorithm=\"NLOPT_LN_NELDERMEAD\")),data=biomassCC_wo_Cbis)\n\nand fed it to MuMin::dredge() as:\n\noptions(na.action = \"na.fail\")\ndred_CC=dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"))\n\nHowever, I am unable to retrieve my \"dred_CC\" (after 8 days, arf) object\nbecause dredge() stops after returning:\n*Error in asMethod(object) : not a positive definite matrix*\nIs this due to a specific problem with one given model? If that's the case,\nhow can I tell the function to simply skip it?\nTo be completely transparent, it also states \"In addition: There were 50 or\nmore warnings (use warnings() to see the first 50)\" but I don't believe the\nproblem comes from there.\n\nI would greatly greatly appreciate it if someone could lend a hand.\nThanks for your time.\n\nGuillaume ADEUX\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello everyone,\n\nI am currently exploring the relationship between weed biomass during the\nfallow period and cover crop productivity (in interaction with tillage\ntype, nitrogen fertilization, and cove",
+      "thread_id": "thread-3b92af0b74c5",
+      "thread_depth": 0,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a3ef018d506f",
+      "message_id": "<0ea3b161-eb07-276a-892f-8ad45c2153a3@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2020-08-28T10:37:43-04:00",
+      "subject": "[R-sig-ME] glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "subject_clean": "glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "in_reply_to": "<CAENiVe9FtWLGtCYgedjL7v+8rtQ=98tDMkQH0bHtv7Y_uvhE1g@mail.gmail.com>",
+      "references": [
+        "<CAENiVe9FtWLGtCYgedjL7v+8rtQ=98tDMkQH0bHtv7Y_uvhE1g@mail.gmail.com>"
+      ],
+      "body_plain": "Pretty hard to debug without a reproducible example (and an 8-day \nrun time isn't going to help ...)\n\n   The error message comes ultimately from the Matrix package (the error \nmessage is found in the \"dspMatrix\" ? \"dppMatrix\" and \"dsyMatrix\" ? \n\"dpoMatrix\" coercion methods).  If you run traceback() **immediately** \nafter getting the error message, we might get a little bit more information.\n\n   What are the warnings?\n\n  If you've got multiple cores, using pdredge() might decrease your \nrun-time.\n\n   I don't know how to tell dredge() to use a try()-clause or equivalent \nto skip over models that have problems.\n\n\n\nOn 8/28/20 8:40 AM, Guillaume Adeux wrote:\n> Hello everyone,\n> \n> I am currently exploring the relationship between weed biomass during the\n> fallow period and cover crop productivity (in interaction with tillage\n> type, nitrogen fertilization, and cover crop species, as imposed by the\n> 3-way factorial experimental design).\n> This results in a highly complex model which I wish to reduce to achieve\n> parsimony.\n> Hence, I fitted the full model with glmer as:\n> \n> mod_full_CC=glmer(dry_bio_weeds_m2+0.001~\n> *block+year*scale(dry_bio_cover_m2)*tillage*N*CC*\n> +(1|block:tillage)+(1|block:tillage:N)+(1|block:tillage:N:CC)+(1|block:year)+(1|block:year:tillage)+(1|block:year:tillage:N)+(1|block:year:tillage:N:CC),family=gaussian(link=\"log\"),control=glmerControl(optimizer=\"nloptwrap\",optCtrl=list(algorithm=\"NLOPT_LN_NELDERMEAD\")),data=biomassCC_wo_Cbis)\n> \n> and fed it to MuMin::dredge() as:\n> \n> options(na.action = \"na.fail\")\n> dred_CC=dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"))\n> \n> However, I am unable to retrieve my \"dred_CC\" (after 8 days, arf) object\n> because dredge() stops after returning:\n> *Error in asMethod(object) : not a positive definite matrix*\n> Is this due to a specific problem with one given model? If that's the case,\n> how can I tell the function to simply skip it?\n> To be completely transparent, it also states \"In addition: There were 50 or\n> more warnings (use warnings() to see the first 50)\" but I don't believe the\n> problem comes from there.\n> \n> I would greatly greatly appreciate it if someone could lend a hand.\n> Thanks for your time.\n> \n> Guillaume ADEUX\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Pretty hard to debug without a reproducible example (and an 8-day \nrun time isn't going to help ...)\n\n   The error message comes ultimately from the Matrix package (the error \nmessage is found in the ",
+      "thread_id": "thread-3b92af0b74c5",
+      "thread_depth": 1,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-9e442cc48ffa",
+      "message_id": "<8BEE86AA-C999-46C3-8842-8B015424BC2B@gmail.com>",
+      "from_name": "Rafael Wüest",
+      "from_email_hash": "f42cae7e93be78666f267038cef3bd471591c044f7daeb97bd8ad1679152899d",
+      "date": "2020-08-28T16:55:04+02:00",
+      "subject": "[R-sig-ME] glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "subject_clean": "glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "in_reply_to": "<0ea3b161-eb07-276a-892f-8ad45c2153a3@gmail.com>",
+      "references": [
+        "<CAENiVe9FtWLGtCYgedjL7v+8rtQ=98tDMkQH0bHtv7Y_uvhE1g@mail.gmail.com>",
+        "<0ea3b161-eb07-276a-892f-8ad45c2153a3@gmail.com>"
+      ],
+      "body_plain": "Hi Guillaume\n\nYou can generate a list of calls by setting evaluate = FALSE in tdredge() and use the resulting list to run the models within a try(). You will just need to extract AIC (or whatever) yourself to rank models. But it should help to pinpoint models that fail.\n\nSomething like:\n\ndlist <- dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"), evaluate = FALSE)\nAICs <- sapply(dlist, function(x) {\n  try(AICc(eval(x)))\n})\n\nHTH,\nRafi\n\n\n> On 28 Aug 2020, at 16:37, Ben Bolker <bbolker at gmail.com> wrote:\n> \n>   Pretty hard to debug without a reproducible example (and an 8-day run time isn't going to help ...)\n> \n>  The error message comes ultimately from the Matrix package (the error message is found in the \"dspMatrix\" ? \"dppMatrix\" and \"dsyMatrix\" ? \"dpoMatrix\" coercion methods).  If you run traceback() **immediately** after getting the error message, we might get a little bit more information.\n> \n>  What are the warnings?\n> \n> If you've got multiple cores, using pdredge() might decrease your run-time.\n> \n>  I don't know how to tell dredge() to use a try()-clause or equivalent to skip over models that have problems.\n> \n> \n> \n> On 8/28/20 8:40 AM, Guillaume Adeux wrote:\n>> Hello everyone,\n>> I am currently exploring the relationship between weed biomass during the\n>> fallow period and cover crop productivity (in interaction with tillage\n>> type, nitrogen fertilization, and cover crop species, as imposed by the\n>> 3-way factorial experimental design).\n>> This results in a highly complex model which I wish to reduce to achieve\n>> parsimony.\n>> Hence, I fitted the full model with glmer as:\n>> mod_full_CC=glmer(dry_bio_weeds_m2+0.001~\n>> *block+year*scale(dry_bio_cover_m2)*tillage*N*CC*\n>> +(1|block:tillage)+(1|block:tillage:N)+(1|block:tillage:N:CC)+(1|block:year)+(1|block:year:tillage)+(1|block:year:tillage:N)+(1|block:year:tillage:N:CC),family=gaussian(link=\"log\"),control=glmerControl(optimizer=\"nloptwrap\",optCtrl=list(algorithm=\"NLOPT_LN_NELDERMEAD\")),data=biomassCC_wo_Cbis)\n>> and fed it to MuMin::dredge() as:\n>> options(na.action = \"na.fail\")\n>> dred_CC=dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"))\n>> However, I am unable to retrieve my \"dred_CC\" (after 8 days, arf) object\n>> because dredge() stops after returning:\n>> *Error in asMethod(object) : not a positive definite matrix*\n>> Is this due to a specific problem with one given model? If that's the case,\n>> how can I tell the function to simply skip it?\n>> To be completely transparent, it also states \"In addition: There were 50 or\n>> more warnings (use warnings() to see the first 50)\" but I don't believe the\n>> problem comes from there.\n>> I would greatly greatly appreciate it if someone could lend a hand.\n>> Thanks for your time.\n>> Guillaume ADEUX\n>> \t[[alternative HTML version deleted]]\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Guillaume\n\nYou can generate a list of calls by setting evaluate = FALSE in tdredge() and use the resulting list to run the models within a try(). You will just need to extract AIC (or whatever) you",
+      "thread_id": "thread-3b92af0b74c5",
+      "thread_depth": 2,
+      "month": "2020-08"
+    },
+    {
+      "id": "msg-a3fb4dfe8be3",
+      "message_id": "<65c0ead7-5c01-a0df-efec-95098f36941a@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2020-08-28T10:57:01-04:00",
+      "subject": "[R-sig-ME] glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "subject_clean": "glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "in_reply_to": "<8BEE86AA-C999-46C3-8842-8B015424BC2B@gmail.com>",
+      "references": [
+        "<CAENiVe9FtWLGtCYgedjL7v+8rtQ=98tDMkQH0bHtv7Y_uvhE1g@mail.gmail.com>",
+        "<0ea3b161-eb07-276a-892f-8ad45c2153a3@gmail.com>",
+        "<8BEE86AA-C999-46C3-8842-8B015424BC2B@gmail.com>"
+      ],
+      "body_plain": "Great idea.  And, if you use parallel::mclapply (with appropriate \nuse of clusterExport() to make sure the clusters have the objects they \nneed in the environment), this can be done in parallel too ...\n\nOn 8/28/20 10:55 AM, Rafael W?est wrote:\n> Hi Guillaume\n> \n> You can generate a list of calls by setting evaluate = FALSE in tdredge() and use the resulting list to run the models within a try(). You will just need to extract AIC (or whatever) yourself to rank models. But it should help to pinpoint models that fail.\n> \n> Something like:\n> \n> dlist <- dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"), evaluate = FALSE)\n> AICs <- sapply(dlist, function(x) {\n>    try(AICc(eval(x)))\n> })\n> \n> HTH,\n> Rafi\n> \n> \n>> On 28 Aug 2020, at 16:37, Ben Bolker <bbolker at gmail.com> wrote:\n>>\n>>    Pretty hard to debug without a reproducible example (and an 8-day run time isn't going to help ...)\n>>\n>>   The error message comes ultimately from the Matrix package (the error message is found in the \"dspMatrix\" ? \"dppMatrix\" and \"dsyMatrix\" ? \"dpoMatrix\" coercion methods).  If you run traceback() **immediately** after getting the error message, we might get a little bit more information.\n>>\n>>   What are the warnings?\n>>\n>> If you've got multiple cores, using pdredge() might decrease your run-time.\n>>\n>>   I don't know how to tell dredge() to use a try()-clause or equivalent to skip over models that have problems.\n>>\n>>\n>>\n>> On 8/28/20 8:40 AM, Guillaume Adeux wrote:\n>>> Hello everyone,\n>>> I am currently exploring the relationship between weed biomass during the\n>>> fallow period and cover crop productivity (in interaction with tillage\n>>> type, nitrogen fertilization, and cover crop species, as imposed by the\n>>> 3-way factorial experimental design).\n>>> This results in a highly complex model which I wish to reduce to achieve\n>>> parsimony.\n>>> Hence, I fitted the full model with glmer as:\n>>> mod_full_CC=glmer(dry_bio_weeds_m2+0.001~\n>>> *block+year*scale(dry_bio_cover_m2)*tillage*N*CC*\n>>> +(1|block:tillage)+(1|block:tillage:N)+(1|block:tillage:N:CC)+(1|block:year)+(1|block:year:tillage)+(1|block:year:tillage:N)+(1|block:year:tillage:N:CC),family=gaussian(link=\"log\"),control=glmerControl(optimizer=\"nloptwrap\",optCtrl=list(algorithm=\"NLOPT_LN_NELDERMEAD\")),data=biomassCC_wo_Cbis)\n>>> and fed it to MuMin::dredge() as:\n>>> options(na.action = \"na.fail\")\n>>> dred_CC=dredge(mod_full_CC,rank=\"AICc\",fixed=c(\"block\",\"year\"))\n>>> However, I am unable to retrieve my \"dred_CC\" (after 8 days, arf) object\n>>> because dredge() stops after returning:\n>>> *Error in asMethod(object) : not a positive definite matrix*\n>>> Is this due to a specific problem with one given model? If that's the case,\n>>> how can I tell the function to simply skip it?\n>>> To be completely transparent, it also states \"In addition: There were 50 or\n>>> more warnings (use warnings() to see the first 50)\" but I don't believe the\n>>> problem comes from there.\n>>> I would greatly greatly appreciate it if someone could lend a hand.\n>>> Thanks for your time.\n>>> Guillaume ADEUX\n>>> \t[[alternative HTML version deleted]]\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Great idea.  And, if you use parallel::mclapply (with appropriate \nuse of clusterExport() to make sure the clusters have the objects they \nneed in the environment), this can be done in parallel too ..",
+      "thread_id": "thread-3b92af0b74c5",
+      "thread_depth": 3,
+      "month": "2020-08"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-c1b1a2b60254",
+      "subject": "GLMM hurdle model for continuous data -Truncated negative binomial family in glmmTMB?",
+      "message_count": 2,
+      "participants": [
+        "Alessandra Bielli",
+        "Ben Bolker"
+      ],
+      "started": "2020-08-01T12:09:40-06:00",
+      "last_reply": "2020-08-01T19:05:52-04:00",
+      "root_message_id": "msg-c1b1a2b60254"
+    },
+    {
+      "id": "thread-1ae419cfefda",
+      "subject": "ONLINE COURSE – Introduction to mixed models using R and Rstudio (IMMR02)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2020-08-03T20:23:47+01:00",
+      "last_reply": "2020-08-03T20:23:47+01:00",
+      "root_message_id": "msg-1ae419cfefda"
+    },
+    {
+      "id": "thread-e1ad9d40a069",
+      "subject": "nlme bug ?",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2020-08-10T17:44:34+02:00",
+      "last_reply": "2020-08-10T17:44:34+02:00",
+      "root_message_id": "msg-e1ad9d40a069"
+    },
+    {
+      "id": "thread-23889b525cf1",
+      "subject": "nlme bug ?",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2020-08-11T20:58:25+02:00",
+      "last_reply": "2020-08-11T20:58:25+02:00",
+      "root_message_id": "msg-23889b525cf1"
+    },
+    {
+      "id": "thread-a67b924a886c",
+      "subject": "Huge speed performance difference when using non-trivial fixed effects in NLMER vs NLME",
+      "message_count": 1,
+      "participants": [
+        "Ramiro Barrantes"
+      ],
+      "started": "2020-08-12T10:56:04-04:00",
+      "last_reply": "2020-08-12T10:56:04-04:00",
+      "root_message_id": "msg-a67b924a886c"
+    },
+    {
+      "id": "thread-e7f81d0a2f53",
+      "subject": "CLMM: Calculate ICC & Assessing Model Fit",
+      "message_count": 5,
+      "participants": [
+        "David Duffy",
+        "Juho Kristian Ruohonen",
+        "Sidoti, Salvatore A."
+      ],
+      "started": "2020-08-18T03:32:35+00:00",
+      "last_reply": "2020-08-20T02:58:37+00:00",
+      "root_message_id": "msg-e7f81d0a2f53"
+    },
+    {
+      "id": "thread-ab91f0190061",
+      "subject": "CLMM: Calculate ICC & Assessing Model Fit",
+      "message_count": 2,
+      "participants": [
+        "David Duffy",
+        "Sidoti, Salvatore A."
+      ],
+      "started": "2020-08-20T03:18:49+00:00",
+      "last_reply": "2020-08-23T07:14:46+00:00",
+      "root_message_id": "msg-ab91f0190061"
+    },
+    {
+      "id": "thread-0a10c5ac6b9e",
+      "subject": "Better Scientific Software (BSSw) Fellowship Program",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2020-08-22T15:03:49-04:00",
+      "last_reply": "2020-08-22T15:03:49-04:00",
+      "root_message_id": "msg-0a10c5ac6b9e"
+    },
+    {
+      "id": "thread-a2130650e6a5",
+      "subject": "Help with nested and crossed effects in models with 2- and 3-way interactions",
+      "message_count": 4,
+      "participants": [
+        "Michal Kahn",
+        "Mollie Brooks",
+        "Thierry Onkelinx"
+      ],
+      "started": "2020-08-23T20:20:47+09:30",
+      "last_reply": "2020-08-26T17:05:00+02:00",
+      "root_message_id": "msg-a2130650e6a5"
+    },
+    {
+      "id": "thread-3b92af0b74c5",
+      "subject": "glmer / MuMin : Error in asMethod(object) : not a positive definite matrix",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Guillaume Adeux",
+        "Rafael Wüest"
+      ],
+      "started": "2020-08-28T14:40:24+02:00",
+      "last_reply": "2020-08-28T10:57:01-04:00",
+      "root_message_id": "msg-3b92af0b74c5"
+    }
+  ]
+}

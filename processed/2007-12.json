@@ -1,0 +1,758 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2007-12",
+  "messages": [
+    {
+      "id": "msg-981aeea348c7",
+      "message_id": "<40e66e0b0712010959j18ddf542x6798ab07c793e50b@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-01T11:59:23-06:00",
+      "subject": "[R-sig-ME] [R] lmer and method call",
+      "subject_clean": "lmer and method call",
+      "in_reply_to": "<loom.20071201T160227-587@post.gmane.org>",
+      "references": [
+        "<37787.70.71.25.135.1196388560.squirrel@www.cfenet.ubc.ca>",
+        "<40e66e0b0712010726j599dc405ifac521481b651ee1@mail.gmail.com>",
+        "<loom.20071201T160227-587@post.gmane.org>"
+      ],
+      "body_plain": "On Dec 1, 2007 10:08 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas Bates <bates <at> stat.wisc.edu> writes:\n>\n> (lmer)\n>\n> > The default is PQL, to refine the\n> > starting estimates, followed by optimization of the Laplace\n> > approximation.  In some cases it is an advantage to suppress the PQL\n> > iterations which can be done with one of the settings for the control\n> > argument.\n>\n> I had found out the hard way that it is often better to let PQL\n> play the game rather loosely.  Yet I never dared to tell someone, for fear\n> the approximation could end up in the wrong slot,\n\n> Any rules (beside trying variants) if I can trust such a result?\n\nI'm not sure I understand the sense of your first statement.  Do you\nmean that you have found that you should use PQL or you should not use\nPQL?\n\nI would advise using the Laplace approximation for the final\nestimates.  At one time I thought it would be much slower than the PQL\niterations but it doesn't seem to be that bad.\n\nI also thought that PQL would refine the starting estimates in the\nsense that it would take comparatively crude starting values and get\nyou much closer to the optimum before you switched to Laplace.\nHowever, because PQL is an algorithm that iterates on both the fixed\neffects and the random effects with fixed weights, then updates the\nweights, then goes back to the fixed effects and random effects, etc.\nthere is a possibility that the early weights can force poor values of\nthe fixed effects and later iterations do not recover.\n\nI tend to prefer the Laplace approximation directly without any PQL\niterations.  That is\n\n method = \"Laplace\", control = list(usePQL = FALSE)\n\nI would be interested in learning what experiences you or others have\nhad with the different approaches.\n\nI am cc:ing this to the R-SIG-mixed-models list and suggest we switch\nto that list only for further discussion.",
+      "body_snippet": "On Dec 1, 2007 10:08 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas Bates <bates <at> stat.wisc.edu> writes:\n>\n> (lmer)\n>\n> > The default is PQL, to refine the\n> > starting estima",
+      "thread_id": "thread-981aeea348c7",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-c6d770106502",
+      "message_id": "<loom.20071203T135043-886@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-03T13:54:31Z",
+      "subject": "[R-sig-ME] glmer != lmer(,..family=binomioal)",
+      "subject_clean": "glmer != lmer(,..family=binomioal)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear lmers,\n\nfrom reading the docs and the first lines of lmer() code, I got the\nunderstanding that the two formulations below should be equivalent. The first\nworks as expected, the second gives an envir() error. What's wrong?\n\nDieter\n\n\nx=data.frame(resp=rbinom(100,1,0.8),\n           treat=sample(letters[7:8],100,TRUE),\n           pat=as.factor(sample(letters[1:4],100,TRUE))\n           )\nglmer(resp~treat+(1|pat),family=binomial,data=x)\nlmer(resp~treat+(1|pat),family=binomial,data=x)",
+      "body_snippet": "Dear lmers,\n\nfrom reading the docs and the first lines of lmer() code, I got the\nunderstanding that the two formulations below should be equivalent. The first\nworks as expected, the second gives an en",
+      "thread_id": "thread-c6d770106502",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-3a76bc332f68",
+      "message_id": "<40e66e0b0712030600r1856786fy2a38e858d66b242d@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-03T08:00:58-06:00",
+      "subject": "[R-sig-ME] glmer != lmer(,..family=binomioal)",
+      "subject_clean": "glmer != lmer(,..family=binomioal)",
+      "in_reply_to": "<loom.20071203T135043-886@post.gmane.org>",
+      "references": [
+        "<loom.20071203T135043-886@post.gmane.org>"
+      ],
+      "body_plain": "Can you tell us the version of the lme4 package that you are using, please?\n\nOn Dec 3, 2007 7:54 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Dear lmers,\n>\n> from reading the docs and the first lines of lmer() code, I got the\n> understanding that the two formulations below should be equivalent. The first\n> works as expected, the second gives an envir() error. What's wrong?\n>\n> Dieter\n>\n>\n> x=data.frame(resp=rbinom(100,1,0.8),\n>            treat=sample(letters[7:8],100,TRUE),\n>            pat=as.factor(sample(letters[1:4],100,TRUE))\n>            )\n> glmer(resp~treat+(1|pat),family=binomial,data=x)\n> lmer(resp~treat+(1|pat),family=binomial,data=x)\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Can you tell us the version of the lme4 package that you are using, please?\n\nOn Dec 3, 2007 7:54 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Dear lmers,\n>\n> from reading the docs and t",
+      "thread_id": "thread-c6d770106502",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-bf98f01709ca",
+      "message_id": "<loom.20071203T140645-63@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-03T14:10:13Z",
+      "subject": "[R-sig-ME] glmer != lmer(,..family=binomioal)",
+      "subject_clean": "glmer != lmer(,..family=binomioal)",
+      "in_reply_to": null,
+      "references": [
+        "<loom.20071203T135043-886@post.gmane.org>",
+        "<40e66e0b0712030600r1856786fy2a38e858d66b242d@mail.gmail.com>"
+      ],
+      "body_plain": "Douglas Bates <bates at ...> writes:\n\n> \n> Can you tell us the version of the lme4 package that you are using, please?\n\nBad, Dieter. Time to read the posting guide. \n\nThis is my home-build version for Windows from r-forge. I admit that I forgot to\nexplicitly check for a fresh version of Matrix.\n\nDieter\n\n\nPackage: lme4\nVersion: 0.999375-0\nDate: 2007-11-10\nTitle: Linear mixed-effects models using S4 classes\nAuthor: Douglas Bates <bates at stat.wisc.edu>\nMaintainer: Douglas Bates <bates at stat.wisc.edu>\nDescription: Fit linear and generalized linear mixed-effects models.\nDepends: methods, R(>= 2.6.0), Matrix(>= 0.999375-1), lattice\nLinkingTo: Matrix, stats\nImports: graphics, stats\nSuggests: coda, mlmRev, MEMSS\nLazyLoad: yes\nLazyData: yes\nLicense: GPL (>=2)\nPackaged: Sun Dec 2 09:18:26 2007; theussl\nBuilt: R 2.6.1; i386-pc-mingw32; 2007-12-03 11:36:46; windows",
+      "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> \n> Can you tell us the version of the lme4 package that you are using, please?\n\nBad, Dieter. Time to read the posting guide. \n\nThis is my home-build version for",
+      "thread_id": "thread-c6d770106502",
+      "thread_depth": 2,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-f2fe9aeb3aee",
+      "message_id": "<40e66e0b0712030620l2be8ff3dmf6715a92feac47ff@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-03T08:20:36-06:00",
+      "subject": "[R-sig-ME] glmer != lmer(,..family=binomioal)",
+      "subject_clean": "glmer != lmer(,..family=binomioal)",
+      "in_reply_to": "<loom.20071203T140645-63@post.gmane.org>",
+      "references": [
+        "<loom.20071203T135043-886@post.gmane.org>",
+        "<40e66e0b0712030600r1856786fy2a38e858d66b242d@mail.gmail.com>",
+        "<loom.20071203T140645-63@post.gmane.org>"
+      ],
+      "body_plain": "Hmm.  Those calls should be equivalent in that version so I will look\ninto why they aren't.\n\nAt present I am involved in hand-to-hand combat with that code trying\nto determine why the calculation of the Laplace approximation for the\nglmer methods is not correct.  I thought I had it working but on\nfurther checking I discovered that I don't.  Don't use that version\nfor glmer for a few days.\n\n\nOn Dec 3, 2007 8:10 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas Bates <bates at ...> writes:\n>\n> >\n> > Can you tell us the version of the lme4 package that you are using, please?\n>\n> Bad, Dieter. Time to read the posting guide.\n>\n> This is my home-build version for Windows from r-forge. I admit that I forgot to\n> explicitly check for a fresh version of Matrix.\n>\n> Dieter\n>\n>\n> Package: lme4\n> Version: 0.999375-0\n> Date: 2007-11-10\n> Title: Linear mixed-effects models using S4 classes\n> Author: Douglas Bates <bates at stat.wisc.edu>\n> Maintainer: Douglas Bates <bates at stat.wisc.edu>\n> Description: Fit linear and generalized linear mixed-effects models.\n> Depends: methods, R(>= 2.6.0), Matrix(>= 0.999375-1), lattice\n> LinkingTo: Matrix, stats\n> Imports: graphics, stats\n> Suggests: coda, mlmRev, MEMSS\n> LazyLoad: yes\n> LazyData: yes\n> License: GPL (>=2)\n> Packaged: Sun Dec 2 09:18:26 2007; theussl\n> Built: R 2.6.1; i386-pc-mingw32; 2007-12-03 11:36:46; windows\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Hmm.  Those calls should be equivalent in that version so I will look\ninto why they aren't.\n\nAt present I am involved in hand-to-hand combat with that code trying\nto determine why the calculation of t",
+      "thread_id": "thread-c6d770106502",
+      "thread_depth": 3,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-03c434eb8545",
+      "message_id": "<loom.20071204T074500-257@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-04T07:55:18Z",
+      "subject": "[R-sig-ME] lmer (binomial) and mcmcsamp",
+      "subject_clean": "lmer (binomial) and mcmcsamp",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Douglas,\n\nI am using the latest CRAN version; details see below.\n\nI tried to run mcmcsamp on a problem of the form \n\nThe model is\n\n lmer(RespB~Treat+Gender+(1|Pat),family=binomial) \n\n\nResults look ok, in reasonable agreement with method=\"PQL\", and in good\nagreement with G?ran's glmmML.\n\nRunning mcmcsamp() gave strange results. See \n\nhttp://www.menne-biomed.de/uni/mcmc20000.pdf\nhttp://www.menne-biomed.de/uni/mcmc2000.pdf\n\nI cannot get rid of the occasional stuck flat segments in between, even if I run\nseveral times. Is this\n\n-- Expected behavior, do your homework\n-- Somewhat fishy; don't trust the results\n-- Ill posed problem\n-- Well known issue with current lmer\n-- ...\n\nDieter\n\n#------------------------------\nGeneralized linear mixed model fit using Laplace \nFormula: form \n   Data: x \n Family: binomial(logit link)\n AIC BIC logLik deviance\n 340 356   -166      332\nRandom effects:\n Groups Name        Variance Std.Dev.\n Pat    (Intercept) 2.15     1.47    \nnumber of obs: 426, groups: Pat, 20\n\nEstimated scale (compare to  1 )  0.859 \n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)    \n(Intercept)   -1.809      0.497   -3.64  0.00027 ***\nTreatFOS      -0.267      0.290   -0.92  0.35775    \nGenderm       -0.775      0.778   -0.99  0.31975    \n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1 \n\nCorrelation of Fixed Effects:\n         (Intr) TrtFOS\nTreatFOS -0.274       \nGenderm  -0.593  0.009\n\n\nPackage: lme4\nVersion: 0.99875-9\nDate: 2007-10-14\nBuilt: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows",
+      "body_snippet": "Douglas,\n\nI am using the latest CRAN version; details see below.\n\nI tried to run mcmcsamp on a problem of the form \n\nThe model is\n\n lmer(RespB~Treat+Gender+(1|Pat),family=binomial) \n\n\nResults look ok,",
+      "thread_id": "thread-03c434eb8545",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-bc076cda79f3",
+      "message_id": "<40e66e0b0712040856j580d0567ud8daafd163fbd92c@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-04T10:56:39-06:00",
+      "subject": "[R-sig-ME] lmer (binomial) and mcmcsamp",
+      "subject_clean": "lmer (binomial) and mcmcsamp",
+      "in_reply_to": "<loom.20071204T074500-257@post.gmane.org>",
+      "references": [
+        "<loom.20071204T074500-257@post.gmane.org>"
+      ],
+      "body_plain": "On Dec 4, 2007 1:55 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas,\n>\n> I am using the latest CRAN version; details see below.\n>\n> I tried to run mcmcsamp on a problem of the form\n>\n> The model is\n>\n>  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n>\n>\n> Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> agreement with G?ran's glmmML.\n>\n> Running mcmcsamp() gave strange results. See\n>\n> http://www.menne-biomed.de/uni/mcmc20000.pdf\n> http://www.menne-biomed.de/uni/mcmc2000.pdf\n>\n> I cannot get rid of the occasional stuck flat segments in between, even if I run\n> several times. Is this\n>\n> -- Expected behavior, do your homework\n> -- Somewhat fishy; don't trust the results\n> -- Ill posed problem\n> -- Well known issue with current lmer\n> -- ...\n>\n> Dieter\n\nThis is a known issue with the current lmer and you should not trust\nthe results.\n\nThe problem is that I use a Metropolis-Hastings update for the fixed\neffects and the random effects together, conditional on the variance\ncomponents.  In awkward cases the approximate distribution from which\nthe sample is drawn is not a good approximation to the conditional\ndistribution of these parameters and the proposed step keeps getting\nrejected.\n\nI believe the solution is to separate the fixed effects from the\nrandom effects but that is difficult to do in the formulation for the\n0.99875 series.  This was one of the reasons for changing the internal\nrepresentation in the 0.999375 series (the development version) but I\nam still encountering difficulties in some of the code design for that\nseries.  I thought I had the penalized iteratively reweighted least\nsquares algorithm for determining the conditional modes working but\nthen I tried it on a difficult example and found that it isn't working\nas well as I thought it was.\n\nI am working on it.  It is just taking considerably longer than I\nthought it would.\n\n> #------------------------------\n> Generalized linear mixed model fit using Laplace\n> Formula: form\n>    Data: x\n>  Family: binomial(logit link)\n>  AIC BIC logLik deviance\n>  340 356   -166      332\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  Pat    (Intercept) 2.15     1.47\n> number of obs: 426, groups: Pat, 20\n>\n> Estimated scale (compare to  1 )  0.859\n>\n> Fixed effects:\n>             Estimate Std. Error z value Pr(>|z|)\n> (Intercept)   -1.809      0.497   -3.64  0.00027 ***\n> TreatFOS      -0.267      0.290   -0.92  0.35775\n> Genderm       -0.775      0.778   -0.99  0.31975\n> ---\n> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n>\n> Correlation of Fixed Effects:\n>          (Intr) TrtFOS\n> TreatFOS -0.274\n> Genderm  -0.593  0.009\n>\n>\n> Package: lme4\n> Version: 0.99875-9\n> Date: 2007-10-14\n> Built: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On Dec 4, 2007 1:55 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas,\n>\n> I am using the latest CRAN version; details see below.\n>\n> I tried to run mcmcsamp on a problem of the form",
+      "thread_id": "thread-03c434eb8545",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-caf93c322790",
+      "message_id": "<loom.20071204T170316-66@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-04T17:06:36Z",
+      "subject": "[R-sig-ME] lmer (binomial) and mcmcsamp",
+      "subject_clean": "lmer (binomial) and mcmcsamp",
+      "in_reply_to": null,
+      "references": [
+        "<loom.20071204T074500-257@post.gmane.org>",
+        "<40e66e0b0712040856j580d0567ud8daafd163fbd92c@mail.gmail.com>"
+      ],
+      "body_plain": "Douglas Bates <bates at ...> writes:\n\n> \n> This is a known issue with the current lmer and you should not trust\n> the results.\n\nThanks, Douglas. May I suggest to use\n\nprettyversion = round(-log(1-Version),1)\n\nas an easier-to-read alternative to version number like 0.999375. After all 1.00\ndoes not have the thrill of tex-pi.\n\nDieter",
+      "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> \n> This is a known issue with the current lmer and you should not trust\n> the results.\n\nThanks, Douglas. May I suggest to use\n\nprettyversion = round(-log(1-Vers",
+      "thread_id": "thread-03c434eb8545",
+      "thread_depth": 2,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-bc58ccc3b8de",
+      "message_id": "<7BC08466-A342-4A2D-A8C9-5E76EB21D054@newcastle.ac.uk>",
+      "from_name": "Rob Forsyth",
+      "from_email_hash": "0b821b185f6bcf2ab07d22a0f1d04b130351ccf9a764242a495ec402755c0312",
+      "date": "2007-12-06T11:55:32Z",
+      "subject": "[R-sig-ME] Extracting significance for fixed effect",
+      "subject_clean": "Extracting significance for fixed effect",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "A hopefully simple query. I have an nlme model based on the SSlogis()  \nfunction in which I am testing for a fixed effect of GROUP on xmid. I  \ncan see the p value of xmid.GROUP in the summary() but what is the  \nsyntax to extract this as a variable for further use?\n\nthanks\n\nRob",
+      "body_snippet": "A hopefully simple query. I have an nlme model based on the SSlogis()  \nfunction in which I am testing for a fixed effect of GROUP on xmid. I  \ncan see the p value of xmid.GROUP in the summary() but w",
+      "thread_id": "thread-bc58ccc3b8de",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-d7d56f78999f",
+      "message_id": "<loom.20071206T141457-13@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-06T14:20:54Z",
+      "subject": "[R-sig-ME] Extracting significance for fixed effect",
+      "subject_clean": "Extracting significance for fixed effect",
+      "in_reply_to": null,
+      "references": [
+        "<7BC08466-A342-4A2D-A8C9-5E76EB21D054@newcastle.ac.uk>"
+      ],
+      "body_plain": "Rob Forsyth <r.j.forsyth at ...> writes:\n\n> \n> A hopefully simple query. I have an nlme model based on the SSlogis()  \n> function in which I am testing for a fixed effect of GROUP on xmid. I  \n> can see the p value of xmid.GROUP in the summary() but what is the  \n> syntax to extract this as a variable for further use?\n> \n\nlibrary(nlme)\nfm1Soy.lis <- nlsList(weight ~ SSlogis(Time, Asym, xmid, scal),\n                       data = Soybean)\nfm1Soy.nlme <- nlme(fm1Soy.lis)\n# Dear Nikolaus, I wish future versions to have a nice \n# extractor function for the following.\nfm1Soy.tab = summary(fm1Soy.nlme)$tTable\n\n... and I leave it as an easy exercise to extract the wanted from fm1Soy.tab.\n\nNote that this is a developer list for a future version of lme(x); for nlme you\nusually should contact r-help. And next time, please supply an example such as\nthe above to make life easier, which will increase the chances to get a response.\n\n\nDieter",
+      "body_snippet": "Rob Forsyth <r.j.forsyth at ...> writes:\n\n> \n> A hopefully simple query. I have an nlme model based on the SSlogis()  \n> function in which I am testing for a fixed effect of GROUP on xmid. I  \n> can s",
+      "thread_id": "thread-bc58ccc3b8de",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-9d2d5df115ac",
+      "message_id": "<376844.51701.qm@web54009.mail.re2.yahoo.com>",
+      "from_name": "kennedy otwombe",
+      "from_email_hash": "cc896ac47d2062434213685fb1a4bc00cd83ce1d11141a1692960ab34c3a18ff",
+      "date": "2007-12-06T12:33:31-08:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear R users,\n\nI have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n\nproc glimmix data=navs;\nclass id;\nmodel y(event='1')=x1 x2 x3/solution distribution=binary;\nrandom intercept/subject=id type=cs;\nrun;\n\nI have also written a code in R for the same analysis but i am getting the following error message (iteration 1\nError in switch(mode(x), \"NULL\" = structure(NULL, class = \"formula\"),  : \n  invalid formula). \n\nMy code in R reads as follows:\n\n>fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n>summary(fit)\n\nI am not sure where the problem lies but i realise that glmmPQL does not seem to cater for binary distributions and i aint sure how to model the probability of the event Y=1 which is my interest in the data i am assuming. My data looks as follows:\n\n  t id y x0 x1 x2 x3\n  1  1 0  0  0  1  1\n  2  1 0  0  1  0  1\n  3  1 0  0  1  0  1\n  1  2 0  0  0  1  0\n  2  2 0  1  1  1  0\n  3  2 0  1  1  1  0\n\nI will appreciate any ideas from this network.\n\n \nKennedy.N.Otwombe\nSchool of Statistics & Actuarial Science \nUniversity of the Witwatersrand \nPrivate Bag 3 \nWits 2050 \nJohannesburg \nSouth Africa\n\n\n      ____________________________________________________________________________________\nLooking for last minute shopping deals?",
+      "body_snippet": "Dear R users,\n\nI have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n\nproc glimmix data=navs;\nclass id;\nmodel y(event='1')=x1 x2 x3/solution ",
+      "thread_id": "thread-9d2d5df115ac",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-478ddf181b08",
+      "message_id": "<47586253.4020407@pdf.com>",
+      "from_name": "Sundar Dorai-Raj",
+      "from_email_hash": "eb4f0e323f9635234e5ff005fe7540ae46dabead0ad239200296a4be11ef4f46",
+      "date": "2007-12-06T12:57:55-08:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": "<376844.51701.qm@web54009.mail.re2.yahoo.com>",
+      "references": [
+        "<376844.51701.qm@web54009.mail.re2.yahoo.com>"
+      ],
+      "body_plain": "kennedy otwombe said the following on 12/6/2007 12:33 PM:\n> Dear R users,\n> \n> I have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n> \n> proc glimmix data=navs;\n> class id;\n> model y(event='1')=x1 x2 x3/solution distribution=binary;\n> random intercept/subject=id type=cs;\n> run;\n> \n> I have also written a code in R for the same analysis but i am getting the following error message (iteration 1\n> Error in switch(mode(x), \"NULL\" = structure(NULL, class = \"formula\"),  : \n>   invalid formula). \n> \n> My code in R reads as follows:\n> \n>> fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n>> summary(fit)\n> \n> I am not sure where the problem lies but i realise that glmmPQL does not seem to cater for binary distributions and i aint sure how to model the probability of the event Y=1 which is my interest in the data i am assuming. My data looks as follows:\n> \n>   t id y x0 x1 x2 x3\n>   1  1 0  0  0  1  1\n>   2  1 0  0  1  0  1\n>   3  1 0  0  1  0  1\n>   1  2 0  0  0  1  0\n>   2  2 0  1  1  1  0\n>   3  2 0  1  1  1  0\n> \n> I will appreciate any ideas from this network.\n> \n>  \n> Kennedy.N.Otwombe\n> School of Statistics & Actuarial Science \n> University of the Witwatersrand \n> Private Bag 3 \n> Wits 2050 \n> Johannesburg \n> South Africa\n> \n\nHi, Kennedy,\n\nYou have not given us enough information:\n\n1. Result from sessionInfo (includes MASS version assuming glmmPQL is \nfrom MASS, nlme version, and R version)\n2. Realistic data - your example data has y == 0 always. You will never \nproduce a realistic model for these observations. And if I fake it and \nassign some ones to \"y\" the code you provide works.\n\nlibrary(MASS)\nnavs <- read.table(con <- textConnection(\"t id y x0 x1 x2 x3\n   1  1 0  0  0  1  1\n   2  1 0  0  1  0  1\n   3  1 0  0  1  0  1\n   1  2 0  0  0  1  0\n   2  2 0  1  1  1  0\n   3  2 1  1  1  1  0\"), header = TRUE) ## last row has a 1\nclose(con)\nfit <- glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n\n > summary(fit)\nLinear mixed-effects model fit by maximum likelihood\n  Data: navs\n   AIC BIC logLik\n    NA  NA     NA\n\nRandom effects:\n  Formula: ~1 | id\n          (Intercept)  Residual\nStdDev: 8.009602e-05 0.5773503\n\nVariance function:\n  Structure: fixed weights\n  Formula: ~invwt\nFixed effects: y ~ x1 + x2 + x3\n                 Value Std.Error DF       t-value p-value\n(Intercept) -61.13214   6171227  2 -9.905993e-06       1\nx1           30.56607   2631420  2  1.161581e-05       1\nx2           30.56607   4160641  2  7.346481e-06       1\nx3            0.00000   3721390  0  0.000000e+00     NaN\n  Correlation:\n    (Intr) x1     x2\nx1 -0.853\nx2 -0.944  0.632\nx3 -0.905  0.707  0.894\n\nStandardized Within-Group Residuals:\n           Min            Q1           Med            Q3           Max\n-1.732051e+00 -4.715395e-16 -2.827740e-16  4.694641e-17  1.732051e+00\n\nNumber of Observations: 6\nNumber of Groups: 2\nWarning message:\nIn pt(q, df, lower.tail, log.p) : NaNs produced\n > sessionInfo()\nR version 2.6.1 (2007-11-26)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United \nStates.1252;LC_MONETARY=English_United \nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base\n\nother attached packages:\n[1] nlme_3.1-86 MASS_7.2-38\n\nloaded via a namespace (and not attached):\n[1] grid_2.6.1     lattice_0.17-2\n >",
+      "body_snippet": "kennedy otwombe said the following on 12/6/2007 12:33 PM:\n> Dear R users,\n> \n> I have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n> \n> pro",
+      "thread_id": "thread-9d2d5df115ac",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-c28321c1225d",
+      "message_id": "<4000BCEE-AACD-4D76-B9B4-CCA3C64CACAE@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-07T08:23:58+11:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": "<376844.51701.qm@web54009.mail.re2.yahoo.com>",
+      "references": [
+        "<376844.51701.qm@web54009.mail.re2.yahoo.com>"
+      ],
+      "body_plain": "On 07/12/2007, at 7:33 AM, kennedy otwombe wrote:\n\n> Dear R users,\n>\n> I have longitudinal data that is all binary and i have run it in SAS  \n> using the following code without a problem:\n>\n> proc glimmix data=navs;\n> class id;\n> model y(event='1')=x1 x2 x3/solution distribution=binary;\n> random intercept/subject=id type=cs;\n> run;\n>\n> I have also written a code in R for the same analysis but i am  \n> getting the following error message (iteration 1\n> Error in switch(mode(x), \"NULL\" = structure(NULL, class =  \n> \"formula\"),  :\n>  invalid formula).\n>\n> My code in R reads as follows:\n>\n>> fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n>> summary(fit)\n>\n> I am not sure where the problem lies but i realise that glmmPQL does  \n> not seem to cater for binary distributions and i aint sure how to  \n> model the probability of the event Y=1 which is my interest in the  \n> data i am assuming. My data looks as follows:\n>\n>  t id y x0 x1 x2 x3\n>  1  1 0  0  0  1  1\n>  2  1 0  0  1  0  1\n>  3  1 0  0  1  0  1\n>  1  2 0  0  0  1  0\n>  2  2 0  1  1  1  0\n>  3  2 0  1  1  1  0\n>\n\nYour code is OK and doesn't give the \"invalid formula\" message with  \nthe current R (is this the one you are using?).\n\nThe example data wont work because all the y values are zero.\n\nKen",
+      "body_snippet": "On 07/12/2007, at 7:33 AM, kennedy otwombe wrote:\n\n> Dear R users,\n>\n> I have longitudinal data that is all binary and i have run it in SAS  \n> using the following code without a problem:\n>\n> proc gli",
+      "thread_id": "thread-9d2d5df115ac",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-a68f57faff79",
+      "message_id": "<431397.3419.qm@web54010.mail.re2.yahoo.com>",
+      "from_name": "kennedy otwombe",
+      "from_email_hash": "cc896ac47d2062434213685fb1a4bc00cd83ce1d11141a1692960ab34c3a18ff",
+      "date": "2007-12-07T00:58:28-08:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi Sundar/Ken,\nI would like to clarify my inquiry. The data structure i gave was just a sample of my data. I actually have 50 subjects each with three binary observations (hence 150 observations). So the error i initially gave emanates from the analysis involving all the 50 subjects. It just turns out that for the sample i gave, the first two subjects have only 0 as their entries but this varies as you look through the data.\nI am using the latest version of R i.e 2.6.1 and i downloaded the nlme version currently available on the CRAN website. I am aslo assuming my random part is the intercept.\nHope this clarifies my inquiry.\n\nKennedy.N.Otwombe\nSchool of Statistics & Actuarial Science \nUniversity of the Witwatersrand \nPrivate Bag 3 \nWits 2050 \nJohannesburg \nSouth Africa\n\n\n\n----- Original Message ----\nFrom: Sundar Dorai-Raj <sundar.dorai-raj at pdf.com>\nTo: kennedy otwombe <notwombe at yahoo.com>\nCc: R-sig-mixed-models at r-project.org\nSent: Thursday, December 6, 2007 10:57:55 PM\nSubject: Re: [R-sig-ME] glmmPQL inquiry\n\n\n\nkennedy otwombe said the following on 12/6/2007 12:33 PM:\n> Dear R users,\n> \n> I have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n> \n> proc glimmix data=navs;\n> class id;\n> model y(event='1')=x1 x2 x3/solution distribution=binary;\n> random intercept/subject=id type=cs;\n> run;\n> \n> I have also written a code in R for the same analysis but i am getting the following error message (iteration 1\n> Error in switch(mode(x), \"NULL\" = structure(NULL, class = \"formula\"),   : \n>  invalid formula). \n> \n> My code in R reads as follows:\n> \n>> fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n>> summary(fit)\n> \n> I am not sure where the problem lies but i realise that glmmPQL does not seem to cater for binary distributions and i aint sure how to model the probability of the event Y=1 which is my interest in the data i am assuming. My data looks as follows:\n> \n>  t id y x0 x1 x2 x3\n>  1  1 0  0  0  1  1\n>  2  1 0  0  1  0  1\n>  3  1 0  0  1  0  1\n>  1  2 0  0  0  1  0\n>  2  2 0  1  1  1  0\n>  3  2 0  1  1  1  0\n> \n> I will appreciate any ideas from this network.\n> \n>  \n> Kennedy.N.Otwombe\n> School of Statistics & Actuarial Science \n> University of the Witwatersrand \n> Private Bag 3 \n> Wits 2050 \n> Johannesburg \n> South Africa\n> \n\nHi, Kennedy,\n\nYou have not given us enough information:\n\n1. Result from sessionInfo (includes MASS version assuming glmmPQL is \nfrom MASS, nlme version, and R version)\n2. Realistic data - your example data has y == 0 always. You will never \nproduce a realistic model for these observations. And if I fake it and \nassign some ones to \"y\" the code you provide works.\n\nlibrary(MASS)\nnavs <- read.table(con <- textConnection(\"t id y x0 x1 x2 x3\n  1  1 0  0  0  1  1\n  2  1 0  0  1  0  1\n  3  1 0  0  1  0  1\n  1  2 0  0  0  1  0\n  2  2 0  1  1  1  0\n  3  2 1  1  1  1  0\"), header = TRUE) ## last row has a 1\nclose(con)\nfit <- glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n\n> summary(fit)\nLinear mixed-effects model fit by maximum likelihood\n  Data: navs\n  AIC BIC logLik\n    NA  NA    NA\n\nRandom effects:\n  Formula: ~1 | id\n          (Intercept)  Residual\nStdDev: 8.009602e-05 0.5773503\n\nVariance function:\n  Structure: fixed weights\n  Formula: ~invwt\nFixed effects: y ~ x1 + x2 + x3\n                Value Std.Error DF      t-value p-value\n(Intercept) -61.13214  6171227  2 -9.905993e-06      1\nx1          30.56607  2631420  2  1.161581e-05      1\nx2          30.56607  4160641  2  7.346481e-06      1\nx3            0.00000  3721390  0  0.000000e+00    NaN\n  Correlation:\n    (Intr) x1    x2\nx1 -0.853\nx2 -0.944  0.632\nx3 -0.905  0.707  0.894\n\nStandardized Within-Group Residuals:\n          Min            Q1          Med            Q3          Max\n-1.732051e+00 -4.715395e-16 -2.827740e-16  4.694641e-17  1.732051e+00\n\nNumber of Observations: 6\nNumber of Groups: 2\nWarning message:\nIn pt(q, df, lower.tail, log.p) : NaNs produced\n> sessionInfo()\nR version 2.6.1 (2007-11-26)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United \nStates.1252;LC_MONETARY=English_United \nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] stats    graphics  grDevices utils    datasets  methods  base\n\nother attached packages:\n[1] nlme_3.1-86 MASS_7.2-38\n\nloaded via a namespace (and not attached):\n[1] grid_2.6.1    lattice_0.17-2\n>\n\n\n      ____________________________________________________________________________________\nLooking for last minute shopping deals?",
+      "body_snippet": "Hi Sundar/Ken,\nI would like to clarify my inquiry. The data structure i gave was just a sample of my data. I actually have 50 subjects each with three binary observations (hence 150 observations). So ",
+      "thread_id": "thread-a68f57faff79",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-205c9de191ca",
+      "message_id": "<725E443D-F015-493D-A4E9-3F61E5B6DC16@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-07T20:30:15+11:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": "<431397.3419.qm@web54010.mail.re2.yahoo.com>",
+      "references": [
+        "<431397.3419.qm@web54010.mail.re2.yahoo.com>"
+      ],
+      "body_plain": "On 07/12/2007, at 7:58 PM, kennedy otwombe wrote:\n\n> Hi Sundar/Ken,\n> I would like to clarify my inquiry. The data structure i gave was  \n> just a sample of my data. I actually have 50 subjects each with  \n> three binary observations (hence 150 observations). So the error i  \n> initially gave emanates from the analysis involving all the 50  \n> subjects. It just turns out that for the sample i gave, the first  \n> two subjects have only 0 as their entries but this varies as you  \n> look through the data.\n> I am using the latest version of R i.e 2.6.1 and i downloaded the  \n> nlme version currently available on the CRAN website. I am aslo  \n> assuming my random part is the intercept.\n> Hope this clarifies my inquiry.\n>\n\nIf I modify your code to include better values for y, using code\n\nlibrary(MASS)\nnavs<-data.frame(matrix(c(1,1,1,0,0,1,1,\n2,1,0,0,1,0,1,\n3,1,0,0,1,0,1,\n1,2,1,0,0,1,0,\n2,2,1,1,1,1,0,\n3,2,0,1,1,1,0),nrow=6,byrow=T))\n\nnames(navs) <- c(\"t\",\"id\",\"y\",\"x0\",\"x1\",\"x2\",\"x3\")\n\nfit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\nsummary(fit)\n\nthe results are fine, except for some problems due to not having  \nenough subjects, as in the following output.\n\nKen\n\n > library(MASS)\n > navs<-data.frame(matrix(c(1,1,1,0,0,1,1,\n+ 2,1,0,0,1,0,1,\n+ 3,1,0,0,1,0,1,\n+ 1,2,1,0,0,1,0,\n+ 2,2,1,1,1,1,0,\n+ 3,2,0,1,1,1,0),nrow=6,byrow=T))\n >\n > names(navs) <- c(\"t\",\"id\",\"y\",\"x0\",\"x1\",\"x2\",\"x3\")\n >\n > fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\niteration 1\niteration 2\niteration 3\niteration 4\niteration 5\niteration 6\niteration 7\niteration 8\niteration 9\niteration 10\n > summary(fit)\nLinear mixed-effects model fit by maximum likelihood\n  Data: navs\n   AIC BIC logLik\n    NA  NA     NA\n\nRandom effects:\n  Formula: ~1 | id\n          (Intercept)  Residual\nStdDev: 8.009601e-05 0.5773503\n\nVariance function:\n  Structure: fixed weights\n  Formula: ~invwt\nFixed effects: y ~ x1 + x2 + x3\n                  Value Std.Error DF       t-value p-value\n(Intercept)   0.000353   6171979  2  5.700000e-11       1\nx1          -30.566351   2631792  2 -1.161427e-05       1\nx2           30.565997   4161051  2  7.345739e-06       1\nx3           -0.000071   3721849  0 -1.900000e-11     NaN\n  Correlation:\n    (Intr) x1     x2\nx1 -0.853\nx2 -0.944  0.632\nx3 -0.905  0.707  0.894\n\nStandardized Within-Group Residuals:\n           Min            Q1           Med            Q3           Max\n-1.732051e+00 -5.451298e-17  8.078053e-16  1.506878e-15  1.732051e+00\n\nNumber of Observations: 6\nNumber of Groups: 2\nWarning message:\nIn pt(q, df, lower.tail, log.p) : NaNs produced",
+      "body_snippet": "On 07/12/2007, at 7:58 PM, kennedy otwombe wrote:\n\n> Hi Sundar/Ken,\n> I would like to clarify my inquiry. The data structure i gave was  \n> just a sample of my data. I actually have 50 subjects each w",
+      "thread_id": "thread-a68f57faff79",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-383239e6b158",
+      "message_id": "<F8AF6BF6CD1CC040AF35B0C2D1680BBB041F0CCF@s31xe7.systems.smu.edu>",
+      "from_name": "Roberts, Kyle",
+      "from_email_hash": "edc6981a7c8f45260894c97c03b6f1317f9c2550e37456a68f08650d4f830148",
+      "date": "2007-12-07T11:18:55-06:00",
+      "subject": "[R-sig-ME] QQ Norm",
+      "subject_clean": "QQ Norm",
+      "in_reply_to": "<725E443D-F015-493D-A4E9-3F61E5B6DC16@kagi.com>",
+      "references": [
+        "<431397.3419.qm@web54010.mail.re2.yahoo.com>",
+        "<725E443D-F015-493D-A4E9-3F61E5B6DC16@kagi.com>"
+      ],
+      "body_plain": "Just a simple yes or no.  Is there any difference between:\n\nqqnorm(resid(lmer.out))\nand\nqqmath(~resid(lmer.out))\n\nThanks,\nKyle\n\n********************************************************\nDr. J. Kyle Roberts\nDepartment of Literacy, Language and Learning\nSchool of Education and Human Development\nSouthern Methodist University\nP.O. Box 750381\nDallas, TX  75275\n214-768-4494\nhttp://www.hlm-online.com/",
+      "body_snippet": "Just a simple yes or no.  Is there any difference between:\n\nqqnorm(resid(lmer.out))\nand\nqqmath(~resid(lmer.out))\n\nThanks,\nKyle\n\n********************************************************\nDr. J. Kyle Rob",
+      "thread_id": "thread-a68f57faff79",
+      "thread_depth": 2,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-ebe48bc50136",
+      "message_id": "<40e66e0b0712071015wf84e875uc5cac668332e92c8@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-07T12:15:37-06:00",
+      "subject": "[R-sig-ME] QQ Norm",
+      "subject_clean": "QQ Norm",
+      "in_reply_to": "<F8AF6BF6CD1CC040AF35B0C2D1680BBB041F0CCF@s31xe7.systems.smu.edu>",
+      "references": [
+        "<431397.3419.qm@web54010.mail.re2.yahoo.com>",
+        "<725E443D-F015-493D-A4E9-3F61E5B6DC16@kagi.com>",
+        "<F8AF6BF6CD1CC040AF35B0C2D1680BBB041F0CCF@s31xe7.systems.smu.edu>"
+      ],
+      "body_plain": "On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> Just a simple yes or no.  Is there any difference between:\n>\n> qqnorm(resid(lmer.out))\n> and\n> qqmath(~resid(lmer.out))\n\nThat's a bad question for which to say that you want a simple yes/no\nbecause the answer is obciously yes and now you are going to need to\nask what the differences are.",
+      "body_snippet": "On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> Just a simple yes or no.  Is there any difference between:\n>\n> qqnorm(resid(lmer.out))\n> and\n> qqmath(~resid(lmer.out))\n\nThat's ",
+      "thread_id": "thread-a68f57faff79",
+      "thread_depth": 3,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-65beafdb9b22",
+      "message_id": "<40e66e0b0712071404o457376fcx7644c694a60518a3@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-07T16:04:21-06:00",
+      "subject": "[R-sig-ME] QQ Norm",
+      "subject_clean": "QQ Norm",
+      "in_reply_to": "<40e66e0b0712071015wf84e875uc5cac668332e92c8@mail.gmail.com>",
+      "references": [
+        "<431397.3419.qm@web54010.mail.re2.yahoo.com>",
+        "<725E443D-F015-493D-A4E9-3F61E5B6DC16@kagi.com>",
+        "<F8AF6BF6CD1CC040AF35B0C2D1680BBB041F0CCF@s31xe7.systems.smu.edu>",
+        "<40e66e0b0712071015wf84e875uc5cac668332e92c8@mail.gmail.com>"
+      ],
+      "body_plain": "On Dec 7, 2007 12:15 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> > Just a simple yes or no.  Is there any difference between:\n> >\n> > qqnorm(resid(lmer.out))\n> > and\n> > qqmath(~resid(lmer.out))\n>\n> That's a bad question for which to say that you want a simple yes/no\n> because the answer is obciously yes and now you are going to need to\n> ask what the differences are.\n\nI was being facetious with that answer.  There are obvious differences\nin that qqnorm is a standard graphics function and qqmath is\nlattice/grid.  Other than that there isn't really a difference.\n\nThe only class of objects for which the lme4 package defines a special\nqqmath method is the ranef classes, such as ranef.mer and ranef.lmer.\nFor those classes the method creates a form of \"caterpillar plot\" if\nyou ask for the posterior variances (which, if I had it to do over\nagain, I would call \"conditional variances\") to be returned (i.e.\npostVar = TRUE).\n\nBy the way, it is now possible to omit the ~ in the first argument for\nqqmath so you could write\n\nqqmath(resid(lmer.out))\n\nWhether it is advisable to do so is something I still haven't decided\nfor myself.",
+      "body_snippet": "On Dec 7, 2007 12:15 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> > Just a simple yes or no.  Is there any difference bet",
+      "thread_id": "thread-a68f57faff79",
+      "thread_depth": 4,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-ccbd35cc5843",
+      "message_id": "<ACE4813F-5DBB-4A3B-9F79-BAFFF0DBBAA9@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-08T17:56:48+11:00",
+      "subject": "[R-sig-ME] glmmPQL inquiry",
+      "subject_clean": "glmmPQL inquiry",
+      "in_reply_to": "<79485.95320.qm@web54011.mail.re2.yahoo.com>",
+      "references": [
+        "<79485.95320.qm@web54011.mail.re2.yahoo.com>"
+      ],
+      "body_plain": "I don't know, possibly it is an error in glmmPQL, but I don't think  \ncompound symmetry is needed, I would expect it is the default.\n\nYou could try lmer, it may be better. My preference for binomials  \nwhere there is a high correlation within clusters/subjects is not to  \nuse Laplace or PQL but adaptive Gauss-Hermite quadrature, which last  \ntime I looked didn't seem to be available in lmer, contrary to what  \nthe help says. This unfortunately means Stata or SAS.\n\nKen\n\n\nOn 07/12/2007, at 8:49 PM, kennedy otwombe wrote:\n\n> Hi Ken,\n> With my dataset that has 50 subjects each with three observations, i  \n> get the error i gave if i use the compound symmetry covariance  \n> structure. Would you have an idea why this is happening?\n>\n> Kennedy\n>\n> ----- Original Message ----\n> From: Ken Beath <kjbeath at kagi.com>\n> To: kennedy otwombe <notwombe at yahoo.com>\n> Cc: R-SIG-Mixed-Models <R-sig-mixed-models at r-project.org>\n> Sent: Friday, December 7, 2007 11:30:15 AM\n> Subject: Re: [R-sig-ME] glmmPQL inquiry\n>\n> On 07/12/2007, at 7:58 PM, kennedy otwombe wrote:\n>\n>> Hi Sundar/Ken,\n>> I would like to clarify my inquiry. The data structure i gave was\n>> just a sample of my data. I actually have 50 subjects each with\n>> three binary observations (hence 150 observations). So the error i\n>> initially gave emanates from the analysis involving all the 50\n>> subjects. It just turns out that for the sample i gave, the first\n>> two subjects have only 0 as their entries but this varies as you\n>> look through the data.\n>> I am using the latest version of R i.e 2.6.1 and i downloaded the\n>> nlme version currently available on the CRAN website. I am aslo\n>> assuming my random part is the intercept.\n>> Hope this clarifies my inquiry.\n>>\n>\n> If I modify your code to include better values for y, using code\n>\n> library(MASS)\n> navs<-data.frame(matrix(c(1,1,1,0,0,1,1,\n> 2,1,0,0,1,0,1,\n> 3,1,0,0,1,0,1,\n> 1,2,1,0,0,1,0,\n> 2,2,1,1,1,1,0,\n> 3,2,0,1,1,1,0),nrow=6,byrow=T))\n>\n> names(navs) <- c(\"t\",\"id\",\"y\",\"x0\",\"x1\",\"x2\",\"x3\")\n>\n> fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n> summary(fit)\n>\n> the results are fine, except for some problems due to not having\n> enough subjects, as in the following output.\n>\n> Ken\n>\n>> library(MASS)\n>> navs<-data.frame(matrix(c(1,1,1,0,0,1,1,\n> + 2,1,0,0,1,0,1,\n> + 3,1,0,0,1,0,1,\n> + 1,2,1,0,0,1,0,\n> + 2,2,1,1,1,1,0,\n> + 3,2,0,1,1,1,0),nrow=6,byrow=T))\n>>\n>> names(navs) <- c(\"t\",\"id\",\"y\",\"x0\",\"x1\",\"x2\",\"x3\")\n>>\n>> fit<-glmmPQL(y~x1+x2+x3, random=~1|id, family=binomial, data=navs)\n> iteration 1\n> iteration 2\n> iteration 3\n> iteration 4\n> iteration 5\n> iteration 6\n> iteration 7\n> iteration 8\n> iteration 9\n> iteration 10\n>> summary(fit)\n> Linear mixed-effects model fit by maximum likelihood\n>  Data: navs\n>  AIC BIC logLik\n>    NA  NA    NA\n>\n> Random effects:\n>  Formula: ~1 | id\n>          (Intercept)  Residual\n> StdDev: 8.009601e-05 0.5773503\n>\n> Variance function:\n>  Structure: fixed weights\n>  Formula: ~invwt\n> Fixed effects: y ~ x1 + x2 + x3\n>                  Value Std.Error DF      t-value p-value\n> (Intercept)  0.000353  6171979  2  5.700000e-11      1\n> x1          -30.566351  2631792  2 -1.161427e-05      1\n> x2          30.565997  4161051  2  7.345739e-06      1\n> x3          -0.000071  3721849  0 -1.900000e-11    NaN\n>  Correlation:\n>    (Intr) x1    x2\n> x1 -0.853\n> x2 -0.944  0.632\n> x3 -0.905  0.707  0.894\n>\n> Standardized Within-Group Residuals:\n>          Min            Q1          Med            Q3          Max\n> -1.732051e+00 -5.451298e-17  8.078053e-16  1.506878e-15  1.732051e+00\n>\n> Number of Observations: 6\n> Number of Groups: 2\n> Warning message:\n> In pt(q, df, lower.tail, log.p) : NaNs produced\n>\n>\n>       \n> ____________________________________________________________________________________\n> Looking for last minute shopping deals?\n> Find them fast with Yahoo! Search.  http://tools.search.yahoo.com/newsearch/category.php?category=shopping\n>",
+      "body_snippet": "I don't know, possibly it is an error in glmmPQL, but I don't think  \ncompound symmetry is needed, I would expect it is the default.\n\nYou could try lmer, it may be better. My preference for binomials ",
+      "thread_id": "thread-ccbd35cc5843",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-d51800742cc1",
+      "message_id": "<loom.20071208T153535-935@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-12-08T15:47:10Z",
+      "subject": "[R-sig-ME] lmer (binomial) and mcmcsamp.. and now?",
+      "subject_clean": "lmer (binomial) and mcmcsamp.. and now?",
+      "in_reply_to": null,
+      "references": [
+        "<loom.20071204T074500-257@post.gmane.org>",
+        "<40e66e0b0712040856j580d0567ud8daafd163fbd92c@mail.gmail.com>"
+      ],
+      "body_plain": "Dieter Menne wrote\n\n> > I tried to run mcmcsamp on a problem of the form\n> >\n> > The model is\n> >\n> >  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n> >\n> >\n> > Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> > agreement with G?ran's glmmML.\n> >\n> > Running mcmcsamp() gave strange results. See\n> >\n> > http://www.menne-biomed.de/uni/mcmc20000.pdf\n> > http://www.menne-biomed.de/uni/mcmc2000.pdf\n\nDouglas Bates <bates at ...> writes:\n\n> This is a known issue with the current lmer and you should not trust\n> the results.\n> \n... removed....\n\nI am in a reviewer-generated deep hole. He (or she) asked for contrasts computed\nvia glmm, which works well by combining glmmPQL and estimable (from gmodels).\nHowever, (s)he mentioned that glmmPQL could not be valid (Agresti?), because\nerrors could be underestimated.\n\nIs there currently any way to compute arbitrary contrasts with lmer/glmer other\nthan the default treatment contrasts in summary()? mcmcsamp cannot be used (see\nabove), parameter _contrast_ of lrm1 seems to be dead (note that it does not\ncomplain about the following, even if you replace sloap by grump, and I have not\nfound an example using it):\n\n  lrm1 = lmer(RespB~Treat*Gender(1|Pat),\n       family=binomial,data=x,contrast=\"sloap\")\n\nand neither gmodels' estimable nor multcomp do accept glmer results.\n\nDieter",
+      "body_snippet": "Dieter Menne wrote\n\n> > I tried to run mcmcsamp on a problem of the form\n> >\n> > The model is\n> >\n> >  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n> >\n> >\n> > Results look ok, in reasonable agree",
+      "thread_id": "thread-03c434eb8545",
+      "thread_depth": 2,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-fb09546bb6e6",
+      "message_id": "<066701c83aa9$953df9d0$0d01a8c0@Amazone>",
+      "from_name": "Sandrine-et-Francois",
+      "from_email_hash": "f495994e6630c83f6d2e241e6d616455abd606ec3b765fab4eb7cd4a17af09d4",
+      "date": "2007-12-09T22:22:15+01:00",
+      "subject": "[R-sig-ME] Lmer output for negative binomial data",
+      "subject_clean": "Lmer output for negative binomial data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear R-list,\nMay I ask for help in interpretating the output of 'lmer' (from the lme4 \npackage) when dealing with negative binomial data ?\n\nI'm using the functions glm.nb (from the MASS package) and lmer (from the \nlme4) to fit respectively fixed-effects and mixed-effects generalized linear \nmodels to data, generated from a negative binomial distribution : count ~ \nNeg.Bin (mu, theta). Here is the code:\n==============================================================================\n#Generate the data frame\nset.seed(2153)\nmydf<-data.frame(subjs=seq(1:nsubjids),\ncounts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n\n#Model\nrequire(MASS); require(lme4)\nsummary(glm.nb(counts~1, data=mydf))\nsummary(lmer(counts~1+(1|subjs), \nfamily=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n==============================================================================\nThe glm.nb output gives : mu=exp(0.5306) and theta=0.513.\nI use the theta estimate from glm.nb as input into lmer, and I obtain, \nmu=exp(0.5306).\n\nThe output from lmer gives the following for the Random effects:\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n subjs    (Intercept) 3.5577e-10 1.8862e-05\n Residual             7.1155e-01 8.4353e-01\nnumber of obs: 30, groups: subjs, 10\n\nI interprete the \"subjs\" component as an individual error term \"e\" (so, that \nmu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\nWhat about the 'Residual' term ?\n\nThanks for your help,\nBest regards,\nFran?ois",
+      "body_snippet": "Dear R-list,\nMay I ask for help in interpretating the output of 'lmer' (from the lme4 \npackage) when dealing with negative binomial data ?\n\nI'm using the functions glm.nb (from the MASS package) and l",
+      "thread_id": "thread-fb09546bb6e6",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-0d58a3c35f69",
+      "message_id": "<475C9F86.2000300@ucdavis.edu>",
+      "from_name": "Sharif S. Aly",
+      "from_email_hash": "254cb398383f902a79a44b5966b080eaf2486a31fd49d45b6538a43324b78eed",
+      "date": "2007-12-09T18:08:06-08:00",
+      "subject": "[R-sig-ME] error regarding levels in grouping factor",
+      "subject_clean": "error regarding levels in grouping factor",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear R-mixed models list,\nAfter running a mixed model with level 4 and 3 crossed with level 2,\nand level 2 nested within level 1:\n\nlmer(y~ 1 + (1|level1/level2)+(1|level3)+(1|level4),data)\n\nI get the following error:\n\nERROR:\nnumber of levels in grouping factor(s) ?level2\n\nWould someone kindly give me some insight as to what may have caused\nthis error or how to remedy this problem?\n\nBest regards,\nSharif",
+      "body_snippet": "Dear R-mixed models list,\nAfter running a mixed model with level 4 and 3 crossed with level 2,\nand level 2 nested within level 1:\n\nlmer(y~ 1 + (1|level1/level2)+(1|level3)+(1|level4),data)\n\nI get the ",
+      "thread_id": "thread-0d58a3c35f69",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-e9fbae3a207d",
+      "message_id": "<475D2EA0.2000303@ufl.edu>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "e939ee505cc6d7a90d0153f4adc5952232fd23faf5cf21e6fd51dcdff5d5ae73",
+      "date": "2007-12-10T07:18:40-05:00",
+      "subject": "[R-sig-ME] Lmer output for negative binomial data",
+      "subject_clean": "Lmer output for negative binomial data",
+      "in_reply_to": "<066701c83aa9$953df9d0$0d01a8c0@Amazone>",
+      "references": [
+        "<066701c83aa9$953df9d0$0d01a8c0@Amazone>"
+      ],
+      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  I believe it's basically telling you that there's no\nadditional variation to assign to the within-subject level,\nso it's setting the within-subject sd very very small (2 x 10^{-5}).\nIn a way this is not surprising, since the theta you've estimated\nfrom glm.nb has already accounted for any additional variation\nin the data above the sampling (Poisson) variation.\n\n  The statistical model is (I think!)\n\ny ~ neg binom(mu, theta)\nmu_{ij} ~ exp(0.5306 + eps_i + eps_ij)\n\n  where eps_i (subject effect) ~ Normal(0,3.6e-10)\n        eps_ij (error term) ~ Normal(0,0.715)\n\n  although actually I'm not sure whether the eps_ij\napplies to mu or to y ...\n\n  Ben Bolker\n\n\nSandrine-et-Francois wrote:\n> Dear R-list,\n> May I ask for help in interpretating the output of 'lmer' (from the lme4 \n> package) when dealing with negative binomial data ?\n> \n> I'm using the functions glm.nb (from the MASS package) and lmer (from the \n> lme4) to fit respectively fixed-effects and mixed-effects generalized linear \n> models to data, generated from a negative binomial distribution : count ~ \n> Neg.Bin (mu, theta). Here is the code:\n> ==============================================================================\n> #Generate the data frame\n> set.seed(2153)\n> mydf<-data.frame(subjs=seq(1:nsubjids),\n> counts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n> \n> #Model\n> require(MASS); require(lme4)\n> summary(glm.nb(counts~1, data=mydf))\n> summary(lmer(counts~1+(1|subjs), \n> family=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n> ==============================================================================\n> The glm.nb output gives : mu=exp(0.5306) and theta=0.513.\n> I use the theta estimate from glm.nb as input into lmer, and I obtain, \n> mu=exp(0.5306).\n> \n> The output from lmer gives the following for the Random effects:\n> Random effects:\n>  Groups   Name        Variance   Std.Dev.\n>  subjs    (Intercept) 3.5577e-10 1.8862e-05\n>  Residual             7.1155e-01 8.4353e-01\n> number of obs: 30, groups: subjs, 10\n> \n> I interprete the \"subjs\" component as an individual error term \"e\" (so, that \n> mu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\n> What about the 'Residual' term ?\n> \n> Thanks for your help,\n> Best regards,\n> Fran?ois\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.6 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org\n\niD8DBQFHXS6gc5UpGjwzenMRAtXdAJ9Zvb1YYH9Ohwrx25h9i+dn16eIRgCbBRSe\npS0ZZovk1rrks/UVCK2jLC4=\n=TSEd\n-----END PGP SIGNATURE-----",
+      "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  I believe it's basically telling you that there's no\nadditional variation to assign to the within-subject level,\nso it's setting the within-subject sd ",
+      "thread_id": "thread-fb09546bb6e6",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-4539150d1b46",
+      "message_id": "<475F1C99.8070603@fuller.edu>",
+      "from_name": "David Atkins",
+      "from_email_hash": "aa74bbfbe7b6f6fb57dbe6d59bdcef28d96ab3581c132f8d8a01665ffb65a0eb",
+      "date": "2007-12-11T15:26:17-08:00",
+      "subject": "[R-sig-ME] nlmer: gradient for random change point model",
+      "subject_clean": "nlmer: gradient for random change point model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all--\n\nI am attempting to implement a nonlinear mixed-effects model in nlmer() \nthat I have gotten to work (well, at least run) in nlme().  However, \nnlmer() requires the gradient function, and I've gotten a bit stuck there.\n\nHere's a bit of background, and some data are attached with script below:\n\nIn psychotherapy research we often see two phases of improvement: an \nearly rapid phase, and a later slower phase.  Thus, a piecewise linear \nmodel can be a reasonably good fit, except that the breakpoint is \ndifferent for different folk.  The following article describes how it is \npossible to set up a nonlinear mixed-effects model like this with a \nrandom effect for the breakpoint:\n\nCudeck, R., & Klebe, K. J. (2002). Multiphase mixed-effects models for \nrepeated measures data. Psychological Methods, 7, 41-63.\n\nA biostatistician colleague of mine has used SAS to fit such a model to \nsome weekly psychotherapy data of a mutual colleague.  However, NLMIXED \ndidn't particularly like our data, and he had to search over a wide grid \nof initial starting values to ever get it to converge.\n\nGiven this and Doug's recent efforts with the lme4 library, I thought it \nmight be worthwhile to try fitting the model using nlmer().  I've got it \nrunning in nlme(), though it often bonks and gives error msgs.  At the \nmoment, I haven't been successful in getting it to run in nlmer().  This \n  appears to be due to the fact that nlmer() wants a gradient explicitly \nprovided (whereas nlme() doesn't), and deriv() doesn't recognize pmax() \nthat we use in the nonlinear formula.\n\nThe data attached are a small subset of the actual data, which are quite \na bit larger (241 individuals) and more \"messy\" (i.e., some mostly \nlinear, some rather chaotic growth patterns), which no doubt lead to \nsome of the difficulty in model fitting.  Finally, this is my first \nforay into nonlinear mixed-effects models, though I regularly use linear \nand generalized linear mixed-effects models.  Any general pointers or \nobvious \"user errors\" appreciated.\n\nThanks in advance.\n\ncheers, Dave\n-- \nDave Atkins, PhD\nAssociate Professor in Clinical Psychology\nFuller Graduate School of Psychology\nEmail: datkins at fuller.edu\nPhone: 626.584.5554\n\n > sessionInfo()\nR version 2.6.1 (2007-11-26)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United \nStates.1252;LC_MONETARY=English_United \nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] stats     graphics  grDevices datasets  utils     methods   base\n\nother attached packages:\n[1] nlme_3.1-86       Matrix_0.999375-3 lattice_0.17-2\n\nloaded via a namespace (and not attached):\n[1] gdata_2.3.1     grid_2.6.1      gtools_2.4.0    lme4_0.999375-0 \ntools_2.6.1\n\n\nload(\"randomChangePoint.Rdata\")\n\n### get a picture of the data\nlibrary(lattice)\nxyplot(dv ~ weeks | id, data = small.df, type = c(\"g\",\"p\",\"smooth\"),\n       pch = 16)\n\n### fit simple linear model with \"forced\" break at 6 weeks\ntest.lm <- lm(dv ~ weeks + pmax(0, (weeks - 6)),\n                        data = small.df)\nsummary(test.lm)\n\n### fit nonlinear model\ntest.nls <- nls(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk)),\n                           data = small.df,\n                           start = c(b0 = 28, b1 = -4.1, b2 = 4.1, brk = 6))\nsummary(test.nls)\n\n### use nlme() to fit nonlinear mixed-effects model, though keep it to\n### diagonal random-effects for now\nlibrary(nlme)\n\ntest.nlme <- nlme(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk)),\n                       data = small.df,\n                       fixed = b0 + b1 + b2 + brk ~ 1,\n                       random = pdDiag(b0 + b1 + b2 + brk ~ 1),\n                       groups = ~ id,\n                       control = list(msVerbose = TRUE, niterEM = 200,\n                                     opt = \"nlminb\", tol = 1e-5),\n                       start = coef(test.nls))\nsummary(test.nlme)\n\n### swap packages\ndetach(\"package:nlme\")\n\nlibrary(lme4)\n\ntest.nlmer <- nlmer(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk))\n                         ~  (b0 | id),\n                         data = small.df,\n                         verbose = TRUE,\n                         start = coef(test.nls))\n### gives error about gradient, though deriv() doesn't like pmax()",
+      "body_snippet": "Hi all--\n\nI am attempting to implement a nonlinear mixed-effects model in nlmer() \nthat I have gotten to work (well, at least run) in nlme().  However, \nnlmer() requires the gradient function, and I'v",
+      "thread_id": "thread-4539150d1b46",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-1487eed27dbd",
+      "message_id": "<475F1E7A.2090805@fuller.edu>",
+      "from_name": "David Atkins",
+      "from_email_hash": "aa74bbfbe7b6f6fb57dbe6d59bdcef28d96ab3581c132f8d8a01665ffb65a0eb",
+      "date": "2007-12-11T15:34:18-08:00",
+      "subject": "[R-sig-ME] [with data] nlmer: gradient for random change point model",
+      "subject_clean": "[with data] nlmer: gradient for random change point model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "looks like the attachment didn't come through, so data can be found:\n\nhttp://www.fuller.edu/sop/faculty/datkins/cp_content/randomChangePoint.Rdata\n\n\n-------- Original Message --------\nSubject: nlmer: gradient for random change point model\nDate: Tue, 11 Dec 2007 15:26:17 -0800\nFrom: David Atkins <datkins at fuller.edu>\nTo: r-sig-mixed-models at r-project.org\n\n\nHi all--\n\nI am attempting to implement a nonlinear mixed-effects model in nlmer()\nthat I have gotten to work (well, at least run) in nlme().  However,\nnlmer() requires the gradient function, and I've gotten a bit stuck there.\n\nHere's a bit of background, and some data are attached with script below:\n\nIn psychotherapy research we often see two phases of improvement: an\nearly rapid phase, and a later slower phase.  Thus, a piecewise linear\nmodel can be a reasonably good fit, except that the breakpoint is\ndifferent for different folk.  The following article describes how it is\npossible to set up a nonlinear mixed-effects model like this with a\nrandom effect for the breakpoint:\n\nCudeck, R., & Klebe, K. J. (2002). Multiphase mixed-effects models for\nrepeated measures data. Psychological Methods, 7, 41-63.\n\nA biostatistician colleague of mine has used SAS to fit such a model to\nsome weekly psychotherapy data of a mutual colleague.  However, NLMIXED\ndidn't particularly like our data, and he had to search over a wide grid\nof initial starting values to ever get it to converge.\n\nGiven this and Doug's recent efforts with the lme4 library, I thought it\nmight be worthwhile to try fitting the model using nlmer().  I've got it\nrunning in nlme(), though it often bonks and gives error msgs.  At the\nmoment, I haven't been successful in getting it to run in nlmer().  This\n   appears to be due to the fact that nlmer() wants a gradient explicitly\nprovided (whereas nlme() doesn't), and deriv() doesn't recognize pmax()\nthat we use in the nonlinear formula.\n\nThe data attached are a small subset of the actual data, which are quite\na bit larger (241 individuals) and more \"messy\" (i.e., some mostly\nlinear, some rather chaotic growth patterns), which no doubt lead to\nsome of the difficulty in model fitting.  Finally, this is my first\nforay into nonlinear mixed-effects models, though I regularly use linear\nand generalized linear mixed-effects models.  Any general pointers or\nobvious \"user errors\" appreciated.\n\nThanks in advance.\n\ncheers, Dave\n-- \nDave Atkins, PhD\nAssociate Professor in Clinical Psychology\nFuller Graduate School of Psychology\nEmail: datkins at fuller.edu\nPhone: 626.584.5554\n\n  > sessionInfo()\nR version 2.6.1 (2007-11-26)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United\nStates.1252;LC_MONETARY=English_United\nStates.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] stats     graphics  grDevices datasets  utils     methods   base\n\nother attached packages:\n[1] nlme_3.1-86       Matrix_0.999375-3 lattice_0.17-2\n\nloaded via a namespace (and not attached):\n[1] gdata_2.3.1     grid_2.6.1      gtools_2.4.0    lme4_0.999375-0\ntools_2.6.1\n\n\nload(\"randomChangePoint.Rdata\")\n\n### get a picture of the data\nlibrary(lattice)\nxyplot(dv ~ weeks | id, data = small.df, type = c(\"g\",\"p\",\"smooth\"),\n        pch = 16)\n\n### fit simple linear model with \"forced\" break at 6 weeks\ntest.lm <- lm(dv ~ weeks + pmax(0, (weeks - 6)),\n                         data = small.df)\nsummary(test.lm)\n\n### fit nonlinear model\ntest.nls <- nls(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk)),\n                            data = small.df,\n                            start = c(b0 = 28, b1 = -4.1, b2 = 4.1, brk \n= 6))\nsummary(test.nls)\n\n### use nlme() to fit nonlinear mixed-effects model, though keep it to\n### diagonal random-effects for now\nlibrary(nlme)\n\ntest.nlme <- nlme(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk)),\n                        data = small.df,\n                        fixed = b0 + b1 + b2 + brk ~ 1,\n                        random = pdDiag(b0 + b1 + b2 + brk ~ 1),\n                        groups = ~ id,\n                        control = list(msVerbose = TRUE, niterEM = 200,\n                                      opt = \"nlminb\", tol = 1e-5),\n                        start = coef(test.nls))\nsummary(test.nlme)\n\n### swap packages\ndetach(\"package:nlme\")\n\nlibrary(lme4)\n\ntest.nlmer <- nlmer(dv ~ b0 + b1*weeks + b2*pmax(0, (weeks - brk))\n                          ~  (b0 | id),\n                          data = small.df,\n                          verbose = TRUE,\n                          start = coef(test.nls))\n### gives error about gradient, though deriv() doesn't like pmax()\n\n\n\n-- \nDave Atkins, PhD\nAssociate Professor in Clinical Psychology\nFuller Graduate School of Psychology\nEmail: datkins at fuller.edu\nPhone: 626.584.5554",
+      "body_snippet": "looks like the attachment didn't come through, so data can be found:\n\nhttp://www.fuller.edu/sop/faculty/datkins/cp_content/randomChangePoint.Rdata\n\n\n-------- Original Message --------\nSubject: nlmer: ",
+      "thread_id": "thread-1487eed27dbd",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-b5c6b2822eba",
+      "message_id": "<5DA5C21C-47A0-4366-B749-A125634283A3@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-12T21:54:48+11:00",
+      "subject": "[R-sig-ME] nlmer: gradient for random change point model",
+      "subject_clean": "nlmer: gradient for random change point model",
+      "in_reply_to": "<475F1C99.8070603@fuller.edu>",
+      "references": [
+        "<475F1C99.8070603@fuller.edu>"
+      ],
+      "body_plain": "On 12/12/2007, at 10:26 AM, David Atkins wrote:\n\n>\n> Hi all--\n>\n> I am attempting to implement a nonlinear mixed-effects model in  \n> nlmer() that I have gotten to work (well, at least run) in nlme().   \n> However, nlmer() requires the gradient function, and I've gotten a  \n> bit stuck there.\n>\n> Here's a bit of background, and some data are attached with script  \n> below:\n>\n> In psychotherapy research we often see two phases of improvement: an  \n> early rapid phase, and a later slower phase.  Thus, a piecewise  \n> linear model can be a reasonably good fit, except that the  \n> breakpoint is different for different folk.  The following article  \n> describes how it is possible to set up a nonlinear mixed-effects  \n> model like this with a random effect for the breakpoint:\n>\n> Cudeck, R., & Klebe, K. J. (2002). Multiphase mixed-effects models  \n> for repeated measures data. Psychological Methods, 7, 41-63.\n\n\nI expect that all of these (I remember reading it for nlme) require  \nthat the function have continuous derivatives (probably twice) in the  \nparameters, which it wont be with the type of breakpoint you are  \nusing. So one of their other methods might work. Or see http://www.biostat.wustl.edu/archives/html/s-news/2000-04/msg00209.html \n  for methods for nls that will probably work with nlme as well.\n\n>\n>\n> A biostatistician colleague of mine has used SAS to fit such a model  \n> to some weekly psychotherapy data of a mutual colleague.  However,  \n> NLMIXED didn't particularly like our data, and he had to search over  \n> a wide grid of initial starting values to ever get it to converge.\n>\n\n\nOne worry is that it hasn't converged to the correct values when this  \nhappens.\n\nKen",
+      "body_snippet": "On 12/12/2007, at 10:26 AM, David Atkins wrote:\n\n>\n> Hi all--\n>\n> I am attempting to implement a nonlinear mixed-effects model in  \n> nlmer() that I have gotten to work (well, at least run) in nlme().",
+      "thread_id": "thread-4539150d1b46",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-66eaecb57486",
+      "message_id": "<E2A63749-2734-405D-A6DE-4554DC6CC81B@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-13T15:32:09+11:00",
+      "subject": "[R-sig-ME] nlmer: gradient for random change point model",
+      "subject_clean": "nlmer: gradient for random change point model",
+      "in_reply_to": "<47600115.90703@fuller.edu>",
+      "references": [
+        "<475F1C99.8070603@fuller.edu>",
+        "<5DA5C21C-47A0-4366-B749-A125634283A3@kagi.com>",
+        "<47600115.90703@fuller.edu>"
+      ],
+      "body_plain": "On 13/12/2007, at 2:41 AM, David Atkins wrote:\n\n>\n> Ken--\n>\n> Many thanks for the reply and the pointer to Mary Lindstrom's post.  \n> However, I can't seem to get her function to work with nls().  I  \n> assume that the underscores in her function should be replaced with  \n> assignments (ie, <-)?\n>\n> My slightly modified version of her function is below, and data  \n> attached.  Any thoughts?\n>\n> cheers, Dave\n>\n> # http://www.biostat.wustl.edu/archives/html/s-news/2000-04/msg00209.html\n> #\n> # It is also possible to fit a linear break point model where the  \n> break\n> # point is a true parameter in the model The model function below will\n> # work in nls.  It includes a very short quadratic piece where the  \n> break\n> # point is to keep the derivative w.r.t. the break point  \n> continuous.  -\n> # Mary Lindstrom\n>\n> hockey <- function(x, alpha1, beta1, beta2, brk, eps = range(x)/100) {\n\nshould be eps = diff(range(x)/100)\n\n>\n>       ## alpha1 is the intercept of the left line segment\n>       ## beta1 is the slope of the left line segment\n>       ## beta2 is the slope of the right line segment\n>       ## brk is location of the break point\n>       ## 2*eps is the length of the connecting quadratic piece\n>\n>       ## reference: Bacon & Watts \"Estimating the Transition Between\n>       ## Two Intersecting Straight Lines\", Biometrika, 1971\n>\n>        x1 <- brk - eps\n>        x2 <- brk + eps\n>        b <- (x2*beta1 - x1*beta2)/(x2 - x1)\n>        cc <- (beta2 - b)/(2*x2)\n>        a <- alpha1 + beta1*x1 - b*x1 - cc*x1^2\n>        alpha2 <- - beta2*x2 + (a + b*x2 + cc*x2^2)\n>\n>        lebrk <- (x <= brk - eps)\n>        gebrk <- (x >= brk + eps)\n>        eqbrk <- (x > brk - eps & x < brk + eps)\n>\n>        result <- rep(0,length(x))\n>        result[lebrk] <- alpha1 + beta1*x[lebrk]\n>        result[eqbrk] <- a + b*x[eqbrk] + cc*x[eqbrk]^2\n>        result[gebrk] <- alpha2 + beta2*x[gebrk]\n>        result\n> }\n>\n> test.nls <- nls(dv ~ hockey(weeks, alpha1, beta1, beta2, brk),\n>                          data = small.df)\n>\n> Dave Atkins, PhD\n> Associate Professor in Clinical Psychology\n> Fuller Graduate School of Psychology\n> Email: datkins at fuller.edu\n> Phone: 626.584.5554\n>\n\nThe zero derivatives are due to the interval around the breakpoint not  \ncontaining any data, I suggest placing the initial changepoint in the  \ncentre of the data and then increasing eps until it works.\n\nI expect things will get even worse with a mixed model so it would be  \nworthwhile plotting observed versus predicted for each subject to make  \nsure the breakpoints are in sensible places. I think this may be a  \ndifficult model to fit.\n\nKen",
+      "body_snippet": "On 13/12/2007, at 2:41 AM, David Atkins wrote:\n\n>\n> Ken--\n>\n> Many thanks for the reply and the pointer to Mary Lindstrom's post.  \n> However, I can't seem to get her function to work with nls().  I  ",
+      "thread_id": "thread-66eaecb57486",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-50d1e7a53345",
+      "message_id": "<627E6FF1-8471-4BE9-AD88-7353D173D051@kagi.com>",
+      "from_name": "Ken Beath",
+      "from_email_hash": "828012f8d91e7aec02576a685516a3192623cbd0772e74805d42b3a808a25e6c",
+      "date": "2007-12-13T21:29:06+11:00",
+      "subject": "[R-sig-ME] nlmer: gradient for random change point model",
+      "subject_clean": "nlmer: gradient for random change point model",
+      "in_reply_to": "<E2A63749-2734-405D-A6DE-4554DC6CC81B@kagi.com>",
+      "references": [
+        "<475F1C99.8070603@fuller.edu>",
+        "<5DA5C21C-47A0-4366-B749-A125634283A3@kagi.com>",
+        "<47600115.90703@fuller.edu>",
+        "<E2A63749-2734-405D-A6DE-4554DC6CC81B@kagi.com>"
+      ],
+      "body_plain": "On 13/12/2007, at 3:32 PM, Ken Beath wrote:\n\n>\n> The zero derivatives are due to the interval around the breakpoint not\n> containing any data, I suggest placing the initial changepoint in the\n> centre of the data and then increasing eps until it works.\n>\n>\n\nThis is not correct, reason is that starting values for both slopes  \nmust be different, otherwise changing the breakpoint location doesn't  \nchange anything. It also helps to get the starting values close to the  \ntrue values.\nFollowing works fine\n\ntest.nls <- nls(dv ~ hockey(weeks, alpha1, beta1, beta2, brk),\n\t\t\t\t\t\tstart= list(alpha1=30,beta1=-6,beta2=0,brk=5),\n\t\t\t\t\t\ttrace=TRUE,\n                        data = small.df)\n\nKen",
+      "body_snippet": "On 13/12/2007, at 3:32 PM, Ken Beath wrote:\n\n>\n> The zero derivatives are due to the interval around the breakpoint not\n> containing any data, I suggest placing the initial changepoint in the\n> centre",
+      "thread_id": "thread-66eaecb57486",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-161823f4e55d",
+      "message_id": "<47612716.6010908@dssm.unipa.it>",
+      "from_name": "vito muggeo",
+      "from_email_hash": "9afd8bd495f73f1258fd6ed4a3a4dc89892d107ee7246e873a10c1d275f931d3",
+      "date": "2007-12-13T13:35:34+01:00",
+      "subject": "[R-sig-ME] nlmer: gradient for random change point model",
+      "subject_clean": "nlmer: gradient for random change point model",
+      "in_reply_to": "<E2A63749-2734-405D-A6DE-4554DC6CC81B@kagi.com>",
+      "references": [
+        "<475F1C99.8070603@fuller.edu>",
+        "<5DA5C21C-47A0-4366-B749-A125634283A3@kagi.com>",
+        "<47600115.90703@fuller.edu>",
+        "<E2A63749-2734-405D-A6DE-4554DC6CC81B@kagi.com>"
+      ],
+      "body_plain": "A completely (simpler and naive) approach could be to use an algorithm \nwhich works reasonably well in non-mixed GLM (see the package segmented).\n\nThe algorithm works via linear approximations of the kink function, \ntherefore extension to mixed models is, at least in principle, \nstraightforward. I discuss such an approach in a paper published in the \nProceedings of the 19th IWSM, and I have (very) raw R code implementing \nthe idea.\n\nLet me know off-list if you are interested in the paper and/or code,\n\nbest,\nvito\n\n\nestimate the cluster-specific parameters (includ\n\nKen Beath ha scritto:\n> On 13/12/2007, at 2:41 AM, David Atkins wrote:\n> \n>> Ken--\n>>\n>> Many thanks for the reply and the pointer to Mary Lindstrom's post.  \n>> However, I can't seem to get her function to work with nls().  I  \n>> assume that the underscores in her function should be replaced with  \n>> assignments (ie, <-)?\n>>\n>> My slightly modified version of her function is below, and data  \n>> attached.  Any thoughts?\n>>\n>> cheers, Dave\n>>\n>> # http://www.biostat.wustl.edu/archives/html/s-news/2000-04/msg00209.html\n>> #\n>> # It is also possible to fit a linear break point model where the  \n>> break\n>> # point is a true parameter in the model The model function below will\n>> # work in nls.  It includes a very short quadratic piece where the  \n>> break\n>> # point is to keep the derivative w.r.t. the break point  \n>> continuous.  -\n>> # Mary Lindstrom\n>>\n>> hockey <- function(x, alpha1, beta1, beta2, brk, eps = range(x)/100) {\n> \n> should be eps = diff(range(x)/100)\n> \n>>       ## alpha1 is the intercept of the left line segment\n>>       ## beta1 is the slope of the left line segment\n>>       ## beta2 is the slope of the right line segment\n>>       ## brk is location of the break point\n>>       ## 2*eps is the length of the connecting quadratic piece\n>>\n>>       ## reference: Bacon & Watts \"Estimating the Transition Between\n>>       ## Two Intersecting Straight Lines\", Biometrika, 1971\n>>\n>>        x1 <- brk - eps\n>>        x2 <- brk + eps\n>>        b <- (x2*beta1 - x1*beta2)/(x2 - x1)\n>>        cc <- (beta2 - b)/(2*x2)\n>>        a <- alpha1 + beta1*x1 - b*x1 - cc*x1^2\n>>        alpha2 <- - beta2*x2 + (a + b*x2 + cc*x2^2)\n>>\n>>        lebrk <- (x <= brk - eps)\n>>        gebrk <- (x >= brk + eps)\n>>        eqbrk <- (x > brk - eps & x < brk + eps)\n>>\n>>        result <- rep(0,length(x))\n>>        result[lebrk] <- alpha1 + beta1*x[lebrk]\n>>        result[eqbrk] <- a + b*x[eqbrk] + cc*x[eqbrk]^2\n>>        result[gebrk] <- alpha2 + beta2*x[gebrk]\n>>        result\n>> }\n>>\n>> test.nls <- nls(dv ~ hockey(weeks, alpha1, beta1, beta2, brk),\n>>                          data = small.df)\n>>\n>> Dave Atkins, PhD\n>> Associate Professor in Clinical Psychology\n>> Fuller Graduate School of Psychology\n>> Email: datkins at fuller.edu\n>> Phone: 626.584.5554\n>>\n> \n> The zero derivatives are due to the interval around the breakpoint not  \n> containing any data, I suggest placing the initial changepoint in the  \n> centre of the data and then increasing eps until it works.\n> \n> I expect things will get even worse with a mixed model so it would be  \n> worthwhile plotting observed versus predicted for each subject to make  \n> sure the breakpoints are in sensible places. I think this may be a  \n> difficult model to fit.\n> \n> Ken\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n\n-- \n====================================\nVito M.R. Muggeo\nDip.to Sc Statist e Matem `Vianelli'\nUniversit? di Palermo\nviale delle Scienze, edificio 13\n90128 Palermo - ITALY\ntel: 091 6626240\nfax: 091 485726/485612",
+      "body_snippet": "A completely (simpler and naive) approach could be to use an algorithm \nwhich works reasonably well in non-mixed GLM (see the package segmented).\n\nThe algorithm works via linear approximations of the ",
+      "thread_id": "thread-66eaecb57486",
+      "thread_depth": 1,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-50ecd2f2b2f7",
+      "message_id": "<20071213174537.GA789@psych.upenn.edu>",
+      "from_name": "Jonathan Baron",
+      "from_email_hash": "8654be822d0d20d8c6ecc7bc25cb15a89120a671b8282ec16320f897275904f1",
+      "date": "2007-12-13T12:45:37-05:00",
+      "subject": "[R-sig-ME] p values for factor effect in lmer",
+      "subject_clean": "p values for factor effect in lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Suppose I have something like\n\nl1 <- lmer(y ~ x + f + (1 | s))\n\nwhere f is a factor with levels 1, 2, 3.\n\nl1 itself lists the individual values, f1, f2, f3, not the overall\neffect of f.\n\nanova(l1) gives the overall effect of f, but no p values.\n\npvals.fnc(l1) from the languageR package is like l1 itself.  But I\nwant to know whether the factor has a significant effect.\n\nI could do\n\nl2 <- lmer(y ~ x + (1 | s))\nanova(l1,l2)\n\nbut, in my experience so far, this method gives answers that don't\nlook right and don't agree with other methods.  I have not been\ntrusting it to provide p values.  pvals.fnc(), by contrast, usually\ngives very sensible values that agree with other approaches.\n\nCan anyone suggest another approach?  (\"Wait until the next version of\n...\" is a legitimate answer, if it is true.)\n\nOr maybe I should trust anova(l1,l2) after all.\n\nJon\n-- \nJonathan Baron, Professor of Psychology, University of Pennsylvania\nHome page: http://www.sas.upenn.edu/~baron",
+      "body_snippet": "Suppose I have something like\n\nl1 <- lmer(y ~ x + f + (1 | s))\n\nwhere f is a factor with levels 1, 2, 3.\n\nl1 itself lists the individual values, f1, f2, f3, not the overall\neffect of f.\n\nanova(l1) giv",
+      "thread_id": "thread-50ecd2f2b2f7",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-9b5169021a24",
+      "message_id": "<F9E424F22569F3469181E1BA1EE24CED0172C401@ECONSRVEX5.econ.kuleuven.ac.be>",
+      "from_name": "Lemmens, Aurelie",
+      "from_email_hash": "cc82ddb082ca6c2de06e3a07016521c5177dca0196813bc258080adaeadfe017",
+      "date": "2007-12-18T15:42:54+01:00",
+      "subject": "[R-sig-ME] specifying the structure of the residual variance-covariance matrix",
+      "subject_clean": "specifying the structure of the residual variance-covariance matrix",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl>",
+      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl>",
+      "thread_id": "thread-9b5169021a24",
+      "thread_depth": 0,
+      "month": "2007-12"
+    },
+    {
+      "id": "msg-d925295490c8",
+      "message_id": "<40e66e0b0712191510m195f1da9o46dffb1d244257bd@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-12-19T17:10:51-06:00",
+      "subject": "[R-sig-ME] Development version of the lme4 package on the R-forge web site",
+      "subject_clean": "Development version of the lme4 package on the R-forge web site",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I have been struggling for a long time with a part of the code for\ngeneralized linear mixed models in the new formulation for lmer\nobjects.  This has taken much longer than I ever anticipated it would\nbut I think I have finally gotten past this log jam.  I believe the\ndevelopment version now on R-forge is producing the proper estimates\nof the parameters.\n\nThe current version is incomplete. To get the estimates of variance\ncomponents you must use the optional argument verbose = TRUE and be\nable to decipher the values of the parameters being optimized. Also,\nthe standard errors of the fixed effects are not currently being\ncalculated - they are arbitrarily set to 1.\n\nAll of these \"infelicities\" are straightforward to fix and I will do\nso after I finish grading exams.  Right now I would appreciate it if a\nfew brave testers could try out some model fits using  this version\nand tell me if the answers are consistent with those from earlier\nversions of lme4 or from other software to which you may have access.\n\nHere is a sample run\n\n> example(cbpp)\n\ncbpp> ## response as a matrix\ncbpp> (m1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),\ncbpp+             cbpp, binomial, verbose = TRUE))\n  0:     101.94202: 0.845154 -1.26902 -1.17076 -1.30141 -1.78228\n  1:     100.53027: 0.673606 -1.31464 -1.12352 -1.26457 -1.75616\n  2:     100.30572: 0.574054 -1.37591 -1.02938 -1.17669 -1.68180\n  3:     100.19154: 0.686359 -1.39110 -0.949652 -1.09270 -1.58420\n  4:     100.11118: 0.651201 -1.40779 -0.962929 -1.10154 -1.58146\n  5:     100.09935: 0.637395 -1.40425 -0.990891 -1.12134 -1.56147\n  6:     100.09784: 0.647778 -1.39980 -0.988828 -1.12366 -1.56676\n  7:     100.09623: 0.640796 -1.39918 -0.987904 -1.12854 -1.57632\n  8:     100.09598: 0.643683 -1.39963 -0.990595 -1.12789 -1.57733\n  9:     100.09598: 0.640981 -1.39885 -0.992325 -1.12640 -1.57935\n 10:     100.09588: 0.642623 -1.39874 -0.992076 -1.12758 -1.57972\n 11:     100.09587: 0.642176 -1.39887 -0.992048 -1.12803 -1.57981\n 12:     100.09586: 0.642561 -1.39857 -0.992080 -1.12844 -1.57994\n 13:     100.09586: 0.642118 -1.39821 -0.992232 -1.12857 -1.58018\n 14:     100.09586: 0.642238 -1.39849 -0.992317 -1.12864 -1.58022\n 15:     100.09586: 0.642248 -1.39853 -0.992324 -1.12866 -1.58032\n 16:     100.09586: 0.642264 -1.39853 -0.992327 -1.12866 -1.58032\n 17:     100.09586: 0.642260 -1.39854 -0.992335 -1.12868 -1.58031\nGeneralized linear mixed model fit using Laplace\nFormula: cbind(incidence, size - incidence) ~ period + (1 | herd)\n   Data: cbpp\n Family: binomial(logit link)\n   AIC   BIC logLik deviance\n 110.1 120.2 -50.05    100.1\nRandom effects:\n Groups   Name        Variance  Std.Dev.\n herd     (Intercept) 0.0079327 0.089066\n Residual             0.0192308 0.138675\nNumber of obs: 56, groups: herd, 15\n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)\n(Intercept)  -1.3985     1.0000 -1.3985    0.162\nperiod2      -0.9923     1.0000 -0.9923    0.321\nperiod3      -1.1287     1.0000 -1.1287    0.259\nperiod4      -1.5804     1.0000 -1.5804    0.114\n\nCorrelation of Fixed Effects:\n        (Intr) perid2 perid3\nperiod2 0.000\nperiod3 0.000  0.000\nperiod4 0.000  0.000  0.000\n\nDon't pay attention to the reported estimates of the variance\ncomponents.  The important numbers are in the verbose output.  The\nfirst number is the Laplace approximation to the deviance (negative\ntwice the log-likelihoood) and the second is the relative standard\ndeviation of the random effects.  For a binomial model there is no\nseparate scale factor in the variance of the responses so the relative\nstandard deviation is the standard deviation (in other words, it is\n\"relative to unity\").  The next four numbers are, as you can see, the\nfixed effects.\n\nIf you do have a chance to run a test I would appreciate learning of\nthe results.  The source package on R-forge should be updated tonight.\n I'm not sure when the Windows binary version is updated.  If you\ninstall the development version of the package please try to reproduce\nthe example shown above before you run your own tests.\n\nThis version will fit GLMMs for the binomial family with logit or\nprobit links and for the Poisson family.  Other families will be added\nas needed.  General capabilities for using a user-defined family will\ntake longer.",
+      "body_snippet": "I have been struggling for a long time with a part of the code for\ngeneralized linear mixed models in the new formulation for lmer\nobjects.  This has taken much longer than I ever anticipated it would",
+      "thread_id": "thread-d925295490c8",
+      "thread_depth": 0,
+      "month": "2007-12"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-981aeea348c7",
+      "subject": "lmer and method call",
+      "message_count": 1,
+      "participants": [
+        "Douglas Bates"
+      ],
+      "started": "2007-12-01T11:59:23-06:00",
+      "last_reply": "2007-12-01T11:59:23-06:00",
+      "root_message_id": "msg-981aeea348c7"
+    },
+    {
+      "id": "thread-c6d770106502",
+      "subject": "glmer != lmer(,..family=binomioal)",
+      "message_count": 4,
+      "participants": [
+        "Dieter Menne",
+        "Douglas Bates"
+      ],
+      "started": "2007-12-03T13:54:31+00:00",
+      "last_reply": "2007-12-03T08:20:36-06:00",
+      "root_message_id": "msg-c6d770106502"
+    },
+    {
+      "id": "thread-03c434eb8545",
+      "subject": "lmer (binomial) and mcmcsamp",
+      "message_count": 4,
+      "participants": [
+        "Dieter Menne",
+        "Douglas Bates"
+      ],
+      "started": "2007-12-04T07:55:18+00:00",
+      "last_reply": "2007-12-08T15:47:10+00:00",
+      "root_message_id": "msg-03c434eb8545"
+    },
+    {
+      "id": "thread-bc58ccc3b8de",
+      "subject": "Extracting significance for fixed effect",
+      "message_count": 2,
+      "participants": [
+        "Dieter Menne",
+        "Rob Forsyth"
+      ],
+      "started": "2007-12-06T11:55:32+00:00",
+      "last_reply": "2007-12-06T14:20:54+00:00",
+      "root_message_id": "msg-bc58ccc3b8de"
+    },
+    {
+      "id": "thread-9d2d5df115ac",
+      "subject": "glmmPQL inquiry",
+      "message_count": 3,
+      "participants": [
+        "Ken Beath",
+        "Sundar Dorai-Raj",
+        "kennedy otwombe"
+      ],
+      "started": "2007-12-06T12:33:31-08:00",
+      "last_reply": "2007-12-07T08:23:58+11:00",
+      "root_message_id": "msg-9d2d5df115ac"
+    },
+    {
+      "id": "thread-a68f57faff79",
+      "subject": "glmmPQL inquiry",
+      "message_count": 5,
+      "participants": [
+        "Douglas Bates",
+        "Ken Beath",
+        "Roberts, Kyle",
+        "kennedy otwombe"
+      ],
+      "started": "2007-12-07T00:58:28-08:00",
+      "last_reply": "2007-12-07T16:04:21-06:00",
+      "root_message_id": "msg-a68f57faff79"
+    },
+    {
+      "id": "thread-ccbd35cc5843",
+      "subject": "glmmPQL inquiry",
+      "message_count": 1,
+      "participants": [
+        "Ken Beath"
+      ],
+      "started": "2007-12-08T17:56:48+11:00",
+      "last_reply": "2007-12-08T17:56:48+11:00",
+      "root_message_id": "msg-ccbd35cc5843"
+    },
+    {
+      "id": "thread-0d58a3c35f69",
+      "subject": "error regarding levels in grouping factor",
+      "message_count": 1,
+      "participants": [
+        "Sharif S. Aly"
+      ],
+      "started": "2007-12-09T18:08:06-08:00",
+      "last_reply": "2007-12-09T18:08:06-08:00",
+      "root_message_id": "msg-0d58a3c35f69"
+    },
+    {
+      "id": "thread-fb09546bb6e6",
+      "subject": "Lmer output for negative binomial data",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Sandrine-et-Francois"
+      ],
+      "started": "2007-12-09T22:22:15+01:00",
+      "last_reply": "2007-12-10T07:18:40-05:00",
+      "root_message_id": "msg-fb09546bb6e6"
+    },
+    {
+      "id": "thread-4539150d1b46",
+      "subject": "nlmer: gradient for random change point model",
+      "message_count": 2,
+      "participants": [
+        "David Atkins",
+        "Ken Beath"
+      ],
+      "started": "2007-12-11T15:26:17-08:00",
+      "last_reply": "2007-12-12T21:54:48+11:00",
+      "root_message_id": "msg-4539150d1b46"
+    },
+    {
+      "id": "thread-1487eed27dbd",
+      "subject": "[with data] nlmer: gradient for random change point model",
+      "message_count": 1,
+      "participants": [
+        "David Atkins"
+      ],
+      "started": "2007-12-11T15:34:18-08:00",
+      "last_reply": "2007-12-11T15:34:18-08:00",
+      "root_message_id": "msg-1487eed27dbd"
+    },
+    {
+      "id": "thread-50ecd2f2b2f7",
+      "subject": "p values for factor effect in lmer",
+      "message_count": 1,
+      "participants": [
+        "Jonathan Baron"
+      ],
+      "started": "2007-12-13T12:45:37-05:00",
+      "last_reply": "2007-12-13T12:45:37-05:00",
+      "root_message_id": "msg-50ecd2f2b2f7"
+    },
+    {
+      "id": "thread-66eaecb57486",
+      "subject": "nlmer: gradient for random change point model",
+      "message_count": 3,
+      "participants": [
+        "Ken Beath",
+        "vito muggeo"
+      ],
+      "started": "2007-12-13T15:32:09+11:00",
+      "last_reply": "2007-12-13T13:35:34+01:00",
+      "root_message_id": "msg-66eaecb57486"
+    },
+    {
+      "id": "thread-9b5169021a24",
+      "subject": "specifying the structure of the residual variance-covariance matrix",
+      "message_count": 1,
+      "participants": [
+        "Lemmens, Aurelie"
+      ],
+      "started": "2007-12-18T15:42:54+01:00",
+      "last_reply": "2007-12-18T15:42:54+01:00",
+      "root_message_id": "msg-9b5169021a24"
+    },
+    {
+      "id": "thread-d925295490c8",
+      "subject": "Development version of the lme4 package on the R-forge web site",
+      "message_count": 1,
+      "participants": [
+        "Douglas Bates"
+      ],
+      "started": "2007-12-19T17:10:51-06:00",
+      "last_reply": "2007-12-19T17:10:51-06:00",
+      "root_message_id": "msg-d925295490c8"
+    }
+  ]
+}

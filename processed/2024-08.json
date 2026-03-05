@@ -1,0 +1,111 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2024-08",
+  "messages": [
+    {
+      "id": "msg-066740af4a4d",
+      "message_id": "<1c8e7b5f-2fbb-4730-9a35-e7118d90fdaf@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-08-01T11:22:38-04:00",
+      "subject": "[R-sig-ME] Speeding up finding non-singular mixed effect models",
+      "subject_clean": "Speeding up finding non-singular mixed effect models",
+      "in_reply_to": "<CAEkY-QFyNE+OYUaeeoRG89dC241=TSZtQRGY9UjhruYWxC-KwQ@mail.gmail.com>",
+      "references": [
+        "<CAEkY-QFyNE+OYUaeeoRG89dC241=TSZtQRGY9UjhruYWxC-KwQ@mail.gmail.com>"
+      ],
+      "body_plain": "Overall it seems like a cool idea and well worth pursuing!  There has \nalso been increased interested in factor-analytic models as well, which \nrepresent another possible avenue (but, currently they're not \nimplemented in lme4, and it would take quite a bit of work to port them \nover from their glmmTMB implementation ...)\n\n   Unfortunately I don't have any intuitions about the answers to your \nquestions - maybe if I were better at visualizing the geometry of \nfive-dimensional positive definite subspaces ... (an idea suggested by \nPhillip Alday recently was thinking about the decomposition of the \ncovariance matrix into a diagonal variance matrix and a correlation \nmatrix, i.e. Sigma = D^{1/2} C D^{1/2}, and trying to understand when \nsingularity was caused by zero elements in D vs. a rank-deficient C ...\n\n   Hopefully Doug Bates will chime in ...\n\n  cheers\n    Ben Bolker\n\n\nOn 2024-07-31 1:49 p.m., David Halpern wrote:\n> Hello all,\n> \n> Not sure if this is necessarily an appropriate venue for this but I wanted\n> to ask people's thoughts on some work Philip Greengard and I have been\n> doing on how to more efficiently select random effects in order to find a\n> parsimonious non-singular model based only on the data and not theoretical\n> concerns (i.e. the situation described in the Parsimonious Mixed Models\n> paper (https://arxiv.org/abs/1506.04967)).\n> \n> We have been testing out the idea of using interpolative decomposition (\n> https://epubs.siam.org/doi/10.1137/030602678\n> <https://urldefense.proofpoint.com/v2/url?u=https-3A__epubs.siam.org_doi_10.1137_030602678&d=DwMFaQ&c=slrrB7dE8n7gBJbeO0g-IQ&r=1fI6tPTeZTtBK3UMOX1dxBGvjRjIAz3vir-OsKyH_TA&m=MM3jgHoRDStULujYcqcdTwPTyxlZ0rtlBxrUlqlUgo2_0adaJXDJXAOFyxj5X7CI&s=OwdbvLvQ_pyDTMBCi-u94EJbIiOwRR-2s-7TukE5vEQ&e=>)\n> as a way of selecting random effects in order to reduce a singular model\n> without refitting the model multiple times. Interpolative decomposition\n> finds the columns (or rows) of a matrix that approximately span the column\n> (or row) space. Our thinking is that this decomposition is a natural tool\n> for selecting which parameters to include in a non-maximal model.\n> \n> We played around with data from Gann and Barr (2012) available in the\n> RePsychLing package (associated with the Parsimonious Mixed Models paper).\n> In the GB vignette from tthe package, the analysis started with a maximal\n> model that included four parameters varying by session and four varying by\n> item. PCA indicated \"two dimensions with no variability in the random\n> effects for session and another two dimensions in the random effects for\n> item.\"\n> The original model is sottrunc2 ~ 1 + T + P + F + TP + TF + PF + TPF + (1 +\n> T + F + TF | session) + (1 + T + P + TP | item)\n> Using the algorithm described in the Parsimonious Mixed Models paper\n> requires fitting the model five times to arrive at a non-singular model.\n> The final model is:\n> sottrunc2 ~ 1 + T + P + F + TP + TF + PF + TPF + (1 + F | session) + (0 + T\n> | session) + (1 | item).\n> \n> In our approach, after fitting the maximal model, we apply an interpolative\n> decomposition to both session and item random effects covariance matrices\n> to find the best 2x2 submatrices:\n> sottrunc2 ~ 1 + T + P + F + TP + TF + PF + TPF + (1 + F | session) + (1 + P\n> | item). However, when we refit, we find that the item random effects are\n> still not full rank. We run the process again and find a final model:\n> sottrunc2 ~ 1 + T + P + F + TP + TF + PF + TPF + (1 + F | session) + (1 |\n> item). Assuming that we do not allow for forcing off-diagonal elements to\n> be 0, this final model matches the model found previously with only three\n> model fits instead of five.\n> \n> We also applied the same approach to the Kliegel et al. (2011) dataset\n> (from the same package) and were able to find the same final model as the\n> KWDYZ vignette (in the package) using only two model fits rather than three.\n> \n> With large models, this method could potentially save a substantial amount\n> of time! But we don't fully understand why initial interpolative\n> decomposition based on PCA of the full maximal model still results in a\n> singular fit. We tried applying interpolative decomposition to each batch\n> of random effects iteratively but this still got us the same result. We'd\n> be very curious to hear thoughts on the overall approach and any intuition\n> people might have for why the rank of the random effects matrices seems to\n> change so much after refitting. Code for our experiments can be found here:\n> https://github.com/dhalpern/lmer_id/blob/main/lmer_id_experiment_GB.R,\n> https://github.com/dhalpern/lmer_id/blob/main/lmer_id_experiment_KWDYZ.R.\n> \n> Thanks so much for any comments or ideas!\n> \n> Best,\n> David\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "Overall it seems like a cool idea and well worth pursuing!  There has \nalso been increased interested in factor-analytic models as well, which \nrepresent another possible avenue (but, currently they'r",
+      "thread_id": "thread-066740af4a4d",
+      "thread_depth": 0,
+      "month": "2024-08"
+    },
+    {
+      "id": "msg-d0615262373c",
+      "message_id": "<MN2PR09MB493726857161CF6E6D8622D090B22@MN2PR09MB4937.namprd09.prod.outlook.com>",
+      "from_name": "Lee, Laura M",
+      "from_email_hash": "f9456f452ee248d9c68a7420faf8b9954d3d51ea41d0d18f5bba36281db8f9cc",
+      "date": "2024-08-01T18:01:19Z",
+      "subject": "[R-sig-ME] specifying multiple random effects in glmmML",
+      "subject_clean": "specifying multiple random effects in glmmML",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\nI need to run a model in glmmML due to a restriction in some companion code. Is it possible to specify multiple random effects in the glmmML function? I would appreciate if someone could provide an example.\n\nThanks so much for your time!\n\n\nBest,\n\nLaura\n\n\n\n#############################\nLaura M. Lee\nUSFWS - Northeast Fishery Center\nP.O. Box 75\n308 Washington Ave.\nLamar, PA  16848\nPhone: 570-726-4247 x 50122\nLaura_Lee at fws.gov<mailto:Laura_Lee at fws.gov>\n#############################\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nI need to run a model in glmmML due to a restriction in some companion code. Is it possible to specify multiple random effects in the glmmML function? I would appreciate if someone could prov",
+      "thread_id": "thread-d0615262373c",
+      "thread_depth": 0,
+      "month": "2024-08"
+    },
+    {
+      "id": "msg-1f4f2b58bee5",
+      "message_id": "<3f16493a-b733-4abf-aa48-dc8c24fc6083@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-08-01T16:45:35-04:00",
+      "subject": "[R-sig-ME] specifying multiple random effects in glmmML",
+      "subject_clean": "specifying multiple random effects in glmmML",
+      "in_reply_to": "<MN2PR09MB493726857161CF6E6D8622D090B22@MN2PR09MB4937.namprd09.prod.outlook.com>",
+      "references": [
+        "<MN2PR09MB493726857161CF6E6D8622D090B22@MN2PR09MB4937.namprd09.prod.outlook.com>"
+      ],
+      "body_plain": "?? It seems impossible.? From the vignette \nhttps://cran.r-project.org/web/packages/glmmML/vignettes/glmmML.pdf :\n\n > The package glmmML generalises in\nother directions. First, **it is only implemented for the simple random\nintercepts model** and the Binomial and Poisson distributions, but it al-\nlows for other distributions than the Normal for the random intercepts\n\n ? I can't think of any way to work around this limitation.\n\n ? I would guess the only way you will get further confirmation of this \nwould be to ask the maintainer (but I'm not sure it makes sense to waste \ntheir time, as the documentation seems clear ...)\n\n ? good luck,\n\n ??? Ben Bolker\n\nOn 8/1/24 14:01, Lee, Laura M via R-sig-mixed-models wrote:\n> Hi all,\n>\n> I need to run a model in glmmML due to a restriction in some companion code. Is it possible to specify multiple random effects in the glmmML function? I would appreciate if someone could provide an example.\n>\n> Thanks so much for your time!\n>\n>\n> Best,\n>\n> Laura\n>\n>\n>\n> #############################\n> Laura M. Lee\n> USFWS - Northeast Fishery Center\n> P.O. Box 75\n> 308 Washington Ave.\n> Lamar, PA  16848\n> Phone: 570-726-4247 x 50122\n> Laura_Lee at fws.gov<mailto:Laura_Lee at fws.gov>\n> #############################\n>\n>\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "?? It seems impossible.? From the vignette \nhttps://cran.r-project.org/web/packages/glmmML/vignettes/glmmML.pdf :\n\n > The package glmmML generalises in\nother directions. First, **it is only implemente",
+      "thread_id": "thread-d0615262373c",
+      "thread_depth": 1,
+      "month": "2024-08"
+    },
+    {
+      "id": "msg-af66beb5644d",
+      "message_id": "<574cb6e7-58e6-4583-aea5-b76968ff4d30@shoin.ac.jp>",
+      "from_name": "N o s t a l g i a",
+      "from_email_hash": "93f29416d78b1175470a30600a50d4e9e491aaf80f20e7565e3c476fe22502b3",
+      "date": "2024-08-27T18:09:36+09:00",
+      "subject": "[R-sig-ME] How to interpret the output for nested random factors in glmer and what to write in a table",
+      "subject_clean": "How to interpret the output for nested random factors in glmer and what to write in a table",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi, this is something I posted on Cross Validated a few days ago, but \nsince I failed to get any substantial answers, I am posting a question \nhere, hoping someone could help me, as I am getting desperate.\n\nI am looking at an alternation of a character in a word using a Japanese \ncongressional record. I have a binary outcome dependent variable (kuni), \nthe date of the meeting expressed as the standardized number of days \nsince 1949/05/31 (days_cnt2) as the only fixed variable, and two random \nfactors for meeting (meetid) and word (morphid). Because there are \nseveral meetings in a given day, and a meeting is specific to a specific \nday, the meeting variable is nested under days_cnt2. Thus, the model \nlooks like kuni~days_cnt2+(1+days_cnt2|morphid)+(1|days_cnt2/meetid). I \nran a binomial logistic regression with glmer and got the following output:\n\nCommand:\nresult <- \nglmer(kuni~days_cnt2+(1+days_cnt2|morphid)+(1|days_cnt2/meetid),data=glmmdata6,family=binomial, \ncontrol=glmerControl(optimizer=\"bobyqa\",optCtrl=list(maxfun=2e5))\n\nA part of the output (summary):\nRandom effects:\n  Groups           Name        Variance Std.Dev. Corr\n  meetid:days_cnt2 (Intercept) 14.0795  3.7523\n  days_cnt2        (Intercept) 26.7335  5.1704\n  morphid          (Intercept)  3.3889  1.8409\n                   days_cnt2    0.2283  0.4778   0.71\nNumber of obs: 748186, groups:\nmeetid:days_cnt2, 12034; days_cnt2, 1189; morphid, 301\n\nFixed effects:\n             Estimate Std. Error z value Pr(>|z|)\n(Intercept)  -9.2793     0.3416  -27.16   <2e-16 ***\ndays_cnt2   -11.8274     0.3045  -38.84   <2e-16 ***\n\nThe ICC values are:\nAdjusted ICC: 0.931 Unadjusted ICC: 0.237\n\nNow I have several questions for this result:\n\n1. Am I right in saying word (morphid) has less effect than meeting \n(meetid) on kuni, based on the fact that the former has only about half \nSD (1.8409) of the latter (3.7523)?\n\n2. How should I interpret the two days_cnt2 parameter values in the \nrandom effects section?\n\n3. When publishing the result in a paper, should I include the values \nfor all of the four effects (meetid:days_cnt2, days_cnt2, morphid, and \ndays_cnt2) or should I skip days_cnt2?\n\nThanks in advance,\n\nKenjiro Matsuda",
+      "body_snippet": "Hi, this is something I posted on Cross Validated a few days ago, but \nsince I failed to get any substantial answers, I am posting a question \nhere, hoping someone could help me, as I am getting despe",
+      "thread_id": "thread-af66beb5644d",
+      "thread_depth": 0,
+      "month": "2024-08"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-066740af4a4d",
+      "subject": "Speeding up finding non-singular mixed effect models",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2024-08-01T11:22:38-04:00",
+      "last_reply": "2024-08-01T11:22:38-04:00",
+      "root_message_id": "msg-066740af4a4d"
+    },
+    {
+      "id": "thread-d0615262373c",
+      "subject": "specifying multiple random effects in glmmML",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Lee, Laura M"
+      ],
+      "started": "2024-08-01T18:01:19+00:00",
+      "last_reply": "2024-08-01T16:45:35-04:00",
+      "root_message_id": "msg-d0615262373c"
+    },
+    {
+      "id": "thread-af66beb5644d",
+      "subject": "How to interpret the output for nested random factors in glmer and what to write in a table",
+      "message_count": 1,
+      "participants": [
+        "N o s t a l g i a"
+      ],
+      "started": "2024-08-27T18:09:36+09:00",
+      "last_reply": "2024-08-27T18:09:36+09:00",
+      "root_message_id": "msg-af66beb5644d"
+    }
+  ]
+}

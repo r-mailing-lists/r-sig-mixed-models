@@ -1,0 +1,38 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2016-06",
+  "messages": [
+    {
+      "id": "msg-e4e0a5da35e5",
+      "message_id": "<5775B93F.60304@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2016-06-30T20:28:47-04:00",
+      "subject": "[R-sig-ME] Overdispersion and R2 in GLMM",
+      "subject_clean": "Overdispersion and R2 in GLMM",
+      "in_reply_to": "<CAPvMryO05ADrZ13v00R+5dSh9YJc4RWysqNQ9F5Gh82R-edvDA@mail.gmail.com>",
+      "references": [
+        "<CAPvMryO05ADrZ13v00R+5dSh9YJc4RWysqNQ9F5Gh82R-edvDA@mail.gmail.com>"
+      ],
+      "body_plain": "On 16-06-30 12:40 PM, Teresa Oliveira wrote:\n> Dear all,\n> \n> I want to estimate RSF\n\n  Can you tell us/remind us what RSF is?  (Remember that this is a very\ngeneral mailing list about mixed models, with readers in many different\nfields)\n\n> and to obtain the relative probabilities I will use\n> the coefficients obtained with GLMMs. I am new in this so I hope I can\n> express myself well.\n> To construct the GLMM's, I am using glmer(). I will to use the MuMIn\n> package to perform model selection [using dredge()].\n\n  I'm getting less and less enthusiastic about this approach, but\ncomments will have to wait for another day.\n\n> I have two doubts:\n> 1) For the top models I get, in order to understand if they are really\n> meaningful, I need to estimate R2 [r.squaredGLMM()] and to test for\n> overdispersion [overdisp.glmer() with \"RVAideMemoire\" package], right? Is\n> there anything else I must consider (besides de AIC)?\n\n  I would generally suggest looking at graphical diagnostics (e.g. see\n?plot.merMod) and plotting the predicted responses of the model along\nwith the original data.  R^2 values are not bad, but they're very much\nharder to interpret in a (G)LMM context.\n\nhttps://tinyurl.com/glmmFAQ#how-do-i-compute-a-coefficient-of-determination-r2-or-an-analogue-for-glmms\n\n(the same base URL also has more information about computing overdispersion)\n\n> \n> 2) How do I interpret the results in both tests?\n> For a model with all variables I wanted to include (so, before performing\n> model selection), I estimated R2 and overdispersion.\n> \n> For overdispersion I got this:\n> \"> overdisp.glmer(lm_set3)\n> Residual deviance: 8537.397 on 32658 degrees of freedom (ratio: 0.261)\"\n> Which value for ratio is acceptable?\n\n  What kind of model are you fitting?\n  In general overdispersion values (a) are only relevant\n> \n> For R2 I got this:\n> \"> r.squaredGLMM(lm_set3)\n> The result is correct only if all data used by the model has not changed\n> since model was fitted.\n>         R2m         R2c\n> 0.006139516 0.788967246 \"\n> Is it normal to get values so different? Should I consider both?\n\n  This means that your fixed effects explain almost nothing, but the\ncombination of fixed and random effects explains almost everything.\nDoes seem a little concerning.\n\n  Explore your data graphically!\n\n  cheers\n    Ben Bolker\n\n> \n> Thank you very much for your time and help!\n> \n> Best regards,\n> Teresa\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 16-06-30 12:40 PM, Teresa Oliveira wrote:\n> Dear all,\n> \n> I want to estimate RSF\n\n  Can you tell us/remind us what RSF is?  (Remember that this is a very\ngeneral mailing list about mixed models, w",
+      "thread_id": "thread-e4e0a5da35e5",
+      "thread_depth": 0,
+      "month": "2016-06"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-e4e0a5da35e5",
+      "subject": "Overdispersion and R2 in GLMM",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2016-06-30T20:28:47-04:00",
+      "last_reply": "2016-06-30T20:28:47-04:00",
+      "root_message_id": "msg-e4e0a5da35e5"
+    }
+  ]
+}

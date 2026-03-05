@@ -1,0 +1,185 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2024-09",
+  "messages": [
+    {
+      "id": "msg-850277b591d1",
+      "message_id": "<2051608306.3019231.1725370206148@mail.yahoo.com>",
+      "from_name": "reza cheloei",
+      "from_email_hash": "a13b1b039e007df19f854082f7ca836dda849d1a69580120c7ba573913ef9db1",
+      "date": "2024-09-03T13:30:06Z",
+      "subject": "[R-sig-ME] Help",
+      "subject_clean": "Help",
+      "in_reply_to": null,
+      "references": [
+        "<2051608306.3019231.1725370206148.ref@mail.yahoo.com>"
+      ],
+      "body_plain": "Hello,I studied agriculture. I have data related to a number of genotypes cultivated under two different environmental conditions (stress and normal) and I want to analyze these data with the BLUPs method, but I have little information about the BLUPs method.It is possible for you to guide me and tell me with which of the functions of the \"lme4\" package that you prepared to perform my analysis.I am waiting for your reply and thank you in advance for your sincere help.\nBest regards,\nReza\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,I studied agriculture. I have data related to a number of genotypes cultivated under two different environmental conditions (stress and normal) and I want to analyze these data with the BLUPs me",
+      "thread_id": "thread-850277b591d1",
+      "thread_depth": 0,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-e8436975d769",
+      "message_id": "<74bcae6f-967b-4fb8-9fd0-f266b97fab34@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-09-03T12:12:55-04:00",
+      "subject": "[R-sig-ME] Help",
+      "subject_clean": "Help",
+      "in_reply_to": "<2051608306.3019231.1725370206148@mail.yahoo.com>",
+      "references": [
+        "<2051608306.3019231.1725370206148.ref@mail.yahoo.com>",
+        "<2051608306.3019231.1725370206148@mail.yahoo.com>"
+      ],
+      "body_plain": "Reza,\n\n   You have to give us a lot more information before we can help you.\n   By \"BLUPs method\" you probably mean a mixed model, but it's hard to \ntell.  Can you post a link or reference (presumably you found out about \nthis method somewhere ...) ?  Typically a mixed model for genotypes \ncultivated under different conditions would look something like\n\nlmer(trait ~ 1 + condition + (1 + condition | genotype), data = your_data)\n\n  but the full process of fitting and interpreting a mixed model is \ncomplex. You might start with Pinheiro and Bates \"Mixed-Effects Models \nin S and S-PLUS\" (this uses an older, but perfectly functional, package \ncalled nlme).  Alternately, there are many, many blogs and resources online.\n\n\n\nOn 2024-09-03 9:30 a.m., reza cheloei via R-sig-mixed-models wrote:\n> Hello,I studied agriculture. I have data related to a number of genotypes cultivated under two different environmental conditions (stress and normal) and I want to analyze these data with the BLUPs method, but I have little information about the BLUPs method.It is possible for you to guide me and tell me with which of the functions of the \"lme4\" package that you prepared to perform my analysis.I am waiting for your reply and thank you in advance for your sincere help.\n> Best regards,\n> Reza\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "Reza,\n\n   You have to give us a lot more information before we can help you.\n   By \"BLUPs method\" you probably mean a mixed model, but it's hard to \ntell.  Can you post a link or reference (presumably",
+      "thread_id": "thread-850277b591d1",
+      "thread_depth": 1,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-aa84898722e4",
+      "message_id": "<LO0P302MB02119CF704BE760C64EB44F2D79C2@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>",
+      "from_name": "Kim Pearce",
+      "from_email_hash": "f5b7be4225fe33c63f46b3fdec735b03786d9e17fd9d780246d7d9ad7d24ac19",
+      "date": "2024-09-04T11:54:51Z",
+      "subject": "[R-sig-ME] lme4 for a 4 level hierarchy",
+      "subject_clean": "lme4 for a 4 level hierarchy",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\n\nIf I may, I'd like to ask if I am visualising the correct syntax to use for a hypothetical situation using a mixed effects logistic regression with a 4 level hierarchy.\n\nSay we have nurses which are nested within wards and the wards are nested within hospitals and hospitals are nested within regions of the UK. Each nurse has a binary response recorded (Y). Nurses are at level 1, wards at level 2, hospitals at level 3 and regions at level 4.  Say each ward has one category of an ordered 3 category intervention applied where a higher ordered category of intervention was hypothesised to affect a nurse's binary response.\n\nHypothetically, I wish to generate a model with a fixed effect for \"Intervention\" and random (and fixed) intercepts for (i) each region, (ii) each region x hospital combination and (iii) each region x hospital x ward combination.  Would the following syntax be appropriate?\n\nNote intervention appears in the model as a factor below.\n\nm1<-glmer(Y~interventionf+(1|region/hospital/ward),data=data,family=binomial,control=glmerControl(optimizer=\"bobyqa\"))\n\nMany thanks for your views.\nKind regards,\nKim\n\nDr Kim Pearce PhD, CStat, Fellow HEA\nNewcastle University",
+      "body_snippet": "Hello everyone,\n\nIf I may, I'd like to ask if I am visualising the correct syntax to use for a hypothetical situation using a mixed effects logistic regression with a 4 level hierarchy.\n\nSay we have n",
+      "thread_id": "thread-aa84898722e4",
+      "thread_depth": 0,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-92efd2e78554",
+      "message_id": "<CAJuCY5yvgeCYJ83TNkg1BfTxSEOB=0LR+WntzSWWYb2ttSwm=g@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2024-09-04T14:48:05+02:00",
+      "subject": "[R-sig-ME] lme4 for a 4 level hierarchy",
+      "subject_clean": "lme4 for a 4 level hierarchy",
+      "in_reply_to": "<LO0P302MB02119CF704BE760C64EB44F2D79C2@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>",
+      "references": [
+        "<LO0P302MB02119CF704BE760C64EB44F2D79C2@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "Dear Kim,\n\nSince every nurse has a single binary response, you can summarise the data\nat the ward level\nc(number of nurse success, number of nurses failure)\nIn this case the ward random effect would be an observation level random\neffect. I'm not sure if you want that.\n\nBest wishes,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\n*Postadres:* Koning Albert II-laan 15 bus 186, 1210 Brussel\n*Poststukken die naar dit adres worden gestuurd, worden ingescand en\ndigitaal aan de geadresseerde bezorgd. Zo kan de Vlaamse overheid haar\ndossiers volledig digitaal behandelen. Poststukken met de vermelding\n?vertrouwelijk? worden niet ingescand, maar ongeopend aan de geadresseerde\nbezorgd.*\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp wo 4 sep 2024 om 13:55 schreef Kim Pearce via R-sig-mixed-models <\nr-sig-mixed-models at r-project.org>:\n\n>\n> Hello everyone,\n>\n> If I may, I'd like to ask if I am visualising the correct syntax to use\n> for a hypothetical situation using a mixed effects logistic regression with\n> a 4 level hierarchy.\n>\n> Say we have nurses which are nested within wards and the wards are nested\n> within hospitals and hospitals are nested within regions of the UK. Each\n> nurse has a binary response recorded (Y). Nurses are at level 1, wards at\n> level 2, hospitals at level 3 and regions at level 4.  Say each ward has\n> one category of an ordered 3 category intervention applied where a higher\n> ordered category of intervention was hypothesised to affect a nurse's\n> binary response.\n>\n> Hypothetically, I wish to generate a model with a fixed effect for\n> \"Intervention\" and random (and fixed) intercepts for (i) each region, (ii)\n> each region x hospital combination and (iii) each region x hospital x ward\n> combination.  Would the following syntax be appropriate?\n>\n> Note intervention appears in the model as a factor below.\n>\n>\n> m1<-glmer(Y~interventionf+(1|region/hospital/ward),data=data,family=binomial,control=glmerControl(optimizer=\"bobyqa\"))\n>\n> Many thanks for your views.\n> Kind regards,\n> Kim\n>\n> Dr Kim Pearce PhD, CStat, Fellow HEA\n> Newcastle University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Kim,\n\nSince every nurse has a single binary response, you can summarise the data\nat the ward level\nc(number of nurse success, number of nurses failure)\nIn this case the ward random effect would b",
+      "thread_id": "thread-aa84898722e4",
+      "thread_depth": 1,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-febb3443207e",
+      "message_id": "<PR3P195MB06845C9A38CFCA26BDAAE91EE29C2@PR3P195MB0684.EURP195.PROD.OUTLOOK.COM>",
+      "from_name": "Noelia Valderrama",
+      "from_email_hash": "612c661e4d2229318f9aae48b1f3ea11e95f2f6cfcbef6d42aaa132b37a32d86",
+      "date": "2024-09-04T14:47:25Z",
+      "subject": "[R-sig-ME] Logistic mixed model selection",
+      "subject_clean": "Logistic mixed model selection",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear community,\n\nI am currently evaluating the presence / absence of snails in the Southern part of Uganda. My study involves 56 water-contact sites, categorized into 4 types (lake, wetland, stream, spring). Each site has been sampled at least 20 times over the past 2 years and a half.\n\nI built a logistic mixed-effect model with the following structure:\n\nsnail_pres ~ precipitation + temperature + Site.type * NDVI + elevation + flow_accumulation + slope_steepness + (1 | Watercontactsite)\n\nFor model selection, I generated all possible combinations of variables 2n-1 = 127 and ranked them by AIC. Based on the recommendation that models with an AIC difference of less than 2 are considered comparable, I selected all models within this interval. I then calculated the marginal and conditional R2  using the r.squaredGLMM() function from the MuMIn package. From this subset of models, I chose the one with the highest R2 values.\n\nI have two datasets with the same variables, one sampled by citizen scientists and the other by an expert. My goal is to compare the best models for each dataset to determine if the same variables are significant.\n\nGiven the mixed opinions on the use of R? with mixed models, I want to ensure that my approach is correct. This paper [https://besjournals.onlinelibrary.wiley.com/doi/10.1111/j.2041-210x.2012.00261.x] suggests that using R? with binomial responses is acceptable, but I would appreciate any feedback or suggestions to refine my methodology.\n\nThank you so much for your suggestions!\nBest regards,\n\nNoelia\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear community,\n\nI am currently evaluating the presence / absence of snails in the Southern part of Uganda. My study involves 56 water-contact sites, categorized into 4 types (lake, wetland, stream, s",
+      "thread_id": "thread-febb3443207e",
+      "thread_depth": 0,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-676fdb56d3de",
+      "message_id": "<LO0P302MB02119BED9D2CEA11BC97F471D79D2@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>",
+      "from_name": "Kim Pearce",
+      "from_email_hash": "f5b7be4225fe33c63f46b3fdec735b03786d9e17fd9d780246d7d9ad7d24ac19",
+      "date": "2024-09-05T07:16:00Z",
+      "subject": "[R-sig-ME] lme4 for a 4 level hierarchy : revisited",
+      "subject_clean": "lme4 for a 4 level hierarchy : revisited",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\n\nI am rephrasing the question I sent to the list yesterday for clarity and wondered if anyone has any further views?  \n\nMy example yesterday was hypothetical and I was questioning whether the syntax I provide below (including the term (1|region/hospital/ward)) is appropriate for a 4 level hierarchical model.  This term is an extension of that detailed for a 3 level hierarchy in Table 2 (page 7) of the paper \"Fitting Linear Mixed-Effects Models Using lme4\" by Douglas Bates, Martin M?chler, Ben Bolker and Steve Walker. In this document, the authors stipulate that a term of the form (1|g1/g2) would mean that a model would be generated with the intercept varying among (i) g1 and (ii) g2 within g1  (i.e. intercepts would be generated (i) for each level of g1 and (ii) for each level produced by the g1 x g2 combination).\n\nI discuss a mixed effects logistic regression below with a 4 level hierarchy but the term (1|region/hospital/ward) would be appropriate too if my response had been of a continuous nature and we were instead using lmer() rather than glmer().\n\nIn my hypothetical example, we have nurses which are nested within wards and the wards are nested within hospitals and hospitals are nested within regions of the UK. Each nurse has a binary response recorded (Y). Nurses are at level 1, wards at level 2, hospitals at level 3 and regions at level 4.  Say each ward has one category of an ordered 3 category intervention applied where a higher ordered category of intervention was hypothesised to affect a nurse's binary response.\n\nHypothetically, I wish to generate a model with a fixed effect for \"Intervention\" and intercepts for (i) each region, (ii) each region x hospital combination and (iii) each region x hospital x ward combination.  Additionally, an intercept would be included in the fixed-effects portion of the model by default.  Would the following syntax be appropriate?\n\nNote intervention appears in the model as a factor below.\n\nm1<-glmer(Y~interventionf+(1|region/hospital/ward),data=data,family=binomial,control=glmerControl(optimizer=\"bobyqa\"))\n\nVarious online sources have hinted that we could approach an example such as this by considering this as a 2 level hierarchy with nurses (level 1) nested within wards (level 2) and having variables which identify hospitals and regions merely added as predictors in the model - but this seems suspect to me as we would not be considering the full nested nature of the design.\n\nMany thanks for your views.\nKind regards,\nKim\n\nDr Kim Pearce PhD, CStat, Fellow HEA\nNewcastle University",
+      "body_snippet": "Hello everyone,\n\nI am rephrasing the question I sent to the list yesterday for clarity and wondered if anyone has any further views?  \n\nMy example yesterday was hypothetical and I was questioning whet",
+      "thread_id": "thread-676fdb56d3de",
+      "thread_depth": 0,
+      "month": "2024-09"
+    },
+    {
+      "id": "msg-ef7dd1679ca1",
+      "message_id": "<CAEsSYzyjX+AYGqFSaQkN86pfmrKjmF18_0KnH_vQJU-7-_8fvQ@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2024-09-25T12:53:00+01:00",
+      "subject": "[R-sig-ME] IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "subject_clean": "IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "IN PERSON COURSE ? Hierarchical modelling in ecology (HMIE01) (Universit?\nde Sherbrooke, Canada)\n\nhttps://www.prstats.org/course/hierarchical-modelling-in-ecology-hmie01/\n\nWhere - Longueuil Campus <https://tinyurl.com/y5pntkxc> of Universit? de\nSherbrooke\n\nWhen - Monday 11th - Frtiday 15th November\n\nPlease feel free to share!\n\n\nCOURSE OVERVIEW - More than ever in biology and ecology we need statistical\nmodelling tools that go beyond the basic linear or generalized linear\nmodels. The next evolution in statistical modelling are hierarchical\nmodels, also known as mixed models. Hierarchical models are complex tools\nthat have the potential to bring your research to the next level. However,\nto understand hierarchical models properly, in this course we will briefly\ndiscuss probability theory, the frequentists and Bayesian paradigms and\n(generalized) linear models before studying hierarchical models. The\ndiscussions on hierarchical models will first focus on simple hierarchical\nmodels and as we advance in the course, we will study the basis of\nconstrained hierarchical models (i.e. in space or time) and multivariate\nhierarchical models. The course will be a mixed of theory and practice. To\nimplement the models we will discuss in the course, we will be using the\nStan programming language, a flexible programming infrastructure designed\nto construct any hierarchical models from the simplest to the most complex\nones. Stan is a programming language that is typically used through a\nhigher-level programming language such as R, python or Julia. In this\nrespect, although all our examples and practical exercises will be carried\nout using R, any language that can interface with Stan can be used.\n\nBy the end of the course, participants should have:\n\n   - Learned statistical theory to better construct, apply and interpret\n   different statistical models applied to biology and ecology.\n   - Become familiar with primary research in statistical modelling in\n   biology and ecology.\n   - Gained experience in working collaboratively on issues related to the\n   development and application of statistical methods.\n\nPlease email oliverhooker at prstatistics.com with any questions.\n\n-- \nBest wishes,\n\nOliver\n\nOliver Hooker PhD.\nPR stats\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "IN PERSON COURSE ? Hierarchical modelling in ecology (HMIE01) (Universit?\nde Sherbrooke, Canada)\n\nhttps://www.prstats.org/course/hierarchical-modelling-in-ecology-hmie01/\n\nWhere - Longueuil Campus <ht",
+      "thread_id": "thread-ef7dd1679ca1",
+      "thread_depth": 0,
+      "month": "2024-09"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-850277b591d1",
+      "subject": "Help",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "reza cheloei"
+      ],
+      "started": "2024-09-03T13:30:06+00:00",
+      "last_reply": "2024-09-03T12:12:55-04:00",
+      "root_message_id": "msg-850277b591d1"
+    },
+    {
+      "id": "thread-aa84898722e4",
+      "subject": "lme4 for a 4 level hierarchy",
+      "message_count": 2,
+      "participants": [
+        "Kim Pearce",
+        "Thierry Onkelinx"
+      ],
+      "started": "2024-09-04T11:54:51+00:00",
+      "last_reply": "2024-09-04T14:48:05+02:00",
+      "root_message_id": "msg-aa84898722e4"
+    },
+    {
+      "id": "thread-febb3443207e",
+      "subject": "Logistic mixed model selection",
+      "message_count": 1,
+      "participants": [
+        "Noelia Valderrama"
+      ],
+      "started": "2024-09-04T14:47:25+00:00",
+      "last_reply": "2024-09-04T14:47:25+00:00",
+      "root_message_id": "msg-febb3443207e"
+    },
+    {
+      "id": "thread-676fdb56d3de",
+      "subject": "lme4 for a 4 level hierarchy : revisited",
+      "message_count": 1,
+      "participants": [
+        "Kim Pearce"
+      ],
+      "started": "2024-09-05T07:16:00+00:00",
+      "last_reply": "2024-09-05T07:16:00+00:00",
+      "root_message_id": "msg-676fdb56d3de"
+    },
+    {
+      "id": "thread-ef7dd1679ca1",
+      "subject": "IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2024-09-25T12:53:00+01:00",
+      "last_reply": "2024-09-25T12:53:00+01:00",
+      "root_message_id": "msg-ef7dd1679ca1"
+    }
+  ]
+}

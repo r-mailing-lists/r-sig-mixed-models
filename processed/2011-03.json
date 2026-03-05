@@ -1,0 +1,635 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2011-03",
+  "messages": [
+    {
+      "id": "msg-c0f374a17180",
+      "message_id": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:07:22-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>"
+      ],
+      "body_plain": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predicted values from \nthe fixed effects.\n\nfor example:\nThe data is available at this link as a R workspace  \"DarrensSpace.RData\" \n(size is approx 70 kb):\nhttp://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n\n####   the random effect (1|yearMonth) is used to model serial temporal \nautocorrelation,\n####   data is  observational & ecological so unbalanced\n#### \"yall \" is abundance of the turtle species of interest\nlibrary(\"lme4\")\nfmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip+surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n\nlibrary(AICcmodavg) # another very helpful library\np.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n\n#### I can then plot and see predicted values and SE if I wanted, for \nexample....\nplot(df.p$yall) #observed values\nlines(p.fmer2f$fit) #predicted response\n\nHow can I calculate / approximate 95 CI intervals to go around this line?\n\nMany thanks again!\nDarrren\n\n\n\n-----Original Message----- \nFrom: David Duffy\nSent: Thursday, March 31, 2011 8:42 PM\nTo: Darren Norris\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nOn Thu, 31 Mar 2011, Darren Norris wrote:\n\n> I would like to obtain (then plot) the fitted (?predicted - sorry never \n> know correct term) response values and in an ideal world 95% confidence \n> (or prediction) intervals for a lmer model.\n\nPossibly I'm being obtuse, but in your fmer2f model has\n\nRandom effects:\n  Groups    Name        Variance Std.Dev.\n  yearMonth (Intercept) 0.000000 0.00000  <----\n  Residual              0.096815 0.31115\nNumber of obs: 333, groups: yearMonth, 50\n\nCheers, David Duffy.",
+      "body_snippet": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predict",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-c0f374a17180",
+      "message_id": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:07:22-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>"
+      ],
+      "body_plain": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predicted values from \nthe fixed effects.\n\nfor example:\nThe data is available at this link as a R workspace  \"DarrensSpace.RData\" \n(size is approx 70 kb):\nhttp://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n\n####   the random effect (1|yearMonth) is used to model serial temporal \nautocorrelation,\n####   data is  observational & ecological so unbalanced\n#### \"yall \" is abundance of the turtle species of interest\nlibrary(\"lme4\")\nfmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip+surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n\nlibrary(AICcmodavg) # another very helpful library\np.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n\n#### I can then plot and see predicted values and SE if I wanted, for \nexample....\nplot(df.p$yall) #observed values\nlines(p.fmer2f$fit) #predicted response\n\nHow can I calculate / approximate 95 CI intervals to go around this line?\n\nMany thanks again!\nDarrren\n\n\n\n-----Original Message----- \nFrom: David Duffy\nSent: Thursday, March 31, 2011 8:42 PM\nTo: Darren Norris\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nOn Thu, 31 Mar 2011, Darren Norris wrote:\n\n> I would like to obtain (then plot) the fitted (?predicted - sorry never \n> know correct term) response values and in an ideal world 95% confidence \n> (or prediction) intervals for a lmer model.\n\nPossibly I'm being obtuse, but in your fmer2f model has\n\nRandom effects:\n  Groups    Name        Variance Std.Dev.\n  yearMonth (Intercept) 0.000000 0.00000  <----\n  Residual              0.096815 0.31115\nNumber of obs: 333, groups: yearMonth, 50\n\nCheers, David Duffy.",
+      "body_snippet": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predict",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-c0f374a17180",
+      "message_id": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:07:22-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>"
+      ],
+      "body_plain": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predicted values from \nthe fixed effects.\n\nfor example:\nThe data is available at this link as a R workspace  \"DarrensSpace.RData\" \n(size is approx 70 kb):\nhttp://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n\n####   the random effect (1|yearMonth) is used to model serial temporal \nautocorrelation,\n####   data is  observational & ecological so unbalanced\n#### \"yall \" is abundance of the turtle species of interest\nlibrary(\"lme4\")\nfmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip+surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n\nlibrary(AICcmodavg) # another very helpful library\np.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n\n#### I can then plot and see predicted values and SE if I wanted, for \nexample....\nplot(df.p$yall) #observed values\nlines(p.fmer2f$fit) #predicted response\n\nHow can I calculate / approximate 95 CI intervals to go around this line?\n\nMany thanks again!\nDarrren\n\n\n\n-----Original Message----- \nFrom: David Duffy\nSent: Thursday, March 31, 2011 8:42 PM\nTo: Darren Norris\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nOn Thu, 31 Mar 2011, Darren Norris wrote:\n\n> I would like to obtain (then plot) the fitted (?predicted - sorry never \n> know correct term) response values and in an ideal world 95% confidence \n> (or prediction) intervals for a lmer model.\n\nPossibly I'm being obtuse, but in your fmer2f model has\n\nRandom effects:\n  Groups    Name        Variance Std.Dev.\n  yearMonth (Intercept) 0.000000 0.00000  <----\n  Residual              0.096815 0.31115\nNumber of obs: 333, groups: yearMonth, 50\n\nCheers, David Duffy.",
+      "body_snippet": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predict",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-c0f374a17180",
+      "message_id": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:07:22-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>"
+      ],
+      "body_plain": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predicted values from \nthe fixed effects.\n\nfor example:\nThe data is available at this link as a R workspace  \"DarrensSpace.RData\" \n(size is approx 70 kb):\nhttp://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n\n####   the random effect (1|yearMonth) is used to model serial temporal \nautocorrelation,\n####   data is  observational & ecological so unbalanced\n#### \"yall \" is abundance of the turtle species of interest\nlibrary(\"lme4\")\nfmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip+surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n\nlibrary(AICcmodavg) # another very helpful library\np.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n\n#### I can then plot and see predicted values and SE if I wanted, for \nexample....\nplot(df.p$yall) #observed values\nlines(p.fmer2f$fit) #predicted response\n\nHow can I calculate / approximate 95 CI intervals to go around this line?\n\nMany thanks again!\nDarrren\n\n\n\n-----Original Message----- \nFrom: David Duffy\nSent: Thursday, March 31, 2011 8:42 PM\nTo: Darren Norris\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nOn Thu, 31 Mar 2011, Darren Norris wrote:\n\n> I would like to obtain (then plot) the fitted (?predicted - sorry never \n> know correct term) response values and in an ideal world 95% confidence \n> (or prediction) intervals for a lmer model.\n\nPossibly I'm being obtuse, but in your fmer2f model has\n\nRandom effects:\n  Groups    Name        Variance Std.Dev.\n  yearMonth (Intercept) 0.000000 0.00000  <----\n  Residual              0.096815 0.31115\nNumber of obs: 333, groups: yearMonth, 50\n\nCheers, David Duffy.",
+      "body_snippet": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predict",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-c0f374a17180",
+      "message_id": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:07:22-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>"
+      ],
+      "body_plain": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predicted values from \nthe fixed effects.\n\nfor example:\nThe data is available at this link as a R workspace  \"DarrensSpace.RData\" \n(size is approx 70 kb):\nhttp://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n\n####   the random effect (1|yearMonth) is used to model serial temporal \nautocorrelation,\n####   data is  observational & ecological so unbalanced\n#### \"yall \" is abundance of the turtle species of interest\nlibrary(\"lme4\")\nfmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip+surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n\nlibrary(AICcmodavg) # another very helpful library\np.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n\n#### I can then plot and see predicted values and SE if I wanted, for \nexample....\nplot(df.p$yall) #observed values\nlines(p.fmer2f$fit) #predicted response\n\nHow can I calculate / approximate 95 CI intervals to go around this line?\n\nMany thanks again!\nDarrren\n\n\n\n-----Original Message----- \nFrom: David Duffy\nSent: Thursday, March 31, 2011 8:42 PM\nTo: Darren Norris\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nOn Thu, 31 Mar 2011, Darren Norris wrote:\n\n> I would like to obtain (then plot) the fitted (?predicted - sorry never \n> know correct term) response values and in an ideal world 95% confidence \n> (or prediction) intervals for a lmer model.\n\nPossibly I'm being obtuse, but in your fmer2f model has\n\nRandom effects:\n  Groups    Name        Variance Std.Dev.\n  yearMonth (Intercept) 0.000000 0.00000  <----\n  Residual              0.096815 0.31115\nNumber of obs: 333, groups: yearMonth, 50\n\nCheers, David Duffy.",
+      "body_snippet": "Many thanks for the reply David,\nI am probably being thick - but it is not the estimates for random effects \nthat I am interested in.....\nI am trying to get the confidence intervals around the predict",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-f69653ddb68d",
+      "message_id": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "from_name": "Andrew Miles",
+      "from_email_hash": "4755fcf77c967f1107dd969dc0aaeeb2693a9d6cb2791bff4d8bb250df8dd6df",
+      "date": "2011-03-31T20:22:36-04:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>"
+      ],
+      "body_plain": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explain - i.e. you  \ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for  \nautocorrelation using a test like the Durban-Watson test (dwtest  \n{lmtest})?  If so and it is a problem, you might want to use an OLS or  \nGLM model with corrected standard errors, which can be found in the  \nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,  \nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random  \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  \n> values from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \n> \"DarrensSpace.RData\" (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  \n> temporal autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  \n> for example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  \n> line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  \n> intervals with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  \n>> never know correct term) response values and in an ideal world 95%  \n>> confidence (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explai",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 1,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-f69653ddb68d",
+      "message_id": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "from_name": "Andrew Miles",
+      "from_email_hash": "4755fcf77c967f1107dd969dc0aaeeb2693a9d6cb2791bff4d8bb250df8dd6df",
+      "date": "2011-03-31T20:22:36-04:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>"
+      ],
+      "body_plain": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explain - i.e. you  \ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for  \nautocorrelation using a test like the Durban-Watson test (dwtest  \n{lmtest})?  If so and it is a problem, you might want to use an OLS or  \nGLM model with corrected standard errors, which can be found in the  \nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,  \nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random  \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  \n> values from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \n> \"DarrensSpace.RData\" (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  \n> temporal autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  \n> for example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  \n> line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  \n> intervals with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  \n>> never know correct term) response values and in an ideal world 95%  \n>> confidence (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explai",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 1,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-f69653ddb68d",
+      "message_id": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "from_name": "Andrew Miles",
+      "from_email_hash": "4755fcf77c967f1107dd969dc0aaeeb2693a9d6cb2791bff4d8bb250df8dd6df",
+      "date": "2011-03-31T20:22:36-04:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>"
+      ],
+      "body_plain": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explain - i.e. you  \ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for  \nautocorrelation using a test like the Durban-Watson test (dwtest  \n{lmtest})?  If so and it is a problem, you might want to use an OLS or  \nGLM model with corrected standard errors, which can be found in the  \nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,  \nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random  \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  \n> values from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \n> \"DarrensSpace.RData\" (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  \n> temporal autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  \n> for example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  \n> line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  \n> intervals with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  \n>> never know correct term) response values and in an ideal world 95%  \n>> confidence (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explai",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 1,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-f69653ddb68d",
+      "message_id": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "from_name": "Andrew Miles",
+      "from_email_hash": "4755fcf77c967f1107dd969dc0aaeeb2693a9d6cb2791bff4d8bb250df8dd6df",
+      "date": "2011-03-31T20:22:36-04:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>"
+      ],
+      "body_plain": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explain - i.e. you  \ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for  \nautocorrelation using a test like the Durban-Watson test (dwtest  \n{lmtest})?  If so and it is a problem, you might want to use an OLS or  \nGLM model with corrected standard errors, which can be found in the  \nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,  \nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random  \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  \n> values from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \n> \"DarrensSpace.RData\" (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  \n> temporal autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  \n> for example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  \n> line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  \n> intervals with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  \n>> never know correct term) response values and in an ideal world 95%  \n>> confidence (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explai",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 1,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-f69653ddb68d",
+      "message_id": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "from_name": "Andrew Miles",
+      "from_email_hash": "4755fcf77c967f1107dd969dc0aaeeb2693a9d6cb2791bff4d8bb250df8dd6df",
+      "date": "2011-03-31T20:22:36-04:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>"
+      ],
+      "body_plain": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explain - i.e. you  \ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for  \nautocorrelation using a test like the Durban-Watson test (dwtest  \n{lmtest})?  If so and it is a problem, you might want to use an OLS or  \nGLM model with corrected standard errors, which can be found in the  \nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,  \nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random  \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  \n> values from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \n> \"DarrensSpace.RData\" (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  \n> temporal autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  \n> for example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  \n> line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  \n> intervals with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  \n>> never know correct term) response values and in an ideal world 95%  \n>> confidence (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I believe what David was pointing out was that your random effect for  \nyearMonth has a variance of 0.000000.  That suggests to me that there  \nis no yearMonth level variation for your model to explai",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 1,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-399fd8a7c7af",
+      "message_id": "<SNT102-DS1143B3CCF28DE389D4241BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:45:44-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+        "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>"
+      ],
+      "body_plain": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have explained that before .....\n\nAs I explained originally I am not a statistician and will not be publishing \nin a statistical journal.\nUnfortunately I cannot \"cook my own\" and expect everyone to believe me.\nIn an ideal world I would like to able to cite functions and packages \ndeveloped by those who know what they are doing.\n\nI am hoping more experienced and infinitely more knowledgeable heads can \nshare a solution...\nwhich will enable me to publish a clear, justifiable method and reproducible \nanalysis.\nBest wishes,\nDarren\n\n-----Original Message----- \nFrom: Andrew Miles\nSent: Thursday, March 31, 2011 9:22 PM\nTo: Darren Norris\nCc: David Duffy ; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nI believe what David was pointing out was that your random effect for\nyearMonth has a variance of 0.000000.  That suggests to me that there\nis no yearMonth level variation for your model to explain - i.e. you\ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for\nautocorrelation using a test like the Durban-Watson test (dwtest\n{lmtest})?  If so and it is a problem, you might want to use an OLS or\nGLM model with corrected standard errors, which can be found in the\nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,\nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  values \n> from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \"DarrensSpace.RData\" \n> (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  temporal \n> autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  for \n> example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  intervals \n> with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  never \n>> know correct term) response values and in an ideal world 95%  confidence \n>> (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have exp",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 2,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-399fd8a7c7af",
+      "message_id": "<SNT102-DS1143B3CCF28DE389D4241BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:45:44-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+        "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>"
+      ],
+      "body_plain": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have explained that before .....\n\nAs I explained originally I am not a statistician and will not be publishing \nin a statistical journal.\nUnfortunately I cannot \"cook my own\" and expect everyone to believe me.\nIn an ideal world I would like to able to cite functions and packages \ndeveloped by those who know what they are doing.\n\nI am hoping more experienced and infinitely more knowledgeable heads can \nshare a solution...\nwhich will enable me to publish a clear, justifiable method and reproducible \nanalysis.\nBest wishes,\nDarren\n\n-----Original Message----- \nFrom: Andrew Miles\nSent: Thursday, March 31, 2011 9:22 PM\nTo: Darren Norris\nCc: David Duffy ; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nI believe what David was pointing out was that your random effect for\nyearMonth has a variance of 0.000000.  That suggests to me that there\nis no yearMonth level variation for your model to explain - i.e. you\ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for\nautocorrelation using a test like the Durban-Watson test (dwtest\n{lmtest})?  If so and it is a problem, you might want to use an OLS or\nGLM model with corrected standard errors, which can be found in the\nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,\nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  values \n> from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \"DarrensSpace.RData\" \n> (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  temporal \n> autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  for \n> example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  intervals \n> with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  never \n>> know correct term) response values and in an ideal world 95%  confidence \n>> (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have exp",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 2,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-399fd8a7c7af",
+      "message_id": "<SNT102-DS1143B3CCF28DE389D4241BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:45:44-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+        "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>"
+      ],
+      "body_plain": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have explained that before .....\n\nAs I explained originally I am not a statistician and will not be publishing \nin a statistical journal.\nUnfortunately I cannot \"cook my own\" and expect everyone to believe me.\nIn an ideal world I would like to able to cite functions and packages \ndeveloped by those who know what they are doing.\n\nI am hoping more experienced and infinitely more knowledgeable heads can \nshare a solution...\nwhich will enable me to publish a clear, justifiable method and reproducible \nanalysis.\nBest wishes,\nDarren\n\n-----Original Message----- \nFrom: Andrew Miles\nSent: Thursday, March 31, 2011 9:22 PM\nTo: Darren Norris\nCc: David Duffy ; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nI believe what David was pointing out was that your random effect for\nyearMonth has a variance of 0.000000.  That suggests to me that there\nis no yearMonth level variation for your model to explain - i.e. you\ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for\nautocorrelation using a test like the Durban-Watson test (dwtest\n{lmtest})?  If so and it is a problem, you might want to use an OLS or\nGLM model with corrected standard errors, which can be found in the\nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,\nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  values \n> from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \"DarrensSpace.RData\" \n> (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  temporal \n> autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  for \n> example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  intervals \n> with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  never \n>> know correct term) response values and in an ideal world 95%  confidence \n>> (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have exp",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 2,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-399fd8a7c7af",
+      "message_id": "<SNT102-DS1143B3CCF28DE389D4241BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:45:44-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+        "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>"
+      ],
+      "body_plain": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have explained that before .....\n\nAs I explained originally I am not a statistician and will not be publishing \nin a statistical journal.\nUnfortunately I cannot \"cook my own\" and expect everyone to believe me.\nIn an ideal world I would like to able to cite functions and packages \ndeveloped by those who know what they are doing.\n\nI am hoping more experienced and infinitely more knowledgeable heads can \nshare a solution...\nwhich will enable me to publish a clear, justifiable method and reproducible \nanalysis.\nBest wishes,\nDarren\n\n-----Original Message----- \nFrom: Andrew Miles\nSent: Thursday, March 31, 2011 9:22 PM\nTo: Darren Norris\nCc: David Duffy ; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nI believe what David was pointing out was that your random effect for\nyearMonth has a variance of 0.000000.  That suggests to me that there\nis no yearMonth level variation for your model to explain - i.e. you\ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for\nautocorrelation using a test like the Durban-Watson test (dwtest\n{lmtest})?  If so and it is a problem, you might want to use an OLS or\nGLM model with corrected standard errors, which can be found in the\nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,\nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  values \n> from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \"DarrensSpace.RData\" \n> (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  temporal \n> autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  for \n> example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  intervals \n> with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  never \n>> know correct term) response values and in an ideal world 95%  confidence \n>> (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have exp",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 2,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-399fd8a7c7af",
+      "message_id": "<SNT102-DS1143B3CCF28DE389D4241BC7BE0@phx.gbl>",
+      "from_name": "Darren Norris",
+      "from_email_hash": "8053b561ca0f62874fad0e179cd2219a83e65442d08f222199219f8540f13acd",
+      "date": "2011-03-31T21:45:44-03:00",
+      "subject": "[R-sig-ME] suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "subject_clean": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "in_reply_to": "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>",
+      "references": [
+        "<BLU0-SMTP119EECFC65E184CF387E595C7BF0@phx.gbl>",
+        "<Pine.LNX.4.64.1104010940310.4661@orpheus.qimr.edu.au>",
+        "<SNT102-DS72532B48AADD9F930FA2BC7BE0@phx.gbl>",
+        "<DAFF34AC-C99B-4F46-B195-3C4484F9B6DB@gmail.com>"
+      ],
+      "body_plain": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have explained that before .....\n\nAs I explained originally I am not a statistician and will not be publishing \nin a statistical journal.\nUnfortunately I cannot \"cook my own\" and expect everyone to believe me.\nIn an ideal world I would like to able to cite functions and packages \ndeveloped by those who know what they are doing.\n\nI am hoping more experienced and infinitely more knowledgeable heads can \nshare a solution...\nwhich will enable me to publish a clear, justifiable method and reproducible \nanalysis.\nBest wishes,\nDarren\n\n-----Original Message----- \nFrom: Andrew Miles\nSent: Thursday, March 31, 2011 9:22 PM\nTo: Darren Norris\nCc: David Duffy ; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] suggestions for estimating confidence intervals with \nonly 1.5 GB of ram?\n\nI believe what David was pointing out was that your random effect for\nyearMonth has a variance of 0.000000.  That suggests to me that there\nis no yearMonth level variation for your model to explain - i.e. you\ndon't need to use a mixed model but can use OLS or GLM.\n\nAs for the autocorrelation, have you checked your data for\nautocorrelation using a test like the Durban-Watson test (dwtest\n{lmtest})?  If so and it is a problem, you might want to use an OLS or\nGLM model with corrected standard errors, which can be found in the\nsandwich package (vcovHAC function).\n\nIf you want confidence intervals and have some time to kill,\nbootstrapping is probably a pretty good approach.\n\nAndrew Miles\n\n\nOn Mar 31, 2011, at 8:07 PM, Darren Norris wrote:\n\n> Many thanks for the reply David,\n> I am probably being thick - but it is not the estimates for random \n> effects that I am interested in.....\n> I am trying to get the confidence intervals around the predicted  values \n> from the fixed effects.\n>\n> for example:\n> The data is available at this link as a R workspace   \"DarrensSpace.RData\" \n> (size is approx 70 kb):\n> http://cid-f0a9fa3480208398.office.live.com/self.aspx/lmeData/DarrensSpace.RData\n>\n> ####   the random effect (1|yearMonth) is used to model serial  temporal \n> autocorrelation,\n> ####   data is  observational & ecological so unbalanced\n> #### \"yall \" is abundance of the turtle species of interest\n> library(\"lme4\")\n> fmer2f<-lmer(yall~yearSeason+sun+total_precip_trip+mean_temp_trip \n> +surveyArea+obscat+hour_period+(1|yearMonth),REML=FALSE,data=df.p)\n>\n> library(AICcmodavg) # another very helpful library\n> p.fmer2f<-predictSE.mer(fmer2f, df.p,type=\"response\")\n>\n> #### I can then plot and see predicted values and SE if I wanted,  for \n> example....\n> plot(df.p$yall) #observed values\n> lines(p.fmer2f$fit) #predicted response\n>\n> How can I calculate / approximate 95 CI intervals to go around this  line?\n>\n> Many thanks again!\n> Darrren\n>\n>\n>\n> -----Original Message----- From: David Duffy\n> Sent: Thursday, March 31, 2011 8:42 PM\n> To: Darren Norris\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] suggestions for estimating confidence  intervals \n> with only 1.5 GB of ram?\n>\n> On Thu, 31 Mar 2011, Darren Norris wrote:\n>\n>> I would like to obtain (then plot) the fitted (?predicted - sorry  never \n>> know correct term) response values and in an ideal world 95%  confidence \n>> (or prediction) intervals for a lmer model.\n>\n> Possibly I'm being obtuse, but in your fmer2f model has\n>\n> Random effects:\n> Groups    Name        Variance Std.Dev.\n> yearMonth (Intercept) 0.000000 0.00000  <----\n> Residual              0.096815 0.31115\n> Number of obs: 333, groups: yearMonth, 50\n>\n> Cheers, David Duffy.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Thanks Andrew,\nYes I have checked,\nYes autocorrelation does exist\nand yes in this model variance of 0.00000 but this is only one part of a \nmore general analysis that I am doing.\nsorry should have exp",
+      "thread_id": "thread-c0f374a17180",
+      "thread_depth": 2,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-61c9cb295128",
+      "message_id": "<AANLkTimJn6Yg85z53gGcBL__pRhv6gys7nGK2nq9XoJ_@mail.gmail.com>",
+      "from_name": "Elizabeth Crone",
+      "from_email_hash": "062b225ffc04c3e0ebbc766a4e4af06752f42d1c21c43621b42d58b502d8ff15",
+      "date": "2011-03-31T20:49:33-04:00",
+      "subject": "[R-sig-ME] generalized mixed models with proportion data using lme4",
+      "subject_clean": "generalized mixed models with proportion data using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit), data =\n> damage).\n\nThis accounts for your weirdly small P-values, and also possibly for\nany problems you have with overdispersion.\n\nIf I were you, I would calculate the proportions from your dot data\n(or trees as suggested this morning), then either use family =\ngaussian(link = logit) or arcsin-sqrt transform and use\ngausian/identity.\n\nIf you are really hard-core, you could input the dots as independent\nobservations, then include leaf as a random variable.\n\nGood luck,\nElizabeth\n\n-- \n****************************\nElizabeth E. Crone\nSenior Ecologist, Harvard Forest\nHarvard University\nPetersham MA 01366\nphone: (978)724-3302\nFAX: (978)724-3595\nemail: ecrone at fas.harvard.edu",
+      "body_snippet": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit",
+      "thread_id": "thread-61c9cb295128",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-61c9cb295128",
+      "message_id": "<AANLkTimJn6Yg85z53gGcBL__pRhv6gys7nGK2nq9XoJ_@mail.gmail.com>",
+      "from_name": "Elizabeth Crone",
+      "from_email_hash": "062b225ffc04c3e0ebbc766a4e4af06752f42d1c21c43621b42d58b502d8ff15",
+      "date": "2011-03-31T20:49:33-04:00",
+      "subject": "[R-sig-ME] generalized mixed models with proportion data using lme4",
+      "subject_clean": "generalized mixed models with proportion data using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit), data =\n> damage).\n\nThis accounts for your weirdly small P-values, and also possibly for\nany problems you have with overdispersion.\n\nIf I were you, I would calculate the proportions from your dot data\n(or trees as suggested this morning), then either use family =\ngaussian(link = logit) or arcsin-sqrt transform and use\ngausian/identity.\n\nIf you are really hard-core, you could input the dots as independent\nobservations, then include leaf as a random variable.\n\nGood luck,\nElizabeth\n\n-- \n****************************\nElizabeth E. Crone\nSenior Ecologist, Harvard Forest\nHarvard University\nPetersham MA 01366\nphone: (978)724-3302\nFAX: (978)724-3595\nemail: ecrone at fas.harvard.edu",
+      "body_snippet": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit",
+      "thread_id": "thread-61c9cb295128",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-61c9cb295128",
+      "message_id": "<AANLkTimJn6Yg85z53gGcBL__pRhv6gys7nGK2nq9XoJ_@mail.gmail.com>",
+      "from_name": "Elizabeth Crone",
+      "from_email_hash": "062b225ffc04c3e0ebbc766a4e4af06752f42d1c21c43621b42d58b502d8ff15",
+      "date": "2011-03-31T20:49:33-04:00",
+      "subject": "[R-sig-ME] generalized mixed models with proportion data using lme4",
+      "subject_clean": "generalized mixed models with proportion data using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit), data =\n> damage).\n\nThis accounts for your weirdly small P-values, and also possibly for\nany problems you have with overdispersion.\n\nIf I were you, I would calculate the proportions from your dot data\n(or trees as suggested this morning), then either use family =\ngaussian(link = logit) or arcsin-sqrt transform and use\ngausian/identity.\n\nIf you are really hard-core, you could input the dots as independent\nobservations, then include leaf as a random variable.\n\nGood luck,\nElizabeth\n\n-- \n****************************\nElizabeth E. Crone\nSenior Ecologist, Harvard Forest\nHarvard University\nPetersham MA 01366\nphone: (978)724-3302\nFAX: (978)724-3595\nemail: ecrone at fas.harvard.edu",
+      "body_snippet": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit",
+      "thread_id": "thread-61c9cb295128",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-61c9cb295128",
+      "message_id": "<AANLkTimJn6Yg85z53gGcBL__pRhv6gys7nGK2nq9XoJ_@mail.gmail.com>",
+      "from_name": "Elizabeth Crone",
+      "from_email_hash": "062b225ffc04c3e0ebbc766a4e4af06752f42d1c21c43621b42d58b502d8ff15",
+      "date": "2011-03-31T20:49:33-04:00",
+      "subject": "[R-sig-ME] generalized mixed models with proportion data using lme4",
+      "subject_clean": "generalized mixed models with proportion data using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit), data =\n> damage).\n\nThis accounts for your weirdly small P-values, and also possibly for\nany problems you have with overdispersion.\n\nIf I were you, I would calculate the proportions from your dot data\n(or trees as suggested this morning), then either use family =\ngaussian(link = logit) or arcsin-sqrt transform and use\ngausian/identity.\n\nIf you are really hard-core, you could input the dots as independent\nobservations, then include leaf as a random variable.\n\nGood luck,\nElizabeth\n\n-- \n****************************\nElizabeth E. Crone\nSenior Ecologist, Harvard Forest\nHarvard University\nPetersham MA 01366\nphone: (978)724-3302\nFAX: (978)724-3595\nemail: ecrone at fas.harvard.edu",
+      "body_snippet": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit",
+      "thread_id": "thread-61c9cb295128",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-61c9cb295128",
+      "message_id": "<AANLkTimJn6Yg85z53gGcBL__pRhv6gys7nGK2nq9XoJ_@mail.gmail.com>",
+      "from_name": "Elizabeth Crone",
+      "from_email_hash": "062b225ffc04c3e0ebbc766a4e4af06752f42d1c21c43621b42d58b502d8ff15",
+      "date": "2011-03-31T20:49:33-04:00",
+      "subject": "[R-sig-ME] generalized mixed models with proportion data using lme4",
+      "subject_clean": "generalized mixed models with proportion data using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit), data =\n> damage).\n\nThis accounts for your weirdly small P-values, and also possibly for\nany problems you have with overdispersion.\n\nIf I were you, I would calculate the proportions from your dot data\n(or trees as suggested this morning), then either use family =\ngaussian(link = logit) or arcsin-sqrt transform and use\ngausian/identity.\n\nIf you are really hard-core, you could input the dots as independent\nobservations, then include leaf as a random variable.\n\nGood luck,\nElizabeth\n\n-- \n****************************\nElizabeth E. Crone\nSenior Ecologist, Harvard Forest\nHarvard University\nPetersham MA 01366\nphone: (978)724-3302\nFAX: (978)724-3595\nemail: ecrone at fas.harvard.edu",
+      "body_snippet": "Sacha:\n\nThe way you have implemented the model uses dots, not leaves, as\nindependent observations:\n\n> y<-cbind(chewdots,leafdots)\n>\n> mod1<-glmer(y~pair + treatment + (1|treeid), binomial(link = logit",
+      "thread_id": "thread-61c9cb295128",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-47b18c8975db",
+      "message_id": "<4D955151.10302@gmail.com>",
+      "from_name": "Sebastián Daza",
+      "from_email_hash": "352ab4d1a7a97af569c55bfa48ecfbbd822828e6dffca011d8a972cf8953e60a",
+      "date": "2011-03-31T23:15:13-05:00",
+      "subject": "[R-sig-ME] analysis of longitudinal data",
+      "subject_clean": "analysis of longitudinal data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n\nSebasti?n Daza\nsebastian.daza at gmail.com",
+      "body_snippet": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n",
+      "thread_id": "thread-47b18c8975db",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-47b18c8975db",
+      "message_id": "<4D955151.10302@gmail.com>",
+      "from_name": "Sebastián Daza",
+      "from_email_hash": "352ab4d1a7a97af569c55bfa48ecfbbd822828e6dffca011d8a972cf8953e60a",
+      "date": "2011-03-31T23:15:13-05:00",
+      "subject": "[R-sig-ME] analysis of longitudinal data",
+      "subject_clean": "analysis of longitudinal data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n\nSebasti?n Daza\nsebastian.daza at gmail.com",
+      "body_snippet": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n",
+      "thread_id": "thread-47b18c8975db",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-47b18c8975db",
+      "message_id": "<4D955151.10302@gmail.com>",
+      "from_name": "Sebastián Daza",
+      "from_email_hash": "352ab4d1a7a97af569c55bfa48ecfbbd822828e6dffca011d8a972cf8953e60a",
+      "date": "2011-03-31T23:15:13-05:00",
+      "subject": "[R-sig-ME] analysis of longitudinal data",
+      "subject_clean": "analysis of longitudinal data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n\nSebasti?n Daza\nsebastian.daza at gmail.com",
+      "body_snippet": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n",
+      "thread_id": "thread-47b18c8975db",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-47b18c8975db",
+      "message_id": "<4D955151.10302@gmail.com>",
+      "from_name": "Sebastián Daza",
+      "from_email_hash": "352ab4d1a7a97af569c55bfa48ecfbbd822828e6dffca011d8a972cf8953e60a",
+      "date": "2011-03-31T23:15:13-05:00",
+      "subject": "[R-sig-ME] analysis of longitudinal data",
+      "subject_clean": "analysis of longitudinal data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n\nSebasti?n Daza\nsebastian.daza at gmail.com",
+      "body_snippet": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n",
+      "thread_id": "thread-47b18c8975db",
+      "thread_depth": 0,
+      "month": "2011-03"
+    },
+    {
+      "id": "msg-47b18c8975db",
+      "message_id": "<4D955151.10302@gmail.com>",
+      "from_name": "Sebastián Daza",
+      "from_email_hash": "352ab4d1a7a97af569c55bfa48ecfbbd822828e6dffca011d8a972cf8953e60a",
+      "date": "2011-03-31T23:15:13-05:00",
+      "subject": "[R-sig-ME] analysis of longitudinal data",
+      "subject_clean": "analysis of longitudinal data",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n\nSebasti?n Daza\nsebastian.daza at gmail.com",
+      "body_snippet": "Hi everyone,\nDoes anyone know how to define time dependent error structure using lmer?\nIs that possible with that package? If it is not, what other \npossibilities I have in R?\n\nThank you in advance.\n\n",
+      "thread_id": "thread-47b18c8975db",
+      "thread_depth": 0,
+      "month": "2011-03"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-61c9cb295128",
+      "subject": "generalized mixed models with proportion data using lme4",
+      "message_count": 1,
+      "participants": [
+        "Elizabeth Crone"
+      ],
+      "started": "2011-03-31T20:49:33-04:00",
+      "last_reply": "2011-03-31T20:49:33-04:00",
+      "root_message_id": "msg-61c9cb295128"
+    },
+    {
+      "id": "thread-61c9cb295128",
+      "subject": "generalized mixed models with proportion data using lme4",
+      "message_count": 1,
+      "participants": [
+        "Elizabeth Crone"
+      ],
+      "started": "2011-03-31T20:49:33-04:00",
+      "last_reply": "2011-03-31T20:49:33-04:00",
+      "root_message_id": "msg-61c9cb295128"
+    },
+    {
+      "id": "thread-61c9cb295128",
+      "subject": "generalized mixed models with proportion data using lme4",
+      "message_count": 1,
+      "participants": [
+        "Elizabeth Crone"
+      ],
+      "started": "2011-03-31T20:49:33-04:00",
+      "last_reply": "2011-03-31T20:49:33-04:00",
+      "root_message_id": "msg-61c9cb295128"
+    },
+    {
+      "id": "thread-61c9cb295128",
+      "subject": "generalized mixed models with proportion data using lme4",
+      "message_count": 1,
+      "participants": [
+        "Elizabeth Crone"
+      ],
+      "started": "2011-03-31T20:49:33-04:00",
+      "last_reply": "2011-03-31T20:49:33-04:00",
+      "root_message_id": "msg-61c9cb295128"
+    },
+    {
+      "id": "thread-61c9cb295128",
+      "subject": "generalized mixed models with proportion data using lme4",
+      "message_count": 1,
+      "participants": [
+        "Elizabeth Crone"
+      ],
+      "started": "2011-03-31T20:49:33-04:00",
+      "last_reply": "2011-03-31T20:49:33-04:00",
+      "root_message_id": "msg-61c9cb295128"
+    },
+    {
+      "id": "thread-c0f374a17180",
+      "subject": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "message_count": 1,
+      "participants": [
+        "Darren Norris"
+      ],
+      "started": "2011-03-31T21:07:22-03:00",
+      "last_reply": "2011-03-31T21:07:22-03:00",
+      "root_message_id": "msg-c0f374a17180"
+    },
+    {
+      "id": "thread-c0f374a17180",
+      "subject": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "message_count": 1,
+      "participants": [
+        "Darren Norris"
+      ],
+      "started": "2011-03-31T21:07:22-03:00",
+      "last_reply": "2011-03-31T21:07:22-03:00",
+      "root_message_id": "msg-c0f374a17180"
+    },
+    {
+      "id": "thread-c0f374a17180",
+      "subject": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "message_count": 1,
+      "participants": [
+        "Darren Norris"
+      ],
+      "started": "2011-03-31T21:07:22-03:00",
+      "last_reply": "2011-03-31T21:07:22-03:00",
+      "root_message_id": "msg-c0f374a17180"
+    },
+    {
+      "id": "thread-c0f374a17180",
+      "subject": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "message_count": 11,
+      "participants": [
+        "Andrew Miles",
+        "Darren Norris"
+      ],
+      "started": "2011-03-31T21:07:22-03:00",
+      "last_reply": "2011-03-31T21:45:44-03:00",
+      "root_message_id": "msg-c0f374a17180"
+    },
+    {
+      "id": "thread-c0f374a17180",
+      "subject": "suggestions for estimating confidence intervals with only 1.5 GB of ram?",
+      "message_count": 1,
+      "participants": [
+        "Darren Norris"
+      ],
+      "started": "2011-03-31T21:07:22-03:00",
+      "last_reply": "2011-03-31T21:07:22-03:00",
+      "root_message_id": "msg-c0f374a17180"
+    },
+    {
+      "id": "thread-47b18c8975db",
+      "subject": "analysis of longitudinal data",
+      "message_count": 1,
+      "participants": [
+        "Sebastián Daza"
+      ],
+      "started": "2011-03-31T23:15:13-05:00",
+      "last_reply": "2011-03-31T23:15:13-05:00",
+      "root_message_id": "msg-47b18c8975db"
+    },
+    {
+      "id": "thread-47b18c8975db",
+      "subject": "analysis of longitudinal data",
+      "message_count": 1,
+      "participants": [
+        "Sebastián Daza"
+      ],
+      "started": "2011-03-31T23:15:13-05:00",
+      "last_reply": "2011-03-31T23:15:13-05:00",
+      "root_message_id": "msg-47b18c8975db"
+    },
+    {
+      "id": "thread-47b18c8975db",
+      "subject": "analysis of longitudinal data",
+      "message_count": 1,
+      "participants": [
+        "Sebastián Daza"
+      ],
+      "started": "2011-03-31T23:15:13-05:00",
+      "last_reply": "2011-03-31T23:15:13-05:00",
+      "root_message_id": "msg-47b18c8975db"
+    },
+    {
+      "id": "thread-47b18c8975db",
+      "subject": "analysis of longitudinal data",
+      "message_count": 1,
+      "participants": [
+        "Sebastián Daza"
+      ],
+      "started": "2011-03-31T23:15:13-05:00",
+      "last_reply": "2011-03-31T23:15:13-05:00",
+      "root_message_id": "msg-47b18c8975db"
+    },
+    {
+      "id": "thread-47b18c8975db",
+      "subject": "analysis of longitudinal data",
+      "message_count": 1,
+      "participants": [
+        "Sebastián Daza"
+      ],
+      "started": "2011-03-31T23:15:13-05:00",
+      "last_reply": "2011-03-31T23:15:13-05:00",
+      "root_message_id": "msg-47b18c8975db"
+    }
+  ]
+}

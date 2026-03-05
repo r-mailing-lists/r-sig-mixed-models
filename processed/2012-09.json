@@ -1,0 +1,96 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2012-09",
+  "messages": [
+    {
+      "id": "msg-6129e7c8e023",
+      "message_id": "<loom.20121001T004255-34@post.gmane.org>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2012-09-30T22:47:02Z",
+      "subject": "[R-sig-ME] Subject-wise log-likelihood gradient and hessian",
+      "subject_clean": "Subject-wise log-likelihood gradient and hessian",
+      "in_reply_to": null,
+      "references": [
+        "<1349019834.24153.YahooMailNeo@web160702.mail.bf1.yahoo.com>"
+      ],
+      "body_plain": "Rubem Kaipper Ceratti <rubem_ceratti at ...> writes:\n\n> \n> Hi all,\n> \n> I'd like to know if it's possible to extract the subject-wise \n> gradient and hessian of the marginal\n> log-likelihood from a 'mer' object. \n\n  Can you explain in slightly greater detail?  What are the\nparameters you're taking the gradient and hessian with respect\nto -- sounds like the fixed-effect parameters (beta)?  How do\nyou define \"subject-wise\"?  The marginal likelihood is only\ndefined with respect to the full data set, isn't it?\n\n> Using the 'cbpp' dataset as an example:\n> \n> library(lme4)\n> \n> (m1 <- glmer(size ~ period+(1|herd), cbpp, poisson))\n\n \n> Since apparently there's no way to get what I need directly, I've\n> thought about splitting the data frame by 'herd', updating m1 on\n> each subset and then calling numDeriv::grad() and\n> numDeriv::hessian() on the deviance function of each updated object\n> at the estimates from m1, but I couldn't get this approach to work.\n> Any input is appreciated. \n\n  I assume you're already using the development version, as\nthe deviance function is only available in the development version?\n\n>  Thanks (and sorry for the broken english),\n\n English seems fine -- it's the technical description that's\neluding me a bit.",
+      "body_snippet": "Rubem Kaipper Ceratti <rubem_ceratti at ...> writes:\n\n> \n> Hi all,\n> \n> I'd like to know if it's possible to extract the subject-wise \n> gradient and hessian of the marginal\n> log-likelihood from a 'm",
+      "thread_id": "thread-6129e7c8e023",
+      "thread_depth": 0,
+      "month": "2012-09"
+    },
+    {
+      "id": "msg-f0d22a0f076a",
+      "message_id": "<loom.20121001T004722-180@post.gmane.org>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2012-09-30T22:51:50Z",
+      "subject": "[R-sig-ME] nlme vs nlmer",
+      "subject_clean": "nlme vs nlmer",
+      "in_reply_to": null,
+      "references": [
+        "<k44h67$tcp$1@ger.gmane.org>"
+      ],
+      "body_plain": "Christof Klu? <ckluss at ...> writes:\n\n> can you give me a hint how to convert a nlme(..) like\n> \n> nlme(Y ~ fun(X,a,b,c),\n>      fixed  = list(a ~ 1, b ~ 1, c ~ 1),\n>      random = list(a ~ 1, b ~ 1, c ~ 1),\n>      groups = ~ location,\n>      data   = measurements,\n>      start  = c(a = 350, b = 0.2, c = 120))\n> \n> to an equivalent nlmer(...)? The following seems to be wrong\n> \n> nlmer(Y ~ fun(X,a,b,c) ~ (a  + b + c | location),\n>               data = measurements,\n>               start = c(a = 350, b = 0.2, c = 120))\n> \n> it throws \"gradient attribute of evaluated model must be a numeric matrix\"\n\n  I believe you need to define your own gradient function explicitly\n(but you may  be able do it with the deriv() function) -- searching the archives\nfor examples gives e.g.\n\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q4/006967.html\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q1/005727.html",
+      "body_snippet": "Christof Klu? <ckluss at ...> writes:\n\n> can you give me a hint how to convert a nlme(..) like\n> \n> nlme(Y ~ fun(X,a,b,c),\n>      fixed  = list(a ~ 1, b ~ 1, c ~ 1),\n>      random = list(a ~ 1, b ~ 1,",
+      "thread_id": "thread-f0d22a0f076a",
+      "thread_depth": 0,
+      "month": "2012-09"
+    },
+    {
+      "id": "msg-3c84c6915800",
+      "message_id": "<loom.20121001T005224-411@post.gmane.org>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "18f6c2b0b79bec76f7afe0fad5e36fffd27297982eaee9a3a21101b9461258e5",
+      "date": "2012-09-30T23:00:02Z",
+      "subject": "[R-sig-ME] nlme-function: Step halving factor reduced below minimum in PNLS step",
+      "subject_clean": "nlme-function: Step halving factor reduced below minimum in PNLS step",
+      "in_reply_to": null,
+      "references": [
+        "<k3uu8d$mg6$1@ger.gmane.org>"
+      ],
+      "body_plain": "Christof Klu? <ckluss at ...> writes:\n\n> \n> Hi\n> \n> can I avoid the error \"Step halving factor reduced below minimum in PNLS\n> step\" by setting a control parameter to a lower value?\n> \n\n  I believe it's the minScale parameter in nlmeControl() (see ?nlmeControl).\nHowever, there's generally a fairly narrow window between (on the one hand)\nproblems that work OK with the default parameters and (on the other hand)\nproblems that can be made to work by tweaking the parameters -- once you\nstart having to adjust the control parameters, the odds are reasonably\nhigh that you're going to have lots of trouble fitting the model no\nmatter what you do ...\n  You might check out AD Model Builder as an alternative, although there's\nquite a learning curve ...\n\n  Ben Bolker",
+      "body_snippet": "Christof Klu? <ckluss at ...> writes:\n\n> \n> Hi\n> \n> can I avoid the error \"Step halving factor reduced below minimum in PNLS\n> step\" by setting a control parameter to a lower value?\n> \n\n  I believe it",
+      "thread_id": "thread-3c84c6915800",
+      "thread_depth": 0,
+      "month": "2012-09"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-6129e7c8e023",
+      "subject": "Subject-wise log-likelihood gradient and hessian",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2012-09-30T22:47:02+00:00",
+      "last_reply": "2012-09-30T22:47:02+00:00",
+      "root_message_id": "msg-6129e7c8e023"
+    },
+    {
+      "id": "thread-f0d22a0f076a",
+      "subject": "nlme vs nlmer",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2012-09-30T22:51:50+00:00",
+      "last_reply": "2012-09-30T22:51:50+00:00",
+      "root_message_id": "msg-f0d22a0f076a"
+    },
+    {
+      "id": "thread-3c84c6915800",
+      "subject": "nlme-function: Step halving factor reduced below minimum in PNLS step",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2012-09-30T23:00:02+00:00",
+      "last_reply": "2012-09-30T23:00:02+00:00",
+      "root_message_id": "msg-3c84c6915800"
+    }
+  ]
+}

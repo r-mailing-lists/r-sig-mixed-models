@@ -1,0 +1,377 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2023-11",
+  "messages": [
+    {
+      "id": "msg-53ca1e6ad70f",
+      "message_id": "<SN4PR03MB676775497B8C71920466176B8DAAA@SN4PR03MB6767.namprd03.prod.outlook.com>",
+      "from_name": "Cones, Alexandra G.",
+      "from_email_hash": "0442f2b022ca39894a83cbe5a90a28c2091e62f0f3323570d996f80a00b5db4b",
+      "date": "2023-11-06T13:00:44Z",
+      "subject": "[R-sig-ME] Specifying bivariate priors with different distributions in MCMCglmm",
+      "subject_clean": "Specifying bivariate priors with different distributions in MCMCglmm",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello all!\n\nI am having trouble specifying my priors for a bivariate model in MCMCglmm with two response variable distributions.  I want to see if they covary at the among-individual level (\"ID\"). I have two response variables, one is gaussian (parental feeding rate of chicks per hour \"Rate_h\") and one is binomial (proportion of chicks that survive \"propfledged\").\n\nI am able to specify the priors and model successfully for the binomial case when it is univariate:\n\nprior1 <- list(G = list(G1 = list(V = diag(1), nu = 0.002)), R = list(V = 0.5, nu = 0.002, fix = T))\nmodel1<-MCMCglmm(propfledged~1,random=~ID,nitt=100000,rcov=~trait:units,thin=10,burnin=1000,prior=prior1,data=dat,family=\"categorical\",verbose=FALSE)\n\nBased on my reading, I hold the residual variance at a fixed value to improve the running of the model in the binomial case. However, when I want to set up the bivariate, I don't know how to properly set up my priors when I have both a gaussian and binomial response.\n\nI tried this for the bivariate but was told that V is the wrong dimension for some prior$G/prior$R elements:\n\nprior2<-list(R=list(V=diag(2),nu=0.002), G=list(G1=list(V=diag(2), nu=0.002)))\nbivmodel<-MCMCglmm(cbind(Rate_h,propfledged)~trait,\n                    random=~us(trait):ID,\n                    rcov=~idh(trait):units,\n                    family=c(\"gaussian\",\"categorical\"),\n                    nitt=100000,thin=10,burnin=1000,prior=prior2,data=dat,verbose=FALSE)\n\nI also tried fixing the residual variance in the bivariate and come up with the same problem (V is the wrong dimension for some prior$G/prior$R elements):\n\nprior3<-list(R = list(V = 0.5, nu = 0.002, fix = T), G=list(G1=list(V=diag(2), nu=0.002)))\nbivmodel2<-MCMCglmm(cbind(Rate_h,propfledged)~trait,\n                    random=~us(trait):ID,\n                    rcov=~idh(trait):units,\n                    family=c(\"gaussian\",\"categorical\"),\n                    nitt=100000,thin=10,burnin=1000,prior=prior3,data=dat,verbose=FALSE)\n\nHow do I correctly specify my priors here?\n\nThank you for your time!\n\nCheers,\nAlex Cones\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all!\n\nI am having trouble specifying my priors for a bivariate model in MCMCglmm with two response variable distributions.  I want to see if they covary at the among-individual level (\"ID\"). I h",
+      "thread_id": "thread-53ca1e6ad70f",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-e908e38c88e3",
+      "message_id": "<CAL7OOdweJUziZLnr1z4hLp3T=57mybC7yA7MwhHVdv5f4cDU6g@mail.gmail.com>",
+      "from_name": "Adam Clark",
+      "from_email_hash": "e7bd90d8e433b44adf9743392c6e3ab37e79fcd13b2d714f1880294c3c1fc4f1",
+      "date": "2023-11-06T14:03:26+01:00",
+      "subject": "[R-sig-ME] Non-zero residual sums, correlation structure (nlme)",
+      "subject_clean": "Non-zero residual sums, correlation structure (nlme)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi all,\n\nMy colleague and I were working through some examples in the Pinheiro and\nBates book, and ran into a bit of a puzzle. When we try fitting a simple\nintercept-only model to the default Orthodont dataset that includes a\ncorrelation structure, the residuals of the model no longer add up to 0 -\nrather, they diverge from zero quite a bit. This divergence seems to be\nmuch larger than we would expect simply from finite computational error.\n\nI'm sure that the answer is that I'm missing something fundamental about\nwhat the correlation structure is doing to the model residuals, but after\nquite a bit of Googling, I'm none the wiser.\n\nCan anyone suggest a source that I could read (or an answer) that could\nexplain this behaviour?\n\nMany thanks,\nAdam Clark\n\n\n### example code\nrequire(nlme)\ndata(Orthodont)\n## 1. fit mixed model\nmod_lme = lme(distance ~ 1, Orthodont, random = ~1|Subject)\nresid_lme = Orthodont$distance-predict(mod_lme, level = 0)\n\n# raw residuals\nsum(resid_lme) # ~0\n\n# normalised residuals\nsum(residuals(mod_lme, type = \"n\")) # ~0\n\n\n## 2. fit mixed model with correlation structure\nmod_lme2 = lme(distance ~ 1, Orthodont, random = ~1|Subject, correlation =\ncorSymm(form = ~1|Subject))\nresid_lme2 = Orthodont$distance-predict(mod_lme2, level = 0)\n\n# raw residuals\nsum(resid_lme2) # -11.9!\n\n# normalised residuals\nsum(residuals(mod_lme2, type = \"n\")) # 17.8!\n\n-- \nAdam Thomas Clark\nAsst. Professor\nKarl-Franzens-Universit?t Graz\nInstitut f?r Biologie\nwww.adamclarktheecologist.com\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nMy colleague and I were working through some examples in the Pinheiro and\nBates book, and ran into a bit of a puzzle. When we try fitting a simple\nintercept-only model to the default Orthodon",
+      "thread_id": "thread-e908e38c88e3",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-1a04e3e1c7c6",
+      "message_id": "<LV3PR07MB9943510C81DC2A682924352ED1AAA@LV3PR07MB9943.namprd07.prod.outlook.com>",
+      "from_name": "Hedyeh Ahmadi",
+      "from_email_hash": "598dfd221e7bd0fb260d4ec007bb5ecd5a864454cc65f6d6ca18bce73c244e50",
+      "date": "2023-11-06T16:37:53Z",
+      "subject": "[R-sig-ME] Looking for a multi-level mixture models",
+      "subject_clean": "Looking for a multi-level mixture models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello all,\nI am looking for an R package that can implement multi-level finite mixture models with more than 2 levels (at least 3 levels).\n\nI know flexmix() can implement repeated measure but that's about it.\n\nAny suggestions and/or resources would be greatly appreciated.\n\nBest,\n\nHedyeh Ahmadi, Ph.D.\nStatistician\nKeck School of Medicine\nDepartment of Preventive Medicine\nUniversity of Southern California\n\nLinkedIn\nwww.linkedin.com/in/hedyeh-ahmadi<http://www.linkedin.com/in/hedyeh-ahmadi>\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\nI am looking for an R package that can implement multi-level finite mixture models with more than 2 levels (at least 3 levels).\n\nI know flexmix() can implement repeated measure but that's a",
+      "thread_id": "thread-1a04e3e1c7c6",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-41dbb4eb5618",
+      "message_id": "<d11c7cd3-e103-4818-afbb-9b88e5e873ef@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-11-06T11:46:41-05:00",
+      "subject": "[R-sig-ME] Looking for a multi-level mixture models",
+      "subject_clean": "Looking for a multi-level mixture models",
+      "in_reply_to": "<LV3PR07MB9943510C81DC2A682924352ED1AAA@LV3PR07MB9943.namprd07.prod.outlook.com>",
+      "references": [
+        "<LV3PR07MB9943510C81DC2A682924352ED1AAA@LV3PR07MB9943.namprd07.prod.outlook.com>"
+      ],
+      "body_plain": "Unfortunately that's sort of off-topic for this list (which covers \n*mixed* models, i.e. hierarchical models where there are *observed* \ngrouping variables, not *finite/discrete mixture* models, which model \n*unobserved* or latent groups), but possibly someone will have a helpful \nsuggestion anyway.\n\nOn 2023-11-06 11:37 a.m., Hedyeh Ahmadi wrote:\n> Hello all,\n> I am looking for an R package that can implement multi-level finite mixture models with more than 2 levels (at least 3 levels).\n> \n> I know flexmix() can implement repeated measure but that's about it.\n> \n> Any suggestions and/or resources would be greatly appreciated.\n> \n> Best,\n> \n> Hedyeh Ahmadi, Ph.D.\n> Statistician\n> Keck School of Medicine\n> Department of Preventive Medicine\n> University of Southern California\n> \n> LinkedIn\n> www.linkedin.com/in/hedyeh-ahmadi<http://www.linkedin.com/in/hedyeh-ahmadi>\n> \n> \n> \n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Unfortunately that's sort of off-topic for this list (which covers \n*mixed* models, i.e. hierarchical models where there are *observed* \ngrouping variables, not *finite/discrete mixture* models, which",
+      "thread_id": "thread-1a04e3e1c7c6",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-e8915d003fc3",
+      "message_id": "<CO3PR03MB67583F07CDD4EB603D96D381EDA9A@CO3PR03MB6758.namprd03.prod.outlook.com>",
+      "from_name": "Olaifa, Julius",
+      "from_email_hash": "d4f73b118f566702c8bba614d134d84b88fa994be665715e01c3ade0a8ac8199",
+      "date": "2023-11-07T20:46:58Z",
+      "subject": "[R-sig-ME] Full Information matrix or Variance Covariance matrix in glmmTMB",
+      "subject_clean": "Full Information matrix or Variance Covariance matrix in glmmTMB",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which returns the variance covariance matrix between the regression parameter coefficient (Beta)?and the dispersiom parameter (phi).\nI however want to obtain the variance covariance matrix of both the fixed parameters and random effect covariance estimates (Beta, phi, Sigma)?\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which returns the variance covariance matrix between t",
+      "thread_id": "thread-e8915d003fc3",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-bda71f5ea142",
+      "message_id": "<2d0ece47-9eac-4605-bd49-d3e796c23edf@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-11-07T17:40:59-05:00",
+      "subject": "[R-sig-ME]  Full Information matrix or Variance Covariance matrix in glmmTMB",
+      "subject_clean": "Full Information matrix or Variance Covariance matrix in glmmTMB",
+      "in_reply_to": "<CO3PR03MB67583F07CDD4EB603D96D381EDA9A@CO3PR03MB6758.namprd03.prod.outlook.com>",
+      "references": [
+        "<CO3PR03MB67583F07CDD4EB603D96D381EDA9A@CO3PR03MB6758.namprd03.prod.outlook.com>"
+      ],
+      "body_plain": "On 2023-11-07 3:46 p.m., Olaifa, Julius wrote:\n> I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which returns the variance covariance matrix between the regression parameter coefficient (Beta)?and the dispersiom parameter (phi).\n> I however want to obtain the variance covariance matrix of both the fixed parameters and random effect covariance estimates (Beta, phi, Sigma)?\n\n  I think vcov(., full = TRUE) will get what you want.\n\n   I You should be able to get this by inverting the results of \nTMB::sdreport(..., getJointPrecision = TRUE), as for example:\n\n\nlibrary(glmmTMB)\ndata(\"sleepstudy\", package = \"lme4\")\nm1 <- glmmTMB(Reaction ~ Days + (Days|Subject), sleepstudy)\ncolnames(vcov(m1, full = TRUE))\n\n                 cond1                  cond2                   disp\n          \"(Intercept)\"                 \"Days\"        \"d~(Intercept)\"\n                 theta1                 theta2                 theta3\n\"theta_Days|Subject.1\" \"theta_Days|Subject.2\" \"theta_Days|Subject.3\"\n\n   If you want the joint precision/covariance matrix that also includes \nthe BLUPs/conditional modes:\n\nss <- TMB::sdreport(m1$obj, getJointPrecision = TRUE)\nh <- solve(ss$jointPrecision)\n\n    You should be aware that this could get ugly for large problems; the \njoint precision matrix (i.e., the inverse of covariance matrix) is \nsparse/well-structured, but the joint covariance matrix is dense.\n\n\n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "On 2023-11-07 3:46 p.m., Olaifa, Julius wrote:\n> I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which",
+      "thread_id": "thread-e8915d003fc3",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-f432f3f878a6",
+      "message_id": "<5C8CA25C-B056-4F1A-A4EC-BCEF619D477F@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "2e43a7af8f4daa87297a28457149e295b738b83f542c302ce576a405c1ae25e2",
+      "date": "2023-11-09T08:00:54Z",
+      "subject": "[R-sig-ME]  Specifying bivariate priors with different distributions in MCMCglmm",
+      "subject_clean": "Specifying bivariate priors with different distributions in MCMCglmm",
+      "in_reply_to": "<SN4PR03MB676775497B8C71920466176B8DAAA@SN4PR03MB6767.namprd03.prod.outlook.com>",
+      "references": [
+        "<SN4PR03MB676775497B8C71920466176B8DAAA@SN4PR03MB6767.namprd03.prod.outlook.com>"
+      ],
+      "body_plain": "Hi,\n\nBy specifying propfledged as ?categorical? you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of the form cbind(number_successes, number_failures)~ with family=?multinomial2?. The priors should then ?work? in the sense that they are of the right dimension. However, you shouldn?t fix the residual variance unless the binomial only has 1 trial (i.e. is Bernoulli).\n\nCheers,\n\nJarrod\n\n\n\n\nOn 6 Nov 2023, at 13:00, Cones, Alexandra G. <alex.cones at uky.edu> wrote:\n\npropfledged\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nBy specifying propfledged as ?categorical? you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of th",
+      "thread_id": "thread-53ca1e6ad70f",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-52d1c564d652",
+      "message_id": "<CA+3TTkOMKiZPF5V4KfJZeB26Uxo_VQM-AMR7zGiKHHYtuxX-dw@mail.gmail.com>",
+      "from_name": "Robert Long",
+      "from_email_hash": "88bc5f51ef8193c212fc86ab8b2a620e6a7efc6f0d3e9e24238a88fa8f24db83",
+      "date": "2023-11-09T12:08:54Z",
+      "subject": "[R-sig-ME]  https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models is down ?",
+      "subject_clean": "https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models is down ?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello all\n\nAre the archives of this list still at\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? If so, then it\nappears to be down on my side. Or have they been moved somewhere else ?\n\nCheers\nRL\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all\n\nAre the archives of this list still at\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? If so, then it\nappears to be down on my side. Or have they been moved somewhere else ?\n\nChe",
+      "thread_id": "thread-52d1c564d652",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-90598c6a7f81",
+      "message_id": "<25932.57137.23273.834052@stat.math.ethz.ch>",
+      "from_name": "Martin Maechler",
+      "from_email_hash": "a92f4a07d4e3cad5fba985e30db2b0fff598d5ddfbadbb2e91ffe91636400c62",
+      "date": "2023-11-09T14:31:29+01:00",
+      "subject": "[R-sig-ME]  https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models is down ?",
+      "subject_clean": "https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models is down ?",
+      "in_reply_to": "<CA+3TTkOMKiZPF5V4KfJZeB26Uxo_VQM-AMR7zGiKHHYtuxX-dw@mail.gmail.com>",
+      "references": [
+        "<CA+3TTkOMKiZPF5V4KfJZeB26Uxo_VQM-AMR7zGiKHHYtuxX-dw@mail.gmail.com>"
+      ],
+      "body_plain": ">>>>> Robert Long \n>>>>>     on Thu, 9 Nov 2023 12:08:54 +0000 writes:\n\n    > Hello all\n\n    > Are the archives of this list still at\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? If so, then it\n    > appears to be down on my side. Or have they been moved somewhere else ?\n\nThey were *NEVER* at the above URL.\n\nPlease do more carefully follow the links on the ML web page\n(given in all R-SIG-Mixed-models footers).\n\n    > Cheers\n    > RL\n\n    > [[alternative HTML version deleted]]",
+      "body_snippet": ">>>>> Robert Long \n>>>>>     on Thu, 9 Nov 2023 12:08:54 +0000 writes:\n\n    > Hello all\n\n    > Are the archives of this list still at\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? I",
+      "thread_id": "thread-52d1c564d652",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-744b3577fe44",
+      "message_id": "<YT1PR01MB3387CE7205480C12C61C073883BBA@YT1PR01MB3387.CANPRD01.PROD.OUTLOOK.COM>",
+      "from_name": "Mohamed Jabir",
+      "from_email_hash": "c8d59c43c826fe75a0277e4b0768f659896a8fa7f4650d9ccde12490332c63f1",
+      "date": "2023-11-21T20:11:27Z",
+      "subject": "[R-sig-ME] Error in qr.default(X) : too large a matrix for LINPACK",
+      "subject_clean": "Error in qr.default(X) : too large a matrix for LINPACK",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI am trying to use glmmTMB. I am getting this error :\nError in qr.default(X) : too large a matrix for LINPACK\nCalls: glmmTMB ... .adjustX -> <Anonymous> -> <Anonymous> -> qr.default\nExecution halted\nCan you help?\n\nBest,\n\nMohamed Jabir\nAnalyste de donn?es LACED\nBiblioth?que HEC Montr?al (LACED)\n3000, chemin de la C?te-Sainte-Catherine\nMontr?al (Qu?bec)  H3T 2A7\n514-340-6934<https://inscription.hec.ca/signature/app/voir?type=minimal>\nHEC Montr?al\nhec.ca<http://www.hec.ca/>\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI am trying to use glmmTMB. I am getting this error :\nError in qr.default(X) : too large a matrix for LINPACK\nCalls: glmmTMB ... .adjustX -> <Anonymous> -> <Anonymous> -> qr.default\nExecution hal",
+      "thread_id": "thread-744b3577fe44",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-cf9b69395964",
+      "message_id": "<b201e584-6bae-45e8-b086-5242ce5da32f@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-11-22T09:23:49-05:00",
+      "subject": "[R-sig-ME]  Error in qr.default(X) : too large a matrix for LINPACK",
+      "subject_clean": "Error in qr.default(X) : too large a matrix for LINPACK",
+      "in_reply_to": "<YT1PR01MB3387CE7205480C12C61C073883BBA@YT1PR01MB3387.CANPRD01.PROD.OUTLOOK.COM>",
+      "references": [
+        "<YT1PR01MB3387CE7205480C12C61C073883BBA@YT1PR01MB3387.CANPRD01.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "We'd love to help, but we can't help much without more information. \nHow large is your data set, what analysis are you running?\n\n   Based on the minimal info in the error message, it looks like the \nmodel is failing in the place where it checks to see whether the model \nmatrix is collinear (i.e., here:\n\nhttps://github.com/glmmTMB/glmmTMB/blob/5939686f39b169b7d5a81512b6a66025f103d598/glmmTMB/R/glmmTMB.R#L1432\n\n) Digging a little bit farther, it seems that LINPACK can't do QR \ndecomposition if the total size of your matrix is bigger than 2^31-1:\n\n  if (1 * n * p > 2147483647)\n         stop(\"too large a matrix for LINPACK\")\n\n   You should be able to skip this checking step by specifying\n\ncontrol = glmmTMBControl(rank_check = \"skip\")\n\n  ... but you may run into trouble further down the line if your model \nmatrix has more than a billion entries ...\n\n   If you can tell us a little bit more about your problem people may be \nable to suggest strategies.\n\n   Ben Bolker\n\n\nOn 2023-11-21 3:11 p.m., Mohamed Jabir wrote:\n> Hi,\n> \n> I am trying to use glmmTMB. I am getting this error :\n> Error in qr.default(X) : too large a matrix for LINPACK\n> Calls: glmmTMB ... .adjustX -> <Anonymous> -> <Anonymous> -> qr.default\n> Execution halted\n> Can you help?\n> \n> Best,\n> \n> Mohamed Jabir\n> Analyste de donn?es LACED\n> Biblioth?que HEC Montr?al (LACED)\n> 3000, chemin de la C?te-Sainte-Catherine\n> Montr?al (Qu?bec)  H3T 2A7\n> 514-340-6934<https://inscription.hec.ca/signature/app/voir?type=minimal>\n> HEC Montr?al\n> hec.ca<http://www.hec.ca/>\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "We'd love to help, but we can't help much without more information. \nHow large is your data set, what analysis are you running?\n\n   Based on the minimal info in the error message, it looks like the \nm",
+      "thread_id": "thread-744b3577fe44",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-8d0ab9aea096",
+      "message_id": "<CAFgPNS-x-g9vzw3VGK4wtYv2MkwqeUeuUVMgwOuiF1y8MUSQGg@mail.gmail.com>",
+      "from_name": "ben pelzer",
+      "from_email_hash": "c74566c142643bbafb2f3afbd518be5b95e7ac855fec610064cbd4bc3536d3f5",
+      "date": "2023-11-27T12:23:34+01:00",
+      "subject": "[R-sig-ME] homogeneous glmmTMB models",
+      "subject_clean": "homogeneous glmmTMB models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nIn glmmTMB we have these nice heterogeneous variances models like compound\nsymmetry, ar1, toeplitz and unstructured, for the covariance matrix over\ntime, say. For a course I'm teaching, I would also like to discuss the more\n\"simple\" homogeneous variances models with compound symmetry, ar1, etc.\nThese can be estimated with e.g. package nlme. But why are these not\navailable in glmmTMB? Or are they, and should I use a particular syntax?\nBest regards,\n\nBen.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nIn glmmTMB we have these nice heterogeneous variances models like compound\nsymmetry, ar1, toeplitz and unstructured, for the covariance matrix over\ntime, say. For a course I'm teaching, I w",
+      "thread_id": "thread-8d0ab9aea096",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-f7cd944eadd0",
+      "message_id": "<06081528-0ffe-45c3-b121-061e33b82dce@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-11-27T10:31:31-05:00",
+      "subject": "[R-sig-ME] homogeneous glmmTMB models",
+      "subject_clean": "homogeneous glmmTMB models",
+      "in_reply_to": "<CAFgPNS-x-g9vzw3VGK4wtYv2MkwqeUeuUVMgwOuiF1y8MUSQGg@mail.gmail.com>",
+      "references": [
+        "<CAFgPNS-x-g9vzw3VGK4wtYv2MkwqeUeuUVMgwOuiF1y8MUSQGg@mail.gmail.com>"
+      ],
+      "body_plain": "They're not available because no-one has gotten around to writing \nthem yet. Pull requests welcome ...\n\n   There are a few notes here (search for \"Adding a covariance \nstructure\") about what needs to be done to add them:\n\nhttp://glmmtmb.github.io/glmmTMB/articles/hacking.html\n\n   which outlines the code added in this pull request: \nhttps://github.com/glmmTMB/glmmTMB/pull/891\n\n   Alternatively, you can do this with the map= argument:\n\ndata(\"cbpp\", package = \"lme4\")\nlibrary(glmmTMB)\n\n## fit a binomial model with compound-specific variation among periods\nm1 <- glmmTMB(cbind(incidence, size-incidence) ~ period + \ncs(period+0|herd), cbpp, family = binomial)\n\n## fix all of the log-standard-deviation parameters (first 4 elements of\n##   the random-effects parameter vector to be equal;\n##  estimate the correlation (element 5) separately\n\nm2 <- update(m1, map = list(theta = factor(c(rep(1,4), 2))))\n\n   The good news is that you can do this without waiting for anyone to \nupdate the code.  The bad news is that it's scarier-looking for your \nstudents (you have to know that the random-effects variance parameter \nvector is called 'theta', how the compound symmetric model is \nparameterized (see the table at the beginning of \nhttp://glmmtmb.github.io/glmmTMB/articles/covstruct.html; and how the \nmap= argument works).\n\n   cheers\n    Ben Bolker\n\n\n\nOn 2023-11-27 6:23 a.m., ben pelzer wrote:\n> Dear all,\n> \n> In glmmTMB we have these nice heterogeneous variances models like compound\n> symmetry, ar1, toeplitz and unstructured, for the covariance matrix over\n> time, say. For a course I'm teaching, I would also like to discuss the more\n> \"simple\" homogeneous variances models with compound symmetry, ar1, etc.\n> These can be estimated with e.g. package nlme. But why are these not\n> available in glmmTMB? Or are they, and should I use a particular syntax?\n> Best regards,\n> \n> Ben.\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "They're not available because no-one has gotten around to writing \nthem yet. Pull requests welcome ...\n\n   There are a few notes here (search for \"Adding a covariance \nstructure\") about what needs to ",
+      "thread_id": "thread-8d0ab9aea096",
+      "thread_depth": 1,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-46757efe2ef5",
+      "message_id": "<CAFgPNS_iweDMW-mQvEZdsMFnsWY3hHE1dv54Mv210EKCfDLxyA@mail.gmail.com>",
+      "from_name": "ben pelzer",
+      "from_email_hash": "c74566c142643bbafb2f3afbd518be5b95e7ac855fec610064cbd4bc3536d3f5",
+      "date": "2023-11-28T09:50:14+01:00",
+      "subject": "[R-sig-ME] homogeneous glmmTMB models",
+      "subject_clean": "homogeneous glmmTMB models",
+      "in_reply_to": "<06081528-0ffe-45c3-b121-061e33b82dce@gmail.com>",
+      "references": [
+        "<CAFgPNS-x-g9vzw3VGK4wtYv2MkwqeUeuUVMgwOuiF1y8MUSQGg@mail.gmail.com>",
+        "<06081528-0ffe-45c3-b121-061e33b82dce@gmail.com>"
+      ],
+      "body_plain": "Thanks for your reply Ben, I've tried your \"maps\" suggestion for a Toeplitz\nmodel and that works fine. Indeed it looks scary, as you say, but then\nagain this is also true for the way it is done in gls from the nlme\npackage, where Toeplitz is specified as an ARMA structure (which I do not\nunderstand too, just apply it). The glmmTMB summary shows the estimated\nvariances and correlations under the Random Effects, which is not the case\nwith gls. Hence I like the glmmTMB results more. For gls I use covmat <-\ngetVarcov(model, individual=\"3\") for a case observed at all time points,\nand then covmat must be converted into correlations; all in all not really\nnice in a course. Thanks again!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks for your reply Ben, I've tried your \"maps\" suggestion for a Toeplitz\nmodel and that works fine. Indeed it looks scary, as you say, but then\nagain this is also true for the way it is done in gls",
+      "thread_id": "thread-8d0ab9aea096",
+      "thread_depth": 2,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-7a5c52d1eb6e",
+      "message_id": "<CA+hwERn8r6B5O+nUU28dYRiY=EnRfVCk0XQoA5AZ23_uHcoUrA@mail.gmail.com>",
+      "from_name": "Toni Hernandez-Matias",
+      "from_email_hash": "2b88e63f79fc6827d575e12995bfa910a251196dfc13b50deaa74d07209400af",
+      "date": "2023-11-30T11:09:59+01:00",
+      "subject": "[R-sig-ME] how to cite github resources'",
+      "subject_clean": "how to cite github resources'",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\nI would like to cite this information:\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects\n\nDo you know which format should I use?\n\nThanks in advance,\n\nToni\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI would like to cite this information:\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects\n\nDo you know which format should I use?\n\nThanks in advan",
+      "thread_id": "thread-7a5c52d1eb6e",
+      "thread_depth": 0,
+      "month": "2023-11"
+    },
+    {
+      "id": "msg-8c15a3bcf7d8",
+      "message_id": "<BC3403EA-26E7-4E31-8FE2-BD9D3815F09A@dcn.davis.ca.us>",
+      "from_name": "Jeff Newmiller",
+      "from_email_hash": "b0534b2df56689de62a07ef0e2eefa136a2b7e536d83dd9445d2bc1683bb09fe",
+      "date": "2023-11-30T07:06:12-08:00",
+      "subject": "[R-sig-ME] how to cite github resources'",
+      "subject_clean": "how to cite github resources'",
+      "in_reply_to": "<CA+hwERn8r6B5O+nUU28dYRiY=EnRfVCk0XQoA5AZ23_uHcoUrA@mail.gmail.com>",
+      "references": [
+        "<CA+hwERn8r6B5O+nUU28dYRiY=EnRfVCk0XQoA5AZ23_uHcoUrA@mail.gmail.com>"
+      ],
+      "body_plain": "Isn't this driven by the conventions of the publishing context?\n\nOn November 30, 2023 2:09:59 AM PST, Toni Hernandez-Matias <ahmatias at gmail.com> wrote:\n>Dear all,\n>I would like to cite this information:\n>https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects\n>\n>Do you know which format should I use?\n>\n>Thanks in advance,\n>\n>Toni\n>\n>\t[[alternative HTML version deleted]]\n>\n>_______________________________________________\n>R-sig-mixed-models at r-project.org mailing list\n>https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nSent from my phone. Please excuse my brevity.",
+      "body_snippet": "Isn't this driven by the conventions of the publishing context?\n\nOn November 30, 2023 2:09:59 AM PST, Toni Hernandez-Matias <ahmatias at gmail.com> wrote:\n>Dear all,\n>I would like to cite this informa",
+      "thread_id": "thread-7a5c52d1eb6e",
+      "thread_depth": 1,
+      "month": "2023-11"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-53ca1e6ad70f",
+      "subject": "Specifying bivariate priors with different distributions in MCMCglmm",
+      "message_count": 2,
+      "participants": [
+        "Cones, Alexandra G.",
+        "Jarrod Hadfield"
+      ],
+      "started": "2023-11-06T13:00:44+00:00",
+      "last_reply": "2023-11-09T08:00:54+00:00",
+      "root_message_id": "msg-53ca1e6ad70f"
+    },
+    {
+      "id": "thread-e908e38c88e3",
+      "subject": "Non-zero residual sums, correlation structure (nlme)",
+      "message_count": 1,
+      "participants": [
+        "Adam Clark"
+      ],
+      "started": "2023-11-06T14:03:26+01:00",
+      "last_reply": "2023-11-06T14:03:26+01:00",
+      "root_message_id": "msg-e908e38c88e3"
+    },
+    {
+      "id": "thread-1a04e3e1c7c6",
+      "subject": "Looking for a multi-level mixture models",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Hedyeh Ahmadi"
+      ],
+      "started": "2023-11-06T16:37:53+00:00",
+      "last_reply": "2023-11-06T11:46:41-05:00",
+      "root_message_id": "msg-1a04e3e1c7c6"
+    },
+    {
+      "id": "thread-e8915d003fc3",
+      "subject": "Full Information matrix or Variance Covariance matrix in glmmTMB",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Olaifa, Julius"
+      ],
+      "started": "2023-11-07T20:46:58+00:00",
+      "last_reply": "2023-11-07T17:40:59-05:00",
+      "root_message_id": "msg-e8915d003fc3"
+    },
+    {
+      "id": "thread-52d1c564d652",
+      "subject": "https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models is down ?",
+      "message_count": 2,
+      "participants": [
+        "Martin Maechler",
+        "Robert Long"
+      ],
+      "started": "2023-11-09T12:08:54+00:00",
+      "last_reply": "2023-11-09T14:31:29+01:00",
+      "root_message_id": "msg-52d1c564d652"
+    },
+    {
+      "id": "thread-744b3577fe44",
+      "subject": "Error in qr.default(X) : too large a matrix for LINPACK",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Mohamed Jabir"
+      ],
+      "started": "2023-11-21T20:11:27+00:00",
+      "last_reply": "2023-11-22T09:23:49-05:00",
+      "root_message_id": "msg-744b3577fe44"
+    },
+    {
+      "id": "thread-8d0ab9aea096",
+      "subject": "homogeneous glmmTMB models",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "ben pelzer"
+      ],
+      "started": "2023-11-27T12:23:34+01:00",
+      "last_reply": "2023-11-28T09:50:14+01:00",
+      "root_message_id": "msg-8d0ab9aea096"
+    },
+    {
+      "id": "thread-7a5c52d1eb6e",
+      "subject": "how to cite github resources'",
+      "message_count": 2,
+      "participants": [
+        "Jeff Newmiller",
+        "Toni Hernandez-Matias"
+      ],
+      "started": "2023-11-30T11:09:59+01:00",
+      "last_reply": "2023-11-30T07:06:12-08:00",
+      "root_message_id": "msg-7a5c52d1eb6e"
+    }
+  ]
+}

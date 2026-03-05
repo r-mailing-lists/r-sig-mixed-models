@@ -1,0 +1,672 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2022-04",
+  "messages": [
+    {
+      "id": "msg-6ebde7b243bd",
+      "message_id": "<AS8PR03MB684022B27A05F0FD2E113E93F7E29@AS8PR03MB6840.eurprd03.prod.outlook.com>",
+      "from_name": "Tara Cox [RPG]",
+      "from_email_hash": "255197ad72ecef5d0bf7413b5011ccff953a60da246eced77a70958145242dea",
+      "date": "2022-04-04T10:19:07Z",
+      "subject": "[R-sig-ME] Bivariate MCMCglmm: fixed effect error",
+      "subject_clean": "Bivariate MCMCglmm: fixed effect error",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear list,\n\nI am stuck attempting to run a bivariate MCMCglmm that uses personality score and age at first breeding (years) as response variables (both modelled Poisson). I have multiple repeats per individual for personality score, but a single value for age at first breeding. For fixed effects, I have included drivers known to impact personality score (age when tested, age2, colour of room that individual was tested in, and the test number) as well as age at first breeding (natal territory quality and island-wide food availability).\n\nTo account for the fact that individuals born more recently in the dataset lived short lives (as per Bouwhuis et al., 2010), I have also included cohort as a fixed effect for age at first breeding.\n\nI've been using the covu method with a parameter expanded prior and model specification outlined below, but I am having issues when trying to run the model with cohort as a fixed effect (error message states: '## Error in MCMCglmm(fitness.stack ~ variable - 1 + at.level(variable, : Mixed model equations singular: use a (stronger) prior'). I have tried setting cohort as both numeric and factor when including it as a fixed effect, but this doesn't make a difference. I know the issue is not with any other part of the model, as it runs successfully when cohort is removed as a fixed effect.\n\n\nprior.age <- list(G = list(G1 = list(V = diag(1), nu = 1),                            # rand effect for Cohort (fitted for AGE_BREEDING)\n                                         G2 = list(V = diag(1), nu = 1)),                           # rand effect for Observer (fitted for Personality)\n                           R = list(R1 = list(V = diag(2), nu = 0.002, covu = TRUE),  # 2-way var-cov matrix of ID for Personality, residual for AGE_BREEDING\n                                         R2 = list(V = diag(1), nu = 0.002)))                       # residual for Personality\n\n\nm1  <-   MCMCglmm(fitness.stack ~ variable - 1 +\n                            at.level(variable, \"Personality\"):Personality_Age +\n                            at.level(variable, \"Personality\"):Personality_Age2 +\n                            at.level(variable, \"Personality\"):Personality_RoomColour +\n                            at.level(variable, \"Personality\"):TestNumber +\n                            at.level(variable, \"AGE_BREEDING\"):logNatalTerritoryQuality +\n                            at.level(variable, \"AGE_BREEDING\"):logIslandWideFoodAvailability +\n                            at.level(variable, \"AGE_BREEDING\"):Cohort,\n                          random = ~ us(at.level(variable,\"Personality\")):Observer + us(at.level(variable,\"AGE_BREEDING\")):Cohort + us(at.level(variable, \"Personality\")):BirdID,\n                          rcov = ~us(at.level(variable, \"AGE_BREEDING\")):BirdID + idh(at.level(variable, \"Personality\")):units,\n                          family = NULL, # specified already in the data as poisson for both\n                          prior = prior.age,\n                          nitt=4600000,\n                          burnin=60000,\n                          thin=500,\n                          verbose = FALSE,\n                          pr=FALSE,\n                          data = stack)\n\n\nIn case the issue is related to sample size or data structure, I have also attached an Rmd containing this info.\n\nIf anyone could provide any insight into how I can get my model to run successfully, it would be much appreciated!\n\nBest wishes,\nTara\n\n\nTara Cox\n\nPronouns: she, her, hers\n\nPhD researcher\n\nDugdale group, School of Biology\n\nFaculty of Biological Sciences\n\nUniversity of Leeds",
+      "body_snippet": "Dear list,\n\nI am stuck attempting to run a bivariate MCMCglmm that uses personality score and age at first breeding (years) as response variables (both modelled Poisson). I have multiple repeats per i",
+      "thread_id": "thread-6ebde7b243bd",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-0d79d2945751",
+      "message_id": "<006701d8480e$618c8250$24a586f0$@uke.de>",
+      "from_name": "Daniel Lüdecke",
+      "from_email_hash": "49f60f793b43e8781cf853ec393ce29481c8d6b5a647f6763a150643bd313c75",
+      "date": "2022-04-04T12:26:00+02:00",
+      "subject": "[R-sig-ME]  Representation model problem with standardized variables",
+      "subject_clean": "Representation model problem with standardized variables",
+      "in_reply_to": "<668477118.139932.1648640020214@mail.yahoo.com>",
+      "references": [
+        "<668477118.139932.1648640020214.ref@mail.yahoo.com>",
+        "<668477118.139932.1648640020214@mail.yahoo.com>"
+      ],
+      "body_plain": "Dear Alexandre,\nthis one might solve your issue. I use the plot() method from ggeffects, but you can of course use ggplot2 as well, to build your own plot from scratch. The basic idea is to map the values of the range from the unstandardized variable with those from the standardized one, and then use \"scale_x_...()\" from ggplot to change the labels. At the bottom, you find the two plots when you use the unstandardized data in your model, and you can see, that the axis labels (range) represents the original scale.\n\nBest\nDaniel\n\nlibrary(datawizard)\nlibrary(lme4)\nlibrary(ggeffects)\nlibrary(ggplot2)\n\nmyds <- read.csv(\"https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\nd.scale <- standardize(myds, select = c(\"temp\", \"storage\"))\nm_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 | storage ), data = d.scale)\n\n\n# for temp\nmydf <- ggpredict(m_6, terms = \"temp [all]\")\n\n# retrieve center and scale from standardization\ncenter_temp <- attributes(d.scale)$center[\"temp\"]\nscale_temp <- attributes(d.scale)$scale[\"temp\"]\n\n# scaled range, calculate back to range of unstandardized\nscaled_range <- c(-1, 0, 1, 2)\nnew_range <- round(scaled_range * scale_temp + center_temp)\n\n# scaled range\nplot(mydf, add.data = TRUE)\n\n# original range\nplot(mydf, add.data = TRUE) + \n  scale_x_continuous(\n    breaks = scaled_range, \n    labels = new_range\n  )\n\n\n# for storage\nmydf <- ggpredict(m_6, terms = \"storage [all]\")\n\n# retrieve center and scale from standardization\ncenter_storage <- attributes(d.scale)$center[\"storage\"]\nscale_storage <- attributes(d.scale)$scale[\"storage\"]\n\n# scaled range, calculate back to range of unstandardized\nscaled_range <- c(-1, 0, 1)\nnew_range <- round(scaled_range * scale_storage + center_storage)\n\n# scaled range\nplot(mydf, add.data = TRUE)\n\n# original range\nplot(mydf, add.data = TRUE) + \n  scale_x_continuous(\n    breaks = scaled_range, \n    labels = new_range\n  )\n\n\n# compare to plots w/o standardization\nm_7 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 | storage ), data = myds)\nggpredict(m_7, terms = \"temp [all]\") |> plot(add.data = TRUE)\nggpredict(m_7, terms = \"storage [all]\") |> plot(add.data = TRUE)\n\n-----Urspr?ngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im Auftrag von Alexandre Santos via R-sig-mixed-models\nGesendet: Mittwoch, 30. M?rz 2022 13:34\nAn: r-sig-mixed-models at r-project.org\nBetreff: [R-sig-ME] Representation model problem with standardized variables\n\nHi Everyone!!\n\nI standardized my input variables (ds.scale) before glmm adjustments but in the final plot, I have a problem with the real-world scale of my variables and the predicted values by model (m_6). I?d like the original scale of my temp and storage variables represented in my better model (m_6). What is the correct approach for this? Do not standardise my input variables, despite I lot of warmings? Some data transformation at the end? I make:\n\n#Packages\nlibrary(lme4)\nlibrary(ggplot2)\nlibrary(ggeffects)\nlibrary(tidyverse)\nlibrary(bbmle) \nlibrary(broom)\n\n#Open my dataset\nmyds<-read.csv(\"https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\nstr(myds)\n# 'data.frame': 400 obs. of  4 variables:\n#  $ temp       : num  0 0 0 0 0 0 0 0 0 0 ...\n#  $ storage    : int  5 5 5 5 5 5 5 5 5 5 ...\n#  $ rep        : chr  \"r1\" \"r2\" \"r3\" \"r4\" ...\n#  $ development: int  0 23 22 27 24 25 24 22 0 22 ...\n\n# Storage (days) is temporally correlated with temperature then mixed model\nds.scale<- myds %>%\n  mutate(across(c(temp, storage), ~ drop(scale(.))))\n\n# Models creation Poisson/Negative binomial\nm_1 <- glmer(development ~ temp + storage +\n               (1 | storage ), data = ds.scale, \n                 family = \"poisson\")\nm_2 <- glmer(development ~ poly(temp,2) + storage +\n               (1 | storage ), data = ds.scale, \n                 family = \"poisson\")  \nm_3 <- glmer(development ~ poly(temp,2) + poly(storage,2) +\n               (1 | storage ), data = ds.scale, \n                 family = \"poisson\")  \nm_4 <- glmer.nb(development ~ temp + storage +\n               (1 | storage ), data = ds.scale)\nm_5 <- glmer.nb(development ~ poly(temp,2) + storage +\n               (1 | storage ), data = ds.scale)  \nm_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) +\n               (1 | storage ), data = ds.scale)   \nmodList <- tibble::lst(m_1,m_2,m_3,m_4,m_5,m_6)\nbbmle::AICtab(modList)\n\n#     dAIC df\n# m_6  0.0 7 \n# m_3  1.0 6 \n# m_5  3.3 6 \n# m_2  5.0 5 \n# m_4 17.9 5 \n# m_1 21.0 4\n\n# Plot the results for my better model (m_6)\nmydf <- ggpredict(m_6, terms = c(\"temp [all]\", \"storage[all]\"))\n\n# For temp\nggplot(mydf, aes(x, predicted)) +\n  geom_point(data=myds, aes(temp, development), alpha = 0.5) + \n  geom_line() +\n  labs(x = \"temp\", y = \"development\")\n\n# For storage\nggplot(mydf, aes(x, predicted)) +\n  geom_point(data=myds, aes(storage, development), alpha = 0.5) + \n  geom_line() +\n  labs(x = \"storage\", y = \"development\")\n# -------------------------------------------------------------------------------------------  \n\n\nPlease, any help with it?\n--\nAlexandre dos Santos\nGeotechnologies and Spatial Statistics applied to Forest Entomology\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
+      "body_snippet": "Dear Alexandre,\nthis one might solve your issue. I use the plot() method from ggeffects, but you can of course use ggplot2 as well, to build your own plot from scratch. The basic idea is to map the va",
+      "thread_id": "thread-0d79d2945751",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-e3d96781bd51",
+      "message_id": "<762822913.1740514.1649073455557@mail.yahoo.com>",
+      "from_name": "Alexandre Santos",
+      "from_email_hash": "9c328798782fdba9a5eb7253ec556480706d126689efca25bdfbcd5bdfb8dc96",
+      "date": "2022-04-04T11:57:35Z",
+      "subject": "[R-sig-ME]  Representation model problem with standardized variables",
+      "subject_clean": "Representation model problem with standardized variables",
+      "in_reply_to": "<006701d8480e$618c8250$24a586f0$@uke.de>",
+      "references": [
+        "<668477118.139932.1648640020214.ref@mail.yahoo.com>",
+        "<668477118.139932.1648640020214@mail.yahoo.com>",
+        "<006701d8480e$618c8250$24a586f0$@uke.de>"
+      ],
+      "body_plain": "Dear Daniel,\n\nThank you so much and my problem was solved.\n\nThe hard to me is to retrieve the center and scale from standardization and after?calculating back, but now with your answer looks easy!\n\nBest wishes,\n\nAlexandre\n\n\n?--Alexandre dos Santos\nGeotechnologies and Spatial Statistics applied to Forest Entomology\nInstituto Federal de Mato Grosso (IFMT) - Campus Caceres\nCaixa Postal 244 (PO Box)\nAvenida dos Ramires, s/n - Vila RealCaceres - MT - CEP 78201-380 (ZIP code)\nPhone: (+55) 65 99686-6970 / (+55) 65 3221-2674\nLattes CV:?http://lattes.cnpq.br/1360403201088680\nOrcID:?orcid.org/0000-0001-8232-6722\nResearchGate:?http://www.researchgate.net/profile/Alexandre_Santos10\nPublons:?https://publons.com/researcher/3085587/alexandre-dos-santos/--\n\n\n\n\n\n\nEm segunda-feira, 4 de abril de 2022 06:26:04 AMT, Daniel L?decke <d.luedecke at uke.de> escreveu: \n\n\n\n\n\nDear Alexandre,\nthis one might solve your issue. I use the plot() method from ggeffects, but you can of course use ggplot2 as well, to build your own plot from scratch. The basic idea is to map the values of the range from the unstandardized variable with those from the standardized one, and then use \"scale_x_...()\" from ggplot to change the labels. At the bottom, you find the two plots when you use the unstandardized data in your model, and you can see, that the axis labels (range) represents the original scale.\n\nBest\nDaniel\n\nlibrary(datawizard)\nlibrary(lme4)\nlibrary(ggeffects)\nlibrary(ggplot2)\n\nmyds <- read.csv(\"https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\nd.scale <- standardize(myds, select = c(\"temp\", \"storage\"))\nm_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 | storage ), data = d.scale)\n\n\n# for temp\nmydf <- ggpredict(m_6, terms = \"temp [all]\")\n\n# retrieve center and scale from standardization\ncenter_temp <- attributes(d.scale)$center[\"temp\"]\nscale_temp <- attributes(d.scale)$scale[\"temp\"]\n\n# scaled range, calculate back to range of unstandardized\nscaled_range <- c(-1, 0, 1, 2)\nnew_range <- round(scaled_range * scale_temp + center_temp)\n\n# scaled range\nplot(mydf, add.data = TRUE)\n\n# original range\nplot(mydf, add.data = TRUE) + \n? scale_x_continuous(\n? ? breaks = scaled_range, \n? ? labels = new_range\n? )\n\n\n# for storage\nmydf <- ggpredict(m_6, terms = \"storage [all]\")\n\n# retrieve center and scale from standardization\ncenter_storage <- attributes(d.scale)$center[\"storage\"]\nscale_storage <- attributes(d.scale)$scale[\"storage\"]\n\n# scaled range, calculate back to range of unstandardized\nscaled_range <- c(-1, 0, 1)\nnew_range <- round(scaled_range * scale_storage + center_storage)\n\n# scaled range\nplot(mydf, add.data = TRUE)\n\n# original range\nplot(mydf, add.data = TRUE) + \n? scale_x_continuous(\n? ? breaks = scaled_range, \n? ? labels = new_range\n? )\n\n\n# compare to plots w/o standardization\nm_7 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 | storage ), data = myds)\nggpredict(m_7, terms = \"temp [all]\") |> plot(add.data = TRUE)\nggpredict(m_7, terms = \"storage [all]\") |> plot(add.data = TRUE)\n\n-----Urspr?ngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im Auftrag von Alexandre Santos via R-sig-mixed-models\nGesendet: Mittwoch, 30. M?rz 2022 13:34\nAn: r-sig-mixed-models at r-project.org\nBetreff: [R-sig-ME] Representation model problem with standardized variables\n\nHi Everyone!!\n\nI standardized my input variables (ds.scale) before glmm adjustments but in the final plot, I have a problem with the real-world scale of my variables and the predicted values by model (m_6). I?d like the original scale of my temp and storage variables represented in my better model (m_6). What is the correct approach for this? Do not standardise my input variables, despite I lot of warmings? Some data transformation at the end? I make:\n\n#Packages\nlibrary(lme4)\nlibrary(ggplot2)\nlibrary(ggeffects)\nlibrary(tidyverse)\nlibrary(bbmle) \nlibrary(broom)\n\n#Open my dataset\nmyds<-read.csv(\"https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\nstr(myds)\n# 'data.frame': 400 obs. of? 4 variables:\n#? $ temp? ? ? : num? 0 0 0 0 0 0 0 0 0 0 ...\n#? $ storage? ? : int? 5 5 5 5 5 5 5 5 5 5 ...\n#? $ rep? ? ? ? : chr? \"r1\" \"r2\" \"r3\" \"r4\" ...\n#? $ development: int? 0 23 22 27 24 25 24 22 0 22 ...\n\n# Storage (days) is temporally correlated with temperature then mixed model\nds.scale<- myds %>%\n? mutate(across(c(temp, storage), ~ drop(scale(.))))\n\n# Models creation Poisson/Negative binomial\nm_1 <- glmer(development ~ temp + storage +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale, \n? ? ? ? ? ? ? ? family = \"poisson\")\nm_2 <- glmer(development ~ poly(temp,2) + storage +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale, \n? ? ? ? ? ? ? ? family = \"poisson\")? \nm_3 <- glmer(development ~ poly(temp,2) + poly(storage,2) +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale, \n? ? ? ? ? ? ? ? family = \"poisson\")? \nm_4 <- glmer.nb(development ~ temp + storage +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale)\nm_5 <- glmer.nb(development ~ poly(temp,2) + storage +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale)? \nm_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) +\n? ? ? ? ? ? ? (1 | storage ), data = ds.scale)? \nmodList <- tibble::lst(m_1,m_2,m_3,m_4,m_5,m_6)\nbbmle::AICtab(modList)\n\n#? ? dAIC df\n# m_6? 0.0 7 \n# m_3? 1.0 6 \n# m_5? 3.3 6 \n# m_2? 5.0 5 \n# m_4 17.9 5 \n# m_1 21.0 4\n\n# Plot the results for my better model (m_6)\nmydf <- ggpredict(m_6, terms = c(\"temp [all]\", \"storage[all]\"))\n\n# For temp\nggplot(mydf, aes(x, predicted)) +\n? geom_point(data=myds, aes(temp, development), alpha = 0.5) + \n? geom_line() +\n? labs(x = \"temp\", y = \"development\")\n\n# For storage\nggplot(mydf, aes(x, predicted)) +\n? geom_point(data=myds, aes(storage, development), alpha = 0.5) + \n? geom_line() +\n? labs(x = \"storage\", y = \"development\")\n# -------------------------------------------------------------------------------------------? \n\n\nPlease, any help with it?\n--\nAlexandre dos Santos\nGeotechnologies and Spatial Statistics applied to Forest Entomology\n\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
+      "body_snippet": "Dear Daniel,\n\nThank you so much and my problem was solved.\n\nThe hard to me is to retrieve the center and scale from standardization and after?calculating back, but now with your answer looks easy!\n\nBe",
+      "thread_id": "thread-0d79d2945751",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-ff5e320a8ed0",
+      "message_id": "<CAJuCY5ybCeGdX0aVxh5QY95m26i=y3HSF+Za7bg-Cjc3+oytoA@mail.gmail.com>",
+      "from_name": "Thierry Onkelinx",
+      "from_email_hash": "1183e720326bc91ec429d1a20d015e292579537392780a0fcfc24d392942c637",
+      "date": "2022-04-05T10:05:43+02:00",
+      "subject": "[R-sig-ME]  Representation model problem with standardized variables",
+      "subject_clean": "Representation model problem with standardized variables",
+      "in_reply_to": "<762822913.1740514.1649073455557@mail.yahoo.com>",
+      "references": [
+        "<668477118.139932.1648640020214.ref@mail.yahoo.com>",
+        "<668477118.139932.1648640020214@mail.yahoo.com>",
+        "<006701d8480e$618c8250$24a586f0$@uke.de>",
+        "<762822913.1740514.1649073455557@mail.yahoo.com>"
+      ],
+      "body_plain": "Dear Alexandre,\n\nI prefer to manually scale the variables. Instead of centering to the mean,\nI prefer to center to some relevant value within or close to the data. And\ninstead of dividing by the standard error, I divide by a sensible power of\n10. The resulting variable and its coefficient are much easier to interpret.\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp ma 4 apr. 2022 om 13:57 schreef Alexandre Santos via R-sig-mixed-models <\nr-sig-mixed-models at r-project.org>:\n\n> Dear Daniel,\n>\n> Thank you so much and my problem was solved.\n>\n> The hard to me is to retrieve the center and scale from standardization\n> and after calculating back, but now with your answer looks easy!\n>\n> Best wishes,\n>\n> Alexandre\n>\n>\n>  --Alexandre dos Santos\n> Geotechnologies and Spatial Statistics applied to Forest Entomology\n> Instituto Federal de Mato Grosso (IFMT) - Campus Caceres\n> Caixa Postal 244 (PO Box)\n> Avenida dos Ramires, s/n - Vila RealCaceres - MT - CEP 78201-380 (ZIP code)\n> Phone: (+55) 65 99686-6970 / (+55) 65 3221-2674\n> Lattes CV: http://lattes.cnpq.br/1360403201088680\n> OrcID: orcid.org/0000-0001-8232-6722\n> ResearchGate: http://www.researchgate.net/profile/Alexandre_Santos10\n> Publons: https://publons.com/researcher/3085587/alexandre-dos-santos/--\n>\n>\n>\n>\n>\n>\n> Em segunda-feira, 4 de abril de 2022 06:26:04 AMT, Daniel L?decke <\n> d.luedecke at uke.de> escreveu:\n>\n>\n>\n>\n>\n> Dear Alexandre,\n> this one might solve your issue. I use the plot() method from ggeffects,\n> but you can of course use ggplot2 as well, to build your own plot from\n> scratch. The basic idea is to map the values of the range from the\n> unstandardized variable with those from the standardized one, and then use\n> \"scale_x_...()\" from ggplot to change the labels. At the bottom, you find\n> the two plots when you use the unstandardized data in your model, and you\n> can see, that the axis labels (range) represents the original scale.\n>\n> Best\n> Daniel\n>\n> library(datawizard)\n> library(lme4)\n> library(ggeffects)\n> library(ggplot2)\n>\n> myds <- read.csv(\"\n> https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\n> d.scale <- standardize(myds, select = c(\"temp\", \"storage\"))\n> m_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 |\n> storage ), data = d.scale)\n>\n>\n> # for temp\n> mydf <- ggpredict(m_6, terms = \"temp [all]\")\n>\n> # retrieve center and scale from standardization\n> center_temp <- attributes(d.scale)$center[\"temp\"]\n> scale_temp <- attributes(d.scale)$scale[\"temp\"]\n>\n> # scaled range, calculate back to range of unstandardized\n> scaled_range <- c(-1, 0, 1, 2)\n> new_range <- round(scaled_range * scale_temp + center_temp)\n>\n> # scaled range\n> plot(mydf, add.data = TRUE)\n>\n> # original range\n> plot(mydf, add.data = TRUE) +\n>   scale_x_continuous(\n>     breaks = scaled_range,\n>     labels = new_range\n>   )\n>\n>\n> # for storage\n> mydf <- ggpredict(m_6, terms = \"storage [all]\")\n>\n> # retrieve center and scale from standardization\n> center_storage <- attributes(d.scale)$center[\"storage\"]\n> scale_storage <- attributes(d.scale)$scale[\"storage\"]\n>\n> # scaled range, calculate back to range of unstandardized\n> scaled_range <- c(-1, 0, 1)\n> new_range <- round(scaled_range * scale_storage + center_storage)\n>\n> # scaled range\n> plot(mydf, add.data = TRUE)\n>\n> # original range\n> plot(mydf, add.data = TRUE) +\n>   scale_x_continuous(\n>     breaks = scaled_range,\n>     labels = new_range\n>   )\n>\n>\n> # compare to plots w/o standardization\n> m_7 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) + (1 |\n> storage ), data = myds)\n> ggpredict(m_7, terms = \"temp [all]\") |> plot(add.data = TRUE)\n> ggpredict(m_7, terms = \"storage [all]\") |> plot(add.data = TRUE)\n>\n> -----Urspr?ngliche Nachricht-----\n> Von: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\n> Auftrag von Alexandre Santos via R-sig-mixed-models\n> Gesendet: Mittwoch, 30. M?rz 2022 13:34\n> An: r-sig-mixed-models at r-project.org\n> Betreff: [R-sig-ME] Representation model problem with standardized\n> variables\n>\n> Hi Everyone!!\n>\n> I standardized my input variables (ds.scale) before glmm adjustments but\n> in the final plot, I have a problem with the real-world scale of my\n> variables and the predicted values by model (m_6). I?d like the original\n> scale of my temp and storage variables represented in my better model\n> (m_6). What is the correct approach for this? Do not standardise my input\n> variables, despite I lot of warmings? Some data transformation at the end?\n> I make:\n>\n> #Packages\n> library(lme4)\n> library(ggplot2)\n> library(ggeffects)\n> library(tidyverse)\n> library(bbmle)\n> library(broom)\n>\n> #Open my dataset\n> myds<-read.csv(\"\n> https://raw.githubusercontent.com/Leprechault/trash/main/ds.desenvol.csv\")\n> str(myds)\n> # 'data.frame': 400 obs. of  4 variables:\n> #  $ temp      : num  0 0 0 0 0 0 0 0 0 0 ...\n> #  $ storage    : int  5 5 5 5 5 5 5 5 5 5 ...\n> #  $ rep        : chr  \"r1\" \"r2\" \"r3\" \"r4\" ...\n> #  $ development: int  0 23 22 27 24 25 24 22 0 22 ...\n>\n> # Storage (days) is temporally correlated with temperature then mixed model\n> ds.scale<- myds %>%\n>   mutate(across(c(temp, storage), ~ drop(scale(.))))\n>\n> # Models creation Poisson/Negative binomial\n> m_1 <- glmer(development ~ temp + storage +\n>               (1 | storage ), data = ds.scale,\n>                 family = \"poisson\")\n> m_2 <- glmer(development ~ poly(temp,2) + storage +\n>               (1 | storage ), data = ds.scale,\n>                 family = \"poisson\")\n> m_3 <- glmer(development ~ poly(temp,2) + poly(storage,2) +\n>               (1 | storage ), data = ds.scale,\n>                 family = \"poisson\")\n> m_4 <- glmer.nb(development ~ temp + storage +\n>               (1 | storage ), data = ds.scale)\n> m_5 <- glmer.nb(development ~ poly(temp,2) + storage +\n>               (1 | storage ), data = ds.scale)\n> m_6 <- glmer.nb(development ~ poly(temp,2) + poly(storage,2) +\n>               (1 | storage ), data = ds.scale)\n> modList <- tibble::lst(m_1,m_2,m_3,m_4,m_5,m_6)\n> bbmle::AICtab(modList)\n>\n> #    dAIC df\n> # m_6  0.0 7\n> # m_3  1.0 6\n> # m_5  3.3 6\n> # m_2  5.0 5\n> # m_4 17.9 5\n> # m_1 21.0 4\n>\n> # Plot the results for my better model (m_6)\n> mydf <- ggpredict(m_6, terms = c(\"temp [all]\", \"storage[all]\"))\n>\n> # For temp\n> ggplot(mydf, aes(x, predicted)) +\n>   geom_point(data=myds, aes(temp, development), alpha = 0.5) +\n>   geom_line() +\n>   labs(x = \"temp\", y = \"development\")\n>\n> # For storage\n> ggplot(mydf, aes(x, predicted)) +\n>   geom_point(data=myds, aes(storage, development), alpha = 0.5) +\n>   geom_line() +\n>   labs(x = \"storage\", y = \"development\")\n> #\n> -------------------------------------------------------------------------------------------\n>\n>\n>\n> Please, any help with it?\n> --\n> Alexandre dos Santos\n> Geotechnologies and Spatial Statistics applied to Forest Entomology\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n>\n> _____________________________________________________________________\n>\n> Universit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen\n> Rechts; Gerichtsstand: Hamburg | www.uke.de\n> Vorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Joachim\n> Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n> _____________________________________________________________________\n>\n> SAVE PAPER - THINK BEFORE PRINTING\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Alexandre,\n\nI prefer to manually scale the variables. Instead of centering to the mean,\nI prefer to center to some relevant value within or close to the data. And\ninstead of dividing by the stand",
+      "thread_id": "thread-0d79d2945751",
+      "thread_depth": 2,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-0053c217f558",
+      "message_id": "<d4f22be3-6518-0007-ebaa-c3c3ca419fb6@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-05T18:58:31-04:00",
+      "subject": "[R-sig-ME] Bivariate MCMCglmm: fixed effect error",
+      "subject_clean": "Bivariate MCMCglmm: fixed effect error",
+      "in_reply_to": "<AS8PR03MB684022B27A05F0FD2E113E93F7E29@AS8PR03MB6840.eurprd03.prod.outlook.com>",
+      "references": [
+        "<AS8PR03MB684022B27A05F0FD2E113E93F7E29@AS8PR03MB6840.eurprd03.prod.outlook.com>"
+      ],
+      "body_plain": "A couple of quick thoughts.\n\n   1. These doesn't look parameter-expanded priors to me (don't you have \nto specify alpha.V != 0 in order to get parameter-expanded priors?)\n\n\n  prior: optional list of prior specifications having 3 possible\n           elements: ?R? (R-structure) ?G? (G-structure) and ?B? (fixed\n           effects). ?B? is a list containing the expected value (?mu?)\n           and a (co)variance matrix (?V?) representing the strength of\n           belief: the defaults are ?B$mu?=0 and ?B$V?=I*1e+10, where\n           where I is an identity matrix of appropriate dimension.  The\n           priors for the variance structures (?R? and ?G?) are lists\n           with the expected (co)variances (?V?) and degree of belief\n           parameter (?nu?) for the inverse-Wishart, and also the mean\n           vector (?alpha.mu?) and covariance matrix (?alpha.V?) for the\n           redundant working parameters. The defaults are ?nu?=0, ?V?=1,\n           ?alpha.mu?=0, and ?alpha.V?=0. When ?alpha.V? is non-zero,\n           parameter expanded algorithms are used.\n\n2. MCMCglmm is explicitly telling you to use stronger priors, which I \nwould interpret in this context as \"larger values of nu\" (nu = 0.002 \nseems *very* small ...)\n\n   I don't use MCMCglmm every day, so I may have missed something/be \nmisunderstanding.\n\n\nOn 4/4/22 6:19 AM, Tara Cox [RPG] wrote:\n> Dear list,\n> \n> I am stuck attempting to run a bivariate MCMCglmm that uses personality score and age at first breeding (years) as response variables (both modelled Poisson). I have multiple repeats per individual for personality score, but a single value for age at first breeding. For fixed effects, I have included drivers known to impact personality score (age when tested, age2, colour of room that individual was tested in, and the test number) as well as age at first breeding (natal territory quality and island-wide food availability).\n> \n> To account for the fact that individuals born more recently in the dataset lived short lives (as per Bouwhuis et al., 2010), I have also included cohort as a fixed effect for age at first breeding.\n> \n> I've been using the covu method with a parameter expanded prior and model specification outlined below, but I am having issues when trying to run the model with cohort as a fixed effect (error message states: '## Error in MCMCglmm(fitness.stack ~ variable - 1 + at.level(variable, : Mixed model equations singular: use a (stronger) prior'). I have tried setting cohort as both numeric and factor when including it as a fixed effect, but this doesn't make a difference. I know the issue is not with any other part of the model, as it runs successfully when cohort is removed as a fixed effect.\n> \n> \n> prior.age <- list(G = list(G1 = list(V = diag(1), nu = 1),                            # rand effect for Cohort (fitted for AGE_BREEDING)\n>                                           G2 = list(V = diag(1), nu = 1)),                           # rand effect for Observer (fitted for Personality)\n>                             R = list(R1 = list(V = diag(2), nu = 0.002, covu = TRUE),  # 2-way var-cov matrix of ID for Personality, residual for AGE_BREEDING\n>                                           R2 = list(V = diag(1), nu = 0.002)))                       # residual for Personality\n> \n> \n> m1  <-   MCMCglmm(fitness.stack ~ variable - 1 +\n>                              at.level(variable, \"Personality\"):Personality_Age +\n>                              at.level(variable, \"Personality\"):Personality_Age2 +\n>                              at.level(variable, \"Personality\"):Personality_RoomColour +\n>                              at.level(variable, \"Personality\"):TestNumber +\n>                              at.level(variable, \"AGE_BREEDING\"):logNatalTerritoryQuality +\n>                              at.level(variable, \"AGE_BREEDING\"):logIslandWideFoodAvailability +\n>                              at.level(variable, \"AGE_BREEDING\"):Cohort,\n>                            random = ~ us(at.level(variable,\"Personality\")):Observer + us(at.level(variable,\"AGE_BREEDING\")):Cohort + us(at.level(variable, \"Personality\")):BirdID,\n>                            rcov = ~us(at.level(variable, \"AGE_BREEDING\")):BirdID + idh(at.level(variable, \"Personality\")):units,\n>                            family = NULL, # specified already in the data as poisson for both\n>                            prior = prior.age,\n>                            nitt=4600000,\n>                            burnin=60000,\n>                            thin=500,\n>                            verbose = FALSE,\n>                            pr=FALSE,\n>                            data = stack)\n> \n> \n> In case the issue is related to sample size or data structure, I have also attached an Rmd containing this info.\n> \n> If anyone could provide any insight into how I can get my model to run successfully, it would be much appreciated!\n> \n> Best wishes,\n> Tara\n> \n> \n> Tara Cox\n> \n> Pronouns: she, her, hers\n> \n> PhD researcher\n> \n> Dugdale group, School of Biology\n> \n> Faculty of Biological Sciences\n> \n> University of Leeds\n> \n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "A couple of quick thoughts.\n\n   1. These doesn't look parameter-expanded priors to me (don't you have \nto specify alpha.V != 0 in order to get parameter-expanded priors?)\n\n\n  prior: optional list of p",
+      "thread_id": "thread-6ebde7b243bd",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-822af738fa91",
+      "message_id": "<7e284ded-6bb2-99cb-4405-e0c34412533c@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-04-05T21:19:00-05:00",
+      "subject": "[R-sig-ME] strip plot design with pseudoreplication",
+      "subject_clean": "strip plot design with pseudoreplication",
+      "in_reply_to": "<CAEyHP-0Z7jG9cneHn1=obBihGmVNVx7wCar=tTa_8Nh8=ZgzMg@mail.gmail.com>",
+      "references": [
+        "<CAEyHP-0Z7jG9cneHn1=obBihGmVNVx7wCar=tTa_8Nh8=ZgzMg@mail.gmail.com>"
+      ],
+      "body_plain": "I am not commenting on whether the model makes sense, but you can use\nthe same nesting syntax in lme4 that you used in lme:\n\nm2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n         (1|BLOQUE/AMBIENTE/parcela),\n        data=data1)\n\n\nOn 22/3/22 8:06 am, Javier Moreira wrote:\n> hi, members of the group.\n> \n> I'm trying to find the way to express a model within R.\n> \n> My intention is to use a set of data from a wheat trial, harvested with GPS\n> mapping. I'm comparing the standard model that use the average of the plot\n> (experimental unit) vs. one that use every pseudo-replication (observation\n> unit-harvest point).\n> \n> The design is a strip plot or split block, with 2 factors and 3 error\n> terms. For the first step, I use the Agricolae package.\n> \n> model0_fijo = with(data21,strip.plot(BLOCK = BLOQUE,\n>                    COL = AMBIENTE,\n>                    ROW = TRATAMIENTO,\n>                    Y = RTO))\n> *data21, n=72\n> and this produces an anova with 3 error terms (Ea,Eb,Ec) and the correct\n> distribution of degrees of freedom (Ambiente, Ea/ Tratamiento,Eb/\n> interacci?n, Ec).\n> \n> When I try to use the pseudo-replication, i first try to use lme(), and to\n> take into account the correct grouping, it produces 2 different Error\n> terms, and i get (Ambiente, Ea, and tratamamiento and interaction, Eb).\n> This makes the design as it was a split plot (2 error terms).\n> \n> modelo2_MM<-lme(REND.~1+TRATAMIENTO*AMBIENTE,\n>                 random=~1|BLOQUE/AMBIENTE/TRATAMIENTO,\n>                 data=data1)\n> *data1, n=3095\n> \n> According to a tutorial\n> <https://vsni.co.uk/case-studies/dealing-with-pseudo-replication-in-linear-mixed-models>for\n> the use of ASreml package i was able to use lmer() to account for the\n> block:plot interaction (1|BLOQUE:parcela) and get the same result as the\n> tutorial. But, this leaves the model with only 1 error term applied to\n> every factor and interaction. So, it takes into account the\n> pseudo-replication but not the correct error assign for the anova.\n> \n> m2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n>         (1|BLOQUE)+(1|BLOQUE:AMBIENTE)+(1|BLOQUE:parcela),\n>        data=data1)\n> \n> In the initial steps, to find a way with lmer() to get a 3 error model that\n> accounts for pseudo-replication would be great.\n> Following that, i also have to account for spatial correlation, and that\n> isn't an option within lmer() so, i have to get the same model translate to\n> lme().\n> \n> Thanks a lot for your help. This data analysis is for a on farm trial from\n> my Msc thesis.\n> \n> best regards,\n> \n> Ing. Agr. Javier Moreira\n>",
+      "body_snippet": "I am not commenting on whether the model makes sense, but you can use\nthe same nesting syntax in lme4 that you used in lme:\n\nm2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n         (1|BLOQUE/AMBIENTE/parce",
+      "thread_id": "thread-822af738fa91",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-1f69c11fbb3d",
+      "message_id": "<CAEyHP-1eXWK30zUcNan+qLW3AAew7njP8HbheQbUAip=CO7r0w@mail.gmail.com>",
+      "from_name": "Javier Moreira",
+      "from_email_hash": "a988e29d98c83c29f2a3c6d2f2f75218a39711bc22c145c05b5ab5ac59c09199",
+      "date": "2022-04-06T11:12:58-03:00",
+      "subject": "[R-sig-ME] strip plot design with pseudoreplication",
+      "subject_clean": "strip plot design with pseudoreplication",
+      "in_reply_to": "<7e284ded-6bb2-99cb-4405-e0c34412533c@phillipalday.com>",
+      "references": [
+        "<CAEyHP-0Z7jG9cneHn1=obBihGmVNVx7wCar=tTa_8Nh8=ZgzMg@mail.gmail.com>",
+        "<7e284ded-6bb2-99cb-4405-e0c34412533c@phillipalday.com>"
+      ],
+      "body_plain": "Hi, thanks for your help.\nI was reading my question, and find\nI have tried that way, but still I'm getting 2 errors. I should edit the\nquestion because later i found the correct way on lmer\n\nm2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n\n(1|BLOQUE)+(1|BLOQUE:AMBIENTE)+(1|BLOQUE:TRATAMIENTO)+(1|BLOQUE:AMBIENTE:TRATAMIENTO),\n       data=data1)\n\nI see your answer is the right response for my question. The error was on\nthe question.\nActually what i need is the translation of this model to lme. I have\nanother random term:  (1|BLOQUE:AMBIENTE:TRATAMIENTO) that makes the model\nto account for every error term needed.\n\nagain, thanks for your help.\n\nregards\n\nEl mar, 5 abr 2022 a las 23:19, Phillip Alday (<me at phillipalday.com>)\nescribi?:\n\n> I am not commenting on whether the model makes sense, but you can use\n> the same nesting syntax in lme4 that you used in lme:\n>\n> m2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n>          (1|BLOQUE/AMBIENTE/parcela),\n>         data=data1)\n>\n>\n> On 22/3/22 8:06 am, Javier Moreira wrote:\n> > hi, members of the group.\n> >\n> > I'm trying to find the way to express a model within R.\n> >\n> > My intention is to use a set of data from a wheat trial, harvested with\n> GPS\n> > mapping. I'm comparing the standard model that use the average of the\n> plot\n> > (experimental unit) vs. one that use every pseudo-replication\n> (observation\n> > unit-harvest point).\n> >\n> > The design is a strip plot or split block, with 2 factors and 3 error\n> > terms. For the first step, I use the Agricolae package.\n> >\n> > model0_fijo = with(data21,strip.plot(BLOCK = BLOQUE,\n> >                    COL = AMBIENTE,\n> >                    ROW = TRATAMIENTO,\n> >                    Y = RTO))\n> > *data21, n=72\n> > and this produces an anova with 3 error terms (Ea,Eb,Ec) and the correct\n> > distribution of degrees of freedom (Ambiente, Ea/ Tratamiento,Eb/\n> > interacci?n, Ec).\n> >\n> > When I try to use the pseudo-replication, i first try to use lme(), and\n> to\n> > take into account the correct grouping, it produces 2 different Error\n> > terms, and i get (Ambiente, Ea, and tratamamiento and interaction, Eb).\n> > This makes the design as it was a split plot (2 error terms).\n> >\n> > modelo2_MM<-lme(REND.~1+TRATAMIENTO*AMBIENTE,\n> >                 random=~1|BLOQUE/AMBIENTE/TRATAMIENTO,\n> >                 data=data1)\n> > *data1, n=3095\n> >\n> > According to a tutorial\n> > <\n> https://vsni.co.uk/case-studies/dealing-with-pseudo-replication-in-linear-mixed-models\n> >for\n> > the use of ASreml package i was able to use lmer() to account for the\n> > block:plot interaction (1|BLOQUE:parcela) and get the same result as the\n> > tutorial. But, this leaves the model with only 1 error term applied to\n> > every factor and interaction. So, it takes into account the\n> > pseudo-replication but not the correct error assign for the anova.\n> >\n> > m2_lmer<-lmer(REND.~AMBIENTE*TRATAMIENTO+\n> >         (1|BLOQUE)+(1|BLOQUE:AMBIENTE)+(1|BLOQUE:parcela),\n> >        data=data1)\n> >\n> > In the initial steps, to find a way with lmer() to get a 3 error model\n> that\n> > accounts for pseudo-replication would be great.\n> > Following that, i also have to account for spatial correlation, and that\n> > isn't an option within lmer() so, i have to get the same model translate\n> to\n> > lme().\n> >\n> > Thanks a lot for your help. This data analysis is for a on farm trial\n> from\n> > my Msc thesis.\n> >\n> > best regards,\n> >\n> > Ing. Agr. Javier Moreira\n> >\n>\n\n\n-- \nJavier Moreira de Souza\nIngeniero Agr?nomo\n099 406 006\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi, thanks for your help.\nI was reading my question, and find\nI have tried that way, but still I'm getting 2 errors. I should edit the\nquestion because later i found the correct way on lmer\n\nm2_lmer<-",
+      "thread_id": "thread-822af738fa91",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-5709b8a018a7",
+      "message_id": "<2025244783.1606999.1649351915387@mail.yahoo.com>",
+      "from_name": "Andras Farkas",
+      "from_email_hash": "d041725740c3449c5c62401c5e9ffc6480157a994fa06484d1395c41ad4da6d8",
+      "date": "2022-04-07T17:18:35Z",
+      "subject": "[R-sig-ME] lower and upper bounds for optimizer=\"nloptwrap\"",
+      "subject_clean": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "in_reply_to": null,
+      "references": [
+        "<2025244783.1606999.1649351915387.ref@mail.yahoo.com>"
+      ],
+      "body_plain": "Hello,\n\nwonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n\n\nlmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?restart_edge = TRUE,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?boundary.tol = 1e-5,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?calc.derivs = TRUE,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?use.last.params = FALSE,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?sparseX = FALSE,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?standardize.X = FALSE,\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## input checking options\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.rankZ = \"ignore\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nlev = \"stop\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtreq.5 = \"ignore\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtr.1 = \"stop\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nRE= \"stop\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.rankX = c(\"message+drop.cols\", \"silent.drop.cols\", \"warn+drop.cols\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?\"stop.deficient\", \"ignore\"),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.scaleX = c(\"warning\",\"stop\",\"silent.rescale\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? \"message+rescale\",\"warn+rescale\",\"ignore\"),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.formula.LHS = \"stop\",\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## convergence checking options\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.grad? ? ?= .makeCC(\"warning\", tol = 2e-3, relTol = NULL),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.singular = .makeCC(action = \"message\", tol = formals(isSingular)$tol),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.hess? ? ?= .makeCC(action = \"warning\", tol = 1e-6),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## optimizer args\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?optCtrl = list(maxeval=100,lower = rep.int(0, 21),upper = rep.int(5, 21)),\n? ? ? ? ? ? ? ? ? ? ? ? ? ? ?mod.type = \"lmer\")\n\nlet us ignore model appropriateness here and just focus on the constraints:?\n\nm1 <- lmer(Reaction ~ Days + Subject+ (1|Days),data=sleepstudy,verbose=1,control =lmercontrollist)\nsummary(m1)\n\n\n?as you will see the fixed effect values are negative. I also tried lb and ub instead of lower and upper based on?nloptr function, but also did not help. Besides, just to be sure I understand correctly, the length of the lower/upper bounds must be the same as the length of fixed and random effect, correct? here I set to 21 based on output but am not exactly sure if the residual has to be included in the count or not...\n\nmuch appreciate your help,\n\nAndras?",
+      "body_snippet": "Hello,\n\nwonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n\n\nlmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n? ? ",
+      "thread_id": "thread-5709b8a018a7",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-18a38b651bbf",
+      "message_id": "<6514b9ef-33f8-356c-f633-4ad95654a077@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-04-07T12:35:28-05:00",
+      "subject": "[R-sig-ME] lower and upper bounds for optimizer=\"nloptwrap\"",
+      "subject_clean": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "in_reply_to": "<2025244783.1606999.1649351915387@mail.yahoo.com>",
+      "references": [
+        "<2025244783.1606999.1649351915387.ref@mail.yahoo.com>",
+        "<2025244783.1606999.1649351915387@mail.yahoo.com>"
+      ],
+      "body_plain": "lme4 uses the profiled log likelihood -- for linear mixed models, the\nmaximum-likelihood estimates of the fixed effects can be computed\ndirectly for a given value of the random effects. Because of this, the\noptimization bounds are for the random effects (or more precisely, the\nlower Cholesky factor of the scaled random effects) and only serve to\nrestrict them to possible values (positive variances and correlations in\n[-1, +1]).\n\nIn other words, you can't constrain the fixed effects in lme4.\n\nIs there an inferential reason why you want to constrain the fixed effects?\n\nOn 7/4/22 12:18 pm, Andras Farkas via R-sig-mixed-models wrote:\n> Hello,\n> \n> wonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n> \n> \n> lmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?restart_edge = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?boundary.tol = 1e-5,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?calc.derivs = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?use.last.params = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?sparseX = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?standardize.X = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## input checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.rankZ = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nlev = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtreq.5 = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtr.1 = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nRE= \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.rankX = c(\"message+drop.cols\", \"silent.drop.cols\", \"warn+drop.cols\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?\"stop.deficient\", \"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.scaleX = c(\"warning\",\"stop\",\"silent.rescale\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? \"message+rescale\",\"warn+rescale\",\"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.formula.LHS = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## convergence checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.grad? ? ?= .makeCC(\"warning\", tol = 2e-3, relTol = NULL),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.singular = .makeCC(action = \"message\", tol = formals(isSingular)$tol),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.hess? ? ?= .makeCC(action = \"warning\", tol = 1e-6),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## optimizer args\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?optCtrl = list(maxeval=100,lower = rep.int(0, 21),upper = rep.int(5, 21)),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?mod.type = \"lmer\")\n> \n> let us ignore model appropriateness here and just focus on the constraints:?\n> \n> m1 <- lmer(Reaction ~ Days + Subject+ (1|Days),data=sleepstudy,verbose=1,control =lmercontrollist)\n> summary(m1)\n> \n> \n> ?as you will see the fixed effect values are negative. I also tried lb and ub instead of lower and upper based on?nloptr function, but also did not help. Besides, just to be sure I understand correctly, the length of the lower/upper bounds must be the same as the length of fixed and random effect, correct? here I set to 21 based on output but am not exactly sure if the residual has to be included in the count or not...\n> \n> much appreciate your help,\n> \n> Andras?\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "lme4 uses the profiled log likelihood -- for linear mixed models, the\nmaximum-likelihood estimates of the fixed effects can be computed\ndirectly for a given value of the random effects. Because of thi",
+      "thread_id": "thread-5709b8a018a7",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-7f31c8515403",
+      "message_id": "<527670223.1622144.1649354753648@mail.yahoo.com>",
+      "from_name": "Andras Farkas",
+      "from_email_hash": "d041725740c3449c5c62401c5e9ffc6480157a994fa06484d1395c41ad4da6d8",
+      "date": "2022-04-07T18:05:53Z",
+      "subject": "[R-sig-ME] lower and upper bounds for optimizer=\"nloptwrap\"",
+      "subject_clean": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "in_reply_to": "<6514b9ef-33f8-356c-f633-4ad95654a077@phillipalday.com>",
+      "references": [
+        "<2025244783.1606999.1649351915387.ref@mail.yahoo.com>",
+        "<2025244783.1606999.1649351915387@mail.yahoo.com>",
+        "<6514b9ef-33f8-356c-f633-4ad95654a077@phillipalday.com>"
+      ],
+      "body_plain": "Philip,\n\nthanks. my actual model is based on some biological process/es where a negative value (or at times a value outside of a particular range) would not make sense, if estimated... I have done the model run with brms in the past which made this easi(er), but I also wanted to see if I can take advantage of automated model selection procedures available in R (have \"way too many potential predictors\"), so switched to frequentist approach to try to make it work with glmulti as I am far from being an R coding expert and there are enough available resources on the web that I have found helpful to set up the glmulti run with lmer... But I guess I may be stuck with bayesian it seems if I must box them in?\n\n\nthanks for the help\n\nAndras?\n\n\n\n\n\n\nOn Thursday, April 7, 2022, 01:35:41 PM EDT, Phillip Alday <me at phillipalday.com> wrote: \n\n\n\n\n\nlme4 uses the profiled log likelihood -- for linear mixed models, the\nmaximum-likelihood estimates of the fixed effects can be computed\ndirectly for a given value of the random effects. Because of this, the\noptimization bounds are for the random effects (or more precisely, the\nlower Cholesky factor of the scaled random effects) and only serve to\nrestrict them to possible values (positive variances and correlations in\n[-1, +1]).\n\nIn other words, you can't constrain the fixed effects in lme4.\n\nIs there an inferential reason why you want to constrain the fixed effects?\n\nOn 7/4/22 12:18 pm, Andras Farkas via R-sig-mixed-models wrote:\n> Hello,\n> \n> wonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n> \n> \n> lmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?restart_edge = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?boundary.tol = 1e-5,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?calc.derivs = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?use.last.params = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?sparseX = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?standardize.X = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## input checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.rankZ = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nlev = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtreq.5 = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtr.1 = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nRE= \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.rankX = c(\"message+drop.cols\", \"silent.drop.cols\", \"warn+drop.cols\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?\"stop.deficient\", \"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.scaleX = c(\"warning\",\"stop\",\"silent.rescale\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? \"message+rescale\",\"warn+rescale\",\"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.formula.LHS = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## convergence checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.grad? ? ?= .makeCC(\"warning\", tol = 2e-3, relTol = NULL),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.singular = .makeCC(action = \"message\", tol = formals(isSingular)$tol),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.hess? ? ?= .makeCC(action = \"warning\", tol = 1e-6),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## optimizer args\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?optCtrl = list(maxeval=100,lower = rep.int(0, 21),upper = rep.int(5, 21)),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?mod.type = \"lmer\")\n> \n> let us ignore model appropriateness here and just focus on the constraints:?\n> \n> m1 <- lmer(Reaction ~ Days + Subject+ (1|Days),data=sleepstudy,verbose=1,control =lmercontrollist)\n> summary(m1)\n> \n> \n> ?as you will see the fixed effect values are negative. I also tried lb and ub instead of lower and upper based on?nloptr function, but also did not help. Besides, just to be sure I understand correctly, the length of the lower/upper bounds must be the same as the length of fixed and random effect, correct? here I set to 21 based on output but am not exactly sure if the residual has to be included in the count or not...\n> \n> much appreciate your help,\n> \n> Andras?\n\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n>",
+      "body_snippet": "Philip,\n\nthanks. my actual model is based on some biological process/es where a negative value (or at times a value outside of a particular range) would not make sense, if estimated... I have done the",
+      "thread_id": "thread-5709b8a018a7",
+      "thread_depth": 2,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-1c712e8cf9e7",
+      "message_id": "<1804903896.1630758.1649356437205@mail.yahoo.com>",
+      "from_name": "Andras Farkas",
+      "from_email_hash": "d041725740c3449c5c62401c5e9ffc6480157a994fa06484d1395c41ad4da6d8",
+      "date": "2022-04-07T18:33:57Z",
+      "subject": "[R-sig-ME] lower and upper bounds for optimizer=\"nloptwrap\"",
+      "subject_clean": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "in_reply_to": "<527670223.1622144.1649354753648@mail.yahoo.com>",
+      "references": [
+        "<2025244783.1606999.1649351915387.ref@mail.yahoo.com>",
+        "<2025244783.1606999.1649351915387@mail.yahoo.com>",
+        "<6514b9ef-33f8-356c-f633-4ad95654a077@phillipalday.com>",
+        "<527670223.1622144.1649354753648@mail.yahoo.com>"
+      ],
+      "body_plain": "funny, had to write this email to somehow find this here. Ben Bolker did some work on this it seems in past, guess have to take it with the warnings... May be helpful for others...\n\nhttps://rstudio-pubs-static.s3.amazonaws.com/108675_02daa6544e584a928b296c3bca9a65d5.html\n\n\n\nAndras?\n\n\n\n\n\n\nOn Thursday, April 7, 2022, 02:05:53 PM EDT, Andras Farkas <motyocska at yahoo.com> wrote: \n\n\n\n\n\nPhilip,\n\nthanks. my actual model is based on some biological process/es where a negative value (or at times a value outside of a particular range) would not make sense, if estimated... I have done the model run with brms in the past which made this easi(er), but I also wanted to see if I can take advantage of automated model selection procedures available in R (have \"way too many potential predictors\"), so switched to frequentist approach to try to make it work with glmulti as I am far from being an R coding expert and there are enough available resources on the web that I have found helpful to set up the glmulti run with lmer... But I guess I may be stuck with bayesian it seems if I must box them in?\n\n\nthanks for the help\n\nAndras?\n\n\n\n\n\n\nOn Thursday, April 7, 2022, 01:35:41 PM EDT, Phillip Alday <me at phillipalday.com> wrote: \n\n\n\n\n\nlme4 uses the profiled log likelihood -- for linear mixed models, the\nmaximum-likelihood estimates of the fixed effects can be computed\ndirectly for a given value of the random effects. Because of this, the\noptimization bounds are for the random effects (or more precisely, the\nlower Cholesky factor of the scaled random effects) and only serve to\nrestrict them to possible values (positive variances and correlations in\n[-1, +1]).\n\nIn other words, you can't constrain the fixed effects in lme4.\n\nIs there an inferential reason why you want to constrain the fixed effects?\n\nOn 7/4/22 12:18 pm, Andras Farkas via R-sig-mixed-models wrote:\n> Hello,\n> \n> wonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n> \n> \n> lmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?restart_edge = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?boundary.tol = 1e-5,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?calc.derivs = TRUE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?use.last.params = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?sparseX = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?standardize.X = FALSE,\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## input checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.rankZ = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nlev = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtreq.5 = \"ignore\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtr.1 = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nRE= \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.rankX = c(\"message+drop.cols\", \"silent.drop.cols\", \"warn+drop.cols\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?\"stop.deficient\", \"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.scaleX = c(\"warning\",\"stop\",\"silent.rescale\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? \"message+rescale\",\"warn+rescale\",\"ignore\"),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.formula.LHS = \"stop\",\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## convergence checking options\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.grad? ? ?= .makeCC(\"warning\", tol = 2e-3, relTol = NULL),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.singular = .makeCC(action = \"message\", tol = formals(isSingular)$tol),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.hess? ? ?= .makeCC(action = \"warning\", tol = 1e-6),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## optimizer args\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?optCtrl = list(maxeval=100,lower = rep.int(0, 21),upper = rep.int(5, 21)),\n> ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?mod.type = \"lmer\")\n> \n> let us ignore model appropriateness here and just focus on the constraints:?\n> \n> m1 <- lmer(Reaction ~ Days + Subject+ (1|Days),data=sleepstudy,verbose=1,control =lmercontrollist)\n> summary(m1)\n> \n> \n> ?as you will see the fixed effect values are negative. I also tried lb and ub instead of lower and upper based on?nloptr function, but also did not help. Besides, just to be sure I understand correctly, the length of the lower/upper bounds must be the same as the length of fixed and random effect, correct? here I set to 21 based on output but am not exactly sure if the residual has to be included in the count or not...\n> \n> much appreciate your help,\n> \n> Andras?\n\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n>",
+      "body_snippet": "funny, had to write this email to somehow find this here. Ben Bolker did some work on this it seems in past, guess have to take it with the warnings... May be helpful for others...\n\nhttps://rstudio-pu",
+      "thread_id": "thread-5709b8a018a7",
+      "thread_depth": 3,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-ab8067988846",
+      "message_id": "<3cad21d7-6599-6ccf-f6ad-ea41e28435f1@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-07T21:24:45-04:00",
+      "subject": "[R-sig-ME] lower and upper bounds for optimizer=\"nloptwrap\"",
+      "subject_clean": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "in_reply_to": "<527670223.1622144.1649354753648@mail.yahoo.com>",
+      "references": [
+        "<2025244783.1606999.1649351915387.ref@mail.yahoo.com>",
+        "<2025244783.1606999.1649351915387@mail.yahoo.com>",
+        "<6514b9ef-33f8-356c-f633-4ad95654a077@phillipalday.com>",
+        "<527670223.1622144.1649354753648@mail.yahoo.com>"
+      ],
+      "body_plain": "glmmTMB should let you pass lower/upper bounds to the nlminb \noptimizer, although it's a little bit obscure (you need\n\n  glmmTMB(optCtrl = list(lower = ..., upper = ...)\n\nand you need to know the mapping/order in which the various model \ncomponents get embedded so you can line up the lower/upper controls \nappropriately.\n\nlibrary(glmmTMB)\ndata(\"sleepstudy\", package = \"lme4\")\nfm1 <- glmmTMB(Reaction ~ Days + (Days|Subject), sleepstudy)\nfm1$obj$par\n  beta  beta betad theta theta theta\n     1     1     0     0     0     0\n\nthis tells you that the fixed effects parameters come first in the \nparameter vector ...\n\n   I don't think glmulti is going to work with glmmTMB though.\n\nOn 4/7/22 2:05 PM, Andras Farkas via R-sig-mixed-models wrote:\n> Philip,\n> \n> thanks. my actual model is based on some biological process/es where a negative value (or at times a value outside of a particular range) would not make sense, if estimated... I have done the model run with brms in the past which made this easi(er), but I also wanted to see if I can take advantage of automated model selection procedures available in R (have \"way too many potential predictors\"), so switched to frequentist approach to try to make it work with glmulti as I am far from being an R coding expert and there are enough available resources on the web that I have found helpful to set up the glmulti run with lmer... But I guess I may be stuck with bayesian it seems if I must box them in?\n> \n> \n> thanks for the help\n> \n> Andras\n> \n> \n> \n> \n> \n> \n> On Thursday, April 7, 2022, 01:35:41 PM EDT, Phillip Alday <me at phillipalday.com> wrote:\n> \n> \n> \n> \n> \n> lme4 uses the profiled log likelihood -- for linear mixed models, the\n> maximum-likelihood estimates of the fixed effects can be computed\n> directly for a given value of the random effects. Because of this, the\n> optimization bounds are for the random effects (or more precisely, the\n> lower Cholesky factor of the scaled random effects) and only serve to\n> restrict them to possible values (positive variances and correlations in\n> [-1, +1]).\n> \n> In other words, you can't constrain the fixed effects in lme4.\n> \n> Is there an inferential reason why you want to constrain the fixed effects?\n> \n> On 7/4/22 12:18 pm, Andras Farkas via R-sig-mixed-models wrote:\n>> Hello,\n>>\n>> wonder if I could get some help on how to specify lower and upper bounds?for optimizer=\"nloptwrap\". To date my approach looks like:\n>>\n>>\n>> lmercontrollist<-lmerControl(optimizer = \"nloptwrap\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?restart_edge = TRUE,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?boundary.tol = 1e-5,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?calc.derivs = TRUE,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?use.last.params = FALSE,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?sparseX = FALSE,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?standardize.X = FALSE,\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## input checking options\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.rankZ = \"ignore\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nlev = \"stop\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtreq.5 = \"ignore\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nlev.gtr.1 = \"stop\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.nobs.vs.nRE= \"stop\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.rankX = c(\"message+drop.cols\", \"silent.drop.cols\", \"warn+drop.cols\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?\"stop.deficient\", \"ignore\"),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.scaleX = c(\"warning\",\"stop\",\"silent.rescale\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? \"message+rescale\",\"warn+rescale\",\"ignore\"),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.formula.LHS = \"stop\",\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## convergence checking options\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.grad? ? ?= .makeCC(\"warning\", tol = 2e-3, relTol = NULL),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.singular = .makeCC(action = \"message\", tol = formals(isSingular)$tol),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?check.conv.hess? ? ?= .makeCC(action = \"warning\", tol = 1e-6),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?## optimizer args\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?optCtrl = list(maxeval=100,lower = rep.int(0, 21),upper = rep.int(5, 21)),\n>>  ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?mod.type = \"lmer\")\n>>\n>> let us ignore model appropriateness here and just focus on the constraints:\n>>\n>> m1 <- lmer(Reaction ~ Days + Subject+ (1|Days),data=sleepstudy,verbose=1,control =lmercontrollist)\n>> summary(m1)\n>>\n>>\n>>  ?as you will see the fixed effect values are negative. I also tried lb and ub instead of lower and upper based on?nloptr function, but also did not help. Besides, just to be sure I understand correctly, the length of the lower/upper bounds must be the same as the length of fixed and random effect, correct? here I set to 21 based on output but am not exactly sure if the residual has to be included in the count or not...\n>>\n>> much appreciate your help,\n>>\n>> Andras\n> \n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n>>\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "glmmTMB should let you pass lower/upper bounds to the nlminb \noptimizer, although it's a little bit obscure (you need\n\n  glmmTMB(optCtrl = list(lower = ..., upper = ...)\n\nand you need to know the mapp",
+      "thread_id": "thread-5709b8a018a7",
+      "thread_depth": 3,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-47317061b7c9",
+      "message_id": "<CA+nfb=0DjwP8E3SMWxreM6K1OouhDNX2eVPN7S93P5L7o=c9Dg@mail.gmail.com>",
+      "from_name": "Amanda Barabas",
+      "from_email_hash": "9434e85dcb470cb50d3b4f34c55e7cb6d846b4d2bd9f27fe756e96abd6e5fb68",
+      "date": "2022-04-08T08:40:50-04:00",
+      "subject": "[R-sig-ME] nested random effects in lmer",
+      "subject_clean": "nested random effects in lmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello R members,\n\nI have a situation involving nested data for which I couldn?t find a clear\nanswer and am hoping someone can help.\n\n\n\nI do work using laboratory mice. A common study design involves repeated\nmeasures of single animals receiving the same treatment over time. For\nthese designs, it?s recommended to use a nested design since each animal\ntypically only experiences one treatment level. It looks like I could code\nthis by adding these terms to a lmer model:\n\n\n\n(1|Mouse) + (1|Treatment:Mouse)\n\n\n\nHowever, we also like to account for sex in the models. A single mouse can\nonly have one sex, so I would similarly code this nested effect with:\n\n\n\n(1|Mouse) + (1|Sex:Mouse)\n\n\n\nIf I have a single model where Mouse is nested in both Treatment and Sex,\ndo I need an additional term to reflect this? Would this code be correct?:\n\n\n\n(1|Mouse) + (1|Treatment:Mouse) + (1|Sex:Mouse)\n\n\n\nFor comparison, I?ve previously used JMP for nested models. In JMP, Mouse\nnested in both Treatment and Sex would look like this: Mouse(Treatment,\nSex). I?m not sure if the above line of code would be the R equivalent or\nif I need to add a term that includes both Treatment and Sex in the same\nset of parentheses. My searches weren?t very helpful for this situation.\nI?d greatly appreciate any resources anyone may have about this type of\ndesign.\n\nThanks,\n-- \nAmanda Barabas, B.S.\nPhD Candidate, Department of Animal Science\nPurdue University\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello R members,\n\nI have a situation involving nested data for which I couldn?t find a clear\nanswer and am hoping someone can help.\n\n\n\nI do work using laboratory mice. A common study design involves r",
+      "thread_id": "thread-47317061b7c9",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-6719d647bbef",
+      "message_id": "<1253113674.137086.1649531463118@mail.yahoo.com>",
+      "from_name": "Andras Farkas",
+      "from_email_hash": "d041725740c3449c5c62401c5e9ffc6480157a994fa06484d1395c41ad4da6d8",
+      "date": "2022-04-09T19:11:03Z",
+      "subject": "[R-sig-ME] lmer formula",
+      "subject_clean": "lmer formula",
+      "in_reply_to": null,
+      "references": [
+        "<1253113674.137086.1649531463118.ref@mail.yahoo.com>"
+      ],
+      "body_plain": "Hello,\n\ncould you please provide input on the following formula (please ignore the widely known example of the sleepstudy data and its analysis for a moment and assume we have this formula here) :\n\n m1 <- lmer(Reaction ~ ((A1*Days)/(B2*C1)) + (1 | Subject), sleepstudy)\n\nthis simple example - similar to my actual real life model of greeter complexity - what I would try to do is to estimate fixed effects for \"Days\" and \"C1\", but not for \"A1\"\nand \"B2\". In this hypothetical example A1, B2, AND C1 all have a column with values in the data sleepstudy, but instead of estimating a coefficient for A1 and B2 we would just use the actual values of them as they appear in the spreadsheet in the calculations.\n\nhope I am not way off with my question, but could you please advise as to how the model formula would need to be written in this case?\n\nmuch appreciate the help,\n\nthanks,\n\n\nAndras?",
+      "body_snippet": "Hello,\n\ncould you please provide input on the following formula (please ignore the widely known example of the sleepstudy data and its analysis for a moment and assume we have this formula here) :\n\n m",
+      "thread_id": "thread-6719d647bbef",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-783c36bb3f91",
+      "message_id": "<c2272f41-e82d-83ee-552d-6dddfd2ff4dd@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-09T19:07:26-04:00",
+      "subject": "[R-sig-ME] lmer formula",
+      "subject_clean": "lmer formula",
+      "in_reply_to": "<1253113674.137086.1649531463118@mail.yahoo.com>",
+      "references": [
+        "<1253113674.137086.1649531463118.ref@mail.yahoo.com>",
+        "<1253113674.137086.1649531463118@mail.yahoo.com>"
+      ],
+      "body_plain": "This is not possible in lme4, which requires a *linear* model (some \nincorporation of constants is possible via offsets, but only additive \nconstants).\n\n   Using nlme() from the nlme package, something like\n\nnlme(Reaction ~ A1*mu1/(B2*mu2) + mu3,\n      fixed = list(mu1 ~ Days,\n                   mu2 ~ C1),\n      random = ~ 1 | mu3\n)\n\nmight work.  But keep in mind that when you fit nonlinear mixed effects \nmodels you often have to be much clearer by what you mean by \"estimating \nfixed effects for\" something -- this will typically involve a sub-model \nthat is a linear model for a parameter that enters the top-level \nnonlinear equation.\n\n\n\nOn 4/9/22 3:11 PM, Andras Farkas via R-sig-mixed-models wrote:\n> Hello,\n> \n> could you please provide input on the following formula (please ignore the widely known example of the sleepstudy data and its analysis for a moment and assume we have this formula here) :\n> \n>   m1 <- lmer(Reaction ~ ((A1*Days)/(B2*C1)) + (1 | Subject), sleepstudy)\n> \n> this simple example - similar to my actual real life model of greeter complexity - what I would try to do is to estimate fixed effects for \"Days\" and \"C1\", but not for \"A1\"\n> and \"B2\". In this hypothetical example A1, B2, AND C1 all have a column with values in the data sleepstudy, but instead of estimating a coefficient for A1 and B2 we would just use the actual values of them as they appear in the spreadsheet in the calculations.\n> \n> hope I am not way off with my question, but could you please advise as to how the model formula would need to be written in this case?\n> \n> much appreciate the help,\n> \n> thanks,\n> \n> \n> Andras\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This is not possible in lme4, which requires a *linear* model (some \nincorporation of constants is possible via offsets, but only additive \nconstants).\n\n   Using nlme() from the nlme package, somethin",
+      "thread_id": "thread-6719d647bbef",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-262237e8d4fa",
+      "message_id": "<0b392dc0-d87b-2fbe-62b8-a2e9bd92a6e2@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-04-10T22:18:18-05:00",
+      "subject": "[R-sig-ME] nested random effects in lmer",
+      "subject_clean": "nested random effects in lmer",
+      "in_reply_to": "<CA+nfb=0DjwP8E3SMWxreM6K1OouhDNX2eVPN7S93P5L7o=c9Dg@mail.gmail.com>",
+      "references": [
+        "<CA+nfb=0DjwP8E3SMWxreM6K1OouhDNX2eVPN7S93P5L7o=c9Dg@mail.gmail.com>"
+      ],
+      "body_plain": "I'm not familiar with JMP, but I suspect that both treatment and sex\nshould be fixed effects. If each mouse receives only a single treatment,\nthen you would have:\n\n1 + treatment * sex + (1|mouse)\n\nif there is treatment by sex interaction\n\nor\n\n1 + treatment + sex + (1|mouse)\n\nif there is no treatment by sex interaction.\n\nIf each mouse received multiple treatments, then you may want to\nconsider (1 + treatment|mouse) instead of (1|mouse) in order to allow\nfor the treatment effect size to vary between mice.\n\n\nThe GLMM FAQ has a small section on this:\n\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#should-i-treat-factor-xxx-as-fixed-or-random\n\nHope that helps a bit,\nPhillip\n\nOn 8/4/22 7:40 am, Amanda Barabas wrote:\n> Hello R members,\n> \n> I have a situation involving nested data for which I couldn?t find a clear\n> answer and am hoping someone can help.\n> \n> \n> \n> I do work using laboratory mice. A common study design involves repeated\n> measures of single animals receiving the same treatment over time. For\n> these designs, it?s recommended to use a nested design since each animal\n> typically only experiences one treatment level. It looks like I could code\n> this by adding these terms to a lmer model:\n> \n> \n> \n> (1|Mouse) + (1|Treatment:Mouse)\n> \n> \n> \n> However, we also like to account for sex in the models. A single mouse can\n> only have one sex, so I would similarly code this nested effect with:\n> \n> \n> \n> (1|Mouse) + (1|Sex:Mouse)\n> \n> \n> \n> If I have a single model where Mouse is nested in both Treatment and Sex,\n> do I need an additional term to reflect this? Would this code be correct?:\n> \n> \n> \n> (1|Mouse) + (1|Treatment:Mouse) + (1|Sex:Mouse)\n> \n> \n> \n> For comparison, I?ve previously used JMP for nested models. In JMP, Mouse\n> nested in both Treatment and Sex would look like this: Mouse(Treatment,\n> Sex). I?m not sure if the above line of code would be the R equivalent or\n> if I need to add a term that includes both Treatment and Sex in the same\n> set of parentheses. My searches weren?t very helpful for this situation.\n> I?d greatly appreciate any resources anyone may have about this type of\n> design.\n> \n> Thanks,\n>",
+      "body_snippet": "I'm not familiar with JMP, but I suspect that both treatment and sex\nshould be fixed effects. If each mouse receives only a single treatment,\nthen you would have:\n\n1 + treatment * sex + (1|mouse)\n\nif ",
+      "thread_id": "thread-47317061b7c9",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-7d3be999f647",
+      "message_id": "<tencent_7843E6F00CECB5736C249AF3@qq.com>",
+      "from_name": "汪燕敏",
+      "from_email_hash": "a016e17dc3ff7861e2711fb41b032912e860d07115e0c715a5b4a847bcc10a2f",
+      "date": "2022-04-14T09:56:20+01:00",
+      "subject": "[R-sig-ME] how to get the relative importance of each variable in linear mixed model",
+      "subject_clean": "how to get the relative importance of each variable in linear mixed model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "dear sir,\n\n&nbsp;I used lme4 in R to fit the mixed model.&nbsp; i would like to get&nbsp;the relative importance of each variable.&nbsp;i know anova can&nbsp;&nbsp;do the task&nbsp;&nbsp;in linear model, but it can not work in&nbsp;linear mixed model.\nso, my question is&nbsp;how to get the relative importance of each variable of both fixed effects and random effects in linear mixed model?\nlook forwar to your reply.\n\n\nbest wishes\nyanmin wang\n\n\n\n\n\n\n\n\n\n\n\n???\n\n??????/?????????\n\n?????????962?\n\n\n\n\n&nbsp;\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "dear sir,\n\n&nbsp;I used lme4 in R to fit the mixed model.&nbsp; i would like to get&nbsp;the relative importance of each variable.&nbsp;i know anova can&nbsp;&nbsp;do the task&nbsp;&nbsp;in linear mod",
+      "thread_id": "thread-7d3be999f647",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-2d3be3148fc7",
+      "message_id": "<9fed4a8f-2f13-92e8-d9e4-7afe18015cbd@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-04-14T21:47:46-05:00",
+      "subject": "[R-sig-ME]  how to get the relative importance of each variable in linear mixed model",
+      "subject_clean": "how to get the relative importance of each variable in linear mixed model",
+      "in_reply_to": "<tencent_7843E6F00CECB5736C249AF3@qq.com>",
+      "references": [
+        "<tencent_7843E6F00CECB5736C249AF3@qq.com>"
+      ],
+      "body_plain": "See this section of the GLMM FAQ for a discussion of effect sizes and\nvariable importance:\n\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-variance-etc.\n\n\nPhillip\n\nOn 14/4/22 3:56 am, ??? wrote:\n> dear sir,\n> \n> &nbsp;I used lme4 in R to fit the mixed model.&nbsp; i would like to get&nbsp;the relative importance of each variable.&nbsp;i know anova can&nbsp;&nbsp;do the task&nbsp;&nbsp;in linear model, but it can not work in&nbsp;linear mixed model.\n> so, my question is&nbsp;how to get the relative importance of each variable of both fixed effects and random effects in linear mixed model?\n> look forwar to your reply.\n> \n> \n> best wishes\n> yanmin wang\n> \n> \n> \n> \n> \n> \n> \n> \n> \n> \n> \n> ???\n> \n> ??????/?????????\n> \n> ?????????962?\n> \n> \n> \n> \n> &nbsp;\n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "See this section of the GLMM FAQ for a discussion of effect sizes and\nvariable importance:\n\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-summaries-goodness-of-fit-decomposition-of-var",
+      "thread_id": "thread-7d3be999f647",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-130f14031cf8",
+      "message_id": "<CAC1piu22SZg6AdWz=rtRoHtW5WWq36gJSnXgEv_R+oHmirDDcg@mail.gmail.com>",
+      "from_name": "will peat",
+      "from_email_hash": "f28ae27752dc17806fbcb07889560279c417289db9279118be7aeb88e059e137",
+      "date": "2022-04-18T16:09:49+01:00",
+      "subject": "[R-sig-ME] Question about glmmTMB",
+      "subject_clean": "Question about glmmTMB",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi there,\n\nI was on github looking for help with an issue and I saw this email listed\nas a place to ask questions!\n\nI am trying to apply a poisson GLMM using glmmTMB and have used the\nfollowing code to do so:\n\n> MP1 <- glmmTMB(Abundance ~ Year + Location + Depth + All_predator +\n+                  (1 | Site/Site.Transect),\n+                data = plandat,\n+                family = \"poisson\")\n\nBut have come across the following error:\n\nError in .Call(\"getParameterOrder\", data, parameters, new.env(), PACKAGE =\nDLL) :\n  Incorrect number of arguments (3), expecting 4 for 'getParameterOrder'\n\nThis has led me to some threads which I struggle to understand. Is there\nanyway to get around this error?\n\nApologies if this is not the right email address or if this is not what the\nemail is intended for!\n\nBest wishes\nWill\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi there,\n\nI was on github looking for help with an issue and I saw this email listed\nas a place to ask questions!\n\nI am trying to apply a poisson GLMM using glmmTMB and have used the\nfollowing code t",
+      "thread_id": "thread-130f14031cf8",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-06de5e922673",
+      "message_id": "<CABghstR=-sYUEW-PjMFyjdUZGksp4oKMY-yXZGdmbtARRaqrNA@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-18T11:19:14-04:00",
+      "subject": "[R-sig-ME] Question about glmmTMB",
+      "subject_clean": "Question about glmmTMB",
+      "in_reply_to": "<CAC1piu22SZg6AdWz=rtRoHtW5WWq36gJSnXgEv_R+oHmirDDcg@mail.gmail.com>",
+      "references": [
+        "<CAC1piu22SZg6AdWz=rtRoHtW5WWq36gJSnXgEv_R+oHmirDDcg@mail.gmail.com>"
+      ],
+      "body_plain": "This is a fine place to ask, but in general cross-posting is discouraged ...\n\nhttps://stackoverflow.com/questions/71913002/issue-with-glmm-in-glmmtmb\n\nFor the record,\n\nThis is a binary-incompatibility problem as documented\n[here](https://github.com/glmmTMB/glmmTMB/issues/791). You should\nprobably have seen a \"Package version inconsistency detected\" message\ntelling you to re-install glmmTMB from source. Depending on the\nrelease sequence of TMB and glmmTMB on CRAN, updating from CRAN as\nusual might work; otherwise you need to re-install from source (see\n?glmmTMB::reinstalling).\n\n  For guidance on where to ask glmmTMB questions see\nhttps://github.com/glmmTMB/glmmTMB#where-to-ask-questions=\n\n  cheers\n   Ben Bolker\n\nOn Mon, Apr 18, 2022 at 11:15 AM will peat <willpeat1 at gmail.com> wrote:\n>\n> Hi there,\n>\n> I was on github looking for help with an issue and I saw this email listed\n> as a place to ask questions!\n>\n> I am trying to apply a poisson GLMM using glmmTMB and have used the\n> following code to do so:\n>\n> > MP1 <- glmmTMB(Abundance ~ Year + Location + Depth + All_predator +\n> +                  (1 | Site/Site.Transect),\n> +                data = plandat,\n> +                family = \"poisson\")\n>\n> But have come across the following error:\n>\n> Error in .Call(\"getParameterOrder\", data, parameters, new.env(), PACKAGE =\n> DLL) :\n>   Incorrect number of arguments (3), expecting 4 for 'getParameterOrder'\n>\n> This has led me to some threads which I struggle to understand. Is there\n> anyway to get around this error?\n>\n> Apologies if this is not the right email address or if this is not what the\n> email is intended for!\n>\n> Best wishes\n> Will\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This is a fine place to ask, but in general cross-posting is discouraged ...\n\nhttps://stackoverflow.com/questions/71913002/issue-with-glmm-in-glmmtmb\n\nFor the record,\n\nThis is a binary-incompatibility",
+      "thread_id": "thread-130f14031cf8",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-2db6c6cbb95c",
+      "message_id": "<6bfb31653b2944e898c83bf751c557e2@liverpool.ac.uk>",
+      "from_name": "Esan, Oluwaseun",
+      "from_email_hash": "be130e24debb39d5a3007563f1a7bb528e1ec4e967ff0fb6347eb9f895b51d5a",
+      "date": "2022-04-19T13:54:57Z",
+      "subject": "[R-sig-ME] Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "subject_clean": "Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear List Members,\n\nI am relatively new to R and Mixed Effects Models using LME.\n\nI am unable to post sample data:\n\n\nI am trying to get the effect of pregnancy on lung function  and age on women with a certain genetic condition. We know lung function declines with age in people with the condition but we do not know the effect pregnancy has on this relationship.\n\nI have repeat measurements of lung function measured up to 4 times in a year for up to 14 years for each woman (A total of 331,722 observations for 11668 women).\n\nI am having problems when trying to add an exponential serial correlation to a validated model.\n\nlibrary(nlme)\n\ncovariate 1= age\nM1<-lme(lung function~age +covariate1+covariate2+covariate3+ timesincepregnancy ,data=df5,random=~1+age|id, na.action=na.exclude, method =\"ML\", control=lmeControl(opt='optim'), corr=corExp(form=~age|id, nugget=T))\n\nThe following error occurs:\n\nError in logLik.reStruct(object, conLin) :\n  NA/NaN/Inf in foreign function call (arg 3)\n\nWhen I run it on random sample of 40 women it runs without an error. Is there any further processing I need to do on the data? I have already removed duplicates.\n\nPrevious studies have shown exponential correlation structure is the best fit for the data but I cannot seem to get this to work on the dataset I have.\n\nAll the best,\nSeun\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear List Members,\n\nI am relatively new to R and Mixed Effects Models using LME.\n\nI am unable to post sample data:\n\n\nI am trying to get the effect of pregnancy on lung function  and age on women with ",
+      "thread_id": "thread-2db6c6cbb95c",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-2e8850d2f4cd",
+      "message_id": "<9e2115da-c764-007d-0a96-4ddd5855af8b@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-19T10:51:23-04:00",
+      "subject": "[R-sig-ME] Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "subject_clean": "Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "in_reply_to": "<6bfb31653b2944e898c83bf751c557e2@liverpool.ac.uk>",
+      "references": [
+        "<6bfb31653b2944e898c83bf751c557e2@liverpool.ac.uk>"
+      ],
+      "body_plain": "These are hard problems to debug.\n\n    The error message means *some* numerical issue  has occurred, but \nwithout a reproducible example it's really hard to diagnose. None of \nthese examples ends up being diagnosed, but some have advice about \ndebugging/troubleshooting:\n\nhttps://stackoverflow.com/questions/16488736/r-error-in-lme-function-na-nan-inf-in-foreign-function-call-arg-3\n\nhttps://stackoverflow.com/questions/34900270/lme-na-nan-inf-in-foreign-function-call-arg-3\n\n\nSlightly different: \nhttps://stat.ethz.ch/pipermail/r-help/2005-November/082151.html\n\nhttps://stats.stackexchange.com/questions/129781/why-will-higher-order-of-polynomials-using-poly-function-solve-in-lme-model-an\n\n   You could try glmmTMB:\n\n\nglmmTMB(lung_function~age +covariate1+covariate2+covariate3+\n        timesincepregnancy + (1+age|id) + ar1(0+age|id),\n        data=df5, na.action=na.exclude)\n\n  [glmmTMB will include an iid residual error term and hence a nugget \nterm by default, unless you add `+0` to the overall model formula]\n\nOn 4/19/22 9:54 AM, Esan, Oluwaseun wrote:\n> Dear List Members,\n> \n> I am relatively new to R and Mixed Effects Models using LME.\n> \n> I am unable to post sample data:\n> \n> \n> I am trying to get the effect of pregnancy on lung function  and age on women with a certain genetic condition. We know lung function declines with age in people with the condition but we do not know the effect pregnancy has on this relationship.\n> \n> I have repeat measurements of lung function measured up to 4 times in a year for up to 14 years for each woman (A total of 331,722 observations for 11668 women).\n> \n> I am having problems when trying to add an exponential serial correlation to a validated model.\n> \n> library(nlme)\n> \n> covariate 1= age\n> M1<-lme(lung function~age +covariate1+covariate2+covariate3+ timesincepregnancy ,data=df5,random=~1+age|id, na.action=na.exclude, method =\"ML\", control=lmeControl(opt='optim'), corr=corExp(form=~age|id, nugget=T))\n> \n> The following error occurs:\n> \n> Error in logLik.reStruct(object, conLin) :\n>    NA/NaN/Inf in foreign function call (arg 3)\n> \n> When I run it on random sample of 40 women it runs without an error. Is there any further processing I need to do on the data? I have already removed duplicates.\n> \n> Previous studies have shown exponential correlation structure is the best fit for the data but I cannot seem to get this to work on the dataset I have.\n> \n> All the best,\n> Seun\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "These are hard problems to debug.\n\n    The error message means *some* numerical issue  has occurred, but \nwithout a reproducible example it's really hard to diagnose. None of \nthese examples ends up b",
+      "thread_id": "thread-2db6c6cbb95c",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-7a4609b1742b",
+      "message_id": "<1c116634-7d2a-9575-55a1-def36b39e790@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2022-04-19T11:43:19-04:00",
+      "subject": "[R-sig-ME] Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "subject_clean": "Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "in_reply_to": "<6bfb31653b2944e898c83bf751c557e2@liverpool.ac.uk>",
+      "references": [
+        "<6bfb31653b2944e898c83bf751c557e2@liverpool.ac.uk>"
+      ],
+      "body_plain": "PS can you perhaps find a subset of women for which it *breaks*? e.g. \nby bisection:\n\n   * run the model on the first half of the data (the first 5834 women)\n   * run the model on the second half of the data\n\n   see if either half gives the error.  If so, subdivide the 'bad' half \nof the data and continue ...\n\nOn 4/19/22 9:54 AM, Esan, Oluwaseun wrote:\n> Dear List Members,\n> \n> I am relatively new to R and Mixed Effects Models using LME.\n> \n> I am unable to post sample data:\n> \n> \n> I am trying to get the effect of pregnancy on lung function  and age on women with a certain genetic condition. We know lung function declines with age in people with the condition but we do not know the effect pregnancy has on this relationship.\n>  \n> I have repeat measurements of lung function measured up to 4 times in a year for up to 14 years for each woman (A total of 331,722 observations for 11668 women).\n> \n> I am having problems when trying to add an exponential serial correlation to a validated model.\n> \n> library(nlme)\n> \n> covariate 1= age\n> M1<-lme(lung function~age +covariate1+covariate2+covariate3+ timesincepregnancy ,data=df5,random=~1+age|id, na.action=na.exclude, method =\"ML\", control=lmeControl(opt='optim'), corr=corExp(form=~age|id, nugget=T))\n> \n> The following error occurs:\n> \n> Error in logLik.reStruct(object, conLin) :\n>    NA/NaN/Inf in foreign function call (arg 3)\n> \n> When I run it on random sample of 40 women it runs without an error. Is there any further processing I need to do on the data? I have already removed duplicates.\n> \n> Previous studies have shown exponential correlation structure is the best fit for the data but I cannot seem to get this to work on the dataset I have.\n> \n> All the best,\n> Seun\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics",
+      "body_snippet": "PS can you perhaps find a subset of women for which it *breaks*? e.g. \nby bisection:\n\n   * run the model on the first half of the data (the first 5834 women)\n   * run the model on the second half of t",
+      "thread_id": "thread-2db6c6cbb95c",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-b422407eb388",
+      "message_id": "<1651127947300.84198@ru.nl>",
+      "from_name": "Leisten, L. (Luca)",
+      "from_email_hash": "750da20c27735951b56ecd1bc6ca3c4db066ed87022de1c177a4c668c1fe0dbf",
+      "date": "2022-04-28T06:39:07Z",
+      "subject": "[R-sig-ME] Help with General Additive Mixed Model",
+      "subject_clean": "Help with General Additive Mixed Model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\n\nI have a little bit of an off topic question regarding general additive mixed models (GAMM).\n\n\nI am using the bam (or gam) function of the mgcv package in R and have some model specification and interpretation issues. As I have no experience with GAM models I was wondering if there is anyone around that has experience with them and could help me answer some questions?\n\n\nSpecifically my questions concern (1) the model specification of my model, as I get different results compared to a linear mixed model that includes poly terms, (2) the differences between the gam and bam function, as both give me different estimates, (3) and the difference between running a full model vs running two subsets as again, those give me different conclusions.\n\n\nI would very much appreciate any help and would love a meeting if anyone has some time available to help! I'm not sure how the email list works, but in case you'd like to contact me directly my email is Luca.leisten at ru.nl.\n\n\nThanks for your help!\n\n\nBest,\n\nLuca Marie Leisten\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\n\nI have a little bit of an off topic question regarding general additive mixed models (GAMM).\n\n\nI am using the bam (or gam) function of the mgcv package in R and have some model specificati",
+      "thread_id": "thread-b422407eb388",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-89cedb9ddcd3",
+      "message_id": "<CA+qDBRvWT0F6pf1e420xz3JqQsmdFf71XXhc0PxiHyXCn1oJLQ@mail.gmail.com>",
+      "from_name": "Miranda Fix",
+      "from_email_hash": "ff9b64409cd53d3ced2228016230a0630a6881fa1b7254d5b83092d1710ddbb2",
+      "date": "2022-04-28T14:32:12-07:00",
+      "subject": "[R-sig-ME] Shape parameter for Gamma glmer?",
+      "subject_clean": "Shape parameter for Gamma glmer?",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nMy understanding is that one can obtain the Gamma shape parameter from a\nglmer object, let's say \"mod\", by 1/sigma(mod)^2. In other words, 1 over\nthe dispersion. However, for a glm the dispersion is only a crude estimate\nand there is a gamma.shape function in the MASS package to provide a better\nestimate of the shape parameter. So my question is twofold:\n\n1) Is sigma(mod)^2 a good estimate of the dispersion in the glmer case?\n(i.e., is 1/sigma(mod)^2 a good estimate of the shape?)\n\n2) If not, is there an equivalent of MASS::gamma.shape for a glmer object\ninstead of a glm object?\n\nThanks so much for your help!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nMy understanding is that one can obtain the Gamma shape parameter from a\nglmer object, let's say \"mod\", by 1/sigma(mod)^2. In other words, 1 over\nthe dispersion. However, for a glm the dispersion",
+      "thread_id": "thread-89cedb9ddcd3",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-6548b40e6f68",
+      "message_id": "<e458c2bc-64e9-c730-f384-0d13250e5eef@phillipalday.com>",
+      "from_name": "Phillip Alday",
+      "from_email_hash": "ade6d80b4ef6149cc8ab38ee82d811cd9a1f6957f6817cbaa3d49bf68fb9cad1",
+      "date": "2022-04-29T18:20:42+01:00",
+      "subject": "[R-sig-ME] Shape parameter for Gamma glmer?",
+      "subject_clean": "Shape parameter for Gamma glmer?",
+      "in_reply_to": "<7b9e9a2f-feb2-ef1b-a445-3ef9d5cc79be@phillipalday.com>",
+      "references": [
+        "<CA+qDBRvWT0F6pf1e420xz3JqQsmdFf71XXhc0PxiHyXCn1oJLQ@mail.gmail.com>",
+        "<7b9e9a2f-feb2-ef1b-a445-3ef9d5cc79be@phillipalday.com>"
+      ],
+      "body_plain": "Once again in plain text for the list\n> On 4/28/22 16:32, Miranda Fix wrote:\n> Hi,\n>\n> My understanding is that one can obtain the Gamma shape parameter from a\n> glmer object, let's say \"mod\", by 1/sigma(mod)^2. In other words, 1 over\n> the dispersion. However, for a glm the dispersion is only a crude estimate\n> and there is a gamma.shape function in the MASS package to provide a better\n> estimate of the shape parameter. So my question is twofold:\n>\n> 1) Is sigma(mod)^2 a good estimate of the dispersion in the glmer case?\n> (i.e., is 1/sigma(mod)^2 a good estimate of the shape?)\n> \n\nI suspect it's about the same quality as for glm() because ultimately\nthe dispersion is estimated in a fairly similar manner.\n\n> 2) If not, is there an equivalent of MASS::gamma.shape for a glmer object\n> instead of a glm object?\n> \nNot to my knowledge, though looking at the source for\nMASS::gamma.shape.glm I suspect that it would be trivial to modify it to\nwork with glmer. You would \"just\" need to change the bits that extract\nthe relevant components from the model (fitted values, deviance, etc),\nand the rest should work. The only tricky bit is the residual degrees of\nfreedom, though maybe somebody here can provide an idea about that. (I'm\npretty weak on gamma regression, even in the non mixed case, to be honest.)\n\nPhillip\n> \n> \n>\n> Thanks so much for your help!\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Once again in plain text for the list\n> On 4/28/22 16:32, Miranda Fix wrote:\n> Hi,\n>\n> My understanding is that one can obtain the Gamma shape parameter from a\n> glmer object, let's say \"mod\", by 1/si",
+      "thread_id": "thread-6548b40e6f68",
+      "thread_depth": 0,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-fe9558214fee",
+      "message_id": "<2C74D73B-4F40-4B5F-A77A-9421F38E4177@earthlink.net>",
+      "from_name": "Liz Hare",
+      "from_email_hash": "b9b0dd39e2e93570f1dcba80f5ec9b0ac81fc1d6715d1f9b0e5d6a602e2ee315",
+      "date": "2022-04-29T13:32:49-04:00",
+      "subject": "[R-sig-ME] Help with General Additive Mixed Model",
+      "subject_clean": "Help with General Additive Mixed Model",
+      "in_reply_to": "<1651127947300.84198@ru.nl>",
+      "references": [
+        "<1651127947300.84198@ru.nl>"
+      ],
+      "body_plain": "I found this book to be really helpful with GAMs and questions like your #3 about submodels.\n\nWood, S. N. Generalized Additive Models: an Introduction with R, CRC Press, New York (2017)\n\nLiz\n\n.\n\n\nLiz Hare, PhD\nDog Genetics LLC\ndoggene at earthlink.net\nhttp://www.doggenetics.com\n\n> On Apr 28, 2022, at 2:39 AM, Leisten, L. (Luca) <luca.leisten at ru.nl> wrote:\n> \n> Dear all,\n> \n> \n> I have a little bit of an off topic question regarding general additive mixed models (GAMM).\n> \n> \n> I am using the bam (or gam) function of the mgcv package in R and have some model specification and interpretation issues. As I have no experience with GAM models I was wondering if there is anyone around that has experience with them and could help me answer some questions?\n> \n> \n> Specifically my questions concern (1) the model specification of my model, as I get different results compared to a linear mixed model that includes poly terms, (2) the differences between the gam and bam function, as both give me different estimates, (3) and the difference between running a full model vs running two subsets as again, those give me different conclusions.\n> \n> \n> I would very much appreciate any help and would love a meeting if anyone has some time available to help! I'm not sure how the email list works, but in case you'd like to contact me directly my email is Luca.leisten at ru.nl.\n> \n> \n> Thanks for your help!\n> \n> \n> Best,\n> \n> Luca Marie Leisten\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I found this book to be really helpful with GAMs and questions like your #3 about submodels.\n\nWood, S. N. Generalized Additive Models: an Introduction with R, CRC Press, New York (2017)\n\nLiz\n\n.\n\n\nLiz ",
+      "thread_id": "thread-b422407eb388",
+      "thread_depth": 1,
+      "month": "2022-04"
+    },
+    {
+      "id": "msg-509bafc81225",
+      "message_id": "<CAPzcKfvk4npgKwuPr8az=14B1B0Z6T=gfuYgozr5DpShh88uXg@mail.gmail.com>",
+      "from_name": "Victoria Pattison-Willits",
+      "from_email_hash": "ff3d096e5f3618952a91386e5ea337458271d603c9291f453b181e9dc82df9e5",
+      "date": "2022-04-29T14:57:49-04:00",
+      "subject": "[R-sig-ME] Modelling non-negative non-zero continuous data",
+      "subject_clean": "Modelling non-negative non-zero continuous data",
+      "in_reply_to": "<CAPKijhpHbCMfJcr8r053OBotJYbAKZ8O_Yj8GgX7oPARks9OHg@mail.gmail.com>",
+      "references": [
+        "<CAPKijhpHbCMfJcr8r053OBotJYbAKZ8O_Yj8GgX7oPARks9OHg@mail.gmail.com>"
+      ],
+      "body_plain": "Dear all,\n\nI am hoping you can help me. I am trying to model chick tarsi (leg length)\ndata. Briefly, I have mean measurements of tarsus length from 457 nests.\nThe data were collected across 31 sites (10 nests in each site) over a\nsix-year period so I have an *a priori *nested random effects structure:\n(1|SITE_ID/BOX_NUMBER) + (1|YEAR). (Although  I have had to remove the\nnested nest_box term due to convergence issues - there is a lot of variance\nbetween nests within sites.)\n\nThe problem that I am running into is that the data is bound between the\nvalues 12.73 and 20.12 mm. Both the data itself and the residuals from a\nlmer model are left-skewed because the data is non-negative and non-zero.\n\nThe initial suite of models I have tried follows the below: I am running\nmodels using both glmmTMB and lme (lmer).\n\n(Also I have run the same models using the same length data for a bunch of\nother response variables with no issues including various breeding outcomes\nand chick measurements). Fixed covariates are scaled and centred: (sc.)\ne.g.\n```{r}\nTL_BUILT_FULL_TMB2<-\nglmmTMB(me_TARSUS~sc.BUILT_PERCENT+sc.GARDEN_PERCENT+sc.RINGING_AGE+sc.AprHatchDate+sc.BROOD_ATRINGING+(1|SITE_ID)+(1|YEAR),\ndata=DF_CHICK_TARSUS, family = gaussian)\n\nsummary(TL_BUILT_FULL_TMB2)\n```\nI am a little stumped as to what to do - I have run the same model using\nreflected and log (and/or square root) transformed data - which does seem\nto resolve the residual issues. However, I know that this is not the best\nresolution and is rarely done, and transforming data even for the more\ncommonly found right-skewed data is increasingly discouraged. However, I am\nnot finding (and this may be me not using the correct terms in my search!)\nany other options to overcome the issue of non-negative non-zero data -\nplenty of advice for ecological data that is right-skewed or left-skewed\nand zero-inflated!\n\nIf anyone can help me I would really appreciate it. Thank you all so much\nas always in advance for your time and knowledge sharing. I am gradually\nbuilding up my competence in R and mixed modelling and this forum has been\nreally helpful on this steep learning curve! I am hoping I am just missing\nsomething obvious! Please let me know if you need any other information\nfrom me. Thank you!\n\nVery best wishes.\n\nVicki Willits\n\n\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI am hoping you can help me. I am trying to model chick tarsi (leg length)\ndata. Briefly, I have mean measurements of tarsus length from 457 nests.\nThe data were collected across 31 sites (",
+      "thread_id": "thread-509bafc81225",
+      "thread_depth": 0,
+      "month": "2022-04"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-6ebde7b243bd",
+      "subject": "Bivariate MCMCglmm: fixed effect error",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Tara Cox [RPG]"
+      ],
+      "started": "2022-04-04T10:19:07+00:00",
+      "last_reply": "2022-04-05T18:58:31-04:00",
+      "root_message_id": "msg-6ebde7b243bd"
+    },
+    {
+      "id": "thread-0d79d2945751",
+      "subject": "Representation model problem with standardized variables",
+      "message_count": 3,
+      "participants": [
+        "Alexandre Santos",
+        "Daniel Lüdecke",
+        "Thierry Onkelinx"
+      ],
+      "started": "2022-04-04T12:26:00+02:00",
+      "last_reply": "2022-04-05T10:05:43+02:00",
+      "root_message_id": "msg-0d79d2945751"
+    },
+    {
+      "id": "thread-822af738fa91",
+      "subject": "strip plot design with pseudoreplication",
+      "message_count": 2,
+      "participants": [
+        "Javier Moreira",
+        "Phillip Alday"
+      ],
+      "started": "2022-04-05T21:19:00-05:00",
+      "last_reply": "2022-04-06T11:12:58-03:00",
+      "root_message_id": "msg-822af738fa91"
+    },
+    {
+      "id": "thread-5709b8a018a7",
+      "subject": "lower and upper bounds for optimizer=\"nloptwrap\"",
+      "message_count": 5,
+      "participants": [
+        "Andras Farkas",
+        "Ben Bolker",
+        "Phillip Alday"
+      ],
+      "started": "2022-04-07T17:18:35+00:00",
+      "last_reply": "2022-04-07T21:24:45-04:00",
+      "root_message_id": "msg-5709b8a018a7"
+    },
+    {
+      "id": "thread-47317061b7c9",
+      "subject": "nested random effects in lmer",
+      "message_count": 2,
+      "participants": [
+        "Amanda Barabas",
+        "Phillip Alday"
+      ],
+      "started": "2022-04-08T08:40:50-04:00",
+      "last_reply": "2022-04-10T22:18:18-05:00",
+      "root_message_id": "msg-47317061b7c9"
+    },
+    {
+      "id": "thread-6719d647bbef",
+      "subject": "lmer formula",
+      "message_count": 2,
+      "participants": [
+        "Andras Farkas",
+        "Ben Bolker"
+      ],
+      "started": "2022-04-09T19:11:03+00:00",
+      "last_reply": "2022-04-09T19:07:26-04:00",
+      "root_message_id": "msg-6719d647bbef"
+    },
+    {
+      "id": "thread-7d3be999f647",
+      "subject": "how to get the relative importance of each variable in linear mixed model",
+      "message_count": 2,
+      "participants": [
+        "Phillip Alday",
+        "汪燕敏"
+      ],
+      "started": "2022-04-14T09:56:20+01:00",
+      "last_reply": "2022-04-14T21:47:46-05:00",
+      "root_message_id": "msg-7d3be999f647"
+    },
+    {
+      "id": "thread-130f14031cf8",
+      "subject": "Question about glmmTMB",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "will peat"
+      ],
+      "started": "2022-04-18T16:09:49+01:00",
+      "last_reply": "2022-04-18T11:19:14-04:00",
+      "root_message_id": "msg-130f14031cf8"
+    },
+    {
+      "id": "thread-2db6c6cbb95c",
+      "subject": "Error in logLik.reStruct(object, conLin) : NA/NaN/Inf in foreign function call (arg 3) when Exponential Correlation added to model",
+      "message_count": 3,
+      "participants": [
+        "Ben Bolker",
+        "Esan, Oluwaseun"
+      ],
+      "started": "2022-04-19T13:54:57+00:00",
+      "last_reply": "2022-04-19T11:43:19-04:00",
+      "root_message_id": "msg-2db6c6cbb95c"
+    },
+    {
+      "id": "thread-b422407eb388",
+      "subject": "Help with General Additive Mixed Model",
+      "message_count": 2,
+      "participants": [
+        "Leisten, L. (Luca)",
+        "Liz Hare"
+      ],
+      "started": "2022-04-28T06:39:07+00:00",
+      "last_reply": "2022-04-29T13:32:49-04:00",
+      "root_message_id": "msg-b422407eb388"
+    },
+    {
+      "id": "thread-89cedb9ddcd3",
+      "subject": "Shape parameter for Gamma glmer?",
+      "message_count": 1,
+      "participants": [
+        "Miranda Fix"
+      ],
+      "started": "2022-04-28T14:32:12-07:00",
+      "last_reply": "2022-04-28T14:32:12-07:00",
+      "root_message_id": "msg-89cedb9ddcd3"
+    },
+    {
+      "id": "thread-509bafc81225",
+      "subject": "Modelling non-negative non-zero continuous data",
+      "message_count": 1,
+      "participants": [
+        "Victoria Pattison-Willits"
+      ],
+      "started": "2022-04-29T14:57:49-04:00",
+      "last_reply": "2022-04-29T14:57:49-04:00",
+      "root_message_id": "msg-509bafc81225"
+    },
+    {
+      "id": "thread-6548b40e6f68",
+      "subject": "Shape parameter for Gamma glmer?",
+      "message_count": 1,
+      "participants": [
+        "Phillip Alday"
+      ],
+      "started": "2022-04-29T18:20:42+01:00",
+      "last_reply": "2022-04-29T18:20:42+01:00",
+      "root_message_id": "msg-6548b40e6f68"
+    }
+  ]
+}

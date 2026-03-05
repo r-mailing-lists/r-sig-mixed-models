@@ -1,0 +1,699 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2007-06",
+  "messages": [
+    {
+      "id": "msg-784884a0b503",
+      "message_id": "<c3ca233a0706051056s3c38cc41xcf48060be01f3eab@mail.gmail.com>",
+      "from_name": "Tobias Sing",
+      "from_email_hash": "e5aa9e0a72a46e83010f69de9f936c1a74b392c29e707d83b3cedba8ec971b9a",
+      "date": "2007-06-05T19:56:52+02:00",
+      "subject": "[R-sig-ME] nlme: \"Singularity in backsolve\" error in ODE-defined, but not in closed-form model",
+      "subject_clean": "nlme: \"Singularity in backsolve\" error in ODE-defined, but not in closed-form model",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nI would appreciate very much some help/advice on a problem related to\nusing nlme together with odesolve. I am aware that the issue might\nalso be related to odesolve rather than to nlme. Still, the error\nmessage comes from nmle, and I know several people working with nlme\nwho have run into similar problems, without knowing a solution\n(platform: nlme 3.1-79, R 2.4.1, Win XP).\n\nI have been trying to come up with a minimalistic example of using\nanalytical versus ODE-defined models in nlme. Specifically, I am\nsampling artificial data from the model\ny_ij = exp(-(beta + b_i) * t) + eps_ij\n(i = number of individuals, j=observations for an individual),\nwhich corresponds to the ODE dy/dt = -beta * y(t).\n\nAs in the examples in \"the book\", I am fitting three models:\n1.) Pooling the data from all individuals\n2.) Separately for all individuals\n3.) Mixed-effects model\n\nAll three steps work fine for the _analytically_ defined models (and\nthe estimates are all good), but when I use the equivalent\n_ODE_-defined models, only the first two steps are fine, and the call\nto nlme (for fitting model 3) always stops with\n\n--> \"Error in MEEM(...): Singularity in backsolve at level 0, block 1)\".\n\nHere is what I tried to solve this problem, without success:\na.) Setting atol and rtol in odesolve as low as possible to be\nvirtually identical to the output of the analytical expression. In R's\noutput, I don't see any remaining differences. For example, I have\nanalytical(TIME=10, beta=0.75) = ode(TIME=10, beta=0.75) =\n0.0005530844\nb.) Playing around with the nlme control options msVerbose, tolerance,\nmsTol, pnlsTol, and maxiter.\nc.) Googling for possible solutions\n\nI would appreciate any help/advice to solve this problem.\nMany thanks,\n  Tobias\n\nP.S. Here is the full code to reproduce the problem:\n\n## sample artificial exponential decay data with noise:\nlibrary(nlme)\nlibrary(odesolve)\nbeta <- 1\nsigma <- 0.025\nsigma.b <- 0.2\ntimes <- seq(0,10, by=0.5)\n\nn.individuals <- 10\nb <- rnorm(n.individuals, 0, sigma.b)\neps <- matrix(rnorm(n.individuals * length(times), 0, sigma),\nlength(times), n.individuals)\n\nmy.data <- as.list(1:n.individuals)\nfor (i in 1:n.individuals) {\n  my.data[[i]] <- data.frame(ID=rep(i, length(times)),\n                       TIME=times,\n                       DV=exp(- (beta + b[i]) * times) + eps[, i])\n  my.data[[i]][ my.data[[i]] <= 0] <- 10^(-5)\n}\nmy.data <- do.call(rbind, my.data)\n\n## fit analytical models (pooled, individual, and mixed):\n## EVERYTHING WORKS FINE HERE!\nanalytical <- function(TIME, beta) {\n  exp(-beta * TIME)\n}\nnls(DV ~ analytical(TIME, beta), data=my.data, start=list(beta=2))\nmodel.list <- nlsList(DV ~ analytical(TIME, beta) | ID, data=my.data,\nstart=list(beta=2))\nmodel.nlme <- nlme(model.list)\n\n## fit equivalent ODE-defined models (pooled, individual, and mixed):\n## --> ERROR \"Singularity in backsolve\" for mixed model\nyprime <- function(t, y, parms) {\n  dydt <- -parms['beta'] * y\n  list(dydt)\n}\node <- function(TIME, beta) {\n  y0 <- 1\n  ans <- lsoda(y0, c(0,TIME), yprime, c(beta=beta), atol=10^(-10),\nrtol=10^(-10))\n  ans[2,2]\n}\node.vectorized <- Vectorize(ode, 'TIME')\n\nnls(DV ~ ode.vectorized(TIME, beta), data=my.data, start=list(beta=2))\nmodel.list <- nlsList(DV ~ ode.vectorized(TIME, beta) | ID,\ndata=my.data, start=list(beta=2))\nmodel.nlme <- nlme(model.list)\n\n\"Error in MEEM(object, conLin, control$niterEM) :\n        Singularity in backsolve at level 0, block 1\"",
+      "body_snippet": "Dear all,\n\nI would appreciate very much some help/advice on a problem related to\nusing nlme together with odesolve. I am aware that the issue might\nalso be related to odesolve rather than to nlme. Sti",
+      "thread_id": "thread-784884a0b503",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-be227adb2713",
+      "message_id": "<BAY144-DAV10F5F85FE3F9BE83739A6A0270@phx.gbl>",
+      "from_name": "Cougar",
+      "from_email_hash": "6bdd2073975c7d1f4bcc0429bc0c506868f28026789b54d63597941b0d3b48fc",
+      "date": "2007-06-06T16:15:42-04:00",
+      "subject": "[R-sig-ME] anova",
+      "subject_clean": "anova",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I wonder if it is possible to nest a generalized least squares model within\nan lmer model for the purpose of testing the hypothesis that sigma.sq_beta_0\n= 0.\n\nExample: R 2.5.0, WinXP\n\n>library(lme4)\n>data(sleepstudy)\n>library(nlme)\n>m0 <- gls(Reaction ~ Days, sleepstudy)\n>m1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)\n>anova(m0,m1)\n\nI do not get any result from the anova.  I assume it is because the model\nobjects are of different classes.  Is that correct?\n\nRespectfully,\n\nFrank Lawrence",
+      "body_snippet": "I wonder if it is possible to nest a generalized least squares model within\nan lmer model for the purpose of testing the hypothesis that sigma.sq_beta_0\n= 0.\n\nExample: R 2.5.0, WinXP\n\n>library(lme4)\n>",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-e960081d1e0c",
+      "message_id": "<40e66e0b0706061335s364f51ffwfb287f5db194726d@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-06T15:35:36-05:00",
+      "subject": "[R-sig-ME] anova",
+      "subject_clean": "anova",
+      "in_reply_to": "<BAY144-DAV10F5F85FE3F9BE83739A6A0270@phx.gbl>",
+      "references": [
+        "<BAY144-DAV10F5F85FE3F9BE83739A6A0270@phx.gbl>"
+      ],
+      "body_plain": "On 6/6/07, Cougar <Cougar_711 at msn.com> wrote:\n> I wonder if it is possible to nest a generalized least squares model within\n> an lmer model for the purpose of testing the hypothesis that sigma.sq_beta_0\n> = 0.\n>\n> Example: R 2.5.0, WinXP\n>\n> >library(lme4)\n> >data(sleepstudy)\n> >library(nlme)\n> >m0 <- gls(Reaction ~ Days, sleepstudy)\n> >m1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)\n> >anova(m0,m1)\n\nIt is supposed to work is you use lm, not gls.  However, it doesn't.\nI am reminded of one of my favorite quotes that \"In theory, theory and\npractice are the same.  In practice they're not.\".\n\n> library(lme4)\nLoading required package: Matrix\nLoading required package: lattice\n> fm1 <- lm(Reaction ~ Days, sleepstudy)\n> fm2 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)\n> anova(fm2, fm1)\nError in FUN(X[[1L]], ...) :\n  no slot of name \"call\" for this object of class \"lm\"\n\nI need to be a bit more careful in the code to get this to work but I\nwill do so.\n\n>\n> I do not get any result from the anova.  I assume it is because the model\n> objects are of different classes.  Is that correct?\n>\n> Respectfully,\n>\n> Frank Lawrence\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 6/6/07, Cougar <Cougar_711 at msn.com> wrote:\n> I wonder if it is possible to nest a generalized least squares model within\n> an lmer model for the purpose of testing the hypothesis that sigma.sq_b",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-0c9ebd4d1475",
+      "message_id": "<3FC0430478C30B4A9AF0AFF7863418F130F1A4@BCMEVS6.ad.bcm.edu>",
+      "from_name": "Roberts, J. Kyle",
+      "from_email_hash": "88de96a6c2a9d0cf7c5c9055fcd25cf68d8edc8e6550db1c23d6252724ee7877",
+      "date": "2007-06-07T10:03:22-05:00",
+      "subject": "[R-sig-ME] NAEP Data and lmer",
+      "subject_clean": "NAEP Data and lmer",
+      "in_reply_to": "<40e66e0b0706061335s364f51ffwfb287f5db194726d@mail.gmail.com>",
+      "references": [],
+      "body_plain": "Friends,\n\nHave any of you used either lme or lmer to analyze NAEP data? I have done some things with HLM (the software), but wondered if there was already a set of routines for handling the whole \"plausible values\" thing in R. Also, for those of you familiar with the NAEP and HLM, does HLM just average the\nresults of the plausible values, or is the final estimate a maximized estimate based on the five plausible values?\n\nThanks,\nKyle\n\nP.S. - Be on the watch for the first ever \"North American Conference on Multilevel Analysis\" coming late Spring 2008!!\n\n***************************************\nJ. Kyle Roberts, Ph.D.\nBaylor College of Medicine\nCenter for Educational Outreach\nOne Baylor Plaza, MS:  BCM411\nHouston, TX   77030-3411\n713-798-6672 - 713-798-8201 Fax\njkrobert at bcm.edu",
+      "body_snippet": "Friends,\n\nHave any of you used either lme or lmer to analyze NAEP data? I have done some things with HLM (the software), but wondered if there was already a set of routines for handling the whole \"pla",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 2,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-af08a2ade4c4",
+      "message_id": "<2323A6D37908A847A7C32F1E3662C80EBA085D@dc1ex01.air.org>",
+      "from_name": "Doran, Harold",
+      "from_email_hash": "92d2bc653019a2d5a0fa1618e3004819dccf7a9f65c746de6a1bc55fa1e194db",
+      "date": "2007-06-07T11:13:26-04:00",
+      "subject": "[R-sig-ME] NAEP Data and lmer",
+      "subject_clean": "NAEP Data and lmer",
+      "in_reply_to": "<3FC0430478C30B4A9AF0AFF7863418F130F1A4@BCMEVS6.ad.bcm.edu>",
+      "references": [],
+      "body_plain": "Kyle:\n\nWhat do you mean by \"handle the plausible values thing in R\". The\nclass.acc() function in the MiscPsycho package is essentially the same\nexpression used for calculating NAEP plausble values. I can send the\nvignette that shows the computational details. Since for each student\nyou have multiple plausible values, can you give us a sense of what your\ndata structure looks like and how you're analyzing it in order to answer\nyour question? \n\nHarold\n\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf \n> Of Roberts, J. Kyle\n> Sent: Thursday, June 07, 2007 11:03 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] NAEP Data and lmer\n> \n>  \n> Friends,\n> \n> Have any of you used either lme or lmer to analyze NAEP data? \n> I have done some things with HLM (the software), but wondered \n> if there was already a set of routines for handling the whole \n> \"plausible values\" thing in R. Also, for those of you \n> familiar with the NAEP and HLM, does HLM just average the \n> results of the plausible values, or is the final estimate a \n> maximized estimate based on the five plausible values?\n> \n> Thanks,\n> Kyle\n> \n> P.S. - Be on the watch for the first ever \"North American \n> Conference on Multilevel Analysis\" coming late Spring 2008!!\n> \n> ***************************************\n> J. Kyle Roberts, Ph.D.\n> Baylor College of Medicine\n> Center for Educational Outreach\n> One Baylor Plaza, MS:  BCM411\n> Houston, TX   77030-3411\n> 713-798-6672 - 713-798-8201 Fax\n> jkrobert at bcm.edu\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Kyle:\n\nWhat do you mean by \"handle the plausible values thing in R\". The\nclass.acc() function in the MiscPsycho package is essentially the same\nexpression used for calculating NAEP plausble values. I ",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 3,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-4de702d7552e",
+      "message_id": "<40e66e0b0706070814g7e1b47a4u9ad35208748b05e2@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-07T10:14:22-05:00",
+      "subject": "[R-sig-ME] NAEP Data and lmer",
+      "subject_clean": "NAEP Data and lmer",
+      "in_reply_to": "<3FC0430478C30B4A9AF0AFF7863418F130F1A4@BCMEVS6.ad.bcm.edu>",
+      "references": [
+        "<40e66e0b0706061335s364f51ffwfb287f5db194726d@mail.gmail.com>",
+        "<3FC0430478C30B4A9AF0AFF7863418F130F1A4@BCMEVS6.ad.bcm.edu>"
+      ],
+      "body_plain": "On 6/7/07, Roberts, J. Kyle <jkrobert at bcm.tmc.edu> wrote:\n\n> Have any of you used either lme or lmer to analyze NAEP data? I have done some things with HLM (the software), but wondered if there was already a set of routines for handling the whole \"plausible values\" thing in R. Also, for those of you familiar with the NAEP and HLM, does HLM just average the\n> results of the plausible values, or is the final estimate a maximized estimate based on the five plausible values?\n\nMy guess from the google hits is that NAEP stands for the National\nAssessment of Educational Progress.  Can you be more specific about\nthe issues involved in analyzing NAEP data?\n\n> P.S. - Be on the watch for the first ever \"North American Conference on Multilevel Analysis\" coming late Spring 2008!!\n\nSounds interesting.  Has the location been set?",
+      "body_snippet": "On 6/7/07, Roberts, J. Kyle <jkrobert at bcm.tmc.edu> wrote:\n\n> Have any of you used either lme or lmer to analyze NAEP data? I have done some things with HLM (the software), but wondered if there was",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 3,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-3c1209e465f2",
+      "message_id": "<3FC0430478C30B4A9AF0AFF7863418F130F1A5@BCMEVS6.ad.bcm.edu>",
+      "from_name": "Roberts, J. Kyle",
+      "from_email_hash": "88de96a6c2a9d0cf7c5c9055fcd25cf68d8edc8e6550db1c23d6252724ee7877",
+      "date": "2007-06-07T10:40:54-05:00",
+      "subject": "[R-sig-ME] NAEP Data and lmer",
+      "subject_clean": "NAEP Data and lmer",
+      "in_reply_to": "<2323A6D37908A847A7C32F1E3662C80EBA085D@dc1ex01.air.org>",
+      "references": [],
+      "body_plain": "Harold,\n\nI just want to use R to analyze NAEP data in a multilevel framework.  I don't want to actually calculate plausible values (if I understood your question correctly).  I was wondering if I would need to run 5 separate analyses and then average across those values or if there was some built-in function\nin R that would let me run all five analyses simultaneously (like how SPSS handles NAEP data with regression and ANOVA).  For my analyses, I am wanting to look at student-level science scores nested within states.  I am wanting to do this to see the effect of states adding science components to\ntheir state mandated standardized assessments (like Texas did a few years back).  This is more curiosity on my part than any rigorous study.  Regardless, I would be very interested in seeing the vignette for the class.acc() function.\n\nThanks,\nKyle\n\n\n***************************************\nJ. Kyle Roberts, Ph.D.\nBaylor College of Medicine\nCenter for Educational Outreach\nOne Baylor Plaza, MS:  BCM411\nHouston, TX   77030-3411\n713-798-6672 - 713-798-8201 Fax\njkrobert at bcm.edu\n***************************************\n\n-----Original Message-----\nFrom: Doran, Harold [mailto:HDoran at air.org] \nSent: Thursday, June 07, 2007 10:13 AM\nTo: Roberts, J. Kyle; r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] NAEP Data and lmer\n\nKyle:\n\nWhat do you mean by \"handle the plausible values thing in R\". The\nclass.acc() function in the MiscPsycho package is essentially the same expression used for calculating NAEP plausble values. I can send the vignette that shows the computational details. Since for each student you have multiple plausible values, can you give us a sense of what your data structure\nlooks like and how you're analyzing it in order to answer your question? \n\nHarold\n\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org\n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \n> Roberts, J. Kyle\n> Sent: Thursday, June 07, 2007 11:03 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] NAEP Data and lmer\n> \n>  \n> Friends,\n> \n> Have any of you used either lme or lmer to analyze NAEP data? \n> I have done some things with HLM (the software), but wondered if there \n> was already a set of routines for handling the whole \"plausible \n> values\" thing in R. Also, for those of you familiar with the NAEP and \n> HLM, does HLM just average the results of the plausible values, or is \n> the final estimate a maximized estimate based on the five plausible \n> values?\n> \n> Thanks,\n> Kyle\n> \n> P.S. - Be on the watch for the first ever \"North American Conference \n> on Multilevel Analysis\" coming late Spring 2008!!\n> \n> ***************************************\n> J. Kyle Roberts, Ph.D.\n> Baylor College of Medicine\n> Center for Educational Outreach\n> One Baylor Plaza, MS:  BCM411\n> Houston, TX   77030-3411\n> 713-798-6672 - 713-798-8201 Fax\n> jkrobert at bcm.edu\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Harold,\n\nI just want to use R to analyze NAEP data in a multilevel framework.  I don't want to actually calculate plausible values (if I understood your question correctly).  I was wondering if I woul",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 4,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-ace9036449a9",
+      "message_id": "<2323A6D37908A847A7C32F1E3662C80EBA0869@dc1ex01.air.org>",
+      "from_name": "Doran, Harold",
+      "from_email_hash": "92d2bc653019a2d5a0fa1618e3004819dccf7a9f65c746de6a1bc55fa1e194db",
+      "date": "2007-06-07T12:19:32-04:00",
+      "subject": "[R-sig-ME] NAEP Data and lmer",
+      "subject_clean": "NAEP Data and lmer",
+      "in_reply_to": "<3FC0430478C30B4A9AF0AFF7863418F130F1A5@BCMEVS6.ad.bcm.edu>",
+      "references": [],
+      "body_plain": "Kyle:\n\nI think this needs much more context before I can be helpful, or maybe I\nam missing something. Our software program AM (that is AIR's software)\nis designed to handle some NAEP analyses (and it is also free). It also\nhas a small component for MLMs, but it is not able to do what lmer does.\n\nAre you asking about 5 analyses because you want to do 1 for each of the\n5 plausible values? \n\n\n> -----Original Message-----\n> From: Roberts, J. Kyle [mailto:jkrobert at bcm.tmc.edu] \n> Sent: Thursday, June 07, 2007 11:41 AM\n> To: Doran, Harold; r-sig-mixed-models at r-project.org\n> Subject: RE: [R-sig-ME] NAEP Data and lmer\n> \n> Harold,\n> \n> I just want to use R to analyze NAEP data in a multilevel \n> framework.  I don't want to actually calculate plausible \n> values (if I understood your question correctly).  I was \n> wondering if I would need to run 5 separate analyses and then \n> average across those values or if there was some built-in \n> function in R that would let me run all five analyses \n> simultaneously (like how SPSS handles NAEP data with \n> regression and ANOVA).  For my analyses, I am wanting to look \n> at student-level science scores nested within states.  I am \n> wanting to do this to see the effect of states adding science \n> components to their state mandated standardized assessments \n> (like Texas did a few years back).  This is more curiosity on \n> my part than any rigorous study.  Regardless, I would be very \n> interested in seeing the vignette for the class.acc() function.\n> \n> Thanks,\n> Kyle\n> \n> \n> ***************************************\n> J. Kyle Roberts, Ph.D.\n> Baylor College of Medicine\n> Center for Educational Outreach\n> One Baylor Plaza, MS:  BCM411\n> Houston, TX   77030-3411\n> 713-798-6672 - 713-798-8201 Fax\n> jkrobert at bcm.edu\n> ***************************************\n> \n> -----Original Message-----\n> From: Doran, Harold [mailto:HDoran at air.org]\n> Sent: Thursday, June 07, 2007 10:13 AM\n> To: Roberts, J. Kyle; r-sig-mixed-models at r-project.org\n> Subject: RE: [R-sig-ME] NAEP Data and lmer\n> \n> Kyle:\n> \n> What do you mean by \"handle the plausible values thing in R\". The\n> class.acc() function in the MiscPsycho package is essentially \n> the same expression used for calculating NAEP plausble \n> values. I can send the vignette that shows the computational \n> details. Since for each student you have multiple plausible \n> values, can you give us a sense of what your data structure \n> looks like and how you're analyzing it in order to answer \n> your question? \n> \n> Harold\n> \n> \n> > -----Original Message-----\n> > From: r-sig-mixed-models-bounces at r-project.org\n> > [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \n> > Roberts, J. Kyle\n> > Sent: Thursday, June 07, 2007 11:03 AM\n> > To: r-sig-mixed-models at r-project.org\n> > Subject: [R-sig-ME] NAEP Data and lmer\n> > \n> >  \n> > Friends,\n> > \n> > Have any of you used either lme or lmer to analyze NAEP data? \n> > I have done some things with HLM (the software), but \n> wondered if there \n> > was already a set of routines for handling the whole \"plausible \n> > values\" thing in R. Also, for those of you familiar with \n> the NAEP and \n> > HLM, does HLM just average the results of the plausible \n> values, or is \n> > the final estimate a maximized estimate based on the five plausible \n> > values?\n> > \n> > Thanks,\n> > Kyle\n> > \n> > P.S. - Be on the watch for the first ever \"North American \n> Conference \n> > on Multilevel Analysis\" coming late Spring 2008!!\n> > \n> > ***************************************\n> > J. Kyle Roberts, Ph.D.\n> > Baylor College of Medicine\n> > Center for Educational Outreach\n> > One Baylor Plaza, MS:  BCM411\n> > Houston, TX   77030-3411\n> > 713-798-6672 - 713-798-8201 Fax\n> > jkrobert at bcm.edu\n> > \n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list \n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > \n>",
+      "body_snippet": "Kyle:\n\nI think this needs much more context before I can be helpful, or maybe I\nam missing something. Our software program AM (that is AIR's software)\nis designed to handle some NAEP analyses (and it ",
+      "thread_id": "thread-be227adb2713",
+      "thread_depth": 5,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-67a4bb552b64",
+      "message_id": "<40e66e0b0706111146i3cfb5877v249739ca040cec49@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-11T13:46:09-05:00",
+      "subject": "[R-sig-ME] Release 0.99875-1 of the lme4 package uploaded to CRAN",
+      "subject_clean": "Release 0.99875-1 of the lme4 package uploaded to CRAN",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I have just uploaded the source package for version 0.99875-1 of the\nlme4 package to CRAN.  There are two big additions to this version of\nthe package:\n\n - a new function nlmer to fit nonlinear mixed models\n - a vignette on \"Theory and computational methods for mixed models\"\n\nThe vignette is not in its finished form but it is a good portion of\nthe way along to a explaining a uniform approach to linear mixed\nmodels, generalized linear mixed models and nonlinear mixed models\nwith crossed and/or nested random effects.\n\nIf you read this vignette and the other vignette on implementation in\nthe lme4 package then compare them to the code you will see that they\ndescribe the lmer2 approach, not the approach that is currently\nimplemented in lmer.  Right now I have some implementation issues with\ngeneralized linear mixed models and the mcmcsamp function in the lmer2\nformulation but I think they are implementation issues and not\ntheoretical roadblocks.  Once I resolve those implementation issues I\nwill switch what is now called lmer2 to become lmer.\n\nIf you have books or papers that record the results of an lmer fit I\nwill be happy to work with you to ensure that the results from the new\nversion are at least as good as the results from the previous version.\n\nIf you have code that depends on the availability of specific slots in\nan lmer object you should be aware that your code will break after\nthat switch takes place.  I can describe how the lmer2 object\nrepresents the model and data but I don't guarantee to fix your code\nfor you if you reached in and grabbed particular slots (as opposed to\nusing extractor functions).  Some peculiar results in testing on CRAN\nin the last few days caused Kurt, Martin and me to look at the\nfunction display.mer in package arm.  That code makes a lot of\nassumptions that are going to fail in the near future.",
+      "body_snippet": "I have just uploaded the source package for version 0.99875-1 of the\nlme4 package to CRAN.  There are two big additions to this version of\nthe package:\n\n - a new function nlmer to fit nonlinear mixed ",
+      "thread_id": "thread-67a4bb552b64",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-121ddcf4d680",
+      "message_id": "<3FC0430478C30B4A9AF0AFF7863418F130F1B5@BCMEVS6.ad.bcm.edu>",
+      "from_name": "Roberts, J. Kyle",
+      "from_email_hash": "88de96a6c2a9d0cf7c5c9055fcd25cf68d8edc8e6550db1c23d6252724ee7877",
+      "date": "2007-06-11T15:37:56-05:00",
+      "subject": "[R-sig-ME] Multilevel Probability Question",
+      "subject_clean": "Multilevel Probability Question",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20070611/92c040e2/attachment.pl>",
+      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20070611/92c040e2/attachment.pl>",
+      "thread_id": "thread-121ddcf4d680",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-8549b7617c70",
+      "message_id": "<A8863C39-57E9-46AA-9905-223A2BA4947E@muohio.edu>",
+      "from_name": "Martin Henry H. Stevens",
+      "from_email_hash": "9bea28e7a1b8317ef7d60a8ebc886597ca71e1b6446dfeff48182b4a4b3c790e",
+      "date": "2007-06-12T07:51:38-04:00",
+      "subject": "[R-sig-ME] Multilevel Probability Question",
+      "subject_clean": "Multilevel Probability Question",
+      "in_reply_to": "<3FC0430478C30B4A9AF0AFF7863418F130F1B5@BCMEVS6.ad.bcm.edu>",
+      "references": [
+        "<3FC0430478C30B4A9AF0AFF7863418F130F1B5@BCMEVS6.ad.bcm.edu>"
+      ],
+      "body_plain": "If you aren't stratifying by school, then isn't it just the  \nprobability of drawing 120 teachers out of 2000?\n-Hank\nOn Jun 11, 2007, at 4:37 PM, Roberts, J. Kyle wrote:\n\n> Dear Friends,\n>\n> I sent the following to the multilevel listserv, but thought that  \n> some of you might actually have code to compute this in R.  If you  \n> do, please let me know.\n>\n> I have an odd question. I am trying to compute the probability of  \n> drawing 120 teachers from a sample of 2000 teachers in 400 schools  \n> where no two teachers work at the same school. Assume that there  \n> are 5 teachers at each school, evenly spread. I was trying to do  \n> this with an \"n choose k\" type\n> situation, but I can't figure out how to include the part about  \n> only 5 teachers can be at any given school. Any ideas? I am not  \n> stratifying on school, just sampling teachers.\n>\n> Thanks,\n>\n> Kyle\n>\n>\n> ***************************************\n> J. Kyle Roberts, Ph.D.\n> Baylor College of Medicine\n> Center for Educational Outreach\n> One Baylor Plaza, MS:  BCM411\n> Houston, TX   77030-3411\n> 713-798-6672 - 713-798-8201 Fax\n> jkrobert at bcm.edu\n> ***************************************\n>\n>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "If you aren't stratifying by school, then isn't it just the  \nprobability of drawing 120 teachers out of 2000?\n-Hank\nOn Jun 11, 2007, at 4:37 PM, Roberts, J. Kyle wrote:\n\n> Dear Friends,\n>\n> I sent th",
+      "thread_id": "thread-121ddcf4d680",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-966b14f7732b",
+      "message_id": "<466E96DE.6000100@optonline.net>",
+      "from_name": "Chuck Cleland",
+      "from_email_hash": "025af000aeea8b33bfe4eed62ab0baf3c2f89b9caa5a1bd2d823a7c1403d56ed",
+      "date": "2007-06-12T08:51:42-04:00",
+      "subject": "[R-sig-ME] Multilevel Probability Question",
+      "subject_clean": "Multilevel Probability Question",
+      "in_reply_to": "<A8863C39-57E9-46AA-9905-223A2BA4947E@muohio.edu>",
+      "references": [
+        "<3FC0430478C30B4A9AF0AFF7863418F130F1B5@BCMEVS6.ad.bcm.edu>",
+        "<A8863C39-57E9-46AA-9905-223A2BA4947E@muohio.edu>"
+      ],
+      "body_plain": "Martin Henry H. Stevens wrote:\n> If you aren't stratifying by school, then isn't it just the  \n> probability of drawing 120 teachers out of 2000?\n> -Hank\n\n  Creating the population described and taking a simple random sample of\n120 teachers, it seems it would be very rare for no two teachers to come\nfrom the same school:\n\npop <- data.frame(TEACHER = 1:2000, SCHOOL = rep(1:400, 5))\n\ntable(replicate(1000000, any(table(pop[sample(2000, size = 120,\nreplace=FALSE),]$SCHOOL) > 1)))\n\n   TRUE\n1000000\n\n  There are obviously some samples where every teacher would come from a\ndifferent school, but I'm not sure how you might find the specific\nprobability.\n\nhope this helps,\n\nChuck\n\n> On Jun 11, 2007, at 4:37 PM, Roberts, J. Kyle wrote:\n> \n>> Dear Friends,\n>>\n>> I sent the following to the multilevel listserv, but thought that  \n>> some of you might actually have code to compute this in R.  If you  \n>> do, please let me know.\n>>\n>> I have an odd question. I am trying to compute the probability of  \n>> drawing 120 teachers from a sample of 2000 teachers in 400 schools  \n>> where no two teachers work at the same school. Assume that there  \n>> are 5 teachers at each school, evenly spread. I was trying to do  \n>> this with an \"n choose k\" type\n>> situation, but I can't figure out how to include the part about  \n>> only 5 teachers can be at any given school. Any ideas? I am not  \n>> stratifying on school, just sampling teachers.\n>>\n>> Thanks,\n>>\n>> Kyle\n>>\n>>\n>> ***************************************\n>> J. Kyle Roberts, Ph.D.\n>> Baylor College of Medicine\n>> Center for Educational Outreach\n>> One Baylor Plaza, MS:  BCM411\n>> Houston, TX   77030-3411\n>> 713-798-6672 - 713-798-8201 Fax\n>> jkrobert at bcm.edu\n>> ***************************************\n>>\n>>\n>> \t[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nChuck Cleland, Ph.D.\nNDRI, Inc.\n71 West 23rd Street, 8th floor\nNew York, NY 10010\ntel: (212) 845-4495 (Tu, Th)\ntel: (732) 512-0171 (M, W, F)\nfax: (917) 438-0894",
+      "body_snippet": "Martin Henry H. Stevens wrote:\n> If you aren't stratifying by school, then isn't it just the  \n> probability of drawing 120 teachers out of 2000?\n> -Hank\n\n  Creating the population described and takin",
+      "thread_id": "thread-121ddcf4d680",
+      "thread_depth": 2,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-a94f1e6f85b2",
+      "message_id": "<466EAAF7.6010908@gvdnet.dk>",
+      "from_name": "Troels Ring",
+      "from_email_hash": "fb3b13581718df0fb9b8266952c5b415223e1840706567621a690ed439ae5852",
+      "date": "2007-06-12T16:17:27+02:00",
+      "subject": "[R-sig-ME] [Fwd: Re:  Multilevel Probability Question]",
+      "subject_clean": "[Fwd: Re:  Multilevel Probability Question]",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "-- \n\nTroels Ring - -\nDepartment of nephrology - - \nAalborg Hospital 9100 Aalborg, Denmark - -\n+45 99326629 - -\ntring at gvdnet.dk\n\n-------------- next part --------------\nAn embedded message was scrubbed...\nFrom: Chuck Cleland <ccleland at optonline.net>\nSubject: Re: [R-sig-ME] Multilevel Probability Question\nDate: Tue, 12 Jun 2007 08:51:42 -0400\nSize: 5246\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20070612/54ff7878/attachment.mht>",
+      "body_snippet": "-- \n\nTroels Ring - -\nDepartment of nephrology - - \nAalborg Hospital 9100 Aalborg, Denmark - -\n+45 99326629 - -\ntring at gvdnet.dk\n\n-------------- next part --------------\nAn embedded message was scrub",
+      "thread_id": "thread-a94f1e6f85b2",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-da716fa5d21b",
+      "message_id": "<OF084CAA89.69E644C2-ON852572F8.005001AF-852572F8.0051AE84@census.gov>",
+      "from_name": "robert.h.creecy at census.gov",
+      "from_email_hash": "029823826bfe04ab6fb70dbbd8aaa7a780d9e918fab23667d01f0a39bbb570bd",
+      "date": "2007-06-12T10:52:15-04:00",
+      "subject": "[R-sig-ME] Multilevel Probability Question",
+      "subject_clean": "Multilevel Probability Question",
+      "in_reply_to": "<466E96DE.6000100@optonline.net>",
+      "references": [],
+      "body_plain": "Yes, very rare\n\nFor a simple random sample without replacement of 120 teachers from the\n2000,\nthe probability that every teacher comes from a different school is:\n\n#  probs[k] is the probability that the kth drawn teacher is not from any\nof the previously drawn teacher's schools\n# and equals 1 - the probability that the teacher drawn IS from one of the\npreviously drawn teacher's schools.\n# After drawing one teacher from a school there are 4 left from that\nschoold, so after drawing k-1 teachers there are 4*(k-1) teachers\n# out of 2000-k-1 teachers that could be drawn\n\n> probs<-1 - 4*(0:199)/(2000-0:199)\n# The probability that all of the 120 teachers are from different schools\nis the product\n> prod(probs[1:120])\n[1] 8.258304e-08\n# picking 27 teachers from different schools is reasonably likely\n> prod(probs[1:27])\n[1] 0.4861363\n\nRob\n\n\n\n                                                                           \n             Chuck Cleland                                                 \n             <ccleland at optonli                                             \n             ne.net>                                                    To \n             Sent by:                  \"Martin Henry H. Stevens\"           \n             r-sig-mixed-model         <stevenmh at muohio.edu>               \n             s-bounces at r-proje                                          cc \n             ct.org                    r-sig-mixed-models at r-project.org    \n                                                                   Subject \n                                       Re: [R-sig-ME] Multilevel           \n             06/12/2007 08:51          Probability Question                \n             AM                                                            \n                                                                           \n                                                                           \n                                                                           \n                                                                           \n                                                                           \n\n\n\n\nMartin Henry H. Stevens wrote:\n> If you aren't stratifying by school, then isn't it just the\n> probability of drawing 120 teachers out of 2000?\n> -Hank\n\n  Creating the population described and taking a simple random sample of\n120 teachers, it seems it would be very rare for no two teachers to come\nfrom the same school:\n\npop <- data.frame(TEACHER = 1:2000, SCHOOL = rep(1:400, 5))\n\ntable(replicate(1000000, any(table(pop[sample(2000, size = 120,\nreplace=FALSE),]$SCHOOL) > 1)))\n\n   TRUE\n1000000\n\n  There are obviously some samples where every teacher would come from a\ndifferent school, but I'm not sure how you might find the specific\nprobability.\n\nhope this helps,\n\nChuck\n\n> On Jun 11, 2007, at 4:37 PM, Roberts, J. Kyle wrote:\n>\n>> Dear Friends,\n>>\n>> I sent the following to the multilevel listserv, but thought that\n>> some of you might actually have code to compute this in R.  If you\n>> do, please let me know.\n>>\n>> I have an odd question. I am trying to compute the probability of\n>> drawing 120 teachers from a sample of 2000 teachers in 400 schools\n>> where no two teachers work at the same school. Assume that there\n>> are 5 teachers at each school, evenly spread. I was trying to do\n>> this with an \"n choose k\" type\n>> situation, but I can't figure out how to include the part about\n>> only 5 teachers can be at any given school. Any ideas? I am not\n>> stratifying on school, just sampling teachers.\n>>\n>> Thanks,\n>>\n>> Kyle\n>>\n>>\n>> ***************************************\n>> J. Kyle Roberts, Ph.D.\n>> Baylor College of Medicine\n>> Center for Educational Outreach\n>> One Baylor Plaza, MS:  BCM411\n>> Houston, TX   77030-3411\n>> 713-798-6672 - 713-798-8201 Fax\n>> jkrobert at bcm.edu\n>> ***************************************\n>>\n>>\n>>           [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\nChuck Cleland, Ph.D.\nNDRI, Inc.\n71 West 23rd Street, 8th floor\nNew York, NY 10010\ntel: (212) 845-4495 (Tu, Th)\ntel: (732) 512-0171 (M, W, F)\nfax: (917) 438-0894\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Yes, very rare\n\nFor a simple random sample without replacement of 120 teachers from the\n2000,\nthe probability that every teacher comes from a different school is:\n\n#  probs[k] is the probability that ",
+      "thread_id": "thread-121ddcf4d680",
+      "thread_depth": 3,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-04ba46db754d",
+      "message_id": "<OF12CDE65F.5D76E14E-ON852572F8.005381D6-852572F8.0054502F@census.gov>",
+      "from_name": "robert.h.creecy at census.gov",
+      "from_email_hash": "029823826bfe04ab6fb70dbbd8aaa7a780d9e918fab23667d01f0a39bbb570bd",
+      "date": "2007-06-12T11:21:00-04:00",
+      "subject": "[R-sig-ME] Multilevel Probability Question",
+      "subject_clean": "Multilevel Probability Question",
+      "in_reply_to": "<OF084CAA89.69E644C2-ON852572F8.005001AF-852572F8.0051AE84@census.gov>",
+      "references": [],
+      "body_plain": "Actually rereading the original post, using choose produces the same answer\nThe 5 teachers per school term is 5^120\n\n> choose(400,120)*(5^120)/choose(2000,120)\n[1] 8.258304e-08\n\nor more reliably for bigger problems using logs\n\n> exp(lchoose(400,120)+120*log(5)-lchoose(2000,120))\n[1] 8.258304e-08\n\nRob\n\n\n\n                                                                           \n             robert.h.creecy at c                                             \n             ensus.gov                                                     \n             Sent by:                                                   To \n             r-sig-mixed-model         Chuck Cleland                       \n             s-bounces at r-proje         <ccleland at optonline.net>            \n             ct.org                                                     cc \n                                       r-sig-mixed-models at r-project.org,   \n                                       \"Martin Henry H. Stevens\"           \n             06/12/2007 10:52          <stevenmh at muohio.edu>               \n             AM                                                    Subject \n                                       Re: [R-sig-ME] Multilevel           \n                                       Probability Question                \n                                                                           \n                                                                           \n                                                                           \n                                                                           \n                                                                           \n                                                                           \n\n\n\n\nYes, very rare\n\nFor a simple random sample without replacement of 120 teachers from the\n2000,\nthe probability that every teacher comes from a different school is:\n\n#  probs[k] is the probability that the kth drawn teacher is not from any\nof the previously drawn teacher's schools\n# and equals 1 - the probability that the teacher drawn IS from one of the\npreviously drawn teacher's schools.\n# After drawing one teacher from a school there are 4 left from that\nschoold, so after drawing k-1 teachers there are 4*(k-1) teachers\n# out of 2000-k-1 teachers that could be drawn\n\n> probs<-1 - 4*(0:199)/(2000-0:199)\n# The probability that all of the 120 teachers are from different schools\nis the product\n> prod(probs[1:120])\n[1] 8.258304e-08\n# picking 27 teachers from different schools is reasonably likely\n> prod(probs[1:27])\n[1] 0.4861363\n\nRob\n\n\n\n\n             Chuck Cleland\n             <ccleland at optonli\n             ne.net>                                                    To\n             Sent by:                  \"Martin Henry H. Stevens\"\n             r-sig-mixed-model         <stevenmh at muohio.edu>\n             s-bounces at r-proje                                          cc\n             ct.org                    r-sig-mixed-models at r-project.org\n                                                                   Subject\n                                       Re: [R-sig-ME] Multilevel\n             06/12/2007 08:51          Probability Question\n             AM\n\n\n\n\n\n\n\n\n\nMartin Henry H. Stevens wrote:\n> If you aren't stratifying by school, then isn't it just the\n> probability of drawing 120 teachers out of 2000?\n> -Hank\n\n  Creating the population described and taking a simple random sample of\n120 teachers, it seems it would be very rare for no two teachers to come\nfrom the same school:\n\npop <- data.frame(TEACHER = 1:2000, SCHOOL = rep(1:400, 5))\n\ntable(replicate(1000000, any(table(pop[sample(2000, size = 120,\nreplace=FALSE),]$SCHOOL) > 1)))\n\n   TRUE\n1000000\n\n  There are obviously some samples where every teacher would come from a\ndifferent school, but I'm not sure how you might find the specific\nprobability.\n\nhope this helps,\n\nChuck\n\n> On Jun 11, 2007, at 4:37 PM, Roberts, J. Kyle wrote:\n>\n>> Dear Friends,\n>>\n>> I sent the following to the multilevel listserv, but thought that\n>> some of you might actually have code to compute this in R.  If you\n>> do, please let me know.\n>>\n>> I have an odd question. I am trying to compute the probability of\n>> drawing 120 teachers from a sample of 2000 teachers in 400 schools\n>> where no two teachers work at the same school. Assume that there\n>> are 5 teachers at each school, evenly spread. I was trying to do\n>> this with an \"n choose k\" type\n>> situation, but I can't figure out how to include the part about\n>> only 5 teachers can be at any given school. Any ideas? I am not\n>> stratifying on school, just sampling teachers.\n>>\n>> Thanks,\n>>\n>> Kyle\n>>\n>>\n>> ***************************************\n>> J. Kyle Roberts, Ph.D.\n>> Baylor College of Medicine\n>> Center for Educational Outreach\n>> One Baylor Plaza, MS:  BCM411\n>> Houston, TX   77030-3411\n>> 713-798-6672 - 713-798-8201 Fax\n>> jkrobert at bcm.edu\n>> ***************************************\n>>\n>>\n>>           [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\nChuck Cleland, Ph.D.\nNDRI, Inc.\n71 West 23rd Street, 8th floor\nNew York, NY 10010\ntel: (212) 845-4495 (Tu, Th)\ntel: (732) 512-0171 (M, W, F)\nfax: (917) 438-0894\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Actually rereading the original post, using choose produces the same answer\nThe 5 teachers per school term is 5^120\n\n> choose(400,120)*(5^120)/choose(2000,120)\n[1] 8.258304e-08\n\nor more reliably for b",
+      "thread_id": "thread-121ddcf4d680",
+      "thread_depth": 4,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-689a206687a4",
+      "message_id": "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-13T12:25:51-05:00",
+      "subject": "[R-sig-ME] Questions on migrating from nlme to lme4",
+      "subject_clean": "Questions on migrating from nlme to lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Thanks for your messages, Robert.  You mentioned posting to the\nR-SIG-Mixed-Models list so I am taking the liberty of cc:ing the list\non this reply.\n\nIt is best to think of lme4 as a reimplementation of mixed models from\nthe ground up.  I have been seeking a way of generalizing the theory\nand computational methods for mixed models in a flexible, efficient\nand extensible way.  At the risk of being immodest I will say that I\nthink I have done so.\n\nFor linear mixed models the big difference between lme and lmer is\nthat lmer can handle models with crossed or partially crossed random\neffects efficiently.  In areas like the analysis of scores on\nstate-wide tests mandated by the No Child Left Behind act or in the\nanalysis of \"breeding values\" by animal scientists, large data sets\nwith a complex structure are the norm.  The state-of-the-art methods\nfor sparse matrices that are used in lmer make fitting mixed models to\nsuch data feasible.\n\nIn the process of examining linear mixed models in detail I eventually\narrived at a formulation of the linear mixed model that generalizes to\ngeneralized linear mixed models and nonlinear mixed models in a way\nthat, to me at least, makes sense.  The basic computational steps and\nthe representation of the models are sufficiently similar to share a\nlot of the code.\n\nThus the lme4 package is not an upgrade of the nlme package.  It\nshares some characteristics with nlme but it is best to think of it as\na reimplementation, not an extension.\n\nBy the way, the theoretical development that I mentioned will be\ndescribed in the vignette \"Theory and Computational Methods for Mixed\nModels\".  The first few sections of that vignette are included in the\nlme4_0.99875-1 package and there is more to come.  Sorry for releasing\nsnapshots of a paper (or a book chapter, in this case).  Because the\ndocument changes between releases of the package there is not a stable\nreference to cite.  Once I have covered all the ground I want to cover\nI will release a stable version as a technical report.\n\nOn 6/13/07, Robert Kushler <kushler at oakland.edu> wrote:\n\n> Follow-up to previous message (included below):\n\n> I discovered that \"confint\" can be used in place of \"intervals\", so item 2\n> is taken care of.\n\nThere is a \"confint\" method for \"lmList\" objects (also discussed\nbelow).  I'm not sure I will produce one for \"lmer\" objects if the\ndegrees of freedom controversy is not resolved.  Also I don't think\nthat symmetric intervals on variance components make sense and would\nprefer not to produce them.\n\nGenerally I recommend using mcmcsamp to produce \"confidence intervals\"\non the variance components.  Approximate (and symmetric) confidence\nintervals on the fixed effects are reasonably accurate but such\nintervals for the random effects can be poor approximations.\n\n> I also gather that you allow (expect?) users to use the\n> two libraries simultaneously.  I assume you recommend loading nlme first,\n> so the lmer version of common functions will be used.\n\nNo, I don't think it is a good idea to use nlme and lme4\nsimultaneously.   At one point I had code in lme4 to give a warning if\nyou tried to load the lme4 package when the nlme package was already\nloaded.\n\n> The windows version of 0.99875-1 appeared today.\n\nGood.\n\n> I have a small bit of user feedback:  lmList requires the \"data\" argument\n> even when all of the needed variables exist in the global environment.\n> I know it's good practice to construct a data frame (and advantageous to\n> exploit the groupedData structure), but since lmer lets the user be lazy,\n> why doesn't lmList do the same?\n\nI haven't looked at that version of lmList for a long time.  I suppose\nthat I am not generating a call to 'model.frame' and I should.  I can\nput that on the \"To Do\" list but it will be a long way down the list.\n\nThe answer to another of your questions about using groupedData\nobjects is that I do not encourage the use of groupedData objects with\nlme4.  They were an attempt to incorporate information on the grouping\nstructure with the data but they got too complicated.  I'm in a \"keep\nit simple\" mode in the development of the lme4 package.  Also, the\ngroupedData objects use S3 classes and one of the purposes of the lme4\npackage is to explore the use of S4 classes and methods.\n\nAnother aspect of the groupedData objects is that the formulation,\nlike the formulation of lme itself, makes sense for nested groupings\nbut not for crossed or partially crossed groupings.\n\nTo some extent the purpose of defining the groupedData classes was to\nmake it easier to generate meaningful and informative graphics with\nthe trellis functions in S-PLUS.  Deepayan Sarkar's development of\nlattice package for R has incorporated so many new features that many\nof the operations that required custom code in trellis are possible\ntransparently in lattice.\n\n> Thanks again for whatever time you can spare,   Rob Kushler\n\n> Text of previous message:\n\n> I am belatedly transitioning to lme4 and have some questions.  Some of\n> the following are things I used to show my students with the nlme library\n> but have not yet figured out how to do with lme4.  If some of this is on\n> your to-do list, perhaps you could post a message to [R-sig-ME] about your\n> plans.  (I am eagerly awaiting the appearance of the 0.99875-1 zip file.)\n\nAhem, I believe you mean the nlme *package*.  (Bear in mind that\nMartin Maechler reads this list. :-)\n\n> My general question is whether any of the following can be done in the current\n> version of lme4 (and if so how), or if these features might be added (\"soon\",\n> not so soon, or never).  I know that I can show my students a \"mixed\" (sic)\n> strategy using both the old and new libraries, but that's a bit awkward, and\n> I'd like to convince them (and myself) that we can someday leave nlme behind\n> with no (or few) regrets.\n\n> If you have addressed these issues elsewhere, forgive me for not locating it.\n\n> 1) The \"correlation\" and \"weights\" arguments of gls and lme were very useful.\n>     In particular, I'd like to fit the AR1 and \"unstructured\" models, and be\n>     able to \"model heteroscedasticity\".\n\nThe correlation and weights arguments haven't made it past the \"keep\nit simple\" filter yet.\n\n> 2) I understand your position on Wald inference for variance components, but\n>     the \"intervals\" function had other uses.  In particular, I like to show\n>     the students \"plot(intervals(lmListobject)) as a diagnostic tool.  Do you\n>     no longer recommend this?\n\nI do think that a plot of the confidence intervals from an lmList\nobject is a good idea.  (For one thing, those confidence intervals are\nwell-defined.)  I have code that looks like\n\n###################################################\n### chunk number 3: Sl1\n###################################################\nprint(plot(confint(lmList(Reaction ~ Days | Subject, sleepstudy),\n                   pooled = TRUE), order = 1))\n\nand it appears to work in current versions of lme4.\n\n> 3) Do you plan to give the inference tools in \"languageR\" an official blessing\n>     by incorporating them into lme4?\n\nI certainly think they are a good idea and I worked with Harald Baayen\na bit on the development of them last January when I visited with him.\n However, I still want to think through the inference issues before\nincorporating my final word about inference in the lme4 package.  One\nof the annoying aspects others find in working with me is that I am\nvery slow on design and theoretical development.  I like to think that\nthe good side of this is that I am thorough.\n\nThe lme4 package and the theoretical work behind it have had a long\ngestation period - one that probably will extend for a long time to\ncome.   However, I like the results and I am comfortable with the idea\nthat I have carefully considered many, many aspects of the model and\ncomputational methods before incorporating them.\n\n> 4) Your R-news article in May 2005 shows \"anova\" producing F's and p-values,\n>     but that no longer seems to be the case.\n\nIndeed.  I realize that calculation of p-values is immensely important\nto some people but doing it properly for unbalanced designs is\nextremely complicated and, in the areas that I am most concerned with\n(large data sets with complex structure), it's a non-issue.  When you\nhave data on a half-million students in 2500 schools whatever\ncalculation you use for the degrees of freedom will produce a number\nso large that the exact number is irrelevant.\n\nIf someone wants to work out how to calculate an approximate\ndenomination degrees of freedom, and they can get the \"degrees of\nfreedom police\" (John Maindonald and Peter Dalgaard) to approve the\nresult, I'll put the degrees of freedom back in.  Until then, you just\nhave to do what several people in the psycholinguistics area have\ndone, which is to uncomment the lines for the denominator degrees of\nfreedom upper bound in the code for the anova method.\n\n>     In this connection, do you have\n>     plans to implement the \"potentially useful approximate D.F.\" mentioned\n>     in mcmcsamp.R?\n\nI'm not sure what code you are referring to there.  Is it in the\nlanguageR package?\n\nI imagine the approximation in question is from the trace of the \"hat\"\nmatrix.  If you look at the Theory vignette you will see I view the\nbasic calculation in mixed models as the solution of a penalized least\nsquares problem.  For an unpenalized least squares problem the\nresidual degrees of freedom is n minus the trace of the hat matrix.\nFrequently in penalized least squares problems the same approximation\nis used.\n\nThat quantity also appears in the definition of the Deviance\nInformation Criterion (DIC) by Spiegelhalter et al. for this model.\nHowever, it does not reproduce the results from balanced experiments\nwith small data sets and I am beginning to have some doubts about\nwhether this calculation is the best way to go.\n\n> 5) Do you no longer recommend the use of groupedData objects, or do you plan\n>     to add them to lme4?\n\nSee above.\n\n> I'm sure I'll think of additional questions, but that's (more than) enough\n> for now.\n\n> Thanks and regards,   Rob Kushler (Oakland University)\n\nThanks for your questions.  I hope my answers were helpful.",
+      "body_snippet": "Thanks for your messages, Robert.  You mentioned posting to the\nR-SIG-Mixed-Models list so I am taking the liberty of cc:ing the list\non this reply.\n\nIt is best to think of lme4 as a reimplementation ",
+      "thread_id": "thread-689a206687a4",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-dd5a9b428891",
+      "message_id": "<45168.81.231.86.209.1181758057.squirrel@sqmail.anu.edu.au>",
+      "from_name": "John Maindonald",
+      "from_email_hash": "9347f4330d83591bdd8db8c64a296e95b75d3a40e79272c50241ea685bdb00d6",
+      "date": "2007-06-14T04:07:37+10:00",
+      "subject": "[R-sig-ME] Questions on migrating from nlme to lme4",
+      "subject_clean": "Questions on migrating from nlme to lme4",
+      "in_reply_to": "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>",
+      "references": [
+        "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>"
+      ],
+      "body_plain": "Bill, it is a little over 24 hours since Peter Dalgaard\nand myself were locked, though briefly, in conversation\nabout degrees of freedom in lme4.\n\nMore seriously, I am impressed with the strides that\nyou have been making with lme4.\n\nJohn Maindonald.\n\n\n> Thanks for your messages, Robert.  You mentioned posting to the\n> R-SIG-Mixed-Models list so I am taking the liberty of cc:ing the list\n> on this reply.\n>\n> It is best to think of lme4 as a reimplementation of mixed models from\n> the ground up.  I have been seeking a way of generalizing the theory\n> and computational methods for mixed models in a flexible, efficient\n> and extensible way.  At the risk of being immodest I will say that I\n> think I have done so.\n>\n> For linear mixed models the big difference between lme and lmer is\n> that lmer can handle models with crossed or partially crossed random\n> effects efficiently.  In areas like the analysis of scores on\n> state-wide tests mandated by the No Child Left Behind act or in the\n> analysis of \"breeding values\" by animal scientists, large data sets\n> with a complex structure are the norm.  The state-of-the-art methods\n> for sparse matrices that are used in lmer make fitting mixed models to\n> such data feasible.\n>\n> In the process of examining linear mixed models in detail I eventually\n> arrived at a formulation of the linear mixed model that generalizes to\n> generalized linear mixed models and nonlinear mixed models in a way\n> that, to me at least, makes sense.  The basic computational steps and\n> the representation of the models are sufficiently similar to share a\n> lot of the code.\n>\n> Thus the lme4 package is not an upgrade of the nlme package.  It\n> shares some characteristics with nlme but it is best to think of it as\n> a reimplementation, not an extension.\n>\n> By the way, the theoretical development that I mentioned will be\n> described in the vignette \"Theory and Computational Methods for Mixed\n> Models\".  The first few sections of that vignette are included in the\n> lme4_0.99875-1 package and there is more to come.  Sorry for releasing\n> snapshots of a paper (or a book chapter, in this case).  Because the\n> document changes between releases of the package there is not a stable\n> reference to cite.  Once I have covered all the ground I want to cover\n> I will release a stable version as a technical report.\n>\n> On 6/13/07, Robert Kushler <kushler at oakland.edu> wrote:\n>\n>> Follow-up to previous message (included below):\n>\n>> I discovered that \"confint\" can be used in place of \"intervals\", so item\n>> 2\n>> is taken care of.\n>\n> There is a \"confint\" method for \"lmList\" objects (also discussed\n> below).  I'm not sure I will produce one for \"lmer\" objects if the\n> degrees of freedom controversy is not resolved.  Also I don't think\n> that symmetric intervals on variance components make sense and would\n> prefer not to produce them.\n>\n> Generally I recommend using mcmcsamp to produce \"confidence intervals\"\n> on the variance components.  Approximate (and symmetric) confidence\n> intervals on the fixed effects are reasonably accurate but such\n> intervals for the random effects can be poor approximations.\n>\n>> I also gather that you allow (expect?) users to use the\n>> two libraries simultaneously.  I assume you recommend loading nlme\n>> first,\n>> so the lmer version of common functions will be used.\n>\n> No, I don't think it is a good idea to use nlme and lme4\n> simultaneously.   At one point I had code in lme4 to give a warning if\n> you tried to load the lme4 package when the nlme package was already\n> loaded.\n>\n>> The windows version of 0.99875-1 appeared today.\n>\n> Good.\n>\n>> I have a small bit of user feedback:  lmList requires the \"data\"\n>> argument\n>> even when all of the needed variables exist in the global environment.\n>> I know it's good practice to construct a data frame (and advantageous to\n>> exploit the groupedData structure), but since lmer lets the user be\n>> lazy,\n>> why doesn't lmList do the same?\n>\n> I haven't looked at that version of lmList for a long time.  I suppose\n> that I am not generating a call to 'model.frame' and I should.  I can\n> put that on the \"To Do\" list but it will be a long way down the list.\n>\n> The answer to another of your questions about using groupedData\n> objects is that I do not encourage the use of groupedData objects with\n> lme4.  They were an attempt to incorporate information on the grouping\n> structure with the data but they got too complicated.  I'm in a \"keep\n> it simple\" mode in the development of the lme4 package.  Also, the\n> groupedData objects use S3 classes and one of the purposes of the lme4\n> package is to explore the use of S4 classes and methods.\n>\n> Another aspect of the groupedData objects is that the formulation,\n> like the formulation of lme itself, makes sense for nested groupings\n> but not for crossed or partially crossed groupings.\n>\n> To some extent the purpose of defining the groupedData classes was to\n> make it easier to generate meaningful and informative graphics with\n> the trellis functions in S-PLUS.  Deepayan Sarkar's development of\n> lattice package for R has incorporated so many new features that many\n> of the operations that required custom code in trellis are possible\n> transparently in lattice.\n>\n>> Thanks again for whatever time you can spare,   Rob Kushler\n>\n>> Text of previous message:\n>\n>> I am belatedly transitioning to lme4 and have some questions.  Some of\n>> the following are things I used to show my students with the nlme\n>> library\n>> but have not yet figured out how to do with lme4.  If some of this is on\n>> your to-do list, perhaps you could post a message to [R-sig-ME] about\n>> your\n>> plans.  (I am eagerly awaiting the appearance of the 0.99875-1 zip\n>> file.)\n>\n> Ahem, I believe you mean the nlme *package*.  (Bear in mind that\n> Martin Maechler reads this list. :-)\n>\n>> My general question is whether any of the following can be done in the\n>> current\n>> version of lme4 (and if so how), or if these features might be added\n>> (\"soon\",\n>> not so soon, or never).  I know that I can show my students a \"mixed\"\n>> (sic)\n>> strategy using both the old and new libraries, but that's a bit awkward,\n>> and\n>> I'd like to convince them (and myself) that we can someday leave nlme\n>> behind\n>> with no (or few) regrets.\n>\n>> If you have addressed these issues elsewhere, forgive me for not\n>> locating it.\n>\n>> 1) The \"correlation\" and \"weights\" arguments of gls and lme were very\n>> useful.\n>>     In particular, I'd like to fit the AR1 and \"unstructured\" models,\n>> and be\n>>     able to \"model heteroscedasticity\".\n>\n> The correlation and weights arguments haven't made it past the \"keep\n> it simple\" filter yet.\n>\n>> 2) I understand your position on Wald inference for variance components,\n>> but\n>>     the \"intervals\" function had other uses.  In particular, I like to\n>> show\n>>     the students \"plot(intervals(lmListobject)) as a diagnostic tool.\n>> Do you\n>>     no longer recommend this?\n>\n> I do think that a plot of the confidence intervals from an lmList\n> object is a good idea.  (For one thing, those confidence intervals are\n> well-defined.)  I have code that looks like\n>\n> ###################################################\n> ### chunk number 3: Sl1\n> ###################################################\n> print(plot(confint(lmList(Reaction ~ Days | Subject, sleepstudy),\n>                    pooled = TRUE), order = 1))\n>\n> and it appears to work in current versions of lme4.\n>\n>> 3) Do you plan to give the inference tools in \"languageR\" an official\n>> blessing\n>>     by incorporating them into lme4?\n>\n> I certainly think they are a good idea and I worked with Harald Baayen\n> a bit on the development of them last January when I visited with him.\n>  However, I still want to think through the inference issues before\n> incorporating my final word about inference in the lme4 package.  One\n> of the annoying aspects others find in working with me is that I am\n> very slow on design and theoretical development.  I like to think that\n> the good side of this is that I am thorough.\n>\n> The lme4 package and the theoretical work behind it have had a long\n> gestation period - one that probably will extend for a long time to\n> come.   However, I like the results and I am comfortable with the idea\n> that I have carefully considered many, many aspects of the model and\n> computational methods before incorporating them.\n>\n>> 4) Your R-news article in May 2005 shows \"anova\" producing F's and\n>> p-values,\n>>     but that no longer seems to be the case.\n>\n> Indeed.  I realize that calculation of p-values is immensely important\n> to some people but doing it properly for unbalanced designs is\n> extremely complicated and, in the areas that I am most concerned with\n> (large data sets with complex structure), it's a non-issue.  When you\n> have data on a half-million students in 2500 schools whatever\n> calculation you use for the degrees of freedom will produce a number\n> so large that the exact number is irrelevant.\n>\n> If someone wants to work out how to calculate an approximate\n> denomination degrees of freedom, and they can get the \"degrees of\n> freedom police\" (John Maindonald and Peter Dalgaard) to approve the\n> result, I'll put the degrees of freedom back in.  Until then, you just\n> have to do what several people in the psycholinguistics area have\n> done, which is to uncomment the lines for the denominator degrees of\n> freedom upper bound in the code for the anova method.\n>\n>>     In this connection, do you have\n>>     plans to implement the \"potentially useful approximate D.F.\"\n>> mentioned\n>>     in mcmcsamp.R?\n>\n> I'm not sure what code you are referring to there.  Is it in the\n> languageR package?\n>\n> I imagine the approximation in question is from the trace of the \"hat\"\n> matrix.  If you look at the Theory vignette you will see I view the\n> basic calculation in mixed models as the solution of a penalized least\n> squares problem.  For an unpenalized least squares problem the\n> residual degrees of freedom is n minus the trace of the hat matrix.\n> Frequently in penalized least squares problems the same approximation\n> is used.\n>\n> That quantity also appears in the definition of the Deviance\n> Information Criterion (DIC) by Spiegelhalter et al. for this model.\n> However, it does not reproduce the results from balanced experiments\n> with small data sets and I am beginning to have some doubts about\n> whether this calculation is the best way to go.\n>\n>> 5) Do you no longer recommend the use of groupedData objects, or do you\n>> plan\n>>     to add them to lme4?\n>\n> See above.\n>\n>> I'm sure I'll think of additional questions, but that's (more than)\n>> enough\n>> for now.\n>\n>> Thanks and regards,   Rob Kushler (Oakland University)\n>\n> Thanks for your questions.  I hope my answers were helpful.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Bill, it is a little over 24 hours since Peter Dalgaard\nand myself were locked, though briefly, in conversation\nabout degrees of freedom in lme4.\n\nMore seriously, I am impressed with the strides that\n",
+      "thread_id": "thread-689a206687a4",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-2a1426229071",
+      "message_id": "<40e66e0b0706170715o4d58f770h68ebac5fdb4857@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-17T09:15:55-05:00",
+      "subject": "[R-sig-ME] more comments and questions",
+      "subject_clean": "more comments and questions",
+      "in_reply_to": "<4672D70B.7060409@oakland.edu>",
+      "references": [
+        "<4672D70B.7060409@oakland.edu>"
+      ],
+      "body_plain": "As we agreed i am sending a copy of this reply to the R-SIG-Mixed-Models list\n\nOn 6/15/07, Robert Kushler <kushler at oakland.edu> wrote:\n\n> Further follow-up:\n\n> 1) \"mcmcsamp.R\" is in the R-ex directory of the lme4 libr.. oops package\n>     (hey, it's stored under \"library\" and you have to call the \"library\"\n>      function to load it - can Martin blame us for slipping up?  :-)\n\nAh, I see.  In that case it is easier to refer to it as being in\n\nexample(mcmcsamp)\n\n>     Here's the line I was referencing:\n\n> ## potentially useful approximate D.F. :\n> (eDF <- mean(samp1[,\"deviance\"]) - deviance(fm1, REML=FALSE))\n\nThat statement refers to the Deviance Information Criterion (DIC) of\nSpiegelhalter et al.  As I said in my earlier reply I am having my\ndoubts about the value of that criterion for this model - hence the\nphrase \"potentially useful\".\n\n> 2) Thanks for clarifying the \"deprecation\" of groupedData objects.  Here's\n>     why I was surprised by the behavior of \"lmList\" (quote from lme4 help\n>     page on lmList):\n\n> Arguments\n\n> formula For lmList, a linear formula object of the form y ~ x1+...+xn | g.\n>          In the formula object, y represents the response, x1,...,xn the covariates,\n>          and g the grouping factor specifying the partitioning of the data according\n>          to which different lm fits should be performed. The grouping factor g may be\n>          omitted from the formula, in which case the grouping structure will be obtained\n>          from data, which must inherit from class groupedData.\n\nThanks for pointing that out.  The sources for the help page were\ncopied from the lmList function in the nlme package and insufficiently\nedited.  I'll correct that.\n\n> 3) I know you have many high-priority items on the to-do list, but I want to pitch\n>     the idea of adding the \"extensions\" of chapter 5 of Pinheiro and Bates sooner\n>     rather than later.  The AR1 structure in particular is a very plausible and\n>     useful model that seems to occur fairly often in applications - the weights data\n>     from the SAS mixed book (first edition) provides one example.\n\nThis is a case where the design, in the sense of deciding how these\nadd-on's should be specified by the user, is much more difficult than\nthe implementation.\n\nOne of the aspects of lmer and nlmer that I particularly like,\nrelative to lme and nlme ,is the model specification.  I think the new\nspecification is much simpler.  In the process of rethinking the model\nspecification I have eliminated the pdMat classes and all of the\nmethods associated with them.  At the same time the new formulation\nallows for specification of models with crossed or partially crossed\nrandom effects in what i feel is a simple and straightforward way.\n\nMy priorities now are to finish and document lmer, nlmer, glmer and\nmcmcsamp.  The \"documentation\" part includes finishing a book with the\nworking title \"Multilevel Modeling in R\".\n\nSo I'm sorry to say that, barring unforeseen developments, having the\nability to specify and fit correlation structures in addition to those\ninduced by the random effects in not about to happen soon.\n\n> 4) Can the \"unstructured\" model be fit using the current version of lmer?  I thought\n>     I could do it (at least for balanced data) by using a factor version of the \"inner\"\n>     data structure (i.e., the repeated measures) as a random effect, but I can't get\n>     it to work.  Any advice you can offer would be appreciated.\n\nI'm not sure what the \"unstructured\" model is.  If you are referring a\nmodel for repeated measures data based on, say, factors \"occasion\" and\n\"subject\", then I believe you want a random-effects term of the form\n\n(occasion|subject)\n\nor, equivalently,\n\n(0+occasion|subject)\n\nThe parameterization of the random effects and the variance-covariance\nmatrix from the second specification may be easier to interpret.\n\nBy the way, the SAS-speak term \"unstructured variance matrix\" is\nnonsense.  An \"unstructured, symmetric, positive-definite matrix\" is\nan oxymoron.\n\nMy approach to mixed-model specification is different from that in SAS\nand in many text books.  Instead of allowing for complex structures of\nthe variance-covariance matrix of the random effects or, even worse\nfrom my point of view, the induced variance-covariance matrix of the\nresponses, I try to keep the variance-covariance matrix's structure\nsimple and move the complexity, when needed, to the structure of the\nmodel matrices for the linear predictor.\nBasically, if you can express the model in terms of model matrices\nplus a variance-covariance structure for the random effects where\nelements associated with different terms are independent as are\nelements associated with different levels of the same term, then you\ncan write the model in lmer.\n\n> 5) You may not want to answer this, but I'll ask anyway.  The listing produced by\n\n>            getMethod(anova,signature=\"mer\")\n\n>     (or \"lmer2\") doesn't contain any commented out lines for denominator df.  Am I\n>     looking in the wrong place?  Can you give me another hint?\n\nAh, I see I left out a couple of steps.  Let me be more specific.\n\nStep 1: Take your Windows computer and install Linux on it.\nStep 2: Install R under Linux.\nStep 3: Download the source package for lme4 and expand the tar file.\nStep 4: Find the commented lines in lme4/R/lmer.R and uncomment them.\nStep 5: Install the lme4 package.\n\nYou could avoid step 1 if you go through the steps necessary to\ncompile an R source package, including C source files, under Windows.\nOnce you have done so you would probably agree that converting to\nLinux is easier.\n\n> Thanks again for your time (and for all the terrific software).\n\n> Regards,    Rob Kushler",
+      "body_snippet": "As we agreed i am sending a copy of this reply to the R-SIG-Mixed-Models list\n\nOn 6/15/07, Robert Kushler <kushler at oakland.edu> wrote:\n\n> Further follow-up:\n\n> 1) \"mcmcsamp.R\" is in the R-ex direct",
+      "thread_id": "thread-2a1426229071",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-593b0b91b938",
+      "message_id": "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>",
+      "from_name": "Sofie Van Gijsel",
+      "from_email_hash": "00c76d25f9b53869fb3aa254d7c8c70a639bb9bbdeed980a5e955cec860de7f5",
+      "date": "2007-06-19T14:59:36+02:00",
+      "subject": "[R-sig-ME] nlme4 vs. nlme question",
+      "subject_clean": "nlme4 vs. nlme question",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": ">Dear List members,\n>\n>I have a question regarding the difference between nlme & lme4 to\n>which I don't seem to find an answer in the previous posts about this topic.\n>\n>I fitted a mixed-effects model with the different observations in my\n>dataset as random effect, in a by-subject analysis. Basically, I have\n>the following model:\n>\n>set_dimb.lmer_pois <- lmer(type_wf  ~dim + region + edu + sex +\n>(1|subcorp), family = \"poisson\", data = set_dimb)\n>\n>In this model, dim, region, edu & sex are all categorical variables.\n>subcorp = the subcorpora or observations in the dataset. Type_wf is\n>the \"number of types per subcorpus\".\n>\n>With nlme, this worked fine, and plotting the ranefs gives insight in\n>which subcorpora behave in an anomolous way.\n>However, if I attempt to do the same with lme4, the error message\n>tells me that the model cannot fit:\n>\n>Error in lmerFactorList(formula, mf, fltype) :\n>          number of levels in grouping factor(s) 'subcorp' is too large\n>\n>I think the problem might be that for different combinations of the\n>factor levels, I have more than one sample, so for example for one\n>level of dim, region, education & sex, the dataset contains several\n>subcorpora. In fact, if I include the subcorpus types as random\n>effect (so not on the individual level of the subcorpora but on the\n>'higher' level of the different types of combinations of the\n>independent variables), the analysis does work and gives \n>interpretable results.\n>\n>So my question is: why does nlme allow this, but lme4 not? And if\n>lme4 does not allow this analysis, is there a theoretical reason,\n>viz. is it \"wrong\" to fit this type of by-subject analysis? Could this\n>indicate a problem with the sampling method (viz. with the dataset)?\n>\n>I hope this is clear (I am not exactly a statistician :-)),\n>Many thanks,\n>\n>Kind regards,\n>Sofie VG\n\n\nDisclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm",
+      "body_snippet": ">Dear List members,\n>\n>I have a question regarding the difference between nlme & lme4 to\n>which I don't seem to find an answer in the previous posts about this topic.\n>\n>I fitted a mixed-effects model",
+      "thread_id": "thread-593b0b91b938",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-883f35263449",
+      "message_id": "<40e66e0b0706200707u2148f5f6g82dc23490eca5faf@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-20T09:07:12-05:00",
+      "subject": "[R-sig-ME] nlme4 vs. nlme question",
+      "subject_clean": "nlme4 vs. nlme question",
+      "in_reply_to": "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>",
+      "references": [
+        "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>"
+      ],
+      "body_plain": "On 6/19/07, Sofie Van Gijsel <Sofie.VanGijsel at arts.kuleuven.ac.be> wrote:\n\n> >Dear List members,\n\n> >I have a question regarding the difference between nlme & lme4 to\n> >which I don't seem to find an answer in the previous posts about this topic.\n\n> >I fitted a mixed-effects model with the different observations in my\n> >dataset as random effect, in a by-subject analysis. Basically, I have\n> >the following model:\n\nI would say that the problem is using a model with random effects for\neach observation.  The \"per-observation\" noise term already provides a\nrandom effect for each observation.  For a linear mixed model or a\nnonlinear mixed model this \"residual variance\" has a Gaussian\ndistribution, the same as the random effect.  Thus the random effect\nvariance is completely confounded with the residual variance.\n\nIn the nlme package there was no check on this situation and the\nalgorithm would apparently converge to an estimate of the variance\ncomponents.  However, this convergence would be spurious because any\ncombination of the residual variance and the random effect variance\nthat had the same sum would produce the same predictions and the same\nvalue of the log-likelihood.\n\nFor the lme4 package I added a check on the number of levels of the\ngrouping factor for a random effects term and throw an error if that\nequals the number of observations.  This is not declared to be an\nerror in a generalized linear mixed model with a binomial family.\n\nSomeone with more experience in mathematical statistics may be able to\ntell us if this should or should not be an error for the Poisson\nfamily.  It seems that this may not be necessarily be a case of\nconfounding of two variance components because the mean of the Poisson\ndetermines the variance.\n\n> >set_dimb.lmer_pois <- lmer(type_wf  ~dim + region + edu + sex +\n> >(1|subcorp), family = \"poisson\", data = set_dimb)\n> >\n> >In this model, dim, region, edu & sex are all categorical variables.\n> >subcorp = the subcorpora or observations in the dataset. Type_wf is\n> >the \"number of types per subcorpus\".\n\nI have created version 0.99875-2 of the lme4 package with this error\nremoved for the Poisson family.  I have tested the new version under\nLinux.  Once it has been tested on Windows I will upload it to CRAN.\nA preview version of the source package is at\n\nhttp://www.stat.wisc.edu/~bates/lme4_0.99875-2.tar.gz\n\nand it will be joined by the Windows binary package at\n\nhttp://www.stat.wisc.edu/~bates/lme4_0.99875-2.zip\n\nwhen the package has been compiled for Windows.  If you are running\nunder Windows you will need to download the .zip file and save it to\ndisk then select Packages->Install from local zip file  (or some name\nlike that, I don't use Windows so I am writing this from memory) to\ninstall it.\n\n> >With nlme, this worked fine, and plotting the ranefs gives insight in\n> >which subcorpora behave in an anomolous way.\n> >However, if I attempt to do the same with lme4, the error message\n> >tells me that the model cannot fit:\n> >\n> >Error in lmerFactorList(formula, mf, fltype) :\n> >          number of levels in grouping factor(s) 'subcorp' is too large\n> >\n> >I think the problem might be that for different combinations of the\n> >factor levels, I have more than one sample, so for example for one\n> >level of dim, region, education & sex, the dataset contains several\n> >subcorpora. In fact, if I include the subcorpus types as random\n> >effect (so not on the individual level of the subcorpora but on the\n> >'higher' level of the different types of combinations of the\n> >independent variables), the analysis does work and gives\n> >interpretable results.\n> >\n> >So my question is: why does nlme allow this, but lme4 not? And if\n> >lme4 does not allow this analysis, is there a theoretical reason,\n> >viz. is it \"wrong\" to fit this type of by-subject analysis? Could this\n> >indicate a problem with the sampling method (viz. with the dataset)?\n> >\n> >I hope this is clear (I am not exactly a statistician :-)),\n> >Many thanks,\n> >\n> >Kind regards,\n> >Sofie VG\n>\n>\n> Disclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "On 6/19/07, Sofie Van Gijsel <Sofie.VanGijsel at arts.kuleuven.ac.be> wrote:\n\n> >Dear List members,\n\n> >I have a question regarding the difference between nlme & lme4 to\n> >which I don't seem to find ",
+      "thread_id": "thread-593b0b91b938",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-b85a2b6ae3cc",
+      "message_id": "<40e66e0b0706200716x48611688m22634ad824578490@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-20T09:16:41-05:00",
+      "subject": "[R-sig-ME] nlme4 vs. nlme question",
+      "subject_clean": "nlme4 vs. nlme question",
+      "in_reply_to": "<40e66e0b0706200707u2148f5f6g82dc23490eca5faf@mail.gmail.com>",
+      "references": [
+        "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>",
+        "<40e66e0b0706200707u2148f5f6g82dc23490eca5faf@mail.gmail.com>"
+      ],
+      "body_plain": "On 6/20/07, Douglas Bates <bates at stat.wisc.edu> wrote:\n...\n\n> A preview version of the source package is at\n>\n> http://www.stat.wisc.edu/~bates/lme4_0.99875-2.tar.gz\n>\n> and it will be joined by the Windows binary package at\n>\n> http://www.stat.wisc.edu/~bates/lme4_0.99875-2.zip\n>\n> when the package has been compiled for Windows.\n\nBoth the source and the Windows binary packages are now available at\nthose URL's.  Let me know if there are any difficulties.",
+      "body_snippet": "On 6/20/07, Douglas Bates <bates at stat.wisc.edu> wrote:\n...\n\n> A preview version of the source package is at\n>\n> http://www.stat.wisc.edu/~bates/lme4_0.99875-2.tar.gz\n>\n> and it will be joined by th",
+      "thread_id": "thread-593b0b91b938",
+      "thread_depth": 2,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-769bddbf69ee",
+      "message_id": "<06C1E76E03FE9C4B85BFA9C75365D9DA090AAC69@tiger.deltadentalwa.com>",
+      "from_name": "Chaudhari, Monica",
+      "from_email_hash": "a4184ce2be2762e0bcb676e5086828d1865768992c39d4f33f5533f81f52d818",
+      "date": "2007-06-20T15:26:59-07:00",
+      "subject": "[R-sig-ME] nlme4 vs. nlme question",
+      "subject_clean": "nlme4 vs. nlme question",
+      "in_reply_to": "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>",
+      "references": [
+        "<20070619125937.2CDCEF3862@smtps02.kuleuven.be>"
+      ],
+      "body_plain": "I think, the problem is that the variable 'subcorp' is not defined as a\nfactor variable. You could check it using is.factor(set_dimb$subcorp).\nIf it returns False, then you could make it a factor variable by using\nset_dimb$subcorp<-as.factor(set_dimb$subcorp)\nNow try using lmer. It should work.\n\nThanks,\nMonica\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Sofie Van\nGijsel\nSent: Tuesday, June 19, 2007 6:00 AM\nTo: R-SIG-Mixed-Models at r-project.org\nSubject: [R-sig-ME] nlme4 vs. nlme question\n\n\n>Dear List members,\n>\n>I have a question regarding the difference between nlme & lme4 to\n>which I don't seem to find an answer in the previous posts about this\ntopic.\n>\n>I fitted a mixed-effects model with the different observations in my\n>dataset as random effect, in a by-subject analysis. Basically, I have\n>the following model:\n>\n>set_dimb.lmer_pois <- lmer(type_wf  ~dim + region + edu + sex +\n>(1|subcorp), family = \"poisson\", data = set_dimb)\n>\n>In this model, dim, region, edu & sex are all categorical variables.\n>subcorp = the subcorpora or observations in the dataset. Type_wf is\n>the \"number of types per subcorpus\".\n>\n>With nlme, this worked fine, and plotting the ranefs gives insight in\n>which subcorpora behave in an anomolous way.\n>However, if I attempt to do the same with lme4, the error message\n>tells me that the model cannot fit:\n>\n>Error in lmerFactorList(formula, mf, fltype) :\n>          number of levels in grouping factor(s) 'subcorp' is too large\n>\n>I think the problem might be that for different combinations of the\n>factor levels, I have more than one sample, so for example for one\n>level of dim, region, education & sex, the dataset contains several\n>subcorpora. In fact, if I include the subcorpus types as random\n>effect (so not on the individual level of the subcorpora but on the\n>'higher' level of the different types of combinations of the\n>independent variables), the analysis does work and gives \n>interpretable results.\n>\n>So my question is: why does nlme allow this, but lme4 not? And if\n>lme4 does not allow this analysis, is there a theoretical reason,\n>viz. is it \"wrong\" to fit this type of by-subject analysis? Could this\n>indicate a problem with the sampling method (viz. with the dataset)?\n>\n>I hope this is clear (I am not exactly a statistician :-)),\n>Many thanks,\n>\n>Kind regards,\n>Sofie VG\n\n\nDisclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n#########################################################\nThe information contained in this e-mail and subsequent attachments may be privileged, \nconfidential and protected from disclosure.  This transmission is intended for the sole \nuse of the individual and entity to whom it is addressed.  If you are not the intended \nrecipient, any dissemination, distribution or copying is strictly prohibited.  If you \nthink that you have received this message in error, please e-mail the sender at the above \ne-mail address.\n#########################################################",
+      "body_snippet": "I think, the problem is that the variable 'subcorp' is not defined as a\nfactor variable. You could check it using is.factor(set_dimb$subcorp).\nIf it returns False, then you could make it a factor vari",
+      "thread_id": "thread-593b0b91b938",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-8c9953c79810",
+      "message_id": "<loom.20070622T112329-758@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-06-22T09:28:33Z",
+      "subject": "[R-sig-ME] Questions on migrating from nlme to lme4",
+      "subject_clean": "Questions on migrating from nlme to lme4",
+      "in_reply_to": null,
+      "references": [
+        "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>"
+      ],
+      "body_plain": "Douglas Bates wrote:\n\n> Generally I recommend using mcmcsamp to produce \"confidence intervals\"\n> on the variance components.  Approximate (and symmetric) confidence\n> intervals on the fixed effects are reasonably accurate but such\n> intervals for the random effects can be poor approximations.\n\nProblem is that referees who don't read the regular Douglas B columns tend to\nsay \"mcmc ... ha?\", and, after explanation, 'we do not publish poker games' (<-\nslightly paraphrased from the original comment).\n\nDieter",
+      "body_snippet": "Douglas Bates wrote:\n\n> Generally I recommend using mcmcsamp to produce \"confidence intervals\"\n> on the variance components.  Approximate (and symmetric) confidence\n> intervals on the fixed effects ar",
+      "thread_id": "thread-689a206687a4",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-0190eb6ecd2e",
+      "message_id": "<18043.62281.715620.174754@stat.math.ethz.ch>",
+      "from_name": "Martin Maechler",
+      "from_email_hash": "c2c86f22f78a4ecfe6d0e6b4e2be505a3f5beb0470ea88c903688ac536018a98",
+      "date": "2007-06-22T18:05:29+02:00",
+      "subject": "[R-sig-ME] Questions on migrating from nlme to lme4",
+      "subject_clean": "Questions on migrating from nlme to lme4",
+      "in_reply_to": "<loom.20070622T112329-758@post.gmane.org>",
+      "references": [
+        "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>",
+        "<loom.20070622T112329-758@post.gmane.org>"
+      ],
+      "body_plain": ">>>>> \"DM\" == Dieter Menne <dieter.menne at menne-biomed.de>\n>>>>>     on Fri, 22 Jun 2007 09:28:33 +0000 (UTC) writes:\n\n    DM> Douglas Bates wrote:\n    >> Generally I recommend using mcmcsamp to produce \"confidence intervals\"\n    >> on the variance components.  Approximate (and symmetric) confidence\n    >> intervals on the fixed effects are reasonably accurate but such\n    >> intervals for the random effects can be poor approximations.\n\n    DM> Problem is that referees who don't read the regular Douglas B columns tend to\n    DM> say \"mcmc ... ha?\", and, after explanation, 'we do not publish poker games' (<-\n    DM> slightly paraphrased from the original comment).\n\nHmm, we are getting off-topic here, but I think these referees\nare not quite fit for the 21st century.\n\nMANY modern statistical procedures depend on random numbers to\nsome extent:\n\n- neural nets  solve a high dimensional minimization and the\n  solution depends on the random starting values.\n  {Some silly people would therefore always use the same random\n  seed before starting the nnet}\n\n- The good old K-Means algorithm very often starts with random\n  centers {and again: people use versions of the algorithm that, e.g.,\n  \t  always start with same indices of observations as starting\n\t  values ==> their algorithm depends on the *ordering*\n\t  of the observations --- which I think is worse}\n  \n- All high-breakdown robust statistics procedures ...\n\n- All K-fold cross-validation  ...\n\n- All bootstrapping / bagging / bragging / ...\n\ndepend on random (sub)sampling.\n\nIf referees ask researchers to refrain from all such methods, \na good journal editor should switch referees,\nor a good author should switch to a better journal  :-)\n\nMartin",
+      "body_snippet": ">>>>> \"DM\" == Dieter Menne <dieter.menne at menne-biomed.de>\n>>>>>     on Fri, 22 Jun 2007 09:28:33 +0000 (UTC) writes:\n\n    DM> Douglas Bates wrote:\n    >> Generally I recommend using mcmcsamp to pro",
+      "thread_id": "thread-689a206687a4",
+      "thread_depth": 2,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-eed67b335d76",
+      "message_id": "<loom.20070622T184744-348@post.gmane.org>",
+      "from_name": "Dieter Menne",
+      "from_email_hash": "c7274b9bd46c9b3353bed705ed75d56d9deb9cf175a43e7f3c56be62d1d3d880",
+      "date": "2007-06-22T17:03:34Z",
+      "subject": "[R-sig-ME] Questions on migrating from nlme to lme4",
+      "subject_clean": "Questions on migrating from nlme to lme4",
+      "in_reply_to": null,
+      "references": [
+        "<40e66e0b0706131025g7920b2a0n91e6d513b66c21c3@mail.gmail.com>",
+        "<loom.20070622T112329-758@post.gmane.org>",
+        "<18043.62281.715620.174754@stat.math.ethz.ch>"
+      ],
+      "body_plain": "Martin Maechler <maechler at ...> writes:\n\n \n> Hmm, we are getting off-topic here, but I think these referees\n> are not quite fit for the 21st century.\n\nOnly partially off-topic, because I think it's important that some accepted\nsolution in the df discussion of lmer should be found. I rarely had problems\nwith professional statistical referees in Journals like Lancet or B.Journal of\nDermatology; or if so, they had damned goods reasons to complain.\n\nThe problem is that you rarely publish in such high-ranked journals with\nstatistical referees. Normally you get trouble with medical referees who argue\nin a complex cross-over design with several nested repeats \"why don't you give\nsimple standard error of mean instead of these incomprehensible stuff?\". For\nexample, at the University Hospital around your corner.\n\n> \n> MANY modern statistical procedures depend on random numbers to\n> some extent:\n...\n... True, but\n \n> If referees ask researchers to refrain from all such methods, \n> a good journal editor should switch referees,\n> or a good author should switch to a better journal  \n\nIf you publish in statistical journals, no problem. If you publish statistics in\na medical journal: good luck. They want Michelin-guide style *** tables.\n\nDieter",
+      "body_snippet": "Martin Maechler <maechler at ...> writes:\n\n \n> Hmm, we are getting off-topic here, but I think these referees\n> are not quite fit for the 21st century.\n\nOnly partially off-topic, because I think it's ",
+      "thread_id": "thread-689a206687a4",
+      "thread_depth": 3,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-54e42f750be1",
+      "message_id": "<BAY144-DAV1694BA43F2711121FFE3F9A0170@phx.gbl>",
+      "from_name": "Cougar",
+      "from_email_hash": "6bdd2073975c7d1f4bcc0429bc0c506868f28026789b54d63597941b0d3b48fc",
+      "date": "2007-06-22T18:21:18-04:00",
+      "subject": "[R-sig-ME] lsmeans",
+      "subject_clean": "lsmeans",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I was wondering if someone could explain how to obtain LSmeans from lmer.  I\ncould not find any information in the R-archives.\n\nRespectfully,\n\nFrank Lawrence",
+      "body_snippet": "I was wondering if someone could explain how to obtain LSmeans from lmer.  I\ncould not find any information in the R-archives.\n\nRespectfully,\n\nFrank Lawrence",
+      "thread_id": "thread-54e42f750be1",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-c7da6b935184",
+      "message_id": "<9A45B32E-3998-46B8-B3F2-D642C7743F96@muohio.edu>",
+      "from_name": "Martin Henry H. Stevens",
+      "from_email_hash": "eabc2c7e982e8ba0851592b4308aaf766a2458866450d0476009d05230e500cc",
+      "date": "2007-06-23T08:39:02-04:00",
+      "subject": "[R-sig-ME] lsmeans",
+      "subject_clean": "lsmeans",
+      "in_reply_to": "<BAY144-DAV1694BA43F2711121FFE3F9A0170@phx.gbl>",
+      "references": [
+        "<BAY144-DAV1694BA43F2711121FFE3F9A0170@phx.gbl>"
+      ],
+      "body_plain": "Dear Frank,\nAs lmer doesn't use least squares means, I am not sure they are  \nreadily obtained. Predicted values may be obtained in several ways,  \nincluding the following from Spencer Graves:\n\n### From Spencer Graves\n### For getting the predicted values from the fixed effects only.\npredict.lmer <- function(object, X){\n## From: Spencer Graves <spencer.graves>\n## Date: Sun, 07 May 2006 08:07:07 -0700\n# object has class \"lmer\"\n# X = model matrix with columns\n# matching object at X\n    if(missing(X))\n      X <- object @ X\n    b <- fixef(object)\n    X %*% b\n}\n\nCheers,\nHank\nOn Jun 22, 2007, at 6:21 PM, Cougar wrote:\n\n> I was wondering if someone could explain how to obtain LSmeans from  \n> lmer.  I\n> could not find any information in the R-archives.\n>\n> Respectfully,\n>\n> Frank Lawrence\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Frank,\nAs lmer doesn't use least squares means, I am not sure they are  \nreadily obtained. Predicted values may be obtained in several ways,  \nincluding the following from Spencer Graves:\n\n### Fr",
+      "thread_id": "thread-54e42f750be1",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-d0ef75b00736",
+      "message_id": "<40e66e0b0706230830n72085a95h6391f7e47093f395@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-23T10:30:28-05:00",
+      "subject": "[R-sig-ME] lsmeans",
+      "subject_clean": "lsmeans",
+      "in_reply_to": "<9A45B32E-3998-46B8-B3F2-D642C7743F96@muohio.edu>",
+      "references": [
+        "<BAY144-DAV1694BA43F2711121FFE3F9A0170@phx.gbl>",
+        "<9A45B32E-3998-46B8-B3F2-D642C7743F96@muohio.edu>"
+      ],
+      "body_plain": "On 6/23/07, Martin Henry H. Stevens <HStevens at muohio.edu> wrote:\n> Dear Frank,\n> As lmer doesn't use least squares means, I am not sure they are\n> readily obtained. Predicted values may be obtained in several ways,\n> including the following from Spencer Graves:\n\n> ### From Spencer Graves\n> ### For getting the predicted values from the fixed effects only.\n> predict.lmer <- function(object, X){\n> ## From: Spencer Graves <spencer.graves>\n> ## Date: Sun, 07 May 2006 08:07:07 -0700\n> # object has class \"lmer\"\n> # X = model matrix with columns\n> # matching object at X\n>     if(missing(X))\n>       X <- object @ X\n>     b <- fixef(object)\n>     X %*% b\n> }\n\nThat works for class \"lmer\".  At the risk of confusing everyone I will\nsay that it doesn't work for the current \"lmer2\" class but it will in\nthe near future.\n\nIt is a dangerous practice to reach into an object and grab the\ncontents of slots (i.e. using the @ operator on S4 objects) or\ncomponents (using $ on S3 objects).  I continue to tweak the form of\nthe lmer and lmer2 objects seeking to optimize the range of\napplicability, the performance and the storage requirements of the\nalgorithms.  Sometimes certain parts of the structure are represented\nin one way and sometimes another.\n\nThe use of extractor functions such as fixef is much preferred.  I am\nresponsible for ensuring that the code is consistent and that such\nextractor do the right thing for the current structure.\nI will ensure that the model.matrix extractor works with upcoming\nreleases of the lme4 package and that it allows an optional argument\n\"which\" to specify \"fixed\", \"random\" or \"both\".  I will also allow\nsuch an argument for the \"fitted\" extractor.\n\n> On Jun 22, 2007, at 6:21 PM, Cougar wrote:\n\n> > I was wondering if someone could explain how to obtain LSmeans from\n> > lmer.  I\n> > could not find any information in the R-archives.\n\nThanks for checking the archive before asking, Frank.  I would\nsuggest, not entirely facetiously, that you also check\n\nlibrary(fortunes); fortune(\"lsmeans\")\n\nIf you could explain what you want to calculate from a fitted model,\nwithout using the term \"lsmeans\", I, at least, would be better able to\ngive advice on how to calculate it.  My big problem with lsmeans is\nthat I have never been able to understand how they should be\ncalculated and, more importantly, why one should want to calculate\nthem.  In other words, what do lsmeans represent and why should I be\ninterested in these particular values?\n\nI have tried to understand what they are.  I have read the\nexplanations and looked at the formulas in, e.g. \"SAS System for Mixed\nModels\".  Anyone who can understand that explanation and decide how\nthe corresponding quantities should be formulated in the\nrepresentation used in lmer is welcome to explain it to me.\n\nIt may seem surprising that I say \"how the corresponding quantities\nare calculated\".  Many people believe that the concept corresponds to\na formula and all one needs to do is to \"code up the formula\".  That's\nnot the case.\n\nPardon me while I digress a bit.\n\nThe statistical concept represented by parameter estimates must be\nassociated with some kind of an objective function, such as \"sum of\nsquares of residuals\" or \"the log-likelihood\", and there are many\nroutes that the person designing the algorithm can take when\noptimizing the objective function to obtain the parameter estimates.\nThis also applies to the representation of the model as data\nstructures.  The data structures used in lmer are very different from\nthose used by other software for fitting mixed models and they did not\ncome about by chance.  They are the result of intensive study and\nextensive experimentation.  I can (and do) explain what the structures\nare and how they are used but if you say, e.g. \"evaluate this summary\nquantity using G-inverse\" that doesn't work for me because I don't\nhave a G matrix.  I need to go back to an explanation of what does it\nrepresent before I can decide how to evaluate it.\n\nThis doesn't mean that everyone gets to make up their own estimation\ncriterion.  Consistency between implementations is a matter of\nagreeing on the objective function and checking that it is evaluated\nconsistently.  In other words lmer should agree with SAS PROC MIXED\nand HLM and MLWin and ... on what the log-likelihood or the REML\ncriterion is for a given model, data, parameter-value combination.\nHowever the different implementations do not need to agree on how they\nrepresent the information from the model and the data nor on how they\noptimize the objective.\n\nI'm sorry for such a long-winded response to your simple question.  As\nyou might guess I have been thinking a lot about the general issues\nbecause I am writing the \"Theory and computational methods for mixed\nmodels\" document that explains exactly how the log-likelihood in lmer,\nand the Laplace approximation to the log-likelihood in nlmer and\nglmer, are defined and evaluated.  One of the interesting things about\nthe description is that it does not deal with how the log-likelihood\nor its approximation is to be optimized.  Not so much for linear mixed\nmodels but definitely for nonlinear mixed models and generalized\nlinear mixed models, people confuse the algorithm and the objective.\nI have been participating in a discussion (http://www.nlme.org/) of\nsome draft specifications for software to fit nonlinear mixed models\nto population pharmacokinetic and pharmacodynamic data.  The draft\nspecifications state that the software should implement a variety of\nmethods that go by names like FO (first-order), FOCE (first-order\nconditional estimates), ...  I claim that you can't tell if you have\nsuch a method implemented properly because those methods (even the\nLindstrom-Bates method, which I know well) just tell you how you go\nfrom one set of parameter estimates to the next.  Different\nimplementations, or even the same implementation but using different\nhardware and systems software, may produce different answers and who\ncan say which is the best answer.  I advocate agreeing on a \"gold\nstandard\" evaluation of the likelihood which can be evaluated based\nsolely on the model and the data and parameter values.  That is, it\ndoes not depend on how you got to those parameter values.  Then you\ncan compare different sets of estimates.\n\nThe situation for generalized linear mixed models is similar.  People\nspeak of PQL or PQL1 or PQL2 estimates as if these names could\nmeaningfully be applied to estimates.  These names refer to methods of\nevaluating an iterative step, not an objective.  (For generalized\nlinear models without random effects you may say that people refer to\nIRLS estimates and that just describes an iterative step.  However,\none can demonstrate that a fixed point of the IRLS iterations is the\nmaximum likelihood estimate so IRLS is justified on the basis of\noptimizing an objective function, which can be, and is, evaluated at\nthe converged values.)\n\nReturning to lsmeans, as best I can understand it, these are an\nattempt to characterize a \"typical\" fitted response for a level of a\nfactor in the model, even when other terms in the model represent\ninteractions with that factor.  If that is the case, and let me\nreiterate that I don't claim to understand exactly what they are\nsupposed to be, then I would claim that you need to be awfully damned\ncareful about what you do regarding those interactions.  There is no\nuniversally applicable way of defining such a beast.  You must\ncarefully state how you are going to marginalize over the levels of\nother factors involved in the interactions, which, of course, implies\nthat you first need to think about the marginalization and decide how\nit should be done in your particular situation.\n\nSorry for going on at such length.  Please don't interpret the length\nof my response as a criticism of your question.  I realize that those\napplying statistical methods in their research to be published in\ntheir field's literature need things like p-values and lmeans and so\non, to satisfy editors and referees in their field who believe that\nthese values are perfectly well-defined.  Unfortunately, I'm a purist\nwith extensive training in mathematics  and I only put things in my\nsoftware when I am satisfied that they are meaningful and useful and\nevaluated the best way I know or can derive.  This is one of the great\npleasures of working on Open Source software.  The R Project doesn't\nhave a marketing department or senior management to tell us, \"It\ndoesn't matter what you think, customers claim they need Type III sums\nof squares so you have to add them whether you like it or not\".  To\nparaphrase Bob Dylan,  \"When you ain't paid nothing, you got nothing\nto lose.\"",
+      "body_snippet": "On 6/23/07, Martin Henry H. Stevens <HStevens at muohio.edu> wrote:\n> Dear Frank,\n> As lmer doesn't use least squares means, I am not sure they are\n> readily obtained. Predicted values may be obtained",
+      "thread_id": "thread-54e42f750be1",
+      "thread_depth": 2,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-c47873b20e55",
+      "message_id": "<c968588d0706250142nbf4291nfc6e8f797eab1e1@mail.gmail.com>",
+      "from_name": "Kevin Wright",
+      "from_email_hash": "629f08d873bc061ef006e4a8a1ca7df0e7c9f0b1e70d6c5079007ef9c091e34e",
+      "date": "2007-06-25T10:42:05+02:00",
+      "subject": "[R-sig-ME] lsmeans",
+      "subject_clean": "lsmeans",
+      "in_reply_to": "<40e66e0b0706230830n72085a95h6391f7e47093f395@mail.gmail.com>",
+      "references": [
+        "<BAY144-DAV1694BA43F2711121FFE3F9A0170@phx.gbl>",
+        "<9A45B32E-3998-46B8-B3F2-D642C7743F96@muohio.edu>",
+        "<40e66e0b0706230830n72085a95h6391f7e47093f395@mail.gmail.com>"
+      ],
+      "body_plain": "As a statistician, I need to be careful to fit a good model to data.\n\"Good\" can have varied meanings from \"it didn't crash\" to \"it\ncompleted in a tolerable amount of time\" to \"the variance parameters\nlook like what I was expecting to see\" to many other criteria.\nModeling the data well can be very time-consuming, especially for\ncomplicated data, and almost always involves finding a balance between\nwriting down a theoretical model and finding a model that is useful,\nmeaningful, and calculable.\n\nMy clients, however, don't care a whit about models.  They care about\nmaking decisions, and the second part of my job after fitting a model\nis to provide information to facilitate decision making.  The client\nmight say, \" I have three treatments.  I don't care about significant\ndifferences.  I have to pick one of the three, which one is my best\nchoice?\"  Often that means providing some type of overall estimate of\nthe treatment effects and standard errors.  There is a nice paper that\ndiscusses some of the art of making predictions:\n\n@Article{Welham2004,\n  author =       {Sue Welham and Brian Cullis and Beverley Gogel and Arthur\n                  Gilmour and Robin Thompson},\n  title =        {Predictions in Linear Mixed Models},\n  journal =      {Aust. N. Z. J. Stat.},\n  year =         2004,\n  pages =        {325--347}\n}\n\nI called it an art, because as Doug mentioned, you have to be very\ncareful about what you mean by an \"lsmean\" or any other type of\nprediction.  For example, here are three ways (not necessarily for\nidentical models) to calculate one particular estimate:\n\nIn PROC MIXED:\nestimate \"Trt1 BLUP narrow\" intercept 3 |trt 3 0 0 0 0\n                    loc*trt 1 0 0 0 0 1 0 0 0 0 1 0/divisor=3;\n\nIn ASREML:\npredict trt  !average loc*trt  # Narrow inference space predictions\n\nIn lme\ncoefs=unlist(ranef(m1=lme(y ~ trt, random=~loc))\ncoefs[1:5]+c(mean(coefs[c(6,11,16)]),\n                mean(coefs[c(7,12,17)]),\n                mean(coefs[c(8,13,18)]),\n                mean(coefs[c(9,14,19)]),\n                mean(coefs[c(10,15,20)])) + mean(dat$y)\n\nThese three methods have pros and cons.  Extracting the right\ncoefficients in MIXED and lme can be excruciatingly tedious (even for\nsimple models), but a good rite of passage to force you to think about\nwhat you are doing.  After learning that, ASREML provides a cleaner\nmethod (as does PROC GLIMMIX, I believe).\n\nIt behooves decision makers to remember that the the theoretical and\ncomputational aspects of mixed models are quite complex.  It behooves\nthe software developers to help people fit models and then help them\nmake decisions.\n\nK Wright\n\n\n\nOn 6/23/07, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On 6/23/07, Martin Henry H. Stevens <HStevens at muohio.edu> wrote:\n> > Dear Frank,\n> > As lmer doesn't use least squares means, I am not sure they are\n> > readily obtained. Predicted values may be obtained in several ways,\n> > including the following from Spencer Graves:\n>\n> > ### From Spencer Graves\n> > ### For getting the predicted values from the fixed effects only.\n> > predict.lmer <- function(object, X){\n> > ## From: Spencer Graves <spencer.graves>\n> > ## Date: Sun, 07 May 2006 08:07:07 -0700\n> > # object has class \"lmer\"\n> > # X = model matrix with columns\n> > # matching object at X\n> >     if(missing(X))\n> >       X <- object @ X\n> >     b <- fixef(object)\n> >     X %*% b\n> > }\n>\n> That works for class \"lmer\".  At the risk of confusing everyone I will\n> say that it doesn't work for the current \"lmer2\" class but it will in\n> the near future.\n>\n> It is a dangerous practice to reach into an object and grab the\n> contents of slots (i.e. using the @ operator on S4 objects) or\n> components (using $ on S3 objects).  I continue to tweak the form of\n> the lmer and lmer2 objects seeking to optimize the range of\n> applicability, the performance and the storage requirements of the\n> algorithms.  Sometimes certain parts of the structure are represented\n> in one way and sometimes another.\n>\n> The use of extractor functions such as fixef is much preferred.  I am\n> responsible for ensuring that the code is consistent and that such\n> extractor do the right thing for the current structure.\n> I will ensure that the model.matrix extractor works with upcoming\n> releases of the lme4 package and that it allows an optional argument\n> \"which\" to specify \"fixed\", \"random\" or \"both\".  I will also allow\n> such an argument for the \"fitted\" extractor.\n>\n> > On Jun 22, 2007, at 6:21 PM, Cougar wrote:\n>\n> > > I was wondering if someone could explain how to obtain LSmeans from\n> > > lmer.  I\n> > > could not find any information in the R-archives.\n>\n> Thanks for checking the archive before asking, Frank.  I would\n> suggest, not entirely facetiously, that you also check\n>\n> library(fortunes); fortune(\"lsmeans\")\n>\n> If you could explain what you want to calculate from a fitted model,\n> without using the term \"lsmeans\", I, at least, would be better able to\n> give advice on how to calculate it.  My big problem with lsmeans is\n> that I have never been able to understand how they should be\n> calculated and, more importantly, why one should want to calculate\n> them.  In other words, what do lsmeans represent and why should I be\n> interested in these particular values?\n>\n> I have tried to understand what they are.  I have read the\n> explanations and looked at the formulas in, e.g. \"SAS System for Mixed\n> Models\".  Anyone who can understand that explanation and decide how\n> the corresponding quantities should be formulated in the\n> representation used in lmer is welcome to explain it to me.\n>\n> It may seem surprising that I say \"how the corresponding quantities\n> are calculated\".  Many people believe that the concept corresponds to\n> a formula and all one needs to do is to \"code up the formula\".  That's\n> not the case.\n>\n> Pardon me while I digress a bit.\n>\n> The statistical concept represented by parameter estimates must be\n> associated with some kind of an objective function, such as \"sum of\n> squares of residuals\" or \"the log-likelihood\", and there are many\n> routes that the person designing the algorithm can take when\n> optimizing the objective function to obtain the parameter estimates.\n> This also applies to the representation of the model as data\n> structures.  The data structures used in lmer are very different from\n> those used by other software for fitting mixed models and they did not\n> come about by chance.  They are the result of intensive study and\n> extensive experimentation.  I can (and do) explain what the structures\n> are and how they are used but if you say, e.g. \"evaluate this summary\n> quantity using G-inverse\" that doesn't work for me because I don't\n> have a G matrix.  I need to go back to an explanation of what does it\n> represent before I can decide how to evaluate it.\n>\n> This doesn't mean that everyone gets to make up their own estimation\n> criterion.  Consistency between implementations is a matter of\n> agreeing on the objective function and checking that it is evaluated\n> consistently.  In other words lmer should agree with SAS PROC MIXED\n> and HLM and MLWin and ... on what the log-likelihood or the REML\n> criterion is for a given model, data, parameter-value combination.\n> However the different implementations do not need to agree on how they\n> represent the information from the model and the data nor on how they\n> optimize the objective.\n>\n> I'm sorry for such a long-winded response to your simple question.  As\n> you might guess I have been thinking a lot about the general issues\n> because I am writing the \"Theory and computational methods for mixed\n> models\" document that explains exactly how the log-likelihood in lmer,\n> and the Laplace approximation to the log-likelihood in nlmer and\n> glmer, are defined and evaluated.  One of the interesting things about\n> the description is that it does not deal with how the log-likelihood\n> or its approximation is to be optimized.  Not so much for linear mixed\n> models but definitely for nonlinear mixed models and generalized\n> linear mixed models, people confuse the algorithm and the objective.\n> I have been participating in a discussion (http://www.nlme.org/) of\n> some draft specifications for software to fit nonlinear mixed models\n> to population pharmacokinetic and pharmacodynamic data.  The draft\n> specifications state that the software should implement a variety of\n> methods that go by names like FO (first-order), FOCE (first-order\n> conditional estimates), ...  I claim that you can't tell if you have\n> such a method implemented properly because those methods (even the\n> Lindstrom-Bates method, which I know well) just tell you how you go\n> from one set of parameter estimates to the next.  Different\n> implementations, or even the same implementation but using different\n> hardware and systems software, may produce different answers and who\n> can say which is the best answer.  I advocate agreeing on a \"gold\n> standard\" evaluation of the likelihood which can be evaluated based\n> solely on the model and the data and parameter values.  That is, it\n> does not depend on how you got to those parameter values.  Then you\n> can compare different sets of estimates.\n>\n> The situation for generalized linear mixed models is similar.  People\n> speak of PQL or PQL1 or PQL2 estimates as if these names could\n> meaningfully be applied to estimates.  These names refer to methods of\n> evaluating an iterative step, not an objective.  (For generalized\n> linear models without random effects you may say that people refer to\n> IRLS estimates and that just describes an iterative step.  However,\n> one can demonstrate that a fixed point of the IRLS iterations is the\n> maximum likelihood estimate so IRLS is justified on the basis of\n> optimizing an objective function, which can be, and is, evaluated at\n> the converged values.)\n>\n> Returning to lsmeans, as best I can understand it, these are an\n> attempt to characterize a \"typical\" fitted response for a level of a\n> factor in the model, even when other terms in the model represent\n> interactions with that factor.  If that is the case, and let me\n> reiterate that I don't claim to understand exactly what they are\n> supposed to be, then I would claim that you need to be awfully damned\n> careful about what you do regarding those interactions.  There is no\n> universally applicable way of defining such a beast.  You must\n> carefully state how you are going to marginalize over the levels of\n> other factors involved in the interactions, which, of course, implies\n> that you first need to think about the marginalization and decide how\n> it should be done in your particular situation.\n>\n> Sorry for going on at such length.  Please don't interpret the length\n> of my response as a criticism of your question.  I realize that those\n> applying statistical methods in their research to be published in\n> their field's literature need things like p-values and lmeans and so\n> on, to satisfy editors and referees in their field who believe that\n> these values are perfectly well-defined.  Unfortunately, I'm a purist\n> with extensive training in mathematics  and I only put things in my\n> software when I am satisfied that they are meaningful and useful and\n> evaluated the best way I know or can derive.  This is one of the great\n> pleasures of working on Open Source software.  The R Project doesn't\n> have a marketing department or senior management to tell us, \"It\n> doesn't matter what you think, customers claim they need Type III sums\n> of squares so you have to add them whether you like it or not\".  To\n> paraphrase Bob Dylan,  \"When you ain't paid nothing, you got nothing\n> to lose.\"\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "As a statistician, I need to be careful to fit a good model to data.\n\"Good\" can have varied meanings from \"it didn't crash\" to \"it\ncompleted in a tolerable amount of time\" to \"the variance parameters\n",
+      "thread_id": "thread-54e42f750be1",
+      "thread_depth": 3,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-cd776113b8ee",
+      "message_id": "<40e66e0b0706261429k15947422i7f3c559f7ea7c3a8@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2007-06-26T16:29:43-05:00",
+      "subject": "[R-sig-ME] Follow-up on lme4",
+      "subject_clean": "Follow-up on lme4",
+      "in_reply_to": "<6.2.1.2.2.20070626152502.03eb6730@email.psu.edu>",
+      "references": [
+        "<6.2.1.2.2.20070623164417.01e52e88@email.psu.edu>",
+        "<40e66e0b0706231416x259dd4d8h181d5e01695374a4@mail.gmail.com>",
+        "<6.2.1.2.2.20070626143625.03db05a0@email.psu.edu>",
+        "<40e66e0b0706261222y3fbd16c0i3e2069350c54299b@mail.gmail.com>",
+        "<6.2.1.2.2.20070626152502.03eb6730@email.psu.edu>"
+      ],
+      "body_plain": "I thought that this reply may be of interest to the members of the\nlist.  Because I did not ask permission of the questioner before\nsending a copy to the list, I have removed the questioner's name.\n\nThe short answer to your question is that the lme4 package is a work\nin progress but it will converge to a 1.0 release \"real soon\".\n\nBy the 1.0 release there will not be an lmer2 function.  The\nmodel-fitting functions will be lmer, for linear mixed models, glmer,\nfor generalized linear mixed models, and nlmer, for nonlinear mixed\nmodels.  (The official pronunciations are \"Elmer\", \"glimmer\" and\n\"Nellmer\", for those who care about such things.)\n\nIt is not that the lmer2 representation will go away; it will become\nthe lmer representation in the 1.0 version and will also be the\n\"linear mixed-effects engine\" on which glmer and nlmer are built.  The\ncurrent lmer is the one that will go away.\n\nThe model specification for the 1.0 lmer, glmer and nlmer will be the\nsame as for the current lmer and nlmer.  (In the current version there\nis not a separate function for generalized linear mixed models, you\njust call lmer with a non-default \"family\" argument.  This behavior\nwill be \"grandfather'ed\" although all lmer will end up doing with a\nglmm specification is turn around and call glmer.)\n\nThe internal representation of the fitted models will *not* be the\nsame as in the current version of the lme4 package.  This is why it\nwould be a very good idea to save the data and the model\nspecifications from current lmer fits.  I will make preview versions\nof the package available and I would greatly appreciate if those of\nyou who have published results from lmer fits could check that the 1.0\nversion of lme4 gives a fit that is at least as good as the one you\nreported.  If not, please inform me and I will do whatever I can to\nensure suitable behavior on models fit previously before I release the\n1.0 version of lme4.\n\nThe reason that I have not already switched the package to the lmer2\nrepresentation is because I was having difficulty getting two pieces\nof code, generalized linear mixed models and mcmcsamp, to work\nproperly in the new formulation.  I use two scales for the random\neffects, the original scale and a transformed \"orthogonal\" scale, in\nthe lmer2 representation and at some point I must have thought of the\nform of the calculation in one scale but used the other.\n\nEventually I decided to bite the bullet and write out the gory details\nof the computational methods so I could be sure that I understood all\nthe steps and hadn't missed any steps when writing the code. As my\nfriend Steve Ziskind from graduate school said, \"Every once in a while\nyou need to roll up your sleeves and write it out.\"  I expect that by\nthe time I am finished writing it all out and honing the steps in the\npresentation, the actual writing of the code will be straightforward.\nI know that the code to create the representation is very clean\nrelative to previous versions lmer (and certainly relative to lme and\nnlme).  The development version of the code, currently broken, is at\n\nhttps://svn.r-project.org/R-packages/branches/gappy-lmer/\n\nThose of you who liked the scenes in the Frankenstein movies before\nthe Doctor proclaimed \"It's alive!\" can satisfy your curiosity there.\nThere's a reason why this representation can be considered to have\ngaps but it would take too long to explain.\n\nThe \"version du jour\" of the paper explaining the theory and the\ncomputational methods is available at\n\nhttp://www.stat.wisc.edu/~bates/Mixed-Model-Theory.pdf\n\nOn 6/26/07, an lme4 user wrote:\n\n>  Is lmer2 an integrated component of the lme4 package, or does it have to be\n> downloaded separately ?\n\nIt is part of the current lme4 package.  Eventually it will become lmer.\n\n>  Also -- as I understand it -- lme4 is intended to eventually expand the\n> capabilities and performance of your older nlme library ?\n\nFunctions in the lme4 package extend the capabilities of lme and nlme\nin some directions - specifically the ability to fit models with\ncrossed or partially crossed random effects, to fit generalized linear\nmixed models and to fit nonlinear mixed models using the Laplace\napproximation to the log-likelihood.  The model-fitting functions also\nhandle the boundary cases, corresponding to variance components of\nzero or more general, but degenerate, forms of the\nvariance-covariance.\n\nHowever, lme4 does not include some capabilities from the nlme package\n- specifically the ability to model correlation structures or variance\nstructures in the responses in addition to those induced by the random\neffects.",
+      "body_snippet": "I thought that this reply may be of interest to the members of the\nlist.  Because I did not ask permission of the questioner before\nsending a copy to the list, I have removed the questioner's name.\n\nT",
+      "thread_id": "thread-cd776113b8ee",
+      "thread_depth": 0,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-dba578a5cf79",
+      "message_id": "<06C1E76E03FE9C4B85BFA9C75365D9DA0925D52F@tiger.deltadentalwa.com>",
+      "from_name": "Chaudhari, Monica",
+      "from_email_hash": "a4184ce2be2762e0bcb676e5086828d1865768992c39d4f33f5533f81f52d818",
+      "date": "2007-06-27T14:46:30-07:00",
+      "subject": "[R-sig-ME] Sample size estimation",
+      "subject_clean": "Sample size estimation",
+      "in_reply_to": "<40e66e0b0706261429k15947422i7f3c559f7ea7c3a8@mail.gmail.com>",
+      "references": [
+        "<6.2.1.2.2.20070623164417.01e52e88@email.psu.edu>",
+        "<40e66e0b0706231416x259dd4d8h181d5e01695374a4@mail.gmail.com>",
+        "<6.2.1.2.2.20070626143625.03db05a0@email.psu.edu>",
+        "<40e66e0b0706261222y3fbd16c0i3e2069350c54299b@mail.gmail.com>",
+        "<6.2.1.2.2.20070626152502.03eb6730@email.psu.edu>",
+        "<40e66e0b0706261429k15947422i7f3c559f7ea7c3a8@mail.gmail.com>"
+      ],
+      "body_plain": "Hello List,\n\nCan anybody guide me through the steps of sample size estimation for\nseeing the effect (at 5% level of significance) of the difference in the\ngrowth of outcome variable between two groups using Generalized Linear\nMixed Model with quasipoisson family. The model is as given below:\n\nlog(mu)= b0 + b1 time + b2 group + b3 time:group\n\nAny clue will be highly appreciated.\n\nThanks,\nMonica\n\n#########################################################\nThe information contained in this e-mail and subsequent attachments may be privileged, \nconfidential and protected from disclosure.  This transmission is intended for the sole \nuse of the individual and entity to whom it is addressed.  If you are not the intended \nrecipient, any dissemination, distribution or copying is strictly prohibited.  If you \nthink that you have received this message in error, please e-mail the sender at the above \ne-mail address.\n#########################################################",
+      "body_snippet": "Hello List,\n\nCan anybody guide me through the steps of sample size estimation for\nseeing the effect (at 5% level of significance) of the difference in the\ngrowth of outcome variable between two groups",
+      "thread_id": "thread-cd776113b8ee",
+      "thread_depth": 1,
+      "month": "2007-06"
+    },
+    {
+      "id": "msg-d58cdec5018b",
+      "message_id": "<2323A6D37908A847A7C32F1E3662C80EE57882@dc1ex01.air.org>",
+      "from_name": "Doran, Harold",
+      "from_email_hash": "92d2bc653019a2d5a0fa1618e3004819dccf7a9f65c746de6a1bc55fa1e194db",
+      "date": "2007-06-28T08:46:55-04:00",
+      "subject": "[R-sig-ME] Sample size estimation",
+      "subject_clean": "Sample size estimation",
+      "in_reply_to": "<06C1E76E03FE9C4B85BFA9C75365D9DA0925D52F@tiger.deltadentalwa.com>",
+      "references": [],
+      "body_plain": "The steps are pretty straightforward if you choose simulation.\n\n1) Simulate data for a sample size s that meets your assumptions (e.g.,\neffect size, variances, etc) based on the generating model\n2) Run these data through lmer N times\n3) Save the p-value at each iteration for the effect of interest in step\n2. Save this as a dichotomous variable where 1 means p < .05\n4) Compute the mean of the dichotomous variable in step 3. This is your\npower at sample size s.\n5) Repeat with a new sample size s.\n\nWith lmer, you don't get p-values. So, what I do is divide the fixed\neffects by their standard errors to get the t-value and compare it to\nthe critical value associated with my level of significance desired.\n\nYou might find Gelman and Hill's book on multilevel models and a paper\nyou can google called \"R as a tool for mathematical statistics\" useful\nsince they both have the process and examples presented.\n\nHarold\n\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf \n> Of Chaudhari, Monica\n> Sent: Wednesday, June 27, 2007 5:47 PM\n> To: Douglas Bates; R-SIG-Mixed-Models\n> Subject: [R-sig-ME] Sample size estimation\n> \n> Hello List,\n> \n> Can anybody guide me through the steps of sample size \n> estimation for seeing the effect (at 5% level of \n> significance) of the difference in the growth of outcome \n> variable between two groups using Generalized Linear Mixed \n> Model with quasipoisson family. The model is as given below:\n> \n> log(mu)= b0 + b1 time + b2 group + b3 time:group\n> \n> Any clue will be highly appreciated.\n> \n> Thanks,\n> Monica\n> \n> #########################################################\n> The information contained in this e-mail and subsequent \n> attachments may be privileged, confidential and protected \n> from disclosure.  This transmission is intended for the sole \n> use of the individual and entity to whom it is addressed.  If \n> you are not the intended recipient, any dissemination, \n> distribution or copying is strictly prohibited.  If you think \n> that you have received this message in error, please e-mail \n> the sender at the above e-mail address.\n> #########################################################\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "The steps are pretty straightforward if you choose simulation.\n\n1) Simulate data for a sample size s that meets your assumptions (e.g.,\neffect size, variances, etc) based on the generating model\n2) Ru",
+      "thread_id": "thread-cd776113b8ee",
+      "thread_depth": 2,
+      "month": "2007-06"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-784884a0b503",
+      "subject": "nlme: \"Singularity in backsolve\" error in ODE-defined, but not in closed-form model",
+      "message_count": 1,
+      "participants": [
+        "Tobias Sing"
+      ],
+      "started": "2007-06-05T19:56:52+02:00",
+      "last_reply": "2007-06-05T19:56:52+02:00",
+      "root_message_id": "msg-784884a0b503"
+    },
+    {
+      "id": "thread-be227adb2713",
+      "subject": "anova",
+      "message_count": 7,
+      "participants": [
+        "Cougar",
+        "Doran, Harold",
+        "Douglas Bates",
+        "Roberts, J. Kyle"
+      ],
+      "started": "2007-06-06T16:15:42-04:00",
+      "last_reply": "2007-06-07T12:19:32-04:00",
+      "root_message_id": "msg-be227adb2713"
+    },
+    {
+      "id": "thread-67a4bb552b64",
+      "subject": "Release 0.99875-1 of the lme4 package uploaded to CRAN",
+      "message_count": 1,
+      "participants": [
+        "Douglas Bates"
+      ],
+      "started": "2007-06-11T13:46:09-05:00",
+      "last_reply": "2007-06-11T13:46:09-05:00",
+      "root_message_id": "msg-67a4bb552b64"
+    },
+    {
+      "id": "thread-121ddcf4d680",
+      "subject": "Multilevel Probability Question",
+      "message_count": 5,
+      "participants": [
+        "Chuck Cleland",
+        "Martin Henry H. Stevens",
+        "Roberts, J. Kyle",
+        "robert.h.creecy at census.gov"
+      ],
+      "started": "2007-06-11T15:37:56-05:00",
+      "last_reply": "2007-06-12T11:21:00-04:00",
+      "root_message_id": "msg-121ddcf4d680"
+    },
+    {
+      "id": "thread-a94f1e6f85b2",
+      "subject": "[Fwd: Re:  Multilevel Probability Question]",
+      "message_count": 1,
+      "participants": [
+        "Troels Ring"
+      ],
+      "started": "2007-06-12T16:17:27+02:00",
+      "last_reply": "2007-06-12T16:17:27+02:00",
+      "root_message_id": "msg-a94f1e6f85b2"
+    },
+    {
+      "id": "thread-689a206687a4",
+      "subject": "Questions on migrating from nlme to lme4",
+      "message_count": 5,
+      "participants": [
+        "Dieter Menne",
+        "Douglas Bates",
+        "John Maindonald",
+        "Martin Maechler"
+      ],
+      "started": "2007-06-13T12:25:51-05:00",
+      "last_reply": "2007-06-22T17:03:34+00:00",
+      "root_message_id": "msg-689a206687a4"
+    },
+    {
+      "id": "thread-2a1426229071",
+      "subject": "more comments and questions",
+      "message_count": 1,
+      "participants": [
+        "Douglas Bates"
+      ],
+      "started": "2007-06-17T09:15:55-05:00",
+      "last_reply": "2007-06-17T09:15:55-05:00",
+      "root_message_id": "msg-2a1426229071"
+    },
+    {
+      "id": "thread-593b0b91b938",
+      "subject": "nlme4 vs. nlme question",
+      "message_count": 4,
+      "participants": [
+        "Chaudhari, Monica",
+        "Douglas Bates",
+        "Sofie Van Gijsel"
+      ],
+      "started": "2007-06-19T14:59:36+02:00",
+      "last_reply": "2007-06-20T15:26:59-07:00",
+      "root_message_id": "msg-593b0b91b938"
+    },
+    {
+      "id": "thread-54e42f750be1",
+      "subject": "lsmeans",
+      "message_count": 4,
+      "participants": [
+        "Cougar",
+        "Douglas Bates",
+        "Kevin Wright",
+        "Martin Henry H. Stevens"
+      ],
+      "started": "2007-06-22T18:21:18-04:00",
+      "last_reply": "2007-06-25T10:42:05+02:00",
+      "root_message_id": "msg-54e42f750be1"
+    },
+    {
+      "id": "thread-cd776113b8ee",
+      "subject": "Follow-up on lme4",
+      "message_count": 3,
+      "participants": [
+        "Chaudhari, Monica",
+        "Doran, Harold",
+        "Douglas Bates"
+      ],
+      "started": "2007-06-26T16:29:43-05:00",
+      "last_reply": "2007-06-28T08:46:55-04:00",
+      "root_message_id": "msg-cd776113b8ee"
+    }
+  ]
+}

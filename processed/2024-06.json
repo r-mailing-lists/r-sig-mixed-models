@@ -1,0 +1,516 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2024-06",
+  "messages": [
+    {
+      "id": "msg-eb4ca04fc8dd",
+      "message_id": "<BY3PR05MB8116D538DF21FB5FB5C8E41B87C22@BY3PR05MB8116.namprd05.prod.outlook.com>",
+      "from_name": "Boylan, Ross",
+      "from_email_hash": "3f3ebc391465e599a6a8e327b3a3a7c2fc33d704bf2ce8bc33c311ba3e441c2b",
+      "date": "2024-06-14T05:05:23Z",
+      "subject": "[R-sig-ME] modifying the simulation in lme4",
+      "subject_clean": "modifying the simulation in lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "I want to do simulations using GLMM's from lme4, but not exactly what the current simulate() offers.\nIn particular I want to generate cluster random effects that are limited to various subsets of the real line.  So in effect the simulation takes some extra arguments.\n\nDoes anyone have any thoughts about the best way to approach this?\n\nAt the moment, it looks to me as if the simplest route is to copy the code (from predict.R, I think) and modify it, placing the result in my package.  This wouldn't track future changes in the lme4 code and generally violates Don't Repeat Yourself, but it doesn't seem there are good alternatives.  The parts I'm interested in changing are sections of the current code, including functions defined inside the main function, as well as functions internal to lme4.  These do not seem amenable to the monkey-patching methods I've read about in R, which generally involve inserting extra namespaces.  Since the functions are in the package namespace (or even have function scope), I can't intercept them.\n\nThe current simulate(), or, more accurately, the .simulateFun() it calls, does a large amount of bookkeeping getting everything in suitable form, and I would like to use that.\n\nMy cases of interest only have random intercepts, which of course means some of the code that deals with more complicated random effects is not necessary, at least initially.\n\nThanks.\nRoss Boylan\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I want to do simulations using GLMM's from lme4, but not exactly what the current simulate() offers.\nIn particular I want to generate cluster random effects that are limited to various subsets of the ",
+      "thread_id": "thread-eb4ca04fc8dd",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-2ba32efefe90",
+      "message_id": "<a4f9f071-b2ec-420a-9c67-e2bc2820d898@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-06-15T15:31:26-04:00",
+      "subject": "[R-sig-ME] modifying the simulation in lme4",
+      "subject_clean": "modifying the simulation in lme4",
+      "in_reply_to": "<BY3PR05MB8116D538DF21FB5FB5C8E41B87C22@BY3PR05MB8116.namprd05.prod.outlook.com>",
+      "references": [
+        "<BY3PR05MB8116D538DF21FB5FB5C8E41B87C22@BY3PR05MB8116.namprd05.prod.outlook.com>"
+      ],
+      "body_plain": "Depending on how quickly you want to put this into production (e.g. \nwhether you would be willing to depend on a development version of \nlme4), I wonder if it would be possible to refactor/modularize \n.simulateFun() to allow hooks, or to return the components you need ... \nmaybe open an issue on the lme4 issues list with more details?\n\nOn 2024-06-14 1:05 a.m., Boylan, Ross via R-sig-mixed-models wrote:\n> I want to do simulations using GLMM's from lme4, but not exactly what the current simulate() offers.\n> In particular I want to generate cluster random effects that are limited to various subsets of the real line.  So in effect the simulation takes some extra arguments.\n> \n> Does anyone have any thoughts about the best way to approach this?\n> \n> At the moment, it looks to me as if the simplest route is to copy the code (from predict.R, I think) and modify it, placing the result in my package.  This wouldn't track future changes in the lme4 code and generally violates Don't Repeat Yourself, but it doesn't seem there are good alternatives.  The parts I'm interested in changing are sections of the current code, including functions defined inside the main function, as well as functions internal to lme4.  These do not seem amenable to the monkey-patching methods I've read about in R, which generally involve inserting extra namespaces.  Since the functions are in the package namespace (or even have function scope), I can't intercept them.\n> \n> The current simulate(), or, more accurately, the .simulateFun() it calls, does a large amount of bookkeeping getting everything in suitable form, and I would like to use that.\n> \n> My cases of interest only have random intercepts, which of course means some of the code that deals with more complicated random effects is not necessary, at least initially.\n> \n> Thanks.\n> Ross Boylan\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Depending on how quickly you want to put this into production (e.g. \nwhether you would be willing to depend on a development version of \nlme4), I wonder if it would be possible to refactor/modularize ",
+      "thread_id": "thread-eb4ca04fc8dd",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-2587715fac19",
+      "message_id": "<72A72B5E-250F-414F-A991-BD3BE79A465F@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "2e43a7af8f4daa87297a28457149e295b738b83f542c302ce576a405c1ae25e2",
+      "date": "2024-06-17T13:05:52Z",
+      "subject": "[R-sig-ME] Fixed effects in nlmer",
+      "subject_clean": "Fixed effects in nlmer",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi,\n\nI would like to use nlmer to fit logistic growth curves to data where a number of replicate growth series are available for several clonal lines. Fitting the random effect structure is straightforward:\n\nfm1 <- lme4:::nlmer(y ~ SSlogis(x, Asym, xmid, scal) ~  (Asym+xmid+scal | line) + (Asym+xmid+scal | rep), ?.)\n\nallowing all 3 growth parameters to vary across lines and across replicates within lines.  However, I?ve had no success adding fixed effects to the model formula, and the examples on the help page do not have fixed effect predictors. For example, if lines could be divided into two groups (A and B) how would I allow Asym to differ between these two groups?\n\nThanks for any help,\n\nJarrod\n\n\n\n\n\n\n\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.",
+      "body_snippet": "Hi,\n\nI would like to use nlmer to fit logistic growth curves to data where a number of replicate growth series are available for several clonal lines. Fitting the random effect structure is straightfo",
+      "thread_id": "thread-2587715fac19",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-80496c6bf4dd",
+      "message_id": "<cf90593c-b64a-4fc9-ab67-120c887fe4cd@ffri.uniri.hr>",
+      "from_name": "marKo",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2024-06-17T15:17:45+02:00",
+      "subject": "[R-sig-ME] Fixed effects in nlmer",
+      "subject_clean": "Fixed effects in nlmer",
+      "in_reply_to": "<72A72B5E-250F-414F-A991-BD3BE79A465F@ed.ac.uk>",
+      "references": [
+        "<72A72B5E-250F-414F-A991-BD3BE79A465F@ed.ac.uk>"
+      ],
+      "body_plain": "Hi.\n\nHow about adding it via an interaction effect?\nSomething like: y ~ SSlogis(x, Asym, Asym:lines_cathegorical, xmid, scal)\nThe rest should be more or less the same.\n\nHope that it make sense.\n\n\nCheers,\n\nMarko\n\n\n  On 17. 06. 2024. 15:05, Jarrod Hadfield wrote:\n> Hi,\n> \n> I would like to use nlmer to fit logistic growth curves to data where a number of replicate growth series are available for several clonal lines. Fitting the random effect structure is straightforward:\n> \n> fm1 <- lme4:::nlmer(y ~ SSlogis(x, Asym, xmid, scal) ~  (Asym+xmid+scal | line) + (Asym+xmid+scal | rep), ?.)\n> \n> allowing all 3 growth parameters to vary across lines and across replicates within lines.  However, I?ve had no success adding fixed effects to the model formula, and the examples on the help page do not have fixed effect predictors. For example, if lines could be divided into two groups (A and B) how would I allow Asym to differ between these two groups?\n> \n> Thanks for any help,\n> \n> Jarrod\n> \n> \n> \n> \n> \n> \n> \n> \n> The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi.\n\nHow about adding it via an interaction effect?\nSomething like: y ~ SSlogis(x, Asym, Asym:lines_cathegorical, xmid, scal)\nThe rest should be more or less the same.\n\nHope that it make sense.\n\n\nChee",
+      "thread_id": "thread-2587715fac19",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-b701a20d3b25",
+      "message_id": "<77c1d451-985e-419a-81e6-455c44b49078@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-06-17T09:32:24-04:00",
+      "subject": "[R-sig-ME] Fixed effects in nlmer",
+      "subject_clean": "Fixed effects in nlmer",
+      "in_reply_to": "<cf90593c-b64a-4fc9-ab67-120c887fe4cd@ffri.uniri.hr>",
+      "references": [
+        "<72A72B5E-250F-414F-A991-BD3BE79A465F@ed.ac.uk>",
+        "<cf90593c-b64a-4fc9-ab67-120c887fe4cd@ffri.uniri.hr>"
+      ],
+      "body_plain": "Nice idea, but I don't see how that would work.  The terms in a \nnonlinear mixed model aren't automatically expanded using linear model \nformulas ...\n\nOn 2024-06-17 9:17 a.m., marKo via R-sig-mixed-models wrote:\n> Hi.\n> \n> How about adding it via an interaction effect?\n> Something like: y ~ SSlogis(x, Asym, Asym:lines_cathegorical, xmid, scal)\n> The rest should be more or less the same.\n> \n> Hope that it make sense.\n> \n> \n> Cheers,\n> \n> Marko\n> \n> \n>  ?On 17. 06. 2024. 15:05, Jarrod Hadfield wrote:\n>> Hi,\n>>\n>> I would like to use nlmer to fit logistic growth curves to data where \n>> a number of replicate growth series are available for several clonal \n>> lines. Fitting the random effect structure is straightforward:\n>>\n>> fm1 <- lme4:::nlmer(y ~ SSlogis(x, Asym, xmid, scal) ~  \n>> (Asym+xmid+scal | line) + (Asym+xmid+scal | rep), ?.)\n>>\n>> allowing all 3 growth parameters to vary across lines and across \n>> replicates within lines.? However, I?ve had no success adding fixed \n>> effects to the model formula, and the examples on the help page do not \n>> have fixed effect predictors. For example, if lines could be divided \n>> into two groups (A and B) how would I allow Asym to differ between \n>> these two groups?\n>>\n>> Thanks for any help,\n>>\n>> Jarrod\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>> The University of Edinburgh is a charitable body, registered in \n>> Scotland, with registration number SC005336. Is e buidheann \n>> carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, \n>> ?ireamh cl?raidh SC005336.\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "Nice idea, but I don't see how that would work.  The terms in a \nnonlinear mixed model aren't automatically expanded using linear model \nformulas ...\n\nOn 2024-06-17 9:17 a.m., marKo via R-sig-mixed-mo",
+      "thread_id": "thread-2587715fac19",
+      "thread_depth": 2,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-c984d9050edf",
+      "message_id": "<2094dcb0fef24f318e7b77049bc8bcd0@uok.ac.ir>",
+      "from_name": "Ghader Mirzaghaderi",
+      "from_email_hash": "ee1b66c638b5973293bb8e0c507dee844d71a9dc7fe34c4a0ff14542d6ce477c",
+      "date": "2024-06-17T14:01:25Z",
+      "subject": "[R-sig-ME] Paired ttest using lme4",
+      "subject_clean": "Paired ttest using lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear Ben,\n\nI appreciate your letting me know how the paired t-test is done using lmer function.\n\nusing the following code, the p-value from lmer is different from the paired t.test.\n\nMany thanks\n\nBest regards,\n\nGhader\n\n\ntt <- read.table(text = \"\ng y\n1 2.39\n1 2.59\n1 2.44\n2 4.34\n2 2.89\n2 3.77\n\", header = T)\nt.test(tt$y ~ tt$g, var.equal = F, paired = T)\n\n\ntt2 <- read.table(text = \"\nid  g y\na1 a 2.39\na2 a 2.59\na3 a 2.44\na1 b 4.34\na2 b 2.89\na3 b 3.77\n\", header = T)\nlibrary(lme4)\nlibrary(emmeans)\nanova(lmerTest::lmer(y ~ g + (1 | id), data = tt2))\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Ben,\n\nI appreciate your letting me know how the paired t-test is done using lmer function.\n\nusing the following code, the p-value from lmer is different from the paired t.test.\n\nMany thanks\n\nBest",
+      "thread_id": "thread-c984d9050edf",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-4391684e0cdb",
+      "message_id": "<A6561A41-E32A-4F07-9C1C-CDFF943EFB74@ed.ac.uk>",
+      "from_name": "Jarrod Hadfield",
+      "from_email_hash": "2e43a7af8f4daa87297a28457149e295b738b83f542c302ce576a405c1ae25e2",
+      "date": "2024-06-17T14:15:32Z",
+      "subject": "[R-sig-ME] Paired ttest using lme4",
+      "subject_clean": "Paired ttest using lme4",
+      "in_reply_to": "<2094dcb0fef24f318e7b77049bc8bcd0@uok.ac.ir>",
+      "references": [
+        "<2094dcb0fef24f318e7b77049bc8bcd0@uok.ac.ir>"
+      ],
+      "body_plain": "Hi Ghader,\n\na) tt is not set up in the correct way for a pair t-test.\nb) the mixed model assumes the variances are equal, but the call to t.test specifies them to be different.\n\nt.test(tt2[1:3,3], tt2[4:6,3], var.equal=TRUE)\n\nis identical to lmer.\n\nCheers,\n\nJarrod\n\n\n\nOn 17 Jun 2024, at 16:01, Ghader Mirzaghaderi via R-sig-mixed-models <r-sig-mixed-models at r-project.org> wrote:\n\nvar.equal = F\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th' ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Ghader,\n\na) tt is not set up in the correct way for a pair t-test.\nb) the mixed model assumes the variances are equal, but the call to t.test specifies them to be different.\n\nt.test(tt2[1:3,3], tt2",
+      "thread_id": "thread-c984d9050edf",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-5f5b75be48f6",
+      "message_id": "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+      "from_name": "Carlos Barboza",
+      "from_email_hash": "10c0151ba2f3a90606c46bdee03acdb5dc6dd73c7b72a7b8f8300317c1979cac",
+      "date": "2024-06-18T06:59:28-03:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>"
+      ],
+      "body_plain": "Dear all,\nwhy Anova type III function gives different results if I change the names\nof a categorical factor? I suspect that is because contrast type but it's\nsomething strange get different results using the same data.\nthank you\n\nEm s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\ncarlosambarboza at gmail.com> escreveu:\n\n> Dear Dr. Ben Bolker\n>\n> My name is Carlos Barboza and I am a Marine Biologist from the Rio de\n> Janeiro University, Brazil. First it's a pleasure to again have the\n> opportunity to send you a message.The reason for it is a simple doubt:\n> Can I compare AIC from:\n>\n> 1. glmmADMB: Density ~ 1 + 1|Site\n>\n> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n>\n> Note that they have different random and fixed structures. I know that\n> this is not the best choice to model selection but, I think that the AIC\n> values can be compared.\n>\n> thank you very much for your attention\n>\n>\n>   is Cage a random effect?  Are you intentionally leaving out the\n> intercept in the second case (it will be included anyway unless you\n> use -1)?  In any case, I don't see any obvious reason you can't\n> compare AIC values; see\n>\n> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n>\n>   Follow-ups to r-sig-mixed-models at r-project.org, please ...\n>\n> sorry, yes, cage was included only to examplify a different random\n> structure in the second case...it should be coded (1|Site) + (1|Cage)\n> yes, I know that the intercept will be included in the second model\n>\n> it's an example of comparing AIC values from mixed models with different\n> fixed and random structures:\n>\n> 1. Density ~ 1 + 1|Site\n>\n> 2. Density ~ Sector + 1|Site + 1|Cage\n>\n> comparing AIC...I beleive that both values can be compared\n>\n> again, thank you very much for your very fast message\n>\n>\n>\n>\n\n-- \nUniversidade Federal do Rio de Janeiro (UFRJ)\nInstituto de Biodiversidade e Sustentabilidade - NUPEM\nCaixa Postal 119331, CEP 27910-970\nMaca?, RJ, Brazil\nhttps://www.macae.ufrj.br/nupem/\nhttp://lattes.cnpq.br/3629226944950076\nhttps://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\nhttps://www.researchgate.net/profile/Carlos_Barboza3\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nwhy Anova type III function gives different results if I change the names\nof a categorical factor? I suspect that is because contrast type but it's\nsomething strange get different results us",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-8366498a3108",
+      "message_id": "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>",
+      "from_name": "Carlos Barboza",
+      "from_email_hash": "10c0151ba2f3a90606c46bdee03acdb5dc6dd73c7b72a7b8f8300317c1979cac",
+      "date": "2024-06-18T06:59:57-03:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+        "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>"
+      ],
+      "body_plain": "sorry, Anova type III function form car package in R\n\nEm ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\ncarlosambarboza at gmail.com> escreveu:\n\n> Dear all,\n> why Anova type III function gives different results if I change the names\n> of a categorical factor? I suspect that is because contrast type but it's\n> something strange get different results using the same data.\n> thank you\n>\n> Em s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\n> carlosambarboza at gmail.com> escreveu:\n>\n>> Dear Dr. Ben Bolker\n>>\n>> My name is Carlos Barboza and I am a Marine Biologist from the Rio de\n>> Janeiro University, Brazil. First it's a pleasure to again have the\n>> opportunity to send you a message.The reason for it is a simple doubt:\n>> Can I compare AIC from:\n>>\n>> 1. glmmADMB: Density ~ 1 + 1|Site\n>>\n>> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n>>\n>> Note that they have different random and fixed structures. I know that\n>> this is not the best choice to model selection but, I think that the AIC\n>> values can be compared.\n>>\n>> thank you very much for your attention\n>>\n>>\n>>   is Cage a random effect?  Are you intentionally leaving out the\n>> intercept in the second case (it will be included anyway unless you\n>> use -1)?  In any case, I don't see any obvious reason you can't\n>> compare AIC values; see\n>>\n>> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n>>\n>>   Follow-ups to r-sig-mixed-models at r-project.org, please ...\n>>\n>> sorry, yes, cage was included only to examplify a different random\n>> structure in the second case...it should be coded (1|Site) + (1|Cage)\n>> yes, I know that the intercept will be included in the second model\n>>\n>> it's an example of comparing AIC values from mixed models with different\n>> fixed and random structures:\n>>\n>> 1. Density ~ 1 + 1|Site\n>>\n>> 2. Density ~ Sector + 1|Site + 1|Cage\n>>\n>> comparing AIC...I beleive that both values can be compared\n>>\n>> again, thank you very much for your very fast message\n>>\n>>\n>>\n>>\n>\n> --\n> Universidade Federal do Rio de Janeiro (UFRJ)\n> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> Caixa Postal 119331, CEP 27910-970\n> Maca?, RJ, Brazil\n> https://www.macae.ufrj.br/nupem/\n> http://lattes.cnpq.br/3629226944950076\n> https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> https://www.researchgate.net/profile/Carlos_Barboza3\n>\n\n\n-- \nUniversidade Federal do Rio de Janeiro (UFRJ)\nInstituto de Biodiversidade e Sustentabilidade - NUPEM\nCaixa Postal 119331, CEP 27910-970\nMaca?, RJ, Brazil\nhttps://www.macae.ufrj.br/nupem/\nhttp://lattes.cnpq.br/3629226944950076\nhttps://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\nhttps://www.researchgate.net/profile/Carlos_Barboza3\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "sorry, Anova type III function form car package in R\n\nEm ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\ncarlosambarboza at gmail.com> escreveu:\n\n> Dear all,\n> why Anova type III function gives di",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-b678ef2b9606",
+      "message_id": "<cc7be015-c323-4659-b460-e78aa459cdf0@ffri.uniri.hr>",
+      "from_name": "marKo",
+      "from_email_hash": "90e28376fef187f995b2b1c35f1c59a218370246dbb3e45e1242c03623ba3b1f",
+      "date": "2024-06-18T15:03:27+02:00",
+      "subject": "[R-sig-ME] Fixed effects in nlmer",
+      "subject_clean": "Fixed effects in nlmer",
+      "in_reply_to": "<77c1d451-985e-419a-81e6-455c44b49078@gmail.com>",
+      "references": [
+        "<72A72B5E-250F-414F-A991-BD3BE79A465F@ed.ac.uk>",
+        "<cf90593c-b64a-4fc9-ab67-120c887fe4cd@ffri.uniri.hr>",
+        "<77c1d451-985e-419a-81e6-455c44b49078@gmail.com>"
+      ],
+      "body_plain": "Hi Ben and group,\n\nIs this a computational problem? How to solve it?\nDo you have (on hand) some resources (links) to explain why? Used to see \ninteraction used quite a bit in logistic models (not mixed models \nthough, not recall any).\n\nThanks, and sorry for my ignorance.\n\n\nCheers,\n\nMarko\n\nOn 17. 06. 2024. 15:32, Ben Bolker wrote:\n>  ?? Nice idea, but I don't see how that would work.? The terms in a \n> nonlinear mixed model aren't automatically expanded using linear model \n> formulas ...\n> \n> On 2024-06-17 9:17 a.m., marKo via R-sig-mixed-models wrote:\n>> Hi.\n>>\n>> How about adding it via an interaction effect?\n>> Something like: y ~ SSlogis(x, Asym, Asym:lines_cathegorical, xmid, scal)\n>> The rest should be more or less the same.\n>>\n>> Hope that it make sense.\n>>\n>>\n>> Cheers,\n>>\n>> Marko\n>>\n>>\n>> ??On 17. 06. 2024. 15:05, Jarrod Hadfield wrote:\n>>> Hi,\n>>>\n>>> I would like to use nlmer to fit logistic growth curves to data where \n>>> a number of replicate growth series are available for several clonal \n>>> lines. Fitting the random effect structure is straightforward:\n>>>\n>>> fm1 <- lme4:::nlmer(y ~ SSlogis(x, Asym, xmid, scal) ~ \n>>> (Asym+xmid+scal | line) + (Asym+xmid+scal | rep), ?.)\n>>>\n>>> allowing all 3 growth parameters to vary across lines and across \n>>> replicates within lines.? However, I?ve had no success adding fixed \n>>> effects to the model formula, and the examples on the help page do \n>>> not have fixed effect predictors. For example, if lines could be \n>>> divided into two groups (A and B) how would I allow Asym to differ \n>>> between these two groups?\n>>>\n>>> Thanks for any help,\n>>>\n>>> Jarrod\n>>>\n>>>\n>>>\n>>>\n>>>\n>>>\n>>>\n>>>\n>>> The University of Edinburgh is a charitable body, registered in \n>>> Scotland, with registration number SC005336. Is e buidheann \n>>> carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, \n>>> ?ireamh cl?raidh SC005336.\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "Hi Ben and group,\n\nIs this a computational problem? How to solve it?\nDo you have (on hand) some resources (links) to explain why? Used to see \ninteraction used quite a bit in logistic models (not mixe",
+      "thread_id": "thread-2587715fac19",
+      "thread_depth": 3,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-fc25595ffd9a",
+      "message_id": "<DM6PR04MB44741531D26F9FA4F7F947D3F1CE2@DM6PR04MB4474.namprd04.prod.outlook.com>",
+      "from_name": "Lenth, Russell V",
+      "from_email_hash": "d2e24904e0c924e339bc69bd07e82d3eb99052bac3cc2dcec2387df9be84bae2",
+      "date": "2024-06-18T15:16:55Z",
+      "subject": "[R-sig-ME] Paired ttest using lme4",
+      "subject_clean": "Paired ttest using lme4",
+      "in_reply_to": "<mailman.20311.3.1718704801.33228.r-sig-mixed-models@r-project.org>",
+      "references": [
+        "<mailman.20311.3.1718704801.33228.r-sig-mixed-models@r-project.org>"
+      ],
+      "body_plain": "Ghader,\n\nAn odd thing about this solution is that the emmeans package is loaded, but not used. Assuming (I hope so) that you care to see the estimated means and then test the difference, I suggest:\n\n    mod <- lmerTest::lmer(y ~ g + (1 | id), data = tt2)\n\n    ( emm <- emmeans(mod, \"g\") )      # obtain the estimated means\n\n    pairs(emm)                                      # compare them\n\nFor this example, this does NOT yield the same P value as the anova test, and that is because the anova test is clearly wrong! (It shows that there are 4 d.f., but there are only 3 subjects so there should be 2 d.f. as you will obtain using the code above.)\n\nAfter testing, I found that the error is due to a singularity issue in fitting the model. That issue is due to the fact that the 'id' effect is estimated as zero, hence we are not really estimating a subject effect, and hence we in a sense don't really have a paired t test. If you include real subject variations in the data, e.g., \n\n    tt2$y = tt2$y + rep(c(3,-2,-1), 2)\n\nand repeat the procedure, there will be no singularity issues in fitting the model and the anova and emmeans results will agree on 2 d.f.\n--\nRuss Lenth\nU of Iowa\n\n-----Original Message-----\n\nDate: Mon, 17 Jun 2024 14:01:25 +0000\nFrom: Ghader Mirzaghaderi <gh.mirzaghaderi at uok.ac.ir>\nTo: \"r-sig-mixed-models at r-project.org\"\n\t<r-sig-mixed-models at r-project.org>\nSubject: [R-sig-ME] Paired ttest using lme4\nMessage-ID: <2094dcb0fef24f318e7b77049bc8bcd0 at uok.ac.ir>\nContent-Type: text/plain; charset=\"utf-8\"\n\n\n\nDear Ben,\n\nI appreciate your letting me know how the paired t-test is done using lmer function.\n\nusing the following code, the p-value from lmer is different from the paired t.test.\n\nMany thanks\n\nBest regards,\n\nGhader\n\n\ntt <- read.table(text = \"\ng y\n1 2.39\n1 2.59\n1 2.44\n2 4.34\n2 2.89\n2 3.77\n\", header = T)\nt.test(tt$y ~ tt$g, var.equal = F, paired = T)\n\n\ntt2 <- read.table(text = \"\nid  g y\na1 a 2.39\na2 a 2.59\na3 a 2.44\na1 b 4.34\na2 b 2.89\na3 b 3.77\n\", header = T)\nlibrary(lme4)\nlibrary(emmeans)\nanova(lmerTest::lmer(y ~ g + (1 | id), data = tt2))",
+      "body_snippet": "Ghader,\n\nAn odd thing about this solution is that the emmeans package is loaded, but not used. Assuming (I hope so) that you care to see the estimated means and then test the difference, I suggest:\n\n ",
+      "thread_id": "thread-fc25595ffd9a",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-4859b9d23268",
+      "message_id": "<8c92a556-09cf-4372-bfc8-e8d294eed43a@mcmaster.ca>",
+      "from_name": "John Fox",
+      "from_email_hash": "fb5e585740b7c9920dce8700b35a0da42dc1980ade6aac3a1f02de01be0488d9",
+      "date": "2024-06-19T09:14:55-04:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+        "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+        "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Carlos,\n\n From ?Anova:\n\n\"Warning\n\nBe careful of type-III tests: For a traditional multifactor ANOVA model \nwith interactions, for example, these tests will normally only be \nsensible when using contrasts that, for different terms, are orthogonal \nin the row-basis of the model, such as those produced by contr.sum, \ncontr.poly, or contr.helmert, but not by the default contr.treatment. In \na model that contains factors, numeric covariates, and interactions, \nmain-effect tests for factors will be for differences over the origin. \nIn contrast (pun intended), type-II tests are invariant with respect to \n(full-rank) contrast coding. If you don't understand this issue, then \nyou probably shouldn't use Anova for type-III tests.\"\n\nI hope this helps,\n  John\n\n-- \nJohn Fox, Professor Emeritus\nMcMaster University\nHamilton, Ontario, Canada\nweb: https://www.john-fox.ca/\n--\nOn 2024-06-18 5:59 a.m., Carlos Barboza wrote:\n> [You don't often get email from carlosambarboza at gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]\n> \n> Caution: External email.\n> \n> \n> sorry, Anova type III function form car package in R\n> \n> Em ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\n> carlosambarboza at gmail.com> escreveu:\n> \n>> Dear all,\n>> why Anova type III function gives different results if I change the names\n>> of a categorical factor? I suspect that is because contrast type but it's\n>> something strange get different results using the same data.\n>> thank you\n>>\n>> Em s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\n>> carlosambarboza at gmail.com> escreveu:\n>>\n>>> Dear Dr. Ben Bolker\n>>>\n>>> My name is Carlos Barboza and I am a Marine Biologist from the Rio de\n>>> Janeiro University, Brazil. First it's a pleasure to again have the\n>>> opportunity to send you a message.The reason for it is a simple doubt:\n>>> Can I compare AIC from:\n>>>\n>>> 1. glmmADMB: Density ~ 1 + 1|Site\n>>>\n>>> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n>>>\n>>> Note that they have different random and fixed structures. I know that\n>>> this is not the best choice to model selection but, I think that the AIC\n>>> values can be compared.\n>>>\n>>> thank you very much for your attention\n>>>\n>>>\n>>>    is Cage a random effect?  Are you intentionally leaving out the\n>>> intercept in the second case (it will be included anyway unless you\n>>> use -1)?  In any case, I don't see any obvious reason you can't\n>>> compare AIC values; see\n>>>\n>>> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n>>>\n>>>    Follow-ups to r-sig-mixed-models at r-project.org, please ...\n>>>\n>>> sorry, yes, cage was included only to examplify a different random\n>>> structure in the second case...it should be coded (1|Site) + (1|Cage)\n>>> yes, I know that the intercept will be included in the second model\n>>>\n>>> it's an example of comparing AIC values from mixed models with different\n>>> fixed and random structures:\n>>>\n>>> 1. Density ~ 1 + 1|Site\n>>>\n>>> 2. Density ~ Sector + 1|Site + 1|Cage\n>>>\n>>> comparing AIC...I beleive that both values can be compared\n>>>\n>>> again, thank you very much for your very fast message\n>>>\n>>>\n>>>\n>>>\n>>\n>> --\n>> Universidade Federal do Rio de Janeiro (UFRJ)\n>> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n>> Caixa Postal 119331, CEP 27910-970\n>> Maca?, RJ, Brazil\n>> https://www.macae.ufrj.br/nupem/\n>> http://lattes.cnpq.br/3629226944950076\n>> https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n>> https://www.researchgate.net/profile/Carlos_Barboza3\n>>\n> \n> \n> --\n> Universidade Federal do Rio de Janeiro (UFRJ)\n> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> Caixa Postal 119331, CEP 27910-970\n> Maca?, RJ, Brazil\n> https://www.macae.ufrj.br/nupem/\n> http://lattes.cnpq.br/3629226944950076\n> https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> https://www.researchgate.net/profile/Carlos_Barboza3\n> \n>          [[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear Carlos,\n\n From ?Anova:\n\n\"Warning\n\nBe careful of type-III tests: For a traditional multifactor ANOVA model \nwith interactions, for example, these tests will normally only be \nsensible when using c",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 2,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-916cf4cfc455",
+      "message_id": "<CAGAvxR=7Rrq=Fc1EejZj00E9fkCCzmLmrNEty8jq=6ACnr1=oQ@mail.gmail.com>",
+      "from_name": "Carlos Barboza",
+      "from_email_hash": "10c0151ba2f3a90606c46bdee03acdb5dc6dd73c7b72a7b8f8300317c1979cac",
+      "date": "2024-06-19T12:13:01-03:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<8c92a556-09cf-4372-bfc8-e8d294eed43a@mcmaster.ca>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+        "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+        "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>",
+        "<8c92a556-09cf-4372-bfc8-e8d294eed43a@mcmaster.ca>"
+      ],
+      "body_plain": "Thank you Jonh for you answer\nI indeed used contr.sum, contr.poly before to model definition\nafter that I get the same results using any names for the same factors\nbut, what do you exactly mean when testing for factors for differences over\nthe origin?\nbest regards\nCarlos\n\n\nEm qua., 19 de jun. de 2024 ?s 10:14, John Fox <jfox at mcmaster.ca> escreveu:\n\n> Dear Carlos,\n>\n>  From ?Anova:\n>\n> \"Warning\n>\n> Be careful of type-III tests: For a traditional multifactor ANOVA model\n> with interactions, for example, these tests will normally only be\n> sensible when using contrasts that, for different terms, are orthogonal\n> in the row-basis of the model, such as those produced by contr.sum,\n> contr.poly, or contr.helmert, but not by the default contr.treatment. In\n> a model that contains factors, numeric covariates, and interactions,\n> main-effect tests for factors will be for differences over the origin.\n> In contrast (pun intended), type-II tests are invariant with respect to\n> (full-rank) contrast coding. If you don't understand this issue, then\n> you probably shouldn't use Anova for type-III tests.\"\n>\n> I hope this helps,\n>   John\n>\n> --\n> John Fox, Professor Emeritus\n> McMaster University\n> Hamilton, Ontario, Canada\n> web: https://www.john-fox.ca/\n> --\n> On 2024-06-18 5:59 a.m., Carlos Barboza wrote:\n> > [You don't often get email from carlosambarboza at gmail.com. Learn why\n> this is important at https://aka.ms/LearnAboutSenderIdentification ]\n> >\n> > Caution: External email.\n> >\n> >\n> > sorry, Anova type III function form car package in R\n> >\n> > Em ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\n> > carlosambarboza at gmail.com> escreveu:\n> >\n> >> Dear all,\n> >> why Anova type III function gives different results if I change the\n> names\n> >> of a categorical factor? I suspect that is because contrast type but\n> it's\n> >> something strange get different results using the same data.\n> >> thank you\n> >>\n> >> Em s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\n> >> carlosambarboza at gmail.com> escreveu:\n> >>\n> >>> Dear Dr. Ben Bolker\n> >>>\n> >>> My name is Carlos Barboza and I am a Marine Biologist from the Rio de\n> >>> Janeiro University, Brazil. First it's a pleasure to again have the\n> >>> opportunity to send you a message.The reason for it is a simple doubt:\n> >>> Can I compare AIC from:\n> >>>\n> >>> 1. glmmADMB: Density ~ 1 + 1|Site\n> >>>\n> >>> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n> >>>\n> >>> Note that they have different random and fixed structures. I know that\n> >>> this is not the best choice to model selection but, I think that the\n> AIC\n> >>> values can be compared.\n> >>>\n> >>> thank you very much for your attention\n> >>>\n> >>>\n> >>>    is Cage a random effect?  Are you intentionally leaving out the\n> >>> intercept in the second case (it will be included anyway unless you\n> >>> use -1)?  In any case, I don't see any obvious reason you can't\n> >>> compare AIC values; see\n> >>>\n> >>>\n> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n> >>>\n> >>>    Follow-ups to r-sig-mixed-models at r-project.org, please ...\n> >>>\n> >>> sorry, yes, cage was included only to examplify a different random\n> >>> structure in the second case...it should be coded (1|Site) + (1|Cage)\n> >>> yes, I know that the intercept will be included in the second model\n> >>>\n> >>> it's an example of comparing AIC values from mixed models with\n> different\n> >>> fixed and random structures:\n> >>>\n> >>> 1. Density ~ 1 + 1|Site\n> >>>\n> >>> 2. Density ~ Sector + 1|Site + 1|Cage\n> >>>\n> >>> comparing AIC...I beleive that both values can be compared\n> >>>\n> >>> again, thank you very much for your very fast message\n> >>>\n> >>>\n> >>>\n> >>>\n> >>\n> >> --\n> >> Universidade Federal do Rio de Janeiro (UFRJ)\n> >> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> >> Caixa Postal 119331, CEP 27910-970\n> >> Maca?, RJ, Brazil\n> >> https://www.macae.ufrj.br/nupem/\n> >> http://lattes.cnpq.br/3629226944950076\n> >> https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> >> https://www.researchgate.net/profile/Carlos_Barboza3\n> >>\n> >\n> >\n> > --\n> > Universidade Federal do Rio de Janeiro (UFRJ)\n> > Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> > Caixa Postal 119331, CEP 27910-970\n> > Maca?, RJ, Brazil\n> > https://www.macae.ufrj.br/nupem/\n> > http://lattes.cnpq.br/3629226944950076\n> > https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> > https://www.researchgate.net/profile/Carlos_Barboza3\n> >\n> >          [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n-- \nUniversidade Federal do Rio de Janeiro (UFRJ)\nInstituto de Biodiversidade e Sustentabilidade - NUPEM\nCaixa Postal 119331, CEP 27910-970\nMaca?, RJ, Brazil\nhttps://www.macae.ufrj.br/nupem/\nhttp://lattes.cnpq.br/3629226944950076\nhttps://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\nhttps://www.researchgate.net/profile/Carlos_Barboza3\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you Jonh for you answer\nI indeed used contr.sum, contr.poly before to model definition\nafter that I get the same results using any names for the same factors\nbut, what do you exactly mean when t",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 3,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-3d16593fcead",
+      "message_id": "<b5911c4e-8d5b-4896-8150-1566588f85a9@mcmaster.ca>",
+      "from_name": "John Fox",
+      "from_email_hash": "fb5e585740b7c9920dce8700b35a0da42dc1980ade6aac3a1f02de01be0488d9",
+      "date": "2024-06-19T11:20:07-04:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<CAGAvxR=7Rrq=Fc1EejZj00E9fkCCzmLmrNEty8jq=6ACnr1=oQ@mail.gmail.com>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+        "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+        "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>",
+        "<8c92a556-09cf-4372-bfc8-e8d294eed43a@mcmaster.ca>",
+        "<CAGAvxR=7Rrq=Fc1EejZj00E9fkCCzmLmrNEty8jq=6ACnr1=oQ@mail.gmail.com>"
+      ],
+      "body_plain": "Dear Carlos,\n\nOn 2024-06-19 11:13 a.m., Carlos Barboza wrote:\n> \t\n> You don't often get email from carlosambarboza at gmail.com. Learn why this \n> is important <https://aka.ms/LearnAboutSenderIdentification>\n> \t\n> \n> \t\n> Caution: External email.\n> \n> \n> Thank you Jonh for you answer\n> I indeed used contr.sum, contr.poly before to model definition\n> after that I get the same results using any names for the same factors\n> but,?what do you exactly mean when testing for factors for differences \n> over the origin?\n\nThe context here is models with both numeric and factor predictors. \nConsider a model of the form y ~ x*f, where x is numeric and f is a \nfactor. A type-III test for the \"main effect\" of f tests for differences \namong factor levels where x = 0 (the origin).\n\nMore generally, the issues concerning \"types\" of tests in models with \nlinear predictors are sufficiently complicated that discussing them in a \nhelp file or by email is likely to prove unsatisfactory. See the first \ntwo references in ?Anova for more details.\n\nI hope this helps,\n  John\n\n> best regards\n> Carlos\n> \n> \n> Em qua., 19 de jun. de 2024 ?s 10:14, John Fox <jfox at mcmaster.ca \n> <mailto:jfox at mcmaster.ca>> escreveu:\n> \n>     Dear Carlos,\n> \n>      ?From ?Anova:\n> \n>     \"Warning\n> \n>     Be careful of type-III tests: For a traditional multifactor ANOVA model\n>     with interactions, for example, these tests will normally only be\n>     sensible when using contrasts that, for different terms, are orthogonal\n>     in the row-basis of the model, such as those produced by contr.sum,\n>     contr.poly, or contr.helmert, but not by the default\n>     contr.treatment. In\n>     a model that contains factors, numeric covariates, and interactions,\n>     main-effect tests for factors will be for differences over the origin.\n>     In contrast (pun intended), type-II tests are invariant with respect to\n>     (full-rank) contrast coding. If you don't understand this issue, then\n>     you probably shouldn't use Anova for type-III tests.\"\n> \n>     I hope this helps,\n>      ? John\n> \n>     -- \n>     John Fox, Professor Emeritus\n>     McMaster University\n>     Hamilton, Ontario, Canada\n>     web: https://www.john-fox.ca/ <https://www.john-fox.ca/>\n>     --\n>     On 2024-06-18 5:59 a.m., Carlos Barboza wrote:\n>      > [You don't often get email from carlosambarboza at gmail.com\n>     <mailto:carlosambarboza at gmail.com>. Learn why this is important at\n>     https://aka.ms/LearnAboutSenderIdentification\n>     <https://aka.ms/LearnAboutSenderIdentification> ]\n>      >\n>      > Caution: External email.\n>      >\n>      >\n>      > sorry, Anova type III function form car package in R\n>      >\n>      > Em ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\n>      > carlosambarboza at gmail.com <mailto:carlosambarboza at gmail.com>>\n>     escreveu:\n>      >\n>      >> Dear all,\n>      >> why Anova type III function gives different results if I change\n>     the names\n>      >> of a categorical factor? I suspect that is because contrast type\n>     but it's\n>      >> something strange get different results using the same data.\n>      >> thank you\n>      >>\n>      >> Em s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\n>      >> carlosambarboza at gmail.com <mailto:carlosambarboza at gmail.com>>\n>     escreveu:\n>      >>\n>      >>> Dear Dr. Ben Bolker\n>      >>>\n>      >>> My name is Carlos Barboza and I am a Marine Biologist from the\n>     Rio de\n>      >>> Janeiro University, Brazil. First it's a pleasure to again have the\n>      >>> opportunity to send you a message.The reason for it is a simple\n>     doubt:\n>      >>> Can I compare AIC from:\n>      >>>\n>      >>> 1. glmmADMB: Density ~ 1 + 1|Site\n>      >>>\n>      >>> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n>      >>>\n>      >>> Note that they have different random and fixed structures. I\n>     know that\n>      >>> this is not the best choice to model selection but, I think\n>     that the AIC\n>      >>> values can be compared.\n>      >>>\n>      >>> thank you very much for your attention\n>      >>>\n>      >>>\n>      >>>? ? is Cage a random effect?? Are you intentionally leaving out the\n>      >>> intercept in the second case (it will be included anyway unless you\n>      >>> use -1)?? In any case, I don't see any obvious reason you can't\n>      >>> compare AIC values; see\n>      >>>\n>      >>>\n>     https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect <https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect>\n>      >>>\n>      >>>? ? Follow-ups to r-sig-mixed-models at r-project.org\n>     <mailto:r-sig-mixed-models at r-project.org>, please ...\n>      >>>\n>      >>> sorry, yes, cage was included only to examplify a different random\n>      >>> structure in the second case...it should be coded (1|Site) +\n>     (1|Cage)\n>      >>> yes, I know that the intercept will be included in the second model\n>      >>>\n>      >>> it's an example of comparing AIC values from mixed models with\n>     different\n>      >>> fixed and random structures:\n>      >>>\n>      >>> 1. Density ~ 1 + 1|Site\n>      >>>\n>      >>> 2. Density ~ Sector + 1|Site + 1|Cage\n>      >>>\n>      >>> comparing AIC...I beleive that both values can be compared\n>      >>>\n>      >>> again, thank you very much for your very fast message\n>      >>>\n>      >>>\n>      >>>\n>      >>>\n>      >>\n>      >> --\n>      >> Universidade Federal do Rio de Janeiro (UFRJ)\n>      >> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n>      >> Caixa Postal 119331, CEP 27910-970\n>      >> Maca?, RJ, Brazil\n>      >> https://www.macae.ufrj.br/nupem/ <https://www.macae.ufrj.br/nupem/>\n>      >> http://lattes.cnpq.br/3629226944950076\n>     <http://lattes.cnpq.br/3629226944950076>\n>      >>\n>     https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n>     <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n>      >> https://www.researchgate.net/profile/Carlos_Barboza3\n>     <https://www.researchgate.net/profile/Carlos_Barboza3>\n>      >>\n>      >\n>      >\n>      > --\n>      > Universidade Federal do Rio de Janeiro (UFRJ)\n>      > Instituto de Biodiversidade e Sustentabilidade - NUPEM\n>      > Caixa Postal 119331, CEP 27910-970\n>      > Maca?, RJ, Brazil\n>      > https://www.macae.ufrj.br/nupem/ <https://www.macae.ufrj.br/nupem/>\n>      > http://lattes.cnpq.br/3629226944950076\n>     <http://lattes.cnpq.br/3629226944950076>\n>      >\n>     https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n>     <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n>      > https://www.researchgate.net/profile/Carlos_Barboza3\n>     <https://www.researchgate.net/profile/Carlos_Barboza3>\n>      >\n>      >? ? ? ? ? [[alternative HTML version deleted]]\n>      >\n>      > _______________________________________________\n>      > R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>      > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> \n> \n> \n> -- \n> Universidade Federal do Rio de Janeiro (UFRJ)\n> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> Caixa Postal 119331, CEP 27910-970\n> Maca?, RJ, Brazil\n> https://www.macae.ufrj.br/nupem/ <https://www.macae.ufrj.br/nupem/>\n> http://lattes.cnpq.br/3629226944950076 \n> <http://lattes.cnpq.br/3629226944950076>\n> https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR \n> <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n> https://www.researchgate.net/profile/Carlos_Barboza3 \n> <https://www.researchgate.net/profile/Carlos_Barboza3>",
+      "body_snippet": "Dear Carlos,\n\nOn 2024-06-19 11:13 a.m., Carlos Barboza wrote:\n> \t\n> You don't often get email from carlosambarboza at gmail.com. Learn why this \n> is important <https://aka.ms/LearnAboutSenderIdentifi",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 4,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-2655c1e9db6d",
+      "message_id": "<CAGAvxRkdjWr7Hd5N-dY7Y0PvoNjb5EhadTO67iK0XfT1hp5p3Q@mail.gmail.com>",
+      "from_name": "Carlos Barboza",
+      "from_email_hash": "10c0151ba2f3a90606c46bdee03acdb5dc6dd73c7b72a7b8f8300317c1979cac",
+      "date": "2024-06-19T12:42:34-03:00",
+      "subject": "[R-sig-ME] Comparing mixed models",
+      "subject_clean": "Comparing mixed models",
+      "in_reply_to": "<b5911c4e-8d5b-4896-8150-1566588f85a9@mcmaster.ca>",
+      "references": [
+        "<CAGAvxRn2AB=ZhkQWtKYLFg9pRj9mT=D5t=7RpM-aJuoj+q3=Xw@mail.gmail.com>",
+        "<CAGAvxRkBNViFfPg-9n3CDvD2esY8YTYWo_FajzN+2OSzbrj6Zg@mail.gmail.com>",
+        "<CAGAvxR=nWu+O4ohNAZXwAJv=r7noH8dY1DY7Ba3a22fw_Gj4Jw@mail.gmail.com>",
+        "<8c92a556-09cf-4372-bfc8-e8d294eed43a@mcmaster.ca>",
+        "<CAGAvxR=7Rrq=Fc1EejZj00E9fkCCzmLmrNEty8jq=6ACnr1=oQ@mail.gmail.com>",
+        "<b5911c4e-8d5b-4896-8150-1566588f85a9@mcmaster.ca>"
+      ],
+      "body_plain": "Thank you,\nyes I know that, it's the same interpretation when using the summary\nfunction when we have f*x\nthank you\nCarlos\n\nEm qua., 19 de jun. de 2024 ?s 12:20, John Fox <jfox at mcmaster.ca> escreveu:\n\n> Dear Carlos,\n>\n> On 2024-06-19 11:13 a.m., Carlos Barboza wrote:\n> >\n> > You don't often get email from carlosambarboza at gmail.com. Learn why\n> this\n> > is important <https://aka.ms/LearnAboutSenderIdentification>\n> >\n> >\n> >\n> > Caution: External email.\n> >\n> >\n> > Thank you Jonh for you answer\n> > I indeed used contr.sum, contr.poly before to model definition\n> > after that I get the same results using any names for the same factors\n> > but, what do you exactly mean when testing for factors for differences\n> > over the origin?\n>\n> The context here is models with both numeric and factor predictors.\n> Consider a model of the form y ~ x*f, where x is numeric and f is a\n> factor. A type-III test for the \"main effect\" of f tests for differences\n> among factor levels where x = 0 (the origin).\n>\n> More generally, the issues concerning \"types\" of tests in models with\n> linear predictors are sufficiently complicated that discussing them in a\n> help file or by email is likely to prove unsatisfactory. See the first\n> two references in ?Anova for more details.\n>\n> I hope this helps,\n>   John\n>\n> > best regards\n> > Carlos\n> >\n> >\n> > Em qua., 19 de jun. de 2024 ?s 10:14, John Fox <jfox at mcmaster.ca\n> > <mailto:jfox at mcmaster.ca>> escreveu:\n> >\n> >     Dear Carlos,\n> >\n> >       From ?Anova:\n> >\n> >     \"Warning\n> >\n> >     Be careful of type-III tests: For a traditional multifactor ANOVA\n> model\n> >     with interactions, for example, these tests will normally only be\n> >     sensible when using contrasts that, for different terms, are\n> orthogonal\n> >     in the row-basis of the model, such as those produced by contr.sum,\n> >     contr.poly, or contr.helmert, but not by the default\n> >     contr.treatment. In\n> >     a model that contains factors, numeric covariates, and interactions,\n> >     main-effect tests for factors will be for differences over the\n> origin.\n> >     In contrast (pun intended), type-II tests are invariant with respect\n> to\n> >     (full-rank) contrast coding. If you don't understand this issue, then\n> >     you probably shouldn't use Anova for type-III tests.\"\n> >\n> >     I hope this helps,\n> >        John\n> >\n> >     --\n> >     John Fox, Professor Emeritus\n> >     McMaster University\n> >     Hamilton, Ontario, Canada\n> >     web: https://www.john-fox.ca/ <https://www.john-fox.ca/>\n> >     --\n> >     On 2024-06-18 5:59 a.m., Carlos Barboza wrote:\n> >      > [You don't often get email from carlosambarboza at gmail.com\n> >     <mailto:carlosambarboza at gmail.com>. Learn why this is important at\n> >     https://aka.ms/LearnAboutSenderIdentification\n> >     <https://aka.ms/LearnAboutSenderIdentification> ]\n> >      >\n> >      > Caution: External email.\n> >      >\n> >      >\n> >      > sorry, Anova type III function form car package in R\n> >      >\n> >      > Em ter., 18 de jun. de 2024 ?s 06:59, Carlos Barboza <\n> >      > carlosambarboza at gmail.com <mailto:carlosambarboza at gmail.com>>\n> >     escreveu:\n> >      >\n> >      >> Dear all,\n> >      >> why Anova type III function gives different results if I change\n> >     the names\n> >      >> of a categorical factor? I suspect that is because contrast type\n> >     but it's\n> >      >> something strange get different results using the same data.\n> >      >> thank you\n> >      >>\n> >      >> Em s?b., 7 de mai. de 2016 ?s 12:26, Carlos Barboza <\n> >      >> carlosambarboza at gmail.com <mailto:carlosambarboza at gmail.com>>\n> >     escreveu:\n> >      >>\n> >      >>> Dear Dr. Ben Bolker\n> >      >>>\n> >      >>> My name is Carlos Barboza and I am a Marine Biologist from the\n> >     Rio de\n> >      >>> Janeiro University, Brazil. First it's a pleasure to again have\n> the\n> >      >>> opportunity to send you a message.The reason for it is a simple\n> >     doubt:\n> >      >>> Can I compare AIC from:\n> >      >>>\n> >      >>> 1. glmmADMB: Density ~ 1 + 1|Site\n> >      >>>\n> >      >>> 2. glmmADMB: Density ~ Sector + 1|Site + Cage\n> >      >>>\n> >      >>> Note that they have different random and fixed structures. I\n> >     know that\n> >      >>> this is not the best choice to model selection but, I think\n> >     that the AIC\n> >      >>> values can be compared.\n> >      >>>\n> >      >>> thank you very much for your attention\n> >      >>>\n> >      >>>\n> >      >>>    is Cage a random effect?  Are you intentionally leaving out\n> the\n> >      >>> intercept in the second case (it will be included anyway unless\n> you\n> >      >>> use -1)?  In any case, I don't see any obvious reason you can't\n> >      >>> compare AIC values; see\n> >      >>>\n> >      >>>\n> >\n> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n> <\n> https://rawgit.com/bbolker/mixedmodels-misc/master/glmmFAQ.html#can-i-use-aic-for-mixed-models-how-do-i-count-the-number-of-degrees-of-freedom-for-a-random-effect\n> >\n> >      >>>\n> >      >>>    Follow-ups to r-sig-mixed-models at r-project.org\n> >     <mailto:r-sig-mixed-models at r-project.org>, please ...\n> >      >>>\n> >      >>> sorry, yes, cage was included only to examplify a different\n> random\n> >      >>> structure in the second case...it should be coded (1|Site) +\n> >     (1|Cage)\n> >      >>> yes, I know that the intercept will be included in the second\n> model\n> >      >>>\n> >      >>> it's an example of comparing AIC values from mixed models with\n> >     different\n> >      >>> fixed and random structures:\n> >      >>>\n> >      >>> 1. Density ~ 1 + 1|Site\n> >      >>>\n> >      >>> 2. Density ~ Sector + 1|Site + 1|Cage\n> >      >>>\n> >      >>> comparing AIC...I beleive that both values can be compared\n> >      >>>\n> >      >>> again, thank you very much for your very fast message\n> >      >>>\n> >      >>>\n> >      >>>\n> >      >>>\n> >      >>\n> >      >> --\n> >      >> Universidade Federal do Rio de Janeiro (UFRJ)\n> >      >> Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> >      >> Caixa Postal 119331, CEP 27910-970\n> >      >> Maca?, RJ, Brazil\n> >      >> https://www.macae.ufrj.br/nupem/ <\n> https://www.macae.ufrj.br/nupem/>\n> >      >> http://lattes.cnpq.br/3629226944950076\n> >     <http://lattes.cnpq.br/3629226944950076>\n> >      >>\n> >     https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> >     <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n> >      >> https://www.researchgate.net/profile/Carlos_Barboza3\n> >     <https://www.researchgate.net/profile/Carlos_Barboza3>\n> >      >>\n> >      >\n> >      >\n> >      > --\n> >      > Universidade Federal do Rio de Janeiro (UFRJ)\n> >      > Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> >      > Caixa Postal 119331, CEP 27910-970\n> >      > Maca?, RJ, Brazil\n> >      > https://www.macae.ufrj.br/nupem/ <\n> https://www.macae.ufrj.br/nupem/>\n> >      > http://lattes.cnpq.br/3629226944950076\n> >     <http://lattes.cnpq.br/3629226944950076>\n> >      >\n> >     https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> >     <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n> >      > https://www.researchgate.net/profile/Carlos_Barboza3\n> >     <https://www.researchgate.net/profile/Carlos_Barboza3>\n> >      >\n> >      >          [[alternative HTML version deleted]]\n> >      >\n> >      > _______________________________________________\n> >      > R-sig-mixed-models at r-project.org\n> >     <mailto:R-sig-mixed-models at r-project.org> mailing list\n> >      > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> >\n> >\n> >\n> > --\n> > Universidade Federal do Rio de Janeiro (UFRJ)\n> > Instituto de Biodiversidade e Sustentabilidade - NUPEM\n> > Caixa Postal 119331, CEP 27910-970\n> > Maca?, RJ, Brazil\n> > https://www.macae.ufrj.br/nupem/ <https://www.macae.ufrj.br/nupem/>\n> > http://lattes.cnpq.br/3629226944950076\n> > <http://lattes.cnpq.br/3629226944950076>\n> > https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\n> > <https://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR>\n> > https://www.researchgate.net/profile/Carlos_Barboza3\n> > <https://www.researchgate.net/profile/Carlos_Barboza3>\n>\n>\n\n-- \nUniversidade Federal do Rio de Janeiro (UFRJ)\nInstituto de Biodiversidade e Sustentabilidade - NUPEM\nCaixa Postal 119331, CEP 27910-970\nMaca?, RJ, Brazil\nhttps://www.macae.ufrj.br/nupem/\nhttp://lattes.cnpq.br/3629226944950076\nhttps://scholar.google.com.br/citations?user=p-PRvd4AAAAJ&hl=pt-BR\nhttps://www.researchgate.net/profile/Carlos_Barboza3\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you,\nyes I know that, it's the same interpretation when using the summary\nfunction when we have f*x\nthank you\nCarlos\n\nEm qua., 19 de jun. de 2024 ?s 12:20, John Fox <jfox at mcmaster.ca> escreve",
+      "thread_id": "thread-5f5b75be48f6",
+      "thread_depth": 5,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-dc1c84c08ea1",
+      "message_id": "<CAOuedHONcy-Pas=ZbJFjoLfE8by7FtGqPH4ujxXmvJr+FBZBRA@mail.gmail.com>",
+      "from_name": "Alejandro Izaguirre",
+      "from_email_hash": "e8bc7b678d71fc5ee3674faead5b301f5c9b133c99d7331b2c0c34ddd73cb418",
+      "date": "2024-06-24T16:21:06-03:00",
+      "subject": "[R-sig-ME] lme4 package",
+      "subject_clean": "lme4 package",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "My name is Alejandro Izaguirre, I am an economist specialized in spatial\ndata analysis. I use linear mixed  models for estimating poverty maps.\nI have a question about the *lme4* package, specifically about lmer. I\nusually work with informative sampling designs and I would like to know if\nthe command *\"weights\"* in *lmer* stands for sampling weights. There are\ndiscussions on the internet about this, and I would like to ask you for\nsome clarifications.\n\nThank you very much.\n\nregards,\n\nAlejandro Izaguirre\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "My name is Alejandro Izaguirre, I am an economist specialized in spatial\ndata analysis. I use linear mixed  models for estimating poverty maps.\nI have a question about the *lme4* package, specifically",
+      "thread_id": "thread-dc1c84c08ea1",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-5777aef5b626",
+      "message_id": "<a3fd698a-a292-45a4-ba4e-45127002f6ec@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-06-26T09:21:55-04:00",
+      "subject": "[R-sig-ME] lme4 package",
+      "subject_clean": "lme4 package",
+      "in_reply_to": "<CAOuedHONcy-Pas=ZbJFjoLfE8by7FtGqPH4ujxXmvJr+FBZBRA@mail.gmail.com>",
+      "references": [
+        "<CAOuedHONcy-Pas=ZbJFjoLfE8by7FtGqPH4ujxXmvJr+FBZBRA@mail.gmail.com>"
+      ],
+      "body_plain": "lmer does *not* implement sampling weights. You may want to look at \nthe svylme <https://CRAN.R-project.org/package=svylme> package (see the \nREADME at https://cran.r-project.org/web/packages/svylme/readme/README.html)\n\n    cheers\n    Ben Bolker\n\n\nOn 2024-06-24 3:21 p.m., Alejandro Izaguirre wrote:\n> My name is Alejandro Izaguirre, I am an economist specialized in spatial\n> data analysis. I use linear mixed  models for estimating poverty maps.\n> I have a question about the *lme4* package, specifically about lmer. I\n> usually work with informative sampling designs and I would like to know if\n> the command *\"weights\"* in *lmer* stands for sampling weights. There are\n> discussions on the internet about this, and I would like to ask you for\n> some clarifications.\n> \n> Thank you very much.\n> \n> regards,\n> \n> Alejandro Izaguirre\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "lmer does *not* implement sampling weights. You may want to look at \nthe svylme <https://CRAN.R-project.org/package=svylme> package (see the \nREADME at https://cran.r-project.org/web/packages/svylme/r",
+      "thread_id": "thread-dc1c84c08ea1",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-11dde3822a7a",
+      "message_id": "<33d1fc8e-defd-409d-9bee-beafe225cbbd@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-06-26T09:58:36-04:00",
+      "subject": "[R-sig-ME] lme4 package",
+      "subject_clean": "lme4 package",
+      "in_reply_to": "<a3fd698a-a292-45a4-ba4e-45127002f6ec@gmail.com>",
+      "references": [
+        "<CAOuedHONcy-Pas=ZbJFjoLfE8by7FtGqPH4ujxXmvJr+FBZBRA@mail.gmail.com>",
+        "<a3fd698a-a292-45a4-ba4e-45127002f6ec@gmail.com>"
+      ],
+      "body_plain": "I've been reminded that I forgot about the WeMix package \n<https://CRAN.R-project.org/package=WeMix>, which supports some models \nthat svylme doesn't ...\n\n   Ben Bolker\n\nOn 2024-06-26 9:21 a.m., Ben Bolker wrote:\n>  ?? lmer does *not* implement sampling weights. You may want to look at \n> the svylme <https://CRAN.R-project.org/package=svylme> package (see the \n> README at \n> https://cran.r-project.org/web/packages/svylme/readme/README.html)\n> \n>  ?? cheers\n>  ?? Ben Bolker\n> \n> \n> On 2024-06-24 3:21 p.m., Alejandro Izaguirre wrote:\n>> My name is Alejandro Izaguirre, I am an economist specialized in spatial\n>> data analysis. I use linear mixed? models for estimating poverty maps.\n>> I have a question about the *lme4* package, specifically about lmer. I\n>> usually work with informative sampling designs and I would like to \n>> know if\n>> the command *\"weights\"* in *lmer* stands for sampling weights. There are\n>> discussions on the internet about this, and I would like to ask you for\n>> some clarifications.\n>>\n>> Thank you very much.\n>>\n>> regards,\n>>\n>> Alejandro Izaguirre\n>>\n>> ????[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "I've been reminded that I forgot about the WeMix package \n<https://CRAN.R-project.org/package=WeMix>, which supports some models \nthat svylme doesn't ...\n\n   Ben Bolker\n\nOn 2024-06-26 9:21 a.m., Ben B",
+      "thread_id": "thread-dc1c84c08ea1",
+      "thread_depth": 2,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-280a899f02ce",
+      "message_id": "<CAEsSYzydPm3iajAHdK0agFQbVOES5q4JvN1eUS1E4rpFj4tw2g@mail.gmail.com>",
+      "from_name": "Oliver Hooker",
+      "from_email_hash": "47b0bc31b285f64bb78fbbab425fc87c1d35be3b4328b6f86a320748ab327aa8",
+      "date": "2024-06-27T15:14:00+01:00",
+      "subject": "[R-sig-ME] IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "subject_clean": "IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "IN PERSON COURSE ? Hierarchical modelling in ecology (HMIE01) (Universit?\nde Sherbrooke, Canada)\n\nhttps://www.prstats.org/course/hierarchical-modelling-in-ecology-hmie01/\n\nWhere - Longueuil Campus <https://tinyurl.com/y5pntkxc> of Universit? de\nSherbrooke\n\nWhen - Monday 11th - Frtiday 15th November\n\nPlease feel free to share!\n\n\nCOURSE OVERVIEW - More than ever in biology and ecology we need statistical\nmodelling tools that go beyond the basic linear or generalized linear\nmodels. The next evolution in statistical modelling are hierarchical\nmodels, also known as mixed models. Hierarchical models are complex tools\nthat have the potential to bring your research to the next level. However,\nto understand hierarchical models properly, in this course we will briefly\ndiscuss probability theory, the frequentists and Bayesian paradigms and\n(generalized) linear models before studying hierarchical models. The\ndiscussions on hierarchical models will first focus on simple hierarchical\nmodels and as we advance in the course, we will study the basis of\nconstrained hierarchical models (i.e. in space or time) and multivariate\nhierarchical models. The course will be a mixed of theory and practice. To\nimplement the models we will discuss in the course, we will be using the\nStan programming language, a flexible programming infrastructure designed\nto construct any hierarchical models from the simplest to the most complex\nones. Stan is a programming language that is typically used through a\nhigher-level programming language such as R, python or Julia. In this\nrespect, although all our examples and practical exercises will be carried\nout using R, any language that can interface with Stan can be used.\n\nBy the end of the course, participants should have:\n\n   - Learned statistical theory to better construct, apply and interpret\n   different statistical models applied to biology and ecology.\n   - Become familiar with primary research in statistical modelling in\n   biology and ecology.\n   - Gained experience in working collaboratively on issues related to the\n   development and application of statistical methods.\n\nPlease email oliverhooker at prstatistics.com with any questions.\n\n-- \nBest wishes,\n\nOliver\n\nOliver Hooker PhD.\nPR stats\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "IN PERSON COURSE ? Hierarchical modelling in ecology (HMIE01) (Universit?\nde Sherbrooke, Canada)\n\nhttps://www.prstats.org/course/hierarchical-modelling-in-ecology-hmie01/\n\nWhere - Longueuil Campus <ht",
+      "thread_id": "thread-280a899f02ce",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-495031c159cf",
+      "message_id": "<LO0P302MB0211374074A81DC62C1EF380D7D72@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>",
+      "from_name": "Kim Pearce",
+      "from_email_hash": "f5b7be4225fe33c63f46b3fdec735b03786d9e17fd9d780246d7d9ad7d24ac19",
+      "date": "2024-06-27T14:41:21Z",
+      "subject": "[R-sig-ME] lmer function in R for linear mixed models : syntax - your views",
+      "subject_clean": "lmer function in R for linear mixed models : syntax - your views",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello everyone,\n\nI am a senior statistician working in Newcastle University, UK.  My question relates to the generation of a (hypothetical) linear mixed model using R's lmer function within the lme4 package.\n\nI wonder if anyone has any views on the following?\n\nHypothetically, say we had a response (Y) from N subjects which was recorded at baseline and at each of 6 subsequent years.? \"Time\" (values 0,1,2,3,4,5,6) is recorded for each subject. \"Medication dose\" (continuous) is recorded for each subject at each of the time points.? Each subject's baseline severity group is also recorded.\n\nIn this hypothetical situation, time (level 1) would be nested within patient (level 2).? At each time point, medication dose and associated response would be recorded for each patient (and each patient belongs to a specific baseline severity group which, of course, would be constant for each patient).? I am hypothesising that the effect of medication (i.e. dose) on response could vary as a function of patient and the change in response over time could vary across people too.? In my example, I am thinking about a model that could possibly include random intercepts, fixed and random slopes for time and fixed and random slopes for medication (i.e. dose) plus q-1 fixed slopes for the q category baseline severity group.\n\nIn my model, the response (Y) takes a continuous form and I am taking \"time\" (time) and \"medication dose\" (meddose) as continuous - additionally, baseline severity group (basesevgroupf) is declared as a factor i.e. categorical.\n\nWould the following syntax be correct?\n\nModely <- lmer(Y ~ time + meddose + basesevgroupf + (time + meddose | subject), data=datafile)\n\nOr equivalently:\n\nModely <- lmer(Y ~ time + meddose + basesevgroupf + (1+ time + meddose | subject), data=datafile)\n\n(Additionally, as I understand it, the above pieces of syntax would create a model with correlated random intercepts and slopes)\n\nI ask this question as examples I have seen utilising R usually focus on the situation when the linear mixed model either contains (i) just random intercepts or (ii) random intercepts and random slopes for one predictor (whereas, in my hypothetical example, the model contains random intercepts and random slopes for two predictors).\n\nMany thanks, in advance, for your views.\nBest wishes,\nKim\n\nDr Kim Pearce PhD, CStat, Fellow HEA\nNewcastle University",
+      "body_snippet": "Hello everyone,\n\nI am a senior statistician working in Newcastle University, UK.  My question relates to the generation of a (hypothetical) linear mixed model using R's lmer function within the lme4 p",
+      "thread_id": "thread-495031c159cf",
+      "thread_depth": 0,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-4091ebd2670d",
+      "message_id": "<bc7ad418-edce-48c1-b334-28d291771662@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2024-06-27T12:11:32-04:00",
+      "subject": "[R-sig-ME]  lmer function in R for linear mixed models : syntax - your views",
+      "subject_clean": "lmer function in R for linear mixed models : syntax - your views",
+      "in_reply_to": "<LO0P302MB0211374074A81DC62C1EF380D7D72@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>",
+      "references": [
+        "<LO0P302MB0211374074A81DC62C1EF380D7D72@LO0P302MB0211.GBRP302.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "This seems fine.  You would end up with a 3x3 covariance matrix \n(variation in intercept, slope with respect to time, and effect of dose \nacross subjects, and 3 covariances).\n\n   A bit more complicated, but e.g. Moritz et al (2023) fit models where \nthe random effects include the intercept plus random slopes for *four* \ncontinuous covariates ...\n\n   I might consider the possibility of a time-by-meddose interaction, \nboth in the fixed effects and random effects (i.e. (1 + time + meddose + \ntime:meddose | subject) or equivalently (1 + time*meddose | subject ), \nalthough that would expand your covariance matrix to 4x4 ...\n\n   cheers\n    Ben Bolker\n\n\nMoritz, Max A., Enric Batllori, and Benjamin M. Bolker. 2023. ?The Role \nof Fire in Terrestrial Vertebrate Richness Patterns.? Ecology Letters 26 \n(4): 563?74. https://doi.org/10.1111/ele.14177.\n\n\nOn 2024-06-27 10:41 a.m., Kim Pearce via R-sig-mixed-models wrote:\n> Hello everyone,\n> \n> I am a senior statistician working in Newcastle University, UK.  My question relates to the generation of a (hypothetical) linear mixed model using R's lmer function within the lme4 package.\n> \n> I wonder if anyone has any views on the following?\n> \n> Hypothetically, say we had a response (Y) from N subjects which was recorded at baseline and at each of 6 subsequent years.? \"Time\" (values 0,1,2,3,4,5,6) is recorded for each subject. \"Medication dose\" (continuous) is recorded for each subject at each of the time points.? Each subject's baseline severity group is also recorded.\n> \n> In this hypothetical situation, time (level 1) would be nested within patient (level 2).? At each time point, medication dose and associated response would be recorded for each patient (and each patient belongs to a specific baseline severity group which, of course, would be constant for each patient).? I am hypothesising that the effect of medication (i.e. dose) on response could vary as a function of patient and the change in response over time could vary across people too.? In my example, I am thinking about a model that could possibly include random intercepts, fixed and random slopes for time and fixed and random slopes for medication (i.e. dose) plus q-1 fixed slopes for the q category baseline severity group.\n> \n> In my model, the response (Y) takes a continuous form and I am taking \"time\" (time) and \"medication dose\" (meddose) as continuous - additionally, baseline severity group (basesevgroupf) is declared as a factor i.e. categorical.\n> \n> Would the following syntax be correct?\n> \n> Modely <- lmer(Y ~ time + meddose + basesevgroupf + (time + meddose | subject), data=datafile)\n> \n> Or equivalently:\n> \n> Modely <- lmer(Y ~ time + meddose + basesevgroupf + (1+ time + meddose | subject), data=datafile)\n> \n> (Additionally, as I understand it, the above pieces of syntax would create a model with correlated random intercepts and slopes)\n> \n> I ask this question as examples I have seen utilising R usually focus on the situation when the linear mixed model either contains (i) just random intercepts or (ii) random intercepts and random slopes for one predictor (whereas, in my hypothetical example, the model contains random intercepts and random slopes for two predictors).\n> \n> Many thanks, in advance, for your views.\n> Best wishes,\n> Kim\n> \n> Dr Kim Pearce PhD, CStat, Fellow HEA\n> Newcastle University\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This seems fine.  You would end up with a 3x3 covariance matrix \n(variation in intercept, slope with respect to time, and effect of dose \nacross subjects, and 3 covariances).\n\n   A bit more complicate",
+      "thread_id": "thread-495031c159cf",
+      "thread_depth": 1,
+      "month": "2024-06"
+    },
+    {
+      "id": "msg-db2d2ada7436",
+      "message_id": "<BY3PR05MB81164AF3A4D3880AF094213B87D12@BY3PR05MB8116.namprd05.prod.outlook.com>",
+      "from_name": "Boylan, Ross",
+      "from_email_hash": "3f3ebc391465e599a6a8e327b3a3a7c2fc33d704bf2ce8bc33c311ba3e441c2b",
+      "date": "2024-06-29T03:03:15Z",
+      "subject": "[R-sig-ME] errors building lme4 from source: Indexis not a member of 'lme4::lme4CholmodDecomposition...",
+      "subject_clean": "errors building lme4 from source: Indexis not a member of 'lme4::lme4CholmodDecomposition...",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "While trying to build lme4 from source with current master (SHA a7239d63) on MS-Windows I get the errors shown at the bottom of this message; the first one is\n----------------------------------------------\nlme4CholmodDecomposition.h: In instantiation of 'lme4::lme4CholmodDecomposition<_MatrixType, _UpLo>::solveInPlaceonst Eigen::MatrixBase<OtherDerived>&, int) const [with OtherDerived = Eigen::Matrix<double, -1, -1>; _MatrixType = Eigen::SparseMatrix<double, 0, int>; int _UpLo = 1]\npredModule.cpp:127:37: required from here\nlme4CholmodDecomposition.h:59:39:error: Indexis not a member of 'lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<double, 0, int> >::Base{aka 'Eigen::CholmodDecomposition<Eigen::SparseMatrix<double, 0, int>, 1>\n   59 |             eigen_assert((Base::Index)(factor()->n)ther.rows());\n      |                          ~~~~~~~~~~~~~^~~~~~~~~~~~~\n------------------------------------------------\nwhich looks as if I may have some version mismatch, but I'm not sure exactly where the culprit is or what to do about it.  Any ideas?\nThis particular build was triggered while requesting a run of the test suite in RStudio, but I got roughly the same when doing a straight build in RStudio.\n\nThis is the development version of lme4, but the rest of my system, including the dependencies, is back in vanilla R 4.4.0.  And I have lme4 1.1-35.4 installed from binary.\n\nFurther version info:\n> Sys.info()\n       sysname        release        version       nodename        machine          login \n     \"Windows\"   \"Server x64\"  \"build 17763\"     \"xxx\"       \"x86-64\"     \"me\" \n          user effective_user \n    \"me\"     \"me\" \n> R.version\n               _                                \nplatform       x86_64-w64-mingw32               \narch           x86_64                           \nos             mingw32                          \ncrt            ucrt                             \nsystem         x86_64, mingw32                  \nstatus                                          \nmajor          4                                \nminor          4.0                              \nyear           2024                             \nmonth          04                               \nday            24                               \nsvn rev        86474                            \nlanguage       R                                \nversion.string R version 4.4.0 (2024-04-24 ucrt)\nnickname       Puppy Cup\n\nRStudio 2024.04.2+764 \"Chocolate Cosmos\" Release (e4392fc9ddc21961fd1d0efd47484b43f07a4177, 2024-06-05) for windows\nMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) RStudio/2024.04.2+764 Chrome/120.0.6099.291 Electron/28.3.1 Safari/537.36, Quarto 1.4.555 (C:/Program Files/RStudio/resources/app/bin/quarto/bin/quarto.exe)\n\nR  packages:\nRcpp 1.0.12\nRcppEigen 0.3.4.0.0\nMatrix 1.7-0   # in particular, past 1.6-2, source of somewhat similar problems\nBecause those were all binary installs, I wondered if I was simply missing some headers.  But the errors don't look like \"can't find file\".\n\nRTools44 installed.\n\n\nFinally, here's part of the log of the failure:\n---------------------------------------------------------------------\n==> devtools::test()\n\ni Testing lme4\nError in `(function (command = NULL, args = character(), error_on_status = TRUE, ...`:\n! System command 'Rcmd.exe' failed\n---\nExit status: 1\nStdout & stderr:\n* installing *source* package 'lme4' ...\n** using staged installation\n** libs\nusing C++ compiler: 'G__~1.EXE (GCC) 13.2.0'\ng++ -std=gnu++17  -I\"C:/PROGRA~1/R/R-44~1.0/include\" -DNDEBUG -I. -DNDEBUG -DEIGEN_DONT_VECTORIZE -I'C:/Program Files/R/R-4.4.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.4.0/library/RcppEigen/include' -I'C:/Program Files/R/R-4.4.0/library/Matrix/include'   -I\"C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/include\"     -O2 -Wall -gdwarf-2 -mfpmath=sse -msse2 -mstackrealign  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c external.cpp -o external.o\ng++ -std=gnu++17  -I\"C:/PROGRA~1/R/R-44~1.0/include\" -DNDEBUG -I. -DNDEBUG -DEIGEN_DONT_VECTORIZE -I'C:/Program Files/R/R-4.4.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.4.0/library/RcppEigen/include' -I'C:/Program Files/R/R-4.4.0/library/Matrix/include'   -I\"C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/include\"     -O2 -Wall -gdwarf-2 -mfpmath=sse -msse2 -mstackrealign  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c glmFamily.cpp -o glmFamily.o\ng++ -std=gnu++17  -I\"C:/PROGRA~1/R/R-44~1.0/include\" -DNDEBUG -I. -DNDEBUG -DEIGEN_DONT_VECTORIZE -I'C:/Program Files/R/R-4.4.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.4.0/library/RcppEigen/include' -I'C:/Program Files/R/R-4.4.0/library/Matrix/include'   -I\"C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/include\"     -O2 -Wall -gdwarf-2 -mfpmath=sse -msse2 -mstackrealign  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c mcmcsamp.cpp -o mcmcsamp.o\ng++ -std=gnu++17  -I\"C:/PROGRA~1/R/R-44~1.0/include\" -DNDEBUG -I. -DNDEBUG -DEIGEN_DONT_VECTORIZE -I'C:/Program Files/R/R-4.4.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.4.0/library/RcppEigen/include' -I'C:/Program Files/R/R-4.4.0/library/Matrix/include'   -I\"C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/include\"     -O2 -Wall -gdwarf-2 -mfpmath=sse -msse2 -mstackrealign  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c optimizer.cpp -o optimizer.o\ng++ -std=gnu++17  -I\"C:/PROGRA~1/R/R-44~1.0/include\" -DNDEBUG -I. -DNDEBUG -DEIGEN_DONT_VECTORIZE -I'C:/Program Files/R/R-4.4.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.4.0/library/RcppEigen/include' -I'C:/Program Files/R/R-4.4.0/library/Matrix/include'   -I\"C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/include\"     -O2 -Wall -gdwarf-2 -mfpmath=sse -msse2 -mstackrealign  -UNDEBUG -Wall -pedantic -g -O0 -fdiagnostics-color=always -c predModule.cpp -o predModule.o\nIn file included from C:/Programs/rtools44/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/13.2.0/include/c++/cassert:44\n                 from C:/Program Files/R/R-4.4.0/library/RcppEigen/include/Eigen/Core:84\n                 from C:/Program Files/R/R-4.4.0/library/RcppEigen/include/Eigen/Dense:1\n                 from C:/Program Files/R/R-4.4.0/library/RcppEigen/include/RcppEigenForward.h:28\n                 from C:/Program Files/R/R-4.4.0/library/RcppEigen/include/RcppEigen.h:25\n                 from predModule.h:12\n                 from predModule.cpp:8\nlme4CholmodDecomposition.h: In instantiation of 'lme4::lme4CholmodDecomposition<_MatrixType, _UpLo>::solveInPlaceonst Eigen::MatrixBase<OtherDerived>&, int) const [with OtherDerived = Eigen::Matrix<double, -1, -1>; _MatrixType = Eigen::SparseMatrix<double, 0, int>; int _UpLo = 1]\npredModule.cpp:127:37: required from here\nlme4CholmodDecomposition.h:59:39:error: Indexis not a member of 'lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<double, 0, int> >::Base{aka 'Eigen::CholmodDecomposition<Eigen::SparseMatrix<double, 0, int>, 1>\n   59 |             eigen_assert((Base::Index)(factor()->n)ther.rows());\n      |                          ~~~~~~~~~~~~~^~~~~~~~~~~~~\nC:/Program Files/R/R-4.4.0/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:1037:25:note:  expansion of macro 'eigen_plain_assert\n 1037 | #define eigen_assert(x) eigen_plain_assert\n      |                         ^~~~~~~~~~~~~~~~~~\nlme4CholmodDecomposition.h:59:13:note:  expansion of macro 'eigen_assert\n   59 |             eigen_asserte::Index)(factor()->n) == other.rows());\n      |             ^~~~~~~~~~~~\nlme4CholmodDecomposition.h: In instantiation of 'lme4::lme4CholmodDecomposition<_MatrixType, _UpLo>::solveInPlaceonst Eigen::MatrixBase<OtherDerived>&, int) const [with OtherDerived = Eigen::Map<Eigen::Matrix<double, -1, 1> >; _MatrixType = Eigen::SparseMatrix<double, 0, int>; int _UpLo = 1]\npredModule.cpp:191:25: required from here\nlme4CholmodDecomposition.h:59:39:error: Indexis not a member of 'lme4::lme4CholmodDecomposition<Eigen::SparseMatrix<double, 0, int> >::Base{aka 'Eigen::CholmodDecomposition<Eigen::SparseMatrix<double, 0, int>, 1>\n   59 |             eigen_assert((Base::Index)(factor()->n)ther.rows());\n      |                          ~~~~~~~~~~~~~^~~~~~~~~~~~~\nC:/Program Files/R/R-4.4.0/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:1037:25:note:  expansion of macro 'eigen_plain_assert\n### and more, ending\nC:/Program Files/R/R-4.4.0/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:1037:25:note:  expansion of macro 'eigen_plain_assert\n 1037 | #define eigen_assert(x) eigen_plain_assert\n      |                         ^~~~~~~~~~~~~~~~~~\nlme4CholmodDecomposition.h:59:13:note:  expansion of macro 'eigen_assert\n   59 |             eigen_asserte::Index)(factor()->n) == other.rows());\n      |             ^~~~~~~~~~~~\nmake: *** [C:/PROGRA~1/R/R-44~1.0/etc/x64/Makeconf:296: predModule.o] Error 1\nERROR: compilation failed for package 'lme4'\n---------------------------------------------------------------------------------------------------------\n\nThanks!\nRoss\n\nP.S. I have made some changes, but none of them involve the C code.\nAnd \"check\" in RStudio passes.  Which is a bit weird; I thought building the package was part of the check.  I guess it's \"build\" as in \"create the source package\".",
+      "body_snippet": "While trying to build lme4 from source with current master (SHA a7239d63) on MS-Windows I get the errors shown at the bottom of this message; the first one is\n-----------------------------------------",
+      "thread_id": "thread-db2d2ada7436",
+      "thread_depth": 0,
+      "month": "2024-06"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-eb4ca04fc8dd",
+      "subject": "modifying the simulation in lme4",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Boylan, Ross"
+      ],
+      "started": "2024-06-14T05:05:23+00:00",
+      "last_reply": "2024-06-15T15:31:26-04:00",
+      "root_message_id": "msg-eb4ca04fc8dd"
+    },
+    {
+      "id": "thread-2587715fac19",
+      "subject": "Fixed effects in nlmer",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Jarrod Hadfield",
+        "marKo"
+      ],
+      "started": "2024-06-17T13:05:52+00:00",
+      "last_reply": "2024-06-18T15:03:27+02:00",
+      "root_message_id": "msg-2587715fac19"
+    },
+    {
+      "id": "thread-c984d9050edf",
+      "subject": "Paired ttest using lme4",
+      "message_count": 2,
+      "participants": [
+        "Ghader Mirzaghaderi",
+        "Jarrod Hadfield"
+      ],
+      "started": "2024-06-17T14:01:25+00:00",
+      "last_reply": "2024-06-17T14:15:32+00:00",
+      "root_message_id": "msg-c984d9050edf"
+    },
+    {
+      "id": "thread-5f5b75be48f6",
+      "subject": "Comparing mixed models",
+      "message_count": 6,
+      "participants": [
+        "Carlos Barboza",
+        "John Fox"
+      ],
+      "started": "2024-06-18T06:59:28-03:00",
+      "last_reply": "2024-06-19T12:42:34-03:00",
+      "root_message_id": "msg-5f5b75be48f6"
+    },
+    {
+      "id": "thread-fc25595ffd9a",
+      "subject": "Paired ttest using lme4",
+      "message_count": 1,
+      "participants": [
+        "Lenth, Russell V"
+      ],
+      "started": "2024-06-18T15:16:55+00:00",
+      "last_reply": "2024-06-18T15:16:55+00:00",
+      "root_message_id": "msg-fc25595ffd9a"
+    },
+    {
+      "id": "thread-dc1c84c08ea1",
+      "subject": "lme4 package",
+      "message_count": 3,
+      "participants": [
+        "Alejandro Izaguirre",
+        "Ben Bolker"
+      ],
+      "started": "2024-06-24T16:21:06-03:00",
+      "last_reply": "2024-06-26T09:58:36-04:00",
+      "root_message_id": "msg-dc1c84c08ea1"
+    },
+    {
+      "id": "thread-495031c159cf",
+      "subject": "lmer function in R for linear mixed models : syntax - your views",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Kim Pearce"
+      ],
+      "started": "2024-06-27T14:41:21+00:00",
+      "last_reply": "2024-06-27T12:11:32-04:00",
+      "root_message_id": "msg-495031c159cf"
+    },
+    {
+      "id": "thread-280a899f02ce",
+      "subject": "IN PERSON COURSE – Hierarchical modelling in ecology (HMIE01) (Université de Sherbrooke, Canada)",
+      "message_count": 1,
+      "participants": [
+        "Oliver Hooker"
+      ],
+      "started": "2024-06-27T15:14:00+01:00",
+      "last_reply": "2024-06-27T15:14:00+01:00",
+      "root_message_id": "msg-280a899f02ce"
+    },
+    {
+      "id": "thread-db2d2ada7436",
+      "subject": "errors building lme4 from source: Indexis not a member of 'lme4::lme4CholmodDecomposition...",
+      "message_count": 1,
+      "participants": [
+        "Boylan, Ross"
+      ],
+      "started": "2024-06-29T03:03:15+00:00",
+      "last_reply": "2024-06-29T03:03:15+00:00",
+      "root_message_id": "msg-db2d2ada7436"
+    }
+  ]
+}

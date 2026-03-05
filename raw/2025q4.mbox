@@ -1,0 +1,1660 @@
+From chr|@ @end|ng |rom tr|cky@o|ut|on@@com@@u  Wed Oct  1 06:11:28 2025
+From: chr|@ @end|ng |rom tr|cky@o|ut|on@@com@@u (Chris Howden)
+Date: Wed, 1 Oct 2025 04:11:28 +0000
+Subject: [R-sig-ME] glmmTMB Zero-inflated Gamma GLMM
+In-Reply-To: <DM6PR01MB5898E3D5B0B48EB0CCCCDA76911AA@DM6PR01MB5898.prod.exchangelabs.com>
+References: <DM6PR01MB58985E99F36D88E71803BCB4911BA@DM6PR01MB5898.prod.exchangelabs.com>
+ <SYBPR01MB71934B46CAB66B5AC9B32DC8981BA@SYBPR01MB7193.ausprd01.prod.outlook.com>
+ <DM6PR01MB5898E3D5B0B48EB0CCCCDA76911AA@DM6PR01MB5898.prod.exchangelabs.com>
+Message-ID: <SYBPR01MB71931FD613F66CAE2C94891198E6A@SYBPR01MB7193.ausprd01.prod.outlook.com>
+
+Hi Trent,
+
+Yes, I believe it is the former as well.
+
+Chris Howden B.Sc. (Hons)
+Founding Partner
+Data Analysis, Modelling and Training
+Evidence Based Strategy/Policy Development, IP Commercialisation and Innovation
+(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>
+
+From: DENNIS, TRENT <dennis.tm.1 at pg.com>
+Sent: Tuesday, 30 September 2025 11:02 PM
+To: Chris Howden <chris at trickysolutions.com.au>; r-sig-mixed-models at r-project.org
+Subject: Re: glmmTMB Zero-inflated Gamma GLMM
+
+Business Use
+
+
+Hi Chris,
+
+
+You've made a great point, my ultimate goal is to simulate new individuals. I should have also reported the estimate of the subject variance component because this would serve as the variance when drawing new random intercepts from a normal distribution.
+
+My real question was whether I draw normal rvs that get put into my linear predictor for the gamma, or if I draw normal rvs and these get added to my overall response separately from the gamma rv.
+
+
+I believe it is the former, but I have never read a textbook on the specifics of this topic and wanted to ask some experts. I know that in glmmTMB at least, when you use predict(model) and specify the type, they will bake the random intercepts for a given subject into the linear predictor for the component you fit them in (if you fit random subject in conditional gamma, it will put each subjects random intercept into the gamma linear predictor, same with zero component)...which would support the former of my two options above.
+
+
+Trent,
+
+
+________________________________
+From: Chris Howden <chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>>
+Sent: Monday, September 29, 2025 7:13 PM
+To: DENNIS, TRENT <dennis.tm.1 at pg.com<mailto:dennis.tm.1 at pg.com>>; r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org> <r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>>
+Subject: RE: glmmTMB Zero-inflated Gamma GLMM
+
+[EXTERNAL]
+
+
+Hi Trent,
+
+I'm not familiar with glmmTMB, so take what I say here with a grain of salt!
+
+Assuming you are adding a random intercept (it looks like that's what yr doing). Then I think it depends on whether you want to simulate just those 3 individuals, or the population.
+
+If its just those 3 individuals then wouldn't you add their BLUP to the overall intercept in the linear predictor? And after that simulate the gamma rv for each of these 3 individuals only?
+
+On the other hand if you want to simulate new individuals than I think you'd draw their simulated "BLUPS" from an appropriate distribution (which I think is usually a normal distribution with mean = 0 and SD as per yr model) - and then continue as above?
+
+Chris Howden B.Sc. (Hons)
+Founding Partner
+Data Analysis, Modelling and Training
+Evidence Based Strategy/Policy Development, IP Commercialisation and Innovation
+(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au<mailto:chris at trickysolutions.com.au>
+
+-----Original Message-----
+From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org<mailto:r-sig-mixed-models-bounces at r-project.org>> On Behalf Of DENNIS, TRENT via R-sig-mixed-models
+Sent: Tuesday, 30 September 2025 7:15 AM
+To: r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>
+Subject: [R-sig-ME] glmmTMB Zero-inflated Gamma GLMM
+
+Business Use
+
+
+Hello,
+
+I am trying to simulate a response from a zero-inflated Gamma generalized linear mixed-effect model and have a question when it comes to the random effects. I am fitting the models with glmmTMB, using ziGamma as the family with a log link function.
+
+Say I fit the model with a random effect for subject (N=3 subjects) and 1 covariate (treatment), which I only include in the conditional Gamma model. Example code:
+
+  model <- glmmTMB(Lactobacillus_crispatus~Treatment+(1|Subject),
+                   ziformula = ~ 1,
+                   family = ziGamma(link="log"),
+                   data=data)
+
+
+ These are the coefficients I get:
+
+Conditional model:
+Intercept: 1.5
+Treatment A: -1
+
+Zero model:
+Intercept: 1.8
+
+Random effects, conditional:
+Subject 1: -2
+Subject 2: 0.5
+Subject 3: 1
+
+
+
+Would you incorporate the random effects into the linear predictor for the Gamma component then simulate Gamma rv, or do the random effects get used to simulate a normal rv which is then added to the Gamma rv? (I also simultaneously simulate a binomial rv based on the proability an observation will be non-zero and multiply this by corresponding Gamma rv to complete the zero-inflated component).
+
+I have simplified my data for illustration sake. The real data is metagenomic species data with 23 subjects. Each subject was swabbed/sequenced at 7 visits and 8 anatomical sites per visit.
+
+
+Any info would be greatly appreciated.
+
+Thank you,
+
+
+
+        [[alternative HTML version deleted]]
+
+_______________________________________________
+R-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list https://urldefense.com/v3/__https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!NgSi4SaN6ydtRVQ-!xnUtAYJ9DWhuOK_-6LpOk9aBPtFCbFFTBAK7slm1k4eg8S2yXWon0hrc2y2ZmfXl7Qp0q4XJ2PpLf7JjP2duAQ$<https://urldefense.com/v3/__https:/stat.ethz.ch/mailman/listinfo/r-sig-mixed-models__;!!NgSi4SaN6ydtRVQ-!xnUtAYJ9DWhuOK_-6LpOk9aBPtFCbFFTBAK7slm1k4eg8S2yXWon0hrc2y2ZmfXl7Qp0q4XJ2PpLf7JjP2duAQ$>
+
+	[[alternative HTML version deleted]]
+
+
+From o||verhooker @end|ng |rom pr@t@t|@t|c@@com  Fri Oct 10 16:11:30 2025
+From: o||verhooker @end|ng |rom pr@t@t|@t|c@@com (Oliver Hooker)
+Date: Fri, 10 Oct 2025 15:11:30 +0100
+Subject: [R-sig-ME] =?utf-8?q?Bayesian_Multilevel_Modelling_Using=C2=A0br?=
+	=?utf-8?q?ms=C2=A0for_Ecologists_=28BMME01=29?=
+Message-ID: <CAEsSYzyrU=0ubqPwjURMs7UHz4xBFy83DSu2E6QQU7NnfC-g9A@mail.gmail.com>
+
+Bayesian Multilevel Modelling Using *brms* for Ecologists (BMME01)
+www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01
+<https://www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01?utm_source=chatgpt.com>
+
+*Dates:* October 20?24 and 27?31, 2025
+*Format:* Live online course (4 hours per day)
+*Fee:* ?450 (standard) | ?400 (early bird for the first 5 registrations)
+SOLD OUT
+
+Bayesian methods are rapidly becoming the standard for ecological data
+analysis. They offer a flexible, transparent, and robust approach to
+dealing with uncertainty, hierarchical data structures, and complex
+ecological processes. If you work with ecological data and want to extend
+your modelling skills beyond classical statistics, this course will give
+you the tools and understanding to do so with confidence.
+
+*Bayesian Multilevel Modelling using brms for Ecologists (BMME01)* is an
+intensive 10-day live online course designed to provide ecologists,
+environmental scientists, and applied researchers with a solid grounding in
+Bayesian hierarchical modelling using the *brms* package in R.
+
+Over the course of ten sessions, participants will be guided step by step
+through the key concepts and practical applications of Bayesian inference,
+with a strong focus on real ecological examples. The course combines clear,
+structured teaching with extensive hands-on coding and interpretation.
+Course Overview
+
+Participants will begin by reviewing the fundamentals of Bayesian
+inference?priors, posteriors, and credible intervals?before moving on to
+the construction and interpretation of generalised linear and multilevel
+models. You will learn how to fit and diagnose models for a range of
+ecological data types, including continuous, count, binary, and
+zero-inflated data, as well as how to address common challenges such as
+spatial and temporal autocorrelation.
+
+Throughout, you will work with real-world datasets and gain practical
+experience in coding models using *brms*, an R package that provides a
+user-friendly interface to *Stan*, one of the most powerful Bayesian
+computation frameworks available. By the end of the course, you will have
+the skills to build, diagnose, and interpret complex Bayesian models
+relevant to your own ecological research.
+Key Topics Include
+
+   -
+
+   The foundations of Bayesian inference and model formulation
+   -
+
+   Understanding priors, posteriors, and credible intervals
+   -
+
+   Generalised linear models (GLMs) and extensions to hierarchical models
+   -
+
+   Random effects, nested structures, and partial pooling
+   -
+
+   Modelling count, binary, zero-inflated, and multivariate ecological data
+   -
+
+   Incorporating spatial and temporal structures
+   -
+
+   Model checking, convergence diagnostics, and posterior predictive checks
+   -
+
+   Interpreting and communicating uncertainty in ecological research
+
+Who Should Attend
+
+This course is aimed at ecologists, environmental scientists, conservation
+biologists, statisticians, and postgraduate researchers who already have a
+working knowledge of R (data import, manipulation, and basic plotting) and
+want to develop practical expertise in Bayesian multilevel modelling. No
+prior experience with Bayesian methods is required?concepts and techniques
+are introduced progressively, with plenty of guided practice and individual
+feedback.
+Why Choose This Course
+
+   -
+
+   Expert instruction from *Dr Niamh Mimnagh*, an experienced statistical
+   ecologist and educator
+   -
+
+   A carefully balanced mix of lectures, demonstrations, and hands-on coding
+   -
+
+   Small-group format encouraging discussion and individual support
+   -
+
+   All course materials, R scripts, and datasets provided
+   -
+
+   Access to recorded sessions for 30 days after the course
+   -
+
+   Certificate of attendance upon completion
+
+Registration
+
+Places are limited to ensure an interactive learning experience. The early
+bird rate of ?400 applies to the first five registrants. Standard
+registration is ?450.
+
+For full details, schedule, and registration, visit:
+www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01
+<https://www.prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme01?utm_source=chatgpt.com>
+
+-- 
+Oliver Hooker PhD.
+PR stats
+
+	[[alternative HTML version deleted]]
+
+
+From i@io m@iii@g oii phys@ii@-courses@org  Tue Oct 21 19:28:28 2025
+From: i@io m@iii@g oii phys@ii@-courses@org (i@io m@iii@g oii phys@ii@-courses@org)
+Date: Tue, 21 Oct 2025 19:28:28 +0200 (CEST)
+Subject: [R-sig-ME] =?utf-8?q?online_course=3A_Applied_Bayesian_Modelling?=
+ =?utf-8?q?_with_R-INLA=3A_A_Hands-on_Introduction_=2827=E2=80=9331_Octobe?=
+ =?utf-8?q?r=29?=
+Message-ID: <1761067708.86737039@webmail.jimdo.com>
+
+
+Dear all,
+
+Only a few seats remain for our upcoming Physalia online course ?Applied Bayesian Modelling with R-INLA: A Hands-on Introduction?, taking place from 27?31 October.
+ 
+Course website: [ https://www.physalia-courses.org/courses-workshops/r-inla/ ]( https://www.physalia-courses.org/courses-workshops/r-inla/ )
+ 
+This four-day hands-on workshop provides an accessible and applied introduction to Bayesian modelling using R-INLA, covering linear models, GLMs, GAMs, and GLMMs, with a strong focus on practical applications and interpretation.
+ 
+ 
+Best regards,
+ 
+Carlo
+ 
+ 
+ 
+ 
+--------------------
+
+Carlo Pecoraro, Ph.D
+
+
+Physalia-courses DIRECTOR
+
+info at physalia-courses.org
+
+mobile: +49 17645230846
+
+[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )
+
+
+	[[alternative HTML version deleted]]
+
+
+From h|gh@t@t @end|ng |rom h|gh@t@t@com  Thu Oct 23 08:03:21 2025
+From: h|gh@t@t @end|ng |rom h|gh@t@t@com (Alain Zuur)
+Date: Thu, 23 Oct 2025 07:03:21 +0100
+Subject: [R-sig-ME] 4 hybrid stats courses in Australia
+Message-ID: <d6409c22-4a6c-4fae-a85f-3a6b7cb6dfec@highstat.com>
+
+We?re pleased to announce four hybrid statistics courses in Australia in 
+February and March 2026.
+
+Format: On-site and simultaneously online (live).
+
+*Hybrid (online and onsite) courses in Australia:*
+
+  * Introduction to linear mixed-effects models and GLMM with R. Murdoch
+    University, Perth. 9-13 February 2026.
+  * GLMs and GAMs with Spatial, Temporal, or Spatial-Temporal
+    Correlation using INLA.?Murdoch University, Perth. 16-20 February 2026.
+  * GLMs and GAMs with Spatial, Temporal, or Spatial-Temporal
+    Correlation using INLA. Deakin University, Melbourne. 23-27 February
+    2026. *7 onsite seats left!*
+  * Introduction to GAMM and GLMM with R (frequentist). - With GAM
+    applications to spatial, temporal, and spatial-temporal data -. JCU,
+    Townsville. 2-6 March 2026.
+
+
+Flyers and registration: www.highstat.com
+
+Early registration is recommended
+
+Kind regards,
+
+Alain
+
+
+
+	[[alternative HTML version deleted]]
+
+
+From hkubr@@eno| @end|ng |rom gm@||@com  Mon Nov  3 16:15:49 2025
+From: hkubr@@eno| @end|ng |rom gm@||@com (HATICE T KUBRA AKDUR)
+Date: Mon, 3 Nov 2025 18:15:49 +0300
+Subject: [R-sig-ME] =?utf-8?q?Clarification_on_the_=E2=80=9Csize=E2=80=9D?=
+	=?utf-8?q?_parameter_used_for_RQR_=28Dunn=E2=80=93Smyth_residuals?=
+	=?utf-8?q?=29_in_NB1_and_NB2_models_in_glmmTMB?=
+In-Reply-To: <CA+_DO+zoWShJS5NZy9C5J98Wy4_gHJ-3A1Awn2kYa44eMFLidw@mail.gmail.com>
+References: <CA+_DO+wUEs=v0BxZ3AZ46gmZC0yqHLV4=Ypc+D1gvm8CQcRzKA@mail.gmail.com>
+ <E8FC7326-D609-433C-8A76-5B4D9D6B1F21@yahoo.fr>
+ <CA+_DO+zoWShJS5NZy9C5J98Wy4_gHJ-3A1Awn2kYa44eMFLidw@mail.gmail.com>
+Message-ID: <CA+_DO+x5SoyOn4Tj5ddYpXGkPP_PSmCZHhGi1=9xwLTv3FNeFg@mail.gmail.com>
+
+Dear glmmTMB development team,
+
+I am currently working with *glmmTMB* to fit several count mixed-effects
+models, including *nbinom1* and *nbinom2* families. I would like to
+compute *Randomized
+Quantile Residuals (Dunn?Smyth residuals)* manually, following the standard
+definition:
+
+[
+u_i = F(y_i - 1 \mid \mu_i, \theta_i) + f(y_i \mid \mu_i, \theta_i)\cdot
+U(0,1)
+]
+[
+\text{RQR}_i = \Phi^{-1}(u_i)
+]
+
+To do this, I need to supply the correct *?size?* parameter to R?s dnbinom()
+and pnbinom() functions.
+
+However, I am unsure about the exact relationship between:
+
+   -
+
+   the dispersion parameter estimated by *glmmTMB* (sigma() output),
+   -
+
+   the model parametrization used internally in nbinom1 and nbinom2, and
+   -
+
+   the ?size? argument required by dnbinom/pnbinom.
+
+Could you please confirm whether the relationships above are correct?
+
+Specifically:
+
+   1.
+
+   *Is sigma(model)^2 equal to 1/? for NB2 and equal to ? for NB1?*
+   2.
+
+   *When computing Dunn?Smyth residuals, is it correct to pass*
+   -
+
+      size = 1/sigma^2 for NB2
+      -
+
+      size = mu / sigma^2 (observation-specific) for NB1
+      *to dnbinom/pnbinom?*
+      3.
+
+   *Is this exactly the parametrization used internally when glmmTMB
+   computes type="dunn-smyth" residuals?*
+
+I want to ensure that the residuals I compute manually are fully consistent
+with the definitions used inside glmmTMB.
+
+Thank you very much for your time, and for developing such an excellent and
+flexible modeling framework.
+
+Best regards,
+Hatice
+
+	[[alternative HTML version deleted]]
+
+
+From o||verhooker @end|ng |rom pr@t@t|@t|c@@com  Tue Nov 11 16:17:07 2025
+From: o||verhooker @end|ng |rom pr@t@t|@t|c@@com (Oliver Hooker)
+Date: Tue, 11 Nov 2025 15:17:07 +0000
+Subject: [R-sig-ME] Bayesian Multilevel Modelling using brms for Ecologists
+ (BMME02)
+Message-ID: <CAEsSYzyec8R4xEKuf0tyJPBmpMDt46AN7Sg5EOr_RqDFFzYc8w@mail.gmail.com>
+
+Advance Your Ecological Research with Bayesian Multilevel Modelling
+
+Take your data analysis to the next level with this hands-on course:
+
+Bayesian Multilevel Modelling using brms for Ecologists (BMME02)
+<https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme02/>
+
+This 5-day live, online workshop is designed by ecologists, for ecologists
+who want to master the use of Bayesian approaches for complex, hierarchical
+data. You?ll gain the practical skills and confidence to apply brms in R to
+real ecological datasets, exploring topics such as GLMs, GLMMs,
+hierarchical and zero-inflated models.
+
+ What you?ll learn:
+
+
+   -
+
+   Core principles of Bayesian inference ? priors, posteriors, and credible
+   intervals
+   -
+
+   How to fit and interpret multilevel models using the brms package
+   -
+
+   Best practices for model checking, residual diagnostics, and
+   visualization
+   -
+
+   Techniques to handle zero-inflated and overdispersed ecological data
+   -
+
+   How to apply these models directly to your own research questions
+
+
+Whether you?re studying population dynamics, biodiversity patterns, or
+ecological processes, this course will equip you with cutting-edge
+statistical tools for transparent, reproducible science.
+
+
+Spaces are limited ? secure your spot today and transform how you model
+ecological data!
+
+Register here
+<https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-bmme02/>
+
+
+
+Oliver Hooker PhD.
+PR stats
+
+	[[alternative HTML version deleted]]
+
+
+From don-|me4 @end|ng |rom |@|@@c@3-|nc@com  Thu Nov 13 20:32:20 2025
+From: don-|me4 @end|ng |rom |@|@@c@3-|nc@com (Don Cohen)
+Date: Thu, 13 Nov 2025 19:32:20 +0000
+Subject: [R-sig-ME] generalized binomial distribution
+Message-ID: <26902.12868.188437.643978@isis.cs3-inc.com>
+
+
+I think I have a reasonable use for the binomial distribution with
+non-integer arguments, and would appreciate references to other cases
+where this has been done (or reasons it should NOT be done).
+
+I notice
+ glmmTMB(c(.5,2/3,.4)~1,weights=c(2.2,3,5),family= binomial)
+
+[notice the non integer weight 2.2 with probability .5 also
+giving a non-integer number of successes]
+
+shows
+     AIC      BIC   logLik df.resid
+ 7.74875  6.84736 -2.87437        2
+(and intercept 0, which was intentional)
+
+and the loglik agrees with what I compute from simply generalizing
+dbinom to non-integers by replacing factorial with gamma:
+ choose2 = function(outof, howmany)                                                         
+  return( gamma(outof+1)/(gamma(howmany+1) * gamma(outof+1-howmany)))                      
+ dbinom2=function(x,size,prob)return(choose2(size,x)*prob^x * (1-prob)^(size-x))            
+
+ log( dbinom(2,3,.5) * dbinom(2,5,.5) * dbinom(1.1,2.2,.5))
+ => NaN
+but
+ log( dbinom2(2,3,.5) * dbinom2(2,5,.5) * dbinom2(1.1,2.2,.5))
+ => -2.874375
+
+So glmmTMB must not be using the regular dbinom function to compute loglik.
+I have to guess this was an intentional generalization in glmmTMB.
+Is it there for some particular reason?  (related to my original question)
+
+Whereas
+ glm(c(.5,2/3,.4)~1,weights=c(2.2,3,5),family= binomial)
+shows
+ Residual Deviance: 0.5412       AIC: 7.674
+which is different, and in fact the same result as
+ glm(c(.5,2/3,.4)~1,weights=c(2,3,5),family= binomial)
+which I think means that glm is rounding (or possibly truncating) the 2.2.
+
+A related question is how to find the code that glmmTMB is using for
+the loglik computations above.  I can see the definition of glmmTMB but
+that quickly leads to functions for which there seem to be no available
+definitions.  I can find some of them by downloading the source, but so
+far I don't see anything there that looks like it's computing dbinom as
+I expect.
+
+
+From mo|||eebrook@ @end|ng |rom gm@||@com  Fri Nov 14 12:59:01 2025
+From: mo|||eebrook@ @end|ng |rom gm@||@com (Mollie Brooks)
+Date: Fri, 14 Nov 2025 12:59:01 +0100
+Subject: [R-sig-ME] generalized binomial distribution
+In-Reply-To: <26902.12868.188437.643978@isis.cs3-inc.com>
+References: <26902.12868.188437.643978@isis.cs3-inc.com>
+Message-ID: <437F0E57-6EB5-46EC-A52C-535C328E7BEF@gmail.com>
+
+Hi Don,
+
+glmmTMB uses the dbinom_robust() function from TMB to avoid overflow and underflow that could otherwise occur with dbinom().
+
+It?s defined here, using gamma like you guessed https://kaskr.github.io/adcomp/distributions__R_8hpp_source.html#l00205
+
+template<class Type>
+ Type dbinom_robust <https://kaskr.github.io/adcomp/group__R__style__distribution.html#gaecb5a18095a320b42e2d20c4b120f5f5>(Type k, Type size, Type logit_p, int give_log=0)
+ {
+   CppAD::vector<Type> tx(4);
+   tx[0] = k;
+   tx[1] = size;
+   tx[2] = logit_p;
+   tx[3] = 0;
+   Type ans = atomic::log_dbinom_robust(tx)[0]; /* without norm. constant */
+   if (size > 1) {
+     ans += lgamma <https://kaskr.github.io/adcomp/group__special__functions.html#ga177b023eb871927fcfc90259e9f00382>(size+1.) - lgamma <https://kaskr.github.io/adcomp/group__special__functions.html#ga177b023eb871927fcfc90259e9f00382>(k+1.) - lgamma <https://kaskr.github.io/adcomp/group__special__functions.html#ga177b023eb871927fcfc90259e9f00382>(size-k+1.);
+   }
+   return ( give_log ? ans : exp(ans) );
+ }
+
+cheers,
+Mollie
+
+> On 13 Nov 2025, at 20.32, Don Cohen <don-lme4 at isis.cs3-inc.com> wrote:
+> 
+> 
+> I think I have a reasonable use for the binomial distribution with
+> non-integer arguments, and would appreciate references to other cases
+> where this has been done (or reasons it should NOT be done).
+> 
+> I notice
+> glmmTMB(c(.5,2/3,.4)~1,weights=c(2.2,3,5),family= binomial)
+> 
+> [notice the non integer weight 2.2 with probability .5 also
+> giving a non-integer number of successes]
+> 
+> shows
+>     AIC      BIC   logLik df.resid
+> 7.74875  6.84736 -2.87437        2
+> (and intercept 0, which was intentional)
+> 
+> and the loglik agrees with what I compute from simply generalizing
+> dbinom to non-integers by replacing factorial with gamma:
+> choose2 = function(outof, howmany)                                                         
+>  return( gamma(outof+1)/(gamma(howmany+1) * gamma(outof+1-howmany)))                      
+> dbinom2=function(x,size,prob)return(choose2(size,x)*prob^x * (1-prob)^(size-x))            
+> 
+> log( dbinom(2,3,.5) * dbinom(2,5,.5) * dbinom(1.1,2.2,.5))
+> => NaN
+> but
+> log( dbinom2(2,3,.5) * dbinom2(2,5,.5) * dbinom2(1.1,2.2,.5))
+> => -2.874375
+> 
+> So glmmTMB must not be using the regular dbinom function to compute loglik.
+> I have to guess this was an intentional generalization in glmmTMB.
+> Is it there for some particular reason?  (related to my original question)
+> 
+> Whereas
+> glm(c(.5,2/3,.4)~1,weights=c(2.2,3,5),family= binomial)
+> shows
+> Residual Deviance: 0.5412       AIC: 7.674
+> which is different, and in fact the same result as
+> glm(c(.5,2/3,.4)~1,weights=c(2,3,5),family= binomial)
+> which I think means that glm is rounding (or possibly truncating) the 2.2.
+> 
+> A related question is how to find the code that glmmTMB is using for
+> the loglik computations above.  I can see the definition of glmmTMB but
+> that quickly leads to functions for which there seem to be no available
+> definitions.  I can find some of them by downloading the source, but so
+> far I don't see anything there that looks like it's computing dbinom as
+> I expect.
+> 
+> _______________________________________________
+> R-sig-mixed-models at r-project.org mailing list
+> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+
+
+	[[alternative HTML version deleted]]
+
+
+From o||verhooker @end|ng |rom pr@t@t|@t|c@@com  Fri Nov 21 21:45:36 2025
+From: o||verhooker @end|ng |rom pr@t@t|@t|c@@com (Oliver Hooker)
+Date: Fri, 21 Nov 2025 20:45:36 +0000
+Subject: [R-sig-ME] Introduction to Generalised Linear Mixed Models for
+ Ecologists
+Message-ID: <CAEsSYzx4bwO5QbKYr+GVRjjmL6Gp+whwzHMuiE9DUqF1_-16QQ@mail.gmail.com>
+
+Introduction to Generalised Linear Mixed Models for Ecologists
+<https://prstats.org/course/introduction-to-generalised-linear-mixed-models-for-ecologists-mmie01/>Learn
+to build and interpret linear, generalised linear, and multilevel models
+for ecological data using R, lme4, and rstanarm in this five day applied
+training course.
+
+*ONLY 6 PLACES LEFT!  *
+*THIS COURSE SOLD OUT LAST TIME - BOOK YOUR PLACE NOW!*
+
+https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-mmie02/
+
+Join our intensive live-online workshop: *Bayesian Multilevel Modelling
+using brms for Ecologists*. If you work with ecological data and want to
+advance beyond standard regression into hierarchical modelling,
+spatial/temporal structure and full Bayesian workflows, this course is for
+you.
+
+*What you will learn*
+
+   -
+
+   A full foundation in Bayesian inference: priors, posteriors, credible
+   intervals and uncertainty quantification.
+   -
+
+   How to fit and interpret generalised linear models (GLMs) and
+   multilevel/hierarchical models using the brms package in R.
+   -
+
+   How to specify meaningful priors for ecological parameters and perform
+   model criticism via posterior predictive checks, WAIC, LOO-CV and other
+   diagnostics.
+   -
+
+   How to model non-Gaussian ecological responses (counts, proportions,
+   zero-inflation), and account for spatial and temporal autocorrelation in
+   your hierarchical models.
+   -
+
+   How to build multivariate or joint species-distribution models,
+   interpret group-level effects, visualise hierarchical structures and
+   communicate results effectively.
+
+*Who should attend*
+This course is designed for ecologists, data analysts, postgraduate
+researchers and early-career scientists who already have some experience
+with R and basic statistical concepts (e.g., mean, variance, correlation,
+linear regression). While prior exposure to GLMs is helpful, the essentials
+will be reviewed and built upon.
+
+*Format & logistics*
+
+   -
+
+   Live online sessions (5 days, approx. 6 hours per day) covering 30 hours
+   of instruction, practical exercises and guided coding.
+   -
+
+   Sessions are recorded and made available so you can revisit content if
+   you miss a live slot.
+   -
+
+   Participants are encouraged to bring their own ecological datasets where
+   possible, for practical application.
+
+*Why this course stands out*
+
+   -
+
+   It bridges the gap between theoretical Bayesian modelling and applied
+   ecological data analysis, focusing on workflows that ecologists can use in
+   real research settings.
+   -
+
+   Emphasis on interpretation, visualisation and clear communication of
+   uncertainty ? not just model fitting.
+   -
+
+   Uses the brms package which allows flexible specification of
+   hierarchical models while leveraging powerful backend tools (Stan) for
+   Bayesian computation.
+
+*How to register / next steps*
+Visit the PR Stats website for full course details, upcoming dates and
+registration information. Early registration is recommended as places may
+be limited. If you have questions about suitability, software requirements
+(R, RStudio, brms package) or data prerequisites, contact the course
+organisers for guidance.
+https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-mmie02/
+-- 
+Oliver Hooker PhD.
+PR stats
+
+	[[alternative HTML version deleted]]
+
+
+From @o|ed@d@e@teb@n @end|ng |rom tr@n@m|tt|ng@c|ence@com  Sun Nov 23 18:56:41 2025
+From: @o|ed@d@e@teb@n @end|ng |rom tr@n@m|tt|ng@c|ence@com (Soledad De Esteban-Trivigno)
+Date: Sun, 23 Nov 2025 17:56:41 +0000
+Subject: [R-sig-ME] Online course: Host and manage your R projects with Git
+ & GitHub
+In-Reply-To: <81d36d91f9a991c7c0b011e4f07a29ce@transmittingscience.com>
+References: <5861c3ea11854f9bef9369297762940e@transmittingscience.com>
+ <e4390af39ae79fa26000b73c185aaf67@transmittingscience.com>
+ <ec99d342c71b3e75828c7a49e5ea808d@transmittingscience.com>
+ <0c3f5f15bc62ae230ef0d526d3a46c89@transmittingscience.com>
+ <c94bb0e973e603e4358493a2a567663e@transmittingscience.com>
+ <78a88a8c2b538843ba44337093e4a221@transmittingscience.com>
+ <cc01b1ab0a5320f54f7306af619b56a2@transmittingscience.com>
+ <97d9c68e6d12d90f8b33d7cd959a1cef@transmittingscience.com>
+ <81d36d91f9a991c7c0b011e4f07a29ce@transmittingscience.com>
+Message-ID: <418ab38ab1496d3bb8c3bd3d29624f5a@transmittingscience.com>
+
+Dear colleagues,
+
+Transmitting Science is offering a new edition of the course "Host and 
+manage your R projects with Git & GitHub"
+
+Course webpage: 
+https://www.transmittingscience.com/courses/statistics-and-bioinformatics/host-and-manage-your-r-projects-with-git-on-github/
+
+Dates and schedule: online live sessions on December 9th, 11th and 12th, 
+2025.
+
+The aim of this course is to introduce participants to version control 
+with Git and GitHub tailored for R-based projects. The course will cover 
+both the theoretical background and practical workflow of initializing a 
+Git repository, branching, collaboration on GitHub, continuous 
+integration, and best practices for reproducible R projects.
+
+By the end of the course, students will be able to:
+* Understand the principles of version control and collaboration in Git.
+* Setup and manage R projects in Git / GitHub.
+* Use branching, pull requests and merge workflows.
+* Implement continuous integration and reproducible workflows for R.
+
+Instruction will combine lectures, guided examples, and practical 
+exercises.
+
+For any question, please write to courses at transmittingscience.com
+
+Best wishes
+
+Sole
+
+-- 
+Soledad De Esteban-Trivigno, PhD
+Director
+Transmitting Science
+www.transmittingscience.com/courses
+
+Bluesky @soledeesteban.bsky.social
+X @SoleDeEsteban
+Orcid: https://orcid.org/0000-0002-2049-0890
+
+Under the provisions of current regulations on the protection of 
+personal data, Regulation (EU) 2016/679 of 27 April 2016 (GDPR), we 
+inform you that personal data and email address, collected from the data 
+subject will be used by TRANSMITTING SCIENCE SL to manage communications 
+through email and properly manage the professional relationship with 
+you. The data are obtained based on a contractual relationship or the 
+legitimate interest of the Responsible, likewise the data will be kept 
+as long as there is a mutual interest for it. The data will not be 
+communicated to third parties, except for legal obligations. We inform 
+you that you can request detailed information on the processing as well 
+as exercise your rights of access, rectification, portability and 
+deletion of your data and those of limitation and opposition to its 
+treatment by contacting Calle Gardenia, 2 Urb. Can Claramunt de Piera 
+CP: 08784 (Barcelona) or sending an email to 
+info at transmittingscience.com or 
+http://transmittingscience.com/additional-terms. If you consider that 
+the processing does not comply with current legislation, you can 
+complain with the supervisory authority at www. aepd.es .
+Confidentiality. - The content of this communication, as well as that of 
+all the attached documentation, is confidential and is addressed to the 
+addressee. If you are not the recipient, we request that you indicate 
+this to us and do not communicate its contents to third parties, 
+proceeding to its destruction.
+  Disclaimer of liability. - The sending of this communication does not 
+imply any obligation on the part of the sender to control the absence of 
+viruses, worms, Trojan horses and/or any other harmful computer program, 
+and it corresponds to the recipient to have the necessary hardware and 
+software tools to guarantee both the security of its information system 
+and the detection and elimination of harmful computer programs. 
+TRANSMITTING SCIENCE SL shall not be liable.
+	[[alternative HTML version deleted]]
+
+
+From d@@@e@s@@z m@iii@g oii tr@@smitti@gscie@ce@com  Mon Nov 24 09:58:35 2025
+From: d@@@e@s@@z m@iii@g oii tr@@smitti@gscie@ce@com (d@@@e@s@@z m@iii@g oii tr@@smitti@gscie@ce@com)
+Date: Mon, 24 Nov 2025 09:58:35 +0100
+Subject: [R-sig-ME] Live online course: Evaluating and Validating Species
+ Distribution Models with R
+Message-ID: <025fbbc9b48df4fe257b036e093893c3@transmittingscience.com>
+
+Dear colleagues,
+
+Last days to register!
+Transmitting Science is offering a new edition of the online course 
+?Evaluating and Validating Species Distribution Models with R?, which 
+will take place very soon, starting on December 1st.
+
+Dates and schedule: live online sessions on December 1st and 3rd, 2025, 
+from 10:00 to 14:00 (Madrid time zone).
+Course webpage: 
+https://www.transmittingscience.com/courses/ecology/evaluating-and-validating-species-distribution-models-with-r/
+
+The aim of this course is to introduce participants to evaluation and 
+validation methods for species distribution models (SDMs) using R. The 
+course will cover a wide range of model-evaluation metrics 
+(discrimination, classification, explanatory power, calibration), and 
+validation methods, including spatial block cross-validation outside the 
+training area.
+
+By the end of the course, students will be able to:
+? Understand how to assess SDM performance beyond simple metrics like 
+AUC and TSS.
+? Compute a wide variety of metrics in R and apply them to species with 
+different ecological and biogeographical traits.
+? Perform validation of models using spatial blocks and interpret 
+reliability and calibration of predictions.
+? Navigate workflows in R tailored to SDM validation and evaluation.
+
+Instruction will combine lectures, code demonstration and practical 
+exercises in R. Language of instruction: English.
+
+For any question, please write to: courses at transmittingscience.com
+
+Best regards,
+D?nae
+
+-- 
+D?nae Sanz P?rez, PhD.
+Courses Coordinator
+Upcoming courses: 
+https://www.transmittingscience.com/courses/#upcoming-courses
+
+Twitter: @transmitscience
+Instagram: @transmittingscience
+Facebook: @Transmittingscience
+
+
+From h|gh@t@t @end|ng |rom h|gh@t@t@com  Thu Dec  4 09:33:42 2025
+From: h|gh@t@t @end|ng |rom h|gh@t@t@com (Alain Zuur)
+Date: Thu, 4 Dec 2025 08:33:42 +0000
+Subject: [R-sig-ME] =?utf-8?q?5-Day_GLMM_course_with_R_=E2=80=93_Murdoch_?=
+ =?utf-8?q?University_=26_Online_=28Feb_2026=29?=
+Message-ID: <dc1b5016-25ae-4a29-81ab-58ae185bf7a1@highstat.com>
+
+We invite you to join the 5?day hybrid course ?*Introduction to linear 
+mixed-effects models and GLMM with R*?, held at Murdoch University, 
+Perth and live online via Zoom on 9?13 February 2026, 09:00?16:00 (AWST).
+
+Taught by Dr. Elena Ieno and Dr. Alain Zuur (Highland Statistics Ltd) ? 
+authors of 12 books and providers of over 250 courses ? this course will 
+give you the tools and confidence to analyse complex ecological and 
+environmental data.
+
+Flyer: https://www.highstat.com/Courses/Flyers/Flyer2026_02_Murdoch_GLMM.pdf
+
+
+*What the course covers
+*
+
+  * Data exploration and a step?by?step revision of multiple linear
+    regression in R
+  * Linear mixed-effects models for nested/clustered data (random
+    intercepts and slopes)
+  * GLMMs for:
+      o Count data (Poisson, negative binomial, generalised Poisson)
+      o Binary and proportional data (Bernoulli, binomial, beta)
+      o Continuous data with and without zeros (Gaussian, gamma, Tweedie)
+  * Model selection, diagnostics (including DHARMa), interpretation, and
+    visualisation
+  * (Time allowing) basic power analysis for choosing numbers of
+    clusters and observations
+
+Around 15 hands-on R exercises use real fisheries, aquatic and 
+ecological datasets, with all code and data provided.
+
+*
+*
+
+*Format, materials and support*
+
+  * Hybrid delivery: attend in person at Murdoch University or join live
+    via Zoom
+  * Fee: ?500, including all course materials. With 50% reduction for
+    participants from developing countries.
+  * Extras:
+      o 1?hour one?to?one video chat with the instructors after the
+        course to discuss your own data.
+      o Access to a course website for 12 months, with on?demand videos
+        for most exercises and all theory presentations.
+
+
+*Who should attend
+*Researchers, practitioners and students in ecology, fisheries, 
+environmental science and related fields with a working knowledge of R, 
+multiple linear regression, and basic GLMs.
+
+
+*Registration
+*For full details and to register, please visit: 
+https://www.highstat.com/index.php/joine-an-onsite-course
+
+
+For questions, contact highstat at highstat.com.
+
+We hope you can join us in February 2026.
+
+Best regards,
+
+
+Alain Zuur
+
+
+	[[alternative HTML version deleted]]
+
+
+From @@m|p@n @end|ng |rom |@@t@te@edu  Sat Dec  6 00:08:58 2025
+From: @@m|p@n @end|ng |rom |@@t@te@edu (Majumder, Samipan)
+Date: Fri, 5 Dec 2025 23:08:58 +0000
+Subject: [R-sig-ME] Bernoulli and Binomial Generalized Linear Mixed Effects
+ Model using glmmTMB, glmmML and lmle4::glmer()
+Message-ID: <SJ0PR04MB8290902BF39383425AC9CBF7B6DBA@SJ0PR04MB8290.namprd04.prod.outlook.com>
+
+Hello,
+
+I am attempting to construct a Bernoulli mixed-effects model and a binomial mixed-effects model for a dataset using various R packages, including glmmTMB, glmmML, and lme4::glmer().
+
+However, I am skeptical about the output shown by the R packages. Sometimes, I receive a warning about a singular fit or model that is not converging. However, at other times, even when I am not receiving any warnings, I still encounter them when diagnosing a model, for example, using glmmTMB::diagnose().
+
+Here are some details regarding the Problem Description, model formulation, and experimental design setup.
+
+Experimental Setup:   https://www.dropbox.com/scl/fi/f4q6r4tnkyuw7rzop8puq/Design_Tree_Screenshot-2025-12-05-134907.png?rlkey=u7fe7yyfmzyq0azr5am1haf5w&st=1art9674&dl=0
+
+Problem Description: https://www.dropbox.com/scl/fi/yjxo0ggf4opymeodcy43e/Exp_Design_Screenshot-2025-12-05-134839.png?rlkey=38zvrh1rwmibk3zq81dwv53m7&st=anppw5xu&dl=0
+
+Binary Response Variable, Factor-1, Factor-2, and a Continuous Variable (x). Factor-2 Levels nested within levels of Factor-1. Unbalanced Design. A New Derived variable is used by combining Factor1 with Factor2 and is represented as "Factor1_Factor2". To represent nested effect with random intercept, I can either do this (1 | Factor1/Factor2) or as this (1 | Factor1_Factor2).  The responses y_{i,j,k} as seen in the Tree Diagram above are repeated measures. The variance term for the Random effects is expected to be separate for each treatment effect. And, "x_scaled" is the scaled version of "x", i.e. x_scaled = (x - mean(x))/sd(x).
+
+Bernoulli GLMM Model Formulation:  https://www.dropbox.com/scl/fi/e0qu3wpfysjeagldzxs5w/Model_formulation_Bernoulli_Screenshot-2025-12-05-135101.png?rlkey=r516o40eia3zu78hz7tkmblgo&st=0qbhtcye&dl=0
+
+Binomial GLMM Model Formulation
+https://www.dropbox.com/scl/fi/3aqcq22q030zcroagq1x4/Binomial_GLMM_Screenshot-2025-12-05-140353.png?rlkey=ofcyz11l74eul38g410opdlsx&st=3b2f8n99&dl=0
+
+Initially, I attempted modeling using the lme4::glmer() function. It was for Bernoulli GLMM. But, lme4 produces common variance for all random effect terms. Later, I switched to the glmmTMB package; I also attempted the glmmML package recently, but things did not work out as expected.
+
+****************Bernoulli GLMM using lme4::glmer() : ******************
+
+lme4::glmer(formula = bernoulli_y ~ Factor_1 + (1 | Factor_1/Factor_2), data = mydata, family = binomial(link = "logit")) # For this, I got Boundary (Singular) Fit.
+
+lme4::glmer(formula = bernoulli_y ~ Factor_1 + (1 | Factor_1:Factor_2), data = mydata, family = binomial(link = "logit")) # For this, I got Boundary (Singular) Fit.
+
+lme4::glmer(formula = bernoulli_y ~ (1 | Factor_1_Factor_2), data = mydata, family = binomial(link = "logit")) # For this, no fixed Effect; it came with no error or warning. (Factor1_Factor2) It is a derived factor variable.
+
+me4::glmer(formula = bernoulli_y ~  x + (1 | Factor_1_Factor_2), data = mydata, family = binomial(link = "logit")) # Here, 'x' is a continuous variable; # Got No error or warnings.
+
+
+*********** Bernoulli GLMM using glmmTMB::glmmTMB(): This package was used to get separate variances for random effects for ith treatment effects (i.e. \sigma^2_i, where I = 1,2,3,4,5). ****************
+
+summary(glmmTMB::glmmTMB(formula = bernoulli_y ~ factor1 + diag(0+factor1|Factor1_Factor2), family=binomial(link = "logit"),data=mydata))  # This came without error/warning. However, when I diagnosed the model using glmmTMB::diagnose(), I received numerous warnings about unusually high coefficient values.
+
+********* Binomial GLMM using lme4::glmer() : ********************
+
+summary(lme4::glmer(formula = cbind(success,total-success) ~ Factor1+ (1 |  Factor1/Factor2),data = mydata,family = binomial(link = "logit"))) # Singular Fit
+
+summary(lme4::glmer(formula = cbind(success,total-success) ~ (1 | Factor1_Factor2), data = mydata, family = binomial(link = "logit"))) # No fixed effects, but worked without error/warning.
+
+************** Binomial GLMM using glmmTMB():  ********************
+
+glmmTMB::glmmTMB(formula = cbind(success,total-success) ~ factor_1 + (1|Factor1_Factor2), family=binomial(link = "logit"),data=mydata) # Initially, this model appeared to run successfully without any error/warning. For this case, I got a common variance. However, upon further inspection, I found that glmmTMB:check_singularity(model) returned TRUE, and glmmTMB::diagnose(model) also issued some warnings.
+
+Another attempt using glmmTMB::glmmTMB was made to obtain the variances of random effects corresponding to each level of the Treatment effect (i.e., Factor 1).
+
+glmmTMB::glmmTMB(formula = cbind(success,total-success) ~ Factor1 + diag(0+Factor1| Factor1_Factor2), family=binomial(link = "logit"),data=mydata)  # Initially, this model appeared to run successfully without any error/warning. For this case, I got a common variance. However, upon further inspection, I found that glmmTMB:check_singularity(model) returned TRUE, and glmmTMB::diagnose(model) also issued some warnings.
+
+************** Using glmmML package() for binomial GLMM *******************
+
+summary(glmmML::glmmML(formula = cbind(success,total-success) ~ (1|Factor1/Factor2), family=binomial(link = "logit"),data=mydata,cluster = factor1_factor2)) # This resulted in error/warning.
+
+summary(glmmML::glmmboot(formula = cbind(success,total-success) ~ (1|Factor1/Factor2), family=binomial(link = "logit"),data=mydata,cluster = factor1_factor2))  # This resulted in error/warning.
+
+************** Using glmmML package() for bernoulli GLMM *******************
+
+# warning/error
+glmmML::glmmML(formula = bernoulli_y ~ x_scaled + Factor_1, family=binomial(link = "logit"),data=mydata, cluster =  Factor1_Factor2)
+
+# warning/error
+glmmML::glmmML(formula = bernoulli_y ~ x_scaled, family=binomial(link = "logit"),data=mydata, cluster =  Factor1_Factor2)
+
+
+
+Anyway, if possible, could you please suggest the type of modelling approach that should be undertaken for this modelling formulation?  Which of the above R packages perform as per the modelling requirements in this context? Or, will it be better to write explicitly a code for computing the Marginal log-likelihood of the Mixed Effects Model, and maximizing it using optim() or Laplace approximation?
+
+Please provide any helpful suggestions in this regard.
+
+
+
+????
+
+
+
+With Best Regards,
+
+Sami
+(Pronouns: He/Him/His)
+
+Iowa State University,
+Ames, Iowa,
+USA.
+
+	[[alternative HTML version deleted]]
+
+
+From bbo|ker @end|ng |rom gm@||@com  Sat Dec  6 01:42:59 2025
+From: bbo|ker @end|ng |rom gm@||@com (Ben Bolker)
+Date: Fri, 5 Dec 2025 19:42:59 -0500
+Subject: [R-sig-ME] 
+ Bernoulli and Binomial Generalized Linear Mixed Effects
+ Model using glmmTMB, glmmML and lmle4::glmer()
+In-Reply-To: <SJ0PR04MB8290902BF39383425AC9CBF7B6DBA@SJ0PR04MB8290.namprd04.prod.outlook.com>
+References: <SJ0PR04MB8290902BF39383425AC9CBF7B6DBA@SJ0PR04MB8290.namprd04.prod.outlook.com>
+Message-ID: <5719c5fb-5476-470a-9616-0830987bc8e7@gmail.com>
+
+   This is a little bit of a wall of text, but I'll do what I can. 
+Comments in-line below.
+
+On 2025-12-05 6:08 p.m., Majumder, Samipan via R-sig-mixed-models wrote:
+> Hello,
+> 
+> I am attempting to construct a Bernoulli mixed-effects model and a binomial mixed-effects model for a dataset using various R packages, including glmmTMB, glmmML, and lme4::glmer().
+> 
+> However, I am skeptical about the output shown by the R packages. Sometimes, I receive a warning about a singular fit or model that is not converging. However, at other times, even when I am not receiving any warnings, I still encounter them when diagnosing a model, for example, using glmmTMB::diagnose().
+> 
+> Here are some details regarding the Problem Description, model formulation, and experimental design setup.
+> 
+> Experimental Setup:   https://www.dropbox.com/scl/fi/f4q6r4tnkyuw7rzop8puq/Design_Tree_Screenshot-2025-12-05-134907.png?rlkey=u7fe7yyfmzyq0azr5am1haf5w&st=1art9674&dl=0
+> 
+> Problem Description: https://www.dropbox.com/scl/fi/yjxo0ggf4opymeodcy43e/Exp_Design_Screenshot-2025-12-05-134839.png?rlkey=38zvrh1rwmibk3zq81dwv53m7&st=anppw5xu&dl=0
+> 
+> Binary Response Variable, Factor-1, Factor-2, and a Continuous Variable (x). Factor-2 Levels nested within levels of Factor-1. Unbalanced Design. A New Derived variable is used by combining Factor1 with Factor2 and is represented as "Factor1_Factor2". To represent nested effect with random intercept, I can either do this (1 | Factor1/Factor2) or as this (1 | Factor1_Factor2).  The responses y_{i,j,k} as seen in the Tree Diagram above are repeated measures. The variance term for the Random effects is expected to be separate for each treatment effect. And, "x_scaled" is the scaled version of "x", i.e. x_scaled = (x - mean(x))/sd(x).
+> 
+> Bernoulli GLMM Model Formulation:  https://www.dropbox.com/scl/fi/e0qu3wpfysjeagldzxs5w/Model_formulation_Bernoulli_Screenshot-2025-12-05-135101.png?rlkey=r516o40eia3zu78hz7tkmblgo&st=0qbhtcye&dl=0
+> 
+> Binomial GLMM Model Formulation
+> https://www.dropbox.com/scl/fi/3aqcq22q030zcroagq1x4/Binomial_GLMM_Screenshot-2025-12-05-140353.png?rlkey=ofcyz11l74eul38g410opdlsx&st=3b2f8n99&dl=0
+> 
+> Initially, I attempted modeling using the lme4::glmer() function. It was for Bernoulli GLMM. But, lme4 produces common variance for all random effect terms. 
+
+Not sure what you mean here. The last sentence of one of your 
+screenshots (which it would have been much more convenient if you had 
+included as text ...) says "... for the variance of random effects, it 
+will be different for each treatment effect, i.e., for the ith level of 
+factor-1".
+
+   This doesn't match with your model formulation, which says
+
+   logit(mu_{ijk}) = alpha + var_{i,j,k} + tau_i + u_{ij}
+   u ~ N(0, sigma^2_u * I(5x4))
+
+   If you wanted to have the random-effects variances be different for 
+each level of i, you would need something like
+
+  Sigma = Kronecker(diag(sigma^2_{u,i)), diag(4))
+
+i.e., a diagonal matrix with diagonal elements {sigma_2_{u,1}, ... 
+sigma^2_{u_1}, sigma^2_{u_2}, ... sigma^2_{u_2}, ... etc.}
+
+   There's not an *easy* way to specify this in the R packages I'm 
+familiar with, but you can hack it as follows:
+
+   y ~ 1 + x + F1 + (0 + dummy(F1, "1") | F2) + (0 + dummy(F2, "2") | 
+F2) + ...
+
+  For each (0 + dummy(...) | F2) term, this generates a random effect on 
+values of F2 and then multiplies it by an indicator variable that is 1 
+if the observation in the specified group and 0 otherwise. This way 
+you'll end up with separate random effects terms, with distinct 
+variances, for each subgroup.
+
+   If you want to be clever you can even construct this programmatically:
+
+dummy_vars <- sprintf("(0 + dummy(F1, '%d') | F2)", levels(data$F1))
+reformulate(c("1", "x", "F1", dummy_vars), response = "y")
+
+  (should be the same whether F2 or F1_F2 is used as the grouping variable)
+
+
+
+
+ >  Later, I switched to the glmmTMB package; I also attempted the 
+glmmML package recently, but things did not work out as expected.>
+> ****************Bernoulli GLMM using lme4::glmer() : ******************
+> 
+> lme4::glmer(formula = bernoulli_y ~ Factor_1 + (1 | Factor_1/Factor_2), data = mydata, family = binomial(link = "logit")) # For this, I got Boundary (Singular) Fit.
+
+    That's not surprising because (1|F1/F2) expands to (1|F1) + 
+(1|F1:F2) [abbreviated for laziness]; the first term (1|F1) is redundant 
+with the fixed-effect term F1.
+
+> 
+> lme4::glmer(formula = bernoulli_y ~ Factor_1 + (1 | Factor_1:Factor_2), data = mydata, family = binomial(link = "logit")) # For this, I got Boundary (Singular) Fit.
+
+   This wouldn't have to be a singular fit, but the indication here is 
+that there's not enough variability among (F1:F2) groups to distinguish 
+the model from the pooled model (i.e. variance = 0). This is not 
+shocking, especially if the overall size of the data set is small (you 
+may have told us more above about the number of binary observations per 
+F1:F2 group, but I didn't click through to all of the images)
+
+> 
+> lme4::glmer(formula = bernoulli_y ~ (1 | Factor_1_Factor_2), data = mydata, family = binomial(link = "logit")) # For this, no fixed Effect; it came with no error or warning. (Factor1_Factor2) It is a derived factor variable.
+
+   This is not necessarily a bad model, but it assumes that there is 
+zero variability among F1 levels (as opposed to the previous 
+specification, which doesn't assume but ends up estimating that there is 
+zero variability among F2-within-F1 levels ...
+> 
+> me4::glmer(formula = bernoulli_y ~  x + (1 | Factor_1_Factor_2), data = mydata, family = binomial(link = "logit")) # Here, 'x' is a continuous variable; # Got No error or warnings.
+
+    This is fine, but you've left out the F1 fixed term you're 
+interested in.
+> 
+> 
+> *********** Bernoulli GLMM using glmmTMB::glmmTMB(): This package was used to get separate variances for random effects for ith treatment effects (i.e. \sigma^2_i, where I = 1,2,3,4,5). ****************
+> 
+> summary(glmmTMB::glmmTMB(formula = bernoulli_y ~ factor1 + diag(0+factor1|Factor1_Factor2), family=binomial(link = "logit"),data=mydata))  # This came without error/warning. However, when I diagnosed the model using glmmTMB::diagnose(), I received numerous warnings about unusually high coefficient values.
+
+   clever, I didn't think of this!  The large-magnitude coefficient 
+values are most likely variance terms going to zero (if they are large 
+*negative* magnitudes; glmmTMB parameterizes RE variances on the log-SD 
+scale)
+
+   For what it's worth, the development version of lme4 allows diag() 
+terms now as well (as of about a day ago ...)
+> 
+> ********* Binomial GLMM using lme4::glmer() : ********************
+> 
+> summary(lme4::glmer(formula = cbind(success,total-success) ~ Factor1+ (1 |  Factor1/Factor2),data = mydata,family = binomial(link = "logit"))) # Singular Fit
+> 
+> summary(lme4::glmer(formula = cbind(success,total-success) ~ (1 | Factor1_Factor2), data = mydata, family = binomial(link = "logit"))) # No fixed effects, but worked without error/warning.
+
+   Are you collapsing trials within F2 groups? How can you do this if 
+you have distinct x_{i,j,k} values for different trials within an F2 group?
+> 
+> ************** Binomial GLMM using glmmTMB():  ********************
+> 
+> glmmTMB::glmmTMB(formula = cbind(success,total-success) ~ factor_1 + (1|Factor1_Factor2), family=binomial(link = "logit"),data=mydata) # Initially, this model appeared to run successfully without any error/warning. For this case, I got a common variance. However, upon further inspection, I found that glmmTMB:check_singularity(model) returned TRUE, and glmmTMB::diagnose(model) also issued some warnings.
+> 
+> Another attempt using glmmTMB::glmmTMB was made to obtain the variances of random effects corresponding to each level of the Treatment effect (i.e., Factor 1).
+> 
+> glmmTMB::glmmTMB(formula = cbind(success,total-success) ~ Factor1 + diag(0+Factor1| Factor1_Factor2), family=binomial(link = "logit"),data=mydata)  # Initially, this model appeared to run successfully without any error/warning. For this case, I got a common variance. However, upon further inspection, I found that glmmTMB:check_singularity(model) returned TRUE, and glmmTMB::diagnose(model) also issued some warnings.
+
+   Note that glmmTMB **does not do any checks for singularity** by 
+default.  So you won't get warnings.
+> 
+> ************** Using glmmML package() for binomial GLMM *******************
+> 
+> summary(glmmML::glmmML(formula = cbind(success,total-success) ~ (1|Factor1/Factor2), family=binomial(link = "logit"),data=mydata,cluster = factor1_factor2)) # This resulted in error/warning.
+> 
+> summary(glmmML::glmmboot(formula = cbind(success,total-success) ~ (1|Factor1/Factor2), family=binomial(link = "logit"),data=mydata,cluster = factor1_factor2))  # This resulted in error/warning.
+
+   What were the errors/warnings?  We can't help you with that ...
+> 
+> ************** Using glmmML package() for bernoulli GLMM *******************
+> 
+> # warning/error
+> glmmML::glmmML(formula = bernoulli_y ~ x_scaled + Factor_1, family=binomial(link = "logit"),data=mydata, cluster =  Factor1_Factor2)
+> 
+> # warning/error
+> glmmML::glmmML(formula = bernoulli_y ~ x_scaled, family=binomial(link = "logit"),data=mydata, cluster =  Factor1_Factor2)
+> 
+> 
+> 
+> Anyway, if possible, could you please suggest the type of modelling approach that should be undertaken for this modelling formulation?  Which of the above R packages perform as per the modelling requirements in this context? Or, will it be better to write explicitly a code for computing the Marginal log-likelihood of the Mixed Effects Model, and maximizing it using optim() or Laplace approximation?
+> 
+> Please provide any helpful suggestions in this regard.
+
+    Bottom line:
+
+   singular fits are an unavoidable consequence of trying to fit a model 
+where the ML (or REML) estimate of one or more variances is zero. This 
+is not a computational problem, it's a fundamental statistical problem. 
+?lme4::isSingular and the GLMM FAQ talk about this situation a lot, and 
+explain the various options (there are no *good* solutions other than 
+"get more data" :-( ) 
+https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html
+
+    I very much doubt that you'll do better by trying to code the 
+computations yourself, these are tricky things to get right (and, to 
+repeat myself, singularity **is not a computational problem** ...)
+
+   For Bernoulli outcomes you *do* want to consider using adaptive 
+Gauss-Hermite quadrature rather than Laplace approximation, which is 
+implemented in lme4 (set the 'nAGQ' argument to `glmer` to a value > 1).
+
+> 
+> 
+> 
+> ????
+> 
+> 
+> 
+> With Best Regards,
+> 
+> Sami
+> (Pronouns: He/Him/His)
+> 
+> Iowa State University,
+> Ames, Iowa,
+> USA.
+> 
+> 	[[alternative HTML version deleted]]
+> 
+> _______________________________________________
+> R-sig-mixed-models at r-project.org mailing list
+> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+
+-- 
+Dr. Benjamin Bolker
+Professor, Mathematics & Statistics and Biology, McMaster University
+Director, School of Computational Science and Engineering
+ > E-mail is sent at my convenience; I don't expect replies outside of 
+working hours.
+
+
+From i@io m@iii@g oii phys@ii@-courses@org  Mon Dec  8 11:56:57 2025
+From: i@io m@iii@g oii phys@ii@-courses@org (i@io m@iii@g oii phys@ii@-courses@org)
+Date: Mon, 8 Dec 2025 11:56:57 +0100 (CET)
+Subject: [R-sig-ME] Generalised Linear Models in R course
+Message-ID: <1765191417.94555415@webmail.jimdo.com>
+
+
+Dear all,
+Registration is now open for the upcoming online Physalia course Generalised Linear Models in R, taking place from 23?27 February 2026.
+ 
+Course website: [ https://www.physalia-courses.org/courses-workshops/glm-in-r-1/ ]( https://www.physalia-courses.org/courses-workshops/glm-in-r-1/ ) 
+ 
+This course reframes common statistical tools (t-tests, ANOVA, regression, logistic/Poisson models) within the unified framework of GLMs, offering a clearer and more flexible approach to analysing real-world data.
+ 
+ Through a mix of lectures, discussions, and hands-on exercises, participants will learn how to specify, fit, interpret, visualise, and validate GLMs in R.
+ 
+The course is ideal for graduate students and researchers with basic stats and R skills who want to strengthen their modelling toolkit.
+ 
+ 
+Best regards,
+Carlo
+ 
+ 
+
+--------------------
+
+Carlo Pecoraro, Ph.D
+
+
+Physalia-courses DIRECTOR
+
+info at physalia-courses.org
+
+mobile: +49 17645230846
+
+[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )
+
+
+
+	[[alternative HTML version deleted]]
+
+
+From @o|ed@d@e@teb@n @end|ng |rom tr@n@m|tt|ng@c|ence@com  Mon Dec 15 08:43:01 2025
+From: @o|ed@d@e@teb@n @end|ng |rom tr@n@m|tt|ng@c|ence@com (Soledad De Esteban-Trivigno)
+Date: Mon, 15 Dec 2025 07:43:01 +0000
+Subject: [R-sig-ME] =?utf-8?q?Online_live_course=3A_Statistical_Analyses_?=
+ =?utf-8?q?with_R_=E2=80=93_February_2026?=
+In-Reply-To: <57ca573486e1d9aca62e9268b7d0ba5e@transmittingscience.com>
+References: <982b6c76abf5bc0cc0c1cc7385c71ace@transmittingscience.com>
+ <57ca573486e1d9aca62e9268b7d0ba5e@transmittingscience.com>
+Message-ID: <5a455b3b478d4a31f9dbb0f50248ba2f@transmittingscience.com>
+
+Dear colleagues,
+
+Transmitting Science is happy to announce a new edition of the course 
+"Statistical Analyses with R".
+
+Course webpage: 
+https://www.transmittingscience.com/courses/statistics-and-bioinformatics/statistical-computing-for-environmental-science-with-r-and-rstudio/
+
+The course is given in four modules covering exploratory data analysis, 
+univariate and multivariate statistical techniques and a final 
+discussion session where students will work and discuss their projects:
+
+  	* Module I. Programming in R and Rstudio
+  	* Module II. Exploratory Data Analysis (EDA)
+  	* Module III. Univariate Statistical Analysis (UniStat)
+  	* Module IV. Multivariate Statistical Analysis (MultiStat)
+
+This course will cover some advanced issues in most statistical 
+computing workflows for the Life Sciences. Together with the statistical 
+analyses, we will cover several aspects of data structure and workspace 
+management, as well as visualisation techniques, using R and RStudio.
+
+For any questions, please write to courses at transmittingscience.com
+
+Best wishes
+
+Sole
+
+-- 
+Sole De Esteban-Trivigno, PhD
+Director
+Transmitting Science
+www.transmittingscience.com/courses
+
+Bluesky @soledeesteban.bsky.social
+X @SoleDeEsteban
+Orcid: https://orcid.org/0000-0002-2049-0890
+	[[alternative HTML version deleted]]
+
+
+From o||verhooker @end|ng |rom pr@t@t|@t|c@@com  Wed Dec 17 17:12:10 2025
+From: o||verhooker @end|ng |rom pr@t@t|@t|c@@com (Oliver Hooker)
+Date: Wed, 17 Dec 2025 16:12:10 +0000
+Subject: [R-sig-ME] Introduction to Generalised Linear Mixed Models for
+ Ecologists
+Message-ID: <CAEsSYzwptkYg2HBcVY4-DWxsxEV7-uPdrSOmxzhEPtMWtOfGCw@mail.gmail.com>
+
+Introduction to Generalised Linear Mixed Models for Ecologists
+<https://prstats.org/course/introduction-to-generalised-linear-mixed-models-for-ecologists-mmie01/>Learn
+to build and interpret linear, generalised linear, and multilevel models
+for ecological data using R, lme4, and rstanarm in this five day applied
+training course.
+
+*ONLY 5 PLACES LEFT!  *
+*THIS COURSE SOLD OUT LAST TIME - BOOK YOUR PLACE NOW!*
+
+https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-mmie02/
+
+Join our intensive live-online workshop: *Bayesian Multilevel Modelling
+using brms for Ecologists*. If you work with ecological data and want to
+advance beyond standard regression into hierarchical modelling,
+spatial/temporal structure and full Bayesian workflows, this course is for
+you.
+
+*What you will learn*
+
+   -
+
+   A full foundation in Bayesian inference: priors, posteriors, credible
+   intervals and uncertainty quantification.
+   -
+
+   How to fit and interpret generalised linear models (GLMs) and
+   multilevel/hierarchical models using the brms package in R.
+   -
+
+   How to specify meaningful priors for ecological parameters and perform
+   model criticism via posterior predictive checks, WAIC, LOO-CV and other
+   diagnostics.
+   -
+
+   How to model non-Gaussian ecological responses (counts, proportions,
+   zero-inflation), and account for spatial and temporal autocorrelation in
+   your hierarchical models.
+   -
+
+   How to build multivariate or joint species-distribution models,
+   interpret group-level effects, visualise hierarchical structures and
+   communicate results effectively.
+
+*Who should attend*
+This course is designed for ecologists, data analysts, postgraduate
+researchers and early-career scientists who already have some experience
+with R and basic statistical concepts (e.g., mean, variance, correlation,
+linear regression). While prior exposure to GLMs is helpful, the essentials
+will be reviewed and built upon.
+
+*Format & logistics*
+
+   -
+
+   Live online sessions (5 days, approx. 6 hours per day) covering 30 hours
+   of instruction, practical exercises and guided coding.
+   -
+
+   Sessions are recorded and made available so you can revisit content if
+   you miss a live slot.
+   -
+
+   Participants are encouraged to bring their own ecological datasets where
+   possible, for practical application.
+
+*Why this course stands out*
+
+   -
+
+   It bridges the gap between theoretical Bayesian modelling and applied
+   ecological data analysis, focusing on workflows that ecologists can use in
+   real research settings.
+   -
+
+   Emphasis on interpretation, visualisation and clear communication of
+   uncertainty ? not just model fitting.
+   -
+
+   Uses the brms package which allows flexible specification of
+   hierarchical models while leveraging powerful backend tools (Stan) for
+   Bayesian computation.
+
+*How to register / next steps*
+Visit the PR Stats website for full course details, upcoming dates and
+registration information. Early registration is recommended as places may
+be limited. If you have questions about suitability, software requirements
+(R, RStudio, brms package) or data prerequisites, contact the course
+organisers for guidance.
+https://prstats.org/course/bayesian-multilevel-modelling-using-brms-for-ecologists-mmie02/
+
+-- 
+Oliver Hooker PhD.
+PR stats
+
+	[[alternative HTML version deleted]]
+
+
+From c@roz @end|ng |rom zed@t@|u-ber||n@de  Fri Dec 19 13:37:57 2025
+From: c@roz @end|ng |rom zed@t@|u-ber||n@de (Caroline Zanchi)
+Date: Fri, 19 Dec 2025 13:37:57 +0100
+Subject: [R-sig-ME] glmmTMB with beta family and 0-inflation
+Message-ID: <fa18dc1a-46bd-4872-94e1-43535eb93caf@zedat.fu-berlin.de>
+
+Dear community,
+
+I am having trouble understanding the way 0-inflation is taken into 
+account in mixed-effects beta regressions with the glmmTMB package.
+
+I have a dataset which consists in readouts of bacterial cells which 
+express or not a certain behaviour according to the state of their 
+parent cell and over time. The response variable is expressed as a 
+number of cells expressing the behaviour over the total number of cells. 
+There are 0s in one parental state, but not the other.
+
+I fitted :
+
+M1 <- glmmTMB(propCFU~ parent_state * TIME + (1|SAMPLE), 
+data=prop_daughters, ziformula= ~1, family=beta_family(link = "logit"))
+
+Which gives :
+
+summary(M1)
+ ?Family: beta? ( logit )
+Formula:????????? propCFUdaught ~ parent_treat * TIME + (1 | SAMPLE)
+Zero inflation:???????????????? ~1
+Data: prop_daughters
+
+ ????? AIC?????? BIC??? logLik -2*log(L)? df.resid
+ ?? -672.9??? -640.7???? 349.4??? -698.9??????? 75
+
+Random effects:
+
+Conditional model:
+ ?Groups Name??????? Variance? Std.Dev.
+ ?SAMPLE (Intercept) 4.322e-09 6.574e-05
+Number of obs: 88, groups:? SAMPLE, 30
+
+Dispersion parameter for beta family ():? 327
+
+Conditional model:
+ ????????????????????????????? Estimate Std. Error z value Pr(>|z|)
+(Intercept)?????????????????? -7.67870??? 0.73063 -10.510 <2e-16 ***
+parent_treatstationary???????? 1.22248??? 0.75556?? 1.618 0.106
+TIME20???????????????????????? 0.06966??? 0.80420?? 0.087 0.931
+TIME40???????????????????????? 0.70438??? 0.78492?? 0.897 0.370
+TIME60???????????????????????? 1.00432??? 0.81196?? 1.237 0.216
+TIME80???????????????????????? 0.91809??? 0.81363?? 1.128 0.259
+parent_treatstationary:TIME20 -0.16829??? 0.90534? -0.186 0.853
+parent_treatstationary:TIME40 -1.34558??? 0.94120? -1.430 0.153
+parent_treatstationary:TIME60 -1.43812??? 0.91828? -1.566 0.117
+parent_treatstationary:TIME80 -0.50110??? 0.98536? -0.509 0.611
+---
+Signif. codes:? 0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1
+
+Zero-inflation model:
+ ??????????? Estimate Std. Error z value Pr(>|z|)
+(Intercept)? -0.8150???? 0.2312? -3.526 0.000422 ***
+
+... and a pretty terrible fit, because of the 0s I suppose :
+
+plot(simulateResiduals(M1))
+
+... which makes me think that the 0s might not be properly taken into 
+account.
+
+Is there anything I am doing wrong ? I would take any advice on how to 
+improve this.
+
+Thank you ! (for taking the time to read it so close to holiday time...)
+
+Caroline
+
+
+
+
+
+
+
+
+
+
+
+
+
+From bbo|ker @end|ng |rom gm@||@com  Sat Dec 20 22:03:00 2025
+From: bbo|ker @end|ng |rom gm@||@com (Ben Bolker)
+Date: Sat, 20 Dec 2025 16:03:00 -0500
+Subject: [R-sig-ME] glmmTMB with beta family and 0-inflation
+In-Reply-To: <fa18dc1a-46bd-4872-94e1-43535eb93caf@zedat.fu-berlin.de>
+References: <fa18dc1a-46bd-4872-94e1-43535eb93caf@zedat.fu-berlin.de>
+Message-ID: <353046fd-0ef5-45ef-8777-39439b3c53fd@gmail.com>
+
+   Hi Caroline,
+
+  comments below/inline.
+
+On 12/19/25 07:37, Caroline Zanchi wrote:
+> Dear community,
+> 
+> I am having trouble understanding the way 0-inflation is taken into 
+> account in mixed-effects beta regressions with the glmmTMB package.
+> 
+> I have a dataset which consists in readouts of bacterial cells which 
+> express or not a certain behaviour according to the state of their 
+> parent cell and over time. The response variable is expressed as a 
+> number of cells expressing the behaviour over the total number of cells. 
+> There are 0s in one parental state, but not the other.
+
+   In principle, if you know the original total number of cells, you 
+could use a zero-inflated beta-binomial model instead of a hurdle-beta. 
+This may not matter as much if the total number of cells is very large 
+(in which case the beta-binomial will approximate a beta pretty well 
+anyway).  (You might not even need the zero-inflation, if the 
+conditional distribution is such that the proportion of non-CFU 
+daughters is well described by the zeros in the beta-binomial distribution).
+
+  You could also try family = "ordbeta".
+
+     >
+> I fitted :
+> \\
+> M1 <- glmmTMB(propCFU~ parent_state * TIME + (1|SAMPLE), 
+> data=prop_daughters, ziformula= ~1, family=beta_family(link = "logit"))
+> 
+> Which gives :
+> 
+> summary(M1)
+>  ?Family: beta? ( logit )
+> Formula:????????? propCFUdaught ~ parent_treat * TIME + (1 | SAMPLE)
+> Zero inflation:???????????????? ~1
+> Data: prop_daughters
+> 
+>  ????? AIC?????? BIC??? logLik -2*log(L)? df.resid
+>  ?? -672.9??? -640.7???? 349.4??? -698.9??????? 75
+> 
+> Random effects:
+> 
+> Conditional model:
+>  ?Groups Name??????? Variance? Std.Dev.
+>  ?SAMPLE (Intercept) 4.322e-09 6.574e-05
+
+   Your fit is singular. (There's little enough among-sample variance 
+that it is estimated as zero -- all the variance can be explained by the 
+variability in the conditional distribution.)  You can see the GLMM FAQ 
+for more discussion of singular fits.
+
+> Number of obs: 88, groups:? SAMPLE, 30
+> 
+> Dispersion parameter for beta family ():? 327
+
+   This corresponds to a very sharp (low-variance) conditional 
+distribution. From ?beta_binomial:
+
+V=mu*(1-mu)/(phi+1)
+
+> 
+> Conditional model:
+>  ????????????????????????????? Estimate Std. Error z value Pr(>|z|)
+> (Intercept)?????????????????? -7.67870??? 0.73063 -10.510 <2e-16 ***
+> parent_treatstationary???????? 1.22248??? 0.75556?? 1.618 0.106
+> TIME20???????????????????????? 0.06966??? 0.80420?? 0.087 0.931
+> TIME40???????????????????????? 0.70438??? 0.78492?? 0.897 0.370
+> TIME60???????????????????????? 1.00432??? 0.81196?? 1.237 0.216
+> TIME80???????????????????????? 0.91809??? 0.81363?? 1.128 0.259
+> parent_treatstationary:TIME20 -0.16829??? 0.90534? -0.186 0.853
+> parent_treatstationary:TIME40 -1.34558??? 0.94120? -1.430 0.153
+> parent_treatstationary:TIME60 -1.43812??? 0.91828? -1.566 0.117
+> parent_treatstationary:TIME80 -0.50110??? 0.98536? -0.509 0.611
+> ---
+> Signif. codes:? 0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1
+> 
+> Zero-inflation model:
+>  ??????????? Estimate Std. Error z value Pr(>|z|)
+> (Intercept)? -0.8150???? 0.2312? -3.526 0.000422 ***
+
+   Nothing here looks especially strange.>
+> ... and a pretty terrible fit, because of the 0s I suppose :
+> 
+> plot(simulateResiduals(M1))
+   We can't see the simulated residuals plot (the mailing list doesn't 
+accept attachments), so we don't know what's wrong.
+
+   Nothing looks obviously wrong with your model. You might also try 
+performance::check_model() for a different set of diagnostics.
+
+> 
+> ... which makes me think that the 0s might not be properly taken into 
+> account.
+> 
+> Is there anything I am doing wrong ? I would take any advice on how to 
+> improve this.
+> 
+> Thank you ! (for taking the time to read it so close to holiday time...)
+> 
+> Caroline
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> _______________________________________________
+> R-sig-mixed-models at r-project.org mailing list
+> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+
+-- 
+Dr. Benjamin Bolker
+Professor, Mathematics & Statistics and Biology, McMaster University
+Associate chair (graduate), Mathematics & Statistics
+Director, School of Computational Science and Engineering
+* E-mail is sent at my convenience; I don't expect replies outside of 
+working hours.
+
+

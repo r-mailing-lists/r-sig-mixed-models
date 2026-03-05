@@ -1,0 +1,41 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2009-06",
+  "messages": [
+    {
+      "id": "msg-fad704b768a1",
+      "message_id": "<4A4AB5ED.1040208@ufl.edu>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "e939ee505cc6d7a90d0153f4adc5952232fd23faf5cf21e6fd51dcdff5d5ae73",
+      "date": "2009-06-30T21:03:41-04:00",
+      "subject": "[R-sig-ME] lmer vs glmmPQL",
+      "subject_clean": "lmer vs glmmPQL",
+      "in_reply_to": "<4836bc6a0906300924n259509bfu7b2fc7f97938dfa2@mail.gmail.com>",
+      "references": [
+        "<4836bc6a0906250133x48fe4323ue2ed0917cdea9678@mail.gmail.com>",
+        "<4A45119E.9030503@ufl.edu>",
+        "<87E6B088-2A58-4E32-B079-8A5388D2B541@kjbeath.com.au>",
+        "<4836bc6a0906300924n259509bfu7b2fc7f97938dfa2@mail.gmail.com>"
+      ],
+      "body_plain": "Fabian Scheipl wrote:\n> On Tue, Jun 30, 2009 at 9:16 AM, Ken Beath<ken at kjbeath.com.au> wrote:\n>> It appears that PQL with moderate random effect variance introduces a small\n>> bias in a direction that reduces the MSE, at least in the simulations\n>> chosen. For large variances the bias is probably excessive and the MSE will\n>> increase using PQL.\n\n  Hmmm.  How can bias, in any direction, reduce MSE?  (I can see that\nthere could be a tradeoff between bias and variance, but MSE\nincorporates bias^2, right?  How about bias-corrected variants of\nPQL (a la Raudenbush et al) -- mights those provide the best\nof both worlds, or does the additional complexity inevitably\nincrease variance -> MSE?  (I don't know if those bias-corrected\nvariants are implemented anywhere other than MLWiN/HLM ... ?)\n\n> Results from simulations with sd(RandomIntercept)=3 instead of 1\n> (results attached) confirm your remark - with the possible exception\n> of very small data sets the performance (in rmse & bias) for Laplace\n> and AGQ is much much better than PQL.\n> I'm sorry for getting Ben Bolker and others all riled up with my earlier post.\n\n  On the contrary, I think this is fascinating and worthwhile.\nIt amazes me that we still don't know these very basic things.\n\n> One more thing to consider though:\n>  A random intercept variance of 1 in a logistic model means that the\n> medium  50% of subjects/groups are expected to have between about half\n> and about double the odds of a subject/group with random intercept=0,\n> which is already fairly large effect in my book.\n> ##\n>> qlnorm(c(.1, .25, .75, .9))\n> [1] 0.28 0.51 1.96 3.60\n> ##\n> \n> For a random intercept sd of 3, the multiplicative effect on the\n> baseline odds for the middle 50% is between  0.13 and  7.6,\n> ##\n>> qlnorm(c(.1, .25,  .75, .9), sdlog = 3)\n> [1]  0.021  0.132  7.565 46.743\n> ##\n> which means really large inter-group/subject heterogeneity and might\n> not be encountered that frequently in real data (?) (or at least\n> suggest a mis-specified model that misses important\n> subject/group-level predictors...).\n> \n> (Similar remarks concerning \"effect size\" of the random effect apply\n> to Poisson regression with log-link.)\n> \n> So, what's the lesson --\n> Should we still prefer PQL if we expect to see small to intermediate\n> inter-group/subject heterogeneity?\n> \n> Fabian\n\n  good question.\n\n\n-- \nBen Bolker\nAssociate professor, Biology Dep't, Univ. of Florida\nbolker at ufl.edu / www.zoology.ufl.edu/bolker\nGPG key: www.zoology.ufl.edu/bolker/benbolker-publickey.asc",
+      "body_snippet": "Fabian Scheipl wrote:\n> On Tue, Jun 30, 2009 at 9:16 AM, Ken Beath<ken at kjbeath.com.au> wrote:\n>> It appears that PQL with moderate random effect variance introduces a small\n>> bias in a direction t",
+      "thread_id": "thread-fad704b768a1",
+      "thread_depth": 0,
+      "month": "2009-06"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-fad704b768a1",
+      "subject": "lmer vs glmmPQL",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2009-06-30T21:03:41-04:00",
+      "last_reply": "2009-06-30T21:03:41-04:00",
+      "root_message_id": "msg-fad704b768a1"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2023-12",
+  "messages": [
+    {
+      "id": "msg-a45c4d30a26f",
+      "message_id": "<YT4PR01MB9832490C244D2DB3A09A640FA363A@YT4PR01MB9832.CANPRD01.PROD.OUTLOOK.COM>",
+      "from_name": "Meaghan Rupprecht",
+      "from_email_hash": "617a9e47c28e99a8fb349956536818795c0d0867522716adda5420f0006646ab",
+      "date": "2023-12-31T23:07:44Z",
+      "subject": "[R-sig-ME] GAMM (gamm4) warning: Hessian vs. RX var-cov",
+      "subject_clean": "GAMM (gamm4) warning: Hessian vs. RX var-cov",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Good afternoon and Happy New Year everyone~\n\nI am running a series of models using various records of fish catch from different datasets. Datasets include a different number of records but are being modelled with the same general formula (the number of records in each dataset ranges from ~3,000 to ~20,000).\n\nThe general model formula is as follows:\nfit <-\n    uGamm(catch ~ s(effort, k = 30) + s(month, bs = 'cc', k = 12) + s(year, k = 15) + s(habitat, k = 15) + s(pop_dens, k = 15) + s(X,Y, bs= 'ts', k = 15) + s(saberes_boat_id, bs = 're') + s(landing_mun, bs = 're') + s(basin_id, bs = 're'),\n          family = Gamma(link = 'log'),\n          data = fish_catch,\n          control = glmerControl(optimizer = 'bobyqa',\n                                 optCtrl = list(maxfun = 2e5)),\n          lme4 = TRUE)\n\nI am using the uGamm wrapper so that I can complete model averaging with the MuMIn package, but the models are being run with gamm4.\n\nThe resulting models of several datasets provide me with the following warning when I attempt model selection with MuMIn::model.sel():\nWarning messages:\n1: In vcov(object, use.hessian = use.hessian) :\n  variance-covariance matrix computed from finite-difference Hessian is\nnot positive definite or contains NA values: falling back to var-cov estimated from RX\n2: In vcov.merMod(object, correlation = correlation, sigm = sig) :\n  variance-covariance matrix computed from finite-difference Hessian is\nnot positive definite or contains NA values: falling back to var-cov estimated from RX\n\nWith the above information in mind, I have several questions.\n\n  1.  Are the model results using the smaller datasets less reliable due to this warning?\n  2.  Can move forward with model selection and averaging with these errors present?\n  3.  If I can't move forward with model selection, how can I address these errors and get to the point where I can complete model selection and averaging?\n\nBest,\nMeaghan\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Good afternoon and Happy New Year everyone~\n\nI am running a series of models using various records of fish catch from different datasets. Datasets include a different number of records but are being m",
+      "thread_id": "thread-a45c4d30a26f",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-d153879a0ba7",
+      "message_id": "<3d72e98e-21f3-4029-bf27-9e4212bc9943@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-31T19:42:00-05:00",
+      "subject": "[R-sig-ME] GAMM (gamm4) warning: Hessian vs. RX var-cov",
+      "subject_clean": "GAMM (gamm4) warning: Hessian vs. RX var-cov",
+      "in_reply_to": "<YT4PR01MB9832490C244D2DB3A09A640FA363A@YT4PR01MB9832.CANPRD01.PROD.OUTLOOK.COM>",
+      "references": [
+        "<YT4PR01MB9832490C244D2DB3A09A640FA363A@YT4PR01MB9832.CANPRD01.PROD.OUTLOOK.COM>"
+      ],
+      "body_plain": "These warnings should not affect the log-likelihood/AIC values in any \ncase, they only refer to estimates of the covariance matrices of the \nfixed-effect parameters (which in this case will probably correspond to \nthe non-penalized linear terms associated with most of the smooths).\n\n  1. I'm not sure why use say \"the smaller data sets\" in this case: are \nyou getting the warnings mostly with the models of smaller data sets? \n(You don't say that explicitly.)\n\n2. I think it is probably OK to move forward with model selection and \naveraging.\n\nThe main thing to check is that the standard errors of the \nparameters/predictions seem reasonable.\n\n   As a cross-check you could try fitting the same model with glmmTMB: I \nbelieve this model could also be fitted with the latest version of \nglmmTMB (although I would recommend using random effects of the form \n(1|boat_id) rather than s(boat_id, bs = 're') for the terms with bs = 're'\n\n   A gold standard for the covariance estimates, if you're worried about \nthis, is to run parametric bootstraps (or cluster-aware bootstraps as in \nthe lmeresampler package), although I'm not sure how well these work \nwith gamm4/uGamm models ...\n\nOn 2023-12-31 6:07 p.m., Meaghan Rupprecht wrote:\n> Good afternoon and Happy New Year everyone~\n> \n> I am running a series of models using various records of fish catch from different datasets. Datasets include a different number of records but are being modelled with the same general formula (the number of records in each dataset ranges from ~3,000 to ~20,000).\n> \n> The general model formula is as follows:\n> fit <-\n>      uGamm(catch ~ s(effort, k = 30) + s(month, bs = 'cc', k = 12) + s(year, k = 15) + s(habitat, k = 15) + s(pop_dens, k = 15) + s(X,Y, bs= 'ts', k = 15) + s(saberes_boat_id, bs = 're') + s(landing_mun, bs = 're') + s(basin_id, bs = 're'),\n>            family = Gamma(link = 'log'),\n>            data = fish_catch,\n>            control = glmerControl(optimizer = 'bobyqa',\n>                                   optCtrl = list(maxfun = 2e5)),\n>            lme4 = TRUE)\n> \n> I am using the uGamm wrapper so that I can complete model averaging with the MuMIn package, but the models are being run with gamm4.\n> \n> The resulting models of several datasets provide me with the following warning when I attempt model selection with MuMIn::model.sel():\n> Warning messages:\n> 1: In vcov(object, use.hessian = use.hessian) :\n>    variance-covariance matrix computed from finite-difference Hessian is\n> not positive definite or contains NA values: falling back to var-cov estimated from RX\n> 2: In vcov.merMod(object, correlation = correlation, sigm = sig) :\n>    variance-covariance matrix computed from finite-difference Hessian is\n> not positive definite or contains NA values: falling back to var-cov estimated from RX\n> \n> With the above information in mind, I have several questions.\n> \n>    1.  Are the model results using the smaller datasets less reliable due to this warning?\n>    2.  Can move forward with model selection and averaging with these errors present?\n>    3.  If I can't move forward with model selection, how can I address these errors and get to the point where I can complete model selection and averaging?\n> \n> Best,\n> Meaghan\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "These warnings should not affect the log-likelihood/AIC values in any \ncase, they only refer to estimates of the covariance matrices of the \nfixed-effect parameters (which in this case will probably c",
+      "thread_id": "thread-a45c4d30a26f",
+      "thread_depth": 1,
+      "month": "2023-12"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-a45c4d30a26f",
+      "subject": "GAMM (gamm4) warning: Hessian vs. RX var-cov",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Meaghan Rupprecht"
+      ],
+      "started": "2023-12-31T23:07:44+00:00",
+      "last_reply": "2023-12-31T19:42:00-05:00",
+      "root_message_id": "msg-a45c4d30a26f"
+    }
+  ]
+}
