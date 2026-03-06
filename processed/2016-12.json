@@ -1576,22 +1576,6 @@
       "month": "2016-12"
     },
     {
-      "id": "msg-d037b34e367b",
-      "message_id": "<45C1844D-27A1-40DA-B101-D2711DB98413@gmail.com>",
-      "from_name": "Mathew Guilfoyle",
-      "from_email_hash": "f00cc59c7d6c095bf1da70915316143e5ab45e258336e303b337d3ec8b6bf2d8",
-      "date": "2016-12-26T19:21:17Z",
-      "subject": "[R-sig-ME] gamm error/problem fitting a smooth by factor",
-      "subject_clean": "gamm error/problem fitting a smooth by factor",
-      "in_reply_to": null,
-      "references": [],
-      "body_plain": "I have a (unbalanced) dataset of time series collected across several subjects (n~500, ~60000 observations total).  I would like to model the overall smooth time trend of a variable and how this trend differs by various categorical factors, with the subject as a random effect, using gamm (mgcv).\n\nMy baseline model \n\nm1 = gamm(v1 ~ s(time), random=list(id=~1+time), data=dat)\n\nwhere v1 is a continuous numerical variable, time is measured at irregular subject-specific intervals, id is subject identifier.  Model m1 shows that time is a significant term.\n\nI have then tried to run this model:\n\nm2 = gamm(v1 ~ s(time)+s(time, by=fac1), random=list(id=~1+time), data=dat)\n\nwhere fac1 is a binary factor.\n\nMy intuitive understanding of this is that the first smooth term will capture the overall major trend common to both groups of fac1 and the second smooth will model the deviation from this mean trend for the fac1==1 subgroup.  However, I get the error:\n\nError in MEestimate(lmeSt, grps) : \n Singularity in backsolve at level 0, block 1 \n\nI've tried other models to isolate the problem but get the exact same error\n\nm3 = gamm(v1 ~ s(time)+s(time, by=fac1), random=list(id=~1), data=dat)   #remove the time random effect\nm4 = gamm(v1 ~ fac1+s(time)+s(time, by=fac1), random=list(id=~1+time), data=dat)   #have the factor as a main effect also\n\nI'm not sure if the whole notion of what I'm trying to do is wrong-headed or if I need to adjust some parameters to get the model (m2) to fit.\n\nThanks",
-      "body_snippet": "I have a (unbalanced) dataset of time series collected across several subjects (n~500, ~60000 observations total).  I would like to model the overall smooth time trend of a variable and how this trend",
-      "thread_id": "thread-d037b34e367b",
-      "thread_depth": 0,
-      "month": "2016-12"
-    },
-    {
       "id": "msg-7ed092482c62",
       "message_id": "<1a5822ea-68c0-3564-17fc-99c116d12ec0@gmail.com>",
       "from_name": "Ben Bolker",
@@ -1989,17 +1973,6 @@
       "started": "2016-12-22T09:09:05+08:00",
       "last_reply": "2016-12-22T10:39:45+01:00",
       "root_message_id": "msg-0b2efc7a2bad"
-    },
-    {
-      "id": "thread-d037b34e367b",
-      "subject": "gamm error/problem fitting a smooth by factor",
-      "message_count": 1,
-      "participants": [
-        "Mathew Guilfoyle"
-      ],
-      "started": "2016-12-26T19:21:17+00:00",
-      "last_reply": "2016-12-26T19:21:17+00:00",
-      "root_message_id": "msg-d037b34e367b"
     },
     {
       "id": "thread-d037b34e367b",

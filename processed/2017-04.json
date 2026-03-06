@@ -104,22 +104,6 @@
       "month": "2017-04"
     },
     {
-      "id": "msg-501f30ebda38",
-      "message_id": "<5b535c72-767a-0639-70a9-c5610ad39de7@uni-potsdam.de>",
-      "from_name": "Diana Michl",
-      "from_email_hash": "92231d027695872d698fb277a4700337f1397528290feec4862ee0196dd341ed",
-      "date": "2017-04-04T13:36:47+02:00",
-      "subject": "[R-sig-ME] lmer-model - model ok? (control condition, random effects, log transformation)",
-      "subject_clean": "lmer-model - model ok? (control condition, random effects, log transformation)",
-      "in_reply_to": null,
-      "references": [],
-      "body_plain": "Dear all,\n\nI'd be very thankful for a short feedback on whether my lmer-model is \ngood the way it is. Thank you very much in advance!\n\nI'm fitting log-10 reaction times (RT), reading times of sentences (s) \nof participants. The sentences are constructed in pairs: 1 test s. - 1 \ncontrol s. (as similar as possible to the test s.). The TEST sentences \nare in 4 conditions, i.e. they belong to one of four KINDS of sentences.\n\nSentences are matched in length (number of letters) and frequency \n(frequency of words averaged across sentence). Matching across ALL \nmaterial is attempted but not quite possible, so the matching is done as \nwell as possible within each test and control sentence pair.\n\n\nFirst, I treated the material as 5 conditions: 1 control + 4 test \nconditions -> \"cond5\" (with contrast.treatment, i.e. control = dummy).\n\"Cond2| subj\" means: random intercepts for test/control condition per \nsubject. (Random slopes don't improve fit and aren't that important to me.)\n\nThe converging model with the best fit (AIC/BIC) is:\n\nm1 <- lmer(logRT ~ cond5 + rat3 + (cond2|subject) + \n(length:frequency|item_ID), data, REML=F)\n\n\nBut I'm going back and forth on whether \"cond5\" is actually ok - or \nwhether I need to compare the sentences ONLY pairwise, like: each of the \n4 conditions (or \"kinds\") only in test vs. control.\nSo I fit another model with a nested fixed effect. \"cond4/cond2\" means: \n4 conditions (\"kinds\") within test or control condition (with contr.sum, \nso sum contrasts).\n\nThe fit (AIC/BIC) is only a bit worse (910 vs. 905 above):\n\nm2 <- lmer(logRT ~ cond4/cond2 + rat3 + (cond2|subject) + \n(length:frequency|item_ID), data, REML=F)\n\n\nThe results of the two models are the same. The fit is almost the same. \nMy question is: Is one model more legitimate than the other, based on \nwhat I describe about the matching?\nAnd is there something objectionable about how I fit the random effects? \n(My model doesn't necessarily converge when I change them.)\n\nAnd I'm not 100% sure about whether I have to use logarithmized reaction \ntimes (=response variable). The raw reaction times have huge variance \nand are right-skewed. The log distribution is more normal, but still not \na normal distribution. The model fit seems much better for the logRT, \nbut the results differ slightly for logRT vs. raw RT.\n\nAgain thank you very much and I'd really appreciate your feedback. I \nhope I provided sufficient and non-confusing information.\n\nBest\n\nDiana\n\n-- \nDiana Michl, M.A.\nPhD candidate\nInternational Experimental\nand Clinical Linguistics\nUniversit?t Potsdam\nwww.ling.uni-potsdam.de/staff/dmichl\n\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Dear all,\n\nI'd be very thankful for a short feedback on whether my lmer-model is \ngood the way it is. Thank you very much in advance!\n\nI'm fitting log-10 reaction times (RT), reading times of sentence",
-      "thread_id": "thread-501f30ebda38",
-      "thread_depth": 0,
-      "month": "2017-04"
-    },
-    {
       "id": "msg-dd5f969104a1",
       "message_id": "<CAJ-MGDTYGhMmkWXvbgLN5RBF_twz1N7Ab5Kh+VYnAZnm-ng7Dg@mail.gmail.com>",
       "from_name": "Marcos Monasterolo",
@@ -1385,17 +1369,6 @@
       ],
       "started": "2017-04-04T13:36:47+02:00",
       "last_reply": "2017-04-11T05:00:21+00:00",
-      "root_message_id": "msg-501f30ebda38"
-    },
-    {
-      "id": "thread-501f30ebda38",
-      "subject": "lmer-model - model ok? (control condition, random effects, log transformation)",
-      "message_count": 1,
-      "participants": [
-        "Diana Michl"
-      ],
-      "started": "2017-04-04T13:36:47+02:00",
-      "last_reply": "2017-04-04T13:36:47+02:00",
       "root_message_id": "msg-501f30ebda38"
     },
     {

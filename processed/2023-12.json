@@ -4,6 +4,228 @@
   "month": "2023-12",
   "messages": [
     {
+      "id": "msg-20975d6ba4f3",
+      "message_id": "<a47a569e-6581-478f-a5f2-06f9c8db80df@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-01T16:48:09-05:00",
+      "subject": "[R-sig-ME] how to cite github resources'",
+      "subject_clean": "how to cite github resources'",
+      "in_reply_to": "<BC3403EA-26E7-4E31-8FE2-BD9D3815F09A@dcn.davis.ca.us>",
+      "references": [
+        "<CA+hwERn8r6B5O+nUU28dYRiY=EnRfVCk0XQoA5AZ23_uHcoUrA@mail.gmail.com>",
+        "<BC3403EA-26E7-4E31-8FE2-BD9D3815F09A@dcn.davis.ca.us>"
+      ],
+      "body_plain": "If you really need a literature citation, you could specify exactly \nwhich piece of information from the GLMM FAQ you want to reference (the \nsection has a lot of stuff in it) and someone might be able to give you \na book or article reference that supports that information ...\n\nOn 2023-11-30 10:06 a.m., Jeff Newmiller via R-sig-mixed-models wrote:\n> Isn't this driven by the conventions of the publishing context?\n> \n> On November 30, 2023 2:09:59 AM PST, Toni Hernandez-Matias <ahmatias at gmail.com> wrote:\n>> Dear all,\n>> I would like to cite this information:\n>> https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects\n>>\n>> Do you know which format should I use?\n>>\n>> Thanks in advance,\n>>\n>> Toni\n>>\n>> \t[[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_snippet": "If you really need a literature citation, you could specify exactly \nwhich piece of information from the GLMM FAQ you want to reference (the \nsection has a lot of stuff in it) and someone might be abl",
+      "thread_id": "thread-20975d6ba4f3",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-95649ea0f6da",
+      "message_id": "<55e6eeab-0b26-4f4d-816f-787f29c1f41c@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-07T18:34:18-05:00",
+      "subject": "[R-sig-ME] how to cite github resources'",
+      "subject_clean": "how to cite github resources'",
+      "in_reply_to": "<CAFSSRFL_d=0mXEtvA4FA_PqztGt+sGpOECTCGuYOGhzgJ2wYog@mail.gmail.com>",
+      "references": [
+        "<CA+hwERn8r6B5O+nUU28dYRiY=EnRfVCk0XQoA5AZ23_uHcoUrA@mail.gmail.com>",
+        "<BC3403EA-26E7-4E31-8FE2-BD9D3815F09A@dcn.davis.ca.us>",
+        "<a47a569e-6581-478f-a5f2-06f9c8db80df@gmail.com>",
+        "<CAFSSRFL_d=0mXEtvA4FA_PqztGt+sGpOECTCGuYOGhzgJ2wYog@mail.gmail.com>"
+      ],
+      "body_plain": "[please keep r-sig-mixed at r-project.org in the Cc: list]\n\nOn 2023-12-07 4:02 p.m., Antonio HERNANDEZ-MATIAS wrote:\n> Many thanks for your message, I just need to justify that :\n> With recent versions of |lme4|, goodness-of-fit (deviance) can be \n> compared between |(g)lmer|?and |(g)lm|?models, although |anova()|?must \n> be called with the mixed (|(g)lmer|) model listed first\n\n   Honestly, I don't think this is the kind of statement that needs a \ncitation from peer-reviewed literature or a book; instead, it's a \nstatement about the behaviour of software.  The archaeology is a little \nbit difficult, but I think the relevant information is from the [lme4 \nNEWS file](https://cran.r-project.org/web/packages/lme4/news.html), \nwhich says for version 1.1-8 (2015-06-22) that:\n\n* deviance() now returns the deviance, rather than half the negative \nlog-likelihood, for GLMMs fitted with Laplace (the behaviour for LMMs \nand GLMMs fitted with nAGQ>1 has not changed)\n\n  This is consistent with the GLMM FAQ \"git blame\", which says that the \ncomment about \"recent versions of lme4\" was added on 2016-12-17 (at \nwhich time version 1.1-8 would have been \"recent\")\n\n   Based on more archaeology, this change was made here, originally on \n2014-07-02 (but the change wasn't in the CRAN version until the 1.1-8 \nrelease date mentioned above):\n\nhttps://github.com/lme4/lme4/commit/5ac6f57f608e425765703b8e83eef7b513b599a6\n\n   As far as the requirement for listing the glmer() model first, that's \na quirk of the methods dispatch (more ugly detail is available if you \nwant it); IIRC listing the glmer() model other than first will throw an \nerror, rather than giving an incorrect answer.\n\n   If your supervisor/reviewers/whoever need more than a pointer to the \nGLMM FAQ/a pointer to this e-mail in the list archives/a \"pers. comm.\" \ncitation from me, you might be out of luck.\n\n   As long as we've gone this far down the rabbit hole, I'll also \nemphasize the very next sentence in the GLMM FAQ, which points out a \npotential *statistical* issue with such comparisons:\n\n > Keep in mind that LRT-based null hypothesis tests are conservative \nwhen the null value (such as ?2=0) is on the boundary of the feasible \nspace (Self and Liang 1987; Stram and Lee 1994; Goldman and Whelan \n2000); in the simplest case (single random effect variance), the p-value \nis approximately twice as large as it should be (Pinheiro and Bates 2000).\n\n> \n> El vie, 1 dic 2023 a las 22:48, Ben Bolker (<bbolker at gmail.com \n> <mailto:bbolker at gmail.com>>) escribi?:\n> \n>      ? ?If you really need a literature citation, you could specify exactly\n>     which piece of information from the GLMM FAQ you want to reference (the\n>     section has a lot of stuff in it) and someone might be able to give you\n>     a book or article reference that supports that information ...\n> \n>     On 2023-11-30 10:06 a.m., Jeff Newmiller via R-sig-mixed-models wrote:\n>      > Isn't this driven by the conventions of the publishing context?\n>      >\n>      > On November 30, 2023 2:09:59 AM PST, Toni Hernandez-Matias\n>     <ahmatias at gmail.com <mailto:ahmatias at gmail.com>> wrote:\n>      >> Dear all,\n>      >> I would like to cite this information:\n>      >>\n>     https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects <https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects>\n>      >>\n>      >> Do you know which format should I use?\n>      >>\n>      >> Thanks in advance,\n>      >>\n>      >> Toni\n>      >>\n>      >>? ? ? [[alternative HTML version deleted]]\n>      >>\n>      >> _______________________________________________\n>      >> R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>      >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>      >\n> \n>     _______________________________________________\n>     R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>     https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>",
+      "body_snippet": "[please keep r-sig-mixed at r-project.org in the Cc: list]\n\nOn 2023-12-07 4:02 p.m., Antonio HERNANDEZ-MATIAS wrote:\n> Many thanks for your message, I just need to justify that :\n> With recent version",
+      "thread_id": "thread-95649ea0f6da",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-52b57b5d4cbd",
+      "message_id": "<CAP=UNak0Lfakpn=z0ARicMcHj-xDi7CwN4L4O-CxerpPo2ACBw@mail.gmail.com>",
+      "from_name": "Fiona Scarff",
+      "from_email_hash": "89f2b07a497703423d8d0f1c19d45a68e756bb2df27d64bed6e77c7c46beb306",
+      "date": "2023-12-12T14:45:25+08:00",
+      "subject": "[R-sig-ME] How to supply random intercepts for new data, blme",
+      "subject_clean": "How to supply random intercepts for new data, blme",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello folks,\n\nI have a mixed model that predicts the presence or absence of a species,\ngiven a set of predictors describing habitat. It is based on tracking data\nfrom tagged individual animals, together with pseudoabsences sampled from\nthe surrounding area. The model assumes all individuals have the same\nhabitat preferences (i.e. the slope coefficients are represented as fixed\neffects). By specifying random intercepts per individual, the model\naccommodates the fact that some individuals were tracked for much longer\nthan others, so that the number of presences relative to pseudoabsences is\nmuch higher for some individuals.\n\nAs part of a cross-validation exercise to assess model accuracy, I would\nlike to make predictions on new data, involving different individuals from\nother geographic areas. As I already know how long these individuals were\ntracked for, I would like to supply that information (in the form of fitted\nrandom intercepts from a 'global' model fitted to all individuals) to the\nmodel for that particular cross validation fold. Otherwise, it seems like\nthe estimate of model accuracy will be unnecessarily pessimistic, since the\npredictions for each new individual won't take into account whether they\nwere extensively tracked or not.\n\nI am using an implementation of binary random forests with mixed effects\ndue to Speiser and colleagues (see refs below). The random effects part of\nthe model is produced using blme.\n\nMy questions are:\n1) Is this a bad idea? It involves taking intercepts from one model and\ninserting them into another.\n2) If it is a bad idea, is there an alternative?\n3) If it is a good idea, how is it best executed using a model derived from\nblme? I could find all the parts of the model object containing\nindividual-specific terms and replace them (so far I've counted eight\nvectors in the model object that contain either the individual IDs, or\nvalues fitted to those IDs) , but is there a more elegant solution?\n\nA different approach could be to draw pseudoabsences for each individual\nequal to the number of presences recorded for that animal. That would mean\nthat the ratio of presences to absences was fixed at 0.5 for all\nindividuals. I avoided this in the first instance, because it would mean\nfitting models with few points for some individuals - as few as 5 or 10\npresences so n= presences + absence = 10?20.\n\nMany thanks for any help you can offer, Fiona\n\nReferences\nSpeiser, J. L., et al. (2019). \"BiMM forest: A random forest method for\nmodeling clustered and longitudinal binary outcomes.\" Chemometrics and\nIntelligent Laboratory Systems *185*: 122-134)\n\nSpeiser, J. L. (2021). \"A random forest method with feature selection for\ndeveloping medical prediction models with clustered and longitudinal\ndata.\" Journal\nof Biomedical Informatics *117*: 103763.\n\n\n*Fiona Scarff*\n*Murdoch University*\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello folks,\n\nI have a mixed model that predicts the presence or absence of a species,\ngiven a set of predictors describing habitat. It is based on tracking data\nfrom tagged individual animals, togeth",
+      "thread_id": "thread-52b57b5d4cbd",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-465336fa4b64",
+      "message_id": "<CAP=UNanpAd5+RBLex+UyejJ+YO0=PnCoi6Jz-86t9GAJdQqz+Q@mail.gmail.com>",
+      "from_name": "Fiona Scarff",
+      "from_email_hash": "89f2b07a497703423d8d0f1c19d45a68e756bb2df27d64bed6e77c7c46beb306",
+      "date": "2023-12-14T12:20:22+08:00",
+      "subject": "[R-sig-ME] How to supply random intercepts for new data, blme",
+      "subject_clean": "How to supply random intercepts for new data, blme",
+      "in_reply_to": "<CAP=UNak0Lfakpn=z0ARicMcHj-xDi7CwN4L4O-CxerpPo2ACBw@mail.gmail.com>",
+      "references": [
+        "<CAP=UNak0Lfakpn=z0ARicMcHj-xDi7CwN4L4O-CxerpPo2ACBw@mail.gmail.com>"
+      ],
+      "body_plain": "...Thinking some more about this, it occurs to me that one solution would\nbe to add a predictor consisting of the number of records obtained for each\nindividual, fitting this as a fixed effect. This seems better than trying\nto model a random effect of individual ID, without providing that\ninformation. (It is also more convenient, as the distribution of those\nrecords is not remotely Gaussian in my case). More generally though, I\nwould be interested to know whether it is possible, and good practice, to\nsupply random effects to a model that have been determined by some external\nprocess, such as another model or based on a priori expectations.\n\nBest,\nFiona\n\n*Dr Fiona Scarff*\n*Murdoch University*\n\n\nOn Tue, Dec 12, 2023 at 2:45?PM Fiona Scarff <fiona.scarff.4 at gmail.com>\nwrote:\n\n> Hello folks,\n>\n> I have a mixed model that predicts the presence or absence of a species,\n> given a set of predictors describing habitat. It is based on tracking data\n> from tagged individual animals, together with pseudoabsences sampled from\n> the surrounding area. The model assumes all individuals have the same\n> habitat preferences (i.e. the slope coefficients are represented as fixed\n> effects). By specifying random intercepts per individual, the model\n> accommodates the fact that some individuals were tracked for much longer\n> than others, so that the number of presences relative to pseudoabsences is\n> much higher for some individuals.\n>\n> As part of a cross-validation exercise to assess model accuracy, I would\n> like to make predictions on new data, involving different individuals from\n> other geographic areas. As I already know how long these individuals were\n> tracked for, I would like to supply that information (in the form of fitted\n> random intercepts from a 'global' model fitted to all individuals) to the\n> model for that particular cross validation fold. Otherwise, it seems like\n> the estimate of model accuracy will be unnecessarily pessimistic, since the\n> predictions for each new individual won't take into account whether they\n> were extensively tracked or not.\n>\n> I am using an implementation of binary random forests with mixed effects\n> due to Speiser and colleagues (see refs below). The random effects part of\n> the model is produced using blme.\n>\n> My questions are:\n> 1) Is this a bad idea? It involves taking intercepts from one model and\n> inserting them into another.\n> 2) If it is a bad idea, is there an alternative?\n> 3) If it is a good idea, how is it best executed using a model derived\n> from blme? I could find all the parts of the model object containing\n> individual-specific terms and replace them (so far I've counted eight\n> vectors in the model object that contain either the individual IDs, or\n> values fitted to those IDs) , but is there a more elegant solution?\n>\n> A different approach could be to draw pseudoabsences for each individual\n> equal to the number of presences recorded for that animal. That would mean\n> that the ratio of presences to absences was fixed at 0.5 for all\n> individuals. I avoided this in the first instance, because it would mean\n> fitting models with few points for some individuals - as few as 5 or 10\n> presences so n= presences + absence = 10?20.\n>\n> Many thanks for any help you can offer, Fiona\n>\n> References\n> Speiser, J. L., et al. (2019). \"BiMM forest: A random forest method for\n> modeling clustered and longitudinal binary outcomes.\" Chemometrics and\n> Intelligent Laboratory Systems *185*: 122-134)\n>\n> Speiser, J. L. (2021). \"A random forest method with feature selection for\n> developing medical prediction models with clustered and longitudinal data.\" Journal\n> of Biomedical Informatics *117*: 103763.\n>\n>\n> *Fiona Scarff*\n> *Murdoch University*\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "...Thinking some more about this, it occurs to me that one solution would\nbe to add a predictor consisting of the number of records obtained for each\nindividual, fitting this as a fixed effect. This s",
+      "thread_id": "thread-52b57b5d4cbd",
+      "thread_depth": 1,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-bb1f5f55dfad",
+      "message_id": "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2023-12-16T21:30:32-06:00",
+      "subject": "[R-sig-ME] Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello All,\n\nI have a highly skewed dataset. But, my MODEL of choice below shows\ndrastically improved, normally distributed residuals (and predicted values)\ncompared to other models whose residuals are not modeled.\n\nThree quick questions:\n\n1- Is MODEL below assuming that my data come from a population that looks\nnormal once \"X1_categorical\" and \"X2_numeric\" are taken into account\nas modeled in MODEL?\n\n2- Do these normally distributed predictions work better for a subject\nrandomly drawn from a similarly skewed population with a\nknown \"X1_categorical\" and \"X2_numeric\"?\n\n3- I think the distribution of residuals mirrors that of the data. If so,\nis it correct to say MODEL below is actually **trimming** my highly skewed\ndata as if it was distributed as:\n```\nhist(resid(MODEL, type = \"normalized\"))\n```\n\n MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n         random = ~1| subject,\n         data = data,\n         correlation = corSymm(~1|subject),\n         weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n                                          varPower(form = ~  X2_numeric )))\n\nThanks,\nSimon\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello All,\n\nI have a highly skewed dataset. But, my MODEL of choice below shows\ndrastically improved, normally distributed residuals (and predicted values)\ncompared to other models whose residuals are",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-4a8521b445bf",
+      "message_id": "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2023-12-22T12:10:50-06:00",
+      "subject": "[R-sig-ME]  Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+      "references": [
+        "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>"
+      ],
+      "body_plain": "Hello All,\n\nJust a follow-up, can we say the model I sketched above is a location-scale\nmodel?\n\nThanks,\nSimon\n\nOn Sat, Dec 16, 2023 at 9:30?PM Simon Harmel <sim.harmel at gmail.com> wrote:\n\n> Hello All,\n>\n> I have a highly skewed dataset. But, my MODEL of choice below shows\n> drastically improved, normally distributed residuals (and predicted values)\n> compared to other models whose residuals are not modeled.\n>\n> Three quick questions:\n>\n> 1- Is MODEL below assuming that my data come from a population that looks\n> normal once \"X1_categorical\" and \"X2_numeric\" are taken into account\n> as modeled in MODEL?\n>\n> 2- Do these normally distributed predictions work better for a subject\n> randomly drawn from a similarly skewed population with a\n> known \"X1_categorical\" and \"X2_numeric\"?\n>\n> 3- I think the distribution of residuals mirrors that of the data. If so,\n> is it correct to say MODEL below is actually **trimming** my highly skewed\n> data as if it was distributed as:\n> ```\n> hist(resid(MODEL, type = \"normalized\"))\n> ```\n>\n>  MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n>          random = ~1| subject,\n>          data = data,\n>          correlation = corSymm(~1|subject),\n>          weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n>                                           varPower(form = ~  X2_numeric )))\n>\n> Thanks,\n> Simon\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello All,\n\nJust a follow-up, can we say the model I sketched above is a location-scale\nmodel?\n\nThanks,\nSimon\n\nOn Sat, Dec 16, 2023 at 9:30?PM Simon Harmel <sim.harmel at gmail.com> wrote:\n\n> Hello Al",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 1,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-b1d98810d4bc",
+      "message_id": "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-22T13:30:01-05:00",
+      "subject": "[R-sig-ME]  Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>",
+      "references": [
+        "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+        "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>"
+      ],
+      "body_plain": "This slipped through the cracks.\n\nOn 2023-12-22 1:10 p.m., Simon Harmel wrote:\n> Hello All,\n> \n> Just a follow-up, can we say the model I sketched above is a location-scale\n> model?\n> \n> Thanks,\n> Simon\n> \n> On Sat, Dec 16, 2023 at 9:30?PM Simon Harmel <sim.harmel at gmail.com> wrote:\n> \n>> Hello All,\n>>\n>> I have a highly skewed dataset.\n\n   As may have been said before, the *marginal* distribution of your \ndata set (e.g., what you get if you plot hist(y)) is irrelevant/doesn't \nmatter at all (the models make no assumptions about the marginal \ndistribution)\n\n  But, my MODEL of choice below shows\n>> drastically improved, normally distributed residuals (and predicted values)\n>> compared to other models whose residuals are not modeled.\n>>\n>> Three quick questions:\n>>\n>> 1- Is MODEL below assuming that my data come from a population that looks\n>> normal once \"X1_categorical\" and \"X2_numeric\" are taken into account\n>> as modeled in MODEL?\n\n   Yes, the *conditional distribution* of y is Gaussian (but not IID \nbecause you have specified correlation and variance (weights) structures).\n\n\n>> 2- Do these normally distributed predictions work better for a subject\n>> randomly drawn from a similarly skewed population with a\n>> known \"X1_categorical\" and \"X2_numeric\"?\n\n   Don't think I understand what this means.\n\n>> 3- I think the distribution of residuals mirrors that of the data. If so,\n>> is it correct to say MODEL below is actually **trimming** my highly skewed\n>> data as if it was distributed as:\n\n   That seems an odd way to put it.  I would say that, if the residuals \nlook Normally distributed, that means that the covariates in the model \nare accounting for the skew.\n\nHere's an example of a dataset where the marginal distribution is \nheavily skewed but the conditional distribution is (exactly) Normal:\n\nset.seed(101)\nx <- rgamma(1000, shape = 1)\ny <- rnorm(1000, mean = x, sd = 0.1)\nhist(y)\n\nqqnorm(residuals(lm(y~x)))\n\n   Heteroscedasticity (but not autocorrelation) will also change the \ndistribution of the residuals, but I don't think it's necessary to \nillustrate the point here.\n\n   I think it would be fair to call this a location-scale model since \nyou are modeling both the location (mean) and the scale (SD/variance), \nalthough often people use the term for models where there is a random \neffect in both the location and the scale model.\n\n\n\n\n\n>> ```\n>> hist(resid(MODEL, type = \"normalized\"))\n>> ```\n>>\n>>   MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n>>           random = ~1| subject,\n>>           data = data,\n>>           correlation = corSymm(~1|subject),\n>>           weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n>>                                            varPower(form = ~  X2_numeric )))\n>>\n>> Thanks,\n>> Simon\n>>\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "This slipped through the cracks.\n\nOn 2023-12-22 1:10 p.m., Simon Harmel wrote:\n> Hello All,\n> \n> Just a follow-up, can we say the model I sketched above is a location-scale\n> model?\n> \n> Thanks,\n> Sim",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 2,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-970b5ad501f9",
+      "message_id": "<76EAB835-EC72-4AB0-A0E5-435F48B46508@usc.edu>",
+      "from_name": "Claire Campbell",
+      "from_email_hash": "79e035e1035e9d85e7f9062ada522b1a4417d39502976f6853dbff96b9a1887b",
+      "date": "2023-12-22T12:00:35-08:00",
+      "subject": "[R-sig-ME] Unstructured Covariance Structure for lmer()",
+      "subject_clean": "Unstructured Covariance Structure for lmer()",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi -\nI was wondering how to implement an unstructured covariance structure in lmer(), is there code for that?\nThank you!\n\n\n--\n\nClaire Campbell\nNeuroscience PhD Candidate\nF31 NRSA Predoctoral Fellow\nHerting Neuroimaging Lab\n\nUSC Keck School of Medicine\nDepartment of Population and Public Health Sciences\nLos Angeles, CA, USA\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi -\nI was wondering how to implement an unstructured covariance structure in lmer(), is there code for that?\nThank you!\n\n\n--\n\nClaire Campbell\nNeuroscience PhD Candidate\nF31 NRSA Predoctoral Fellow\nHe",
+      "thread_id": "thread-970b5ad501f9",
+      "thread_depth": 0,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-4e350cd88982",
+      "message_id": "<86ea46f9-3d23-41ae-b9c8-ddecc8440cba@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-22T15:42:07-05:00",
+      "subject": "[R-sig-ME] Unstructured Covariance Structure for lmer()",
+      "subject_clean": "Unstructured Covariance Structure for lmer()",
+      "in_reply_to": "<76EAB835-EC72-4AB0-A0E5-435F48B46508@usc.edu>",
+      "references": [
+        "<76EAB835-EC72-4AB0-A0E5-435F48B46508@usc.edu>"
+      ],
+      "body_plain": "\"Unstructured\" (aka 'general positive (semi)definite') covariance \nmatrices are the *only* option in lme4.  If you give a little bit more \ndetail/context about what you want to do, we may be able to help you better.\n\nOn 2023-12-22 3:00 p.m., Claire Campbell wrote:\n> Hi -\n> I was wondering how to implement an unstructured covariance structure in lmer(), is there code for that?\n> Thank you!\n> \n> \n> --\n> \n> Claire Campbell\n> Neuroscience PhD Candidate\n> F31 NRSA Predoctoral Fellow\n> Herting Neuroimaging Lab\n> \n> USC Keck School of Medicine\n> Department of Population and Public Health Sciences\n> Los Angeles, CA, USA\n> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "\"Unstructured\" (aka 'general positive (semi)definite') covariance \nmatrices are the *only* option in lme4.  If you give a little bit more \ndetail/context about what you want to do, we may be able to h",
+      "thread_id": "thread-970b5ad501f9",
+      "thread_depth": 1,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-6a4d12fca33a",
+      "message_id": "<CACgv6yU-pMdE-rLkNKx4muJ_h7XYBLvERrnUDe-n8=dLNBDkhQ@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2023-12-22T15:50:20-06:00",
+      "subject": "[R-sig-ME]  Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>",
+      "references": [
+        "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+        "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>",
+        "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>"
+      ],
+      "body_plain": "Dear Ben,\n\nThese are exactly what I was looking for! Thank you so much. Please allow\nme to clarify my 2nd question.\n\nWhen I compare predict(MODEL) with predict(model_with_no_resid_modeled),\nthe former looks quite normal and unimodal in shape but the latter looks\nmulti-model (see the illustration below).\n\nThis made me think: should a good-fitting model produce normally\ndistributed predicted values? And does such a model do a better job of\npredicting the value of random draw from the y population?\n               *\n            * * *\n       * * * * * * *\n   * * * * * * * * * *\n* * * * * * * * * * * *\n-------------------------  vs:\n                        *\n                      * *\n      *             * * *\n   * *   * *     * * * *\n* * * * * * * * * * * *\n-------------------------\n\nOn Fri, Dec 22, 2023 at 12:30?PM Ben Bolker <bbolker at gmail.com> wrote:\n\n>    This slipped through the cracks.\n>\n> On 2023-12-22 1:10 p.m., Simon Harmel wrote:\n> > Hello All,\n> >\n> > Just a follow-up, can we say the model I sketched above is a\n> location-scale\n> > model?\n> >\n> > Thanks,\n> > Simon\n> >\n> > On Sat, Dec 16, 2023 at 9:30?PM Simon Harmel <sim.harmel at gmail.com>\n> wrote:\n> >\n> >> Hello All,\n> >>\n> >> I have a highly skewed dataset.\n>\n>    As may have been said before, the *marginal* distribution of your\n> data set (e.g., what you get if you plot hist(y)) is irrelevant/doesn't\n> matter at all (the models make no assumptions about the marginal\n> distribution)\n>\n>   But, my MODEL of choice below shows\n> >> drastically improved, normally distributed residuals (and predicted\n> values)\n> >> compared to other models whose residuals are not modeled.\n> >>\n> >> Three quick questions:\n> >>\n> >> 1- Is MODEL below assuming that my data come from a population that\n> looks\n> >> normal once \"X1_categorical\" and \"X2_numeric\" are taken into account\n> >> as modeled in MODEL?\n>\n>    Yes, the *conditional distribution* of y is Gaussian (but not IID\n> because you have specified correlation and variance (weights) structures).\n>\n>\n> >> 2- Do these normally distributed predictions work better for a subject\n> >> randomly drawn from a similarly skewed population with a\n> >> known \"X1_categorical\" and \"X2_numeric\"?\n>\n>    Don't think I understand what this means.\n>\n> >> 3- I think the distribution of residuals mirrors that of the data. If\n> so,\n> >> is it correct to say MODEL below is actually **trimming** my highly\n> skewed\n> >> data as if it was distributed as:\n>\n>    That seems an odd way to put it.  I would say that, if the residuals\n> look Normally distributed, that means that the covariates in the model\n> are accounting for the skew.\n>\n> Here's an example of a dataset where the marginal distribution is\n> heavily skewed but the conditional distribution is (exactly) Normal:\n>\n> set.seed(101)\n> x <- rgamma(1000, shape = 1)\n> y <- rnorm(1000, mean = x, sd = 0.1)\n> hist(y)\n>\n> qqnorm(residuals(lm(y~x)))\n>\n>    Heteroscedasticity (but not autocorrelation) will also change the\n> distribution of the residuals, but I don't think it's necessary to\n> illustrate the point here.\n>\n>    I think it would be fair to call this a location-scale model since\n> you are modeling both the location (mean) and the scale (SD/variance),\n> although often people use the term for models where there is a random\n> effect in both the location and the scale model.\n>\n>\n>\n>\n>\n> >> ```\n> >> hist(resid(MODEL, type = \"normalized\"))\n> >> ```\n> >>\n> >>   MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n> >>           random = ~1| subject,\n> >>           data = data,\n> >>           correlation = corSymm(~1|subject),\n> >>           weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n> >>                                            varPower(form = ~\n> X2_numeric )))\n> >>\n> >> Thanks,\n> >> Simon\n> >>\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> (Acting) Graduate chair, Mathematics & Statistics\n>  > E-mail is sent at my convenience; I don't expect replies outside of\n> working hours.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Ben,\n\nThese are exactly what I was looking for! Thank you so much. Please allow\nme to clarify my 2nd question.\n\nWhen I compare predict(MODEL) with predict(model_with_no_resid_modeled),\nthe former",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 3,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-d7355f9d3462",
+      "message_id": "<099e162e-0a4b-42ab-aac0-4fd307a24503@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2023-12-22T17:07:13-05:00",
+      "subject": "[R-sig-ME]  Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": "<CACgv6yU-pMdE-rLkNKx4muJ_h7XYBLvERrnUDe-n8=dLNBDkhQ@mail.gmail.com>",
+      "references": [
+        "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+        "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>",
+        "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>",
+        "<CACgv6yU-pMdE-rLkNKx4muJ_h7XYBLvERrnUDe-n8=dLNBDkhQ@mail.gmail.com>"
+      ],
+      "body_plain": "On 2023-12-22 4:50 p.m., Simon Harmel wrote:\n> Dear?Ben,\n> \n> These are exactly what I was?looking for! Thank you so much. Please \n> allow me to clarify my 2nd?question.\n> \n> When I compare predict(MODEL) with predict(model_with_no_resid_modeled), \n> the former looks quite normal and unimodal in shape but the latter looks \n> multi-model (see the illustration below).\n> \n> This made me think: should a good-fitting model produce normally \n> distributed predicted values? And does such a model do a better?job of \n> predicting?the value?of random draw?from the y population?\n\n     Ideally the *marginal* (overall) distribution of *predictions* \nshould match the marginal distribution of the response variable (this is \nwhat the 'posterior predictive check' panel of \nperformance::check_model() does).  If the marginal distribution of your \ndata is skewed, then the marginal distribution of your prediction should \nbe skewed in the same way -- if it's not, then it's not doing a good job \ndescribing the data.\n\nm <- lm(mpg ~ cyl + disp, mtcars)\nperformance::check_model(m, check = \"pp_check\")\n\n   This is a different story from the *residuals* (which tell you \nsomething about the conditional distribution, not the marginal \ndistribution ...)\n\n\n>  ? ? ? ? ? ? ? ?*\n>  ? ? ? ? ? ? * * *\n>  ? ? ? ?* * * * * * *\n>  ? ?* * * * * * * * * *\n> * * * * * * * * * * * *\n> -------------------------? vs:\n>  ? ? ? ? ? ? ? ? ? ? ? ? *\n>  ? ? ? ? ? ? ? ? ? ? ? * *\n>  ? ? ? *? ? ? ? ? ? ?* * *\n>  ? ?* *? ?* *? ? ?* * * *\n> * * * * * * * * * * * *\n> -------------------------\n> \n> On Fri, Dec 22, 2023 at 12:30?PM Ben Bolker <bbolker at gmail.com \n> <mailto:bbolker at gmail.com>> wrote:\n> \n>      ? ?This slipped through the cracks.\n> \n>     On 2023-12-22 1:10 p.m., Simon Harmel wrote:\n>      > Hello All,\n>      >\n>      > Just a follow-up, can we say the model I sketched above is a\n>     location-scale\n>      > model?\n>      >\n>      > Thanks,\n>      > Simon\n>      >\n>      > On Sat, Dec 16, 2023 at 9:30?PM Simon Harmel\n>     <sim.harmel at gmail.com <mailto:sim.harmel at gmail.com>> wrote:\n>      >\n>      >> Hello All,\n>      >>\n>      >> I have a highly skewed dataset.\n> \n>      ? ?As may have been said before, the *marginal* distribution of your\n>     data set (e.g., what you get if you plot hist(y)) is irrelevant/doesn't\n>     matter at all (the models make no assumptions about the marginal\n>     distribution)\n> \n>      ? But, my MODEL of choice below shows\n>      >> drastically improved, normally distributed residuals (and\n>     predicted values)\n>      >> compared to other models whose residuals are not modeled.\n>      >>\n>      >> Three quick questions:\n>      >>\n>      >> 1- Is MODEL below assuming that my data come from a population\n>     that looks\n>      >> normal once \"X1_categorical\" and \"X2_numeric\" are taken into account\n>      >> as modeled in MODEL?\n> \n>      ? ?Yes, the *conditional distribution* of y is Gaussian (but not IID\n>     because you have specified correlation and variance (weights)\n>     structures).\n> \n> \n>      >> 2- Do these normally distributed predictions work better for a\n>     subject\n>      >> randomly drawn from a similarly skewed population with a\n>      >> known \"X1_categorical\" and \"X2_numeric\"?\n> \n>      ? ?Don't think I understand what this means.\n> \n>      >> 3- I think the distribution of residuals mirrors that of the\n>     data. If so,\n>      >> is it correct to say MODEL below is actually **trimming** my\n>     highly skewed\n>      >> data as if it was distributed as:\n> \n>      ? ?That seems an odd way to put it.? I would say that, if the\n>     residuals\n>     look Normally distributed, that means that the covariates in the model\n>     are accounting for the skew.\n> \n>     Here's an example of a dataset where the marginal distribution is\n>     heavily skewed but the conditional distribution is (exactly) Normal:\n> \n>     set.seed(101)\n>     x <- rgamma(1000, shape = 1)\n>     y <- rnorm(1000, mean = x, sd = 0.1)\n>     hist(y)\n> \n>     qqnorm(residuals(lm(y~x)))\n> \n>      ? ?Heteroscedasticity (but not autocorrelation) will also change the\n>     distribution of the residuals, but I don't think it's necessary to\n>     illustrate the point here.\n> \n>      ? ?I think it would be fair to call this a location-scale model since\n>     you are modeling both the location (mean) and the scale (SD/variance),\n>     although often people use the term for models where there is a random\n>     effect in both the location and the scale model.\n> \n> \n> \n> \n> \n>      >> ```\n>      >> hist(resid(MODEL, type = \"normalized\"))\n>      >> ```\n>      >>\n>      >>? ?MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n>      >>? ? ? ? ? ?random = ~1| subject,\n>      >>? ? ? ? ? ?data = data,\n>      >>? ? ? ? ? ?correlation = corSymm(~1|subject),\n>      >>? ? ? ? ? ?weights = varComb(varIdent(form = ~ 1 |? X1_categorical ),\n>      >>? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? varPower(form = ~ \n>     X2_numeric )))\n>      >>\n>      >> Thanks,\n>      >> Simon\n>      >>\n>      >\n>      >? ? ? ?[[alternative HTML version deleted]]\n>      >\n>      > _______________________________________________\n>      > R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>      > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> \n>     -- \n>     Dr. Benjamin Bolker\n>     Professor, Mathematics & Statistics and Biology, McMaster University\n>     Director, School of Computational Science and Engineering\n>     (Acting) Graduate chair, Mathematics & Statistics\n>      ?> E-mail is sent at my convenience; I don't expect replies outside of\n>     working hours.\n> \n>     _______________________________________________\n>     R-sig-mixed-models at r-project.org\n>     <mailto:R-sig-mixed-models at r-project.org> mailing list\n>     https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>     <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> \n\n-- \nDr. Benjamin Bolker\nProfessor, Mathematics & Statistics and Biology, McMaster University\nDirector, School of Computational Science and Engineering\n(Acting) Graduate chair, Mathematics & Statistics\n > E-mail is sent at my convenience; I don't expect replies outside of \nworking hours.",
+      "body_snippet": "On 2023-12-22 4:50 p.m., Simon Harmel wrote:\n> Dear?Ben,\n> \n> These are exactly what I was?looking for! Thank you so much. Please \n> allow me to clarify my 2nd?question.\n> \n> When I compare predict(MO",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 4,
+      "month": "2023-12"
+    },
+    {
+      "id": "msg-00ad1f8edf8f",
+      "message_id": "<CACgv6yWYg-TX8bLj7R_0qbayJ_11LTxqzBXMKSaKu_QJSsRhMA@mail.gmail.com>",
+      "from_name": "Simon Harmel",
+      "from_email_hash": "b2479c2043c7e11b87d7b142a228829c7cb76ea995058d0d0fcb40d9482a34d4",
+      "date": "2023-12-24T22:55:47-06:00",
+      "subject": "[R-sig-ME]  Implications of modeling residuals in multilevel models",
+      "subject_clean": "Implications of modeling residuals in multilevel models",
+      "in_reply_to": "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>",
+      "references": [
+        "<CACgv6yV1_fXFD8LfEP+U+Jvz2=_G7ZpGQ=StH86JvqOdxqRZ0A@mail.gmail.com>",
+        "<CACgv6yU3o-BP+GNeTX4j+Gz-4P7J68Axshkb+4b+18Jh9mRQNg@mail.gmail.com>",
+        "<4c12b847-328a-459c-9bd3-08b8099b072d@gmail.com>"
+      ],
+      "body_plain": "Dear Ben,\n\nA question regarding your response is inline below.\n\n### I think it would be fair to call this a location-scale model since\nyou are modeling both the location (mean) and the scale (SD/variance),\nalthough often people use the term for models where there is a random\neffect in both the location and the scale model.\n\nQ: Usually for the scale part of a location-scale model, the linear model\nuses a logarithmic link to guarantee that the estimate of scale is positive:\n\nlog(scale_i) = a_0 + b_1*x_i1+ ... + b_n*x_ip  (for p predictors of scale)\n\nBut in the MODEL that I sketched below, how such a guarantee is made?\n\nMODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n         random = ~1| subject,\n         data = data,\n         correlation = corSymm(~1|subject),\n         weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n                                          varPower(form = ~  X2_numeric )))\n\nThanks, Simon\n\nOn Fri, Dec 22, 2023 at 12:30?PM Ben Bolker <bbolker at gmail.com> wrote:\n\n>    This slipped through the cracks.\n>\n> On 2023-12-22 1:10 p.m., Simon Harmel wrote:\n> > Hello All,\n> >\n> > Just a follow-up, can we say the model I sketched above is a\n> location-scale\n> > model?\n> >\n> > Thanks,\n> > Simon\n> >\n> > On Sat, Dec 16, 2023 at 9:30?PM Simon Harmel <sim.harmel at gmail.com>\n> wrote:\n> >\n> >> Hello All,\n> >>\n> >> I have a highly skewed dataset.\n>\n>    As may have been said before, the *marginal* distribution of your\n> data set (e.g., what you get if you plot hist(y)) is irrelevant/doesn't\n> matter at all (the models make no assumptions about the marginal\n> distribution)\n>\n>   But, my MODEL of choice below shows\n> >> drastically improved, normally distributed residuals (and predicted\n> values)\n> >> compared to other models whose residuals are not modeled.\n> >>\n> >> Three quick questions:\n> >>\n> >> 1- Is MODEL below assuming that my data come from a population that\n> looks\n> >> normal once \"X1_categorical\" and \"X2_numeric\" are taken into account\n> >> as modeled in MODEL?\n>\n>    Yes, the *conditional distribution* of y is Gaussian (but not IID\n> because you have specified correlation and variance (weights) structures).\n>\n>\n> >> 2- Do these normally distributed predictions work better for a subject\n> >> randomly drawn from a similarly skewed population with a\n> >> known \"X1_categorical\" and \"X2_numeric\"?\n>\n>    Don't think I understand what this means.\n>\n> >> 3- I think the distribution of residuals mirrors that of the data. If\n> so,\n> >> is it correct to say MODEL below is actually **trimming** my highly\n> skewed\n> >> data as if it was distributed as:\n>\n>    That seems an odd way to put it.  I would say that, if the residuals\n> look Normally distributed, that means that the covariates in the model\n> are accounting for the skew.\n>\n> Here's an example of a dataset where the marginal distribution is\n> heavily skewed but the conditional distribution is (exactly) Normal:\n>\n> set.seed(101)\n> x <- rgamma(1000, shape = 1)\n> y <- rnorm(1000, mean = x, sd = 0.1)\n> hist(y)\n>\n> qqnorm(residuals(lm(y~x)))\n>\n>    Heteroscedasticity (but not autocorrelation) will also change the\n> distribution of the residuals, but I don't think it's necessary to\n> illustrate the point here.\n>\n>    I think it would be fair to call this a location-scale model since\n> you are modeling both the location (mean) and the scale (SD/variance),\n> although often people use the term for models where there is a random\n> effect in both the location and the scale model.\n>\n>\n>\n>\n>\n> >> ```\n> >> hist(resid(MODEL, type = \"normalized\"))\n> >> ```\n> >>\n> >>   MODEL <- nlme::lme(y ~ X1_categorical + X2_numeric ...,\n> >>           random = ~1| subject,\n> >>           data = data,\n> >>           correlation = corSymm(~1|subject),\n> >>           weights = varComb(varIdent(form = ~ 1 |  X1_categorical ),\n> >>                                            varPower(form = ~\n> X2_numeric )))\n> >>\n> >> Thanks,\n> >> Simon\n> >>\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n> Dr. Benjamin Bolker\n> Professor, Mathematics & Statistics and Biology, McMaster University\n> Director, School of Computational Science and Engineering\n> (Acting) Graduate chair, Mathematics & Statistics\n>  > E-mail is sent at my convenience; I don't expect replies outside of\n> working hours.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Ben,\n\nA question regarding your response is inline below.\n\n### I think it would be fair to call this a location-scale model since\nyou are modeling both the location (mean) and the scale (SD/varia",
+      "thread_id": "thread-bb1f5f55dfad",
+      "thread_depth": 3,
+      "month": "2023-12"
+    },
+    {
       "id": "msg-a45c4d30a26f",
       "message_id": "<YT4PR01MB9832490C244D2DB3A09A640FA363A@YT4PR01MB9832.CANPRD01.PROD.OUTLOOK.COM>",
       "from_name": "Meaghan Rupprecht",
@@ -39,6 +261,63 @@
     }
   ],
   "threads": [
+    {
+      "id": "thread-20975d6ba4f3",
+      "subject": "how to cite github resources'",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2023-12-01T16:48:09-05:00",
+      "last_reply": "2023-12-01T16:48:09-05:00",
+      "root_message_id": "msg-20975d6ba4f3"
+    },
+    {
+      "id": "thread-95649ea0f6da",
+      "subject": "how to cite github resources'",
+      "message_count": 1,
+      "participants": [
+        "Ben Bolker"
+      ],
+      "started": "2023-12-07T18:34:18-05:00",
+      "last_reply": "2023-12-07T18:34:18-05:00",
+      "root_message_id": "msg-95649ea0f6da"
+    },
+    {
+      "id": "thread-52b57b5d4cbd",
+      "subject": "How to supply random intercepts for new data, blme",
+      "message_count": 2,
+      "participants": [
+        "Fiona Scarff"
+      ],
+      "started": "2023-12-12T14:45:25+08:00",
+      "last_reply": "2023-12-14T12:20:22+08:00",
+      "root_message_id": "msg-52b57b5d4cbd"
+    },
+    {
+      "id": "thread-bb1f5f55dfad",
+      "subject": "Implications of modeling residuals in multilevel models",
+      "message_count": 6,
+      "participants": [
+        "Ben Bolker",
+        "Simon Harmel"
+      ],
+      "started": "2023-12-16T21:30:32-06:00",
+      "last_reply": "2023-12-24T22:55:47-06:00",
+      "root_message_id": "msg-bb1f5f55dfad"
+    },
+    {
+      "id": "thread-970b5ad501f9",
+      "subject": "Unstructured Covariance Structure for lmer()",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "Claire Campbell"
+      ],
+      "started": "2023-12-22T12:00:35-08:00",
+      "last_reply": "2023-12-22T15:42:07-05:00",
+      "root_message_id": "msg-970b5ad501f9"
+    },
     {
       "id": "thread-a45c4d30a26f",
       "subject": "GAMM (gamm4) warning: Hessian vs. RX var-cov",
