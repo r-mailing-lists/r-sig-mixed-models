@@ -4,25 +4,6 @@
   "month": "2009-04",
   "messages": [
     {
-      "id": "msg-af079daa142a",
-      "message_id": "<49D28F7E.9040007@stat.auckland.ac.nz>",
-      "from_name": "Russell Millar",
-      "from_email_hash": "ae70c8e7e7f1758178113b2ebe3781841289324d968baddfe939ca067e50ecdc",
-      "date": "2009-04-01T10:47:42+13:00",
-      "subject": "[R-sig-ME] Incorrect std errors from nlmer?",
-      "subject_clean": "Incorrect std errors from nlmer?",
-      "in_reply_to": "<40e66e0b0903311254x39e25ca2l1bb3030385487dca@mail.gmail.com>",
-      "references": [
-        "<1389.125.237.187.150.1238487090.squirrel@www.stat.auckland.ac.nz>",
-        "<40e66e0b0903311254x39e25ca2l1bb3030385487dca@mail.gmail.com>"
-      ],
-      "body_plain": "Thanks for that, but I do notice that the point estimates have now changed.\nThe laplace method (ADMB), quadrature (SAS), and simulated likelihood \n(Millar, 2004, Aust&NZ J. Stat)\nall produce the same ML point estimates (to at least 4 sig places) that \nthe current nlmer is finding.\nIs the development version doing something different?\n\nRegards,\n\nRussell Millar\n> On Tue, Mar 31, 2009 at 3:11 AM,  <r.millar at auckland.ac.nz> wrote:\n>   \n>> Hi All,\n>>     \n>\n>   \n>> I just copied and paste the example nlmer code from the lmer help file\n>> (see below), which fits the logistic to the orange tree data.\n>> The point estimates of the fixed effects look correct, but the s.e.'s\n>> are not (I've fitted the model using three other software). The s.e. of\n>> Asym is way out (it should be about 15), as is the tree effect variance\n>> (should be about 1000)??????\n>>     \n>\n> You're right.  I was kind of hoping that people wouldn't notice that :-)\n>\n> This is corrected in the development version, which uses a slightly\n> different syntax in the model formula (all fixed-effects terms must be\n> explicitly included).  I won't have the development version ready for\n> release soon so I should go back and fix that in the released version.\n>  Unfortunately, it will probably be a week before I can look at it.\n> If someone can produce a patch I would greatly appreciate it.\n>\n> Here is what the development version produces.\n>\n>   \n>> (nm1 <- nlmer(circumference ~ SSlogis(age, Asym, xmid, scal) ~ Asym + xmid + scal + (Asym|Tree), Orange, start = c(Asym = 200, xmid = 725, scal = 350)))\n>>     \n> Nonlinear mixed model fit by the Laplace approximation\n> Formula: circumference ~ SSlogis(age, Asym, xmid, scal) ~ Asym + xmid\n> +      scal + (Asym | Tree)\n>    Data: Orange\n>    AIC   BIC logLik deviance\n>  273.2 280.9 -131.6    263.2\n> Random effects:\n>  Groups   Name Variance Std.Dev.\n>  Tree     Asym 1000.911 31.637\n>  Residual        61.466  7.840\n> Number of obs: 35, groups: Tree, 5\n>\n> Fixed effects:\n>      Estimate Std. Error t value\n> Asym   191.06      15.51   12.32\n> xmid   722.61      33.59   21.51\n> scal   344.20      25.94   13.27\n>\n> Correlation of Fixed Effects:\n>      Asym  xmid\n> xmid 0.373\n> scal 0.353 0.755\n>\n>\n>   \n>> Regards,\n>>\n>> Russell Millar\n>> U. Auckland\n>>\n>>     \n>>> (nm1 <- nlmer(circumference ~ SSlogis(age, Asym, xmid, scal) ~ Asym|Tree,\n>>>       \n>> +               Orange, start = c(Asym = 200, xmid = 725, scal = 350)))\n>> Nonlinear mixed model fit by the Laplace approximation\n>> Formula: circumference ~ SSlogis(age, Asym, xmid, scal) ~ Asym | Tree\n>>   Data: Orange\n>>  AIC  BIC logLik deviance\n>>  1901 1908 -945.3     1891\n>> Random effects:\n>>  Groups   Name Variance  Std.Dev.\n>>  Tree     Asym 53985.920 232.349\n>>  Residual         52.868   7.271\n>> Number of obs: 35, groups: Tree, 5\n>>\n>> Fixed effects:\n>>     Estimate Std. Error t value\n>> Asym   192.04     104.09   1.845\n>> xmid   727.89      31.97  22.771\n>> scal   347.97      24.42  14.252\n>>\n>> Correlation of Fixed Effects:\n>>     Asym  xmid\n>> xmid 0.053\n>> scal 0.050 0.763\n>>\n>>\n>>     \n>>> sessionInfo()\n>>>       \n>> R version 2.8.1 (2008-12-22)\n>> i386-pc-mingw32\n>>\n>> locale:\n>> LC_COLLATE=English_New Zealand.1252;LC_CTYPE=English_New\n>> Zealand.1252;LC_MONETARY=English_New\n>> Zealand.1252;LC_NUMERIC=C;LC_TIME=English_New Zealand.1252\n>>\n>> attached base packages:\n>> [1] stats     graphics  grDevices utils     datasets  methods   base\n>>\n>> other attached packages:\n>> [1] lme4_0.999375-28   Matrix_0.999375-22 lattice_0.17-20\n>>\n>> loaded via a namespace (and not attached):\n>> [1] grid_2.8.1  tools_2.8.1\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>",
-      "body_snippet": "Thanks for that, but I do notice that the point estimates have now changed.\nThe laplace method (ADMB), quadrature (SAS), and simulated likelihood \n(Millar, 2004, Aust&NZ J. Stat)\nall produce the same ",
-      "thread_id": "thread-af079daa142a",
-      "thread_depth": 0,
-      "month": "2009-04"
-    },
-    {
       "id": "msg-0cc7b140fce9",
       "message_id": "<D82F7938-6C25-40B2-A935-D39D9B0D46E5@auckland.ac.nz>",
       "from_name": "Rolf Turner",
@@ -1989,17 +1970,6 @@
       "started": "2009-04-01T10:04:16+08:00",
       "last_reply": "2009-04-01T10:04:16+08:00",
       "root_message_id": "msg-90af6c2bc3a5"
-    },
-    {
-      "id": "thread-af079daa142a",
-      "subject": "Incorrect std errors from nlmer?",
-      "message_count": 1,
-      "participants": [
-        "Russell Millar"
-      ],
-      "started": "2009-04-01T10:47:42+13:00",
-      "last_reply": "2009-04-01T10:47:42+13:00",
-      "root_message_id": "msg-af079daa142a"
     },
     {
       "id": "thread-9177252e61b6",

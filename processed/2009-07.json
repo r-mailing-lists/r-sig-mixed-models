@@ -108,6 +108,24 @@
       "month": "2009-07"
     },
     {
+      "id": "msg-fb0ff9fbfe85",
+      "message_id": "<40e66e0b0907040958q1333a635g9d3f9f8a79ca8c9a@mail.gmail.com>",
+      "from_name": "Douglas Bates",
+      "from_email_hash": "c908588836123be177df15f4b3132be3a2b4b95c4eaeddcc72b433a3981bb1b3",
+      "date": "2009-07-04T18:58:46+02:00",
+      "subject": "[R-sig-ME] [R] 'singularity' between fixed effect and random factor in mixed model",
+      "subject_clean": "'singularity' between fixed effect and random factor in mixed model",
+      "in_reply_to": "<h2gssa$ofc$1@ger.gmane.org>",
+      "references": [
+        "<h2gssa$ofc$1@ger.gmane.org>"
+      ],
+      "body_plain": "On Thu, Jul 2, 2009 at 1:52 AM, Thomas Mang<thomas.mang at fiwi.at> wrote:\n> Hi,\n\n> I just came across the following issue regarding mixed effects models:\n> In a longitudinal study individuals (variable ind) are observed for some\n> response variable. One explanatory variable, f, entering the model as fixed\n> effect, is a (2-level) factor. The expression of that factor is constant for\n> each individual across time (say, the sex of the individual). ind enters the\n> model as grouping variable for random effects. So in a simple form, the\n> formula could look like:\n> y ~ f + ... + (1|ind)\n> [and in the simplest model, the ellipsis is simply nothing]\n\n> To me, this seems not to be an unusual design at all.\n\n> However, the indicator matrix consisting of f and ind - say if ind had\n> entered the model as fixed effect - shows a singularity.\n\nYes.\n\n> My question is now\n> what will this 'singularity' cause in a mixed-effects model ? I admit, I\n> have never fully understood how the fitting of mixed-effects models happen\n> internally (whether REML or ML) [so I am not even sure if it can be called a\n> 'singularity'].\n\nYou do not encounter a singularity in solving for the conditional\nmeans of the random effects and the conditional estimates of the fixed\neffects because there is a penalty assigned to the size of the random\neffects vector.  This removes the ill-conditioning of the least\nsquares problem.  It is sometimes called \"regularization\" of the\nestimation.\n\nShould you wish to find out what does go on inside the lmer function\nfor REML or ML estimation of the parameters in a linear mixed model,\nyou can check out the slides from a short course that I just finished\nat the University of Lausanne.  Go to\n\nhttp://lme4.R-forge.R-project.org/slides\n\nand click on the link \"2009-07-01-Lausanne\".  The display version of\nthe slides for the theory section, 6TheoryD.pdf, is the best\nexplanation I have yet been able to formulate for the theory.  The\nimportant thing to note is that in the penalized linear least squares\nproblem the predictions for the \"pseudo-observations\" are affected by\nthe random effects but not by the fixed-effects.\n\n\n\n> Specifically, does it make the fit numerically more unstable? Would the\n> degree of this depend on other variables of the model? Is the issue of\n> degrees of freedom - complicated enough anyway for mixed models - further\n> inflated by that? Have statistical inferences regarding the fixed effect be\n> treated more carefully? Is the general situation something that should be\n> avoided ?\n>\n> many thanks in advance for any insights and cheers,\n> Thomas\n>\n> ______________________________________________\n> R-help at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-help\n> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n> and provide commented, minimal, self-contained, reproducible code.\n>",
+      "body_snippet": "On Thu, Jul 2, 2009 at 1:52 AM, Thomas Mang<thomas.mang at fiwi.at> wrote:\n> Hi,\n\n> I just came across the following issue regarding mixed effects models:\n> In a longitudinal study individuals (variab",
+      "thread_id": "thread-fb0ff9fbfe85",
+      "thread_depth": 0,
+      "month": "2009-07"
+    },
+    {
       "id": "msg-4b43a5995a3c",
       "message_id": "<4A4F91CB.2010901@sbg.ac.at>",
       "from_name": "Andy Fugard",
@@ -1920,6 +1938,17 @@
       "started": "2009-07-03T15:27:17+02:00",
       "last_reply": "2009-07-03T15:27:17+02:00",
       "root_message_id": "msg-56bbaa310a04"
+    },
+    {
+      "id": "thread-fb0ff9fbfe85",
+      "subject": "'singularity' between fixed effect and random factor in mixed model",
+      "message_count": 1,
+      "participants": [
+        "Douglas Bates"
+      ],
+      "started": "2009-07-04T18:58:46+02:00",
+      "last_reply": "2009-07-04T18:58:46+02:00",
+      "root_message_id": "msg-fb0ff9fbfe85"
     },
     {
       "id": "thread-fb0ff9fbfe85",
