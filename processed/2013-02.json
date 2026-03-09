@@ -2308,22 +2308,6 @@
       "month": "2013-02"
     },
     {
-      "id": "msg-d52db62a9fc2",
-      "message_id": "<5127FA87.9030707@biostat.ucsf.edu>",
-      "from_name": "Ross Boylan",
-      "from_email_hash": "78e03be59d28548d4fb6638b762e5784b40f8a33a50a5dd7ca221f117b700020",
-      "date": "2013-02-24T13:26:50-08:00",
-      "subject": "[R-sig-ME] glmer:  Downdated X'X is not positive definite",
-      "subject_clean": "glmer:  Downdated X'X is not positive definite",
-      "in_reply_to": null,
-      "references": [],
-      "body_plain": "> r2 <- glmer(sa~(1|id), data=sexpartner, family=poisson(), nAGQ=6)\nError in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\nRunning a closely related (specifically, the outcome variables match on \nmissings)\n > r <- glmer(pAnyUAVI~pIsMale+pEthnic+(1|studyidx), data=sexpartner,\n   family=binomial, nAGQ=6)\nproduces no error.\n\nI trimmed the covariates until only the intercept was left.  I used id \n<- factor(studyidx) in case the fact that studyidx was a character was a \nproblem (the archive had a statement that it needed to be a factor).  \nThe original count data had a minimum of 1; sa was the count -1 so that \nit would look more as expected.  At every step along the way I got the \nsame error.\n\nMy searches suggested the message usually indicates a colinearity \nproblem, but I can't see how it could be, or why it wouldn't have shown \nup for the binomial as well as the poisson.\n\nMy data are unusual; cluster size varies widely and there are lots of \nsingleton clusters.  I tried simulating data with lots of singletons; \nthe poisson fit them fine.  As mentioned the counts have no zeros \n(though the sa outcome above does).\n\nCan anyone suggest steps to diagnose or fix the problem?\n\nR 2.15.2; lme4 Version: 0.999999-0, Date: 2012-06-22 from CRAN.\n\nRoss Boylan\n\nP.S.   Would extending the model to a poisson distribution conditional \non the value being greater than 0 be hard?",
-      "body_snippet": "> r2 <- glmer(sa~(1|id), data=sexpartner, family=poisson(), nAGQ=6)\nError in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\nRunning a closely related (specifically, the outcome variabl",
-      "thread_id": "thread-d52db62a9fc2",
-      "thread_depth": 0,
-      "month": "2013-02"
-    },
-    {
       "id": "msg-27c5d068108e",
       "message_id": "<1361742542.25712.30.camel@corn.betterworld.us>",
       "from_name": "Ross Boylan",
@@ -3668,12 +3652,14 @@
     {
       "id": "thread-d52db62a9fc2",
       "subject": "glmer:  Downdated X'X is not positive definite",
-      "message_count": 1,
+      "message_count": 7,
       "participants": [
-        "Ross Boylan"
+        "Ben Bolker",
+        "Ross Boylan",
+        "Thompson,Paul"
       ],
       "started": "2013-02-22T15:08:55-08:00",
-      "last_reply": "2013-02-22T15:08:55-08:00",
+      "last_reply": "2013-02-27T17:37:39-08:00",
       "root_message_id": "msg-d52db62a9fc2"
     },
     {
@@ -3724,19 +3710,6 @@
       "started": "2013-02-23T14:21:21-08:00",
       "last_reply": "2013-02-25T17:48:36-05:00",
       "root_message_id": "msg-2ed73a89c629"
-    },
-    {
-      "id": "thread-d52db62a9fc2",
-      "subject": "glmer:  Downdated X'X is not positive definite",
-      "message_count": 7,
-      "participants": [
-        "Ben Bolker",
-        "Ross Boylan",
-        "Thompson,Paul"
-      ],
-      "started": "2013-02-24T13:26:50-08:00",
-      "last_reply": "2013-02-27T17:37:39-08:00",
-      "root_message_id": "msg-d52db62a9fc2"
     },
     {
       "id": "thread-30181a1ed32e",

@@ -832,3 +832,154 @@ PR stats
 	[[alternative HTML version deleted]]
 
 
+From jorgemmtte|xe|r@ @end|ng |rom gm@||@com  Sat Mar  7 13:39:13 2026
+From: jorgemmtte|xe|r@ @end|ng |rom gm@||@com (Jorge Teixeira)
+Date: Sat, 7 Mar 2026 12:39:13 +0000
+Subject: [R-sig-ME] Fwd: AR(1) modeling in an N-of-1 trial
+In-Reply-To: <mailman.20534.3396.1772885967.1806.r-sig-mixed-models@r-project.org>
+References: <mailman.20534.3396.1772885967.1806.r-sig-mixed-models@r-project.org>
+Message-ID: <CAOYO_yD-m8vG_wT18wRm44kutGQQAN+DtTJwcjqWykCTkZDxWg@mail.gmail.com>
+
+Hi. Many questions! ^^
+
+1 - When modeling auto-correlation as a function of time (ie, "day") should
+time also be included as a fixed effect?
+
+2 - If so, is it preferable to model it with or without an interaction with
+the treatment?
+
+3- If time is already a covariate, would including 'order' and 'cycle' in
+the model be redundant?
+
+4- Additionally, when there is a chronological gap between intervention
+periods (e.g., between the end of period one and the start of period two),
+should the time variable reflect the actual calendar days (including the
+gap), or should days be coded consecutively (1, 2, 3...)?
+
+5 - Finally, why do gee models (pain_global_gee_cycle_treatXday_ar1) yield
+much smaller CIs?
+REP and code below. Thank you
+
+
+library(readxl)       # read_excel()
+library(tidyverse)    # dplyr, ggplot2, tidyr, purrr, stringr, forcats
+library(lme4)         # lmer(), glmer()
+library(lmerTest)     # Satterthwaite df ? p-values for lmer()
+library(ordinal)      # clmm() ? cumulative-link mixed model for ordinal
+library(DHARMa)       # standardised-residual diagnostics for GLMMs
+library(performance)  # check_model(), icc(), r2()
+library(patchwork)    # combine ggplots with / and |
+library(ggpubr)       # stat_compare_means(), ggtexttable()
+library(broom.mixed)  # tidy() for lme4 / ordinal objects
+library(emmeans)      # estimated marginal means _ contrasts
+library(MuMIn)        # r.squaredGLMM() ? marginal _ conditional R?
+library(car)          # Anova() type-III tests
+library(glmmTMB)      # glmmTMB() ? negative binomial GLMM sensitivity check
+library(performance)
+
+
+# Download the file from GitHub (use raw download URL)
+url <- "
+https://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx"
+temp <- tempfile(fileext = ".xlsx")
+download.file(url, temp, mode = "wb")
+
+# Read into R
+dat <- read_excel(temp)
+
+dat <- dat %>%
+  mutate(
+    date    = as.Date(date),
+
+    # Ordered factors for ordinal outcomes
+    sleep_ordinal       = ordered(sleep_ordinal),
+    throat_pain_ordinal = ordered(throat_pain_ordinal),
+
+    # treat: 0 = Off Lyrica (reference), 1 = On Lyrica
+    treat   = factor(treat, levels = c(0, 1),
+                     labels = c("Nothing", "Lyrica")),
+
+    # cycle and order as factors (for fixed-effect use later) AND as
+integers
+    cycle   = factor(cycle),
+    order   = factor(order)
+  )
+
+library(nlme)
+
+pain_global_gls_base <- gls(pain_global ~ treat * day, data = dat)
+model_performance(pain_global_gls_base)
+summary(pain_global_gls_base)
+
+
+pain_global_gls_ar1_day <- gls(
+  pain_global ~ treat * day,
+  correlation = corAR1(form = ~1 | day),
+  data = dat
+)
+
+ summary(pain_global_gls_ar1_day)
+
+
+#
+
+pain_global_nlme_ar1 <- nlme::lme(
+  pain_global ~ treat * day,
+  random = ~ 1 | cycle,
+  correlation = corAR1(form = ~ day ),
+  data = dat,
+  method = "REML"
+)
+
+summary(pain_global_nlme_ar1)
+
+
+# GENERALISED ESTIMATING EQUATIONS (GEE)
+
+library(geepack)
+
+dat <- dat[order(dat$cycle, dat$day), ]
+
+#  AR-1
+pain_global_gee_cycle_treatXday_ar1 <- geeglm(
+  pain_global ~ treat * day,
+  id = cycle,
+  data = dat,
+  family = gaussian(),
+  corstr = "ar1"
+)
+
+summary(pain_global_gee_cycle_treatXday_ar1)
+QIC(pain_global_gee_cycle_treatXday_ar1)
+
+
+
+#  Exchangeable
+pain_global_gee_cycle_treatXday_exch <- geeglm(
+  pain_global ~ treat * day,
+  id = cycle,
+  data = dat,
+  family = gaussian(),
+  corstr = "exchangeable"
+)
+
+summary(pain_global_gee_cycle_treatXday_exch)
+QIC(pain_global_gee_cycle_treatXday_exch)
+
+
+
+# 3?? Unstructured
+pain_global_gee_cycle_treatXday_unstr <- geeglm(
+  pain_global ~ treat * day,
+  id = cycle,
+  data = dat,
+  family = gaussian(),
+  corstr = "unstructured"
+)
+
+summary(pain_global_gee_cycle_treatXday_unstr)
+QIC(pain_global_gee_cycle_treatXday_unstr)
+
+	[[alternative HTML version deleted]]
+
+
