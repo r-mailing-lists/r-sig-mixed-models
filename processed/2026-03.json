@@ -18,6 +18,24 @@
       "thread_id": "thread-dfad0b9154f5",
       "thread_depth": 0,
       "month": "2026-03"
+    },
+    {
+      "id": "msg-2392b9b65278",
+      "message_id": "<CAOYO_yD-m8vG_wT18wRm44kutGQQAN+DtTJwcjqWykCTkZDxWg@mail.gmail.com>",
+      "from_name": "Jorge Teixeira",
+      "from_email_hash": "304a743c29fe7399f083c8afca312fd3d83578d24d9612c282073381938e1091",
+      "date": "2026-03-07T12:39:13Z",
+      "subject": "[R-sig-ME] Fwd: AR(1) modeling in an N-of-1 trial",
+      "subject_clean": "AR(1) modeling in an N-of-1 trial",
+      "in_reply_to": "<mailman.20534.3396.1772885967.1806.r-sig-mixed-models@r-project.org>",
+      "references": [
+        "<mailman.20534.3396.1772885967.1806.r-sig-mixed-models@r-project.org>"
+      ],
+      "body_plain": "Hi. Many questions! ^^\n\n1 - When modeling auto-correlation as a function of time (ie, \"day\") should\ntime also be included as a fixed effect?\n\n2 - If so, is it preferable to model it with or without an interaction with\nthe treatment?\n\n3- If time is already a covariate, would including 'order' and 'cycle' in\nthe model be redundant?\n\n4- Additionally, when there is a chronological gap between intervention\nperiods (e.g., between the end of period one and the start of period two),\nshould the time variable reflect the actual calendar days (including the\ngap), or should days be coded consecutively (1, 2, 3...)?\n\n5 - Finally, why do gee models (pain_global_gee_cycle_treatXday_ar1) yield\nmuch smaller CIs?\nREP and code below. Thank you\n\n\nlibrary(readxl)       # read_excel()\nlibrary(tidyverse)    # dplyr, ggplot2, tidyr, purrr, stringr, forcats\nlibrary(lme4)         # lmer(), glmer()\nlibrary(lmerTest)     # Satterthwaite df ? p-values for lmer()\nlibrary(ordinal)      # clmm() ? cumulative-link mixed model for ordinal\nlibrary(DHARMa)       # standardised-residual diagnostics for GLMMs\nlibrary(performance)  # check_model(), icc(), r2()\nlibrary(patchwork)    # combine ggplots with / and |\nlibrary(ggpubr)       # stat_compare_means(), ggtexttable()\nlibrary(broom.mixed)  # tidy() for lme4 / ordinal objects\nlibrary(emmeans)      # estimated marginal means _ contrasts\nlibrary(MuMIn)        # r.squaredGLMM() ? marginal _ conditional R?\nlibrary(car)          # Anova() type-III tests\nlibrary(glmmTMB)      # glmmTMB() ? negative binomial GLMM sensitivity check\nlibrary(performance)\n\n\n# Download the file from GitHub (use raw download URL)\nurl <- \"\nhttps://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx\"\ntemp <- tempfile(fileext = \".xlsx\")\ndownload.file(url, temp, mode = \"wb\")\n\n# Read into R\ndat <- read_excel(temp)\n\ndat <- dat %>%\n  mutate(\n    date    = as.Date(date),\n\n    # Ordered factors for ordinal outcomes\n    sleep_ordinal       = ordered(sleep_ordinal),\n    throat_pain_ordinal = ordered(throat_pain_ordinal),\n\n    # treat: 0 = Off Lyrica (reference), 1 = On Lyrica\n    treat   = factor(treat, levels = c(0, 1),\n                     labels = c(\"Nothing\", \"Lyrica\")),\n\n    # cycle and order as factors (for fixed-effect use later) AND as\nintegers\n    cycle   = factor(cycle),\n    order   = factor(order)\n  )\n\nlibrary(nlme)\n\npain_global_gls_base <- gls(pain_global ~ treat * day, data = dat)\nmodel_performance(pain_global_gls_base)\nsummary(pain_global_gls_base)\n\n\npain_global_gls_ar1_day <- gls(\n  pain_global ~ treat * day,\n  correlation = corAR1(form = ~1 | day),\n  data = dat\n)\n\n summary(pain_global_gls_ar1_day)\n\n\n#\n\npain_global_nlme_ar1 <- nlme::lme(\n  pain_global ~ treat * day,\n  random = ~ 1 | cycle,\n  correlation = corAR1(form = ~ day ),\n  data = dat,\n  method = \"REML\"\n)\n\nsummary(pain_global_nlme_ar1)\n\n\n# GENERALISED ESTIMATING EQUATIONS (GEE)\n\nlibrary(geepack)\n\ndat <- dat[order(dat$cycle, dat$day), ]\n\n#  AR-1\npain_global_gee_cycle_treatXday_ar1 <- geeglm(\n  pain_global ~ treat * day,\n  id = cycle,\n  data = dat,\n  family = gaussian(),\n  corstr = \"ar1\"\n)\n\nsummary(pain_global_gee_cycle_treatXday_ar1)\nQIC(pain_global_gee_cycle_treatXday_ar1)\n\n\n\n#  Exchangeable\npain_global_gee_cycle_treatXday_exch <- geeglm(\n  pain_global ~ treat * day,\n  id = cycle,\n  data = dat,\n  family = gaussian(),\n  corstr = \"exchangeable\"\n)\n\nsummary(pain_global_gee_cycle_treatXday_exch)\nQIC(pain_global_gee_cycle_treatXday_exch)\n\n\n\n# 3?? Unstructured\npain_global_gee_cycle_treatXday_unstr <- geeglm(\n  pain_global ~ treat * day,\n  id = cycle,\n  data = dat,\n  family = gaussian(),\n  corstr = \"unstructured\"\n)\n\nsummary(pain_global_gee_cycle_treatXday_unstr)\nQIC(pain_global_gee_cycle_treatXday_unstr)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi. Many questions! ^^\n\n1 - When modeling auto-correlation as a function of time (ie, \"day\") should\ntime also be included as a fixed effect?\n\n2 - If so, is it preferable to model it with or without an",
+      "thread_id": "thread-2392b9b65278",
+      "thread_depth": 0,
+      "month": "2026-03"
     }
   ],
   "threads": [
@@ -28,9 +46,20 @@
       "participants": [
         "Oliver Hooker"
       ],
-      "started": "2026-03-03T20:26:37+00:00",
-      "last_reply": "2026-03-03T20:26:37+00:00",
+      "started": "2026-03-03T20:26:37Z",
+      "last_reply": "2026-03-03T20:26:37Z",
       "root_message_id": "msg-dfad0b9154f5"
+    },
+    {
+      "id": "thread-2392b9b65278",
+      "subject": "AR(1) modeling in an N-of-1 trial",
+      "message_count": 1,
+      "participants": [
+        "Jorge Teixeira"
+      ],
+      "started": "2026-03-07T12:39:13Z",
+      "last_reply": "2026-03-07T12:39:13Z",
+      "root_message_id": "msg-2392b9b65278"
     }
   ]
 }
