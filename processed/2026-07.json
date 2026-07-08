@@ -1,0 +1,36 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2026-07",
+  "messages": [
+    {
+      "id": "msg-aa2bf826422c",
+      "message_id": "<e97b2575-ae73-e284-575f-6a15b5d6a73e@uni-tuebingen.de>",
+      "from_name": "iiori@@@wickeim@ier m@iii@g oii u@i-tuebi@ge@@de",
+      "from_email_hash": "89e10beae61d7d0dc071fffe477156a152cd1081bd098baea0f45fab71d65d9e",
+      "date": "2026-07-08T07:03:05Z",
+      "subject": "[R-sig-ME] Diagonal covariance structure and crossed random effects",
+      "subject_clean": "Diagonal covariance structure and crossed random effects",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n\nIn lme4 2.0-1, the diag tag only suppresses estimation of the correlation in\nm1, but not in m2:\n\nitem <- factor(rep(1:10, each = 18))\nm1 <- lmer(Reaction ~ Days + diag(Days | Subject) + (1 | item), sleepstudy)\nm2 <- lmer(Reaction ~ Days + (1 | item) + diag(Days | Subject), sleepstudy)\n\nlogLik(m1)  # 'log Lik.' -871.756 (df=6)\nlogLik(m2)  # 'log Lik.' -871.7482 (df=7)\n\nSeemingly, depending on the order of the two random-effect terms one\ngets different models. Is this intended behavior?\n\nBest, Florian\n\n(I apologize if this is known and fixed already. Maybe it's related to\nhttps://github.com/lme4/lme4/issues/945. Also, sorry for not posting on\nGitHub, I do not have an account.)",
+      "body_snippet": "Dear all,\n\nIn lme4 2.0-1, the diag tag only suppresses estimation of the correlation in\nm1, but not in m2:\n\nitem <- factor(rep(1:10, each = 18))\nm1 <- lmer(Reaction ~ Days + diag(Days | Subject) + (1 ",
+      "thread_id": "thread-aa2bf826422c",
+      "thread_depth": 0,
+      "month": "2026-07"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-aa2bf826422c",
+      "subject": "Diagonal covariance structure and crossed random effects",
+      "message_count": 1,
+      "participants": [
+        "iiori@@@wickeim@ier m@iii@g oii u@i-tuebi@ge@@de"
+      ],
+      "started": "2026-07-08T07:03:05Z",
+      "last_reply": "2026-07-08T07:03:05Z",
+      "root_message_id": "msg-aa2bf826422c"
+    }
+  ]
+}

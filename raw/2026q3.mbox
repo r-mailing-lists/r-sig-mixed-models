@@ -1,0 +1,28 @@
+From iiori@@@wickeim@ier m@iii@g oii u@i-tuebi@ge@@de  Wed Jul  8 09:03:05 2026
+From: iiori@@@wickeim@ier m@iii@g oii u@i-tuebi@ge@@de (iiori@@@wickeim@ier m@iii@g oii u@i-tuebi@ge@@de)
+Date: Wed, 8 Jul 2026 09:03:05 +0200 (CEST)
+Subject: [R-sig-ME] Diagonal covariance structure and crossed random effects
+Message-ID: <e97b2575-ae73-e284-575f-6a15b5d6a73e@uni-tuebingen.de>
+
+Dear all,
+
+In lme4 2.0-1, the diag tag only suppresses estimation of the correlation in
+m1, but not in m2:
+
+item <- factor(rep(1:10, each = 18))
+m1 <- lmer(Reaction ~ Days + diag(Days | Subject) + (1 | item), sleepstudy)
+m2 <- lmer(Reaction ~ Days + (1 | item) + diag(Days | Subject), sleepstudy)
+
+logLik(m1)  # 'log Lik.' -871.756 (df=6)
+logLik(m2)  # 'log Lik.' -871.7482 (df=7)
+
+Seemingly, depending on the order of the two random-effect terms one
+gets different models. Is this intended behavior?
+
+Best, Florian
+
+(I apologize if this is known and fixed already. Maybe it's related to
+https://github.com/lme4/lme4/issues/945. Also, sorry for not posting on
+GitHub, I do not have an account.)
+
+
