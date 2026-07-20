@@ -1,0 +1,121 @@
+{
+  "list": "r-sig-mixed-models",
+  "description": "",
+  "month": "2026-05",
+  "messages": [
+    {
+      "id": "msg-3fcf7c0aa92d",
+      "message_id": "<CAOYO_yCF3EhwNkBGkUCgFCPQPQhyW-TV6tuN6HqHwchdrHkieg@mail.gmail.com>",
+      "from_name": "Jorge Teixeira",
+      "from_email_hash": "304a743c29fe7399f083c8afca312fd3d83578d24d9612c282073381938e1091",
+      "date": "2026-05-07T17:12:20Z",
+      "subject": "[R-sig-ME] Fit CS and Ar1 in lme4",
+      "subject_clean": "Fit CS and Ar1 in lme4",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Not sure why, but I have always imagined that lme4 standard notation was\nusing CS, not US correlation.\n\n\n\nCan someone please tell me how to fit these models using *cs*, and *ar1*? This\nwas a n-of-1 trial (single subject) consisting of four cycles. Each cycle\nincluded two 2-week treatment periods (aka, \"order\" variable), totaling 4\nweeks per cycle. Data for the outcomes were collected during the final five\ndays of each 2-week period.\n\n\n\nm1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n\nm2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n\n\n\nI got the idea that it was not as simple as just adding cs or ar1.\n\n\n\nIf necessary, the ordering variable is *day*.   dat <- dat[order(dat$cycle,\ndat$day), ]\n\n\n\nDf below. Thank you\n\n\n\n\n\n# Download the file from GitHub (use raw download URL)\n\nurl <- \"\nhttps://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx\"\n\ntemp <- tempfile(fileext = \".xlsx\")\n\ndownload.file(url, temp, mode = \"wb\")\n\n\n\n# Read into R\n\ndat <- read_excel(temp)\n\n\n\ndat <- dat %>%\n\n  mutate(\n\n    date    = as.Date(date),\n\n\n\n    # treat: 0 = Off Lyrica (reference), 1 = On Lyrica\n\n    treat   = factor(treat, levels = c(0, 1),\n\n                     labels = c(\"Nothing\", \"Lyrica\")),\n\n\n\n    # cycle and order as factors (for fixed-effect use later) AND as\nintegers\n\n    cycle   = factor(cycle),\n\n    order   = factor(order)\n\n  )\n\n\n\n\n\nlibrary(lme4)\n\nm1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n\n\nm2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Not sure why, but I have always imagined that lme4 standard notation was\nusing CS, not US correlation.\n\n\n\nCan someone please tell me how to fit these models using *cs*, and *ar1*? This\nwas a n-of-1 tr",
+      "thread_id": "thread-3fcf7c0aa92d",
+      "thread_depth": 0,
+      "month": "2026-05"
+    },
+    {
+      "id": "msg-4050e434a069",
+      "message_id": "<CABghstSd8Ri12BwmZviNTBU0RF6U4NajgMi8jjkKNbWozUmSSA@mail.gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2026-05-07T17:55:24Z",
+      "subject": "[R-sig-ME] Fit CS and Ar1 in lme4",
+      "subject_clean": "Fit CS and Ar1 in lme4",
+      "in_reply_to": "<CAOYO_yCF3EhwNkBGkUCgFCPQPQhyW-TV6tuN6HqHwchdrHkieg@mail.gmail.com>",
+      "references": [
+        "<CAOYO_yCF3EhwNkBGkUCgFCPQPQhyW-TV6tuN6HqHwchdrHkieg@mail.gmail.com>"
+      ],
+      "body_plain": "This might get you started. PLEASE INSTALL THE DEVELOPMENT VERSION OF\nlme4 (`remotes::install_github(\"lme4/lme4\")`), there are some relevant\nbug fixes ...\n\nlibrary(lme4)\nm1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\nm2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\nm3 <- lmer(pain_global ~ treat + cs(0+order | cycle),\n           data = dat)\nsummary(select(dat, c(cycle, order, day)))\n\nm4 <- lmer(pain_global ~ treat + ar1(0+factor(day) | cycle,\n                                     hom = TRUE),\n           data = dat)\nm5 <- lmer(pain_global ~ treat + cs(0+factor(day) | cycle,\n                                    hom = TRUE),\n           data = dat, verbose = TRUE)\n\nwith(dat, table(day, cycle))\nlibrary(bbmle)\nmlist <- list(int_only = m1, \"cycle/order\" = m2, \"cs(order|cycle)\" =\nm3, \"cs()\"  = m4, \"ar1()\" = m5)\nAICtab(mlist,\n       logLik = TRUE)\n\n## AICtab is *too* aggressive in rounding log-likelihoods, we want to\nsee the differences ...\nnll <- sapply(mlist, logLik)\nround(nll - min(nll), 3)\n\nOn Thu, May 7, 2026 at 1:13?PM Jorge Teixeira\n<jorgemmtteixeira at gmail.com> wrote:\n>\n> Not sure why, but I have always imagined that lme4 standard notation was\n> using CS, not US correlation.\n>\n>\n>\n> Can someone please tell me how to fit these models using *cs*, and *ar1*? This\n> was a n-of-1 trial (single subject) consisting of four cycles. Each cycle\n> included two 2-week treatment periods (aka, \"order\" variable), totaling 4\n> weeks per cycle. Data for the outcomes were collected during the final five\n> days of each 2-week period.\n>\n>\n>\n> m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>\n> m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n>\n>\n>\n> I got the idea that it was not as simple as just adding cs or ar1.\n>\n>\n>\n> If necessary, the ordering variable is *day*.   dat <- dat[order(dat$cycle,\n> dat$day), ]\n>\n>\n>\n> Df below. Thank you\n>\n>\n>\n>\n>\n> # Download the file from GitHub (use raw download URL)\n>\n> url <- \"\n> https://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx\"\n>\n> temp <- tempfile(fileext = \".xlsx\")\n>\n> download.file(url, temp, mode = \"wb\")\n>\n>\n>\n> # Read into R\n>\n> dat <- read_excel(temp)\n>\n>\n>\n> dat <- dat %>%\n>\n>   mutate(\n>\n>     date    = as.Date(date),\n>\n>\n>\n>     # treat: 0 = Off Lyrica (reference), 1 = On Lyrica\n>\n>     treat   = factor(treat, levels = c(0, 1),\n>\n>                      labels = c(\"Nothing\", \"Lyrica\")),\n>\n>\n>\n>     # cycle and order as factors (for fixed-effect use later) AND as\n> integers\n>\n>     cycle   = factor(cycle),\n>\n>     order   = factor(order)\n>\n>   )\n>\n>\n>\n>\n>\n> library(lme4)\n>\n> m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>\n>\n> m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "This might get you started. PLEASE INSTALL THE DEVELOPMENT VERSION OF\nlme4 (`remotes::install_github(\"lme4/lme4\")`), there are some relevant\nbug fixes ...\n\nlibrary(lme4)\nm1 <- lmer(pain_global ~ treat",
+      "thread_id": "thread-3fcf7c0aa92d",
+      "thread_depth": 1,
+      "month": "2026-05"
+    },
+    {
+      "id": "msg-b9a97b9ea32b",
+      "message_id": "<CAOYO_yCVRWo4g1h7xXLAvuP1z-2GsH2OOb7_U0J1x5Qhi4jmzw@mail.gmail.com>",
+      "from_name": "Jorge Teixeira",
+      "from_email_hash": "304a743c29fe7399f083c8afca312fd3d83578d24d9612c282073381938e1091",
+      "date": "2026-05-11T07:00:00Z",
+      "subject": "[R-sig-ME] Fit CS and Ar1 in lme4",
+      "subject_clean": "Fit CS and Ar1 in lme4",
+      "in_reply_to": "<CABghstSd8Ri12BwmZviNTBU0RF6U4NajgMi8jjkKNbWozUmSSA@mail.gmail.com>",
+      "references": [
+        "<CAOYO_yCF3EhwNkBGkUCgFCPQPQhyW-TV6tuN6HqHwchdrHkieg@mail.gmail.com>",
+        "<CABghstSd8Ri12BwmZviNTBU0RF6U4NajgMi8jjkKNbWozUmSSA@mail.gmail.com>"
+      ],
+      "body_plain": "Thank you.\n\n\nI added two new variables:  *obs_order_cycle* (1:10) and  *obs_order_period\n* (1:5).  From my reading, they are more appropriate than *day* here.  *Q1:*\nIs that correct?\n\n\nIf so,\n\nm1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n\n                                        becomes\n\nm1cs  <- lmer(pain_global ~ treat + cs(as.factor(obs_order_cycle) + 0 |\ncycle),            data = dat)\n\n*Q2:*  Is that correct?\n\n\nand\n\n\nm2 <- lmer(pain_global ~ treat + (1 | cycle/period), data = dat)\n\n                                        becomes\n\nm2 <- lmer(pain_global ~ treat + cs(as.factor(obs_order_period) + 0 |\nperiod:cycle),            data = dat)\n\n\n*Q3:*  Is that correct?  Here we use interactions, not nesting notation?\n\n\n*Q4:* For ar1, things would be pretty much the same,  right?\n\n\nThank you.\n\n\nOn Thu, 7 May 2026 at 18:55, Ben Bolker <bbolker at gmail.com> wrote:\n\n>  This might get you started. PLEASE INSTALL THE DEVELOPMENT VERSION OF\n> lme4 (`remotes::install_github(\"lme4/lme4\")`), there are some relevant\n> bug fixes ...\n>\n> library(lme4)\n> m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n> m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n> m3 <- lmer(pain_global ~ treat + cs(0+order | cycle),\n>            data = dat)\n> summary(select(dat, c(cycle, order, day)))\n>\n> m4 <- lmer(pain_global ~ treat + ar1(0+factor(day) | cycle,\n>                                      hom = TRUE),\n>            data = dat)\n> m5 <- lmer(pain_global ~ treat + cs(0+factor(day) | cycle,\n>                                     hom = TRUE),\n>            data = dat, verbose = TRUE)\n>\n> with(dat, table(day, cycle))\n> library(bbmle)\n> mlist <- list(int_only = m1, \"cycle/order\" = m2, \"cs(order|cycle)\" =\n> m3, \"cs()\"  = m4, \"ar1()\" = m5)\n> AICtab(mlist,\n>        logLik = TRUE)\n>\n> ## AICtab is *too* aggressive in rounding log-likelihoods, we want to\n> see the differences ...\n> nll <- sapply(mlist, logLik)\n> round(nll - min(nll), 3)\n>\n> On Thu, May 7, 2026 at 1:13?PM Jorge Teixeira\n> <jorgemmtteixeira at gmail.com> wrote:\n> >\n> > Not sure why, but I have always imagined that lme4 standard notation was\n> > using CS, not US correlation.\n> >\n> >\n> >\n> > Can someone please tell me how to fit these models using *cs*, and\n> *ar1*? This\n> > was a n-of-1 trial (single subject) consisting of four cycles. Each cycle\n> > included two 2-week treatment periods (aka, \"order\" variable), totaling 4\n> > weeks per cycle. Data for the outcomes were collected during the final\n> five\n> > days of each 2-week period.\n> >\n> >\n> >\n> > m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n> >\n> > m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n> >\n> >\n> >\n> > I got the idea that it was not as simple as just adding cs or ar1.\n> >\n> >\n> >\n> > If necessary, the ordering variable is *day*.   dat <-\n> dat[order(dat$cycle,\n> > dat$day), ]\n> >\n> >\n> >\n> > Df below. Thank you\n> >\n> >\n> >\n> >\n> >\n> > # Download the file from GitHub (use raw download URL)\n> >\n> > url <- \"\n> > https://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx\"\n> >\n> > temp <- tempfile(fileext = \".xlsx\")\n> >\n> > download.file(url, temp, mode = \"wb\")\n> >\n> >\n> >\n> > # Read into R\n> >\n> > dat <- read_excel(temp)\n> >\n> >\n> >\n> > dat <- dat %>%\n> >\n> >   mutate(\n> >\n> >     date    = as.Date(date),\n> >\n> >\n> >\n> >     # treat: 0 = Off Lyrica (reference), 1 = On Lyrica\n> >\n> >     treat   = factor(treat, levels = c(0, 1),\n> >\n> >                      labels = c(\"Nothing\", \"Lyrica\")),\n> >\n> >\n> >\n> >     # cycle and order as factors (for fixed-effect use later) AND as\n> > integers\n> >\n> >     cycle   = factor(cycle),\n> >\n> >     order   = factor(order)\n> >\n> >   )\n> >\n> >\n> >\n> >\n> >\n> > library(lme4)\n> >\n> > m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n> >\n> >\n> > m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you.\n\n\nI added two new variables:  *obs_order_cycle* (1:10) and  *obs_order_period\n* (1:5).  From my reading, they are more appropriate than *day* here.  *Q1:*\nIs that correct?\n\n\nIf so,\n\nm1 <- l",
+      "thread_id": "thread-3fcf7c0aa92d",
+      "thread_depth": 2,
+      "month": "2026-05"
+    },
+    {
+      "id": "msg-4ca429d24d32",
+      "message_id": "<1779453772.215345969@webmail.jimdo.com>",
+      "from_name": "i@io m@iii@g oii phys@ii@-courses@org",
+      "from_email_hash": "ca8ae7fca04226cbf7116003b962efbd86b9ffdf6a68e1a8cee80f656f89cb9c",
+      "date": "2026-05-22T12:42:52Z",
+      "subject": "[R-sig-ME] Online course: Generalized Linear Mixed Models (GLMMs) in R",
+      "subject_clean": "Online course: Generalized Linear Mixed Models (GLMMs) in R",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\n \nWe are pleased to announce an upcoming online course on Generalized Linear Mixed Models (GLMMs) in R, taking place from 21?24 September.\n \nCourse website: [ https://www.physalia-courses.org/courses-workshops/glmms-in-r/ ]( https://www.physalia-courses.org/courses-workshops/glmms-in-r/ ) \n \nIn this course, participants will learn how to specify, interpret, and validate GLMMs in R, with a strong focus on practical applications using the lme4 and glmmTMB packages. The course emphasizes how to build statistically sound and defensible models for real research data.\n \nThe course is intended for researchers and graduate students with prior experience in regression models in R who want to extend their skills to mixed models and more advanced modelling frameworks. \nOver four days (14:00?19:00 Berlin time), the program will cover:\nDay 1: Regression fundamentals, interactions, contrasts, ANOVA, and model misspecification\nDay 2: Random effects, variance structures, model selection, and causal vs predictive approaches\nDay 3: GLMM formulation, interpretation, diagnostics, and model validation (including DHARMa)\nDay 4: Spatial, temporal, and phylogenetic correlation structures in GLMMs\nThe course will combine lectures, discussions, and hands-on exercises via Zoom and Slack.\nBy the end of the course, participants will be able to confidently build, interpret, and validate GLMMs and apply them appropriately in their own research.\n \nIf you want to get introduced to GLMs in R, have a look at this course: [ https://www.physalia-courses.org/courses-workshops/glm-in-r-1/ ]( https://www.physalia-courses.org/courses-workshops/glm-in-r-1/ ) \n \nWe look forward to your participation.\nBest regards, Carlo\n--------------------\n\nCarlo Pecoraro, Ph.D\n\n\nPhysalia-courses DIRECTOR\n\ninfo at physalia-courses.org\n\nmobile: +49 17645230846\n\n[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n \nWe are pleased to announce an upcoming online course on Generalized Linear Mixed Models (GLMMs) in R, taking place from 21?24 September.\n \nCourse website: [ https://www.physalia-courses.or",
+      "thread_id": "thread-4ca429d24d32",
+      "thread_depth": 0,
+      "month": "2026-05"
+    },
+    {
+      "id": "msg-356598e8f760",
+      "message_id": "<CAOYO_yBA3E+x-Rd_WM5=RL9dKh8NWJ2P3X0Hn+hx9NBFT-zKVQ@mail.gmail.com>",
+      "from_name": "Jorge Teixeira",
+      "from_email_hash": "304a743c29fe7399f083c8afca312fd3d83578d24d9612c282073381938e1091",
+      "date": "2026-05-29T10:16:00Z",
+      "subject": "[R-sig-ME] Fit CS and Ar1 in lme4",
+      "subject_clean": "Fit CS and Ar1 in lme4",
+      "in_reply_to": "<CAOYO_yCVRWo4g1h7xXLAvuP1z-2GsH2OOb7_U0J1x5Qhi4jmzw@mail.gmail.com>",
+      "references": [
+        "<CAOYO_yCF3EhwNkBGkUCgFCPQPQhyW-TV6tuN6HqHwchdrHkieg@mail.gmail.com>",
+        "<CABghstSd8Ri12BwmZviNTBU0RF6U4NajgMi8jjkKNbWozUmSSA@mail.gmail.com>",
+        "<CAOYO_yCVRWo4g1h7xXLAvuP1z-2GsH2OOb7_U0J1x5Qhi4jmzw@mail.gmail.com>"
+      ],
+      "body_plain": "Just a kind reminder,  in case someone is able to add something here. Thank\nyou\n\nA segunda, 11/05/2026, 08:00, Jorge Teixeira <jorgemmtteixeira at gmail.com>\nescreveu:\n\n> Thank you.\n>\n>\n> I added two new variables:  *obs_order_cycle* (1:10) and  *obs_order_period\n> * (1:5).  From my reading, they are more appropriate than *day* here.\n> *Q1:* Is that correct?\n>\n>\n> If so,\n>\n> m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>\n>                                         becomes\n>\n> m1cs  <- lmer(pain_global ~ treat + cs(as.factor(obs_order_cycle) + 0 |\n> cycle),            data = dat)\n>\n> *Q2:*  Is that correct?\n>\n>\n> and\n>\n>\n> m2 <- lmer(pain_global ~ treat + (1 | cycle/period), data = dat)\n>\n>                                         becomes\n>\n> m2 <- lmer(pain_global ~ treat + cs(as.factor(obs_order_period) + 0 |\n> period:cycle),            data = dat)\n>\n>\n> *Q3:*  Is that correct?  Here we use interactions, not nesting notation?\n>\n>\n> *Q4:* For ar1, things would be pretty much the same,  right?\n>\n>\n> Thank you.\n>\n>\n> On Thu, 7 May 2026 at 18:55, Ben Bolker <bbolker at gmail.com> wrote:\n>\n>>  This might get you started. PLEASE INSTALL THE DEVELOPMENT VERSION OF\n>> lme4 (`remotes::install_github(\"lme4/lme4\")`), there are some relevant\n>> bug fixes ...\n>>\n>> library(lme4)\n>> m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>> m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n>> m3 <- lmer(pain_global ~ treat + cs(0+order | cycle),\n>>            data = dat)\n>> summary(select(dat, c(cycle, order, day)))\n>>\n>> m4 <- lmer(pain_global ~ treat + ar1(0+factor(day) | cycle,\n>>                                      hom = TRUE),\n>>            data = dat)\n>> m5 <- lmer(pain_global ~ treat + cs(0+factor(day) | cycle,\n>>                                     hom = TRUE),\n>>            data = dat, verbose = TRUE)\n>>\n>> with(dat, table(day, cycle))\n>> library(bbmle)\n>> mlist <- list(int_only = m1, \"cycle/order\" = m2, \"cs(order|cycle)\" =\n>> m3, \"cs()\"  = m4, \"ar1()\" = m5)\n>> AICtab(mlist,\n>>        logLik = TRUE)\n>>\n>> ## AICtab is *too* aggressive in rounding log-likelihoods, we want to\n>> see the differences ...\n>> nll <- sapply(mlist, logLik)\n>> round(nll - min(nll), 3)\n>>\n>> On Thu, May 7, 2026 at 1:13?PM Jorge Teixeira\n>> <jorgemmtteixeira at gmail.com> wrote:\n>> >\n>> > Not sure why, but I have always imagined that lme4 standard notation was\n>> > using CS, not US correlation.\n>> >\n>> >\n>> >\n>> > Can someone please tell me how to fit these models using *cs*, and\n>> *ar1*? This\n>> > was a n-of-1 trial (single subject) consisting of four cycles. Each\n>> cycle\n>> > included two 2-week treatment periods (aka, \"order\" variable), totaling\n>> 4\n>> > weeks per cycle. Data for the outcomes were collected during the final\n>> five\n>> > days of each 2-week period.\n>> >\n>> >\n>> >\n>> > m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>> >\n>> > m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n>> >\n>> >\n>> >\n>> > I got the idea that it was not as simple as just adding cs or ar1.\n>> >\n>> >\n>> >\n>> > If necessary, the ordering variable is *day*.   dat <-\n>> dat[order(dat$cycle,\n>> > dat$day), ]\n>> >\n>> >\n>> >\n>> > Df below. Thank you\n>> >\n>> >\n>> >\n>> >\n>> >\n>> > # Download the file from GitHub (use raw download URL)\n>> >\n>> > url <- \"\n>> > https://github.com/jorgemmteixeira/databases/raw/main/n1_lyrica_v2.xlsx\n>> \"\n>> >\n>> > temp <- tempfile(fileext = \".xlsx\")\n>> >\n>> > download.file(url, temp, mode = \"wb\")\n>> >\n>> >\n>> >\n>> > # Read into R\n>> >\n>> > dat <- read_excel(temp)\n>> >\n>> >\n>> >\n>> > dat <- dat %>%\n>> >\n>> >   mutate(\n>> >\n>> >     date    = as.Date(date),\n>> >\n>> >\n>> >\n>> >     # treat: 0 = Off Lyrica (reference), 1 = On Lyrica\n>> >\n>> >     treat   = factor(treat, levels = c(0, 1),\n>> >\n>> >                      labels = c(\"Nothing\", \"Lyrica\")),\n>> >\n>> >\n>> >\n>> >     # cycle and order as factors (for fixed-effect use later) AND as\n>> > integers\n>> >\n>> >     cycle   = factor(cycle),\n>> >\n>> >     order   = factor(order)\n>> >\n>> >   )\n>> >\n>> >\n>> >\n>> >\n>> >\n>> > library(lme4)\n>> >\n>> > m1 <- lmer(pain_global ~ treat + (1 | cycle), data = dat)\n>> >\n>> >\n>> > m2 <- lmer(pain_global ~ treat + (1 | cycle/order), data = dat)\n>> >\n>> >         [[alternative HTML version deleted]]\n>> >\n>> > _______________________________________________\n>> > R-sig-mixed-models at r-project.org mailing list\n>> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Just a kind reminder,  in case someone is able to add something here. Thank\nyou\n\nA segunda, 11/05/2026, 08:00, Jorge Teixeira <jorgemmtteixeira at gmail.com>\nescreveu:\n\n> Thank you.\n>\n>\n> I added two ",
+      "thread_id": "thread-3fcf7c0aa92d",
+      "thread_depth": 3,
+      "month": "2026-05"
+    }
+  ],
+  "threads": [
+    {
+      "id": "thread-3fcf7c0aa92d",
+      "subject": "Fit CS and Ar1 in lme4",
+      "message_count": 4,
+      "participants": [
+        "Ben Bolker",
+        "Jorge Teixeira"
+      ],
+      "started": "2026-05-07T17:12:20Z",
+      "last_reply": "2026-05-29T10:16:00Z",
+      "root_message_id": "msg-3fcf7c0aa92d"
+    },
+    {
+      "id": "thread-4ca429d24d32",
+      "subject": "Online course: Generalized Linear Mixed Models (GLMMs) in R",
+      "message_count": 1,
+      "participants": [
+        "i@io m@iii@g oii phys@ii@-courses@org"
+      ],
+      "started": "2026-05-22T12:42:52Z",
+      "last_reply": "2026-05-22T12:42:52Z",
+      "root_message_id": "msg-4ca429d24d32"
+    }
+  ]
+}
