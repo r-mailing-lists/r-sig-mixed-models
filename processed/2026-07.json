@@ -102,6 +102,22 @@
       "thread_id": "thread-8eb2462aceb8",
       "thread_depth": 0,
       "month": "2026-07"
+    },
+    {
+      "id": "msg-8662b61c6c76",
+      "message_id": "<SN6PR06MB4127848BCE53E81F2A10C39FA3C32@SN6PR06MB4127.namprd06.prod.outlook.com>",
+      "from_name": "Erin Jonaitis",
+      "from_email_hash": "472fe42eee18c2f4c4e7f753f77890815ed179f14089c4cd50503a52ed5de6d5",
+      "date": "2026-07-20T19:17:30Z",
+      "subject": "[R-sig-ME] Differences in glmmTMB vs glmer fits for similar Gamma model specifications",
+      "subject_clean": "Differences in glmmTMB vs glmer fits for similar Gamma model specifications",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hello,\n\nI have some skewed, nonnegative longitudinal data, and following initial model exploration I decided to model it with a generalized linear mixed model, specifically a mixed-effects Gamma regression with a log link. However, I was surprised to see some differences in fit statistics for a glmer fit vs one with glmmTMB.\n\nI have now tried this with a publicly available dataset in order to produce a minimal working example. See below for an example that uses the epil2 dataset (comes with glmmTMB):\n\nlibrary(glmmTMB)\nlibrary(lme4)\ndata(epil2)\nepil2_red <- filter(epil2, y>0) # gamma requires y>0\nmod_glmer    <- glmer(y ~ trt + (1 | subject), data = epil2_red, family = Gamma(link = \"log\"))\nmod_glmmTMB  <- glmmTMB(y ~ trt + (1 | subject), data = epil2_red, family = Gamma(link = \"log\"))\n\nAIC(mod_glmer, mod_glmmTMB)\nsummary(mod_glmer)\nsummary(mod_glmmTMB)\n\nThe fixed effects estimates are not wildly different, but more so than I had expected. The variance components look quite different to my eye, as well as AIC.\n\nWhen I use the two packages to fit Poisson GLMMs with the same effects to the same dataset, the resulting models do not differ appreciably. The AIC values are identical, as is the variance estimate for the random intercept.\n\nFurther, possibly off-topic details: I have also fit this model in SAS using PROC GLIMMIX twice, once using Laplace and once using Gauss-Hermite quadrature for the likelihood approximation, following a suggestion that perhaps different approximation methods could explain the discrepancy. However, the two SAS results were trivially different from each other, very similar to the results of glmmTMB, and less similar to the results of glmer. This makes me think that either I am misunderstanding how to specify Gamma (but not Poisson) models in glmer, or else something is not correct with the glmer fit.\n\n\nErin M. Jonaitis, PhD, MS (she/her/hers)\nStatistician - Emphasis in Health and Social Science Methodologies\nUW-Madison School of Nursing\n5134 Signe Skott Cooper Hall, 701 Highland Avenue, Madison WI 53705\n(608) 265-6629\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI have some skewed, nonnegative longitudinal data, and following initial model exploration I decided to model it with a generalized linear mixed model, specifically a mixed-effects Gamma regre",
+      "thread_id": "thread-8662b61c6c76",
+      "thread_depth": 0,
+      "month": "2026-07"
     }
   ],
   "threads": [
@@ -149,6 +165,17 @@
       "started": "2026-07-18T13:29:31Z",
       "last_reply": "2026-07-18T13:29:31Z",
       "root_message_id": "msg-8eb2462aceb8"
+    },
+    {
+      "id": "thread-8662b61c6c76",
+      "subject": "Differences in glmmTMB vs glmer fits for similar Gamma model specifications",
+      "message_count": 1,
+      "participants": [
+        "Erin Jonaitis"
+      ],
+      "started": "2026-07-20T19:17:30Z",
+      "last_reply": "2026-07-20T19:17:30Z",
+      "root_message_id": "msg-8662b61c6c76"
     }
   ]
 }
