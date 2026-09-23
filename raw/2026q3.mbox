@@ -2324,3 +2324,146 @@ r-sig-mixed-models at r-project.org> wrote:
 	[[alternative HTML version deleted]]
 
 
+From @en@2 @end|ng |rom vcu@edu  Tue Sep 22 17:53:15 2026
+From: @en@2 @end|ng |rom vcu@edu (Anabeel Sen)
+Date: Tue, 22 Sep 2026 11:53:15 -0400
+Subject: [R-sig-ME] 
+ glmmTMB large dataset: NaN at starting parameter values
+In-Reply-To: <CABghstT708+02Cmnw4D1s8Lcys9Sfwn2C2LnkYKuFWuDA-VjCg@mail.gmail.com>
+References: <CAD638MdreU7MGgGGTau8nTj1zb+KVicPF27S8hMuDXKYHMsivg@mail.gmail.com>
+ <CABghstT708+02Cmnw4D1s8Lcys9Sfwn2C2LnkYKuFWuDA-VjCg@mail.gmail.com>
+Message-ID: <CAD638MdnQOZyHrL472zd27UnuJUvxHaSH5EUGvHSqifUgYyDnQ@mail.gmail.com>
+
+Appreciate the suggestion Dr. Bolker! The year  variable is numeric and I
+have tried centering the year and factorizing the person id but it has not
+worked for me.
+
+Thanks for the idea of the simulation! I will be sending it out soon to get
+your insights.
+
+On Mon, Sep 21, 2026 at 5:42?PM Ben Bolker <bbolker at gmail.com> wrote:
+
+>     *Very* quick question/suggestion: is year a numeric variable (e.g.
+> 2020, 2021, 2022) ... ? If so, you might be able to solve the problem by
+> centering the year variable, or doing anything to make the zero value
+> closer to the body of the data (i.e. you could use `year-min_year` or
+> `year-min_year+1`, rather than `year-mean_year`, should perform about the
+> same). If you're already doing that, or if centering doesn't help, a
+> minimal reproducible example would be useful ...
+>
+> On Mon, Sep 21, 2026 at 4:29?PM Anabeel Sen via R-sig-mixed-models <
+> r-sig-mixed-models at r-project.org> wrote:
+>
+>> Hi everyone,
+>>
+>> My name is Anabeel Sen. I?m a PhD candidate in Epidemiology at Virginia
+>> Commonwealth University, and I?m working on a longitudinal analysis of
+>> diabetes-related emergency department(ED) visits for my dissertation. I?m
+>> running into a problem with glmmTMB that I haven?t been able to figure
+>> out.
+>> Thanks Dr. Bolker for pointing me towards this list!
+>>
+>> My dataset has about 5.1 million person-year observations, 860,000
+>> individuals in 904 ZCTAs (Zip Code Tabulation Areas which are similar to
+>> Zip Codes). The outcome is the annual number of diabetes-related ED
+>> visits,
+>> and I?m using a negative binomial model with the nbinom2 family.
+>>
+>> My original model had random intercepts for both person and ZCTA which
+>> might have been too complex:
+>>
+>> ed_visit_cnt ~ fixed_effects + (1 | person_id) + (1 | zcta)
+>>
+>> My initial idea was to account for repeated observations within people and
+>> clustering by ZCTA, while including individual-level demographic and
+>> clinical variables and ZCTA-level social determinants of health variables.
+>> When I ran these models on a subset of 5,000 people in 605 ZCTAs, they
+>> converged. However, the two-random-effect model has been difficult to fit
+>> on the full dataset. I have tried it both on my PC RStudio and my
+>> university's
+>> high performance research computing core RStudio interface. On the R
+>> studio
+>> interface, it tends to run for several hours at a time and then restart on
+>> its own. I have then switched back to my PC R studio and started
+>> simplifying the model to figure out where the problem was coming from.
+>>
+>> When I removed all my fixed effects and the ZCTA level random effect, the
+>> following model fits on my full dataset:
+>>
+>> ed_visit_cnt ~ 1 + (1 | person_id) where it converges with a
+>> positive-definite Hessian.
+>>
+>> But when I add just one fixed effect for my year variable, it fails even
+>> before I can start adding any of my other covariates or exposure variables
+>>
+>> ed_visit_cnt ~ year + (1 | person_id)
+>>
+>> The error that shows up is:
+>>
+>> *"Negative log-likelihood is NaN at starting parameter values"*
+>>
+>> I tried the same simplified model : (ed_visit_cnt ~ year + (1 |
+>> person_id) on
+>> smaller subsets of the data. With approximately 50,000, 200,000, and
+>> 400,000 individuals, the models all fit successfully. The estimated year
+>> effect was also fairly stable across those subsets as well. So I wasn't
+>> sure if I?m running into a numerical or computational limitation related
+>> to
+>> the combination of this many observations and huge random-effect levels.
+>>
+>> A few questions I could pick everyone's brain and experience on include:
+>>
+>>    -
+>>
+>>    Is this likely a numerical/memory limitation at this scale?
+>>    -
+>>
+>>    Is there anything specific I could try in glmmTMB for a
+>> random-intercept
+>>    model with this many groups?
+>>    -
+>>
+>>    Does the fact that the intercept-only model works, but adding year
+>>    causes the starting likelihood to become NaN, point toward a specific
+>> issue?
+>>    -
+>>
+>>    Is there a limit on the number of random-effect levels that glmmTMB can
+>>    normally handle, even if there is only a random intercept?
+>>    -
+>>
+>>    If this is simply too large for glmmTMB, what could be a reasonable
+>>    alternative for accounting for repeated observations within
+>> individuals?
+>>
+>> I would be happy to provide my exact script or a smaller reproducible
+>> example if that would help. Any insight or suggestions would be greatly
+>> appreciated.
+>>
+>> With regards,
+>> Anabeel Sen, MBBS, MPH (he/him)
+>> Ph.D Candidate and Graduate Research Assistant
+>> Department of Epidemiology, School of Public Health
+>> Virginia Commonwealth University
+>> 551-777-1559 <(551)%20777-1559> (p) - LinkedIn <
+>> https://www.linkedin.com/in/anabeelsen/>
+>>
+>>         [[alternative HTML version deleted]]
+>>
+>> _______________________________________________
+>> R-sig-mixed-models at r-project.org mailing list
+>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>>
+>
+
+-- 
+Anabeel Sen, MBBS, MPH (he/him)
+Ph.D Candidate and Graduate Research Assistant
+Department of Epidemiology, School of Public Health
+Virginia Commonwealth University
+551-777-1559 <(551)%20777-1559> (p) - LinkedIn
+<https://www.linkedin.com/in/anabeelsen/>
+
+	[[alternative HTML version deleted]]
+
+
