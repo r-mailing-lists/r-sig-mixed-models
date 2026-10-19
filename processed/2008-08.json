@@ -134,11 +134,14 @@
       "references": [
         "<20080805172637.hxs09u3k00o0s80o@pneumatix.net-cube.net>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080805/4cd0d8c9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080805/4cd0d8c9/attachment.pl>",
+      "body_plain": "Julian:\n\nWhen it comes to a mixed linear model, there are \"levels\" of the variance components but there are no \"levels\" associated with the fixed effects. In the model specification for glmer, it seems that your linear predictor has 2 levels of random variation. The idea of levels for fixed effects tends to come from software programs that write these models out using a hierarchical notation, and I think that is a bit confusing.\n\nMaybe someone else knows, but can you clarify what you mean by \"spatial scale of the explanatory variables\"? \n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org on behalf of Julian PICHENOT\nSent: Tue 8/5/2008 11:26 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] level-dependent explanatory variables\n \nDear mixed models list,\n\nI am trying to fit models with lme4 for a data set which has an  \nunbalanced and hierarchical structure.\nThe goal is to model the presence/absence (0/1) of a frog species in  \nponds, considering potential explanatory variables measured at three  \nlevels (spatial scales).\n\nThe nested structure is as follow : 1516 ponds are nested within 134  \npatches and these patches are nested within 24 landscapes.\n\nThere are 3 variables measured at each level :\nPond level : A1,B1,C1\nPatch level : D2,E2,F2\nLandscape level : G3,H3,I3.\n\nThis is the structure of the data set :\n> str(msc)\n'data.frame':   1516 obs. of  13 variables:\n  $ y      : int  0 1 0 1 0 0 0 1 0 0 ...\n  $ A1   : num  -0.758 -0.835 -0.835 -0.757 -0.757 ...\n  $ B1   : num  -1.77 -1.77 -1.77 -1.80 -1.80 ...\n  $ C1   : num  -0.262 -0.189 -0.189 -0.286 -0.286 ...\n  $ D2  : num  0.869 0.869 0.869 0.869 0.869 ...\n  $ E2: num  -2.49 -2.49 -2.49 -2.49 -2.49 ...\n  $ F2   : num  -1.09 -1.09 -1.09 -1.09 -1.09 ...\n  $ G3  : num  -0.327 -0.327 -0.327 -0.327 -0.327 ...\n  $ H3  : num  -1.56 -1.56 -1.56 -1.56 -1.56 ...\n  $ I3 : num  1.15 1.15 1.15 1.15 1.15 ...\n  $ POND   : int  1619 1620 1621 1622 1623 1624 1625 1626 1627 1628 ...\n  $ PATCH  : int  1 1 1 1 1 1 1 1 1 1 ...\n  $ LAND   : int  1 1 1 1 1 1 1 1 1 1 ...\n\nDue to the fact that they are measured at a higher level than the  \npond, the values of D2,E2,F2 are repeated for each pond in a one  \nparticular patch and the values of G3,H3,I3 are repeated for each pond  \nof each patch in one particular landscape.\n\nHere is the code that I use :\n\n> glmer(y~A1+B1+C1+D2+EP2+F2+G3+H3+I3+(1|LAND/PATCH),family=binomial,data)\n\nBut I find the results a bit strange. Only the variables measured at  \nthe pond level are significant and I have doubts about this.\n\nIs there another way to fit a model that takes into account the  \nspatial scale of each explanatory variable ?\n\nI use the following packages :\n\n> sessionInfo()\nR version 2.7.0 (2008-04-22)\ni386-pc-mingw32\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base\nother attached packages:\n[1] lme4_0.999375-22   Matrix_0.999375-10 lattice_0.17-6\nloaded via a namespace (and not attached):\n[1] grid_2.7.0\n\nThanks in advance for your help and answers.\nBest regards.\n\nJulian\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Julian:\n\nWhen it comes to a mixed linear model, there are \"levels\" of the variance components but there are no \"levels\" associated with the fixed effects. In the model specification for glmer, it seem",
       "thread_id": "thread-88a261d84045",
       "thread_depth": 1,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080805/4cd0d8c9/attachment.pl"
+      ]
     },
     {
       "id": "msg-c0fd694e5e92",
@@ -304,11 +307,14 @@
       "subject_clean": "[lme4]Coef output with binomial lmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/e1c408f8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/e1c408f8/attachment.pl>",
+      "body_plain": "Dear R users  \n \nI have built the following model\n \nm1<-lmer(y~harn+foodn+(1|ass%in%pop%in%fam),family = \"quasibinomial\")\n \nwhere y<-cbind(alive,dead)\n \nwhere harn and foodn are categorical factors and the random effect is a\nnested term to represent experimental structure\ne.g.  Day/Block/Replicate\nass= 5 level factor, pop= 2 populations per treatment factor in each\nassay, 7 reps per population\n \nThe model can be family = quasibinomial or binomial\n \nMy complete lack of understanding is in retrieving the coefficients for\nthe fixed effects to back-transform the effects of my factors on\nproportional survival\n \nI get the following output:\n> coef(m1)\n$`ass %in% pop %in% fam`\n      (Intercept)      harn1     harn2   foodn2\nFALSE   1.0322375 -0.1939521 0.0310434 0.810084\nTRUE    0.5997679 -0.1939521 0.0310434 0.810084\n \nWhere FALSE and TRUE refer to some attribute of the random effect \n \nMy hunch is that it refers to the Coefficients with (=TRUE) and without\n(=FALSE) the random effects?\n \nAny help appreciated\n \n\n........................................................................\n............\nDr Tom C Cameron\nGenetics, Ecology and Evolution\nIICB, University of Leeds\nLeeds, UK\nOffice: +44 (0)113 343 2837\nLab:    +44 (0)113 343 2854\nFax:    +44 (0)113 343 2835\n\n\nEmail: t.c.cameron at leeds.ac.uk\nWebpage: click here\n<http://www.fbs.leeds.ac.uk/staff/profile.php?tag=Cameron_TC> \n\n \n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear R users  \n \nI have built the following model\n \nm1<-lmer(y~harn+foodn+(1|ass%in%pop%in%fam),family = \"quasibinomial\")\n \nwhere y<-cbind(alive,dead)\n \nwhere harn and foodn are categorical factors an",
       "thread_id": "thread-052a4431cd5d",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/e1c408f8/attachment.pl"
+      ]
     },
     {
       "id": "msg-d939ad9eefca",
@@ -386,11 +392,14 @@
       "references": [
         "<ED7B522EE00C9A4FA515AA71724D61EEB86D5A@DC1EXCL01.air.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/822e24b0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/822e24b0/attachment.pl>",
+      "body_plain": "Hi Harold\n\nThanks for this\n\nI did not know about that function.\n\nI tried the nesting structure you suggested, that is what I normally use\nwith nlme, but the following happened\n\n> m2<-lmer(y~harn+foodn+(1|ass/pop/fam),family = \"quasibinomial\")\nError: Matrices must have same number of columns in rbind2(..1, r)\nIn addition: Warning messages:\n1: In pop:ass : numerical expression has 492 elements: only the first\nused\n2: In pop:ass : numerical expression has 492 elements: only the first\nused\n3: In fam:(pop:ass) :\n  numerical expression has 492 elements: only the first used\n4: In pop:ass : numerical expression has 492 elements: only the first\nused\n5: In pop:ass : numerical expression has 492 elements: only the first\nused\n\nI found the other method online and it worked, so I accept that I do not\nactually know whether it is the correct model at present\n\nAny ideas about the error messages above?\n\n \n\n \n\n \n\nThe extractor function for the fixed effects is fixef(), not coef(). Out\nof curiosity, why are you using (1|ass%in%pop%in%fam)? This notation is\nnon-standard and does not define the nesting structure of the data.\n\nI think you want (1|ass/pop/fam)\n\n> -----Original Message-----\n> From: r-help-bounces at r-project.org\n> [mailto:r-help-bounces at r-project.org] On Behalf Of Tom Cameron\n> Sent: Friday, August 08, 2008 11:47 AM\n> To: r-help at r-project.org; r-sig-mixed-models at r-project.org\n> Subject: [R] [lme4]Coef output with binomial lmer\n>\n> Dear R users \n> \n> I have built the following model\n> \n> m1<-lmer(y~harn+foodn+(1|ass%in%pop%in%fam),family = \"quasibinomial\")\n> \n> where y<-cbind(alive,dead)\n> \n> where harn and foodn are categorical factors and the random\n> effect is a nested term to represent experimental structure\n> e.g.  Day/Block/Replicate ass= 5 level factor, pop= 2\n> populations per treatment factor in each assay, 7 reps per population\n> \n> The model can be family = quasibinomial or binomial\n> \n> My complete lack of understanding is in retrieving the\n> coefficients for the fixed effects to back-transform the\n> effects of my factors on proportional survival\n> \n> I get the following output:\n> > coef(m1)\n> $`ass %in% pop %in% fam`\n>       (Intercept)      harn1     harn2   foodn2\n> FALSE   1.0322375 -0.1939521 0.0310434 0.810084\n> TRUE    0.5997679 -0.1939521 0.0310434 0.810084\n> \n> Where FALSE and TRUE refer to some attribute of the random effect\n> \n> My hunch is that it refers to the Coefficients with (=TRUE)\n> and without\n> (=FALSE) the random effects?\n> \n> Any help appreciated\n> \n>\n> ..............................................................\n> ..........\n> ............\n> Dr Tom C Cameron\n> Genetics, Ecology and Evolution\n> IICB, University of Leeds\n> Leeds, UK\n> Office: +44 (0)113 343 2837\n> Lab:    +44 (0)113 343 2854\n> Fax:    +44 (0)113 343 2835\n>\n>\n> Email: t.c.cameron at leeds.ac.uk\n> Webpage: click here\n> <http://www.fbs.leeds.ac.uk/staff/profile.php?tag=Cameron_TC>\n>\n> \n>\n>       [[alternative HTML version deleted]]\n>\n> ______________________________________________\n> R-help at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-help\n> PLEASE do read the posting guide\n> http://www.R-project.org/posting-guide.html\n> and provide commented, minimal, self-contained, reproducible code.\n>\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Harold\n\nThanks for this\n\nI did not know about that function.\n\nI tried the nesting structure you suggested, that is what I normally use\nwith nlme, but the following happened\n\n> m2<-lmer(y~harn+foodn",
       "thread_id": "thread-052a4431cd5d",
       "thread_depth": 2,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080808/822e24b0/attachment.pl"
+      ]
     },
     {
       "id": "msg-f68e1104f6da",
@@ -554,11 +563,14 @@
       "subject_clean": "segfaults from lmer on a 64-bit system",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080812/84d89db5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080812/84d89db5/attachment.pl>",
+      "body_plain": "Hello all,\n\n \n\nI am encountering trouble with lme4 on a 64-bit linux system, and I'm\nwondering if any of you might have advice on how to circumvent it. Using\nrecent versions of lme4 and R, I was able to compile and install the\npackage, and use it with success on relatively small problems.  However,\nwhen I tried to scale up to work on a big problem, applying lmer() with\nthousands of observations and a hundred or so random effects, my R fails\nreporting a segmentation fault.  I don't see the same problem on a\ndifferent 32-bit Mac OSX system, which runs the same code without\nevident difficulty.\n\n \n\nSome details of the setup where the problem occurs.  We've tried a few\ncombinations of things, so I write what we tried first, with variants\nnoted in parentheses:\n\n \n\nRed Hat Enterprise Linux 4 (version 5)\n\nR version 2.7.1 (2.6.1)\n\ngcc/g++ compilers for C and C++, Portland Group Fortran compilers\n(gcc/g++/gfortran, ie full GNU compiler suite) \n\nMatrix package version 0.999375-10  (installed with and without\n--with-package-versions flag)\n\nlme4 version 0.999375-16 (installed with and without\n--with-package-versions flag)\n\n \n\nAny suggestions?  I'd be very appreciative.\n\n \n\nBen\n\n \n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\n \n\nI am encountering trouble with lme4 on a 64-bit linux system, and I'm\nwondering if any of you might have advice on how to circumvent it. Using\nrecent versions of lme4 and R, I was able ",
       "thread_id": "thread-284e830338d3",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080812/84d89db5/attachment.pl"
+      ]
     },
     {
       "id": "msg-d9154ad4ee02",
@@ -606,11 +618,14 @@
       "subject_clean": "gmodels:estimable() fails with nlme:lme()",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/52e46bd5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/52e46bd5/attachment.pl>",
+      "body_plain": "I came across the following problem:\n\nrequire(nlme)\nrequire(gmodels)\nfm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1)\nci(fm2)\nmm <- unique(model.matrix(with(Orthodont, distance ~ age + Sex)))\nestimable(fm2, cm = mm, conf.int = 0.95)\n# Error in function (classes, fdef, mtable)  :\n#  unable to find an inherited method for function \"fixef\", for  \nsignature \"lme\"\n_____________________________\nProfessor Michael Kubovy\nUniversity of Virginia\nDepartment of Psychology\nUSPS:     P.O.Box 400400    Charlottesville, VA 22904-4400\nParcels:    Room 102        Gilmer Hall\n         McCormick Road    Charlottesville, VA 22903\nOffice:    B011    +1-434-982-4729\nLab:        B019    +1-434-982-4751\nFax:        +1-434-982-4766\nWWW:    http://www.people.virginia.edu/~mk9y/\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I came across the following problem:\n\nrequire(nlme)\nrequire(gmodels)\nfm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1)\nci(fm2)\nmm <- unique(model.matrix(with(Orthodont, distance ~ age +",
       "thread_id": "thread-c6cac96ed4fc",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/52e46bd5/attachment.pl"
+      ]
     },
     {
       "id": "msg-96592e8c0494",
@@ -640,11 +655,14 @@
       "references": [
         "<8BE219E2-DCBB-4BAD-9C7E-298F0A7B97C3@virginia.edu>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/d012f289/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/d012f289/attachment.pl>",
+      "body_plain": "Sorry, I had lme4 loaded as well.\n\n > require(nlme)\nLoading required package: nlme\n > require(gmodels)\nLoading required package: gmodels\n > fm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1)\n > ci(fm2)\n               Estimate   CI lower   CI upper Std. Error DF      p-value\n(Intercept) 17.7067130 16.0471544 19.3662716 0.83392247 80 1.283974e-34\nage          0.6601852  0.5375855  0.7827849 0.06160592 80 3.952235e-17\nSexFemale   -2.3210227 -3.8891901 -0.7528554 0.76141685 25 5.375056e-03\n > mm <- unique(model.matrix(with(Orthodont, distance ~ age + Sex)))\n > estimable(fm2, cm = mm, conf.int = 0.95)\n    Estimate Std. Error  t value DF Pr(>|t|) Lower.CI Upper.CI\n1  22.98819  0.5199561 44.21180 80        0 21.95345 24.02294\n2  24.30856  0.4898898 49.62047 80        0 23.33365 25.28348\n3  25.62894  0.4898898 52.31571 80        0 24.65402 26.60385\n4  26.94931  0.5199561 51.82996 80        0 25.91456 27.98405\n65 20.66717  0.6145864 33.62777 25        0 19.40141 21.93294\n66 21.98754  0.5893676 37.30701 25        0 20.77372 23.20137\n67 23.30791  0.5893676 39.54733 25        0 22.09409 24.52174\n68 24.62828  0.6145864 40.07294 25        0 23.36252 25.89405\nWarning message:\nIn estimable.default(fm2, cm = mm, conf.int = 0.95) :\n   Degrees of freedom vary among parameters used to construct linear  \ncontrast(s): 1, 2, 3, 4, 5, 6, 7, 8. Using the smallest df among the  \nset of parameters.\n_____________________________\nProfessor Michael Kubovy\nUniversity of Virginia\nDepartment of Psychology\nUSPS:     P.O.Box 400400    Charlottesville, VA 22904-4400\nParcels:    Room 102        Gilmer Hall\n         McCormick Road    Charlottesville, VA 22903\nOffice:    B011    +1-434-982-4729\nLab:        B019    +1-434-982-4751\nFax:        +1-434-982-4766\nWWW:    http://www.people.virginia.edu/~mk9y/\n\nOn Aug 13, 2008, at 11:05 AM, Michael Kubovy wrote:\n\n> require(nlme)\n> require(gmodels)\n> fm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1)\n> ci(fm2)\n> mm <- unique(model.matrix(with(Orthodont, distance ~ age + Sex)))\n> estimable(fm2, cm = mm, conf.int = 0.95)\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Sorry, I had lme4 loaded as well.\n\n > require(nlme)\nLoading required package: nlme\n > require(gmodels)\nLoading required package: gmodels\n > fm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ",
       "thread_id": "thread-c6cac96ed4fc",
       "thread_depth": 1,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080813/d012f289/attachment.pl"
+      ]
     },
     {
       "id": "msg-0a17ae7dd34e",
@@ -984,11 +1002,14 @@
         "<24c96eca0808180920t7033f866u1287a35a4d8fe572@mail.gmail.com>",
         "<40e66e0b0808181221p40183858y64a9cedfddd24da3@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080818/182a2e49/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080818/182a2e49/attachment.pl>",
+      "body_plain": "Dear Dr. Bates,\n\nThanks for the info about the SIG on mixed models.\n\nA followup question: if I did not want a generalized variance-covariance\nmatrix, and instead wanted to assume independence between grouped\ncovariates, then instead of (3n-n^2)/2 variance-covariance parameters per\ngrouping (of size n), I'd have only n variance parameters, yes?  Would that\nbe specified (x1|fac) + (x2|fac) instead of (x1 + x2 | fac)?\n\nAnd either way I formulate it, my syntax question remains: is there a way to\nwrite the formula that is generic for a given covariate matrix of\nunspecified dimension?  Said another way, how would you write a lmer\n\"wrapper\" function that was given a matrix of covariates?  How would you\n\"unpack\" the columns of that matrix to generate the formula required for\nlmer()?  Would you build up a formula string programmatically, and then\n\"eval\" it?\n\nThanks again,\n\n-Aaron\n\nOn Mon, Aug 18, 2008 at 3:21 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n\n> On Mon, Aug 18, 2008 at 11:20 AM, Aaron Mackey <ajmackey at gmail.com> wrote:\n> > I have a fairly large model:\n>\n> >> length(Y)\n> > [1] 3051\n> >> dim(covariates)\n> > [1] 3051  211\n>\n> > All of these 211 covariates need to be nested hierarchically within a\n> > grouping \"class\", of which there are 8.  I have an accessory vector, \"\n> > cov2class\" that specifies the mapping between covariates and the 8\n> classes.\n>\n> > Now, I understand I can break all this information up into individual\n> > vectors (cov1, cov2, ..., cov211, class1, class2, ..., class8), and do\n> > something like this:\n>\n> > model <- lmer(Y ~ 1 + cov1 + cov2 + ... + cov211 +\n> >                  (cov1 + cov2 + ... | class1) +\n> >                  (...) +\n> >                  (... + cov210 + cov211 | class8)\n>\n> > But I'd like keep things syntactically simpler, and use the covariates\n> > and cov2class\n> > variables directly.  I haven't been able to find the right syntactic\n> sugar\n> > to get this done.\n>\n> Before considering the syntax you should consider the complexity of\n> the model.  Even with 3000+ observations estimating fixed effects for\n> over 200 covariates is a risky business.  To follow that up by\n> incorporating dozens of covariates in a vector-valued random effects\n> term with a general variance covariance matrix is not likely to be\n> productive.  When estimating variances and covariances of random\n> effects the complexity of the estimation problem increases according\n> to the square of the dimension of each random-effects vector.  For a\n> term of the form (1|fac) there is one variance-covariance parameter to\n> estimate.  For a term of the form (1+x|fac) there are 3 such\n> parameters to estimate, (1+x1+x2|fac) requires 6, etc.  Assuming that\n> your 211 covariates are more-or-less equally distributed among the 8\n> classes you would have about 27 per class which means that you have\n> 378 variance-covariance parameters to estimate for each of your 8\n> classes.  Even with 3000+ observations it would be optimistic to\n> expect to estimate that many variance-covariance parameters.\n>\n> You may want to move your question to the R-SIG-Mixed-Models mailing\n> list and follow up on the model specification there.\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Dr. Bates,\n\nThanks for the info about the SIG on mixed models.\n\nA followup question: if I did not want a generalized variance-covariance\nmatrix, and instead wanted to assume independence between ",
       "thread_id": "thread-236122bc9f9f",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080818/182a2e49/attachment.pl"
+      ]
     },
     {
       "id": "msg-d5652a142850",
@@ -1170,11 +1191,14 @@
       "subject_clean": "Extending the specification of random effects to allow (1|A+B).",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080820/1510722d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080820/1510722d/attachment.pl>",
+      "body_plain": "The issue is that I have some linear mixed models that I cannot specify\nusing lme4 model formula. \nI have made some extensions of the model formula such that I can specify\nthe models,\nbut would like some feedback on that.\n \nMy motivation is that I am constructing a primitive R-interface for some\nother software for mixed models, where \ntypical applications are from animal breeding. The two examples below\ncannot be specified using lme4 model formulas.\n \n\n## Example 1 :\n## Direct and Maternal genetic effects.\nBackground is that genetic effect on a trait (for example growth) could\nbe both the animals\nown genetics and the genetics of the mother.\n \nLet i be the animal number. For the animals with observation a model is\nY_i = \\mu + X^D_{i} + X^M_{mother(i)}\n \nNote that all animals have a direct genetic effect X^D_i \n(including animals without observations), \nand all animals have a maternal genetic effect X^M_i (including animals\nwith observations but without offspring, \nand including males !).\nThere are two levels of correlation. First the animals are related, and\ninformation about this is provided in a pedigree.\nThis is handled using a \"corlist\" argument, and is NOT the issue here.\nThe second levels of correlation is that (X^D_i,X^M_i) has a general 2*2\nvariance matrix.\nThe correlation of (X^D_i,X^M_i) is relevant to know when breeding.\nSince selecting animal with a high direct effect   \nwould imply a selection for animals with high/low (depending on the sign\nof correlation) maternal effects, \nand the other way around. Imagine linked genes where some influence X^D\nand others influence X^M.\n \n\n## Example 2 :\n## QTL.\n \nAssuming no dominance effects but only additive effect of the two\nhaplotypes (centered around a given loci)  we have\nY_i = \\mu + X_{hap1(i)} + X_{hap2(i)}\nwhere hap1(i) is the maternally inherited haplotype, hap2(i) is the\npaternally inherited haplotype, \nand X_h is the effect of haplotype h.\nThe X_h are correlated due to haplotypes being more or less identical by\ndescent, \nand this is handled using a \"corlist\" argument, \nbut that correlation is NOT the issue here.\n \n\n##\n \nMy extensions of the formula language are as follows.\nFor Example 2 I have used the formula \" Y ~ (1|hap1+hap2) \" whereas for\nExample 1 I have in mind to \nuse \" Y ~ (c(1,1) | D + M) \".\n \nSome disadvantages I can see are :\n1) allowing the specification of effects (1|A+B) with the meaning as\nabove, \nthen it would be natural to have (1|A/B) be the same as (1|A + A:B) . \nHowever that gives a conflict with lme4 where (1|A/B) is a shorthand for\n(1|A) + (1|A:B) .\nMy solution has been not to allow term like (1|A/B).\n2) the (1|A+B) and (c(1,1) | A + B) notation is not entirely general.\nConsidering three terms, then effects\n(1|A+B+C) and (c(1,1,1) | A+B+C) can be defined, but a model like \nY_i = \\mu + X^D_{hap1(i)} + X^D_{hap2(i) + X^M_{hap1(mother(i))} +\nX^M_{hap2(mother(i))}\nwith (X^_h,X^M_h) cannot be described. Not a practical issue so far,\nonly an issue of completeness. \n \n\nComments and suggestions are very welcome.\n \nYours \nOle Christensen\n \n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "The issue is that I have some linear mixed models that I cannot specify\nusing lme4 model formula. \nI have made some extensions of the model formula such that I can specify\nthe models,\nbut would like s",
       "thread_id": "thread-83aa8db5fb23",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080820/1510722d/attachment.pl"
+      ]
     },
     {
       "id": "msg-cbb2e95b7c34",
@@ -1244,11 +1268,14 @@
       "subject_clean": "Problems in using lmer to fit a multilevel model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/b3d943d6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/b3d943d6/attachment.pl>",
+      "body_plain": "Dear£¬ \n   when I fitted my logistic model(binary data),I received an error \"Error in mer_finalize(ans, verbose) : q = > n = \". what's the matter?how can I do with this problem? was this tell me the observations were not enough to fit the model ? I appreciate if anyone who use lmer could give me some advice.\n best regards£¬ Lei  \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear£¬ \n   when I fitted my logistic model(binary data),I received an error \"Error in mer_finalize(ans, verbose) : q = > n = \". what's the matter?how can I do with this problem? was this tell me the o",
       "thread_id": "thread-d1138f1d3bbd",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/b3d943d6/attachment.pl"
+      ]
     },
     {
       "id": "msg-8e3efe6b3348",
@@ -1461,11 +1488,14 @@
       "subject_clean": "residual variance in nested mixed model with family=Poisson?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/34853fbf/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/34853fbf/attachment.pl>",
+      "body_plain": "Hello,\n    I would like to ask if it is possible (and if so how) to obtained an estimate of the residual variance of a mixed model having a set of nested random factors when using family=Poisson. I have searched in the help files and in the forum and I found no information in this regard. When using family=Gaussian, one obtains by default this variance but not when using Poisson. In the latest verion of lme4, one can now obtain the residuals of a fitted model when family=Poisson, and one can of course calculated the variance of these residuals. However, not being sure of how these residuals are calculated (are they standardised?, raw?, etc), I am unsure of using their variance as an estimate of the residual variance in a nested mixed model.\nMany thanks in advance,\nRegards,\nPablo\n\n\n\n      _____________________________________________________________________________ \n\no.fr\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n    I would like to ask if it is possible (and if so how) to obtained an estimate of the residual variance of a mixed model having a set of nested random factors when using family=Poisson. I ha",
       "thread_id": "thread-af53b7cf5d11",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/34853fbf/attachment.pl"
+      ]
     },
     {
       "id": "msg-8f8a5a10115b",
@@ -1499,11 +1529,14 @@
       "references": [
         "<336485.30799.qm@web26004.mail.ukl.yahoo.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/e3577740/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/e3577740/attachment.pl>",
+      "body_plain": "Hi Pablo,\nMy instructions were, indeed, faulty. Use\n\nsummary(model) @ sigma\n\nHank\nOn Aug 21, 2008, at 8:07 AM, logodall wrote:\n\n> Hi Hank,\n> Thanks for the prompt reply. In retrospect, your answers are both  \n> evident (Pearson residuals for Poisson; variance of Poisson  \n> model=1) and reassuring (I should have thought about them). I just  \n> wanted to avoid making silly mistakes in the absence of more  \n> detailed information. My needing of the residual variance was to  \n> calculate the % of variation explained at different levels of the  \n> hierarchy of random effects.\n> The instructions sigma(model) or sigma( summary (model)) do not  \n> work in lme4, but I can calculate var(resid(model))=0.86.\n> Thanks again.\n> Pablo\n>\n>\n> ----- Message d'origine ----\n> De : Martin Henry H. Stevens <HStevens at muohio.edu>\n> À : logodall <logodall at yahoo.fr>\n> Envoyé le : Jeudi, 21 Août 2008, 12h03mn 12s\n> Objet : Re: [R-sig-ME] residual variance in nested mixed model with  \n> family=Poisson?\n>\n> Hi Pablo,\n> By definition, the residual variance of the Poisson model is 1. The  \n> quasi-Poisson model has a dispersion factor (aka scale factor) that\n> is called sigma, in lmer -- get it with sigma(model) or sigma \n> ( summary (model)), I forget. The residuals (get them with resid \n> (model) ) are\n> Pearson residuals\n> (y[i] - ybar) / sqrt( Var(y) ), where Var(y) is ybar for Poisson\n> data, and ybar *sigma for quasi-Poisson data.\n>\n> Hank\n>\n> On Aug 21, 2008, at 5:50 AM, logodall wrote:\n>\n> > Hello,\n> >    I would like to ask if it is possible (and if so how) to  \n> obtain an estimate of the residual variance of a mixed model\n> > having a set of nested random factors when using family=Poisson.  \n> I  have searched in the help files and in the forum and I found no\n> > information in this regard. When using family=Gaussian, one  \n> obtains by default this variance but not when using Poisson. In the  \n> latest\n> > verion of lme4, one can now obtain the residuals of a fitted  \n> model when family=Poisson, and one can of course calculated the  \n> variance\n> > of these residuals. However, not being sure of how these  \n> residuals are calculated (are they standardised?, raw?, etc), I am  \n> unsure of\n> > using their variance as an estimate of the residual variance in  \n> a  nested mixed model.\n> > Many thanks in advance,\n> > Regards,\n> > Pablo\n> >\n> >\n> >\n> >\n> >  \n> ______________________________________________________________________\n> > _______\n> >\n> > o.fr\n> >        [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> Dr. Hank Stevens, Associate Professor\n> 338 Pearson Hall\n> Botany Department\n> Miami University\n> Oxford, OH 45056\n>\n> Office: (513) 529-4206\n> Lab: (513) 529-4262\n> FAX: (513) 529-4243\n> http://www.cas.muohio.edu/~stevenmh/\n> http://www.users.muohio.edu/harkesae/\n> http://www.cas.muohio.edu/ecology\n> http://www.muohio.edu/botany/\n> \"E Pluribus Unum\"\n>\n> \"I love deadlines. I love the whooshing noise they make as they go  \n> by.\"\n>                                             (Douglas Adams)\n>\n>\n> If you send an attachment, please try to send it in a format anyone\n> can read, such as PDF, text, Open Document Format, HTML, or RTF.\n> Why? See:  http://www.gnu.org/philosophy/no-word-attachments.html\n>\n>\n>\n>\n>\n>\n> Envoyé avec Yahoo! Mail.\n> Une boite mail plus intelligente.\n\nDr. Hank Stevens, Associate Professor\n338 Pearson Hall\nBotany Department\nMiami University\nOxford, OH 45056\n\nOffice: (513) 529-4206\nLab: (513) 529-4262\nFAX: (513) 529-4243\nhttp://www.cas.muohio.edu/~stevenmh/\nhttp://www.users.muohio.edu/harkesae/\nhttp://www.cas.muohio.edu/ecology\nhttp://www.muohio.edu/botany/\n\"E Pluribus Unum\"\n\n\"I love deadlines. I love the whooshing noise they make as they go by.\"\n                                             (Douglas Adams)\n\n\nIf you send an attachment, please try to send it in a format anyone  \ncan read, such as PDF, text, Open Document Format, HTML, or RTF.\nWhy? See:  http://www.gnu.org/philosophy/no-word-attachments.html\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Pablo,\nMy instructions were, indeed, faulty. Use\n\nsummary(model) @ sigma\n\nHank\nOn Aug 21, 2008, at 8:07 AM, logodall wrote:\n\n> Hi Hank,\n> Thanks for the prompt reply. In retrospect, your answers ar",
       "thread_id": "thread-7e299b04bce0",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/e3577740/attachment.pl"
+      ]
     },
     {
       "id": "msg-fbaa04d75005",
@@ -1588,11 +1621,14 @@
         "<18602.28526.464291.817178@stat.math.ethz.ch>",
         "<40e66e0b0808190504g6a6efb9bj63dae7fa5e5c5abe@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/445ff472/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/445ff472/attachment.pl>",
+      "body_plain": "Thanks for the help.  Just to confirm a modelling issue, what I'm trying to\nrecreate is the ML version of a hierarchical Bayesian analysis, in which\neach class exhibits a main effect, and each observed covariate (all members\nof some underlying class of unobserved effects) are random effects.\n\nHere's what the hierarchical Bayesian model looks like (in BUGS model\nlanguage):\n\nmodel {\n  for (i in 1:N) {\n    Y[i] ~ dnorm(mu[i], tau)\n    mu[i] ~ intercept + inprod(covBeta[], covariates[i,])\n  }\n\n  intercept ~ dnorm(0, 1.0E-03)\n\n  for (k in 1:numCov) {\n    covBeta[k] ~ dnorm(classBeta[cov2class[k]],\n                        classTau[cov2class[k]])\n  }\n\n  for (j in 1:numClass) {\n    classBeta[j] ~ dnorm(0, 1.0E-03)\n    classTau[j] <- pow(classSigma[j], -2)\n    classSigma[j] ~ dunif(0, 1000)\n  }\n\n  tau <- pow(sigma, -2)\n  sigma <- dunif(0, 1000)\n}\n\nIs this lmer formula equivalent in nature? (disregarding the impact of the\nhyperpriors):\n\nY ~ 1 + cov1 + (0+cov1 | class1) + cov2 + (0+cov2 | class1) + ... + cov100 +\n(0+cov100 | class8)\n\nOr should this be written as:\n\nY ~ 1 + class1 + (0+cov1 | class1) + (0+cov2|class1) + ... class8 + ... +\n(0+cov100 | class8)\n\nThanks again,\n\n-Aaron\n\n\nOn Tue, Aug 19, 2008 at 8:04 AM, Douglas Bates <bates at stat.wisc.edu> wrote:\n\n> On Tue, Aug 19, 2008 at 1:59 AM, Martin Maechler\n> <maechler at stat.math.ethz.ch> wrote:\n> >>>>>> \"AM\" == Aaron Mackey <ajmackey at gmail.com>\n> >>>>>>     on Mon, 18 Aug 2008 15:41:20 -0400 writes:\n> >\n> >    AM> Dear Dr. Bates, Thanks for the info about the SIG on\n> >    AM> mixed models.\n> >\n> >    AM> A followup question: if I did not want a generalized\n> >    AM> variance-covariance matrix, and instead wanted to assume\n> >    AM> independence between grouped covariates, then instead of\n> >    AM> (3n-n^2)/2 variance-covariance parameters per grouping\n> >    AM> (of size n), I'd have only n variance parameters, yes?\n> >    AM> Would that be specified (x1|fac) + (x2|fac) instead of\n> >    AM> (x1 + x2 | fac)?\n> >\n> > yes.\n>\n> For lmer I think you would want to write that as (0+x1|fac) + (0+x2|fac) +\n> ...\n>\n> By default a linear model formula includes the intercept term so that\n> (x1|fac) is equivalent to (1+x1|fac).  If you do not suppress the\n> implicit intercept you end up with multiple terms including it.\n>\n> >    AM> And either way I formulate it, my syntax question\n> >    AM> remains: is there a way to write the formula that is\n> >    AM> generic for a given covariate matrix of unspecified\n> >    AM> dimension?  Said another way, how would you write a lmer\n> >    AM> \"wrapper\" function that was given a matrix of\n> >    AM> covariates?  How would you \"unpack\" the columns of that\n> >    AM> matrix to generate the formula required for lmer()?\n> >    AM> Would you build up a formula string programmatically,\n> >    AM> and then \"eval\" it?\n> >\n> > yes / \"kind of\" :\n> >\n> > I would build the formula programmatically\n> > but then use  as.formula(.)  or possibly in some cases  parse().\n> >\n> > Package 'sfsmisc' has a utility  wrapFormula() that I had need\n> > for at some time:\n> >\n> > ----------------------------------------\n> >\n> > install.packages(\"sfsmisc\")\n> > library(sfsmisc)\n> >\n> > myF <- wrapFormula(Fertility ~ . , data = swiss)\n> > myF\n> > ## Fertility ~ s(Agriculture) + s(Examination) + s(Education) +\n> > ##             s(Catholic) + s(Infant.Mortality)\n> >\n> > ------------------------------------------\n> >\n> > and you can look at the short definition of  wrapFormula\n> > to see how I use gsub(.) on character strings to construct the\n> > new formula.\n> >\n> > Martin Maechler, ETH Zurich\n> >\n> >\n> >    AM> Thanks again,\n> >\n> >    AM> -Aaron\n> >\n> >    AM> On Mon, Aug 18, 2008 at 3:21 PM, Douglas Bates\n> >    AM> <bates at stat.wisc.edu> wrote:\n> >\n> >    >> On Mon, Aug 18, 2008 at 11:20 AM, Aaron Mackey\n> >    >> <ajmackey at gmail.com> wrote: > I have a fairly large\n> >    >> model:\n> >    >>\n> >    >> >> length(Y) > [1] 3051 >> dim(covariates) > [1] 3051 211\n> >    >>\n> >    >> > All of these 211 covariates need to be nested\n> >    >> hierarchically within a > grouping \"class\", of which\n> >    >> there are 8.  I have an accessory vector, \" > cov2class\"\n> >    >> that specifies the mapping between covariates and the 8\n> >    >> classes.\n> >    >>\n> >    >> > Now, I understand I can break all this information up\n> >    >> into individual > vectors (cov1, cov2, ..., cov211,\n> >    >> class1, class2, ..., class8), and do > something like\n> >    >> this:\n> >    >>\n> >    >> > model <- lmer(Y ~ 1 + cov1 + cov2 + ... + cov211 + >\n> >    >> (cov1 + cov2 + ... | class1) + > (...) + > (... + cov210\n> >    >> + cov211 | class8)\n> >    >>\n> >    >> > But I'd like keep things syntactically simpler, and use\n> >    >> the covariates > and cov2class > variables directly.  I\n> >    >> haven't been able to find the right syntactic sugar > to\n> >    >> get this done.\n> >    >>\n> >    >> Before considering the syntax you should consider the\n> >    >> complexity of the model.  Even with 3000+ observations\n> >    >> estimating fixed effects for over 200 covariates is a\n> >    >> risky business.  To follow that up by incorporating\n> >    >> dozens of covariates in a vector-valued random effects\n> >    >> term with a general variance covariance matrix is not\n> >    >> likely to be productive.  When estimating variances and\n> >    >> covariances of random effects the complexity of the\n> >    >> estimation problem increases according to the square of\n> >    >> the dimension of each random-effects vector.  For a term\n> >    >> of the form (1|fac) there is one variance-covariance\n> >    >> parameter to estimate.  For a term of the form (1+x|fac)\n> >    >> there are 3 such parameters to estimate, (1+x1+x2|fac)\n> >    >> requires 6, etc.  Assuming that your 211 covariates are\n> >    >> more-or-less equally distributed among the 8 classes you\n> >    >> would have about 27 per class which means that you have\n> >    >> 378 variance-covariance parameters to estimate for each\n> >    >> of your 8 classes.  Even with 3000+ observations it would\n> >    >> be optimistic to expect to estimate that many\n> >    >> variance-covariance parameters.\n> >    >>\n> >    >> You may want to move your question to the\n> >    >> R-SIG-Mixed-Models mailing list and follow up on the\n> >    >> model specification there.\n> >    >>\n> >\n> >        [[alternative HTML version deleted]]\n> >\n> >    AM> _______________________________________________\n> >    AM> R-sig-mixed-models at r-project.org mailing list\n> >    AM> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks for the help.  Just to confirm a modelling issue, what I'm trying to\nrecreate is the ML version of a hierarchical Bayesian analysis, in which\neach class exhibits a main effect, and each observe",
       "thread_id": "thread-236122bc9f9f",
       "thread_depth": 3,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080821/445ff472/attachment.pl"
+      ]
     },
     {
       "id": "msg-75b2dbcc174b",
@@ -2300,11 +2336,14 @@
       "subject_clean": "empty cell",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080829/3a1b4c8b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080829/3a1b4c8b/attachment.pl>",
+      "body_plain": "I am using mixed effect models (library lmer) to evaluate factors that influence the catch rate of hake (set by set) in a fishery. I have some empty cells when I include some of the interactions between the fixed factors (e.g. year:area) and interactions between fixed and random effects (e.g. year:vessel, where vessel is a random effect) . While empty cell were not the problem when all factors were treated as fixed using lm or glm, the estimation failed when I used lme4 and treated some of the factors (the vessel id) as random.\nMaría Eva Góngora\n_________________________________________________________________\nDescargá GRATIS el poder del nuevo Internet Explorer 7.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am using mixed effect models (library lmer) to evaluate factors that influence the catch rate of hake (set by set) in a fishery. I have some empty cells when I include some of the interactions betwe",
       "thread_id": "thread-5513994de2cc",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080829/3a1b4c8b/attachment.pl"
+      ]
     },
     {
       "id": "msg-7578adfe8d31",
@@ -2501,11 +2540,14 @@
       "subject_clean": "(no subject)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/982cdc45/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/982cdc45/attachment.pl>",
+      "body_plain": "This is a repost from R-help.  Hopefully someone here will be able to give\nme more specific advice.  Here is the issue:\n\nSay, for instance you want to model growth in pituitary distance  as a\nfunction of age in the Orthodont dataset.\n\nfm1 = lme(distance ~ I(age-8), random = ~ 1 + I(age-8) | Subject, data =\nOrthodont)\n\nYou notice that there is substantial variability in the intercepts (initial\ndistance) for people at 8 years, and that\nthis variability in initial distance is related to growth over time:\n\nR# summary(fm1)\n...\nRandom effects:\n Formula: ~1 + I(age - 8) | Subject\n Structure: General positive-definite, Log-Cholesky parametrization\n            StdDev Corr\n(Intercept) 1.8866 (Intr)\nI(age - 8)  0.2264 0.209\nResidual    1.3100\n\nNow 2 questions:\n\n1.  With lme, how can you get a fit of the growth model accounting for the\nrelationship between initial status (intercept) and growth?\nSome texts call this latent variable regression or something or other, which\nseems to basically boil down to adding the random effects\nintercept as a predictor in the growth model.  Is this done in lme by simply\nadding the intercept results from ranef(fm1) to the model?\nThis two-step process seems wrong to me for some reason, perhaps because it\nseems too simple.  Anyone know the proper way to do\nthis in lme?  I have read Pinheiro and Bates, and not seen anything that\nwould help me with this.\n\n2.  In addition, suppose you see that there are significant mean differences\nin initial status by Sex:\n\nfm2 = lme(distance ~ I(age-8) + Sex, random = ~ 1 + I(age-8) | Subject, data\n= Orthodont)\n\nR# summary(fm2)\nFixed effects: distance ~ I(age - 8) + Sex\n             Value Std.Error DF t-value p-value\n(Intercept) 22.917    0.5134 80   44.64   0.000\nI(age - 8)   0.660    0.0713 80    9.27   0.000\nSexFemale   -2.145    0.7575 25   -2.83   0.009\n\nAlong the lines of question #1, how would you get a growth model adjusting\nfor these Sex differences in initial status?  I am looking for something\nsimilar to adjusting for baseline differences between Sexes in ANCOVA.  I\nknow Lord would not approve, but this is just by way of example...  Thanks\nso much for your help, and this wonderful program Dr. Bates.\n\n- DC\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "This is a repost from R-help.  Hopefully someone here will be able to give\nme more specific advice.  Here is the issue:\n\nSay, for instance you want to model growth in pituitary distance  as a\nfunction",
       "thread_id": "thread-09287b6e71db",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/982cdc45/attachment.pl"
+      ]
     },
     {
       "id": "msg-7619cb2e69ea",
@@ -2517,11 +2559,14 @@
       "subject_clean": "Adjusting for initial status in growth models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/ee946801/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/ee946801/attachment.pl>",
+      "body_plain": "This is a repost from R-help.  Hopefully someone here will be able to give\nme more specific advice.  Here is the issue:\n\nSay, for instance you want to model growth in pituitary distance  as a\nfunction of age in the Orthodont dataset.\n\nfm1 = lme(distance ~ I(age-8), random = ~ 1 + I(age-8) | Subject, data =\nOrthodont)\n\nYou notice that there is substantial variability in the intercepts (initial\ndistance) for people at 8 years, and that\nthis variability in initial distance is related to growth over time:\n\nR# summary(fm1)\n...\nRandom effects:\n Formula: ~1 + I(age - 8) | Subject\n Structure: General positive-definite, Log-Cholesky parametrization\n            StdDev Corr\n(Intercept) 1.8866 (Intr)\nI(age - 8)  0.2264 0.209\nResidual    1.3100\n\nNow 2 questions:\n\n1.  With lme, how can you get a fit of the growth model accounting for the\nrelationship between initial status (intercept) and growth?\nSome texts call this latent variable regression or something or other, which\nseems to basically boil down to adding the random effects\nintercept as a predictor in the growth model.  Is this done in lme by simply\nadding the intercept results from ranef(fm1) to the model?\nThis two-step process seems wrong to me for some reason, perhaps because it\nseems too simple.  Anyone know the proper way to do\nthis in lme?  I have read Pinheiro and Bates, and not seen anything that\nwould help me with this.\n\n2.  In addition, suppose you see that there are significant mean differences\nin initial status by Sex:\n\nfm2 = lme(distance ~ I(age-8) + Sex, random = ~ 1 + I(age-8) | Subject, data\n= Orthodont)\n\nR# summary(fm2)\nFixed effects: distance ~ I(age - 8) + Sex\n             Value Std.Error DF t-value p-value\n(Intercept) 22.917    0.5134 80   44.64   0.000\nI(age - 8)   0.660    0.0713 80    9.27   0.000\nSexFemale   -2.145    0.7575 25   -2.83   0.009\n\nAlong the lines of question #1, how would you get a growth model adjusting\nfor these Sex differences in initial status?  I am looking for something\nsimilar to adjusting for baseline differences between Sexes in ANCOVA.  I\nknow Lord would not approve, but this is just by way of example...  Thanks\nso much for your help, and this wonderful program Dr. Bates.\n\n- DC\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "This is a repost from R-help.  Hopefully someone here will be able to give\nme more specific advice.  Here is the issue:\n\nSay, for instance you want to model growth in pituitary distance  as a\nfunction",
       "thread_id": "thread-7619cb2e69ea",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080830/ee946801/attachment.pl"
+      ]
     },
     {
       "id": "msg-b405a9fc6d24",
@@ -2533,11 +2578,14 @@
       "subject_clean": "VarCorr vs ranef",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/bcbcc82d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/bcbcc82d/attachment.pl>",
+      "body_plain": "Can someone tell me why correlations between raw random effects are\ndifferent from that provided in VarCorr for lme models?\nFor example:\n\nfm1 = lme(distance ~ I(age-8), random = ~ 1 + I(age-8) | Subject, data =\nOrthodont)\nR# VarCorr(fm1)\nSubject = pdLogChol(1 + I(age - 8))\n            Variance StdDev Corr\n(Intercept) 3.55937  1.8866 (Intr)\nI(age - 8)  0.05127  0.2264 0.209\nResidual    1.71620  1.3100\n\nand\n\nR# cor(ranef(fm1))\n            (Intercept) I(age - 8)\n(Intercept)      1.0000     0.5764\nI(age - 8)       0.5764     1.0000\n\n\nWhen correlating the extracted random effects with ranef the relationship\nbetween intercept and age-8 is nearly tripled.\n\n-- DC\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Can someone tell me why correlations between raw random effects are\ndifferent from that provided in VarCorr for lme models?\nFor example:\n\nfm1 = lme(distance ~ I(age-8), random = ~ 1 + I(age-8) | Subje",
       "thread_id": "thread-b405a9fc6d24",
       "thread_depth": 0,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/bcbcc82d/attachment.pl"
+      ]
     },
     {
       "id": "msg-5599a97ba12a",
@@ -2570,11 +2618,14 @@
         "<dcf23fb80808302253i366dae18j6a3e0652d6ec2f7d@mail.gmail.com>",
         "<a46630750808310313o1de77409q16d98aef0220d658@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/65e84323/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/65e84323/attachment.pl>",
+      "body_plain": "Thanks so much for the reply.  This still seems very strange.  Even if the\ndifferences between population and subject effects is the issue, wouldn't\none expect a bit more similarity between the actual effects for the subjects\nand the population effects inferred from those effects?  Dr. Bates or anyone\nelse, can you resolve this mystery?  Alternatively, is there a way to get\npopulation estimates of the random effects for subjects (contradiction in\nterms?), like fitted.lme with the level = 0 argument?\n\nAll this is in service of an attempt to gain a simple scatterplot between\ntwo random effects that closely reflect the estimates from VarCorr or\nsummary.  I'm sure someone must have a method for this already worked out.\npairs.lme plots the raw data from ranef, so the discrepancy is still a\nproblem there.\n\nThanks so much for your help.\n\n- DC\n\nOn Sun, Aug 31, 2008 at 6:13 AM, Daniel Ezra Johnson <\ndanielezrajohnson at gmail.com> wrote:\n\n> On Sun, Aug 31, 2008 at 6:53 AM, D Chaws <cat.dev.urandom at gmail.com>\n> wrote:\n> > Can someone tell me why correlations between raw random effects are\n> > different from that provided in VarCorr for lme models?\n> > For example:\n> >\n> > fm1 = lme(distance ~ I(age-8), random = ~ 1 + I(age-8) | Subject, data =\n> > Orthodont)\n> > R# VarCorr(fm1)\n> > Subject = pdLogChol(1 + I(age - 8))\n> >            Variance StdDev Corr\n> > (Intercept) 3.55937  1.8866 (Intr)\n> > I(age - 8)  0.05127  0.2264 0.209\n> > Residual    1.71620  1.3100\n> >\n> > and\n> >\n> > R# cor(ranef(fm1))\n> >            (Intercept) I(age - 8)\n> > (Intercept)      1.0000     0.5764\n> > I(age - 8)       0.5764     1.0000\n> >\n>\n> This isn't a complete answer, but the figures in VarCorr and the model\n> summary are the population estimates for the random effects (the\n> parameters) while everything derived from ranef() refers to the actual\n> Subjects in the data (the BLUPs).\n>\n> Look at:\n>\n> > sd(ranef(fm1))\n> (Intercept)  I(age - 8)\n>  1.7359554   0.1557322\n>\n> Those figures don't match the VarCorr standard deviations either,\n> especially the second.\n>\n> I don't know why the BLUPs pattern differently, exactly, but I did\n> look at plot(coefs(fm1)) which suggested Sex should be added as a\n> fixed effect. Once I did that, the correlation between the random\n> effects changed quite a lot (but was still different between VarCorr\n> and ranef; the population correlation was actually negative...)\n>\n> D\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks so much for the reply.  This still seems very strange.  Even if the\ndifferences between population and subject effects is the issue, wouldn't\none expect a bit more similarity between the actual",
       "thread_id": "thread-b405a9fc6d24",
       "thread_depth": 2,
-      "month": "2008-08"
+      "month": "2008-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080831/65e84323/attachment.pl"
+      ]
     }
   ],
   "threads": [

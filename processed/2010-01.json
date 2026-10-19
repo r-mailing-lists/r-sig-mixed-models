@@ -131,11 +131,14 @@
       "subject_clean": "Back-transformation of Poisson model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/f1479346/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/f1479346/attachment.pl>",
+      "body_plain": "Hello,\n\nI'd like to know if predicted values from  a Poisson mixed model require\nback-transformation to get the 'real' predicted values or if this is\ndone automatically? I assume that the predicted values are already\nback-transformed since my results are similar to the annual means.\n\nMy model for estimating bird trends in lme4 is as such:\n\nlme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\ndata=SWTH, family = poisson(link=log))\n\nI then took the coefficients from the mixed model and used them in a GLM\nto derive the predicted values.\ndd <-fixef(lme3) # gives coefficients\n                      \nlme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\nlog)) # for poisson distribution\nlme_glmDEY$coefficients <- dd  \n\n# create a data set of predicted values\npred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\npred_val <- as.data.frame(cbind(SWTH,pred))\n \nSo, do I have to perform a back-transformation on the predicted values\n(ie., using exp())? \n\nThanks,\n\nKevin\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI'd like to know if predicted values from  a Poisson mixed model require\nback-transformation to get the 'real' predicted values or if this is\ndone automatically? I assume that the predicted va",
       "thread_id": "thread-6bd16b6dc8b6",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/f1479346/attachment.pl"
+      ]
     },
     {
       "id": "msg-45957470c773",
@@ -179,11 +182,14 @@
       "subject_clean": "STRANGE! lmer: \"false convergence\" warning only for certain multiples of x!?!",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/945f91cf/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/945f91cf/attachment.pl>",
+      "body_plain": "I have a very strange problem with my lmer function:  the model below (model2) gives me a \"false convergence\" warning, but ONLY for certain multiples of x (here time), ie. time was originally in days (15-60) and I need it to be in hours, so I multiplied by 24 (and called it time instead of timed) and it gives me the following output:\n\n\nmodel2 <- lmer (y~time+instar + (1|blc/instar),verbose=TRUE, REML=FALSE,family=quasibinomial(link=probit))\n\n\n> model2 <- lmer (y~time+instar + (1|blc/instar),verbose=TRUE, REML=FALSE,family=quasibinomial(link=probit))\n  0:     170.25087: 0.816497 0.471405 -1.80929 0.00183953 0.409944 -0.120202\n  1:     170.20463: 0.816496 0.471404 -1.80929 0.00186189 0.409944 -0.120202\n  2:     170.20463: 0.816496 0.471404 -1.80929 0.00186189 0.409944 -0.120202\nWarning message:\nIn mer_finalize(ans) : false convergence (8)\n\n\nIt looks like the iteration stops after a few steps, whereas when I run the model with days it completes 27 steps and reaches the following output (I cut out some steps for better overview):\n\n \n\n> model2 <- lmer (y~timed+instar + (1|blc/instar),verbose=TRUE, REML=FALSE,family=quasibinomial(link=probit))\n  0:     170.25087: 0.816497 0.471405 -1.80929 0.0441486 0.409944 -0.120202\n  1:     170.22534: 0.816271 0.471329 -1.80929 0.0451200 0.409944 -0.120203\n  2:     170.15753: 0.815436 0.471049 -1.80931 0.0446475 0.409939 -0.120212\n  3:     170.11357: 0.813606 0.470435 -1.80935 0.0451684 0.409930 -0.120230\n  4:     124.52440: 0.109642 0.234346 -1.82552 0.0448669 0.406283 -0.127214\n  5:     121.10622:  0.00000 0.165132 -1.83089 0.0433875 0.407351 -0.129359\n 27:     120.55699: 2.03203e-07 0.162016 -1.82157 0.0442344 0.415274 -0.120470\n> summary(model2)\nGeneralized linear mixed model fit by the Laplace approximation \nFormula: y ~ timed + instar + (1 | blc/instar) \n   AIC   BIC logLik deviance\n 134.6 151.6 -60.28    120.6\nRandom effects:\n Groups     Name        Variance   Std.Dev.  \n instar:blc (Intercept) 4.5491e-16 2.1329e-08\n blc        (Intercept) 2.8919e-04 1.7006e-02\n Residual               1.1017e-02 1.0496e-01\nNumber of obs: 84, groups: instar:blc, 21; blc, 7\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept) -1.8215677  0.0137412 -132.56\ntimed        0.0442344  0.0002751  160.77\ninstarforth  0.4152732  0.0087307   47.56\ninstarsixth -0.1204703  0.0086215  -13.97\n\nCorrelation of Fixed Effects:\n            (Intr) timed  instrf\ntimed       -0.764              \ninstarforth -0.378  0.087       \ninstarsixth -0.305 -0.013  0.495\n> \n\nThe strange thing is, that if I multiply by 10 it works fine, multiply by anything between 15 and 1350 is a problem, then again 1400 is fine and 1450 but 1500 isn't... I tested different multiples, displaying standard deviation and the multiplication factor, to see which multiples work and which give me a convergence problem (standard deviation for the ones that work fine is about 120, the ones with problems stops at 170). Unfortunately, I see no pattern and don't understand this at all...\n\n \n\nCan anybody help me with this? What am I doing wrong?\n\n \n\nHere are the different multiples:\n\n \n> iter <- seq(1,1600,25)\n> dev <- numeric(length=length(iter))\n> for (i in 1:length(iter)){\n+ modelx <- lmer (y~I(timed*iter[i])+instar + (1|blc/instar),REML=FALSE,family=quasibinomial(link=probit))\n+ dev[i] <- deviance(modelx)\n+ }\n\n\n> cbind(iter,dev)\n      iter      dev\n [1,]    1 120.5570\n [2,]   26 170.2046\n [3,]   51 170.2046\n [4,]   76 170.2128\n [5,]  101 170.2046\n [6,]  126 170.2046\n [7,]  151 170.2046\n [8,]  176 170.2046\n [9,]  201 170.2046\n[10,]  226 170.2046\n[11,]  251 170.2046\n[12,]  276 170.2055\n[13,]  301 170.2088\n[14,]  326 170.2147\n[15,]  351 170.2235\n[16,]  376 170.2477\n[17,]  401 170.2046\n[18,]  426 170.2046\n[19,]  451 120.5570\n[20,]  476 170.2046\n[21,]  501 170.2046\n[22,]  526 120.5570\n[23,]  551 170.2046\n[24,]  576 170.2046\n[25,]  601 170.2046\n[26,]  626 170.2046\n[27,]  651 170.2046\n[28,]  676 170.2046\n[29,]  701 170.2046\n[30,]  726 170.2046\n[31,]  751 170.2046\n[32,]  776 170.2049\n[33,]  801 170.2056\n[34,]  826 170.2068\n[35,]  851 170.2085\n[36,]  876 170.2108\n[37,]  901 170.2137\n[38,]  926 170.2172\n[39,]  951 170.2213\n[40,]  976 170.2272\n[41,] 1001 170.2380\n[42,] 1026 170.2046\n[43,] 1051 170.2046\n[44,] 1076 120.5857\n[45,] 1101 170.2046\n[46,] 1126 170.2046\n[47,] 1151 170.2046\n[48,] 1176 170.2046\n[49,] 1201 120.5570\n[50,] 1226 170.2046\n[51,] 1251 170.2046\n[52,] 1276 170.2046\n[53,] 1301 170.2046\n[54,] 1326 170.2046\n[55,] 1351 170.2046\n[56,] 1376 170.2046\n[57,] 1401 120.5570\n[58,] 1426 120.5570\n[59,] 1451 120.5570\n[60,] 1476 120.5570\n[61,] 1501 170.2046\n[62,] 1526 170.2046\n[63,] 1551 170.2046\n[64,] 1576 120.5859\n\n\n \n\nThank you!\n\n \n\nLinda\n\n \n\nLinda Buergi\nDepartment of Environmental Science, Policy and Management\nUC Berkeley, Berkeley, California\n\n \t\t \t   \t\t  \n_________________________________________________________________\nHotmail: Free, trusted and rich email service.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I have a very strange problem with my lmer function:  the model below (model2) gives me a \"false convergence\" warning, but ONLY for certain multiples of x (here time), ie. time was originally in days ",
       "thread_id": "thread-ef2363229c6c",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/945f91cf/attachment.pl"
+      ]
     },
     {
       "id": "msg-4df4b1371e00",
@@ -195,11 +201,14 @@
       "subject_clean": "an error in gee()",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100113/8646e949/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100113/8646e949/attachment.pl>",
+      "body_plain": "Hi everyone,\n\nI've been trying to fit a simple dataset Rail in nlme package with gee().\n\nThis is what I tried. Rail has 3 repetitions for each id.\n----------------------------------------\nlibrary(gee)\ndata(Rail,package=\"nlme\")\ngee(travel~1, id=Rail, data=Rail, corstr=\"exchangeable\")\n ----------------------------------------\n\nHowever, I got the following error;\n ----------------------------------------\nWorking Correlation[1:4,1:4]\nError in print(x$working.correlation[1:4, 1:4], digits = digits) :\n  subscript out of bounds\n ----------------------------------------\n\nI make the Rail have 4 repetitions per each id, then it works.\n-----------------------------------------------\nRail1<-rbind(Rail,c(1,53),c(2,30),c(3,87),c(4,95),c(5,48),c(6,84))\naa<-order(Rail1$Rail)\nRail1<-Rail1[aa,]\ngee(travel~1, id=Rail, data=Rail1, corstr=\"exchangeable\")\n---------------------------------------------------\n\nSo, it works with 4 repetitions but with 3 repetitions. Did I do something\nwrong or is it a known bug?\n\nMany thanks in advance.\n\ncahn\n\n\n-- \nChaehyung Ahn\n4033 Remington Oaks Circle\nCary, NC 27519\nhttp://cahn88.blogspot.com/\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nI've been trying to fit a simple dataset Rail in nlme package with gee().\n\nThis is what I tried. Rail has 3 repetitions for each id.\n----------------------------------------\nlibrary(gee)",
       "thread_id": "thread-4df4b1371e00",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100113/8646e949/attachment.pl"
+      ]
     },
     {
       "id": "msg-c236574dd1e8",
@@ -265,11 +274,14 @@
       "references": [
         "<93d6f2a81001141148r52212a3ci59af26b4f43b53aa@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/1238940a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/1238940a/attachment.pl>",
+      "body_plain": "Hi Juliet,\n\nI had the same idea as you and created the following code for linear mixed\nmodels.\n\nHave fun~\n\ncahn\n\n### This fits Rail with nlm() (linear mixed models).\n\ndata(Rail, package=\"nlme\")\nlme(travel~1, random=~1|Rail, data=Rail)\n\n*fixed: 66.5\nrandom: 24.80547 4.020779 (standard deviations)*\n\n### The followings set up REML and maximize it with optim()\n### the last two elements of optim output needs to be sqrt(log())\n\n# 6 Rails have 3 repeatitions each.\nn<-6; r<-3;\n\n# -log Restricted Maximum Likelihood\n# beta[1]: mean\n\n# exp(beta[2]): sigma_a\n\n# exp(beta[3]): sigma\n# exp is used to prevent negative estimator for variance\n\n### Design Matrix\n\ny<-Rail$travel\nX<-rep(1,n*r)\nZ<-kronecker(diag(n),rep(1,r))\n\n### Restricted Maximum Likelihood\nreml<-function(beta){\n  V<-exp(beta[2])*Z%*%t(Z)+exp(beta[3])*diag(n*r)\n\nml<-log(det(V))/2+t(y-beta[1])%*%solve(V)%*%(y-beta[1])/2+log(det(t(X)%*%solve(V)%*%X))/2\n  return(ml)\n}\n\n#### optim()\n\noptim(c(66.5,5,2), reml, control=list(reltol=1e-20))$par\n\n\n\n\n\nOn Thu, Jan 14, 2010 at 2:48 PM, Juliet Hannah <juliet.hannah at gmail.com>wrote:\n\n> Hi List,\n>\n> I'm trying to learn more about mixed models in detail. Does anyone know of\n> any examples where code is provided showing simple examples of doing\n> this from scratch. For example, setting up a likelihood, using optim, and\n> things\n> like that.\n>\n> Thanks,\n>\n> Juliet\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n안재형\n4033 Remington Oaks Circle\nCary, NC 27519\nhttp://cahn88.blogspot.com/\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Juliet,\n\nI had the same idea as you and created the following code for linear mixed\nmodels.\n\nHave fun~\n\ncahn\n\n### This fits Rail with nlm() (linear mixed models).\n\ndata(Rail, package=\"nlme\")\nlme(tr",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/1238940a/attachment.pl"
+      ]
     },
     {
       "id": "msg-4997528b1782",
@@ -283,11 +295,14 @@
       "references": [
         "<93d6f2a81001141148r52212a3ci59af26b4f43b53aa@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/aba65554/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/aba65554/attachment.pl>",
+      "body_plain": "Sorry, I missed something.\n\n# lme() output;\nfixed: 66.5\nrandom: *24.80547 4.020779* (sd)\n\n\nThis is the output from optim(). The 1st element is the same as the lme\noutput.\n> optim(c(66.5,5,2), reml, control=list(reltol=1e-20))$par\n[1] 66.500000  6.422128  2.782951\n\nThe 2nd and 3rd need to transformed as the following;\n\n> sqrt(exp(c(6.422128,2.782951)))\n[1] 24.805465  4.020778\n\nThen, all are the same as lme output.\n\n\n\nOn Thu, Jan 14, 2010 at 2:48 PM, Juliet Hannah <juliet.hannah at gmail.com>wrote:\n\n> Hi List,\n>\n> I'm trying to learn more about mixed models in detail. Does anyone know of\n> any examples where code is provided showing simple examples of doing\n> this from scratch. For example, setting up a likelihood, using optim, and\n> things\n> like that.\n>\n> Thanks,\n>\n> Juliet\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n안재형\n4033 Remington Oaks Circle\nCary, NC 27519\nhttp://cahn88.blogspot.com/\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Sorry, I missed something.\n\n# lme() output;\nfixed: 66.5\nrandom: *24.80547 4.020779* (sd)\n\n\nThis is the output from optim(). The 1st element is the same as the lme\noutput.\n> optim(c(66.5,5,2), reml, co",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/aba65554/attachment.pl"
+      ]
     },
     {
       "id": "msg-d46352930538",
@@ -386,11 +401,14 @@
       "subject_clean": "using R for linear mixed effects models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100117/3a60fa5c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100117/3a60fa5c/attachment.pl>",
+      "body_plain": "Hello,\n\n   I'm a Masters student at UC Davis and I'm trying to use R to produce a\nlinear mixed effect model for my data on N2O emissions in agricultural\necosystems. I'm looking at the effects of management practices (such as\nfertilization and irrigation) as well as crop type, soil type, and other\nenvironmental factors on N2O emissions in California cropping systems.\nHowever, I'm having trouble finding specific examples on how to do it. I've\nnever used a computer program like this before and I'm struggling on where\nto begin. Do you have any advice or specific examples that could point me in\nthe right direction?\n\nThanks,\nGina\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\n   I'm a Masters student at UC Davis and I'm trying to use R to produce a\nlinear mixed effect model for my data on N2O emissions in agricultural\necosystems. I'm looking at the effects of manag",
       "thread_id": "thread-6a894bf0c58e",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100117/3a60fa5c/attachment.pl"
+      ]
     },
     {
       "id": "msg-9891f895e3d0",
@@ -438,11 +456,14 @@
       "subject_clean": "Help with LME in R",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100119/250ca31f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100119/250ca31f/attachment.pl>",
+      "body_plain": "Hello,\n\n \n\nI'm conducting an experiment where I trenched plots (treatment) in secondary forests of three age classes: young (4 years), intermediate (8-11 years) and old (28 years). There are six secondary forests (two in every class) divided in two farms and in every second-growth forest I paired five treatmento and control plot at random, and in each plot I planted 2 individuals of each species I'm studing.\n\n \n\nRechapting: there are two farms, three secondary forests on each farm (one of each age class), five pairs of treatment and control plot in every secondary forest.\n\n \n\nI want to estimate the parameters for the interaction between age classes and treatment (fixed effects), and specify that farm and the pairs are random variables, however, I'm not being able to do so. The estimated variance for the farms variable is zero. Any help is aprecciated.\n\n \n\nHere is an example I'm using for survival.\n\n \n\nfarm<-factor(rep(1:2,each=30))\ntreatment<-factor(rep(0:1,times=30))\npair<-factor(rep(1:30,each=2))\nage<-ordered(rep(1:3,each=10,times=2))\nsurvival<-rbinom(60,0:2,0.5)\ndeath<-2-survival\n\n \n\nsurv1<-glmer(cbind(survival,death)~age+treatment+age:treatment+(1|farm)+(1|pair),family=binomial)\n\n \n\nGeneralized linear mixed model fit by the Laplace approximation \nFormula: cbind(survival, death) ~ age + treatment + age:treatment + (1 | farm) + (1 | pair) \n   AIC   BIC logLik deviance\n 104.2 121.0  -44.1     88.2\nRandom effects:\n Groups Name        Variance Std.Dev.\n pair   (Intercept)  0        0      \n farm   (Intercept)  0        0      \nNumber of obs: 60, groups: pair, 30; farm, 2\n\n\nFixed effects:\n                 Estimate Std. Error z value Pr(>|z|)   \n(Intercept)       -0.8952     0.2946 -3.0385  0.00238 **\nage.L             -0.8384     0.5072 -1.6529  0.09835 . \nage.Q              0.2491     0.5134  0.4853  0.62745   \ntreatment1        -0.2556     0.4294 -0.5951  0.55178   \nage.L:treatment1   1.2881     0.7659  1.6817  0.09263 . \nage.Q:treatment1  -0.9004     0.7210 -1.2488  0.21173  \n\n \n\n \n\nIn these case, both \"pair\" and \"farm\" had variances zero. Why? What I'm doing wrong?\n\n \n\nThese p-values for the fixed effects are from the Wald test? If not, how can I perform the Wald test to test the effects of the fixed effects??\n\n \n\nI appreciate any help!\n\n \n\nThanks,\n\n \n\nGuilherme\n\n \n\n \n\n \n\n \n\n \n\n \n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\n \n\nI'm conducting an experiment where I trenched plots (treatment) in secondary forests of three age classes: young (4 years), intermediate (8-11 years) and old (28 years). There are six secon",
       "thread_id": "thread-414394ca4817",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100119/250ca31f/attachment.pl"
+      ]
     },
     {
       "id": "msg-644867316478",
@@ -470,11 +491,14 @@
       "subject_clean": "Random & fixed effects on same level",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100120/bd7186c5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100120/bd7186c5/attachment.pl>",
+      "body_plain": "Dear mailing list,\n\n \n\n \n\nI have a model where I use leaf characteristics as response variables,\nand populations and trees (nested in populations) as random effects.\nAfter quantifying the variation associated with the different grouping\nlevels (error/within trees/within populations), I've added fixed\neffects. I have information on population level (annual precipitation,\nsoil characteristics ...). By adding explanatory variables on population\nlevel, can I still include 'population' as a random effect (without\nbreaking any statistical rule)? My idea was that, by including a fixed\neffect, the fixed effect partially explains the variation added by a\ngrouping variable, but now I'm hesitating a bit... Does anybody have\nsome references on this topic?\n\n \n\n \n\nThanks in advance,\n\nSebastiaan   \n\n \n\n \n\n \n\n \n\n \n\n \n\nSebastiaan De Smedt\n\nResearch assistant\n\nUA - Department of Bioscience Engineering\n\n \n\nGroenenborgerlaan 171 - V6.16\n\nB-2020 Antwerpen, Belgium\n\n+32 (0)3 265 35 69\n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mailing list,\n\n \n\n \n\nI have a model where I use leaf characteristics as response variables,\nand populations and trees (nested in populations) as random effects.\nAfter quantifying the variation as",
       "thread_id": "thread-16d45bde91c8",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100120/bd7186c5/attachment.pl"
+      ]
     },
     {
       "id": "msg-7737037d35d2",
@@ -504,11 +528,14 @@
       "subject_clean": "How to do an split-plot design with glmer??",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100121/6b832017/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100121/6b832017/attachment.pl>",
+      "body_plain": "Hello all,\n\n \n\nI have the follow type of data:\n\n \n\n \n\nfarm <- factor(rep(1:2, each = 30))  ## two different locations\nage <- factor(rep(1:3, each = 10, times = 2)) ## age of the secondary forests (1=young,2=intermediate,3=old)\nblock <- factor(rep(1:5, each = 2, times = 6)) ## experiemental blocks\ntrt <- factor(as.vector(replicate(30, sample(c(0, 1)))))     # treatments with randomizes order within pair\nsurvival <- rbinom(60, 0:2, 0.5) ## survival of the two seedlings planted in the plots\ndeath <- 2 - survival\n\n\nAnd I want to fit a split-plot model, having age as the main-plot effect, block and trt as the split-plot effects, with all effects nested with farms.\n\n \n\nAnyone could  help me on that?\n\n \n\n \n\nGuilherme\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\n \n\nI have the follow type of data:\n\n \n\n \n\nfarm <- factor(rep(1:2, each = 30))  ## two different locations\nage <- factor(rep(1:3, each = 10, times = 2)) ## age of the secondary forests (1=y",
       "thread_id": "thread-fcd25f012292",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100121/6b832017/attachment.pl"
+      ]
     },
     {
       "id": "msg-1b9225419554",
@@ -840,11 +867,14 @@
       "subject_clean": "Time series LME with nested fixed effects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100126/ce82c87a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100126/ce82c87a/attachment.pl>",
+      "body_plain": "We are using transmitting time/depth recorders to measure the diving\nbehavior of 5 harbor seals in Puget Sound.  For each seal, we have two\nseasons, while herring are spawning and after they spawn.  Nested in each\nseason, we have four times of day (labeled period).  We are interested in\nwhether there is an effect of “season” (spawn / non-spawn), “period”\n(morning, day, evening, night) on the “Modal Depth Bin” of harbor seals, or\nan interaction between these two factors.\n\nBelow is the code that we think is correct.  Does anyone think the model is\nspecified incorrectly, and if so what do they recommend (and why)?\nThanks very much for your time.\n\n-Austen Thomas\n\nBiology Department\nWestern Washington University\nBiology Building BI 315\nMail Stop 9160\nBellingham, WA 98225-9160\n\n\n\nFor lme4 package\nsummary(d)\nlmer(MDB~Season*Period+(1|Seal/Season/Period), data=d, REML=F)->fit10\nsummary(fit10)\nlmer(MDB~Season+Period+(1|Seal/Season/Period), data=d, REML=F)->fit11\nlmer(MDB~Season+(1|Seal/Season/Period), data=d, REML=F)->fit12\nlmer(MDB~1+(1|Seal/Season/Period), data=d, REML=F)->fit13\nanova(fit10, fit11, fit12, fit13)\n\nfor the nlme package\nlme(MDB~Season*Period, random=~1|Seal/Season/Period, method=\"ML\",\ndata=d)->fit20\nsummary(fit20)\nlme(MDB~Season+Period, random=~1|Seal/Season/Period, method=\"ML\",\ndata=d)->fit21\nlme(MDB~Season, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit22\nlme(MDB~1, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit23\nanova(fit20, fit21, fit22, fit23)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "We are using transmitting time/depth recorders to measure the diving\nbehavior of 5 harbor seals in Puget Sound.  For each seal, we have two\nseasons, while herring are spawning and after they spawn.  N",
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100126/ce82c87a/attachment.pl"
+      ]
     },
     {
       "id": "msg-f8856989dbeb",
@@ -907,11 +937,14 @@
       "references": [
         "<9d4eee51001262346u4abd4313s3e0abef7652f6bd0@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/f658dde9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/f658dde9/attachment.pl>",
+      "body_plain": "Hello Austin,\n\nI stand to be corrected but as no-one else has offered anything yet I'll\nmake a suggestion or two.\n\n\n1.\nI don't think you want your random effects nested; you want them crossed.\nThis you can only do with lmer, not nlme.\n\nSo something like:\n\nlmer(MDB~Season*Period+(1|Seal) +(1|Season)+(1|Period), data=d,\nREML=F)->fit10\n\nThis is because the seasons and periods have meaning independently. i.e.\nsaying \"spawn\" means the same thing for each seal, and each period. Or in\nother words, you might expect \"spawn\" data points to share similarities with\neach other that they do not share with non-spawn, regardless of which time\nperiod or seal.\n\n2. But!\n\nYou only have 2 categories for season. This is not enough to treat it as\nrandom. 4 periods is not really enough either. 5 seals is possibly just\nenough. So I would just have seal as the only random effect. Just treat\nseason and period as fixed.\n\nlmer(MDB~Season*Period+(1|Seal), data=d, REML=F)->fit10\n\n\n\nandydolman at gmail.com\n\n\n2010/1/27 Austen Thomas <austen.thomas at gmail.com>\n\n> We are using transmitting time/depth recorders to measure the diving\n> behavior of 5 harbor seals in Puget Sound.  For each seal, we have two\n> seasons, while herring are spawning and after they spawn.  Nested in each\n> season, we have four times of day (labeled period).  We are interested in\n> whether there is an effect of “season” (spawn / non-spawn), “period”\n> (morning, day, evening, night) on the “Modal Depth Bin” of harbor seals, or\n> an interaction between these two factors.\n>\n> Below is the code that we think is correct.  Does anyone think the model is\n> specified incorrectly, and if so what do they recommend (and why)?\n> Thanks very much for your time.\n>\n> -Austen Thomas\n>\n> Biology Department\n> Western Washington University\n> Biology Building BI 315\n> Mail Stop 9160\n> Bellingham, WA 98225-9160\n>\n>\n>\n> For lme4 package\n> summary(d)\n> lmer(MDB~Season*Period+(1|Seal/Season/Period), data=d, REML=F)->fit10\n> summary(fit10)\n> lmer(MDB~Season+Period+(1|Seal/Season/Period), data=d, REML=F)->fit11\n> lmer(MDB~Season+(1|Seal/Season/Period), data=d, REML=F)->fit12\n> lmer(MDB~1+(1|Seal/Season/Period), data=d, REML=F)->fit13\n> anova(fit10, fit11, fit12, fit13)\n>\n> for the nlme package\n> lme(MDB~Season*Period, random=~1|Seal/Season/Period, method=\"ML\",\n> data=d)->fit20\n> summary(fit20)\n> lme(MDB~Season+Period, random=~1|Seal/Season/Period, method=\"ML\",\n> data=d)->fit21\n> lme(MDB~Season, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit22\n> lme(MDB~1, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit23\n> anova(fit20, fit21, fit22, fit23)\n>\n>        [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello Austin,\n\nI stand to be corrected but as no-one else has offered anything yet I'll\nmake a suggestion or two.\n\n\n1.\nI don't think you want your random effects nested; you want them crossed.\nThis yo",
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/f658dde9/attachment.pl"
+      ]
     },
     {
       "id": "msg-baa7f7b5fc94",
@@ -926,11 +959,14 @@
         "<9d4eee51001262346u4abd4313s3e0abef7652f6bd0@mail.gmail.com>",
         "<951234ac1001271323r7ca32abbxda3c0d9f59564bec@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/96b300bc/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/96b300bc/attachment.pl>",
+      "body_plain": "Hi Andrew,\n\nThank you so much for taking the time to look this over for us.  Your\nassistance has been exceedingly helpful.\n\n-Austen\n\nOn Wed, Jan 27, 2010 at 1:23 PM, Andrew Dolman <andydolman at gmail.com> wrote:\n\n> Hello Austin,\n>\n> I stand to be corrected but as no-one else has offered anything yet I'll\n> make a suggestion or two.\n>\n>\n> 1.\n> I don't think you want your random effects nested; you want them crossed.\n> This you can only do with lmer, not nlme.\n>\n> So something like:\n>\n> lmer(MDB~Season*Period+(1|Seal) +(1|Season)+(1|Period), data=d,\n> REML=F)->fit10\n>\n> This is because the seasons and periods have meaning independently. i.e.\n> saying \"spawn\" means the same thing for each seal, and each period. Or in\n> other words, you might expect \"spawn\" data points to share similarities with\n> each other that they do not share with non-spawn, regardless of which time\n> period or seal.\n>\n> 2. But!\n>\n> You only have 2 categories for season. This is not enough to treat it as\n> random. 4 periods is not really enough either. 5 seals is possibly just\n> enough. So I would just have seal as the only random effect. Just treat\n> season and period as fixed.\n>\n> lmer(MDB~Season*Period+(1|Seal), data=d, REML=F)->fit10\n>\n>\n>\n> andydolman at gmail.com\n>\n>\n> 2010/1/27 Austen Thomas <austen.thomas at gmail.com>\n>\n>>  We are using transmitting time/depth recorders to measure the diving\n>> behavior of 5 harbor seals in Puget Sound.  For each seal, we have two\n>> seasons, while herring are spawning and after they spawn.  Nested in each\n>> season, we have four times of day (labeled period).  We are interested in\n>> whether there is an effect of “season” (spawn / non-spawn), “period”\n>> (morning, day, evening, night) on the “Modal Depth Bin” of harbor seals,\n>> or\n>> an interaction between these two factors.\n>>\n>> Below is the code that we think is correct.  Does anyone think the model\n>> is\n>> specified incorrectly, and if so what do they recommend (and why)?\n>> Thanks very much for your time.\n>>\n>> -Austen Thomas\n>>\n>> Biology Department\n>> Western Washington University\n>> Biology Building BI 315\n>> Mail Stop 9160\n>> Bellingham, WA 98225-9160\n>>\n>>\n>>\n>> For lme4 package\n>> summary(d)\n>> lmer(MDB~Season*Period+(1|Seal/Season/Period), data=d, REML=F)->fit10\n>> summary(fit10)\n>> lmer(MDB~Season+Period+(1|Seal/Season/Period), data=d, REML=F)->fit11\n>> lmer(MDB~Season+(1|Seal/Season/Period), data=d, REML=F)->fit12\n>> lmer(MDB~1+(1|Seal/Season/Period), data=d, REML=F)->fit13\n>> anova(fit10, fit11, fit12, fit13)\n>>\n>> for the nlme package\n>> lme(MDB~Season*Period, random=~1|Seal/Season/Period, method=\"ML\",\n>> data=d)->fit20\n>> summary(fit20)\n>> lme(MDB~Season+Period, random=~1|Seal/Season/Period, method=\"ML\",\n>> data=d)->fit21\n>> lme(MDB~Season, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit22\n>> lme(MDB~1, random=~1|Seal/Season/Period, method=\"ML\", data=d)->fit23\n>> anova(fit20, fit21, fit22, fit23)\n>>\n>>        [[alternative HTML version deleted]]\n>>\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>\n>\n\n\n-- \nBiology Department\nWestern Washington University\nBiology Building BI 315\nMail Stop 9160\nBellingham, WA 98225-9160\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Andrew,\n\nThank you so much for taking the time to look this over for us.  Your\nassistance has been exceedingly helpful.\n\n-Austen\n\nOn Wed, Jan 27, 2010 at 1:23 PM, Andrew Dolman <andydolman at gmail",
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 2,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/96b300bc/attachment.pl"
+      ]
     },
     {
       "id": "msg-82e945f80e0a",
@@ -958,11 +994,14 @@
       "subject_clean": "Trend in total number of animals",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100128/8e07b841/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100128/8e07b841/attachment.pl>",
+      "body_plain": "Dear all,\n \nWe are modelling the total numbers of hibarnating bats in a fortress. We\nhave data of the number of bats per room spanning ten years. The main\nproblem is that not all rooms were visited each year. The fieldworkers\ndid not known or find all rooms and some rooms were not allways\naccessible.\n \nSome of the rooms were not counted in the early years and they contain a\nrather high number of bats in the more recent years. So a glm on the\ntotal observed number would be very biased. Therefore we would use a\nmixed model on the numbers of bats per room. The model looks like:\nglmer(Number ~ Year + (1|Year) + (Year|Room), family = poisson). Year is\nthe long-term trend. (1|Year) allows for year-to-year variability (due\nto weatherconditions) and (Year|Room) allows for a random intercept and\nslope per room.\n \nOur main question about this model is the interpretation of the\nlong-term trend (fixed effect of Year). Given the model specification it\nis the trend in an 'average' room from the population of rooms. Can we\nassume that this trend equals the trend in the total number of bats in\nthe fortress. That would be the trend in to total observed numbers if we\ncould have investigated every room in every year.\nOr is it better to use the model to simulate the total number of bats\nand then model this simulated totals using a simple glm? Repeating the\nsimulations a large number of times would yield an average and\nconfidence intervals for the trend.\n \nBest regards,\n \nThierry\n\n------------------------------------------------------------------------\n----\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to\nsay what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of\ndata.\n~ John Tukey\n  \n\n\n\nDruk dit bericht a.u.b. niet onnodig af.\nPlease do not print this message unnecessarily.\n\nDit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer \nen binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is\ndoor een geldig ondertekend document. The views expressed in  this message\nand any annex are purely those of the writer and may not be regarded as stating \nan official position of INBO, as long as the message is not confirmed by a duly \nsigned document.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n \nWe are modelling the total numbers of hibarnating bats in a fortress. We\nhave data of the number of bats per room spanning ten years. The main\nproblem is that not all rooms were visited ea",
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100128/8e07b841/attachment.pl"
+      ]
     },
     {
       "id": "msg-e965cb1267b8",
@@ -1188,11 +1227,14 @@
       "references": [
         "<4B613CBD.9090705@life.ku.dk>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100129/3cf3a450/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100129/3cf3a450/attachment.pl>",
+      "body_plain": "Hello Christian,\n\nThanks for your input.  I tried the changes that you suggested and it\nactually did yield a different result from our original model specification\n(please see below).\n\n-Austen\n\n\n> # LME for Dive Depth Focus (DDF)\n> #For lme4 package\n> #summary(d)\n> lmer(DDF~Season*Period+(1|Seal/Season/Period), data=d, REML=F)->fit10\n> #summary(fit10)\n> lmer(DDF~Season+Period+(1|Seal/Season/Period), data=d, REML=F)->fit11\n> lmer(DDF~Season+(1|Seal/Season/Period), data=d, REML=F)->fit12\n> lmer(DDF~1+(1|Seal/Season/Period), data=d, REML=F)->fit13\n> anova(fit10, fit11, fit12, fit13)\nData: d\nModels:\nfit13: DDF ~ 1 + (1 | Seal/Season/Period)\nfit12: DDF ~ Season + (1 | Seal/Season/Period)\nfit11: DDF ~ Season + Period + (1 | Seal/Season/Period)\nfit10: DDF ~ Season * Period + (1 | Seal/Season/Period)\n      Df     AIC     BIC  logLik  Chisq Chi Df Pr(>Chisq)\nfit13  5 -48.958 -23.951  29.479\nfit12  6 -47.799 -17.792  29.900 0.8416      1    0.35894\nfit11  9 -47.515  -2.504  32.758 5.7161      3    0.12627\nfit10 12 -50.398   9.617  37.199 8.8826      3    0.03089 *\n---\nSignif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\n\n> # LME for Dive Depth Focus (DDF)\n> #For lme4 package\n> #summary(d)\n> lmer(DDF~Season*Period+(1|Seal:Season:Period), data=d, REML=F)->fit10\n> #summary(fit10)\n> lmer(DDF~Season+Period+(1|Seal:Season:Period), data=d, REML=F)->fit11\n> lmer(DDF~Season+(1|Seal:Season:Period), data=d, REML=F)->fit12\n> lmer(DDF~1+(1|Seal:Season:Period), data=d, REML=F)->fit13\n> anova(fit10, fit11, fit12, fit13)\nData: d\nModels:\nfit13: DDF ~ 1 + (1 | Seal:Season:Period)\nfit12: DDF ~ Season + (1 | Seal:Season:Period)\nfit11: DDF ~ Season + Period + (1 | Seal:Season:Period)\nfit10: DDF ~ Season * Period + (1 | Seal:Season:Period)\n      Df     AIC     BIC  logLik  Chisq Chi Df Pr(>Chisq)\nfit13  3 -47.837 -32.833  26.918\nfit12  4 -47.246 -27.242  27.623 1.4095      1     0.2351\nfit11  7 -44.909  -9.900  29.455 3.6625      3     0.3003\nfit10 10 -44.166   5.847  32.083 5.2565      3     0.1539\n\n\n\nOn Wed, Jan 27, 2010 at 11:29 PM, Christian Ritz <ritz at life.ku.dk> wrote:\n\n> Hi Austen,\n>\n> apart from the residual error I could imagine that there are two additional\n> layers of\n> variation in the experimental setup you've:\n>\n> (1|seal) - variation between seals\n>\n> (1|seal:season) - season-specific seal variation\n>\n> (1|seal:season:period) - season- and period-specific seal variation\n>\n>\n> Far from sure that all sources will show up for an experiment only\n> involving 5 seals. For\n> clarity, I would prefer using these three terms to using\n> \"(1|seal/season/period)\", even\n> though I think the end result is this same as the latter is equivalent to:\n>\n> (1|seal) + (1|seal:season) + (1|seal:season:period)\n>\n>\n> If there are no replicates (you didn't tell us about replicates...) the\n> last term will be\n> redundant as it corresponds to the residual error term, which is anyway\n> part of the model.\n> So in short your original model specification looks ok to me.\n>\n>\n> Christian\n>\n>\n\n\n-- \nBiology Department\nWestern Washington University\nBiology Building BI 315\nMail Stop 9160\nBellingham, WA 98225-9160\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello Christian,\n\nThanks for your input.  I tried the changes that you suggested and it\nactually did yield a different result from our original model specification\n(please see below).\n\n-Austen\n\n\n> # L",
       "thread_id": "thread-82e945f80e0a",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100129/3cf3a450/attachment.pl"
+      ]
     }
   ],
   "threads": [

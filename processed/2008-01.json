@@ -34,11 +34,14 @@
         "<b20ae6290712312119yf7aa270jc9b6cc42f060b49f@mail.gmail.com>",
         "<b20ae6290712312127i52b123d7r72b84c1dbe1c3700@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080101/416d31bd/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080101/416d31bd/attachment.pl>",
+      "body_plain": "Hi,\nHow about:\n\nxwfB[f==\"A\"] <-0\nxwfB[f==\"B\"] <- scale(x[f==\"B\"], center = TRUE, scale=FALSE)\n\nlmer(y ~ f + xwfB + (1 | g))\nLinear mixed-effects model fit by REML\nFormula: y ~ f + xwfB + (1 | g)\n  AIC  BIC logLik MLdeviance REMLdeviance\n 1481 1494 -736.4       1477         1473\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n g        (Intercept) 3.2279e-06 0.0017966\n Residual             9.5567e+01 9.7758279\nNumber of obs: 200, groups: g, 20\n\nFixed effects:\n             Estimate Std. Error t value\n(Intercept)  606.5497     0.9776   620.5\nfB          -183.9712     1.3825  -133.1\nxwfB         -51.3651     0.4447  -115.5\n\nCorrelation of Fixed Effects:\n     (Intr) fB\nfB   -0.707\nxwfB  0.000  0.000\n\nBest\nReinhold\n\nOn Jan 1, 2008 6:27 AM, Gregor GORJANC <gregor.gorjanc at bfro.uni-lj.si>\nwrote:\n\n> Hi!\n>\n> First of all happy new year and all the best in 2008!\n>\n> Does anyone have any idea how to trick lmer() in the same way as\n> lm() to constrain one regression slope to zero in nested regression.\n> The following code shows what I want to do:\n>\n> ## Generate data\n>\n> x1 <- runif(n=100, min=-4, max=1)\n> y1 <- rep(606, length(x1)) + rnorm(n=100, sd=10)\n> x1 <- x1 + 1995\n>\n> x2 <- runif(n=100, min=0, max=8)\n> y2 <- (606 + 0.14) - 51.8 * x2 + rnorm(n=100, sd=10)\n> x2 <- x2 + 1997\n>\n> y <- c(y1, y2)\n> x <- c(x1, x2)\n> f <- factor(rep(c(\"A\", \"B\"), each=100))\n> g <- factor(rep(letters[1:20], times=10))\n>\n> ## Plot\n>\n> plot(y ~ x, type=\"p\", xlim=c(1991, 2005), ylim=c(0, 700))\n>\n> ## Fit model - (nested) regression for each \"period\"\n>\n> lm(y ~ f * x)\n> ## OK\n>\n> lmer(y ~ f * x + (1 | g))\n> ## OK\n>\n> ## Fit model - (nested) regression for each \"period\", but constrain\n> ## slope to zero in first \"period\"\n>\n> x2 <- x\n> x2[1:100] <- 0\n>\n> lm(y ~ f * x2)\n> ## OK\n>\n> lmer(y ~ f * x2 + (1 | g))\n> Error in lmer(y ~ f * x2 + (1 | g)) :\n>  Leading minor of order 4 in downdated X'X is not positive definite\n>\n> Thanks!\n>\n> --\n> Lep pozdrav / With regards,\n>    Gregor Gorjanc\n>\n>\n> ----------------------------------------------------------------------------------------------------\n> University of Ljubljana          PhD student\n> Biotechnical Faculty\n> Zootechnical Department     URI: http://www.bfro.uni-lj.si/MR/ggorjan\n> Groblje 3                            mail: gregor.gorjanc <at>\n> bfro.uni-lj.si\n> SI-1230 Domzale                tel: +386 (0)1 72 17 861\n> Slovenia, Europe                 fax: +386 (0)1 72 17 888\n>\n> ----------------------------------------------------------------------------------------------------\n> \"One must learn by doing the thing; for though you think you know it,\n>  you have no certainty until you try.\" Sophocles ~ 450 B.C.\n>\n> ----------------------------------------------------------------------------------------------------\n>\n>\n>\n> --\n> Lep pozdrav / With regards,\n>    Gregor Gorjanc\n>\n>\n> ----------------------------------------------------------------------------------------------------\n> University of Ljubljana          PhD student\n> Biotechnical Faculty\n> Zootechnical Department     URI: http://www.bfro.uni-lj.si/MR/ggorjan\n> Groblje 3                            mail: gregor.gorjanc <at>\n> bfro.uni-lj.si\n> SI-1230 Domzale                tel: +386 (0)1 72 17 861\n> Slovenia, Europe                 fax: +386 (0)1 72 17 888\n>\n> ----------------------------------------------------------------------------------------------------\n> \"One must learn by doing the thing; for though you think you know it,\n>  you have no certainty until you try.\" Sophocles ~ 450 B.C.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\nHow about:\n\nxwfB[f==\"A\"] <-0\nxwfB[f==\"B\"] <- scale(x[f==\"B\"], center = TRUE, scale=FALSE)\n\nlmer(y ~ f + xwfB + (1 | g))\nLinear mixed-effects model fit by REML\nFormula: y ~ f + xwfB + (1 | g)\n  AIC",
       "thread_id": "thread-112801177031",
       "thread_depth": 1,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080101/416d31bd/attachment.pl"
+      ]
     },
     {
       "id": "msg-c200be24fd82",
@@ -333,11 +336,14 @@
       "subject_clean": "testing fixed effects in binomial lmer...again?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080108/74a6fe32/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080108/74a6fe32/attachment.pl>",
+      "body_plain": "Dear all,\nI know that this may be a already debated topic, but even searching  \nthe R-help and the r-sig-mixed-models archives I can not find a reply  \nto my doubts...(but see Ben Bolkers' reply to my similar quest in r- \nhelp).\n\nI am performing a binomial glmm analysis using the lmer function in  \nthe lme4 package (last release, just downloaded). I am using the  \n\"Laplace method\".\n\nHowever, I am not sure about what I should do to test for the  \nsignificance of fixed effects in the binomial case: Is it correct to  \ntest a full model against a model from which I remove the fixed  \neffect I want to test using the anova(mod1.lmer, mod2.lmer) method  \nand then relying on the model with the lower AIC (or on the Log- \nlikelihood test?)?\n\nWould you advice me to use the glmmML function instead? (I am not  \nsure where the differences are with lmer)\n\nI thank in advance for your help!\n\nbest regards,\nAchaz von Hardenberg\n\nBen Bolker wrote:\n >The short answer is that testing fixed effects in GLMMs\n >is difficult and dangerous.  Likelihood ratio tests on fixed\n >effect differences [which is generally what anova() does]\n >in a random-effects model are unreliable\n >(see Pinheiro and Bates 2000).  Most of the world does\n >F tests with various corrections on the denominator\n >degrees of freedom, but this is contentious (in particular,\n >Doug Bates, the author of lme4, disagrees).  lme4 will\n >eventually let you use an MCMC sampling method to test\n >fixed effects but that may or may not be working\n >in the current version.\n\n >I would try this question again on the r-sig-mixed\n >mailing list.\n\n > good luck,\n > Ben Bolker\n\nDr. Achaz von Hardenberg\n------------------------------------------------------------------------ \n--------------------------------\nCentro Studi Fauna Alpina - Alpine Wildlife Research Centre\nServizio Sanitario e della Ricerca Scientifica\nParco Nazionale Gran Paradiso, Degioz, 11, 11010-Valsavarenche (Ao),  \nItaly\n------------------------------------------------------------------------ \n--------------------------------\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI know that this may be a already debated topic, but even searching  \nthe R-help and the r-sig-mixed-models archives I can not find a reply  \nto my doubts...(but see Ben Bolkers' reply to my",
       "thread_id": "thread-b43c880aa1fd",
       "thread_depth": 0,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080108/74a6fe32/attachment.pl"
+      ]
     },
     {
       "id": "msg-ab857a26d83b",
@@ -433,11 +439,14 @@
         "<Pine.LNX.4.64.0801090746380.31988@orpheus.qimr.edu.au>",
         "<4783F76B.7000302@ufl.edu>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080109/2d29b8cc/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080109/2d29b8cc/attachment.pl>",
+      "body_plain": "Not sure it applies exactly to the cases discussed so far here, but there is\nanalytical and simulation evidence against using BLUP-based residuals of\nmixed models for bootstrapping. See:Morris, J.S. (2002). The BLUPs are not\n\"best\" when it comes to bootstrapping.\nStatistics & Probability Letters 56, 425-450.\n\nA PDF is available on his website.\n\nReinhold\n\nOn Jan 8, 2008 11:21 PM, Ben Bolker <bolker at ufl.edu> wrote:\n\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> David Duffy wrote:\n> | On Tue, 8 Jan 2008, Dimitris Rizopoulos wrote:\n> |>> On Jan 8, 2008 5:38 AM, Achaz von Hardenberg <fauna at pngp.it> wrote:\n> |>>\n> |>>> However, I am not sure about what I should do to test for the\n> |>>> significance of fixed effects in the binomial case\n> |> What about Bootstrap (parametric or not)? Would it be useful in this\n> |> case?\n> |>\n> |\n> | The only problem is specifying a bootstrap mechanism that respects the\n> | structure of the random effects.  So for time series data, your\n> bootstrap\n> | samples have to remain AR1 or whatever (ie you don't want gaps\n> appearing that\n> | aren't in the observed data), and for genetic type data (the kind I\n> have),\n> | that pseudosample people are appropriately related to one another.\n> Resampling\n> | clusters works for that kind of data, though I think you need many\n> clusters.\n> | There are several papers in the area of genetic linkage analysis that\n> have\n> | validated bootstrapping for a test that a variance component is zero.\n> |\n> | But for testing simple hypotheses about particular fixed effects,\n> | a permutation/randomization test should work, I think.\n> |\n> | David Duffy.\n>\n> ~  My favorite solution (which worked in nlme, I think, but might\n> take some time to get for lme4 ...) would to be able to generate\n> posterior simulations from the reduced model, then use these to\n> generate a null distribution for F statistics (or whatever) for\n> the model comparison.  This seems as though it would actually be\n> a relatively straightforward extension of mcmcsamp, once it exists --\n> although arguably once you have mcmcsamp you wouldn't need it\n> any more ...\n>\n> ~   Ben Bolker\n>\n> -----BEGIN PGP SIGNATURE-----\n> Version: GnuPG v1.4.6 (GNU/Linux)\n> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org\n>\n> iD8DBQFHg/drc5UpGjwzenMRAgtdAJ9iill9KFLLGOAUnLyXvCRVEWthEQCdFLb9\n> s+A2eFe1JfDrAy/0zW9MFhA=\n> =Aitb\n> -----END PGP SIGNATURE-----\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Not sure it applies exactly to the cases discussed so far here, but there is\nanalytical and simulation evidence against using BLUP-based residuals of\nmixed models for bootstrapping. See:Morris, J.S. (",
       "thread_id": "thread-b43c880aa1fd",
       "thread_depth": 5,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080109/2d29b8cc/attachment.pl"
+      ]
     },
     {
       "id": "msg-02b4a747f72d",
@@ -778,11 +787,14 @@
       "subject_clean": "Random slopes without random intercepts",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080117/82c12897/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080117/82c12897/attachment.pl>",
+      "body_plain": "Dear all,\n\nI'd like to fit a model with random slopes without random intercepts. I\ncan't figure out the syntax and would appreciate some help.\n\nBasically, I want to explore the full volume of parameter space for my\ndataset. There's only one fixed effect, but several levels of random\nvariation. I can fit all combinations of random intercept and random slope\nmodels as:\n\n1) lmer( y ~ x + (1|A) ...)\n2) lmer(y ~ x + (x|A) ...)\n\n\nThe logical way to remove the random intercept is to remove \"A\" from formula\n2. But then lmer wouldn't know which level at which to fit the random\nslopes. I tried \"A-1\" and \"(A-1)\" but both returned errors.\n\nThanks in advance.\n\nBest wishes, Nick\n\n\n\n\nPS I'd like to take this opportunity to add my voice to the chorus of\ngratitude and enthusiasm about lme4. The old version of lmer was very slow\nfitting random slope models and frequently returned convergence warnings,\nprobably due to my data structure (n=1200, very unbalanced). I've just\nstarted using the newest lmer (aka lmer2) and am astonished to find a 40\nfold increase in the speed of model fitting, and no warnings.\n\n\nNick Isaac\nZoological Society of London\nnick.isaac at ioz.ac.uk\nT: +44 (0) 20 7449 6670\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI'd like to fit a model with random slopes without random intercepts. I\ncan't figure out the syntax and would appreciate some help.\n\nBasically, I want to explore the full volume of paramete",
       "thread_id": "thread-184674ac666f",
       "thread_depth": 0,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080117/82c12897/attachment.pl"
+      ]
     },
     {
       "id": "msg-a94d0fa7f1ef",
@@ -902,11 +914,14 @@
       "subject_clean": "Prediction for \"new\" data from a binomial glmm fitted using lmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080118/7eae5977/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080118/7eae5977/attachment.pl>",
+      "body_plain": "Hello all,\n\nI have fit an lmer() model to binomial data collected on a number of\nsubjects and obtained the predicted values using fitted(). The model has\nseveral fixed effects plus a random intercept and slope.\n\nI would now like to predict for a \"new\" data set. This I have developed\nby simply\nsubsampling across the range of fitted values, and then replicating for\nall subjects the same set of covariates linked with each of the\nsubsampled observations.  \n\nI can obtain predictions for the new data set based on the fixed effects\nonly using model.matrix() together with fixef():\n\nfit <- lmer( bin ~ formula + (1+x1 | Subject), data=dat.original,\nfamily=binomial)\nX <- model.matrix(~ formula, data=dat.new)    \nb <- fixef(fit)\npred.f <- X %*% b ; pred.f <- exp(pred.f)/(1+exp(pred.f))\n\nHowever I am struggling to build predictions for the new data set\nincorporating both the estimated fixed and random effects. I believe the\ninformation necessary to do this is available from the slots in the\nlmer-class object, but I can't work our exactly how.\nAny help would be greatly appreciated! I am using Package lme4 version\n0.99875-7.\nThanks,\nSophie\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\nI have fit an lmer() model to binomial data collected on a number of\nsubjects and obtained the predicted values using fitted(). The model has\nseveral fixed effects plus a random intercept ",
       "thread_id": "thread-ce3bb5abbcab",
       "thread_depth": 0,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080118/7eae5977/attachment.pl"
+      ]
     },
     {
       "id": "msg-f7454ad63025",
@@ -1030,11 +1045,14 @@
       "subject_clean": "Lme doubt...",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080123/8b2ae25c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080123/8b2ae25c/attachment.pl>",
+      "body_plain": "Dear all,\n\nI am analyzing data regarding the effects of introduced fish on the  \nbiodiversity of 12 alpine lakes. I have 6 lakes with fish and 6  \nwithout and my dependent variables are various repeated density  \nmeasurements of zooplankton taxa.\nAs we repeated the biodiversity measurements twice a year for two  \nyears (2006 and 2007) I am analyzing this data with  the lme function  \nof the nlme package with lake identity as random grouping factor  \n(random = ~1|as.factor(Cod)), and the presence/absence of fish as  \nfixed effect. I included also the year and month of sampling as fixed  \neffects.\nThe full model specification is the following:\n\nzoopcrost.lme<-lme(Logcrostacei~as.factor(year)+as.factor(month) \n+as.factor(fish),method=\"ML\", random=~1|as.factor(Cod),  \ndata=zooplankton, na.action=na.omit)\n\nNow, I have a doubt....\nThe lakes differ among each other for some physical characteristics  \nsuch as altitude, maximum depth etc....Obviously these parameters do  \nnot vary within each sampling as they are specific for each lake  \n(they do not vary from one year to the next or from one month to the  \nnext) but they may have an influence on the densities of zooplankton  \ntaxa, regardless of the presence/absence of introduced fish. Should I  \nnonetheless consider these variables among the fixed effects? Or  \nshould the fact that I impose the lake identity as grouping factor  \ntake care of the fact that there are individual differences among the  \nlakes?\n\nSorry for possibly a naive question and thank you for your help!\n\nDr. Achaz von Hardenberg\n------------------------------------------------------------------------ \n--------------------------------\nCentro Studi Fauna Alpina - Alpine Wildlife Research Centre\nServizio Sanitario e della Ricerca Scientifica\nParco Nazionale Gran Paradiso, Degioz, 11, 11010-Valsavarenche (Ao),  \nItaly\n-----------------------------------------------------------------\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI am analyzing data regarding the effects of introduced fish on the  \nbiodiversity of 12 alpine lakes. I have 6 lakes with fish and 6  \nwithout and my dependent variables are various repeat",
       "thread_id": "thread-70bb725313f7",
       "thread_depth": 0,
-      "month": "2008-01"
+      "month": "2008-01",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080123/8b2ae25c/attachment.pl"
+      ]
     },
     {
       "id": "msg-aebd3ed14de0",

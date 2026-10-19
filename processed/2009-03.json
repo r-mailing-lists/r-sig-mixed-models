@@ -271,11 +271,14 @@
       "subject_clean": "Data aggregation",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090302/8fd138c0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090302/8fd138c0/attachment.pl>",
+      "body_plain": "I have a question that I think will interest many \non this list. It is not intrinsically related to \nmixed models, although they may generate some \nadditional complications, as I discuss at the end.\n\nHere's a toy example that illustrates the issue. \nSuppose one has a data frame containing successes \nassociated with a binomial r.v., e.g.,\n\nSex\tFactor\tWeight\n10\t1\t20                   e.g., 10 \nboys out of 20 children in study 1\n15\t2\t20\n\nCall this the \"AGGREGATED\" form of the data. One \ncould proceed to analyze this as follows:\n\nshort\nCall:  glm(formula = Sex ~ 1, family = binomial, data = test2, weights = Total)\nCoefficients:\n(Intercept)\n      0.5108\nDegrees of Freedom: 1 Total (i.e. Null);  1 Residual\nNull Deviance:\t    2.706\nResidual Deviance: 2.706\tAIC: 11.37\n\nOne could look for an effect of factor\n\nshort_factor\nCall:  glm(formula = Sex ~ Factor, family = \nbinomial, data = test2,      weights = Total)\nCoefficients:\n(Intercept)      Factor2\n  -3.753e-16    1.099e+00\nDegrees of Freedom: 1 Total (i.e. Null);  0 Residual\nNull Deviance:\t    2.706\nResidual Deviance: 2.22e-15\tAIC: 10.67\n\nOf course, 10 boys out of 20 children means that \nthere were 20 Bernoulli trials, so the \n\"DISAGGREGATED\" form of the data frame above is\n\nSex Factor\n1      1\n1      1\n1      1\n1      1\n1      1\n1      1\n1      1\n1      1\n1      1\n1      1\n0      1\n0      1\n0      1\n0      1\n0      1\n0      1\n0      1\n0      1\n0      1\n0      1\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n1      2\n0      2\n0      2\n0      2\n0      2\n0      2\n\nNow, we have\n\nlong\nCall:  glm(formula = Sex ~ 1, family = binomial, data = test)\nCoefficients:\n(Intercept)\n      0.5108\nDegrees of Freedom: 39 Total (i.e. Null);  39 Residual\nNull Deviance:\t    52.93\nResidual Deviance: 52.93\tAIC: 54.93\n\nAnd\n\nlong_factor\nCall:  glm(formula = Sex ~ Factor, family = binomial, data = test)\nCoefficients:\n(Intercept)      Factor2\n   7.506e-16    1.099e+00\nDegrees of Freedom: 39 Total (i.e. Null);  38 Residual\nNull Deviance:\t    52.93\nResidual Deviance: 50.22\tAIC: 54.22\n\nThere is nothing eyecatching here in that we get \nidentical estimates of the overall proportion of \nboys (in the only intercept model) and identical \nestimates of the factor-specific intercepts (in \nthe factor model) (ignoring error). In addition, \nthe AIC values are such that one would select the \nsame model regardless of whether the data were \naggregated or not.\n\nHowever, it is not obvious to me that one \ngenerally gets the \"same\" results regardless of \nthe aggregation. Therefore, my question is: is \nthere a preferred or canonical input form from a \nstatistical point of view? aggregated or \ndisaggregated or ? I am interested to hear about \nthe statistical ins and outs of this. I have \noften obtained disaggregated data (as defined \nabove) and not thought twice about the \nconsequences of aggregating them for analysis (or \nvice-versa).\n\nOf course, I think the answer to my question will \nbe that \"it depends\"Š.on what one is trying to \nestimate. To this extent, there may be extra \nwrinkles to this issue in the context of \nanalyzing mixed models. Consider the following:\n\n\nAGGREGATED\nshortlmer\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: Sex ~ 1 + (1 | Factor)\n    Data: test2\n    AIC   BIC logLik deviance\n  6.612 3.998 -1.306    2.612\nRandom effects:\n  Groups Name        Variance Std.Dev.\n  Factor (Intercept) 0.074601 0.27313\nNumber of obs: 2, groups: Factor, 2\nFixed effects:\n             Estimate Std. Error z value Pr(>|z|)\n(Intercept)   0.5202     0.3803   1.368    0.171\n\nshortlmer_factor\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: Sex ~ Factor + (1 | Factor)\n    Data: test2\n  AIC   BIC     logLik  deviance\n    6 2.079 -1.524e-12 3.048e-12\nRandom effects:\n  Groups Name        Variance   Std.Dev.\n  Factor (Intercept) 5.6766e-17 7.5343e-09\nNumber of obs: 2, groups: Factor, 2\nFixed effects:\n              Estimate Std. Error  z value Pr(>|z|)\n(Intercept) 4.903e-07  4.472e-01 1.10e-06    1.000\nFactor2     1.099e+00  6.831e-01    1.608    0.108\nCorrelation of Fixed Effects:\n         (Intr)\nFactor2 -0.655\n\nIn this case, note that AIC of the constant model \nis greater than the AIC of the factor model AND \nthe BIC of the constant model is greater than the \nBIC of the factor model. So, the two criteria \ntend in the same direction in terms of model \nselection.\n\nDISAGGREGATED\nlonglmer\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: Sex ~ 1 + (1 | Factor)\n    Data: test\n    AIC   BIC logLik deviance\n  56.83 60.21 -26.42    52.83\nRandom effects:\n  Groups Name        Variance Std.Dev.\n  Factor (Intercept) 0.074601 0.27313\nNumber of obs: 40, groups: Factor, 2\nFixed effects:\n             Estimate Std. Error z value Pr(>|z|)\n(Intercept)   0.5201     0.3803   1.368    0.171\n\n  longlmer_factor\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: Sex ~ Factor + (1 | Factor)\n    Data: test\n    AIC   BIC logLik deviance\n  56.22 61.29 -25.11    50.22\nRandom effects:\n  Groups Name        Variance Std.Dev.\n  Factor (Intercept)  0        0\nNumber of obs: 40, groups: Factor, 2\nFixed effects:\n              Estimate Std. Error  z value Pr(>|z|)\n(Intercept) 4.856e-07  4.472e-01 1.09e-06    1.000\nFactor2     1.099e+00  6.831e-01    1.608    0.108\nCorrelation of Fixed Effects:\n         (Intr)\nFactor2 -0.655\n\nWe get identical fixed-effect estimates \nregardless of aggregation/disaggregation.\n\nNote that AIC of the constant model is greater \nthan the AIC of the factor model, but BIC of the \nconstant model is LESS than the BIC of the factor \nmodel. Of course, the differences are not great \n(magnitude „ 2) but the two criteria do NOT tend \nin the same direction in terms of model selection.\n\nThis is one context in which the data \naggregation/disaggregation could influence the \nresults of analysis even when the analysis is at \na level \"above\" the level of the aggregation.\n\nThoughts about all of this as well as pointers to \nany relevant discussions in the literature would \nbe much appreciated.\n\n--\nSteven Orzack\n\nThe Fresh Pond Research Institute\n173 Harvey Street\nCambridge, MA. 02140\n617 864-4307\n\nwww.freshpond.org\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I have a question that I think will interest many \non this list. It is not intrinsically related to \nmixed models, although they may generate some \nadditional complications, as I discuss at the end.\n\n",
       "thread_id": "thread-e98a82dffa29",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090302/8fd138c0/attachment.pl"
+      ]
     },
     {
       "id": "msg-98900b41a83b",
@@ -324,11 +327,14 @@
       "subject_clean": "estimated P values",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090303/aaf71d37/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090303/aaf71d37/attachment.pl>",
+      "body_plain": "Hello all listª!!!\nI` am currently comparing generalized linear mixed models in lmer, with quasibinomial families. I read some of the discussions on the R-forum and it seems\nthat the Laplace approximation used in the current version of lmer is good. My problem is that in lmer, with quasibinomial families, only\nget t-values but no associated p-values.\n\nI understood that LRT for testing fixed effects in no good (Bolker et al 2008). So, Is there a way to get a reliable p-value for the fixed effects? \n\n\nIn this forum spoke about Wald F test and wald t test, but I don’t know how I estimated this test in R software for GLMM analysis. Can anybody talk me about this?\n Thank you so much\n\nLic. Germán García Ecología y Conservación de Aves Marinas Departamento de Biología, Facultad de Ciencias Exactas y Naturales, Universidad Nacional de Mar del Plata - CONICET Funes 3250 (B7602AYJ) Mar del Plata, Argentina Tel Oficina: +54 223 4757008\n\n\n\n      Yahoo! Cocina\nRecetas prácticas y comida saludable\nhttp://ar.mujer.yahoo.com/cocina/\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all listª!!!\nI` am currently comparing generalized linear mixed models in lmer, with quasibinomial families. I read some of the discussions on the R-forum and it seems\nthat the Laplace approxima",
       "thread_id": "thread-4467f9ab6656",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090303/aaf71d37/attachment.pl"
+      ]
     },
     {
       "id": "msg-6ca56f4850b9",
@@ -340,11 +346,14 @@
       "subject_clean": "F test in lmer quasipoisson",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/28ef774d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/28ef774d/attachment.pl>",
+      "body_plain": "Hello !!\n\nII'm trying to test for my fixed effects using an lmer with quasipoisson\nerrors.\n\nSince my lmer model is corrected for overdispersion using this kind of\nerrors, I should use during model simplification in my Anovas *F test *and\nnot *Chi square test* to compare two models. So I write:\n\n> anova(model,model2,test=\"F\")\n\nbut R keeps performing a Chi square instead of the F test I want...\n\nAny ideas why ?\n\nThank you very much !!!\nJulien.\n\n\n\n\n\n\n\n-- \nJulien Vézilier\nGénétique et Evolution des Maladies Infectieuses (UMR 2724 CNRS-IRD)\nCentre de Recherche IRD\n911 Avenue Agropolis\n34394 Montpellier, France\n\nTel:  + 33 467 41 63 73\nFax: + 33 467 41 62 99\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello !!\n\nII'm trying to test for my fixed effects using an lmer with quasipoisson\nerrors.\n\nSince my lmer model is corrected for overdispersion using this kind of\nerrors, I should use during model sim",
       "thread_id": "thread-6ca56f4850b9",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/28ef774d/attachment.pl"
+      ]
     },
     {
       "id": "msg-bdf5ff179c6b",
@@ -374,11 +383,14 @@
       "subject_clean": "Numerical methods for the estimation of correlation parameters in lme()?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/611d00e0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/611d00e0/attachment.pl>",
+      "body_plain": "Hello\n\nthe standard lme() from the nlme library is equipped to estimate the\ncorrelation coefficient, phi, of a model with say AR(1)  correlation\nstructure  for e.g..The estimation is done using numerical methods.  It is\nrelatively fast.  Does anyone know what numerical methods are used?\n\nThanks,\n\nHarlan\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello\n\nthe standard lme() from the nlme library is equipped to estimate the\ncorrelation coefficient, phi, of a model with say AR(1)  correlation\nstructure  for e.g..The estimation is done using numeri",
       "thread_id": "thread-6ccad10cebca",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/611d00e0/attachment.pl"
+      ]
     },
     {
       "id": "msg-bb5cdd066578",
@@ -426,11 +438,14 @@
       "subject_clean": "LMM covariance structure",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/67e15cf7/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/67e15cf7/attachment.pl>",
+      "body_plain": "Dear list\nI need confirmation or correction on this: how can the structure of  \nthe R vcv matrix of a LMM have non negative covariances if the  \nresiduals are independent given the random effects (and the co- \nvariates)?  Covariance structures such as compound symmetry, AR 1,  \nToeplitz are specified by the user or are the marginal type of vcv  \nimplied/induced by the random effects?\nThank you\nPietro\n\n---------------------------------------------------------------------------------\nDr. Pietro Ravani, MSc (Biostatistics), MD, FNCPI\nAssociate Professor - Division of Nephrology\nDepartments of Medicine & Community Health Sciences\nFaculty of Medicine - University of Calgary\nFoothills Medical Centre - AB Health Services - CHR\n1403 - 29th Street N.W. (room C210N)\nCalgary, AB, Canada, T2N 2T9\nT 403-944-8168; F 403-944-2876; E pravani at ucalgary.ca\n---------------------------------------------------------------------------------\nP Please consider before printing\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list\nI need confirmation or correction on this: how can the structure of  \nthe R vcv matrix of a LMM have non negative covariances if the  \nresiduals are independent given the random effects (and",
       "thread_id": "thread-181456c10c2d",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/67e15cf7/attachment.pl"
+      ]
     },
     {
       "id": "msg-db1d7733c8bd",
@@ -442,11 +457,14 @@
       "subject_clean": "Question on using 'weights' option in glmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/71139dfb/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/71139dfb/attachment.pl>",
+      "body_plain": "Hello SIG members,\n\nI would like to incorporate sampling weights in glmer. I was wondering if supplying the sampling weights to the 'weights' option in glmer (package lme4) would be a possibility. The documentation for the 'weights' option only states that it's the same as in lm(). Since I'm running a logistic model for a binary outcome variable, sticking the weights in this option yields the (not surprising) error message that the outcome variable is no longer binary and that it conflicts with fitting a logistic regression model.\n\nAre there other options for using sampling weights in glmer or do I need to incorporate them into the data compilation before running glmer?\n\nMany thanks for your response!\nTanja\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello SIG members,\n\nI would like to incorporate sampling weights in glmer. I was wondering if supplying the sampling weights to the 'weights' option in glmer (package lme4) would be a possibility. The",
       "thread_id": "thread-db1d7733c8bd",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090304/71139dfb/attachment.pl"
+      ]
     },
     {
       "id": "msg-e079b2892862",
@@ -458,11 +476,14 @@
       "subject_clean": "Advice on model selection procedure in glmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090305/3ad15302/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090305/3ad15302/attachment.pl>",
+      "body_plain": "Dear list members,\n\nI am analyzing data on Golden eagle productivity (PROD = number of  \nchicks fledging for each eagle couple each year) to see how it is  \ninfluenced by various meteorological factors, Nearest neighbor  \ndistance (NND) and reproductive success the year before (back1) and  \ntwo years before (back2). for each nest/couple (Nterr) we have one  \nPROD measure for each year of the study (about 20 years). PROD varies  \nbetween 0 and 3.\n\nI therefore fitted a full glmm model with family=poisson(link = \"log\")  \nlike the following:\n\naquile09full.lmer<-lmer(PROD~back1+back2+NND+as.factor(clas3)+neve \n+Twinter+Tprecova+Tcova+Tcrescita+Pwinter+Pprecova+Pcova+Pcrescita+(1| \nNterr)+(1|anno),data=aquile09,family=poisson(link = \"log\"))\n\nneve+Twinter+Tprecova+Tcova+Tcrescita+Pwinter+Pprecova+Pcova+Pcrescita  \nare all meterological variables,\n\"clas3\" is a categorial index of the territory quality, and \"anno\" is  \nthe year.\n\nI then went to see the difference in AIC of removing one single  \nvariable from the full model. I put this variable back before removing  \nthe next. If the AIC of the Full model -1 increases sensibly compared  \nto the full model, I keep the removed variable in the final model:\n\nremoved \tdf  AIC\t    BIC\t    Loglik\nFULL\t\t17  255.59  316.51 -110.80\nBack1  \t\t16  268.05  326.43 -118.02\nBack2\t        16  266.81  325.31 -117.41\nNND\t\t16  286.48  346.58 -127.24\t\t\nclas3\t\t15  255.87  309.62 -112.94\nneve\t\t16  254.56  311.90 -111.28\nTwinter\t\t16  254.67  312.01 -111.34\nTprecova\t16  254.03  311.36 -111.01\nTcova\t\t16  254.09  311.43 -111.05\nTcrescita\t16  254.43  311.77 -111.22\nPwinter\t\t16  254.84  312.18 -111.42\nPprecova\t16  253.59  310.93 -110.80\nPcova\t\t16  255.14  312.48 -111.57\nPcrescita\t16  272.62  331.28 -120.31\n\nI therefore refitted a final model with only the kept variables:\n\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: cl   Data: aquile09\n    AIC   BIC logLik deviance\n  246.7 271.8 -116.4    232.7\nRandom effects:\n  Groups Name        Variance  Std.Dev.\n  anno   (Intercept) 0.0056248 0.074999\n  Nterr  (Intercept) 0.0324398 0.180111\nNumber of obs: 266, groups: anno, 24; Nterr, 22\n\nFixed effects:\n              Estimate Std. Error\n(Intercept) -1.016941   0.279004\nback1       -0.067498   0.146796\nback2        0.181103   0.136243\nNND          0.029392   0.053093\nPcrescita    0.003070   0.003008\n\nremoved \tdf AIC\t   BIC\t  Loglik\nFULL\t\t7  246.73  271.82 -116.37\nBack1\t\t6  257.79  279.68 -122.89\nBack2\t\t6  259.03  280.97 -123.52\nNND\t\t6  281.81  304.34 -134.91\nPcrescita\t6  276.86  299.16 -132.43\n\n\nI would really like to know if you think this model selection  \nprocedure is correct.\n\nThank you in advance,\n\nbest regards,\n\nDr. Achaz von Hardenberg\n\nCentro Studi Fauna Alpina - Alpine Wildlife Research Centre\nServizio Sanitario e della Ricerca Scientifica\nParco Nazionale Gran Paradiso, Degioz, 11, 11010-Valsavarenche (Ao),  \nItaly\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list members,\n\nI am analyzing data on Golden eagle productivity (PROD = number of  \nchicks fledging for each eagle couple each year) to see how it is  \ninfluenced by various meteorological factor",
       "thread_id": "thread-e079b2892862",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090305/3ad15302/attachment.pl"
+      ]
     },
     {
       "id": "msg-e0705a3c552a",
@@ -610,11 +631,14 @@
       "subject_clean": "LMM covariance structure",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090307/4866c8b9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090307/4866c8b9/attachment.pl>",
+      "body_plain": "Dear Doug\nI sent my reply twice (* copied below) but I cannot see it\nCan you pls check?\nThank you\nPietro\n\n(*)\nYes, I was referring to the conditional variance-covariance structure  \nof the response given the random effects, which is referred to as R in  \nthe book of West, Welch, Galecki that I found mathematically  \naffordable (I am studying the R language now, and trying to learn more  \nabout correlated data for study design purposes).  And yes, I meant  \n\"non-zero\", as stated in the erratum.\n\nLooking at the output of the getVarCov() function in R, I see that  \nchoosing \"conditional\" as \"type\" I obtain a matrix with the estimate  \nof the error \"variance\" on the diagonal (which can be heterogeneous,  \ni.e. vary within cluster/group by values of cluster level co-variates)  \nand all \"zeros\" off the diagonal.  I thought this is what LMM do:  \nexplaining the group heterogeneity in the data (and the resulting  \ncorrelation in the responses) through splitting the random portion of  \nthe statistical model into two layers, the random effects and the  \nrandom errors.  These random errors - conditioning on the random  \neffects - I thought were normally distributed with zero mean and some  \nvariance sigma2 (on the diagonal of the R matrix) and independent  \n(thus with zero co-variances off the diagonal of the R matrix).   \nTyping \"marginal\" in the above cmd tells R to give me what I thought  \nit was the combination (marginal model implied by the LMM) of the 2  \nVCV matrices, D (matrix of the random effects parameters) and R  \n(matrix of the random error parameter).  The fact that different  \nstructures (of the R matrix?) - mentioned in the previous emails  \n(compound symmetry, AR 1, Toeplitz, etc) - can be specified in the  \nlme() function via the correlation argument confuses me, unless they  \nrefer to the resulting marginal model matrix (not the R matrix  \nconditional on the random effects).  I have the impression I am lost  \n(although I know I have much more to learn).\n\nDirections re math friendly sources / learning tools (especially using  \nR) would be very appreciated of course\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Doug\nI sent my reply twice (* copied below) but I cannot see it\nCan you pls check?\nThank you\nPietro\n\n(*)\nYes, I was referring to the conditional variance-covariance structure  \nof the response gi",
       "thread_id": "thread-9bf7c6debca9",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090307/4866c8b9/attachment.pl"
+      ]
     },
     {
       "id": "msg-10034533943a",
@@ -849,11 +873,14 @@
       "subject_clean": "odd occurance of \"Error in model.frame.default(formula = ... variable lengths differ \"!",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090313/3d0bcec7/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090313/3d0bcec7/attachment.pl>",
+      "body_plain": "I am trying to run different lme models for different section of my data.\n Consider the simple example where the data is partition into two \"groups\":\n\n\nytest<-rnorm(50)\nxtest<-cbind(rep(1,50),ytest*2,rnorm(50),rnorm(50),rnorm(50))\nIDtest<-rep(c(1:5),10)\ngrouptest<-c(rep(1,20),rep(2,30))\n\nhead(cbind(ytest,xtest,IDtest,grouptest))\n\n\nThe following function \"under2\" attempts to create lm as well as lme models.\n no problems are encountered with lm (when lme is commented out).\n\nunder2<-function(x,y,ID,group)\n{\nmod<-list()\nlmemod<-list()\nfor(k in 1:K)\n{\nyy<-y[group==k]\nxx<-matrix(c(x[group==k]),length(yy))\nIDID<-ID[group==k]\nthedatak<-data.frame(cbind(yy,xx,IDID))\nprint(head(thedatak))\nmod[[k]]<-lm(yy~xx-1)\nlmemod[[k]]<-lme(yy~xx-1, random=~1|IDID, method=\"ML\", data=thedatak)\n}\n\nreturn(list(mod=mod,lmemod=lmemod))\n}\n\nPROBLEMS occur with lme:\n\nunder2(xtest,ytest,IDtest,grouptest)\n\nreturns:\nError in model.frame.default(formula = ~yy + xx + IDID, data = list(yy =\nc(1.74992615120210,  :\n  variable lengths differ (found for 'xx')\n\n\nWhy does lme have a problem?\n\nI can't figure this out...\n\nAny help would be greatly appreciated,\n\nHarlan\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am trying to run different lme models for different section of my data.\n Consider the simple example where the data is partition into two \"groups\":\n\n\nytest<-rnorm(50)\nxtest<-cbind(rep(1,50),ytest*2,",
       "thread_id": "thread-c66def11d3ad",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090313/3d0bcec7/attachment.pl"
+      ]
     },
     {
       "id": "msg-763bdce7e7b4",
@@ -1027,11 +1054,14 @@
       "subject_clean": "update on mcmcsamp for glmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090317/f01e0045/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090317/f01e0045/attachment.pl>",
+      "body_plain": "I've searched the help archives of both lists and apologize if I missed the answer to my question:\n\nIs there an update on developing mcmcsamp for glmer?\n\nI'm using R v. 2.7.2 (on our Unix server - will hopefully be updated soon) and 2.8.1 on my PC and get the message for both:\n\ngm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),family = binomial, data = cbpp)\ntemp<-mcmcsamp(gm1, 1000)\nError in .local(object, n, verbose, ...) : Update not yet written\n\nHere is the session info if that's helpful:\n\nPC:\n> sessionInfo()\nR version 2.8.1 (2008-12-22)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=English_United States.1252;LC_CTYPE=English_United States.1252;LC_MONETARY=English_United States.1252;LC_NUMERIC=C;LC_TIME=English_United States.1252\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base\n\nother attached packages:\n[1] lme4_0.999375-28   Matrix_0.999375-20 lattice_0.17-17\n\nloaded via a namespace (and not attached):\n[1] grid_2.8.1\n\nUnix:\n> sessionInfo()\nR version 2.7.2 (2008-08-25)\nx86_64-unknown-linux-gnu\n\nlocale:\nLC_CTYPE=en_US.UTF-8;LC_NUMERIC=C;LC_TIME=en_US.UTF-8;LC_COLLATE=en_US.UTF-8;LC_MONETARY=C;LC_MESSAGES=en_US.UTF-8;LC_PAPER=en_US.UTF-8;LC_NAME=C;LC_ADDRESS=C;LC_TELEPHONE=C;LC_MEASUREMENT=en_US.UTF-8;LC_IDENTIFICATION=C\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base\n\nother attached packages:\n[1] MASS_7.2-44        lme4_0.999375-28   Matrix_0.999375-20 lattice_0.17-13\n[5] gibbs.met_1.1-3\n\nloaded via a namespace (and not attached):\n[1] grid_2.7.2  tools_2.7.2\n\nThanks!\nTanja\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I've searched the help archives of both lists and apologize if I missed the answer to my question:\n\nIs there an update on developing mcmcsamp for glmer?\n\nI'm using R v. 2.7.2 (on our Unix server - wil",
       "thread_id": "thread-feb3de046b75",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090317/f01e0045/attachment.pl"
+      ]
     },
     {
       "id": "msg-df0afebe885e",
@@ -1141,11 +1171,14 @@
       "subject_clean": "Multilevel logistic regression",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090318/2d640c8e/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090318/2d640c8e/attachment.pl>",
+      "body_plain": "lmer Experts:\n\nI am trying to use lmer to duplicate the results found in Joop Hox's  \nbook \"Multilevel Analysis: technique and applications\" 2002.  In  \nchapter 6 of his book he shows an example of multilevel logistic  \nregression for a meta-analysis of survey response rates.  The data are  \navailable in the file \"metaresp.xls\" at his website:\n\n<http://www.geocities.com/joophox/mlbook/excelxls.zip>\n\nThe dataset includes the following variables of interest:\n\nIndividual level (Level 1) variables:\nTELDUM\t = telephone questioning\nMAILDUM  = mail questioning\nRESPONSE = the outcome of interest, the study response rate\nDENOM    = the number of people questioned\n\nStudy/group level (Level 2) variables:\nSOURCE \t = the study identifier\nYEAR\t = year of study\nSALIENCY = how salient the questionnaire was (0 to 2)\nRESPISRR = the way the response rate was calculated\n\n\nThe null model (Table 6.2) proposed by Joop is easy to fit:\n\nSUCCESS <- as.integer(RESPISRR*DENOM)\ny  \t<- cbind(SUCCESS, DENOM-SUCCESS)\n\nf1 <- lmer(y ~ RESPISRR + (1 | SOURCE), family=binomial(link=logit))\n\n\nJoop then adds a couple Level 1 variables (Table 6.3):\n\nf2 <- lmer(y ~ RESPISRR + TELNUM + MAILDUM + (1 | SOURCE),  \nfamily=binomial(link=logit))\n\n\nHe then says that these two Level 1 variables should be allowed to  \nvary across studies (varying slopes).  When I try to fit what I  \nbelieve to be the correct model, I get an error\n\n\nf3 <- lmer(y ~ RESPISRR + TELNUM + MAILDUM + (TELNUM | SOURCE) +  \n(MAILDUM | SOURCE)\n\t+ (1 | SOURCE), family=binomial(link=logit))\n\nError in mer_finalize(ans) : q = 240 > n = 105\n\n\nCan anyone tell me what I am doing wrong here?  Thanks so much in  \nadvance.\n\nBrant Inman\nDuke University Medical Center\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "lmer Experts:\n\nI am trying to use lmer to duplicate the results found in Joop Hox's  \nbook \"Multilevel Analysis: technique and applications\" 2002.  In  \nchapter 6 of his book he shows an example of mu",
       "thread_id": "thread-3d47c2b65a1c",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090318/2d640c8e/attachment.pl"
+      ]
     },
     {
       "id": "msg-2b565c88ed19",
@@ -1212,11 +1245,14 @@
       "subject_clean": "lmer and multiple membership",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090320/682c2d4f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090320/682c2d4f/attachment.pl>",
+      "body_plain": "Hi everyone\n \nI know that lmer can handle cross-classified random effects, but can it handle random effects \ninvolving multiple membership as well? My problem is this: I am modelling the number of visits \nmade by different individuals at every feeder they visit daily. I have three random effects: \nindividual, feeder and date. There is multiple membership in terms of feeders and dates \nand an individual can potentially be seen at many different feeders which can change everyday. \nTo make it simpler, here is an example of the data:\n \nIndividual           Date          Feeder          Number of visits \n       1                   155              A                           13\n       1                   155              B                           34\n       1                   157              A                           76\n       2                   155              A                           87\n       2                   156              B                           34\n       2                   157              C                           23\n       3                   155              A                             3\n       3                   155              D                         123\n       3                   156              D                           12\n       3                   157              A                           56\n       3                   157              E                           24\n       3                   168              A                          45\n       3                   168              B                            6\n       3                   168              C                          78\n \nIf I am not interested in date as a fixed effect, I have to put it in the model as a random effect \nand I’m wondering if specifying the model like this in lmer is the thing to do (not interested in \nvarying slopes yet):\n \nfixed effects + (1|individual) + (1|feeder) + (1|date)         \n \nHowever, if I am interested by the date as a fixed effect, do I have to specify it in the random \neffects as well to indicate that the repeated measures on individuals are related to feeders and \ndates? If so, does it have to be specified in any special way?\n \nThanks in advance\nSincerely,\nFrancois Rousseu\n_________________________________________________________________\nDécouvrez toutes les nouvelles fonctions et reconnectez-vous à votre vie.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone\n \nI know that lmer can handle cross-classified random effects, but can it handle random effects \ninvolving multiple membership as well? My problem is this: I am modelling the number of vis",
       "thread_id": "thread-39ba79d091d9",
       "thread_depth": 0,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090320/682c2d4f/attachment.pl"
+      ]
     },
     {
       "id": "msg-7d433770a1dd",
@@ -2032,11 +2068,14 @@
         "<7BB0058A-ABDB-4572-93E4-A8702341FD79@ed.ac.uk>",
         "<68347D8C-AE1C-48BF-B194-D7E1DDD50B50@kjbeath.com.au>"
       ],
-      "body_plain": "Hi Ken,\n\nThanks for the reference, it looks interesting. I disagree that  \nLuciano's second model should be classified as over fitting. Imagine  \nthis....\n\ny<-rbinom(100, 1, c(0.001, 0.999))\nx<-gl(2,1,100)\n\nsummary(glm(y~1, family=\"binomial\"))\nsummary(glm(y~x, family=\"binomial\"))\n\nThere is a very high probability of complete separation, the second  \nmodel gives non-significant p-values for the effect of x, but I think  \nit would be a mistake to say the 2nd model is over-fitted and should  \nbe avoided.\n\nCheers,\n\nJarrod\n\n\nOn 30 Mar 2009, at 11:08, Ken Beath wrote:\n\n> I meant overfitting in the sense of trying to fit too complex a  \n> model, which is the same as what you are describing. Gelman has some  \n> papers on the use of priors, one is http://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.aoas/1231424214 \n>  In the case of complete separation the results seem to be very  \n> dependent on the prior which doesn't look to be a good thing. It  \n> would appear much better to admit that there is insufficient data to  \n> perform the analysis.\n>\n> Ken\n>\n>\n> On 30/03/2009, at 7:48 PM, Jarrod Hadfield wrote:\n>\n>> Hi,\n>>\n>> I think it unlikely that the problem arises through overfitting in  \n>> the sense that there are too many parameters for the amount of   \n>> data.  It's more likely that the underlying probabilities really  \n>> are extreme for some categories causing what are also known as  \n>> \"extreme category problems\" (eg Miztal 1998 J. Dairy Science 72  \n>> 1557-1568): the binary variable in one or more groups is always 0  \n>> or 1, even though there are probably many eggs  in most  \n>> categories.  A solution to this type of problem is to place an  \n>> informative prior on the fixed effects to stop them wandering into  \n>> extreme values on the logit scale. For the purist this may be  \n>> anathema, but as a practical solution it seems to work quite well.   \n>> Having a normal prior on the logit scale with mean zero and  \n>> variance pi, is the closest (I think?) to a uniform prior on the  \n>> probability scale. If there are more elegant solutions to the  \n>> problem I'd be interested to hear about them.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>\n>\n\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090330/df46ef59/attachment.pl>",
+      "body_plain": "Hi Ken,\n\nThanks for the reference, it looks interesting. I disagree that  \nLuciano's second model should be classified as over fitting. Imagine  \nthis....\n\ny<-rbinom(100, 1, c(0.001, 0.999))\nx<-gl(2,1,100)\n\nsummary(glm(y~1, family=\"binomial\"))\nsummary(glm(y~x, family=\"binomial\"))\n\nThere is a very high probability of complete separation, the second  \nmodel gives non-significant p-values for the effect of x, but I think  \nit would be a mistake to say the 2nd model is over-fitted and should  \nbe avoided.\n\nCheers,\n\nJarrod\n\n\nOn 30 Mar 2009, at 11:08, Ken Beath wrote:\n\n> I meant overfitting in the sense of trying to fit too complex a  \n> model, which is the same as what you are describing. Gelman has some  \n> papers on the use of priors, one is http://projecteuclid.org/DPubS?service=UI&version=1.0&verb=Display&handle=euclid.aoas/1231424214 \n>  In the case of complete separation the results seem to be very  \n> dependent on the prior which doesn't look to be a good thing. It  \n> would appear much better to admit that there is insufficient data to  \n> perform the analysis.\n>\n> Ken\n>\n>\n> On 30/03/2009, at 7:48 PM, Jarrod Hadfield wrote:\n>\n>> Hi,\n>>\n>> I think it unlikely that the problem arises through overfitting in  \n>> the sense that there are too many parameters for the amount of   \n>> data.  It's more likely that the underlying probabilities really  \n>> are extreme for some categories causing what are also known as  \n>> \"extreme category problems\" (eg Miztal 1998 J. Dairy Science 72  \n>> 1557-1568): the binary variable in one or more groups is always 0  \n>> or 1, even though there are probably many eggs  in most  \n>> categories.  A solution to this type of problem is to place an  \n>> informative prior on the fixed effects to stop them wandering into  \n>> extreme values on the logit scale. For the purist this may be  \n>> anathema, but as a practical solution it seems to work quite well.   \n>> Having a normal prior on the logit scale with mean zero and  \n>> variance pi, is the closest (I think?) to a uniform prior on the  \n>> probability scale. If there are more elegant solutions to the  \n>> problem I'd be interested to hear about them.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>\n>\n\n-------------- next part --------------\nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi Ken,\n\nThanks for the reference, it looks interesting. I disagree that  \nLuciano's second model should be classified as over fitting. Imagine  \nthis....\n\ny<-rbinom(100, 1, c(0.001, 0.999))\nx<-gl(2,1",
       "thread_id": "thread-bf4371028504",
       "thread_depth": 2,
-      "month": "2009-03"
+      "month": "2009-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20090330/df46ef59/attachment.pl"
+      ]
     },
     {
       "id": "msg-609f69cd9df3",

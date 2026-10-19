@@ -139,11 +139,14 @@
       "subject_clean": "MCMCglmm: correslation between variables two variables in repeated measure?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110703/bf0471ad/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110703/bf0471ad/attachment.pl>",
+      "body_plain": "Hi all,\n\nI'd like to test for correlation between two variables that represent\nrepeated measures (over time) on subjects of a follow-up. Test for\ncorrelation is both within and accross subjects. The  first idea that hits\nmy mind is to use a bivariate model for exemple using MCMCglmm. I'd like to\nknow if this idea can lead to something correct.\n\ncheers,\nArdo.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nI'd like to test for correlation between two variables that represent\nrepeated measures (over time) on subjects of a follow-up. Test for\ncorrelation is both within and accross subjects. The  ",
       "thread_id": "thread-c55ee9b09e87",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110703/bf0471ad/attachment.pl"
+      ]
     },
     {
       "id": "msg-c4af2a1e090b",
@@ -196,11 +199,14 @@
         "<AA818EAD2576BC488B4F623941DA74273B79AEF8@inbomail.inbo.be>",
         "<SNT124-W209AE3AFCA0D9B5D15093C35B0@phx.gbl>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/ad9741a5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/ad9741a5/attachment.pl>",
+      "body_plain": "Mike,\n\nPlease keep the mailing list in cc.\n\nThe value specifies the variable(s) which defines the 'distance' between the observations. That is something the model can't guess.\n\nMaybe you should do some reading (e.g. Pinheiro and Bates (2000) or Zuur et al (2009))\n\nBest regards,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n\nVan: Mike Gibson [mailto:megalops31 at hotmail.com]\nVerzonden: vrijdag 1 juli 2011 19:12\nAan: ONKELINX, Thierry\nOnderwerp: RE: [R-sig-ME] including covariance pattern in a nlme model\n\nThanks.\n\nIs it OK to not include a value in the corAR1 brackets?  Or, what value would you put in the brackets ?    i.e. corAR1()\n\nMike\n\n> From: Thierry.ONKELINX at inbo.be\n> To: megalops31 at hotmail.com; r-sig-mixed-models at r-project.org\n> Subject: RE: [R-sig-ME] including covariance pattern in a nlme model\n> Date: Thu, 30 Jun 2011 08:46:24 +0000\n>\n> I think you need some extra brackets.\n>\n> update(LVB.nlme, corr=corAR1())\n>\n>\n> > -----Oorspronkelijk bericht-----\n> > Van: r-sig-mixed-models-bounces at r-project.org<mailto:r-sig-mixed-models-bounces at r-project.org> [mailto:r-sig-mixed-models-\n> > bounces at r-project.org<mailto:bounces at r-project.org>] Namens Mike Gibson\n> > Verzonden: woensdag 29 juni 2011 18:01\n> > Aan: r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>\n> > Onderwerp: [R-sig-ME] including covariance pattern in a nlme model\n> >\n> >\n> > I am trying to include a defined covariance pattern in my nlme model. I followed\n> > an example made by Bates online. I am close but I keep getting an error\n> > message. Any help would be greatly appreciated. The details are below.\n> >\n> >\n> > Here is my code: I already defined an equation for LVB (von Bert growth\n> > equation).\n> >\n> > LVB.nlme=nlme(L~LVB(Age,t0,Lmax,K), data=datagr,\n> > fixed=list(t0~1,Lmax~1,K~1), random=t0+Lmax+K~1, start=list(fixed=c(t0=-1.0,\n> > Lmax=700, K=0.25)), control=nlmeControl(maxIter=10000, tolerance=1e-2,\n> > msVerbose=TRUE))\n> >\n> > #Everthing is fine up to this point. Next, I define the covariance structure.\n> >\n> > LVB2.nlme<-update(LVB.nlme, corr=corAR1)\n> >\n> > #This is where I am stuck. I get the following error message:\n> >\n> > ERROR: object of type 'closure' is not subsettable\n> >\n> >\n> > I would greatly appreciate any help.\n> >\n> > Mike\n> >\n> >\n> >\n> > [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Mike,\n\nPlease keep the mailing list in cc.\n\nThe value specifies the variable(s) which defines the 'distance' between the observations. That is something the model can't guess.\n\nMaybe you should do som",
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/ad9741a5/attachment.pl"
+      ]
     },
     {
       "id": "msg-356b0191cdf2",
@@ -252,11 +258,14 @@
       "subject_clean": "using lmer instead of 2-way repeated measure ANOVA for categorical response data",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/1a6cf3aa/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/1a6cf3aa/attachment.pl>",
+      "body_plain": "Hi to all,\n\nI am trying to analyze with lmer some data I collected in a fully factorial\n2x2 experiment, with only within-subject factors and a categorical response\nvariable (binomial).\n\nThe structure of my dataset is the following:\n\n> str(ck1bis)\n'data.frame':    1200 obs. of  8 variables:\n $ subject : Factor w/ 15 levels \"s_01\",\"s_02\",..: 1 1 1 1 1 1 1 1 2 2 ...\n $ age     : int  57 57 57 57 57 57 57 57 53 53 ...\n $ ori     : Factor w/ 2 levels \"l\",\"r\": 1 1 1 1 2 2 2 2 1 1 ...\n $ phase   : Factor w/ 2 levels \"different CP\",..: 1 1 2 2 1 1 2 2 1 1 ...\n $ contrast: Factor w/ 2 levels \"alto\",\"basso\": 1 2 1 2 1 2 1 2 1 2 ...\n $ variable: Factor w/ 10 levels \"rep1\",\"rep2\",..: 1 1 1 1 1 1 1 1 1 1 ...\n $ value   : Factor w/ 2 levels \"left\",\"right\": 2 2 1 1 2 1 2 2 2 2 ...\n $ scelta  : Factor w/ 2 levels \"antizolner\",\"zolner\": 2 2 1 1 1 2 1 1 2 2\n...\n\nThe response variable is $scelta and the factors are $phase and $contrast.\nFor each condition there are 10 repetitions, which become 20 given that I\ndon't care about the factor %ori. I (think I have) succeeded in analyzing\nthe data with glmer, using the following code:\n\nmodel <- lmer(scelta ==\"antizolner\" ~ phase * contrast  + (1 +\nphase*contrast| subject), data=ck1bis, family=\"binomial\")\n\nThe output reveals two significant main effects and no interaction (I have\nused treatment coding for the 2 factors). I have tried to simplify the\nrandom effect structure, fitting a model with only a random intercept\n[model2 <- lmer(scelta ==\"antizolner\" ~ phase * contrast  + (1 t|\nsubject)...], and then comparing the models with anova(model, model1) but it\nlooks like all the random terms are necessary because the likelihood ratio\ntest is significant.\n\nAt this point I would like to be able to plot a barchart of the\nprobabilities for the 4 conditions with error bar representing 95% CI, just\nI would do with the marginal means after an ANOVA, but I don't know how to\ndo it. Can anyone help me with that? Thank you in advance.\n\nStefano Guidi\nPost-doctoral fellow\nCommunication Science Department\nUniversity of Siena\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi to all,\n\nI am trying to analyze with lmer some data I collected in a fully factorial\n2x2 experiment, with only within-subject factors and a categorical response\nvariable (binomial).\n\nThe structure ",
       "thread_id": "thread-2a869ee65932",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/1a6cf3aa/attachment.pl"
+      ]
     },
     {
       "id": "msg-7f509e378ad8",
@@ -323,11 +332,14 @@
       "subject_clean": "Multilevel multivariate meta-regression",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110705/a8a5c4ca/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110705/a8a5c4ca/attachment.pl>",
+      "body_plain": "Dear all,\n\nI'm trying to run a multilevel meta-regression. The dependent variable\nconsists in regression coefficients.\nI need to restrict the residual variance to 1, and I can't figure it out.\n\nmultivariate.r.studies=try(lme(effect.size~pred1+pred2-1,random = list(\nstudy =pdDiag( ~ pred1 +\npred2-1)),weights=varFixed(~(1/weights.a)),control=list(msMaxIter=400000000),data=data.h,method=\"REML\"),silent=T)\n\nI thank you all.\n\nBest regards\n\n                                               Vincenzo Barbaro\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI'm trying to run a multilevel meta-regression. The dependent variable\nconsists in regression coefficients.\nI need to restrict the residual variance to 1, and I can't figure it out.\n\nmultiv",
       "thread_id": "thread-b09b2bedcd0d",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110705/a8a5c4ca/attachment.pl"
+      ]
     },
     {
       "id": "msg-eeb74171e04e",
@@ -375,11 +387,14 @@
       "references": [
         "<CAOUhUUJaDg7-sg1wnMqrno7JgvULK7ysXiNCvg248r8RZCgpiQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/ff9bc8e3/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/ff9bc8e3/attachment.pl>",
+      "body_plain": "Dear Vincenzo,\n\nYou may refer to the following reply by Prof. Brian Ripley. There is another\nR package called metaSEM that can be used for univariate and multivariate\nmeta-regression. http://courses.nus.edu.sg/course/psycwlm/internet/metaSEM/\n\nRegards,\nMike\n-- \n---------------------------------------------------------------------\n Mike W.L. Cheung               Phone: (65) 6516-3702\n Department of Psychology       Fax:   (65) 6773-1843\n National University of Singapore\n http://courses.nus.edu.sg/course/psycwlm/internet/\n---------------------------------------------------------------------\n\nOn Tue, Jul 5, 2011 at 11:39 PM, Vincenzo Barbaro <\nvincenzo.barbaro1982 at gmail.com> wrote:\n\n> Dear all,\n>\n> I'm trying to run a multilevel meta-regression. The dependent variable\n> consists in regression coefficients.\n> I need to restrict the residual variance to 1, and I can't figure it out.\n>\n> multivariate.r.studies=try(lme(effect.size~pred1+pred2-1,random = list(\n> study =pdDiag( ~ pred1 +\n>\n> pred2-1)),weights=varFixed(~(1/weights.a)),control=list(msMaxIter=400000000),data=data.h,method=\"REML\"),silent=T)\n>\n> I thank you all.\n>\n> Best regards\n>\n>                                               Vincenzo Barbaro\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Vincenzo,\n\nYou may refer to the following reply by Prof. Brian Ripley. There is another\nR package called metaSEM that can be used for univariate and multivariate\nmeta-regression. http://courses.n",
       "thread_id": "thread-b09b2bedcd0d",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/ff9bc8e3/attachment.pl"
+      ]
     },
     {
       "id": "msg-98dc456105da",
@@ -394,11 +409,14 @@
         "<CAOUhUUJaDg7-sg1wnMqrno7JgvULK7ysXiNCvg248r8RZCgpiQ@mail.gmail.com>",
         "<CADF7-FOJ=Fs27Sn2RAs=CRch0yUgVJTrRYXD6p9K28ZELN210Q@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/f73a8377/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/f73a8377/attachment.pl>",
+      "body_plain": "Oops. I forgot to include the link of the reply.\nhttps://stat.ethz.ch/pipermail/r-help/2005-September/079837.html Sorry!\n\nRegards,\nMike\n\n\nOn Wed, Jul 6, 2011 at 11:00 AM, Mike Cheung <mikewlcheung at gmail.com> wrote:\n\n> Dear Vincenzo,\n>\n> You may refer to the following reply by Prof. Brian Ripley. There is\n> another R package called metaSEM that can be used for univariate and\n> multivariate meta-regression.\n> http://courses.nus.edu.sg/course/psycwlm/internet/metaSEM/\n>\n> Regards,\n> Mike\n> --\n> ---------------------------------------------------------------------\n>  Mike W.L. Cheung               Phone: (65) 6516-3702\n>  Department of Psychology       Fax:   (65) 6773-1843\n>  National University of Singapore\n>  http://courses.nus.edu.sg/course/psycwlm/internet/\n> ---------------------------------------------------------------------\n>\n>\n> On Tue, Jul 5, 2011 at 11:39 PM, Vincenzo Barbaro <\n> vincenzo.barbaro1982 at gmail.com> wrote:\n>\n>> Dear all,\n>>\n>> I'm trying to run a multilevel meta-regression. The dependent variable\n>> consists in regression coefficients.\n>> I need to restrict the residual variance to 1, and I can't figure it out.\n>>\n>> multivariate.r.studies=try(lme(effect.size~pred1+pred2-1,random = list(\n>> study =pdDiag( ~ pred1 +\n>>\n>> pred2-1)),weights=varFixed(~(1/weights.a)),control=list(msMaxIter=400000000),data=data.h,method=\"REML\"),silent=T)\n>>\n>> I thank you all.\n>>\n>> Best regards\n>>\n>>                                               Vincenzo Barbaro\n>>\n>>        [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Oops. I forgot to include the link of the reply.\nhttps://stat.ethz.ch/pipermail/r-help/2005-September/079837.html Sorry!\n\nRegards,\nMike\n\n\nOn Wed, Jul 6, 2011 at 11:00 AM, Mike Cheung <mikewlcheung at ",
       "thread_id": "thread-b09b2bedcd0d",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110706/f73a8377/attachment.pl"
+      ]
     },
     {
       "id": "msg-b6dec136003a",
@@ -689,11 +707,14 @@
       "subject_clean": "Model specification for usual data structure",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110707/e9e1a0e0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110707/e9e1a0e0/attachment.pl>",
+      "body_plain": "I would be very grateful for some advice concerning specification of a mixed\nmodel using lmer() in lme4.\n\n \n\nI have measurements of growth rates of individual fishes (G) at 20 sites\n(S,random) in three years (Y,random) and therefore at 60 site-year\ncombinations (SY,random). I would like to explore:\n\n1)      The spatial and temporal structure of growth variation- does growth\nrate vary between S, Y or SY.\n\n2)      Whether growth variation is related to a set of continuous\nenvironmental variables (E1, E2, E3, E4, all fixed).\n\nI am concerned by the fact that, unlike most previous examples, my\nenvironmental variables are measured at the level S (E1=wave fetch, E2=tidal\nrange) or SY (E3=competitor density, E4=prey density). Therefore, there is\none measurement of E1 and E2 for each of the 20 sites (S), regardless of the\nyear. Similarly, there is one measurement of E3 and E4 for each site and\nyear (SY). On the other hand, there are many measurements of the response\nvariable, G, within SY. In my case, therefore, fixed effects only vary among\n(not within) random groups: in previous examples I have seen, fixed factors\nvary within random groups.\n\n \n\nMy 'best guess' at the appropriate model specification is:\n\n \n\nlmer(G~E1+E2+E3+E4+(1|Y)+(1|S)+(1|YS))\n\n \n\nMy approach has then been to fit the model with REML and sequentially drop\nthe random spatial / temporal terms. This has indicated that the random\nstructure can be reduced as follows:\n\n \n\nlmer(G~E1+E2+E3+E4+(1|YS))\n\n \n\nI then sequentially dropped fixed effects (E1-E4) from the ML fitted model\nto assess the importance of each environmental variable.\n\n \n\nI would greatly appreciate any insights as to whether my model specification\nand approach are correct since I have not encountered this data structure in\nprevious examples of lme4 applications.\n\n \n\n~Ben\n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I would be very grateful for some advice concerning specification of a mixed\nmodel using lmer() in lme4.\n\n \n\nI have measurements of growth rates of individual fishes (G) at 20 sites\n(S,random) in thre",
       "thread_id": "thread-f0de79638a07",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110707/e9e1a0e0/attachment.pl"
+      ]
     },
     {
       "id": "msg-92a066d68034",
@@ -727,11 +748,14 @@
         "<SNT124-W209AE3AFCA0D9B5D15093C35B0@phx.gbl>",
         "<AA818EAD2576BC488B4F623941DA74273B79BEB3@inbomail.inbo.be>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/535a5485/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/535a5485/attachment.pl>",
+      "body_plain": "I already ran a mixed model and got convergence.  I have 700 data points.  Now, I am running a new mixed model that adds the ARMA (corARMA) covariance pattern.  I keep getting an error message telling me that the model did not reach convergence.  I already tried reducing my tolerance to 1e-1 and increased the number of iterations to 7,000.  Still, I am not having any luck.  \n \nAny suggestions to get my model to work properly so I can get my parameter estimates?  I pasted my covariance code below.  \n \nLVB2.nlme<-update(LVB.nlme, corr=corARMA(p=1, q=1), \ncontrol=nlmeControl(maxIter=6000, tolerance=1e-1, msVerbose=TRUE))\n \nMike\n  \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I already ran a mixed model and got convergence.  I have 700 data points.  Now, I am running a new mixed model that adds the ARMA (corARMA) covariance pattern.  I keep getting an error message telling",
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/535a5485/attachment.pl"
+      ]
     },
     {
       "id": "msg-a336612ce8af",
@@ -766,11 +790,14 @@
       "subject_clean": "Help with anova result for model comparison",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/2448523d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/2448523d/attachment.pl>",
+      "body_plain": "Hello;\n\nWhen I run an anova to compare two lmer models I have in some situations\n(always when I compare a model with interactions with a model where I\nremoved one simple fixed effect) an output that I don't fully understand. In\nthe anova output the models have the same degrees of freedom, as well as AIC\nand BIC; the Chisq and its degrees of freedom are 0, and the p value is 1.\nThis makes me think that I cannot make this model comparison, but I would\nlike to understand why and to know how could I correctly compare two models\nof this type.\nThe R output is below, any help or suggestions would be greatly appreciated!\n\nCatarina\n\nR version 2.13.0 (2011-04-13)\n\n>\nm2_Exp<-lmer(lat_perch~(Sex+Origin+trial)^2+SMI_Neo+(1|Nest_ID)+(1|ID),data=full,REML=F)\n\n# lat_perch and SMI are numeric, but the other variables are factors\n\n>\nm2_Exp_Origin<-lmer(lat_perch~(Sex+Origin+trial)^2+SMI_Neo-Origin+(1|Nest_ID)+(1|ID),data=full,REML=F)\n\n> anova(m2_Exp,m2_Exp_Origin)  # NS but sething wierd is happening\nData: full\nModels:\nm2_Exp: lat_perch ~ (Sex + Origin + trial)^2 + SMI_Neo + (1 | Nest_ID) +\nm2_Exp:     (1 | ID)\nm2_Exp_Origin: lat_perch ~ (Sex + Origin + trial)^2 + SMI_Neo - Origin + (1\n|\nm2_Exp_Origin:     Nest_ID) + (1 | ID)\n              Df  AIC    BIC logLik Chisq Chi Df Pr(>Chisq)\nm2_Exp        14 3056 3098.9  -1514\nm2_Exp_Origin 14 3056 3098.9  -1514     0      0          1\n\n> summary(m2_Exp)\nLinear mixed model fit by maximum likelihood\nFormula: lat_perch ~ (Sex + Origin + trial)^2 + SMI_Neo + (1 | Nest_ID)\n+      (1 | ID)\n   Data: full\n  AIC  BIC logLik deviance REMLdev\n 3056 3099  -1514     3028    2865\nRandom effects:\n Groups   Name        Variance Std.Dev.\n ID       (Intercept) 2516808  1586.45\n Nest_ID  (Intercept)  481927   694.21\n Residual             9961255  3156.15\nNumber of obs: 158, groups: ID, 53; Nest_ID, 18\n\nFixed effects:\n                    Estimate Std. Error t value\n(Intercept)         -3995.97    3731.88  -1.071\nSexMale             -1754.35    1225.74  -1.431\nOriginUrban          1618.35    1268.25   1.276\ntrialT2             -2989.72    1128.92  -2.648\ntrialT3             -1457.01    1145.84  -1.272\nSMI_Neo                98.49      43.34   2.272\nSexMale:OriginUrban    64.10    1390.64   0.046\nSexMale:trialT2      1364.19    1230.84   1.108\nSexMale:trialT3      2570.80    1237.91   2.077\nOriginUrban:trialT2  -336.72    1231.60  -0.273\nOriginUrban:trialT3   821.13    1238.67   0.663\n\nCorrelation of Fixed Effects:\n            (Intr) SexMal OrgnUr trilT2 trilT3 SMI_Ne SxM:OU SxM:T2 SxM:T3\nOrU:T2\nSexMale\n-0.066\nOriginUrban -0.127\n0.380\ntrialT2     -0.106  0.312\n0.299\ntrialT3      0.009  0.324  0.304\n0.499\nSMI_Neo     -0.962 -0.120 -0.063 -0.047\n-0.165\nSxMl:OrgnUr -0.047 -0.593 -0.578 -0.007 -0.030\n0.159\nSexMl:trlT2  0.118 -0.498 -0.027 -0.609 -0.296 -0.027\n-0.004\nSexMl:trlT3  0.077 -0.505 -0.033 -0.304 -0.607  0.016  0.009\n0.496\nOrgnUrbn:T2  0.135 -0.025 -0.482 -0.608 -0.293 -0.044 -0.007  0.061\n0.029\nOrgnUrbn:T3  0.130 -0.029 -0.483 -0.301 -0.598 -0.039  0.001  0.031  0.070\n0.498\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello;\n\nWhen I run an anova to compare two lmer models I have in some situations\n(always when I compare a model with interactions with a model where I\nremoved one simple fixed effect) an output that I",
       "thread_id": "thread-39fc9bef52fb",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/2448523d/attachment.pl"
+      ]
     },
     {
       "id": "msg-876e7d8ece3b",
@@ -790,11 +817,14 @@
         "<SNT124-W335B5B85B04473E54B030CC3400@phx.gbl>",
         "<CAO7JsnRwALyooX9QrCeowiuCp86kVx3iuX8iOMovZzOpJj+_mg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/ace22a6d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/ace22a6d/attachment.pl>",
+      "body_plain": "Please exuse my lack of knowledge but I didn't get any verbose output..  All I get is the error message.  Is there something I can type to get the verbose output even if the model does not run completely.  \n \n \n\n \n\n> Date: Fri, 8 Jul 2011 09:46:27 -0500\n> Subject: Re: [R-sig-ME] lack of convergence\n> From: bates at stat.wisc.edu\n> To: megalops31 at hotmail.com\n> CC: r-sig-mixed-models at r-project.org\n> \n> On Fri, Jul 8, 2011 at 6:20 AM, Mike Gibson <megalops31 at hotmail.com> wrote:\n> \n> > I already ran a mixed model and got convergence.  I have 700 data points.  Now, I am running a new mixed model that adds the ARMA (corARMA) covariance pattern.  I keep getting an error message telling me that the model did not reach convergence.  I already tried reducing my tolerance to 1e-1 and increased the number of iterations to 7,000.  Still, I am not having any luck.\n> \n> > Any suggestions to get my model to work properly so I can get my parameter estimates?  I pasted my covariance code below.\n> \n> > LVB2.nlme<-update(LVB.nlme, corr=corARMA(p=1, q=1),\n> > control=nlmeControl(maxIter=6000, tolerance=1e-1, msVerbose=TRUE))\n> \n> Do you see any patterns in the verbose output indicating that the\n> parameter estimates are getting stalled somewhere?\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Please exuse my lack of knowledge but I didn't get any verbose output..  All I get is the error message.  Is there something I can type to get the verbose output even if the model does not run complet",
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/ace22a6d/attachment.pl"
+      ]
     },
     {
       "id": "msg-d832f7e6db06",
@@ -900,11 +930,14 @@
       "subject_clean": "Bayesian Hierarchical Model - Estimating Rho (correlation between intercepts and slopes)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110711/20c23a56/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110711/20c23a56/attachment.pl>",
+      "body_plain": "Dear List\n\nI'm trying to run a hierarchical model to look at the effect of body condition and environmental variables on breeding probability (1/0). The model I'm using is adapted from Gelman and Hill (2006) pg 376, with the modifications to add a group level predictor, for both intercepts and slopes, listed on pg 379. I'm modelling body condition at the individual level, and NAO at the group (year level). These models are being run in JAGS using Denwood's 'runjags' interface for R.\n\nThe issue I'm having is that the 95% credible intervals for rho, the correlation among intercepts and slopes, is -.95 to 0.93, so essentially is spanning the entire available range. I would expect that if the model were 'behaving', then this estimate would take some kind of sensible value i.e. perhaps with  a posterior mode of zero, but much more certainty that it's zero. This may be telling me simply that there is no relationship between intercepts and slopes and that the correlated model is unjustified, but I would appreciate any advice on the model (listed below) which I quite likely have coded incorrectly. If anyone would like simulated data to go with this code I can happily provide it.\n\nAs an aside, what are the likely effects of fiddling with the the degrees of freedom (set to 3 here)? Is this akin to the 'nu' parameter in MCMCglmm?\n\nAny help is greatly appreciated\n\nRegards\n\nXavier\n\n#########################################\n#Separate Intercepts and Slopes - CORRELATED Scaled inverse-Wishart Distribution AND Group-Level Predictor\n#########################################\n\ncfgroupmod<-\"model{\n\n#Individual model\n\nfor (i in 1:n.samp){\n\tlogit.p[i]<-a[yearcode[i]] + b[yearcode[i]]*mass[i] \n\tp[i]<-exp(logit.p[i])/(1+exp(logit.p[i]))\n\tbreed[i]~dbern(p[i])\n\t}\n\t\n\t\n#Group Model \n\nfor (j in 1:5){\n\ta[j]<-xi.a*B.raw[j,1]\n\tb[j]<-xi.b*B.raw[j,2]\n\tB.raw[j,1:2]~dmnorm(B.raw.hat[j,],Tau.B.raw[,])\n\tB.raw.hat[j,1]<-g.a.0.raw+g.a.1.raw*naoj[j]\n\tB.raw.hat[j,2]<-g.b.0.raw+g.b.1.raw*naoj[j]\n\t\t}\n\t\t\n\t#Recover Parameters on Original Scale\n\tg.a.0<-xi.a*g.a.0.raw\n\tg.a.1<-xi.a*g.a.1.raw\n\tg.b.0<-xi.b*g.b.0.raw\n\tg.b.1<-xi.b*g.b.1.raw\n\t\n\t#Priors for scaled Parameters\n\tg.a.0.raw~dnorm(0,0.0001)\n\tg.a.1.raw~dnorm(0,0.0001)\n\tg.b.0.raw~dnorm(0,0.0001)\n\tg.b.1.raw~dnorm(0,0.0001)\n\t\n\txi.a~dunif(0,100)\t\n\txi.b~dunif(0,100)\n\t\n\tTau.B.raw[1:2,1:2]~dwish(W[,],df)\n\tdf<-3\n\tSigma.B.raw[1:2,1:2]<-inverse(Tau.B.raw[,])\n\tsigma.a<-xi.a*sqrt(Sigma.B.raw[1,1])\n\tsigma.b<-xi.b*sqrt(Sigma.B.raw[2,2])\n\trho<-Sigma.B.raw[1,2]/sqrt(Sigma.B.raw[1,1]*Sigma.B.raw[2,2])\n\n}\"\n\t\nW<-diag(2)\n\ncfgroupdat<-dump.format(list(n.samp=nrow(fem),n.year=5,breed=fem$futurebreed,mass=fem$seasonbci,yearcode=fem$yearcode,naoj=naoframe$junnaoresids,W=W))\n\ncfgroupparams<-c(\"a\",\"b\",\"g.a.0\",\"g.a.1\",\"g.b.0\",\"g.b.1\",\"sigma.a\",\"sigma.b\",\"rho\")\nburncfgroup=20000\nsampcfgroup=200000\nadaptcfgroup=10000\ncfgroupthin=200\n\n\n\n---------------------------------------------------------\nDr Xavier Harrison\nBBSRC Postdoctoral Research Associate\nCentre for Ecology and Conservation\nUniversity of Exeter\nTremough Campus\nPenryn\nCornwall\nTR10 9EZ\nTel: (01326) 371872\nxav.harrison at gmail.com\n\n\n\n\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear List\n\nI'm trying to run a hierarchical model to look at the effect of body condition and environmental variables on breeding probability (1/0). The model I'm using is adapted from Gelman and Hill",
       "thread_id": "thread-bc3a5076f41d",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110711/20c23a56/attachment.pl"
+      ]
     },
     {
       "id": "msg-086fa820c04c",
@@ -990,11 +1023,14 @@
       "subject_clean": "GLS - Plotting Graphs with 95% conf interval",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/0b0e4c50/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/0b0e4c50/attachment.pl>",
+      "body_plain": "Hi, I am new to this group.  Firstly I am just wondering if there is a search option to look through back dated achrives (rather than having to mannually sift through all the threads by month)?\n\nSecondly (and the subject of this post) I am trying to plot the original data with the line of the model using the predict function.  I want to add SE to the graph, but not sure how to get them out as the predict function for gls (package nlme) does not appear to allow for SE=TRUE argument.\n\nHere is my code so far:\n\nf1<-formula(MaxNASC40_50~hu3+flcmax+TidalFlag)\n\nvf1Exp<-varExp(form=~hu3)\n\nB1D<-gls(f1,correlation=corGaus(form=Lat~Lon, nugget=TRUE),weights=vf1Exp , data=ocean)\n\nochu3<-seq(from=2.9,to=4,length=120)\nocflc<-seq(from=0,to=0.8,length=120)\ntidal1<-rep(c(\"1\"),length=120)\n\nmydata1<-data.frame(TidalFlag=factor(tidal1),hu3=ochu3,flcmax=ocflc)\nlineNASC1<-predict(B1D,newdata=mydata1,type=\"response\")\nlineNASC1<-as.data.frame(lineNASC1)\n\nplot(ocean$MaxNASC40_50[ocean$TidalFlag==1]~ocean$flcmax[ocean$TidalFlag==1)\nlines(lineNASC1$lineNASC1~mydata1$flcmax)\n\nTidal Flag is a factor (so i assume i have to plot seperate graphs for each level).\n\nWhen I have tried to use the effects package I get the error:  Error in x$formula : object of type 'symbol' is not subsettable.\n\nAlso (regarding plotting but a different modelling framework) when i have been trying to predict values from a zero inflated negative binomial (package pscl), I am getting the same line of fit regardless of what is on my X axis (depsite different variables have positive and negative relationships).\n\nany imput on any of these problems would be appreciated.\n\nThanks\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi, I am new to this group.  Firstly I am just wondering if there is a search option to look through back dated achrives (rather than having to mannually sift through all the threads by month)?\n\nSecon",
       "thread_id": "thread-f9164409340d",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/0b0e4c50/attachment.pl"
+      ]
     },
     {
       "id": "msg-acd95b1b72f1",
@@ -1006,11 +1042,14 @@
       "subject_clean": "Doubts regarding lmer's fitted model form",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/1d7b480f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/1d7b480f/attachment.pl>",
+      "body_plain": "Hi All,\n\nI'm relatively new to R and I've been playing around with lmer recently regarding which I have run into some basic doubts. My objective is to write an R function for a given lmer model such that when provided with a set of values for the predictors it should return the expected value of the dependent variable.\n\nTo this end, I created a dummy dataset with the following attributes:\n\ny: binary (0,1)\nx1: continuous\nx2: continuous, range depends on value of group\ngroup: factor with levels A,B,C and D\n\n'data.frame':     200 obs. of  4 variables:\n$ y    : int  0 1 1 1 1 1 0 0 1 0 ...\n$ x1   : int  12 17 12 18 13 12 16 16 12 14 ...\n$ x2   : int  774 1254 2 1121 1565 4 1093 597 1019 167 ...\n$ Group: Factor w/ 4 levels \"A\",\"B\",\"C\",\"D\": 1 1 1 1 1 1 1 1 1 1 ...\n\nI then used lmer to fit a model to this using the call:\n\na <- lmer(y ~ x1 + x2 + ((1 + x1 + x2)|Group),data = modelData , family = binomial)\n\nNow to the best of my ability to use the internet, I found that the following commands all seemed relevant:\n\ncoef(a) - returns a 4x3 matrix of coefficients: intercept, x1 and x2 coefficients by Group\nranef(a) - returns a 1x3 vector of fixed effect coefficients: intercept, x1 and x2\nfixef(a) - returns a 4x3 matrix of random effect coefficients: intercept, x1 and x2 coefficients by Group\n\nAs I suspected, the sum of results of ranef and fixef equals the result of coef -\n\nie.\n\ncf <- as.matrix(coef(a)[[1]])\nrf <- ranef(a)[[1]]\nff <- fixef(a)\n\n> rf + matrix(ff,nrow=4,ncol=3,byrow=TRUE) == cf\n  (Intercept)   x1   x2\nA        TRUE TRUE TRUE\nB        TRUE TRUE TRUE\nC        TRUE TRUE TRUE\nD        TRUE TRUE TRUE\n\nSo, based on the values obtained using coef I created a model function which implements the following logic:\n\napplyModel <- function(row){\n      inVec <- as.numeric(row[2:3])\n      group <- row[4]\n      logx <- log1p(inVec + 1)\n      if(group == \"A\"){\n            ret <- sum(cf[1,1], cf[1,2:3]*logx)\n      }else if(group == \"B\"){\n            ret <- sum(cf[2,1], cf[2,2:3]*logx)\n      }else if(group == \"C\"){\n            ret <- sum(cf[3,1], cf[3,2:3]*logx)\n      }else{\n            ret <- sum(cf[4,1], cf[4,2:3]*logx)\n      }\n      return(ret)\n}\n\naf <- as.matrix(fitted(a))\nb <- as.matrix(apply(as.matrix(binomData),1,applyModel))\nc <- exp(b)/(1+exp(b))\nbinomOut <- cbind(binomData,b,af,c)\nnames(binomOut) <- c(names(binomData),\"computed\",\"fitted\",\"computed_y\")\n\nHaving done this, I was expecting that values in columns \"fitted\" and \"computed_y\" would match exactly. This however has turned out not to be the case and  computed_y seems to be consistently higher than the corresponding fitted value.\n\nPasted below are the first few observations from binomOut:\n\n\ny\n\nx1\n\nx2\n\nGroup\n\ncomputed\n\nfitted\n\ncomputed_y\n\n1\n\n0\n\n12\n\n774\n\nA\n\n-0.30243\n\n0.411052\n\n0.424962\n\n2\n\n1\n\n17\n\n1254\n\nA\n\n-0.14744\n\n0.452844\n\n0.463206\n\n3\n\n1\n\n12\n\n2\n\nA\n\n0.589756\n\n0.641315\n\n0.643309\n\n4\n\n1\n\n18\n\n1121\n\nA\n\n-0.08875\n\n0.46796\n\n0.477826\n\n5\n\n1\n\n13\n\n1565\n\nA\n\n-0.36802\n\n0.396194\n\n0.40902\n\n6\n\n1\n\n12\n\n4\n\nA\n\n0.521084\n\n0.62118\n\n0.627401\n\n7\n\n0\n\n16\n\n1093\n\nA\n\n-0.16609\n\n0.44764\n\n0.458573\n\n8\n\n0\n\n16\n\n597\n\nA\n\n-0.06392\n\n0.473048\n\n0.484025\n\n9\n\n1\n\n12\n\n1019\n\nA\n\n-0.34891\n\n0.399837\n\n0.413648\n\n10\n\n0\n\n14\n\n167\n\nA\n\n0.059154\n\n0.502542\n\n0.514784\n\n\nI have a few guesses about why this might be happening:\n\n\n1)      I'm coverting the logit incorrectly\n\n2)      Numerical-errors are throwing values off\n\n3)      My understanding of the outputs of ranef/fixef/coef is wrong\n\n4)      I shouldn't be considering/shouldn't be considering only the output of coef while reconstructing the model equation\n\nCould this mismatch be due to one/any of the guesses above, or is it due to something entirely different? Please help!\n\nThanks,\n\nKrish.\n\n________________________________\nThis email message may contain proprietary, private and confidential information. The information transmitted is intended only for the person(s) or entities to which it is addressed. Any review, retransmission, dissemination or other use of, or taking of any action in reliance upon, this information by persons or entities other than the intended recipient is prohibited and may be illegal. If you received this in error, please contact the sender and delete the message from your system.\n\nMu Sigma takes all reasonable steps to ensure that its electronic communications are free from viruses. However, given Internet accessibility, the Company cannot accept liability for any virus introduced by this e-mail or any attachment and you are advised to use up-to-date virus checking software.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All,\n\nI'm relatively new to R and I've been playing around with lmer recently regarding which I have run into some basic doubts. My objective is to write an R function for a given lmer model such t",
       "thread_id": "thread-acd95b1b72f1",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/1d7b480f/attachment.pl"
+      ]
     },
     {
       "id": "msg-b26961adcd4d",
@@ -1272,11 +1311,14 @@
       "subject_clean": "How can parameter estimates be extracted from a LMEM which includes VarIdent and corAR1?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110716/1633714b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110716/1633714b/attachment.pl>",
+      "body_plain": "Dear All,\n\nI was wondering if anyone knows a way to reliably extract parameter\nestimates from a LMEM where VarIdent and corAR1 are necessary.\n\nHere is the full model I am currently working with:\n\nmodel1<-lme(asin(max_cover/100)~1+provenance*lifeform*year_trt*N*P*K,method=\"ML\",random=~1|site/plot,weights=varIdent(form=~1|lifeform),\nna.action=na.exclude,\ncorrelation=corAR1(form=~as.numeric(year_trt)|site/plot), data=dat1)\n\nThe two lifeforms I am working with are graminoids and forbs, and the\nexperiment is a full factorial fertilization experiment that has been\nconducted at 26 sites. Max_cover represents 16 species and their response to\nfertilization. Because I am hypotheses testing, I have simplified the model\nusing LRT and I have found a significant four-way interaction and these\ntrends follow the results shown in the raw data. I used REML and LRT to\ntest  VarIdent and the autocorrelation with treatment year and both are\nnecessary.\n\nIs there a method for calculating parameter estimates from such a complex\nmodel for a designed experiment? If there isn't, does anyone have any\nsuggestions on methods or approaches I could use to get around this issue?\n\nThank you very much for any help or advice in advance.\n\nBest wishes,\n\nKaren\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear All,\n\nI was wondering if anyone knows a way to reliably extract parameter\nestimates from a LMEM where VarIdent and corAR1 are necessary.\n\nHere is the full model I am currently working with:\n\nmode",
       "thread_id": "thread-f2b89adb40c7",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110716/1633714b/attachment.pl"
+      ]
     },
     {
       "id": "msg-4f5a918c7317",
@@ -1288,11 +1330,14 @@
       "subject_clean": "Matched-Pair Cluster Randomized Trials",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110715/c5d4ff5f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110715/c5d4ff5f/attachment.pl>",
+      "body_plain": "Hi,\n\nI am trying to analyze data from a matched-pair cluster randomized trial.\nThe group-level outcomes were analyzed using a random effect meta-analysis\nbut I now want to investigate individual-level outcomes. I have used glmer\nto take into account the school clustering but I am unsure about the correct\nway to take into account the matching...\n\nglmer(Outcome ~ Trt + (1|SCHOOL), data=Data, family = binomial)\n\nIs there an option to include the matching as a strata?\n\n(There is a total of 18 schools that were matched on geographic area and\nsize. In each pair (9), one school was randomized to an intervention. There\nis a total of 1159 observations (but cluster size varies from 20 to 180).\nThe primary outcome is binary.)\n\nThanks,\nMathieu MG\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI am trying to analyze data from a matched-pair cluster randomized trial.\nThe group-level outcomes were analyzed using a random effect meta-analysis\nbut I now want to investigate individual-level",
       "thread_id": "thread-4f5a918c7317",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110715/c5d4ff5f/attachment.pl"
+      ]
     },
     {
       "id": "msg-b11e3fc74c2b",
@@ -1359,11 +1404,14 @@
       "subject_clean": "Confusion about contrasts",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/1b41164c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/1b41164c/attachment.pl>",
+      "body_plain": "Dear all,\nI'm struggling to understand how lmer handles contrasts. I have a lexical\ndecision experiment that I'm trying to analyse, where regular or irregular\nverbs (the targets) are preceded by four different kinds of prime, making it\na (2x4) within-subjects design. I'm pretty sure I have the basic model\nspecification right, i.e. something like this:\n\npriming.model<-lmer(react~target*prime+(1|subject)+(1|item),data=trimmedwords)\n\nThe contrasts I would be most interested in are comparing the first prime\ncondition to the third, and the second to the third. Initially I was\nplanning to set the contrasts for the prime factor like this (I realise\nthese are not orthogonal, is this a problem?):\n\nprimeconts<-cbind(c(-1,0,1,0),c(0,-1,1,0),c(0,0,-1,1))\ncolnames(primeconts)<-c(\"1v3\",\"2v3\",\"3v4\")\nprimeconts\n     1v3 2v3 3v4\n[1,]  -1   0   0\n[2,]   0  -1   0\n[3,]   1   1  -1\n[4,]   0   0   1\n\nHowever, I've been told by one of the other researchers here that you need\nthe contrasts in the form given by make.contrasts() in the gmodels package,\nwhich creates contrasts \"in the form that R requires\". I'm having trouble\nfinding out exactly what this command does in the package documentation, and\nI'm a little wary of using something I don't understand. For the set of\ncontrasts above, make.contrasts() returns:\n\n      C1    C2    C3\nV1 -0.75  0.25 -0.25\nV2  0.25 -0.75 -0.25\nV3  0.25  0.25 -0.25\nV4  0.25  0.25  0.75\n\nbut when I've used a different set of contrasts (albeit possibly not the\nmost sensible ones), it returns something a lot less understandable, hence\nmy hesitation:\n\nmake.contrasts(rbind(c(-1,0,1,0),c(0,-1,1,0),c(-1,1,0,0)))\n              C1         C2            C3\nV1 -3.333333e-01  0.0000000 -3.333333e-01\nV2  3.148450e-17 -0.3333333  3.333333e-01\nV3  3.333333e-01  0.3333333 -2.775558e-17\nV4  0.000000e+00  0.0000000  0.000000e+00\n\nThe first set of contrasts given by make.contrasts() looks like what I'm\nfamiliar with from linear regression, where you set the coefficients for the\ngroups in the contrast so that their mean is 0 and the difference between\nthem is 1, so that the intercept in the regression output represents the\noverall mean, and the unstandardized beta for the contrast effect gives you\nthe difference between the groups (i.e. the contrast estimate) directly.\n\nCan anyone shed some light on the best way to code the contrasts? If it is\nthe make.contrasts() method, I would appreciate a brief explanation on what\nthat function actually does, in terms of the properties of the matrix it\nreturns.\n\nThanks in advance,\nMarius\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI'm struggling to understand how lmer handles contrasts. I have a lexical\ndecision experiment that I'm trying to analyse, where regular or irregular\nverbs (the targets) are preceded by four ",
       "thread_id": "thread-48a3138dd14b",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/1b41164c/attachment.pl"
+      ]
     },
     {
       "id": "msg-0f0f5fe04a3e",
@@ -1393,11 +1441,14 @@
       "subject_clean": "Including groups as levels and groups as dummies simultaneously",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/e4cf86a8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/e4cf86a8/attachment.pl>",
+      "body_plain": "Hi everyone,\n\nA friend of mine has constructed a three-levels dataset by content analyzing\na sample of newspapers. At Level-1, there are 6090 news stories with nine\nvariables from content characteristics.  At Level-2, there are 114 daily\nnewspaper from a national random sample, stratified by circulation size and\nownership types.  Two L2 group level predictors are included: circulation of\nthe newspaper and a measure of concentration of population in their\ncorresponding geographic area. At Level-3, there are 59 ownership groups.\nOnly one group level predictor which is the public/private  characteristic\nof each ownership group.\n\nMy friend asked me whether is correct to include at level-3 dummy variables\nthat account for the ownership groups and I found this approach redundant\nsince the level three itself represents the same ownership groups; however,\nI could not offer to him a reasonable explanation for this.\n\nWould his approach be viable in any situation or is that something that\nwe should always avoid?\n\nThanks for any help or guidance on this issue.\n\nBest,\n\nDavid\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nA friend of mine has constructed a three-levels dataset by content analyzing\na sample of newspapers. At Level-1, there are 6090 news stories with nine\nvariables from content characterist",
       "thread_id": "thread-21e012651936",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/e4cf86a8/attachment.pl"
+      ]
     },
     {
       "id": "msg-c5cbbaab95ca",
@@ -1409,11 +1460,14 @@
       "subject_clean": "question about linear mixed model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/19901326/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/19901326/attachment.pl>",
+      "body_plain": "Hi all:\nI have a question about linear mixed model.\n\nmy linear mixed model with randomized slope and intercept with interaction\nof time and group(g1,g2,g3):\nmodel<- glmmPQL(log10(CD4) ~ time + factor(group)+ time:factor(group),\nrandom = ~time|id)\n\nWhat I get is only the main and interaction of time and group.My question\nis:\n\n1. How can I get the g1,g2,g3's slope respectively?In other words,how can I\nget the slope of g1,the slope of g2,and the slope of g3?\n\n2.How can I pair-wise compare the 3 slopes of g1,g2,g3?\n\n\n\nThanks a lot!\n\n\nMy best\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all:\nI have a question about linear mixed model.\n\nmy linear mixed model with randomized slope and intercept with interaction\nof time and group(g1,g2,g3):\nmodel<- glmmPQL(log10(CD4) ~ time + factor(",
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/19901326/attachment.pl"
+      ]
     },
     {
       "id": "msg-26329d5fae06",
@@ -1427,11 +1481,14 @@
       "references": [
         "<CANDXbiqEhfdVvwuwVO-YzZNvLtq6wBMMn2Rkw7q0r9v=OS+jYw@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/7ba61fb0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/7ba61fb0/attachment.pl>",
+      "body_plain": "Hi,\n\n1. Maybe you could try model<- glmmPQL(log10(CD4) ~ time +\n(0+factor(group))+ time:factor(group), random = ~time|id).\n0+ some times means that you do NOT fit a intercept, but fit each level a\nslope.\n\n2. Maybe you could try\nlibrary(multcomp),\nglht(model, linfct=mcp(fgroup=\"Tukey\"))\nfgroup<-factor(group).\nThe glht function work for \"lmer\" or \"mer\", but I am not sure whether it\nwill help in your case.\n\nI hope it may help a bit.\nbest,\nYuanye\n\n\n2011/7/19 Lao Meng <laomeng.3 at gmail.com>\n\n> Hi all:\n> I have a question about linear mixed model.\n>\n> my linear mixed model with randomized slope and intercept with interaction\n> of time and group(g1,g2,g3):\n> model<- glmmPQL(log10(CD4) ~ time + factor(group)+ time:factor(group),\n> random = ~time|id)\n>\n> What I get is only the main and interaction of time and group.My question\n> is:\n>\n> 1. How can I get the g1,g2,g3's slope respectively?In other words,how can I\n> get the slope of g1,the slope of g2,and the slope of g3?\n>\n> 2.How can I pair-wise compare the 3 slopes of g1,g2,g3?\n>\n>\n>\n> Thanks a lot!\n>\n>\n> My best\n>\n>        [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\n1. Maybe you could try model<- glmmPQL(log10(CD4) ~ time +\n(0+factor(group))+ time:factor(group), random = ~time|id).\n0+ some times means that you do NOT fit a intercept, but fit each level a\nslo",
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110719/7ba61fb0/attachment.pl"
+      ]
     },
     {
       "id": "msg-0ca8c025c960",
@@ -1475,11 +1532,14 @@
       "subject_clean": "R-Forge lme4/lme4a installation on Windows 7",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110720/1de38ade/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110720/1de38ade/attachment.pl>",
+      "body_plain": "Hi all,\n\nI don't know if I'm the only one, but I'm unable to install lme4 or lme4a\n(or Matrix for that matter) from R-Forge since a couple of weeks (\nhttp://r-forge.r-project.org/R/?group_id=60). I'm running R version 2.13.1\non windows 7 (64 bits). I get the following error message:\n\n*> install.packages(\"lme4\", repos=\"http://R-Forge.R-project.org\")*\nWarning : unable to access index for repository\nhttp://R-Forge.R-project.org/bin/windows/contrib/2.13\nWarning message :\nIn getDependencies(pkgs, dependencies, available, lib) :\n  package ‘lme4’ is not available (for R version 2.13.1)\n\nI don't know what's going on since this procedure has always worked fine in\nthe past. I also tried to install from the zip file, but it says \" page not\nfound \" (of course). I have tried on 3 different computers with the same OS\nand reinstalled R many time to see if I was the problem.\n\nThanks in advance for your help and sorry if this subject has been discussed\nbefore, I didn't find anything in the mailing list archive.\n\nRegards,\n\n\nSimon Delisle-Boulianne\nGraduate student\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nI don't know if I'm the only one, but I'm unable to install lme4 or lme4a\n(or Matrix for that matter) from R-Forge since a couple of weeks (\nhttp://r-forge.r-project.org/R/?group_id=60). I'm ",
       "thread_id": "thread-85d1d3ad6a30",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110720/1de38ade/attachment.pl"
+      ]
     },
     {
       "id": "msg-a463f12fc95c",
@@ -1601,11 +1661,14 @@
         "<CANDXbiqEhfdVvwuwVO-YzZNvLtq6wBMMn2Rkw7q0r9v=OS+jYw@mail.gmail.com>",
         "<CAF0Vy4chrJgh4nBbizJF8XXDVNhH7jX=U495_Qf3RitCNe2KUQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110722/52a97de6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110722/52a97de6/attachment.pl>",
+      "body_plain": "Thanks Yuan-Ye.\nAs to the first answer,I'm not sure whether it's ok to use:\n\nglmmPQL(log10(CD4) ~ time +factor(group))*time, random = ~time-1|id)\n\n\n\n\n2011/7/19 Yuan-Ye Zhang <zhangyuanye0706 at gmail.com>\n\n> Hi,\n>\n> 1. Maybe you could try model<- glmmPQL(log10(CD4) ~ time +\n> (0+factor(group))+ time:factor(group), random = ~time|id).\n> 0+ some times means that you do NOT fit a intercept, but fit each level a\n> slope.\n>\n> 2. Maybe you could try\n> library(multcomp),\n> glht(model, linfct=mcp(fgroup=\"Tukey\"))\n> fgroup<-factor(group).\n> The glht function work for \"lmer\" or \"mer\", but I am not sure whether it\n> will help in your case.\n>\n> I hope it may help a bit.\n> best,\n> Yuanye\n>\n>\n> 2011/7/19 Lao Meng <laomeng.3 at gmail.com>\n>\n>> Hi all:\n>> I have a question about linear mixed model.\n>>\n>> my linear mixed model with randomized slope and intercept with interaction\n>> of time and group(g1,g2,g3):\n>> model<- glmmPQL(log10(CD4) ~ time + factor(group)+ time:factor(group),\n>> random = ~time|id)\n>>\n>> What I get is only the main and interaction of time and group.My question\n>> is:\n>>\n>> 1. How can I get the g1,g2,g3's slope respectively?In other words,how can\n>> I\n>> get the slope of g1,the slope of g2,and the slope of g3?\n>>\n>> 2.How can I pair-wise compare the 3 slopes of g1,g2,g3?\n>>\n>>\n>>\n>> Thanks a lot!\n>>\n>>\n>> My best\n>>\n>>        [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Yuan-Ye.\nAs to the first answer,I'm not sure whether it's ok to use:\n\nglmmPQL(log10(CD4) ~ time +factor(group))*time, random = ~time-1|id)\n\n\n\n\n2011/7/19 Yuan-Ye Zhang <zhangyuanye0706 at gmail.",
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110722/52a97de6/attachment.pl"
+      ]
     },
     {
       "id": "msg-86e2b0b8be82",
@@ -1711,11 +1774,14 @@
       "subject_clean": "Cholmod warning",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/24cb7b24/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/24cb7b24/attachment.pl>",
+      "body_plain": "Dear list: \n\n\n   I am implementing a model with lmer in which the dependent variable is the number of chicks fledged by a number of barn swallow couples. I am using the simplification method, and have realized that the order in which different elements are introduced in the model has a great important, to the extent of making a \"false convergence\" warning message disappear. After doing all the simplification, I arrive to this model:\n\n   s.hatchcoltailmodel1.76<-lmer(nhatch1~sex+tlength+brithr+briventral+cond+weatherpc1+weatherpc1:briventral+weatherpc1:cond+(1|site/pair)+(1|year),family=poisson,na.action=na.omit)\n\n   This one, the LAST one (and the simplest) gives me this error message:\n\n   Mensajes de aviso perdidos\n1: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n2: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n3: In mer_finalize(ans) : false convergence (8)\n\n\n   No matter the order in which I write the elements. \n\n\n   I really cannot understand how it is possible that I have been able to make all the simplification from the maximal model (18 parameters), and after a long and careful process, exactly when I arrive to my minimal model (8 parameters and only 2 interactions) is when everything collapses. It is really annoying. \n\n\n   Any suggestions, comments or ideas'll be much appreciated.\n\n   Thank you very much.\n\n\n  ________________________________________\n\n   Iker Vaquero-Alba\n   Centre for Ecology and Conservation\n   Daphne du Maurier Building\n   University of Exeter, Cornwall Campus\n   Treliever Road\n   TR10 9EZ Penryn\n   U.K.\n\n   http://biosciences.exeter.ac.uk/cec/staff/postgradresearch/ikervaquero-alba/\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list: \n\n\n   I am implementing a model with lmer in which the dependent variable is the number of chicks fledged by a number of barn swallow couples. I am using the simplification method, and have",
       "thread_id": "thread-67fef3e2afa7",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/24cb7b24/attachment.pl"
+      ]
     },
     {
       "id": "msg-dfa2ef38148b",
@@ -1748,11 +1814,14 @@
         "<1311513766.5790.YahooMailNeo@web27001.mail.ukl.yahoo.com>",
         "<CAO7JsnSGcCMjVne70hgAgcL3dOjDeWPY2Z2jNZzMGKjc6fRhrA@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/4b066194/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/4b066194/attachment.pl>",
+      "body_plain": "s.hatchcoltailmodel1.76<-lmer(nhatch1~sex+tlength+brithr+briventral+cond+weatherpc1+weatherpc1:briventral+weatherpc1:cond+(1|site/pair)+(1|year),family=poisson,na.action=na.omit,verbose=TRUE)\n\n  0:     129.32699:  1.05525 0.617213 0.242091  2.11758 -0.0668442 0.00235620 0.00296124 0.000930340 -0.619141 0.622250 0.00267117 -0.537532\n  1:     129.32699:  1.05525 0.617213 0.242091  2.11758 -0.0668442 0.00235620 0.00296124 0.000930340 -0.619141 0.622250 0.00267117 -0.537532\n\nMensajes de aviso perdidos\n1: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n2: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n3: In mer_finalize(ans) : false convergence (8)\n\n\n   I thought it could be overparametrized, but in that case, why don't I get any error with the maximum model, which has much more parameters to estimate? \n\n\n   Thank you very much. Iker\n\n\n\n________________________________\nDe: Douglas Bates <bates at stat.wisc.edu>\n\nCC: \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\nEnviado: domingo 24 de julio de 2011 19:06\nAsunto: Re: [R-sig-ME] Cholmod warning\n\n\note:\n\n>    Dear list:\n\n>    I am implementing a model with lmer in which the dependent variable is the number of chicks fledged by a number of barn swallow couples. I am using the simplification method, and have realized that the order in which different elements are introduced in the model has a great important, to the extent of making a \"false convergence\" warning message disappear. After doing all the simplification, I arrive to this model:\n\n>    s.hatchcoltailmodel1.76<-lmer(nhatch1~sex+tlength+brithr+briventral+cond+weatherpc1+weatherpc1:briventral+weatherpc1:cond+(1|site/pair)+(1|year),family=poisson,na.action=na.omit)\n\n>    This one, the LAST one (and the simplest) gives me this error message:\n\n>    Mensajes de aviso perdidos\n> 1: In mer_finalize(ans) :\n>   Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n> 2: In mer_finalize(ans) :\n>   Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 432\n> 3: In mer_finalize(ans) : false convergence (8)\n\n>    No matter the order in which I write the elements.\n\n>    I really cannot understand how it is possible that I have been able to make all the simplification from the maximal model (18 parameters), and after a long and careful process, exactly when I arrive to my minimal model (8 parameters and only 2 interactions) is when everything collapses. It is really annoying.\n\nAdd the verbose=TRUE option to see if you can determine which of the\nparameters is going off to unusual values.  It is entirely possible\nthat your model is overparameterized.\n\n>\n>    Any suggestions, comments or ideas'll be much appreciated.\n>\n>    Thank you very much.\n>\n>\n>   ________________________________________\n>\n>    Iker Vaquero-Alba\n>    Centre for Ecology and Conservation\n>    Daphne du Maurier Building\n>    University of Exeter, Cornwall Campus\n>    Treliever Road\n>    TR10 9EZ Penryn\n>    U.K.\n>\n>    http://biosciences.exeter.ac.uk/cec/staff/postgradresearch/ikervaquero-alba/\n>        [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "s.hatchcoltailmodel1.76<-lmer(nhatch1~sex+tlength+brithr+briventral+cond+weatherpc1+weatherpc1:briventral+weatherpc1:cond+(1|site/pair)+(1|year),family=poisson,na.action=na.omit,verbose=TRUE)\n\n  0:   ",
       "thread_id": "thread-67fef3e2afa7",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110724/4b066194/attachment.pl"
+      ]
     },
     {
       "id": "msg-6e7268abd755",
@@ -1802,11 +1871,14 @@
       "subject_clean": "RLRsim masked VarCorr",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110725/98fb1931/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110725/98fb1931/attachment.pl>",
+      "body_plain": "Hi,\nI need to use the packages lmer and RLRsim in some code. I need to extract the interclass correlation and I would use the following lines\n\ngrowdat=data.frame(individual=rep(rep(1:8),3), growth=rep(rnorm(8, mean=0, sd=2),3)+rnorm(3*8, sd=1))\nmod1=lmer(growth~(1|individual), data=growdat)\nind_var=attr(VarCorr(mod1)$individual,\"stddev\")^2\nres_var=attr(VarCorr(mod1),\"sc\")^2\n\nbut this causes the error\nError in UseMethod(\"VarCorr\") : \n no applicable method for 'VarCorr' applied to an object of class \"mer\"\nCalls: VarCorr\nExecution halted\n\nbecause loading RLRsim masked the function VarCorr. \nIs there an alternative way to get these elements out of the mer object?\nExtracting them before loading RLRsim isn't an option because the model fits and info extraction are in a big loop for replication.\n\nthanks,\nMollie\n\nMollie Brooks\nPh.D. Candidate\nNSF IGERT Fellow\nBiology Department\nUniversity of Florida\nmbrooks at ufl.edu\nwww.zoology.ufl.edu/mbrooks\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\nI need to use the packages lmer and RLRsim in some code. I need to extract the interclass correlation and I would use the following lines\n\ngrowdat=data.frame(individual=rep(rep(1:8),3), growth=rep",
       "thread_id": "thread-5a898c2183b2",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110725/98fb1931/attachment.pl"
+      ]
     },
     {
       "id": "msg-603d9c27f631",
@@ -1818,11 +1890,14 @@
       "subject_clean": "a question about glht function",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/2b0ae93d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/2b0ae93d/attachment.pl>",
+      "body_plain": "Hi all:\nThere's a question about glht function.\n\nMy data:data_ori,which inclue CD4, GROUP,time.\n\n\nf_GROUP<-factor(data_ori$GROUP)\n\nf_GROUP is a factor of 3 levels(0,1,2,3)\n\n\nresult <- lme(sqrt(CD4) ~ f_GROUP*time ,random = ~time|ID,data=data_ori)\n\nglht(result, linfct = mcp(f_GROUP=\"Tukey\") )\nError in `[.data.frame`(mf, nhypo[checknm]) : undefined columns selected\n\n\nI can't find out the reason for Error.\n\n\nAny help from you are welcome.\n\n\nMany thanks!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all:\nThere's a question about glht function.\n\nMy data:data_ori,which inclue CD4, GROUP,time.\n\n\nf_GROUP<-factor(data_ori$GROUP)\n\nf_GROUP is a factor of 3 levels(0,1,2,3)\n\n\nresult <- lme(sqrt(CD4) ~ ",
       "thread_id": "thread-603d9c27f631",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/2b0ae93d/attachment.pl"
+      ]
     },
     {
       "id": "msg-cbbc26276fa3",
@@ -1868,11 +1943,14 @@
       "subject_clean": "lme4 error: \"Number of levels of a grouping factor . . .\"",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/6094a878/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/6094a878/attachment.pl>",
+      "body_plain": "Hello,\nI have count/proportion data and I am trying to account for overdispersion\nin a logistic regression. With the following code from lme4 I receive the\nfollowing error message:\n\n> glmm = glmer(cbind(fertilized, unfert) ~ density.class + (1|individual),\nfamily = binomial)\nNumber of levels of a grouping factor for the random effects\nis *equal* to n, the number of observations\n\nThis problem was mentioned in Warton and Hui 2011, so I imagine it may have\nbeen fixed recently.  I downloaded the most recent version of lme4 available\nthrough the command install.packages(\"lme4\").  Is there an updated version\nof the package available in a different form?\n\nI am using R version 2.13.1 on OS 10.6.4.\n\nthank you!\nGabrielle\n\n-- \nGabrielle Miller-Messner\nGraduate Student\nCenter for Population Biology\nSection of Evolution and Ecology\nUniversity of California, Davis\n1 Shields Avenue\nDavis, California 95616\ngmessner at ucdavis.edu\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\nI have count/proportion data and I am trying to account for overdispersion\nin a logistic regression. With the following code from lme4 I receive the\nfollowing error message:\n\n> glmm = glmer(cbi",
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/6094a878/attachment.pl"
+      ]
     },
     {
       "id": "msg-5957ba691e5c",
@@ -1884,11 +1962,14 @@
       "subject_clean": "question about the lme result",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/fac3da57/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/fac3da57/attachment.pl>",
+      "body_plain": "Hi all.\nMy data is a longitudinal data,which measure everyone(id)'s CD4 level at\nsome specific time point.All persons are grouped into 3 groups(0,1,2,3).\n\ny:sqrt(CD4)\nx:time,GROUP(3levels: 0,1,2,3)\n\ndata_ori is my original data,which inclues:CD4,group,time,id.\n\nI performed a linear mixed model using lme:\nresult <- lme(sqrt(CD4) ~ group*time,random = ~time|id,data=data_ori)\n\n>From the summary(result),I can only get the intercept and slope of\nGROUP0(which is described as \"intercept\" and \"time\").\nIf I wanna get intercepts and slopes of GROUP1,GROUP2,GROUP3,how can I do?\n\nSimply,I can do this manually by the following steps(GROUP1 for instance):\n\"intercept\" + GROUP1 = intercept_GROUP1;\n\"time\" + time:GROUP1 = slope_GROUP1;\n\nBut is there any \"shortcut\" method to choose?Also,I cann't get the\ncorresponding SE and p value for each parameter.So the\nabove \"manually\"method is not effective to some degree.\n\nAny help from you are welcome.\n\nMany thanks!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all.\nMy data is a longitudinal data,which measure everyone(id)'s CD4 level at\nsome specific time point.All persons are grouped into 3 groups(0,1,2,3).\n\ny:sqrt(CD4)\nx:time,GROUP(3levels: 0,1,2,3)\n\nd",
       "thread_id": "thread-5957ba691e5c",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/fac3da57/attachment.pl"
+      ]
     },
     {
       "id": "msg-58e4b2dc9d61",
@@ -1939,11 +2020,14 @@
         "<CANDXbiqY6NhjkkQt4=2hKMqeh4D+cd0EEa-U8NwB5Wkg3KypOw@mail.gmail.com>",
         "<AA818EAD2576BC488B4F623941DA74273B7AAE1E@inbomail.inbo.be>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/66c73fcc/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/66c73fcc/attachment.pl>",
+      "body_plain": "Thanks Thierry.It works well!\n\nAccording to your suggestion,I find that the following command has the same\neffect:\nlme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n\n>From the result,can I say that maybe the opinion that \"a*b = a + a:b\" is not\n\"right\"?\n\n\nMy best\n\n\n2011/7/27 ONKELINX, Thierry <Thierry.ONKELINX at inbo.be>\n\n> Dear Lao,\n>\n> Rewrite your model as lme(sqrt(CD4) ~ 0 + group + group:time,random =\n> ~time|id,data=data_ori)\n>\n> Best regards,\n>\n> Thierry\n>\n> > -----Oorspronkelijk bericht-----\n> > Van: r-sig-mixed-models-bounces at r-project.org [mailto:\n> r-sig-mixed-models-\n> > bounces at r-project.org] Namens Lao Meng\n> > Verzonden: woensdag 27 juli 2011 9:26\n> > Aan: r-sig-mixed-models at r-project.org\n> > Onderwerp: [R-sig-ME] question about the lme result\n> >\n> > Hi all.\n> > My data is a longitudinal data,which measure everyone(id)'s CD4 level at\n> some\n> > specific time point.All persons are grouped into 3 groups(0,1,2,3).\n> >\n> > y:sqrt(CD4)\n> > x:time,GROUP(3levels: 0,1,2,3)\n> >\n> > data_ori is my original data,which inclues:CD4,group,time,id.\n> >\n> > I performed a linear mixed model using lme:\n> > result <- lme(sqrt(CD4) ~ group*time,random = ~time|id,data=data_ori)\n> >\n> > >From the summary(result),I can only get the intercept and slope of\n> > GROUP0(which is described as \"intercept\" and \"time\").\n> > If I wanna get intercepts and slopes of GROUP1,GROUP2,GROUP3,how can I\n> > do?\n> >\n> > Simply,I can do this manually by the following steps(GROUP1 for\n> instance):\n> > \"intercept\" + GROUP1 = intercept_GROUP1; \"time\" + time:GROUP1 =\n> > slope_GROUP1;\n> >\n> > But is there any \"shortcut\" method to choose?Also,I cann't get the\n> > corresponding SE and p value for each parameter.So the above\n> > \"manually\"method is not effective to some degree.\n> >\n> > Any help from you are welcome.\n> >\n> > Many thanks!\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Thierry.It works well!\n\nAccording to your suggestion,I find that the following command has the same\neffect:\nlme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n\n>From the resu",
       "thread_id": "thread-5957ba691e5c",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/66c73fcc/attachment.pl"
+      ]
     },
     {
       "id": "msg-40cd15d27df5",
@@ -2082,11 +2166,14 @@
         "<CAB+QPJDrm4jZugNY45NmU2F_g_U=60N4ryen6FG1GVPPQg7Ohg@mail.gmail.com>",
         "<686DF18D10EF1C428C2760321FB5B69E0BDA7E2D@DC1VEX07MB001.air.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/076427e8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/076427e8/attachment.pl>",
+      "body_plain": "How can you check for overparameterization? \n\n   Thanks. Iker\n\n\n\n________________________________\nDe: \"Doran, Harold\" <HDoran at air.org>\nPara: Mike Lawrence <Mike.Lawrence at dal.ca>; \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\nEnviado: miércoles 27 de julio de 2011 15:29\nAsunto: Re: [R-sig-ME] Resume terminated lmer fit if verbose=TRUE?\n\nYes. See ?lmer and the start argument. You can provide the function with starting values, which can come as the last iteration of the output from verbose. 100 hours is a ridiculous amount of computing time. \n\nYou might want to check your model and make sure it isn't overparameterized. \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-\n> bounces at r-project.org] On Behalf Of Mike Lawrence\n> Sent: Wednesday, July 27, 2011 9:16 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] Resume terminated lmer fit if verbose=TRUE?\n> \n> Hi folks,\n> \n> I ran a binomial lmer on a large data set with lots of levels of a\n> random effect (1000+) and a large fixed effects structure (7 variables\n> all interacting). My local machine wasn't up to the task (it needs\n> about 16GB of memory so far as I can tell), so I put it on a serial\n> node on a supercomputer to which I have access. I asked for 100 hours\n> of compute time, but it seems that the model went over time and the\n> process was terminated by the system's queue. However, I ran it in\n> verbose mode and have all the output, so I'm wondering if there's any\n> way to use this information to resubmit the job and have it resume\n> where it left off. Any ideas?\n> \n> Cheers,\n> \n> Mike\n> \n> --\n> Mike Lawrence\n> Graduate Student\n> Department of Psychology\n> Dalhousie University\n> \n> Looking to arrange a meeting? Check my public calendar:\n> http://tr.im/mikes_public_calendar\n> \n> ~ Certainty is folly... I think. ~\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "How can you check for overparameterization? \n\n   Thanks. Iker\n\n\n\n________________________________\nDe: \"Doran, Harold\" <HDoran at air.org>\nPara: Mike Lawrence <Mike.Lawrence at dal.ca>; \"r-sig-mixed-mo",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/076427e8/attachment.pl"
+      ]
     },
     {
       "id": "msg-25c9c7fcee74",
@@ -2102,11 +2189,14 @@
         "<686DF18D10EF1C428C2760321FB5B69E0BDA7E2D@DC1VEX07MB001.air.org>",
         "<1311775514.49619.YahooMailNeo@web27005.mail.ukl.yahoo.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/c3b712ad/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/c3b712ad/attachment.pl>",
+      "body_plain": "See Ben Bolker's response to r-sig-mixed. The variance covariance structure of the random effects and fixed effects can creep into extremely large values. This can be problematic.\n\nFrom: Iker Vaquero Alba [mailto:karraspito at yahoo.es]\nSent: Wednesday, July 27, 2011 10:05 AM\nTo: Doran, Harold; Mike Lawrence; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Resume terminated lmer fit if verbose=TRUE?\n\n   How can you check for overparameterization?\n   Thanks. Iker\n\n________________________________\nDe: \"Doran, Harold\" <HDoran at air.org>\nPara: Mike Lawrence <Mike.Lawrence at dal.ca>; \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\nEnviado: miércoles 27 de julio de 2011 15:29\nAsunto: Re: [R-sig-ME] Resume terminated lmer fit if verbose=TRUE?\n\nYes. See ?lmer and the start argument. You can provide the function with starting values, which can come as the last iteration of the output from verbose. 100 hours is a ridiculous amount of computing time.\n\nYou might want to check your model and make sure it isn't overparameterized.\n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org<mailto:r-sig-mixed-models-bounces at r-project.org> [mailto:r-sig-mixed-models-\n> bounces at r-project.org<mailto:bounces at r-project.org>] On Behalf Of Mike Lawrence\n> Sent: Wednesday, July 27, 2011 9:16 AM\n> To: r-sig-mixed-models at r-project.org<mailto:r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] Resume terminated lmer fit if verbose=TRUE?\n>\n> Hi folks,\n>\n> I ran a binomial lmer on a large data set with lots of levels of a\n> random effect (1000+) and a large fixed effects structure (7 variables\n> all interacting). My local machine wasn't up to the task (it needs\n> about 16GB of memory so far as I can tell), so I put it on a serial\n> node on a supercomputer to which I have access. I asked for 100 hours\n> of compute time, but it seems that the model went over time and the\n> process was terminated by the system's queue. However, I ran it in\n> verbose mode and have all the output, so I'm wondering if there's any\n> way to use this information to resubmit the job and have it resume\n> where it left off. Any ideas?\n>\n> Cheers,\n>\n> Mike\n>\n> --\n> Mike Lawrence\n> Graduate Student\n> Department of Psychology\n> Dalhousie University\n>\n> Looking to arrange a meeting? Check my public calendar:\n> http://tr.im/mikes_public_calendar\n>\n> ~ Certainty is folly... I think. ~\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n_______________________________________________\nR-sig-mixed-models at r-project.org<mailto:R-sig-mixed-models at r-project.org> mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "See Ben Bolker's response to r-sig-mixed. The variance covariance structure of the random effects and fixed effects can creep into extremely large values. This can be problematic.\n\nFrom: Iker Vaquero ",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/c3b712ad/attachment.pl"
+      ]
     },
     {
       "id": "msg-714e8772de89",
@@ -2304,11 +2394,14 @@
       "references": [
         "<AA818EAD2576BC488B4F623941DA74273B7AAF5F@inbomail.inbo.be>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/e979cc70/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/e979cc70/attachment.pl>",
+      "body_plain": "Yes,I checked the difference between the two command:\nr1<-lme(sqrt(CD4) ~ group + group:time+0,random = ~time|id,data=data_ori)\nr2<-lme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n\nanova's result (i.e anova(r1) and anova(r2)) are totally the same.\nsummary's result is mainly same,and the only difference is:\nr1 has the content:\nCorrelation\n\ngroup1:group2\n... ...\n... ...\n... ...\n\nBut r2 hasn't the above content.\n\nThat's the only difference.\n\n\n\n\n2011/7/27 ONKELINX, Thierry <Thierry.ONKELINX at inbo.be>\n\n> Both fit the same model but the parametrisation is different. Hence the\n> hypotheses tested by summary() or anova() can be different as well. It's up\n> to you to determine which parametrisation is the most useful.\n>\n> Essentially, all models are wrong, but some are useful (George Box)\n>\n>\n>\n> Van: Lao Meng [mailto:laomeng.3 at gmail.com]\n> Verzonden: woensdag 27 juli 2011 9:57\n> Aan: ONKELINX, Thierry\n> CC: r-sig-mixed-models at r-project.org\n> Onderwerp: Re: [R-sig-ME] question about the lme result\n>\n> Thanks Thierry.It works well!\n>\n> According to your suggestion,I find that the following command has the same\n> effect:\n> lme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n>\n> From the result,can I say that maybe the opinion that \"a*b = a + a:b\" is\n> not \"right\"?\n>\n> My best\n>\n>\n> 2011/7/27 ONKELINX, Thierry <Thierry.ONKELINX at inbo.be>\n> Dear Lao,\n>\n> Rewrite your model as lme(sqrt(CD4) ~ 0 + group + group:time,random =\n> ~time|id,data=data_ori)\n>\n> Best regards,\n>\n> Thierry\n>\n> > -----Oorspronkelijk bericht-----\n> > Van: r-sig-mixed-models-bounces at r-project.org [mailto:\n> r-sig-mixed-models-\n> > bounces at r-project.org] Namens Lao Meng\n> > Verzonden: woensdag 27 juli 2011 9:26\n> > Aan: r-sig-mixed-models at r-project.org\n> > Onderwerp: [R-sig-ME] question about the lme result\n> >\n> > Hi all.\n> > My data is a longitudinal data,which measure everyone(id)'s CD4 level at\n> some\n> > specific time point.All persons are grouped into 3 groups(0,1,2,3).\n> >\n> > y:sqrt(CD4)\n> > x:time,GROUP(3levels: 0,1,2,3)\n> >\n> > data_ori is my original data,which inclues:CD4,group,time,id.\n> >\n> > I performed a linear mixed model using lme:\n> > result <- lme(sqrt(CD4) ~ group*time,random = ~time|id,data=data_ori)\n> >\n> > >From the summary(result),I can only get the intercept and slope of\n> > GROUP0(which is described as \"intercept\" and \"time\").\n> > If I wanna get intercepts and slopes of GROUP1,GROUP2,GROUP3,how can I\n> > do?\n> >\n> > Simply,I can do this manually by the following steps(GROUP1 for\n> instance):\n> > \"intercept\" + GROUP1 = intercept_GROUP1; \"time\" + time:GROUP1 =\n> > slope_GROUP1;\n> >\n> > But is there any \"shortcut\" method to choose?Also,I cann't get the\n> > corresponding SE and p value for each parameter.So the above\n> > \"manually\"method is not effective to some degree.\n> >\n> > Any help from you are welcome.\n> >\n> > Many thanks!\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Yes,I checked the difference between the two command:\nr1<-lme(sqrt(CD4) ~ group + group:time+0,random = ~time|id,data=data_ori)\nr2<-lme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori",
       "thread_id": "thread-7e80d1254c58",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/e979cc70/attachment.pl"
+      ]
     },
     {
       "id": "msg-b947b61b6511",
@@ -2323,11 +2416,14 @@
         "<CANDXbiqEhfdVvwuwVO-YzZNvLtq6wBMMn2Rkw7q0r9v=OS+jYw@mail.gmail.com>",
         "<CAF0Vy4chrJgh4nBbizJF8XXDVNhH7jX=U495_Qf3RitCNe2KUQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/06774591/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/06774591/attachment.pl>",
+      "body_plain": "Thanks Yuan.\nHere's another question:\nWhat's kind of difference does glht tests?\nIn other words,\nIf I get 4 intercepts and 4 slopes for all levels of GROUP,then glht tests\nfor the difference of the 4 intercepts or 4 slopes,or something else?\n\nThanks.\n\n\n2011/7/19 Yuan-Ye Zhang <zhangyuanye0706 at gmail.com>\n\n> Hi,\n>\n> 1. Maybe you could try model<- glmmPQL(log10(CD4) ~ time +\n> (0+factor(group))+ time:factor(group), random = ~time|id).\n> 0+ some times means that you do NOT fit a intercept, but fit each level a\n> slope.\n>\n> 2. Maybe you could try\n> library(multcomp),\n> glht(model, linfct=mcp(fgroup=\"Tukey\"))\n> fgroup<-factor(group).\n> The glht function work for \"lmer\" or \"mer\", but I am not sure whether it\n> will help in your case.\n>\n> I hope it may help a bit.\n> best,\n> Yuanye\n>\n>\n> 2011/7/19 Lao Meng <laomeng.3 at gmail.com>\n>\n>> Hi all:\n>> I have a question about linear mixed model.\n>>\n>> my linear mixed model with randomized slope and intercept with interaction\n>> of time and group(g1,g2,g3):\n>> model<- glmmPQL(log10(CD4) ~ time + factor(group)+ time:factor(group),\n>> random = ~time|id)\n>>\n>> What I get is only the main and interaction of time and group.My question\n>> is:\n>>\n>> 1. How can I get the g1,g2,g3's slope respectively?In other words,how can\n>> I\n>> get the slope of g1,the slope of g2,and the slope of g3?\n>>\n>> 2.How can I pair-wise compare the 3 slopes of g1,g2,g3?\n>>\n>>\n>>\n>> Thanks a lot!\n>>\n>>\n>> My best\n>>\n>>        [[alternative HTML version deleted]]\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Yuan.\nHere's another question:\nWhat's kind of difference does glht tests?\nIn other words,\nIf I get 4 intercepts and 4 slopes for all levels of GROUP,then glht tests\nfor the difference of the 4 ",
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/06774591/attachment.pl"
+      ]
     },
     {
       "id": "msg-98559cf9a063",
@@ -2342,11 +2438,14 @@
         "<AA818EAD2576BC488B4F623941DA74273B7AAF5F@inbomail.inbo.be>",
         "<CANDXbip+m+gW=A2md6gvTBCEDEk3XH__AHJjLRDN0YeXWZdprg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/08947e75/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/08947e75/attachment.pl>",
+      "body_plain": "Sorry for last mail's mistake.\nI recheck the difference between r1 and r2.Both result of anova and summary\nare the same.\n\n\n2011/7/28 Lao Meng <laomeng.3 at gmail.com>\n\n> Yes,I checked the difference between the two command:\n> r1<-lme(sqrt(CD4) ~ group + group:time+0,random = ~time|id,data=data_ori)\n> r2<-lme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n>\n> anova's result (i.e anova(r1) and anova(r2)) are totally the same.\n> summary's result is mainly same,and the only difference is:\n> r1 has the content:\n> Correlation\n>\n> group1:group2\n> ... ...\n> ... ...\n> ... ...\n>\n> But r2 hasn't the above content.\n>\n> That's the only difference.\n>\n>\n>\n>\n> 2011/7/27 ONKELINX, Thierry <Thierry.ONKELINX at inbo.be>\n>\n>> Both fit the same model but the parametrisation is different. Hence the\n>> hypotheses tested by summary() or anova() can be different as well. It's up\n>> to you to determine which parametrisation is the most useful.\n>>\n>> Essentially, all models are wrong, but some are useful (George Box)\n>>\n>>\n>>\n>> Van: Lao Meng [mailto:laomeng.3 at gmail.com]\n>> Verzonden: woensdag 27 juli 2011 9:57\n>> Aan: ONKELINX, Thierry\n>> CC: r-sig-mixed-models at r-project.org\n>> Onderwerp: Re: [R-sig-ME] question about the lme result\n>>\n>> Thanks Thierry.It works well!\n>>\n>> According to your suggestion,I find that the following command has the\n>> same effect:\n>> lme(sqrt(CD4) ~ group + group:time-1,random = ~time|id,data=data_ori)\n>>\n>> From the result,can I say that maybe the opinion that \"a*b = a + a:b\" is\n>> not \"right\"?\n>>\n>> My best\n>>\n>>\n>> 2011/7/27 ONKELINX, Thierry <Thierry.ONKELINX at inbo.be>\n>> Dear Lao,\n>>\n>> Rewrite your model as lme(sqrt(CD4) ~ 0 + group + group:time,random =\n>> ~time|id,data=data_ori)\n>>\n>> Best regards,\n>>\n>> Thierry\n>>\n>> > -----Oorspronkelijk bericht-----\n>> > Van: r-sig-mixed-models-bounces at r-project.org [mailto:\n>> r-sig-mixed-models-\n>> > bounces at r-project.org] Namens Lao Meng\n>> > Verzonden: woensdag 27 juli 2011 9:26\n>> > Aan: r-sig-mixed-models at r-project.org\n>> > Onderwerp: [R-sig-ME] question about the lme result\n>> >\n>> > Hi all.\n>> > My data is a longitudinal data,which measure everyone(id)'s CD4 level at\n>> some\n>> > specific time point.All persons are grouped into 3 groups(0,1,2,3).\n>> >\n>> > y:sqrt(CD4)\n>> > x:time,GROUP(3levels: 0,1,2,3)\n>> >\n>> > data_ori is my original data,which inclues:CD4,group,time,id.\n>> >\n>> > I performed a linear mixed model using lme:\n>> > result <- lme(sqrt(CD4) ~ group*time,random = ~time|id,data=data_ori)\n>> >\n>> > >From the summary(result),I can only get the intercept and slope of\n>> > GROUP0(which is described as \"intercept\" and \"time\").\n>> > If I wanna get intercepts and slopes of GROUP1,GROUP2,GROUP3,how can I\n>> > do?\n>> >\n>> > Simply,I can do this manually by the following steps(GROUP1 for\n>> instance):\n>> > \"intercept\" + GROUP1 = intercept_GROUP1; \"time\" + time:GROUP1 =\n>> > slope_GROUP1;\n>> >\n>> > But is there any \"shortcut\" method to choose?Also,I cann't get the\n>> > corresponding SE and p value for each parameter.So the above\n>> > \"manually\"method is not effective to some degree.\n>> >\n>> > Any help from you are welcome.\n>> >\n>> > Many thanks!\n>> >\n>> >       [[alternative HTML version deleted]]\n>> >\n>> > _______________________________________________\n>> > R-sig-mixed-models at r-project.org mailing list\n>> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Sorry for last mail's mistake.\nI recheck the difference between r1 and r2.Both result of anova and summary\nare the same.\n\n\n2011/7/28 Lao Meng <laomeng.3 at gmail.com>\n\n> Yes,I checked the difference b",
       "thread_id": "thread-7e80d1254c58",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/08947e75/attachment.pl"
+      ]
     },
     {
       "id": "msg-f6d56a9391de",
@@ -2580,11 +2679,14 @@
         "<CADv2QyH_56wiQJED6tKiOMmh7EkmUtf9h+s0hOo8b22hYRH6hw@mail.gmail.com>",
         "<D742C77C-F88F-4ACB-809C-BA19B9D9A8FC@comcast.net>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/5355b684/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/5355b684/attachment.pl>",
+      "body_plain": "david, i'm now slogging thru the most informative thread!\n\nas dennis advised, one has to do the 'predict' part 'by hand' when using lmer.  this is done in the 2 lines:\nmm = model.matrix(terms(fm1),newdat)\nnewdat$distance = mm %*% fixef(fm1)\ngood luck - this thing is worth sticking with!\newart\n\nOn Jul 31, 2011, at 6:35 AM, David Winsemius wrote:\n\n> \n> On Jul 31, 2011, at 8:47 AM, Dennis Murphy wrote:\n> \n>> Hi:\n>> \n>> See http://glmm.wikidot.com/faq\n>> \n>> Go about 2/3 of the way down until you see the section 'Predictions\n>> and/or confidence (or prediction) intervals on predictions'.\n> \n> Aren't objects created by lmer of class \"mer\"? Attempting to follow your advice with the first example provided in ?lmer meets with frustration:\n> \n> require(lme4)\n> (fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy))\n> newdat0 <- expand.grid(Reaction=c(200,300,400), Days=c(0,4,8), Subject=c(5,10,15) )\n> newdat0$pred <- predict(fm1, newdat0, level = 0)\n> \n> Error in UseMethod(\"predict\") :\n>  no applicable method for 'predict' applied to an object of class \"mer\"\n> \n> I'm not even a journeyman use of ME methods, so this is just a question. Do you have a fix? (There are predict methods listed in nlme but none in the Index of lme4.\n> \n> -- \n> David.\n> \n> \n> \n> David Winsemius, MD\n> West Hartford, CT\n> \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "david, i'm now slogging thru the most informative thread!\n\nas dennis advised, one has to do the 'predict' part 'by hand' when using lmer.  this is done in the 2 lines:\nmm = model.matrix(terms(fm1),new",
       "thread_id": "thread-182a8aef787e",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/5355b684/attachment.pl"
+      ]
     },
     {
       "id": "msg-227c1756791e",
@@ -2621,11 +2723,14 @@
         "<D742C77C-F88F-4ACB-809C-BA19B9D9A8FC@comcast.net>",
         "<2FA04079-C7E6-4D87-82D8-A9FFAC6C0AEA@stanford.edu>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/505f1d20/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/505f1d20/attachment.pl>",
+      "body_plain": "On Jul 31, 2011, at 9:41 AM, Ewart Thomas wrote:\n\n> david, i'm now slogging thru the most informative thread!\n>\n> as dennis advised, one has to do the 'predict' part 'by hand' when  \n> using lmer.  this is done in the 2 lines:\n> mm = model.matrix(terms(fm1),newdat)\n> newdat$distance = mm %*% fixef(fm1)\n> good luck - this thing is worth sticking with!\n\nThe ongoing quest for prediction and confidence intervals is  \nchronicled in the mixed-effects Archive. The online discussion of  \nprediction intervals in lme4-derived models, i.e. objects of class  \n\"mer\" can be extracted with a Google search of the mixed-models  \nArchive at the \"advanced search\" page:\n\nhttp://www.google.com/search?q=lme4+OR+mer+%22prediction+intervals%22+site%3Ahttps%3A%2F%2Fstat.ethz.ch%2Fpipermail%2Fr-sig-mixed-models%2F&hl=en&num=50\n\nThe other place to look is in Bates' drafts of the book he is writing  \non lme4 methods. In chapter 1 of a 2010 draft he suggests plotting  \nprediction intervals (of the random effects)  thusly:\n\ndotplot(ranef(fm1ML,postVar=TRUE))\n\nAnd he continues using that method for the next few chapters (during  \nthat year). I wonder if it makes sense to construct prediction  \nintervals without proper consideration of the fact that some of the  \nvariability is assumed to arise from fixed effects. In his written  \nmaterial it appears that Bates studiously avoids mixing random and  \nfixed effects in what he is calling \"prediction intervals\". There is  \nsome discussion of this problem in his chapter 5 of the March 2011  \nmaterial but the matrix math is too complex for me to follow and he  \nhas no accompanying R code to go along with it.\n\n\n> ewart\n>\n> On Jul 31, 2011, at 6:35 AM, David Winsemius wrote:\n>\n>>\n>> On Jul 31, 2011, at 8:47 AM, Dennis Murphy wrote:\n>>\n>>> Hi:\n>>>\n>>> See http://glmm.wikidot.com/faq\n>>>\n>>> Go about 2/3 of the way down until you see the section 'Predictions\n>>> and/or confidence (or prediction) intervals on predictions'.\n>>\n>> Aren't objects created by lmer of class \"mer\"? Attempting to follow  \n>> your advice with the first example provided in ?lmer meets with  \n>> frustration:\n>>\n>> require(lme4)\n>> (fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy))\n>> newdat0 <- expand.grid(Reaction=c(200,300,400), Days=c(0,4,8),  \n>> Subject=c(5,10,15) )\n>> newdat0$pred <- predict(fm1, newdat0, level = 0)\n>>\n>> Error in UseMethod(\"predict\") :\n>>  no applicable method for 'predict' applied to an object of class  \n>> \"mer\"\n>>\n>> I'm not even a journeyman use of ME methods, so this is just a  \n>> question. Do you have a fix? (There are predict methods listed in  \n>> nlme but none in the Index of lme4.\n>>\n>> -- \n>> David.\n>>\n>>\n>>\n>> David Winsemius, MD\n>> West Hartford, CT\n>>\n>\n\nDavid Winsemius, MD\nWest Hartford, CT\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "On Jul 31, 2011, at 9:41 AM, Ewart Thomas wrote:\n\n> david, i'm now slogging thru the most informative thread!\n>\n> as dennis advised, one has to do the 'predict' part 'by hand' when  \n> using lmer.  th",
       "thread_id": "thread-182a8aef787e",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110731/505f1d20/attachment.pl"
+      ]
     },
     {
       "id": "msg-bfb75c724a5e",

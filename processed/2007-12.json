@@ -554,11 +554,14 @@
       "subject_clean": "specifying the structure of the residual variance-covariance matrix",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl>",
+      "body_plain": "Dear all,\n\n \n\nI would be very pleased if someone could help me with the following\nissue on the structure of the residuals variance-covariance matrix.\n\n \n\nI have repeated observations (t = 1, ..., T) for several products,\nbelonging to a category in several countries:\n\n \n\nProduct i = 1, ... , I\n\nCategory k = 1, ..., K\n\nCountry j = 1, ... , J\n\n \n\nThe same product i is present in several/all countries. I also have some\nextra explanatory variables in x.\n\n \n\nI want to model y_{ikjt} = beta*x_{ikjt} + u_j + v_{kj} + w_{ikj} +\ne_{ikjt} allowing for:\n\n \n\n- within-category correlation Corr(e_{ik},e_{i'k}), \n\n \n\n- within-country correlation Corr(e_{ikj},e_{i'k'j}),\n\n \n\n- different variances for the different products (heteroskedasticy among\nproducts).\n\n \n\nI do the following:\n\n \n\nlme(y~-1+x,random=~1|country/category/product,           \n\n                        weights=varIdent(~1|country/category/product),\n\n \ncorrelation=corCompSymm(form=~1|country/category/product))\n\n \n\nis it correct and does it exist a way to extract the residual variance\ncovariance matrix?\n\n \n\nThanks a lot,\n\nA. Lemmens (aurelie.lemmens at econ.kuleuven.be)\n\n \n\n\n\nDisclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\n \n\nI would be very pleased if someone could help me with the following\nissue on the structure of the residuals variance-covariance matrix.\n\n \n\nI have repeated observations (t = 1, ..., T) f",
       "thread_id": "thread-9b5169021a24",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl"
+      ]
     },
     {
       "id": "msg-d925295490c8",
