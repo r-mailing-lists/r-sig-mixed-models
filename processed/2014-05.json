@@ -146,11 +146,14 @@
         "<CAO7JsnRzwWxOw5HQgswdRx3cJF4At7z17GdWdtQ1RBRsqYtPzQ@mail.gmail.com>",
         "<53640CBA.4060501@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140502/eafaa266/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140502/eafaa266/attachment.pl>",
+      "body_plain": "On Fri, May 2, 2014 at 4:23 PM, Ben Bolker <bbolker at gmail.com> wrote:\n\n> On 14-05-02 03:43 PM, Douglas Bates wrote:\n> > On Fri, May 2, 2014 at 9:23 AM, Charlotte Arndt <arndtch at uni-landau.de\n> > <mailto:arndtch at uni-landau.de>> wrote:\n> >\n> >     Dear Sir / Madam,\n> >     I am analyzing some data by means of multivariate multilevel models\n> >     and want to fix the residual variance on level 1 to zero. In HLM,\n> >     you can do this by fixing the level 1 residual variance (sigma\n> >     square) to a very small value, e.g. 0.00001. Is it possible to\n> >     constrain the level 1 residual variance with lme4? It would be\n> >     great, if I could use lme4 for my analyses. Thanking you in advance.\n> >\n> >\n> > I forget how the \"levels\" are numbered in the multilevel modeling\n> > literature but as you say \"residual variance\" I imagine you are\n> > referring to the variance of the conditional distribution of the\n> > response given the random effects.  The way the model is defined and fit\n> > in the lme4 package the covariance matrix of the random effects is\n> > defined relative to this variance.  In other words it would not be\n> > possible to fit the model in the way you describe.\n> >\n> > Actually I can't imagine how such a model could make sense.  Where does\n> > the variability in the conditional distribution get absorbed?\n>\n>\n>   Actually, this can be done with blme.   See\n>\n\nBut what does it mean?  What model is being fit?\n\n>\n> http://thread.gmane.org/gmane.comp.lang.r.lme4.devel/11500/\n> http://thread.gmane.org/gmane.comp.lang.r.lme4.devel/11093/\n> _______________________________________________\n> Lme4-authors mailing list\n> Lme4-authors at lists.r-forge.r-project.org\n> https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/lme4-authors\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "On Fri, May 2, 2014 at 4:23 PM, Ben Bolker <bbolker at gmail.com> wrote:\n\n> On 14-05-02 03:43 PM, Douglas Bates wrote:\n> > On Fri, May 2, 2014 at 9:23 AM, Charlotte Arndt <arndtch at uni-landau.de\n> >",
       "thread_id": "thread-a3214d41360b",
       "thread_depth": 1,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140502/eafaa266/attachment.pl"
+      ]
     },
     {
       "id": "msg-65b1a46574fc",
@@ -257,11 +260,14 @@
       "subject_clean": "BOBYQA warning message",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/52af7122/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/52af7122/attachment.pl>",
+      "body_plain": "Hello List:\n\n \n\nI am getting the following warning message when running a model with BOBYQA\noptimization. I am not sure how to interpret it:\n\n \n\nWarning message:\n\nIn commonArgs(par, fn, control, environment()) :\n\n  maxfun < 10 * length(par)^2 is not recommended.\n\n> summary(model)\n\nGeneralized linear mixed model fit by maximum likelihood (Laplace\nApproximation) ['glmerMod']\n\nFamily: binomial ( logit )\n\nFormula: wr ~ 1 + a + b + c + d*e + f*e + g*e + h*e + i +  \n\n    i*k + k*e + l*e + m + (1+f+i|w) + (-1+d|w) + (1+m|x) + (1|y) + (1| z)\n\n   Data: m\n\nControl: glmerControl(optimizer = \"bobyqa\")\n\n \n\n     AIC      BIC   logLik deviance df.resid \n\n  6198.5   6426.2  -3067.3   6134.5     9058 \n\n \n\nScaled residuals: \n\n     Min       1Q   Median       3Q      Max \n\n-10.7164  -0.2638   0.1284   0.3356  10.3950 \n\n \n\nRandom effects:\n\nGroups Name        Variance Std.Dev. Corr       \n\n     (Intercept)    0.189556 0.43538             \n\n x      m           0.087545 0.29588  0.24       \n\n w      d           0.385553 0.62093             \n\n w.1    (Intercept) 1.673762 1.29374             \n\n        f           0.045596 0.21353  -0.39      \n\n        i           0.036892 0.19207  -0.55 -0.36\n\ny      (Intercept) 0.005768 0.07595             \n\n z      (Intercept) 0.000000 0.00000             \n\nNumber of obs: 9090, groups: x, 202; w, 45; y, 23; z, 6\n\n \n\nFixed effects:\n\n                      Estimate Std. Error z value Pr(>|z|)    \n\n(Intercept)            1.72456    0.21281   8.104 5.32e-16 ***\n\na                      0.29682    0.06380   4.652 3.28e-06 ***\n\nb                     -0.06976    0.17471  -0.399 0.689698    \n\nc                      0.12498    0.09981   1.252 0.210496    \n\nd                      1.00641    0.13625   7.387 1.51e-13 ***\n\ne                      1.28465    0.20023   6.416 1.40e-10 ***\n\nf                      0.17962    0.08665   2.073 0.038175 *  \n\ng                      1.30007    0.08096  16.057  < 2e-16 ***\n\nh                      0.16457    0.07051   2.334 0.019601 *  \n\ni                      0.01631    0.07326   0.223 0.823805    \n\nk                      0.76396    0.21435   3.564 0.000365 ***\n\nl                     -0.35635    0.19711  -1.808 0.070633 .  \n\nm                      0.30247    0.22093   1.369 0.170979    \n\nd:e                    0.08819    0.13846   0.637 0.524198    \n\ne:f                   -0.01060    0.06633  -0.160 0.873059    \n\ne:g                    0.04057    0.05732   0.708 0.479095    \n\ne:h                    0.02144    0.05099   0.421 0.674085    \n\ni:k                    0.14288    0.05095   2.804 0.005045 ** \n\ne:k                   -0.31092    0.19069  -1.630 0.103000    \n\ne:l                   -0.28359    0.22508  -1.260 0.207682    \n\n \n\nIf it is not clear above, \"w\" and \"x\" are perfectly crossed effects (there\nare no missing values). In multilevel language, \"x\" is nested within \"y\"\nwhich is nested within \"z\".\n\n \n\n\"a\" is continuous and varies across \"x\".\n\n\"b\" is binary and varies across \"x\". \n\n\"c\" and \"d\" are binary and vary across \"w\" and \"x\".\n\n\"e\", \"k\", \"l\", and \"m\" are continuous and vary across \"w\".\n\n\"f\", \"g\", \"h\", \"i\", and \"I\" are continuous and vary across \"x\". \n\n \n\nTo explain the random intercepts and slopes, these were derived from a model\nbuilding procedure that involved the addition of a random slope for each\nfixed effect and testing whether the model without the random slope fit\nworse than that with it (the idea was to follow the \"forward selection\"\napproach Bates described here:\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003921.html).\nCorrelations were added in the same way. The \"maximal\" strategy is ideal,\nbut the model with all possible random slopes and correlations did not\nconverge, nor did a \"near maximal\" model. Barr, Levy, Scheepers, and Tily\n(2013) suggested that this approach controls Type I error almost as well as\nthe maximal strategy, which is why it was used here. \n\n \n\nIt is not clear to me what this warning means or why it occurred. Here were\nmy initial thoughts: \n\n \n\n\"z\" has almost no variability (and it is a random effect with only six\nlevels). I was included because the unconditional model without fit worse\nthan that with it (the p value for the likelihood ratio test was .07, which\nis significant for these). I am therefore reluctant to remove this term,\nalthough I suspected the error might relate to the lack of information\nrelated to z. \n\n \n\nI also wondered whether the number of \"w\" covariates was too large given\nthat I have only 45 \"w\" cases. I have seen papers where authors have\nincluded more covariates with fewer numbers (I've seen as many as 8\ncovariates for a random effect with only 39 levels). In logistic regression,\nthere is the 10:1 rule of thumb for observations to covariates, but there do\nnot seem to be any such rules of thumb for these models. It is my\nunderstanding that lme4 includes some tests for overfitting, but this seems\nto be under development: https://github.com/lme4/lme4/issues/7). So, I\nconsidered the possibility of overfitting (although the standard errors do\nnot raise concerns). \n\n \n\nOf course, \"warnings\" are not \"errors\" and it is possible that nothing is\nwrong. However, I am reluctant to believe that!\n\n \n\nWould anyone be able to explain this warning? Is there something I could do\ndifferently? \n\n \n\nThank you for your time. I am very appreciative of the list's help.\n\n \n\nDevin.\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello List:\n\n \n\nI am getting the following warning message when running a model with BOBYQA\noptimization. I am not sure how to interpret it:\n\n \n\nWarning message:\n\nIn commonArgs(par, fn, control, envir",
       "thread_id": "thread-d10e864d0a83",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/52af7122/attachment.pl"
+      ]
     },
     {
       "id": "msg-32a1e86dd5bf",
@@ -273,11 +279,14 @@
       "subject_clean": "p values for random effects in an unbalanced nested mixed model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/71a2be37/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/71a2be37/attachment.pl>",
+      "body_plain": "Hi List-serv community,\nI would like to calculate the p values for the random effects in an\nunbalanced nested mixed model (lme or lmer). There are three factor levels\n(all random), ecoregions, area nested in ecoregion, and sites nested in\narea and ecoregion.\n\nMy model looks like something like this\ncoral_richness<-lme(Richness~1, random=~1|Ecoregion/Area/Site)\n\nMy goals are to examine 1) how much richness varies at different spatial\nscales (ecoregions, areas, sites) and 2) is the variation in richness\nsignificant at each spatial scale.\n\nAny help would be greatly appreciated!!!!!\n\nThanks,\nStacey\n\n-- \nStacey Williams, PhD.\nUniversity of Costa Rica\nFORCE (www.force-project.eu)\nISER (www.isercaribe.org)\nstcmwilliams at gmail.com\nstcmwilliams at sbcglobal.net\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi List-serv community,\nI would like to calculate the p values for the random effects in an\nunbalanced nested mixed model (lme or lmer). There are three factor levels\n(all random), ecoregions, area ne",
       "thread_id": "thread-32a1e86dd5bf",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140503/71a2be37/attachment.pl"
+      ]
     },
     {
       "id": "msg-ad3a7d0aca1b",
@@ -385,11 +394,14 @@
       "subject_clean": "glmmADMB zero-inflated poisson model. How to solve",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/c378647e/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/c378647e/attachment.pl>",
+      "body_plain": "Dear all,\n\nI'm trying to run a ZIGLMM  with the package glmmADMB. My data set contains 37 zero-valued of 66 observations in the dependent variable (number of attaks), so I consider that a zero-inflated model would be appropriated. I checked the dataset and, apparently, there are enough variation for all combinations.\n\nI centered and rescaled continuos input variables before performing the model. I run several models and they looked OK, but an error message appeared when trying some combinations, usually with only one explanatory  variable (but not in all cases!!) and with the null model (only random effects).\nThis is the full model:\n\nmodel_full<-glmmadmb (Nat~ coldecoy+ colmale*colfem+sfecha+ snnd+ colvecino+ (1|Year) +(1|Nido),data=data, zeroInflation=TRUE,family=\"poisson\")\nsummary(model_full)\n\nand this is the error message:\n\nmodel_7<-glmmadmb (Nat~ colfem+ (1|Year) +(1|Nido),data=data, zeroInflation=TRUE,family=\"poisson\")\nParameters were estimated, but not standard errors were not: the most likely problem is that the curvature at MLE was zero or negative\nError en glmmadmb(Nat ~ colfem + (1 | Year) + (1 | Nido), data = data,  : \n  The function maximizer failed (couldn't find STD file) Troubleshooting steps include (1) run with 'save.dir' set and inspect output files; (2) change run parameters: see '?admbControl'\nAdemás: Mensajes de aviso perdidos\ncomando ejecutado './glmmadmb -maxfn 500 -maxph 5 -noinit -shess' tiene estatus 1 \n\nI found similar an almost identical question in the list (sorry, I was unable to find it again and I cannot give more details). I checked the ?admbControl and further explanations about this provided in a previous post, but it was unclear to me what should I do. \nSorry if I'm repeating an already \"solved\" topic, but I was unable to find an answer.  I would be very grateful if someone can give me some help.\n\nBest,\n\nLaura\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI'm trying to run a ZIGLMM  with the package glmmADMB. My data set contains 37 zero-valued of 66 observations in the dependent variable (number of attaks), so I consider that a zero-inflate",
       "thread_id": "thread-f7855a9391a1",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/c378647e/attachment.pl"
+      ]
     },
     {
       "id": "msg-f01ff256f404",
@@ -419,11 +431,14 @@
       "subject_clean": "gamm4 error with large dataset",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/87548b18/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/87548b18/attachment.pl>",
+      "body_plain": "Thanks for the info and the advice. It seems like the fixed effects matrix is on the edge but okay, but the random effects are what drives the model over the edge. Year was being used for completeness but really doesn’t matter to it could be excluded or used as a fixed effect as you suggest. I’ll also consider the adjustment to dOY. I’ve also started coding a version in JAGS, so we’ll see how that goes (other than slowly). The flexibility of JAGS and ease of coding could help with some other challenges with the data. I’ve been interested in checking out Julia, so this might be my excuse to investigate the MixedModels packages.\n\nThanks,\nDan\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nDaniel Hocking\nDepartment of Environmental Conservation\nNortheast Climate Science Center\nUniversity of Massachusetts\n\nhttp://www.danieljhocking.wordpress.com\ndhocking at umass.edu\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\nBen Bolker <bbolker at ...> writes:\n\n> \n> On 14-04-30 12:03 PM, Daniel Hocking wrote:\n> > I am trying to predict daily water temperature from air temperature\n> > primarily but ideally would include other factors such as\n> > precipitation and landscape characteristics. I have paired air and\n> > water temperatures from 600+ sites over a ~10 year period. Some sites\n> > have daily temperatures for just a couple months and others for\n> > years, and some for a couple months sporadically in different years.\n> > I am trying to use a mixed effects gamm so I can include random\n> > effects of site and year and smooth over day of the year (dOY).\n\n  [snip to make Gmane happy]\n\n> > \n> > \n> > My plan was to try gamm4 and if there was autocorrelation issues to\n> > switch to gamm within mgcv. I know bam is designed for large data but\n> > I’m not sure how I would code the random effects using bam. I know in\n> > general it’s s(dOY, bs = ‘re’) but I’m not sure how to relate this to\n> > site and year. Ideally I would have random slopes for airTemp effects\n> > for each site because of things like ground water inputs that we\n> > don’t measure.\n> > \n> \n>   I can imagine that this problem is caused by the size of the\n> fixed-effect matrix.  A couple of thoughts (none of them practical, I'm\n> afraid):\n> \n>   * I was going to say that it's too bad that we haven't yet managed to\n> implement a sparse model matrix structure;\n>   * then I was going to say that a potential trick/workaround for this\n> (for many-level _categorical_ variables) is to treat the factor as a\n> random effect, then use devFunOnly/modular structure to fix the theta\n> parameter for that variable at a large value, making it a pseudo-fixed\n> effect and getting the benefits of (1) a little bit of regularization\n> and (2) model matrix sparsity -- but doing this within gamm4 would be\n> harder/require more hacking\n>   * then I realized that your fixed-effect model matrix probably isn't\n> sparse, because it looks like it's made up entirely of continuous covariates\n>   * that got me thinking about the fact that some of your continuous\n> covariates only vary at higher levels (i.e. Lat/Long and presumably\n> Forest, Agriculture, elevation, etc.), and wondering whether there would\n> be any way to save space by going back to the underlying model\n> formulation and writing this out in terms of another multiplication of\n> higher-level covariates times an indicator matrix ...\n> \n>   ... all of which is fascinating (to me at least) but none of which\n> actually gets you any farther with your specific problem.  Sorry.\n> \n>   Ben Bolker\n> \n  \n  A couple of further thoughts:\n\n * if it's true that the size of the fixed-effects model matrix\nis your problem, then bam may not help you either (I would guess,\nwithout bothering to check, that it's intended to reduce the size/\nincrease the sparsity of the spline bases, rather than messing\nwith the fixed-effect covariates).  \n * you can check whether the fixed-effects matrix is the problem\nby running the problem as a straight linear mixed model, i.e. with\nlmer either without dOY or with something simple like ns(dOY,10);\nyou could also try Doug Bates's MixedModels package from Julia.\n * If you were willing to make year a fixed effect you would only\nhave a single RE, then you might be able to take advantage of\nsome model structures for increased efficiency (at least until\nyou incorporate interactions of site with various covariates)\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks for the info and the advice. It seems like the fixed effects matrix is on the edge but okay, but the random effects are what drives the model over the edge. Year was being used for completeness",
       "thread_id": "thread-8a2def57b32c",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140505/87548b18/attachment.pl"
+      ]
     },
     {
       "id": "msg-3471b448ed0b",
@@ -435,11 +450,14 @@
       "subject_clean": "Accessing and updating lmer objects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140506/c921212c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140506/c921212c/attachment.pl>",
+      "body_plain": "Hi,\n\nI am trying to follow the lme4 manual (Bates) where objects returned by\nlmer() are accessed in the following way (for example):\n\nfm08 at re at Lambda at x[] <- c(1,0,1)[fm08 at re at Lind]\n\nIf I understand correctly, accessing with \"@\" no longer works, and to\nobtain, eg, Lambda, I'll need to use\n\ngetME(fm08, 'Lambda')\n\ninstead.\n\nBut how do I update an object (not just view it)? In other words, what\ncommand replaces\n\nfm08 at re at Lambda at x[] <- c(1,0,1)[fm08 at re at Lind] ?\n\n\nThank you!\n\nAsaf\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nI am trying to follow the lme4 manual (Bates) where objects returned by\nlmer() are accessed in the following way (for example):\n\nfm08 at re at Lambda at x[] <- c(1,0,1)[fm08 at re at Lind]\n\nIf I ",
       "thread_id": "thread-3471b448ed0b",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140506/c921212c/attachment.pl"
+      ]
     },
     {
       "id": "msg-2105540d5a6d",
@@ -469,11 +487,14 @@
       "subject_clean": "pedigreemm with one observation per individual",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140507/f6dd43db/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140507/f6dd43db/attachment.pl>",
+      "body_plain": "I would like to ask how to exactly apply that fix to lme4 and pedigreemm\npackages.\nAs I understand i need to call edit(lmer) and edit(pedigreem) to be able\nto fix the problem. \nPlease indicate exactly where in the lmer and pedigreemm function codes\nI need to place the solution given below. \n\nHere is a somewhat crude fix; it adds an additional parameter\n(checklevels) to the lmer_finalize and glmer_finalize functions in\nlme4 that turns off the unwanted sanity check. The default is\nchecklevels=TRUE, which maintains the previous behavior. The\npedigreemm function is then changed to set checklevels=FALSE before\ncalling the appropriate finalizing function. I'm running these\nchanges locally and they seem to work fine.\n\nComments or suggestions are welcome, as is consideration of this\nchange or some variant on it for inclusion in the pedigreemm and lme4\npackages.\n\n----- in lmer.R in the lme4 package -----\nlmer_finalize <- function(fr, FL, start, REML, verbose,\nchecklevels=TRUE)\n{\n...\n### This checks that the number of levels in a grouping factor < n\n### Only need to check the first factor because it is the one with\n### the most levels.\n IF (CHECKLEVELS & !(LENGTH(LEVELS(DM$FLIST[[1]])) < LENGTH(Y)))\n...\n\nglmer_finalize <- function(fr, FL, glmFit, start, nAGQ, verbose,\nchecklevels=TRUE)\n{\n...\n### This checks that the number of levels in a grouping factor < n\n### Only need to check the first factor because it is the one with\n### the most levels.\n if (checklevels & !(length(levels(dm$flist[[1]])) < ncol(dm$Zt)))\n...\n\n----- in pedigree.R in the pedigreemm package -----\npedigreemm <-\n function(formula, data, family = NULL, REML = TRUE, pedigree = list(),\n...\n lmf$checklevels <- FALSE;\n ans <- do.call(if (!is.null(lmf$glmFit)) lme4:::glmer_finalize\nelse lme4:::lmer_finalize, lmf)\n...\n\n-- \nAaron Rendahl, Ph.D.\nStatistical Consulting Manager\nSchool of Statistics, University of Minnesota\n\nNEW OFFICE (as of June 2009):\n48C McNeal Hall, St. Paul Campus\n612-625-1062\nwww.stat.umn.edu/consulting\n\n-- \nYours sincerely, \n----------------\nWitold Proskura, M.Sc., Ph.D. student \nWest Pomeranian University of Technology, Szczecin\nThe Laboratory of Molecular Cytogenetics\n6 Dr Judyma Street\nSzczecin\n71-466\nPoland\n \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I would like to ask how to exactly apply that fix to lme4 and pedigreemm\npackages.\nAs I understand i need to call edit(lmer) and edit(pedigreem) to be able\nto fix the problem. \nPlease indicate exactly",
       "thread_id": "thread-fbb466c7536e",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140507/f6dd43db/attachment.pl"
+      ]
     },
     {
       "id": "msg-c9b66c5939a0",
@@ -572,11 +593,14 @@
       "subject_clean": "Zero alteration and mixed models?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140508/e551c52d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140508/e551c52d/attachment.pl>",
+      "body_plain": "Good afternoon;\n\n\n\nA non-R specific question about mixed models, but I am sending this email\nwith the hope that others in this group may be familiar with zero-altered\n(i.e. zero-inflated or hurdle) models in a mixed model context.\n\n\n\nMy current project is focused on understanding changes in wetland biota\nrelated to environmental change, and I’m using zero-altered negative\nbinomial models (implemented in SAS) to evaluate changes in abundance of\ninvertebrates in these habitats.  I have had good success implementing\nmodels that accurately reflect my data structure and that include predictor\nvariables of interest, but I do have a question or two outstanding.\n\n\n\nSpecifically, I am curious about the logit (zero) part of the ZINB mixed\nmodels.  If parameters for this part of the model are estimated imprecisely\nand thereby uninformative, should they be removed from the model?\n\n\n\nPrior to model construction, I plotted the proportion of zeroes in the\ndataset as a function of several variables, and these plots suggested that\nwetland class had an important influence on whether or not excess zeroes\nwere observed.  However, none of the parameter estimates for the wetland\nclass variable are predicted with any precision (nor is the intercept for\nthis logit model) in the model that includes them.\n\n\n\nIf anyone on this list is willing / able to provide any insights or\nsuggestions as to the mathematical interpretation for the inflation\nprobability portion of these models, I would be most grateful.\n\n\n\nThank you in advance.\n\n\n\nkbg\n\n\n\n\n\n-~-~-~-\nKirsty E. B. Gurney, Ph.D.\nAlaska Cooperative Fish and Wildlife Research Unit\nInstitute of Arctic Biology\n216 Irving 1 Building\nUniversity of Alaska Fairbanks\nFairbanks, AK 99775\nT: (907) 474 - 7738\n-~-~-~-\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Good afternoon;\n\n\n\nA non-R specific question about mixed models, but I am sending this email\nwith the hope that others in this group may be familiar with zero-altered\n(i.e. zero-inflated or hurdle) mo",
       "thread_id": "thread-27bc1cb0222f",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140508/e551c52d/attachment.pl"
+      ]
     },
     {
       "id": "msg-756aedbe5ea0",
@@ -640,11 +664,14 @@
       "subject_clean": "Significance of fixed effects. Kinship package (Marc Moragues)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140510/6ffe0c71/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140510/6ffe0c71/attachment.pl>",
+      "body_plain": "Dear R Support Team,\n\nI have tried to compare the log-likelihoods of the two models, with and\nwithout the fixed effect which I want to test significance for. Nevertheless.\nit does not work for lmekin objects. Could you provide me some solution how\nto do that.\nMoreover please indicate some method for multiple comparisons of groups\nwithin particular fixed effect. When I tried to obtain df value for the\nmodel, the result was always NULL.\nThe last question is how to extract variation components and to calculate\nheritability?\n\nMy model:\nm1=lmekin(kgm~s1+rs+w+d+(1|id), data=milk,varlist=list(kmat))\n,where:\ns1 and rs are categorical factors\nw and d are continuous variables\n\n> summary(m1)\n             Length Class  Mode\ncoefficients   2    -none- list\nvar          576    -none- numeric\nvcoef          1    -none- list\nresiduals    424    -none- numeric\nmethod         1    -none- character\nloglik         1    -none- numeric\nsigma          1    -none- numeric\nn              1    -none- numeric\ncall           4    -none- call\nrvar           1    -none- numeric\niter           2    -none- numeric\n> m1\nLinear mixed-effects kinship model fit by maximum likelihood\n  Data: milk\n  Log-likelihood = -3604.361\n  n= 424\n\n\nModel:  kgm ~ s1 + rs + w + d + (1 | id)\nFixed coefficients\n                   Value    Std Error     z       p\n(Intercept) -7920.701534 3023.8600619 -2.62 8.8e-03\ns1CT           76.794638  170.4547258  0.45 6.5e-01\ns1TT          770.554009  428.2979895  1.80 7.2e-02\nrs2003s2     1335.176474 1344.4342656  0.99 3.2e-01\nrs2004s1     1870.773274  861.5747018  2.17 3.0e-02\nrs2004s2     1784.307434 1366.0593031  1.31 1.9e-01\nrs2005s1     2849.522645  926.4414789  3.08 2.1e-03\nrs2005s2     2486.210241  846.6835494  2.94 3.3e-03\nrs2006s1     1756.016058  735.8492313  2.39 1.7e-02\nrs2006s2     2216.941969  769.2182425  2.88 4.0e-03\nrs2007s1     2796.197396  774.6566677  3.61 3.1e-04\nrs2007s2     3124.945897  769.0728464  4.06 4.8e-05\nrs2008s1     2887.273027  759.1794318  3.80 1.4e-04\nrs2008s2     3652.569548  733.7944105  4.98 6.4e-07\nrs2009s1     3767.072605  739.4121617  5.09 3.5e-07\nrs2009s2     4214.124725  743.3092905  5.67 1.4e-08\nrs2010s1     3531.512166  740.0453808  4.77 1.8e-06\nrs2010s2     4032.536562  734.9962561  5.49 4.1e-08\nrs2011s1     4167.056720  746.4233233  5.58 2.4e-08\nrs2011s2     4617.445325  735.2761752  6.28 3.4e-10\nrs2012s1     3291.394032  873.2073594  3.77 1.6e-04\nrs2012s2     3807.023242  768.5026529  4.95 7.3e-07\nw               2.300196    0.6510945  3.53 4.1e-04\nd              41.339062    9.9779674  4.14 3.4e-05\n\nRandom effects\n Group Variable Std Dev     Variance\n id    Vmat.1      1210.785 1465999.783\nResidual error= 864.8264\n> m1$df\nNULL\n\n\n\n\"Hi,\n\nWhen I use the kinship package I fit two models, with and without the\nfixed effect you want to test. The compare the log-likelihoods of the\ntwo models, twice the difference in log-likelihood between models should\nbe apprixmately chi-square with df equal to the difference in number of\nparameters in the two models.\n\nSo using your example:\n\naa<-lmekin(dta1[,j] ~ dta1[,k] + g1:g2:g3:g4,data = dta1, random =\n~1|geno, varlist = list(K), subset = Year==i)\n\naa2<-lmekin(dta1[,j] ~ g1:g2:g3:g4,data = dta1, random = ~1|geno,\nvarlist = list(K), subset = Year==i)\n\nX2<-2*(logLik(aa)-logLik(aa2))\ndf<-aa$df-aa2$df\np<-1-pchisq(X2,df)\n\nwould give you a chi-square value and the associated degrees of freedom.\nThe p-value of the effect can then be calculated using pchisq.\n\n-Pelle\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear R Support Team,\n\nI have tried to compare the log-likelihoods of the two models, with and\nwithout the fixed effect which I want to test significance for. Nevertheless.\nit does not work for lmekin ",
       "thread_id": "thread-753b99cb6086",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140510/6ffe0c71/attachment.pl"
+      ]
     },
     {
       "id": "msg-8da4c6ec287d",
@@ -708,11 +735,14 @@
       "subject_clean": "glmer syntax for model with \"common\" random effects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/216ae8b8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/216ae8b8/attachment.pl>",
+      "body_plain": "I have a quick question about syntax for a glmer call.\n\nI am fitting models with categorial predictors (Norm_XY and Norm_21)\n\ne.g.\n\nmodel <- glmer(Sex ~ 1 + Norm_XY + Norm_21 + (Norm_XY|Pat_ID/Proc_ID)  + \n(Norm_21|Pat_ID/Proc_ID), data =  PGD_21.df,family = binomial)\n\nthis will fit random effects for the intercept and \"slope\" associated with \neach predictor\n\nRandom effects:\n Groups           Name        Variance  Std.Dev. Corr \n Proc_ID.Pat_ID   (Intercept) 0.0371635 0.19278       \n                  Norm_21NN   0.0073152 0.08553  -1.00\n Proc_ID.Pat_ID.1 (Intercept) 0.0007932 0.02816       \n                  Norm_XYNN   0.0390357 0.19757  -0.89\n Pat_ID           (Intercept) 0.0055269 0.07434       \n                  Norm_21NN   0.0129897 0.11397  0.99 \n Pat_ID.1         (Intercept) 0.0781525 0.27956       \n                  Norm_XYNN   0.0579198 0.24067  -1.00\n\nWhat I can't figure (and have failed to find an example of) is the syntax \nfor \"common\" estimates of the random effects (i.e., for both categorical \npredictors).\n\nThe following syntax will generate a common estimate of the random effects \nfor the intercept\n\nmodel <- glmer(Sex ~ 1 + Norm_XY + Norm_21 + ((Norm_XY + \nNorm_21)|Pat_ID/Proc_ID), data =  PGD_21.df,family = binomial))\n\nthe estimates are\n\nRandom effects:\n Groups         Name        Variance Std.Dev. Corr       \n Proc_ID:Pat_ID (Intercept) 0.010129 0.10064             \n                Norm_XYNN   0.035686 0.18891   0.99      \n                Norm_21NN   0.009532 0.09763  -0.99 -1.00\n Pat_ID         (Intercept) 0.101927 0.31926             \n                Norm_XYNN   0.070295 0.26513  -0.98      \n                Norm_21NN   0.019164 0.13843   0.11  0.08\n\nSo how does one specify a model that estimates the random effects for the \n\"common\" or joint categorical predictor of the \"slope\"  (i.e. for Norm_XY \nand Norm_21 combined)?\n\nThis model would produce estimates like this\n\nRandom effects:\n Groups         Name        Variance Std.Dev. Corr       \n Proc_ID:Pat_ID (Intercept) XXX    \n                           Common \"slope\" ZZZ     QQQ\n Pat_ID               (Intercept) YYY            \n                           Common \"slope\" WWW  RRR\n\nIn these applications, the random effects are nuisance parameters, so I \ndon't necessarily need predictor-specific estimates. That said, I do want \nto account for the random effects and their influence on the estimates of \nthe fixed effects (otherwise I would just use GLM)\n\nThe first model above penalizes AIC by 24 (just considering random effects) \nand the last model would penalize it by 12. this is a big difference.\n\nMANY THANKS!\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I have a quick question about syntax for a glmer call.\n\nI am fitting models with categorial predictors (Norm_XY and Norm_21)\n\ne.g.\n\nmodel <- glmer(Sex ~ 1 + Norm_XY + Norm_21 + (Norm_XY|Pat_ID/Proc_ID",
       "thread_id": "thread-1d8466bcf504",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/216ae8b8/attachment.pl"
+      ]
     },
     {
       "id": "msg-91c811559c4a",
@@ -760,11 +790,14 @@
       "subject_clean": "Diagnosing Overdispersion in Mixed Models with Parametric Bootstrapping",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/1e640b67/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/1e640b67/attachment.pl>",
+      "body_plain": "Hi All\n\nI have a question regarding the appropriateness of diagnosing overdispersion in mixed models using parametric bootstrap as provided in the lme4 package. \n\nFollowing Zuur et al (2009), Bolker et al (2009), and nicely summarised on the glmm wiki, one can approximate overdispersion in a model as the ratio of sum of squared residuals to residual degrees of freedom. However this suffers the problem of not knowing exactly how many residual degrees of freedom there are in a mixed model. \n\nMy question is, given the flexibility of the parametric bootstrapping function in lme4, could one not calculate overdispersion by looking at the ratio of the model SS residuals to the mean SS residuals from n parametric bootstrap samples? Does it follow that if the data are well approximated by a Poisson process, this ratio should be roughly 1, whereas if there is extra variability in the data than a Poisson can predict', the ratio should be a fair bit higher? \n\nBelow I have provided code to reproduce an example along the lines of what I have just tried to describe. I have simulated  two sets of data where a Poisson outcome (number of offspring) is affected by body size (with positive slope). In both cases the data are generated from Poisson process, but in the latter case I add some random noise to the linear predictor drawn from a normal distribution with mean 0 and known SD. The code below models the effect of body size on offspring, performs parametric bootstrapping, and then calculates the ratio of observed model SS residuals to mean parametrically bootstrapped SS residuals. As expected, the ‘over dispersed’ data yield a SS ratio of much greater than 1. \n\nIf this approach seems valid, it seems it would be simple to use sim to sim variability to put some CIs on this point estimate. \n\nAny help greatly appreciated\n\nXavier\n\n###############\n# \tData Generation\n###############\n\n#Random Intercept Hyperparams\nintercept.mean<--0.5\nintercept.sd<-0.5\nn.pops<-10\n\n#Draw Random Intercepts\nalpha.pops<-rnorm(n.pops,intercept.mean,intercept.sd)\n\n#Draw Factor Levels for Populations in Model\npopid<-gl(10,50)\n\n#Draw Overdispersion Data\neps<-rnorm(length(popid),0,0.8)\n\n#Slope of Body Size\nbody.slope<-0.05\n\n#BodySize Covariates\nbodysize<-rnorm(length(popid),30,4)\nhist(bodysize)\nlength(bodysize)\n\n#Build Outcome - Poisson Data\noffspring<-rpois(length(popid),exp(alpha.pops[popid] + body.slope*bodysize))\nhist(offspring)\n\n#Build Outcome - Overdispersed Poisson Data\noffspring.od<-rpois(length(popid),exp(alpha.pops[popid] + body.slope*bodysize + eps))\nhist(offspring.od)\n\n\n#######################\n#\tMixed Models\n#######################\n\nlibrary(lme4)\n\n#Non Overdispersed Model\nm1<-glmer(offspring~bodysize+(1|popid),family=poisson)\nsummary(m1)\n\n#Overdispersed Data but No Explicit Overdispersion Modelling\nm1od<-glmer(offspring.od~bodysize+(1|popid),family=poisson)\nsummary(m1od)\n\n\n\n\n########################\n# Overdispersion Assessment  Through Parametric Bootstrapping\n########################\n\n\nlibrary(boot)\n\n#Function for bootstrap - returns sum of squared residuals\nFUN <- function(fit) {\n    #return(fixef(fit))\n    x<-resid(fit,type=\"pearson\")\n    return(sum(x^2))\n}\n\n\n#Function To Calculate Ratio of Model SS to Mean Parametric Bootstrap SS \nod<-function(bootobject){\n\tratio<-bootobject$t0/mean(bootobject[2]$t)\n\treturn(cat(\"Ratio is”,ratio))\n}\n\n#Number of Simulations\nbootsim<-10 #kept small for speed\n\n#Data Without Overdispersion\nboot1<-bootMer(m1,FUN,nsim=bootsim)\nboot1\nod(boot1) #~ 0.9\n\n#Data With Overdispersion but Modelling Ignored\nboot2<-bootMer(m1od,FUN,nsim=bootsim)\nboot2\nod(boot2) # ~ 5\n\n\n\n\n---------------------------------------------------------\nDr Xavier Harrison\nInstitute Research Fellow\nInstitute of Zoology\nZoological Society of London\nRegent's Park\nLondon NW1 4RY\nxav.harrison at gmail.com\n+44 (0) 207 449 6621\nwww.zsl.org/xavierharrison/\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All\n\nI have a question regarding the appropriateness of diagnosing overdispersion in mixed models using parametric bootstrap as provided in the lme4 package. \n\nFollowing Zuur et al (2009), Bolker e",
       "thread_id": "thread-56cc13cfdceb",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140512/1e640b67/attachment.pl"
+      ]
     },
     {
       "id": "msg-c42a8a384357",
@@ -812,11 +845,14 @@
       "subject_clean": "Diagnosing Overdispersion in Mixed Models with Parametric Bootstrapping",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1c9d397e/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1c9d397e/attachment.pl>",
+      "body_plain": "Hi Ben / List\n\nThanks for the reply, and the more compact code. I should probably have provided more context to the post in the first instance. The simulated data do indeed lend themselves well to being analysed with an observation level random effect (OLRE), but that’s because the data are explicitly designed to investigate the pitfalls associated with not explicitly modelling overdispersion when it is present. \n\nI plan to do this for data generated as in the original email (overdispersion added to the linear predictor by OLRE), and also zero-inflated data. My first thought was that it would be good to have an initial section dedicated to how you measure the presence of overdispersion in a mixed model context, and the parametric bootstrapping approach seemed like a nice way to dispense with the need to estimate residual df in a mixed model. I just wanted to make sure it seemed sound before putting it in the kind of place where it might invoke the ire of a reviewer. \n\nRegards\n\nXav\n\n\n\n\n\n\n---------------------------------------------------------\nDr Xavier Harrison\nInstitute Research Fellow\nInstitute of Zoology\nZoological Society of London\nRegent's Park\nLondon NW1 4RY\nxav.harrison at gmail.com\n+44 (0) 207 449 6621\nwww.zsl.org/xavierharrison/\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Ben / List\n\nThanks for the reply, and the more compact code. I should probably have provided more context to the post in the first instance. The simulated data do indeed lend themselves well to bei",
       "thread_id": "thread-63f9d5877317",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1c9d397e/attachment.pl"
+      ]
     },
     {
       "id": "msg-1fa3115e78b7",
@@ -844,11 +880,14 @@
       "subject_clean": "Doubts about models in glmmADMB",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/826eb27c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/826eb27c/attachment.pl>",
+      "body_plain": "> I'm a phd student from The Federal University of Rio de Janeiro\n> Brazil in Marine Biology. First it's a pleasure to to send you a message.\nThe reason\n> for it is that I'm using glmmADMB package for run my analyses and I\n> have some doubts. In a simple way I have the following model:\n> sectors a fixed factor; sites (nested in sectors, random), points\n> (nested in sites, random). So:\n>\n> teste1<- glmmadmb(total ~ sector + (1 | sector/site/point),...\n>\n> # why  did the result gave me the effect of the factor sector alone,\n> also in the random effects...? since the random effect included\n> only the nested factors and must include only the effects of\n> sector/site and sector/site/point\n>\n> # but if I try:\n>\n> teste1<- glmmadmb(total ~ set + (1 | site/point),...\n>\n> # I get that result, but I think that with this path, site/point\n> were not nested within sector\n>\n> # in another ocasion it is correct to code only random effects like:\n> model<- glmmadmb(log(total+1) ~ 1, random= ~ 1 | set/loc/pon,\nfamily=......\n\n> # whatever the case, I thank for all your attention\n>\n>  # Best regards Carlos Barboza\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "> I'm a phd student from The Federal University of Rio de Janeiro\n> Brazil in Marine Biology. First it's a pleasure to to send you a message.\nThe reason\n> for it is that I'm using glmmADMB package for",
       "thread_id": "thread-6f2fab83786e",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/826eb27c/attachment.pl"
+      ]
     },
     {
       "id": "msg-0d67f5d33175",
@@ -878,11 +917,14 @@
       "subject_clean": "Power Analysis for Linear Mixed Model with Covariates",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1a544659/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1a544659/attachment.pl>",
+      "body_plain": "I would like to conduct a power analysis for a linear mixed model with fixed effects for Treatment(two levels) and Time (four time points: pre, mid, post treatment, 3 months post treatment; each three months apart) and correlated random effects for children (intercepts and slopes). I am using the following code in R using the lmer function:\n\nexpdat <- expand.grid(kid = factor(1:500), Time = factor(1:4), Treat = c(\"XTx\", \"BAU\"))\nexpdat$obs <- factor(seq(nrow(expdat)))\nset.seed(101)\nnsim <- 20\nbeta <- c(100, -7, 8, 15, 20, 0, 0, 0)\ntheta <- c(15.000000, 7.500000, 7.500000, 7.500000, 12.990381, 4.330127, 4.330127, \n           12.247449, 3.061862, 11.858541)\nss <- simulate(~Treat*Time + (1+Time | kid), nsim = nsim, family = gaussian, \n      weights = rep(25, nrow(expdat)), newdata = expdat, newparams = \n      list(theta = theta, beta = beta, sigma = 1))\nexpdat$Outcome <- ss[, 1]\nfit1 <- lmer(Outcome ~ Treat*Time + (1+Time | kid), data = expdat)\nI have the following questions:\n\nIn the output I see the variance associated with the random intercepts at each time point and their correlation. However, I cannot find in the output the variance associated with the slopes, and I cannot find information about the correction between the intercepts and the slopes. Where is that information?\nHow does the lmer know that Time has levels and that it should estimate a unique effect for each level of the Time factor instead of a general slope parameter?\nI am attaching the summary statement of the model:\nLinear mixed model fit by REML ['lmerMod']\nFormula: Outcome ~ Treat * Time + (1 + Time | kid)\nData: expdat\n\nREML criterion at convergence: 22951.8\n\nScaled residuals: \nMin       1Q   Median       3Q      Max \n-2.55473 -0.47186 -0.00007  0.47268  2.57786 \n\nRandom effects:\nGroups   Name        Variance Std.Dev. Corr          \n kid      (Intercept) 235.4531 15.3445                \n          Time2       230.9249 15.1962  0.43          \n          Time3       220.6076 14.8529  0.52 0.53     \n          Time4       213.2725 14.6039  0.48 0.51 0.52\n Residual               0.9749  0.9874                \nNumber of obs: 4000, groups: kid, 500\n\nFixed effects:\n                Estimate Std. Error t value\n(Intercept)    100.92006    0.68765  146.76\nTreatBAU        -6.94796    0.06245 -111.26\nTime2            7.39371    0.68246   10.83\nTime3           15.17849    0.66717   22.75\nTime4           19.27623    0.65608   29.38\nTreatBAU:Time2  -0.16052    0.08831   -1.82\nTreatBAU:Time3  -0.05291    0.08831   -0.60\nTreatBAU:Time4  -0.14215    0.08831   -1.61\n\nCorrelation of Fixed Effects:\n            (Intr) TrtBAU Time2  Time3  Time4  TBAU:T2 TBAU:T3\nTreatBAU    -0.045                                            \nTime2        0.422  0.046                                     \nTime3        0.510  0.047  0.528                              \nTime4        0.468  0.048  0.506  0.520                       \nTretBAU:Tm2  0.032 -0.707 -0.065 -0.033 -0.034                \nTretBAU:Tm3  0.032 -0.707 -0.032 -0.066 -0.034  0.500         \nTretBAU:Tm4  0.032 -0.707 -0.032 -0.033 -0.067  0.500   0.500\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nGerasimos Fergadiotis, PhD., CCC-SLP\nAssistant Professor\nSpeech & Hearing Sciences\n724 SW Harrison St., RM 84B\nPortland State University\nPortland, Oregon 97201\nPhone: 503.725.2217\nFax: 503.725.9171\nWeb page: http://aaldresearch.wix.com/aald\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I would like to conduct a power analysis for a linear mixed model with fixed effects for Treatment(two levels) and Time (four time points: pre, mid, post treatment, 3 months post treatment; each three",
       "thread_id": "thread-80160f4d2502",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140513/1a544659/attachment.pl"
+      ]
     },
     {
       "id": "msg-e2e333f8709b",
@@ -1004,11 +1046,14 @@
       "references": [
         "<CAGAvxRkS9yJoubfV3JaWj-O3pwGhUq7dNWzhSupS7xoqsRR3ZQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/3c60dbc7/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/3c60dbc7/attachment.pl>",
+      "body_plain": "Dear Dr. Bolker,\n\nI'm working with spatial factors: sectors are spaced by kilometers, sites\n(randomly sampled within sectors) are spaced by hundred of meters, and\npoints (randomly sampled within sites) are spaced by dozen of meters. I\nhave, 3 sectors, 3 sites within each sector and 3 points within each site,\nreplicated 5 times (n=135). Sectors specify a pollution gradient. So I want\nto investigate the sector's effect (fixed) and the spatial variability\nwithin each sector by two spatial scales, sites and points. Labels were\ncoded like your example in http://glmm.wikidot.com/faq:  (e.g. A1, A2, …,\nB1, B2, …), the only difference is to include points (A11,A12,A13.....A33).\nSo this was my doubt:\n\n>model.1<- glmmadmb(total ~ sector + (1 | sector/site/point),...\n\nor\n\n>model.2<-glmmadmb(total ~ sector + (1 | site/point),...\n\nwhen I want to include all spatial variability????\n\n# since I want to test if a model including only sector or sector and\nwithin spatial variability of each sectors, are better then a null model, I\nspecified this null model with the intercept only:\n\n>null.model<-glmmadmb(total ~ 1 ,..\n\nAgain, I want to thank you very much by all your attention and help me to\nunderstand this fascinating world of glm !!!\n\nvery best wishes\nCarlos\n\n\n2014-05-13 15:11 GMT-03:00 Carlos Barboza <carlosambarboza at gmail.com>:\n\n> > I'm a phd student from The Federal University of Rio de Janeiro\n> > Brazil in Marine Biology. First it's a pleasure to to send you a\n> message. The reason\n> > for it is that I'm using glmmADMB package for run my analyses and I\n> > have some doubts. In a simple way I have the following model:\n> > sectors a fixed factor; sites (nested in sectors, random), points\n> > (nested in sites, random). So:\n> >\n> > teste1<- glmmadmb(total ~ sector + (1 | sector/site/point),...\n> >\n> > # why  did the result gave me the effect of the factor sector alone,\n> > also in the random effects...? since the random effect included\n> > only the nested factors and must include only the effects of\n> > sector/site and sector/site/point\n> >\n> > # but if I try:\n> >\n> > teste1<- glmmadmb(total ~ set + (1 | site/point),...\n> >\n> > # I get that result, but I think that with this path, site/point\n> > were not nested within sector\n> >\n> > # in another ocasion it is correct to code only random effects like:\n> > model<- glmmadmb(log(total+1) ~ 1, random= ~ 1 | set/loc/pon,\n> family=......\n>\n> > # whatever the case, I thank for all your attention\n> >\n> >  # Best regards Carlos Barboza\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Dr. Bolker,\n\nI'm working with spatial factors: sectors are spaced by kilometers, sites\n(randomly sampled within sectors) are spaced by hundred of meters, and\npoints (randomly sampled within sites",
       "thread_id": "thread-6f2fab83786e",
       "thread_depth": 1,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/3c60dbc7/attachment.pl"
+      ]
     },
     {
       "id": "msg-b5bb35cae7e8",
@@ -1020,11 +1065,14 @@
       "subject_clean": "ANOVA type lll ss table for GLMER?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/fafa421f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/fafa421f/attachment.pl>",
+      "body_plain": "Hello group,\n\nThis is my first time posting, so I hope I have explained my needs clearly\nbelow.\n\nI am running a repeated measure analysis with a raw species count data set\n(SpDens). I have run different model types (zeroinfl, glm, glmer) and have\nidentified glmer to have the best fit. The output generated by GLMER breaks\nmy between groups (treat) and within groups (samp) factors down by levels.\nIn addition to this, I would like to look at the effect of treat and samp\noverall, something similar to an ANOVA table (Type lll SS). When I use\nAnova(object) I receive an ANOVA table with an F val and no P-vals. I would\nprefer to stick with the z-stat and p-vals. I have seen this reported in\nother papers, so I know it can be done...just can't figure out how to do it!\n\nComponents of the model:\nsamp: 23 sampling dates is the repeated measure (within groups)\ntreat: 4 levels (between groups)\nTRANSECT: experimental unit (subject), 4/treat and data collected from all\n16 every sampling date\n\nWhen I run this code:\n\nRM <- read.csv(\"C:/Users/heatbell/Desktop/Walthour-Moss/STATS/CH\n1/Final/R/RM.csv\")\n\nView(RM)\n\nrm <- subset(RM, SAMPLE >= 2)\n\n\n\nrm<- within(rm, {\n\n  samp<-factor(SAMPLE)\n\n  yr<-factor(YEAR)\n\n  treat<-factor(TREAT)\n\n})\n\nsummary(rm)\n\n\nsummary(spden<-glmer(SpDens~(treat*samp)-1+(1|TRANSECT),family=poisson,\ndata=rm, nAGQ = 9))\n\nThank you for the help!\nHeather\n-- \nHeather M. C. Moylett\nMSc Candidate\nEntomology Department\nNorth Carolina State University\nRaleigh, NC 27609\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello group,\n\nThis is my first time posting, so I hope I have explained my needs clearly\nbelow.\n\nI am running a repeated measure analysis with a raw species count data set\n(SpDens). I have run differe",
       "thread_id": "thread-b5bb35cae7e8",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/fafa421f/attachment.pl"
+      ]
     },
     {
       "id": "msg-206589a18bd2",
@@ -1153,11 +1201,14 @@
         "<CAGAvxRmwv8_y5994s4DFTkz3iqCOso-_FR1jP3Rve1wigbpJiQ@mail.gmail.com>",
         "<5373CE5F.9090605@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/769d9713/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/769d9713/attachment.pl>",
+      "body_plain": "Again...thank you very much for all !!!\n\n\n2014-05-14 17:13 GMT-03:00 Ben Bolker <bbolker at gmail.com>:\n\n> On 14-05-14 08:56 AM, Carlos Barboza wrote:\n> > Dear Dr. Bolker,\n>\n>   (note this is sent to the mixed models list, not just to me ...)\n>\n> > I'm working with spatial factors: sectors are spaced by kilometers, sites\n> > (randomly sampled within sectors) are spaced by hundred of meters, and\n> > points (randomly sampled within sites) are spaced by dozen of meters. I\n> > have, 3 sectors, 3 sites within each sector and 3 points within each\n> site,\n> > replicated 5 times (n=135). Sectors specify a pollution gradient. So I\n> want\n> > to investigate the sector's effect (fixed) and the spatial variability\n> > within each sector by two spatial scales, sites and points. Labels were\n> > coded like your example in http://glmm.wikidot.com/faq:  (e.g. A1, A2,\n> â€¦,\n> > B1, B2, â€¦), the only difference is to include points\n> (A11,A12,A13.....A33).\n> > So this was my doubt:\n> >\n> >> model.1<- glmmadmb(total ~ sector + (1 | sector/site/point),...\n> >\n> > or\n> >\n> >> model.2<-glmmadmb(total ~ sector + (1 | site/point),...\n> >\n> > when I want to include all spatial variability????\n>\n>   Given what you have said, the second specification is correct.  The\n> first includes sector, redundantly, both as a fixed effect and as a\n> grouping variable for variation in intercepts.\n>\n> >\n> > # since I want to test if a model including only sector or sector and\n> > within spatial variability of each sectors, are better then a null\n> model, I\n> > specified this null model with the intercept only:\n> >\n> >> null.model<-glmmadmb(total ~ 1 ,..\n>\n>   Sounds reasonable, although keep in mind the issues with using\n> likelihood ratio tests to test null hypotheses of zero variance ...\n>\n>   Ben Bolker\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Again...thank you very much for all !!!\n\n\n2014-05-14 17:13 GMT-03:00 Ben Bolker <bbolker at gmail.com>:\n\n> On 14-05-14 08:56 AM, Carlos Barboza wrote:\n> > Dear Dr. Bolker,\n>\n>   (note this is sent to ",
       "thread_id": "thread-6f2fab83786e",
       "thread_depth": 3,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140514/769d9713/attachment.pl"
+      ]
     },
     {
       "id": "msg-c99f897c0555",
@@ -1321,11 +1372,14 @@
       "subject_clean": "\"parm\" parameter in lme4::confint.merMod",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140518/0d6ee97f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140518/0d6ee97f/attachment.pl>",
+      "body_plain": "Hi all,\n\nAccording to the documentation, in confint.merMod() you can use the \"parm\" parameter to get confidence intervals for only a specified subset of parameters by indicating the integer positions of the desired parameters. But how is one supposed to know which integer positions correspond with which parameters? I poked around a little but found nothing in the methods or slots of the merMod object that indicates this, and nothing in the documentation detailing this. Have I missed something? I guess you can call the function leaving that argument at its default, and the order of the parameters in that output will correspond with the integer positions, but this approach would seem to defeat the point of being able to specify particular subsets of parameters...\n\nJake \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nAccording to the documentation, in confint.merMod() you can use the \"parm\" parameter to get confidence intervals for only a specified subset of parameters by indicating the integer positions ",
       "thread_id": "thread-66f7abd2d33d",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140518/0d6ee97f/attachment.pl"
+      ]
     },
     {
       "id": "msg-156532f2e30b",
@@ -1374,11 +1428,14 @@
       "subject_clean": "Course: Introduction to GAM and GAMM with R",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/3eb0abf5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/3eb0abf5/attachment.pl>",
+      "body_plain": "We would like to announce the following stats course:\n\nCourse: Introduction to Generalized Additive Models and Generalized \nAdditive Mixed Effects Models with R\nWhere: Deakin University, Melbourne, Australia\nWhen: 25 - 29 August, 2014\n\nURL Flyer: http://www.highstat.com/Courses/Flyer2014_08Deakin.pdf\nFurther info: http://www.highstat.com/statscourse.htm\n\n\nKind regards,\n\nAlain\n\n\n-- \nDr. Alain F. Zuur\n\nFirst author of:\n1. Beginner's Guide to GAMM with R (2014).\n2. Beginner's Guide to GLM and GLMM with R (2013).\n3. Beginner's Guide to GAM with R (2012).\n4. Zero Inflated Models and GLMM with R (2012).\n5. A Beginner's Guide to R (2009).\n6. Mixed effects models and extensions in ecology with R (2009).\n7. Analysing Ecological Data (2007).\n\nHighland Statistics Ltd.\n9 St Clair Wynd\nUK - AB41 6DZ Newburgh\nTel:   0044 1358 788177\nEmail: highstat at highstat.com\nURL:   www.highstat.com\nblog: http://www.highstat.com/wordpress/\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "We would like to announce the following stats course:\n\nCourse: Introduction to Generalized Additive Models and Generalized \nAdditive Mixed Effects Models with R\nWhere: Deakin University, Melbourne, Au",
       "thread_id": "thread-42ef8418764f",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/3eb0abf5/attachment.pl"
+      ]
     },
     {
       "id": "msg-2f4b665eb293",
@@ -1467,11 +1524,14 @@
         "<53789ACC.90208@psychologie.uni-freiburg.de>",
         "<5378C1CC.1090408@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/651b1348/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/651b1348/attachment.pl>",
+      "body_plain": "Thanks Ben, it looks like a slight tweaking of your command should work:\n\nc(names(getME(sig0,c(\"theta\"))), names(fixef(sig0)))\n\nAlthough (not sure if this is the right thread for this but here goes) I'm having trouble verifying that the order matches because, from what I can tell, confint.merMod() does not appear to work for profile confidence intervals for models that include covariance parameters between random terms. I always get an error about \"Starting values violate bounds\" and additionally some warnings about non-monotonic profiles. If I fix the covariance at 0 then confint.merMod() works fine for profile confidence intervals. I could send more info if you'd like, but it sounds like maybe you are aware of this already.\nJake\n\n> Date: Sun, 18 May 2014 10:21:00 -0400\n> From: bbolker at gmail.com\n> To: henrik.singmann at psychologie.uni-freiburg.de; r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] \"parm\" parameter in lme4::confint.merMod\n> \n> On 14-05-18 07:34 AM, Henrik Singmann wrote:\n> > Hi Jake,\n> > \n> > I think fixef() or names(fixef()) gives you what you want:\n> \n>   I don't think it gets you everything.  Your solution works\n> in the method=\"Wald\" case because method=\"Wald\" only returns\n> the fixed effects, so one only has to keep track of those\n> positions.  method=\"profile\" and \"boot\" include both\n> variance-covariance and fixed effect parameters, in that order.\n> Some possibilities are\n> \n> names(unlist(getME(m1,c(\"theta\",\"fixef\"))))\n> ## this gives names of 'theta' parameters (i.e. Cholesky factors)\n> ## rather than standard deviations/correlations, but I believe\n> ## the order is the same\n> \n> ## theta parameters only (hidden function)\n> lme4:::tnames(m1)\n> \n> require(lme4)\n> data(md_16.4, package = \"afex\")\n> m1 <-  lmer(induct ~ cond*cog + (cog|room:cond), md_16.4)\n> \n> ## I actually had some problems with profiling this example --\n> ## not quite sure why.  Will have to look into it.\n> pp <- profile(m1)\n> \n> \n> confint(m1,parm=3)\n> > fixef(m1)\n> > ## (Intercept)       cond1         cog   cond1:cog\n> > ## -6.14153043 10.32001485  0.66722061 -0.02520666\n> > \n> > confint(m1, parm = c(3,2), method=\"Wald\")\n> > ##             2.5 %    97.5 %\n> > ## cog     0.2498764  1.084565\n> > ## cond1 -18.4845630 39.124593\n> > \n> > I hope I didn't misunderstand your question,\n> > Henrik\n> > \n> > \n> > Am 18.05.2014 08:03, schrieb Jake Westfall:\n> >> Hi all,\n> >>\n> >> According to the documentation, in confint.merMod() you can use the\n> >> \"parm\" parameter to get confidence intervals for only a specified\n> >> subset of parameters by indicating the integer positions of the\n> >> desired parameters. But how is one supposed to know which integer\n> >> positions correspond with which parameters? I poked around a little\n> >> but found nothing in the methods or slots of the merMod object that\n> >> indicates this, and nothing in the documentation detailing this. Have\n> >> I missed something? I guess you can call the function leaving that\n> >> argument at its default, and the order of the parameters in that\n> >> output will correspond with the integer positions, but this approach\n> >> would seem to defeat the point of being able to specify particular\n> >> subsets of parameters...\n> >>\n> >> Jake                        \n> >>     [[alternative HTML version deleted]]\n> >>\n> >\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Ben, it looks like a slight tweaking of your command should work:\n\nc(names(getME(sig0,c(\"theta\"))), names(fixef(sig0)))\n\nAlthough (not sure if this is the right thread for this but here goes) I",
       "thread_id": "thread-66f7abd2d33d",
       "thread_depth": 3,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/651b1348/attachment.pl"
+      ]
     },
     {
       "id": "msg-a66d68b820ef",
@@ -1510,11 +1570,14 @@
         "<BAY172-W21564705A9B3C21EC68FE9CB320@phx.gbl>",
         "<537A4D5F.70802@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/8a8eeab8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/8a8eeab8/attachment.pl>",
+      "body_plain": "Will do.\n\nJake\n\n> Date: Mon, 19 May 2014 14:28:47 -0400\n> From: bbolker at gmail.com\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] \"parm\" parameter in lme4::confint.merMod\n> \n> On 14-05-19 02:24 PM, Jake Westfall wrote:\n> > Thanks Ben, it looks like a slight tweaking of your command should\n> > work:\n> > \n> > c(names(getME(sig0,c(\"theta\"))), names(fixef(sig0)))\n> > \n> > Although (not sure if this is the right thread for this but here\n> > goes) I'm having trouble verifying that the order matches because,\n> > from what I can tell, confint.merMod() does not appear to work for\n> > profile confidence intervals for models that include covariance\n> > parameters between random terms. I always get an error about\n> > \"Starting values violate bounds\" and additionally some warnings about\n> > non-monotonic profiles. If I fix the covariance at 0 then\n> > confint.merMod() works fine for profile confidence intervals. I could\n> > send more info if you'd like, but it sounds like maybe you are aware\n> > of this already. Jake\n> \n> \n>   I'm vaguely aware of it, but it would be great if you were able to add\n> an issue (with simple reproducible example) at\n> https://github.com/lme4/lme4/issues ...\n> \n>   cheers\n>     Ben\n> \n> \n> >> Date: Sun, 18 May 2014 10:21:00 -0400 From: bbolker at gmail.com To:\n> >> henrik.singmann at psychologie.uni-freiburg.de;\n> >> r-sig-mixed-models at r-project.org Subject: Re: [R-sig-ME] \"parm\"\n> >> parameter in lme4::confint.merMod\n> >> \n> >> On 14-05-18 07:34 AM, Henrik Singmann wrote:\n> >>> Hi Jake,\n> >>> \n> >>> I think fixef() or names(fixef()) gives you what you want:\n> >> \n> >> I don't think it gets you everything.  Your solution works in the\n> >> method=\"Wald\" case because method=\"Wald\" only returns the fixed\n> >> effects, so one only has to keep track of those positions.\n> >> method=\"profile\" and \"boot\" include both variance-covariance and\n> >> fixed effect parameters, in that order. Some possibilities are\n> >> \n> >> names(unlist(getME(m1,c(\"theta\",\"fixef\")))) ## this gives names of\n> >> 'theta' parameters (i.e. Cholesky factors) ## rather than standard\n> >> deviations/correlations, but I believe ## the order is the same\n> >> \n> >> ## theta parameters only (hidden function) lme4:::tnames(m1)\n> >> \n> >> require(lme4) data(md_16.4, package = \"afex\") m1 <-  lmer(induct ~\n> >> cond*cog + (cog|room:cond), md_16.4)\n> >> \n> >> ## I actually had some problems with profiling this example -- ##\n> >> not quite sure why.  Will have to look into it. pp <- profile(m1)\n> >> \n> >> \n> >> confint(m1,parm=3)\n> >>> fixef(m1) ## (Intercept)       cond1         cog   cond1:cog ##\n> >>> -6.14153043 10.32001485  0.66722061 -0.02520666\n> >>> \n> >>> confint(m1, parm = c(3,2), method=\"Wald\") ##             2.5 %\n> >>> 97.5 % ## cog     0.2498764  1.084565 ## cond1 -18.4845630\n> >>> 39.124593\n> >>> \n> >>> I hope I didn't misunderstand your question, Henrik\n> >>> \n> >>> \n> >>> Am 18.05.2014 08:03, schrieb Jake Westfall:\n> >>>> Hi all,\n> >>>> \n> >>>> According to the documentation, in confint.merMod() you can use\n> >>>> the \"parm\" parameter to get confidence intervals for only a\n> >>>> specified subset of parameters by indicating the integer\n> >>>> positions of the desired parameters. But how is one supposed to\n> >>>> know which integer positions correspond with which parameters?\n> >>>> I poked around a little but found nothing in the methods or\n> >>>> slots of the merMod object that indicates this, and nothing in\n> >>>> the documentation detailing this. Have I missed something? I\n> >>>> guess you can call the function leaving that argument at its\n> >>>> default, and the order of the parameters in that output will\n> >>>> correspond with the integer positions, but this approach would\n> >>>> seem to defeat the point of being able to specify particular \n> >>>> subsets of parameters...\n> >>>> \n> >>>> Jake [[alternative HTML version deleted]]\n> >>>> \n> >>> \n> >> \n> >> _______________________________________________ \n> >> R-sig-mixed-models at r-project.org mailing list \n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >  [[alternative HTML version deleted]]\n> > \n> > _______________________________________________ \n> > R-sig-mixed-models at r-project.org mailing list \n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Will do.\n\nJake\n\n> Date: Mon, 19 May 2014 14:28:47 -0400\n> From: bbolker at gmail.com\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] \"parm\" parameter in lme4::confint.merMod\n> \n> O",
       "thread_id": "thread-66f7abd2d33d",
       "thread_depth": 5,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140519/8a8eeab8/attachment.pl"
+      ]
     },
     {
       "id": "msg-11f835e95a82",
@@ -1573,11 +1636,14 @@
       "subject_clean": "Variance of predictions from lme4 models at existing levels?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/6ad810a8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/6ad810a8/attachment.pl>",
+      "body_plain": "Dear contributors,\n\nI know that this has been widely discussed, but even after having read many\ndiscussions on this matter, I'm still not sure if I'm understanding\nproperly.\n\nSo I have a dataset of studies reporting prevalence in several settings,\nhere is an exemple:\n\ndata<-data.frame(id_study=c(\"UK1\",\"UK2\",\"UK3\",\"FRA1\",\"FRA2\",\"BEL1\",\"GER1\",\"GER2\",\"GER3\"),\n             country=c(\"UK\",\"UK\",\"UK\",\"FRANCE\",\"FRANCE\",\"BELGIUM\",\"GERMANY\",\"GERMANY\",\"GERMANY\"),\n             n_events=c(130,49,18,10,50,6,34,20,51),\n             n_total=c(3041,580,252,480,887,256,400,206,300),\n             study_median_age=c(25,50,58,30,42,26,27,28,36),\n             pop_type=c(2,0,1,0,0,0,1,0,2))\ndata$prevalence<-data$n_events/data$n_total\n\nSince the prevalence is linked to the sample age and type, the objective is\nto estimate the predicted prevalence for each study for a sample with\nstandardized median age (30) and type (\"A\"). Then these predictions will be\npooled by country using a Dersimonian & Laird method.\n\nThis is the model I chose:\n\nmod<-glmer(cbind(n_events, n_total-n_events) ~ study_median_age + pop_type +\n    (1|country) + (1|id_study), data=data, family=\"binomial\"(link=logit))\n\nI tried to adapt the method from the r-sig-mixed-models\nFAQ<http://glmm.wikidot.com/faq> in\norder to get the variance of the estimate, which will be used in the\nweighting of the Dersimonian & Laird meta-analysis:\n\nnewdat=data.frame(id_study=data$id_study,\n                  country=data$country,\n                  study_median_age=30,\n                  pop_type=\"A\",\n                  n_events=0,\n                  n_total=data$n_total)\n\npred<-predict(mod,newdat[,1:4],type=\"link\",REform=~(1|country) + (1|id_study))\nmm <- model.matrix(terms(mod),newdat)\nnewdat$distance <- mm %*% fixef(mod)\n\npvar1 <- diag(mm %*% tcrossprod(vcov(mod),mm))\ntvar1 <- pvar1 + VarCorr(mod)$country[1] + VarCorr(mod)$id_study[1]\n\nIf I understood correctly, tvar1 is an estimation of the variance of the\nprediction, taking into account the uncertainty on the two random\nintercepts. I can consider tvar1 as the variance of the prediction for the\nfurther meta-analysis, and also for calculation of the confidence interval\nof the prediction.\n\ndata$prediction<-mod at resp$family$linkinv(pred)\ndata$predictionSE2<-tvar1\ndata$predictionCI<-paste0(\"[\",round(mod at resp$family$linkinv(pred-1.96*tvar1),4),\";\",\n                          round(mod at resp$family$linkinv(pred+1.96*tvar1),4),\"]\")\ndata\n\nSo my questions are:\n\n   - Did I properly adapt the method for the calculation of the variance to\n   this model with 2 random intercepts?\n   - Can I use this variance in the meta-analysis?\n\nThank you!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear contributors,\n\nI know that this has been widely discussed, but even after having read many\ndiscussions on this matter, I'm still not sure if I'm understanding\nproperly.\n\nSo I have a dataset of st",
       "thread_id": "thread-53adb5689c15",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/6ad810a8/attachment.pl"
+      ]
     },
     {
       "id": "msg-4c376a13e564",
@@ -1589,11 +1655,14 @@
       "subject_clean": "transformation of BLUPs to response scale",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/4bed8e56/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/4bed8e56/attachment.pl>",
+      "body_plain": "Hi\nI'd like to present a graph of conditional modes (BLUPs) and an estimate of their error in a paper. I can see this as being straightforward in a situation where there are no transformations in the model:\n\nfm1 <- lmer (distance ~age * Sex + (age | Subject), Orthodont)\n##extract Subject conditional modes\n(subject.fm1 <- ranef(fm1)$Subject[, 1])\n##extract standard errors\n(subject.se.fm1 <- sqrt(attr(ranef(fm1, postVar = TRUE)[[\"Subject\"]], \"postVar\")[1, 1, ]))\n##or displayed as a dotplot with 95% prediction intervals\ndotplot(ranef(fm2,condVar=TRUE))\n\n##My data are a time series, so I use the following function to produce a plot of conditional modes with their SEs (not really appropriate with this dataset, but you get the idea)\nCoefPlot <- function(xaxis, coefs, ses, col.line = \"black\",\n...) {\nrequire(plotrix)\nplotCI(xaxis, coefs, ses, ...)\nlines(xaxis, coefs, lty = 2, col = col.line)\n}\n##27 Subjects\nCoefPlot(1:27, subject.fm1, subject.se.fm1,\nxlab = \"subject\", ylab = \"distance (mm)\", las = 1)\n\nWhat happens if the response and/or predictor variables are transformed as in fm2 below?\n\nfm2 <- lmer (log(distance) ~ log(age) * Sex + (log(age) | Subject),Orthodont)\n##extract Subject conditional modes\n(subject.fm2 <- ranef(fm2)$Subject[, 1])\n##extract standard errors\n(subject.se.fm2 <- sqrt(attr(ranef(fm2, postVar = TRUE)[[\"Subject\"]], \"postVar\")[1, 1, ]))\n\nIf I were to display fixed effects (log(Days)) from fm2 on the scale of the response, I'd back-transform fitted values using the appropriate link and inverse functions. E.g. using Effect from the effects package\nlibrary(effects)\nplot(Effect(c(\"age\",\"Sex\"), fm2, transformation=list(link=log, inverse=exp)), ylab=\"distance (mm)\")\n\nGiven the random Subject effects are relative to the overall model intercept, does it make sense to do something similar to the Subject random effects or should they be left as is? If yes, how, e.g. add them to the overall intercept then transform? Also, what do I do with the SEs to account for bias in back-transformation? I just think in my case it would be more consistent for the reader to present both the conditional mode and fixed effects graphs on the same y axis scale (preferably that of the response variable).\n\nCheers\n\nJohn\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi\nI'd like to present a graph of conditional modes (BLUPs) and an estimate of their error in a paper. I can see this as being straightforward in a situation where there are no transformations in the ",
       "thread_id": "thread-4c376a13e564",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/4bed8e56/attachment.pl"
+      ]
     },
     {
       "id": "msg-39917aa9703d",
@@ -1623,11 +1692,14 @@
       "subject_clean": "Assessing Normality for Mixed Models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/3945d220/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/3945d220/attachment.pl>",
+      "body_plain": "Hi All,\n\nAfter doing some extensive googling, searching for ways to assess normality\nfor linear mixed models, I can honestly say my head is swimming in\ndifferent proposed techniques that may or may not be valid.  Also, when\nreading the literature, I find that few studies that use linear mixed\nmodels and random regression actually explicitly address how they assess\nnormality.  What are the rules with normality with mixed models (if there\nare any) and what are your techniques to assess normality?  Any input that\nyou can provide would be great and hopefully we help to settle my mind on\nthis issue.\n\nThank you,\nJacob\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All,\n\nAfter doing some extensive googling, searching for ways to assess normality\nfor linear mixed models, I can honestly say my head is swimming in\ndifferent proposed techniques that may or may no",
       "thread_id": "thread-ffd40ae29556",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140520/3945d220/attachment.pl"
+      ]
     },
     {
       "id": "msg-bcf1666e0ea5",
@@ -1751,11 +1823,14 @@
         "<03e619c4c74e0de8920d8cea40a5177a@mail.gmail.com>",
         "<e6a70a5767464a70a2497460c3b6eb5e@BY2PR09MB030.namprd09.prod.outlook.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/5af342a7/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/5af342a7/attachment.pl>",
+      "body_plain": "Hi all,\n\nThank you for the answers so far.  I have been looking at\nqqnorm(residuals(model)) and notice that there isn't a linear line, but\nrather some skewing at both ends.  When I try various transformations (log,\nsqrt, boxcox, etc...), I don't see much of an improvement in this plot.\nI'm just wondering if these models are robust to such deviations or not.  I\nwas also looking for some methods in various R packages that quantitatively\nassess these assumptions.\n\nIf it helps with answers, I am running the following models over 59 males\nwith roughly 15 observations per male for a total of 872 observations:\n\nmodel1<-lmer(Response~Predictor+(1|Male)) or\nmodel2<-lmer(Response~Predictor+(Predictor|Male)) or\nmodel3<-lmer(Response~Predictor+(1|Male)+(Predictor+0|Male))\n\nwhere my response and predictor values are continuous.  I have run models\nwhere I have within individual mean centered my predictor, along with using\nthe mean value of the predictor for each male for each observation of each\nmale to separate the within and between subject effects as per van de Pol\nand Wright (2009), so my model looks like\n\nmodel4<-lmer(Response~Predictor(within)+Predictor(between)+(1|Male))\n\nThe Predictor(between) is never significant, so I end up running\n\nmodel5<-lmer(Response~Predictor+Predictor(between)+(1|Male)\n\nto verify that there are no between subject effects.\n\nSince I never see any between subject effects, I end up running 'model1'\nfrom above, where the predictor variable is the actual unadjusted observed\nvalues, which now represents only the within subject effect as tested in\n'model4' and 'model5'.\n\nOnce I have my fixed effects structure set, I have set the random effects\nstructure using LRT fitted by ML to test the significant of random slopes\nand correlation between slopes and intercepts.\n\nI now am at the point where I just need to make sure I am meeting model\nassumptions, which is the subject of my initial email.  I hope this extra\ndetail sheds some light on my particular issue and helps with providing\nadvice.\n\nJacob\n\n\nOn Wed, May 21, 2014 at 10:00 AM, Farrar, David <Farrar.David at epa.gov>wrote:\n\n>\n> There could be, of course, normality or otherwise at multiple levels of\n> variation.\n> Also I would think the importance of normality (versus perhaps just not\n> too heavy-tailed?) could depend on the inferences one wants to make.\n> David\n>\n>\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org [mailto:\n> r-sig-mixed-models-bounces at r-project.org] On Behalf Of Chris Howden\n> Sent: Tuesday, May 20, 2014 10:13 PM\n> To: AvianResearchDivision; r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Assessing Normality for Mixed Models\n>\n> They may not be addressing normality since we don’t always expect the\n> residuals to be normal e.g. if we are doing a GLMM with a Poisson or\n> binomial error distribution.\n>\n> Chris Howden B.Sc. (Hons) GStat.\n> Founding Partner\n> Evidence Based Strategic Development, IP Commercialisation and Innovation,\n> Data Analysis, Modelling and Training\n> (mobile) 0410 689 945\n> (skype) chris.howden\n> chris at trickysolutions.com.au\n>\n>\n>\n>\n> Disclaimer: The information in this email and any attachments to it are\n> confidential and may contain legally privileged information. If you are not\n> the named or intended recipient, please delete this communication and\n> contact us immediately. Please note you are not authorised to copy, use or\n> disclose this communication or any attachments without our consent.\n> Although this email has been checked by anti-virus software, there is a\n> risk that email messages may be corrupted or infected by viruses or other\n> interferences. No responsibility is accepted for such interference. Unless\n> expressly stated, the views of the writer are not those of the company.\n> Tricky Solutions always does our best to provide accurate forecasts and\n> analyses based on the data supplied, however it is possible that some\n> important predictors were not included in the data sent to us. Information\n> provided by us should not be solely relied upon when making decisions and\n> clients should use their own judgement.\n>\n>\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org\n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of\n> AvianResearchDivision\n> Sent: Wednesday, 21 May 2014 4:59 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] Assessing Normality for Mixed Models\n>\n> Hi All,\n>\n> After doing some extensive googling, searching for ways to assess\n> normality for linear mixed models, I can honestly say my head is swimming\n> in different proposed techniques that may or may not be valid.  Also, when\n> reading the literature, I find that few studies that use linear mixed\n> models and random regression actually explicitly address how they assess\n> normality.  What are the rules with normality with mixed models (if there\n> are any) and what are your techniques to assess normality?  Any input that\n> you can provide would be great and hopefully we help to settle my mind on\n> this issue.\n>\n> Thank you,\n> Jacob\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi all,\n\nThank you for the answers so far.  I have been looking at\nqqnorm(residuals(model)) and notice that there isn't a linear line, but\nrather some skewing at both ends.  When I try various transfo",
       "thread_id": "thread-ffd40ae29556",
       "thread_depth": 3,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/5af342a7/attachment.pl"
+      ]
     },
     {
       "id": "msg-57311a6ee395",
@@ -1767,11 +1842,14 @@
       "subject_clean": "] Zero inflated mixed model with constraint (lasso or other)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/4cc8ad94/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/4cc8ad94/attachment.pl>",
+      "body_plain": "As suggested by Ben :\nI have recently used the glmmADMB package with the aim to realize a zero\ninflated mixed model analyze.\nI have a lot of variable and I wish to select some of them. The function\nstep in glmmADMB don't work for now.\nI have previously tried glmmLasso and lmmLasso but, as far I know, these\npackages are not ready for zero inflated distribution.\nHave you some clues about a constraint solution?\n\nCheers\n\nGuillaume\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "As suggested by Ben :\nI have recently used the glmmADMB package with the aim to realize a zero\ninflated mixed model analyze.\nI have a lot of variable and I wish to select some of them. The function\nst",
       "thread_id": "thread-57311a6ee395",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140521/4cc8ad94/attachment.pl"
+      ]
     },
     {
       "id": "msg-92cf7c434374",
@@ -1883,11 +1961,14 @@
       "subject_clean": "Zero inflated mixed model with constraint (lasso or other)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/f22222ca/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/f22222ca/attachment.pl>",
+      "body_plain": "As suggested by Ben :\nI have recently used the glmmADMB package with the aim to realize a zero\ninflated mixed model analyze.\nI have a lot of variable and I wish to select some of them. The function\nstep in glmmADMB don't work for now.\nI have previously tried glmmLasso and lmmLasso but, as far I know, these\npackages are not ready for zero inflated distribution.\nHave you some clues about a constraint solution?\n\nCheers\n\nGuillaume\n\nPS: the first mail wasn't send\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "As suggested by Ben :\nI have recently used the glmmADMB package with the aim to realize a zero\ninflated mixed model analyze.\nI have a lot of variable and I wish to select some of them. The function\nst",
       "thread_id": "thread-f9652ad29351",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/f22222ca/attachment.pl"
+      ]
     },
     {
       "id": "msg-9dc4fb8795b2",
@@ -1899,11 +1980,14 @@
       "subject_clean": "Getting each bootstrapped data frame from bootMer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/413e70cb/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/413e70cb/attachment.pl>",
+      "body_plain": "I am trying to get bootstrapped predictions from a logistic glmer (lme4) object and compare them to the “observed” independent variable from each bootstrap iteration. I can use bootMer to get the bootstrapped predictions:\n\nbb <- bootMer(glmm.M35, FUN=function(x)predict(x,re.form=NA,newdata=df.fit,type=\"response\"), nsim=10) # test with just 10 draws\n\nbut it doesn’t appear that bootMer saves the replicate datasets. Can anyone help me modify the bootMer function to output the bootstrap data frames or at least the independent variable (y) from each? Also any advice on handling the occasions when an iteration fails to converge in bootMer would be appreciated.\n\nThanks,\nDan\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nDaniel Hocking\nDepartment of Environmental Conservation\nNortheast Climate Science Center\nUniversity of Massachusetts\n\nhttp://www.danieljhocking.wordpress.com\ndhocking at umass.edu<mailto:dhocking at umass.edu>\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am trying to get bootstrapped predictions from a logistic glmer (lme4) object and compare them to the “observed” independent variable from each bootstrap iteration. I can use bootMer to get the boot",
       "thread_id": "thread-9dc4fb8795b2",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/413e70cb/attachment.pl"
+      ]
     },
     {
       "id": "msg-5ac1884df637",
@@ -1915,11 +1999,14 @@
       "subject_clean": "Previous messageNext messageBack to messages Post-hoc tests on linear mixed model give mixed results.‏",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/a47d373f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/a47d373f/attachment.pl>",
+      "body_plain": "Dear all,\n\nI am quite new to R so apologies if I fail to ask \nproperly. I have done a test comparing bat species richness in five \nhabitats as assessed by three methods. I used a linear mixed model in \nlme4 and got habitat, method and the interaction between the two as \nsignificant, with the random effects explaining little variation.\n\nI then ran Tukey's post hoc tests as pairwise comparisons in three ways:\n\nFirstly in lsmeans:\nlsmeans(LMM.richness, pairwise~Habitat*Method, adjust=\"tukey\")\n\nThen in ‘agricolae’:\n\ntx <- with(diversity, interaction(Method, Habitat))\namod <- aov(Richness ~ tx, data=diversity)\nlibrary(agricolae)\ninteraction <-HSD.test(amod, \"tx\", group=TRUE)\ninteraction\n\nThen in ghlt 'multcomp':\nsummary(glht(LMM.richness, linfct=mcp(Habitat=\"Tukey\")))\n\nsummary(glht(LMM.richness, linfct=mcp(Method=\"Tukey\")))\n\ntuk <- glht(amod, linfct = mcp(tx = \"Tukey\"))\nsummary(tuk)          # standard display\ntuk.cld <- cld(tuk)   # letter-based display\nopar <- par(mai=c(1,1,1.5,1))\npar(mfrow=c(1,1))\nplot(tuk.cld)\npar(opar)\n\nI\n got somewhat different levels of significance from each method, with \nghlt giving me the greatest number of significant results and lsmeans \nthe least. When I ran this on a generalized linear model of abundance data from the same study, ghlt was then the most conservative. All the results from all packages make sense based on the \ngraphs of the data. \n\nCan anyone tell me if there are underlying \nreasons why these tests might be more or less conservative, whether in \nany case I have failed to specify anything correctly or whether any of \nthese tests are not suitable for linear mixed models? It seems from the code to me that the 'agricolae' and 'multcomp' approaches fit their own model rather than the one I have specified, but I found these codes as suggested post-hoc tests on forums.\n\nThankyou for your time,\nClaire \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI am quite new to R so apologies if I fail to ask \nproperly. I have done a test comparing bat species richness in five \nhabitats as assessed by three methods. I used a linear mixed model in",
       "thread_id": "thread-5ac1884df637",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140522/a47d373f/attachment.pl"
+      ]
     },
     {
       "id": "msg-2425d701b62a",
@@ -1931,11 +2018,14 @@
       "subject_clean": "negative Hessian eigenvalues",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140523/2d3d43a0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140523/2d3d43a0/attachment.pl>",
+      "body_plain": "Hello,\n\nI have read the long thread about the convergence warnings in lmer v. 1.1.6. However, I am still unclear as to how to work with them.\nIf I understand correctly, I should probably ignore the max | grad | warnings, at least if they are close to the tol value.\nHowever, what about the negative Hessian eigenvalues? Can I ignore those as well? Is the number of negative Hessian eigenvalues relevant at all?\nIn older versions, models also did not always converge. Does any combination of the new warnings map to the cases in which earlier versions would have told me that they did not achieve convergence?\n\nThanks\nTobias\n\n\n--\n-------------------------------------------------------------------------------------------\nDr. Tobias Heed\nBiological Psychology and Neuropsychology\nFaculty of Psychology and Human Movement Science | University of Hamburg\nVon-Melle-Park 11, Room 206 | D-20146 Hamburg, Germany\nPhone: (49) 40 - 42838 5831 | Fax: (49) 40 - 42838 6591\ntobias.heed at uni-hamburg.de\n-------------------------------------------------------------------------------------------\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI have read the long thread about the convergence warnings in lmer v. 1.1.6. However, I am still unclear as to how to work with them.\nIf I understand correctly, I should probably ignore the ma",
       "thread_id": "thread-2425d701b62a",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140523/2d3d43a0/attachment.pl"
+      ]
     },
     {
       "id": "msg-073a59f762e6",
@@ -1965,11 +2055,14 @@
       "subject_clean": "Help: mixed model with nested structure",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/1fcbe229/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/1fcbe229/attachment.pl>",
+      "body_plain": "We are evaluating yield of 10 wheat genotypes  in six locations that are\nselected randomly. In each location, we have 8 farmers, Among them, 4 are\nearly planting group and 4 are late planting group based on optimum\nplanting date. Each farmer's plot has been divided into 3 main plots –\nwhere three doses of Nitrogen have applied. Each main plot has further been\ndivided into 10 subplots. Where 10 wheat varieties have assigned randomly.\nThe  experiment has repeated for 2 years.\nWe want to use a mixed model to evaluate the wheat yield. Our treatment\nstructure given below:\n\nEnvirionment (site x no. year) = 6 X 2 = 12  (Random)\n\nFarmers = 8 (Random)\n\nPlanting groups = 2 (Fixed)\n\nN-treatment = 3 (Fixed)\n\nGenotype =10  (Fixed)\n\nWe appreciate if someone help use to develop a mixed model in *R/lme4 or\nlme.**It is little challenging for me*\nThanks\nZia\n\n-- \nZia Uddin Ahmed\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "We are evaluating yield of 10 wheat genotypes  in six locations that are\nselected randomly. In each location, we have 8 farmers, Among them, 4 are\nearly planting group and 4 are late planting group ba",
       "thread_id": "thread-308a19f85891",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/1fcbe229/attachment.pl"
+      ]
     },
     {
       "id": "msg-8b33e0eb4280",
@@ -2035,11 +2128,14 @@
       "subject_clean": "{dsm} warning message \"step size truncated due to divergence\"",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/6e835476/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/6e835476/attachment.pl>",
+      "body_plain": "Hello,\n\nI'm trying to fit a density surface model, following \"Spatial models for\ndistance sampling data: recent developments and future directions\" (Miller\net al. 2013 - Methods in Ecology and Evolution 4 (11): 1001-1010).\n\nWhen I run the model, I get the following:\n\"warning messages:\n1: Step size truncated due to divergence\n2: Step size truncated due to divergence\n3: Step size truncated due to divergence\n4: Step size truncated due to divergence\n5: Step size truncated due to divergence \"\n\nThen, when I try to use \"predict\", 17 grid cells (belonging to 5 groups)\nappear as \"Inf\", instead of having a value. And that keeps from mapping the\npredicted abundance or calculating the abundance for the entire survey area.\n\nCan you please help me understanding what this means and how I can get\naround this?\n\nThanks,\nRICARDO.\n\n\n\n-- \nRicardo Faustino de Lima - http://sites.google.com/site/rfdelimasite/home\n\nPost-Doc Researcher\nAnimal Diversity and Conservation -\nhttp://cba.fc.ul.pt/members/ricardo_lima.php\nCentre for Environmental Biology, Lisbon University Faculty of Sciences\nOffice 2.5.15b, Campo Grande 1749-016 Lisboa, Portugal.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI'm trying to fit a density surface model, following \"Spatial models for\ndistance sampling data: recent developments and future directions\" (Miller\net al. 2013 - Methods in Ecology and Evoluti",
       "thread_id": "thread-877e5686040f",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140525/6e835476/attachment.pl"
+      ]
     },
     {
       "id": "msg-5bb2330a02dc",
@@ -2299,11 +2395,14 @@
       "subject_clean": "citable references for profile likelihood CIs",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140528/9f97c5c5/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140528/9f97c5c5/attachment.pl>",
+      "body_plain": "Hello list,\n\nI am writing up the results from an analysis involving mixed models, and I am considering including the profile likelihood confidence intervals (as computed by confint.merMod() in lme4 package) for all parameter estimates in the manuscript. Does anyone have suggestions for good references I can cite that explain basically how it works and why profile CIs are a Good Thing? All justificationary purposes aside, I would actually be interested in reading some of these myself.\n\nJake \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello list,\n\nI am writing up the results from an analysis involving mixed models, and I am considering including the profile likelihood confidence intervals (as computed by confint.merMod() in lme4 pa",
       "thread_id": "thread-60fbb61775a7",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140528/9f97c5c5/attachment.pl"
+      ]
     },
     {
       "id": "msg-6ea925be2149",
@@ -2372,11 +2471,14 @@
         "<BAY172-W47F99677C7056D33C2DFB6CB240@phx.gbl>",
         "<loom.20140529T191552-873@post.gmane.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140529/6fd0abed/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140529/6fd0abed/attachment.pl>",
+      "body_plain": "Non-rigorous is perfect ;) Thanks to all for the suggestions so far, these look great. I printed off the papers and checked out Ben's book and will try to look through soon.\nJake\n\n> To: r-sig-mixed-models at r-project.org\n> From: bbolker at gmail.com\n> Date: Thu, 29 May 2014 17:17:59 +0000\n> Subject: Re: [R-sig-ME] citable references for profile likelihood CIs\n> \n> Jake Westfall <jake987722 at ...> writes:\n> \n> > \n> > Hello list,\n>  \n> > I am writing up the results from an analysis involving mixed models,\n> > and I am considering including the profile likelihood confidence\n> > intervals (as computed by confint.merMod() in lme4 package) for all\n> > parameter estimates in the manuscript. Does anyone have suggestions\n> > for good references I can cite that explain basically how it works\n> > and why profile CIs are a Good Thing? All justificationary purposes\n> > aside, I would actually be interested in reading some of these\n> > myself.\n> \n> If you're writing for a sufficiently naive audience (e.g. typical\n> ecologists), I will be bold enough to suggest Chapter 6 of Bolker 2008\n> (_Ecological Models and Data in R_) ... not very rigorous though\n> (and not available online via university libraries).\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Non-rigorous is perfect ;) Thanks to all for the suggestions so far, these look great. I printed off the papers and checked out Ben's book and will try to look through soon.\nJake\n\n> To: r-sig-mixed-mo",
       "thread_id": "thread-60fbb61775a7",
       "thread_depth": 2,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140529/6fd0abed/attachment.pl"
+      ]
     },
     {
       "id": "msg-8251c9984743",
@@ -2409,11 +2511,14 @@
       "subject_clean": "reference for expression given on glmm wiki",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140530/da7a012c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140530/da7a012c/attachment.pl>",
+      "body_plain": "All,\n\nThe glmm wiki\n\nhttp://glmm.wikidot.com/faq\n\ngives examples for computing confidence intervals and prediction intervals\nfor normal mixed models. Can anyone give (ideally page numbers) references\nfor a text describing these expressions.\n\nThanks,\n\nJuliet\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "All,\n\nThe glmm wiki\n\nhttp://glmm.wikidot.com/faq\n\ngives examples for computing confidence intervals and prediction intervals\nfor normal mixed models. Can anyone give (ideally page numbers) references\n",
       "thread_id": "thread-1e1e002e1abd",
       "thread_depth": 0,
-      "month": "2014-05"
+      "month": "2014-05",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140530/da7a012c/attachment.pl"
+      ]
     }
   ],
   "threads": [

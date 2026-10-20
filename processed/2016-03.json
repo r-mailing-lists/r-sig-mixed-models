@@ -646,11 +646,14 @@
         "<56E7193F.3040107@ed.ac.uk>",
         "<5A184EF2-CC22-4815-8E11-627A2ADCF731@gmail.com>"
       ],
-      "body_plain": "Hi,\n\nObtianing the expected mean by integrating over the uncertainity (e.g. \nthe posterior) gets a much better estimate\n\nm1.mcmc<-MCMCglmm(y~1, random=~group, data=dat, prior=list(R=list(V=1, \nnu=0.002), G=list(G1=list(V=1, nu=0.002))), family=\"poisson\")\n\nhist(exp(m1.mcmc$Sol+ 0.5*rowSums(m1.mcmc$VCV)), breaks=100)\nabline(v=mean(dat$y), col=\"red\")\n\nYou might be able to improve on the REML estimate by subtracting 0.5*(Vi \n+Civ+0.25*Vv) before exponentiating. Vi is the samping variance of the \nintercept (standard error^2) Vv the sampling variance of the variance, \nand Civ the sampling covariance bewteen the two. Getting approximate \nvalues of Vv and Civ from glmer might be difficult though - not sure.\n\nCheers,\n\nJarrod\n\n\n\n\nOn 15/03/2016 18:27, Mollie Brooks wrote:\n> summary(m1)\n> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])\n\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20160316/8627fd2f/attachment.pl>",
+      "body_plain": "Hi,\n\nObtianing the expected mean by integrating over the uncertainity (e.g. \nthe posterior) gets a much better estimate\n\nm1.mcmc<-MCMCglmm(y~1, random=~group, data=dat, prior=list(R=list(V=1, \nnu=0.002), G=list(G1=list(V=1, nu=0.002))), family=\"poisson\")\n\nhist(exp(m1.mcmc$Sol+ 0.5*rowSums(m1.mcmc$VCV)), breaks=100)\nabline(v=mean(dat$y), col=\"red\")\n\nYou might be able to improve on the REML estimate by subtracting 0.5*(Vi \n+Civ+0.25*Vv) before exponentiating. Vi is the samping variance of the \nintercept (standard error^2) Vv the sampling variance of the variance, \nand Civ the sampling covariance bewteen the two. Getting approximate \nvalues of Vv and Civ from glmer might be difficult though - not sure.\n\nCheers,\n\nJarrod\n\n\n\n\nOn 15/03/2016 18:27, Mollie Brooks wrote:\n> summary(m1)\n> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])\n\n-------------- next part --------------\nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi,\n\nObtianing the expected mean by integrating over the uncertainity (e.g. \nthe posterior) gets a much better estimate\n\nm1.mcmc<-MCMCglmm(y~1, random=~group, data=dat, prior=list(R=list(V=1, \nnu=0.00",
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 3,
-      "month": "2016-03"
+      "month": "2016-03",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20160316/8627fd2f/attachment.pl"
+      ]
     },
     {
       "id": "msg-5250338d3e5f",

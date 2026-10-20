@@ -15,11 +15,14 @@
       "references": [
         "<BAY172-W50AAB09751D3FF136C6F779EE60@phx.gbl>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/f70cb903/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/f70cb903/attachment.pl>",
+      "body_plain": "I guess that the number of observation is way to low for estimate such a \nhigh number of parameters (you didn't mention the number of individuals).\nAs for the goodness of fit, isn't better to look at at how the model \nfits the data (pseudo R2, percent correct and similar)?\n\nGood luck,\n\nMarko\n\n\n\n  On 01.08.2014 00:01, yuki fujita wrote:\n> Hi\n>\n>\n>\n>\n> I need a help with testing goodness of fit for Generalized linear mixed model.\n> It seems there is no solid way of doing it, but I'd like to make sure the model is a good fit.\n>\n>\n>\n>\n> My model is\n>\n>\n>\n>\n> model1 <- glmer(cbind(CorrectHits,12-CorrectHits)~ ADHDYN*Condition + (1 |�..ID),\n>\n>\n>                  data = bert, family=\"binomial\")\n>\n>\n>\n>\n> where ADHDYN has a 2 levels\n> and 3 levels in Condition, and interaction. (so 6 fixed effect\n> parameters). We have allowed random inetrcept for individuals. The\n> number of observation is 258.\n>\n>\n>\n>\n> I tried to carry our the\n> goodness of fit test by using chi-square test, but I get 0 as a answer\n> so I am not sure if I did right.\n>\n>\n>\n>\n>\n> # The degrees of freedom is obtained by number of obs - number of fixed params\n>\n>\n> df <- length(bert$�..ID)-6;df\n>\n>\n> 1-pchisq(952.5144 , df=251) # The output was 0\n>\n>\n>\n>\n> Any better way of testing the goodness of fit?\n>\n>\n>\n>\n> We carried out the same model\n>   but with glm, but we want to compare which model gives us smaller\n> Satandard error. The estimate of coefficients were very similay between\n> GLm and GLMM models.\n>\n>\n>\n>\n>\n>\n>\n> Thanks in advance\n> Yuki  \t\t \t   \t\t\n> \t[[alternative HTML version deleted]]\n>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I guess that the number of observation is way to low for estimate such a \nhigh number of parameters (you didn't mention the number of individuals).\nAs for the goodness of fit, isn't better to look at ",
       "thread_id": "thread-2fbe0aeca08c",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/f70cb903/attachment.pl"
+      ]
     },
     {
       "id": "msg-eff1eb129985",
@@ -67,11 +70,14 @@
       "references": [
         "<FEC647A5D0EB3749B5BB9A174F06F43913D1F358@mexchange.Mango.local>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/e602647a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/e602647a/attachment.pl>",
+      "body_plain": "Hi Nicholas,\n\nYou can do this using model comparisons. Fit the larger model (with all the terms included), then fit the smaller model (with the terms you want to test excluded), and then use KRmodcomp(largeModel, smallModel). KRmodcomp() as you might know is in the pbkrtest package.\n\nJake\n\n> From: nburgoyne at mango-solutions.com\n> To: r-sig-mixed-models at r-project.org\n> Date: Fri, 1 Aug 2014 10:28:42 +0000\n> Subject: [R-sig-ME] lme4 vs nlme\n> \n> Dear all,\n> \n> I have been using lme4 (1.1-7) extensively for a project, and have become stumped when trying to perform an F-test anova on the output, I want a to jointly set a series of terms as zero (I am using pbkrtest to generate DF values, which I believe are good enough for the test). I see that nlme has this functionality (specifying Terms in the anova function), but I am too far gone down the lme4 route for that.\n> \n> The lme4 value I think is not generated (I'm not going to say missing, I'm sure there is a good reason for it) is the varFixFac matrix (an attribute of the fixDF in nlme). With this set the anova required should be simple. Is there anyway of defining this matrix using the values generated in the lme4 output?\n> \n> Any input would be greatly appreciated, many thanks, \n> \n> Nicholas Burgoyne\n>   \n> Tel. +44 (0)1249 705 450 | Mobile. \n> mailto:nburgoyne at mango-solutions.com | www.mango-solutions.com\n> \n> \n> \n> 2 Methuen Park\n> Chippenham\n> Wiltshire \n> SN14 OGB\n> UK\n> \n> \n> --\n> \n> LEGAL NOTICE\\ \\ This message is intended for the use of ...{{dropped:18}}\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Nicholas,\n\nYou can do this using model comparisons. Fit the larger model (with all the terms included), then fit the smaller model (with the terms you want to test excluded), and then use KRmodcomp",
       "thread_id": "thread-553b25088da4",
       "thread_depth": 1,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140801/e602647a/attachment.pl"
+      ]
     },
     {
       "id": "msg-f308c7ccba93",
@@ -83,11 +89,14 @@
       "subject_clean": "Standard errors in generalised linear mixed models?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/a5b24451/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/a5b24451/attachment.pl>",
+      "body_plain": "Dear Prof. Bates and colleagues,\n\n\n\nI have read your comments about the problem of significance testing in\ngeneralized linear mixed models (GLMM). If I understood it correctly\nsignificance testing of a predictor in GLMMs is tricky because when\nperforming a likelihood ratio test (model comparison with and without the\npredictor) one cannot be sure that the underlying chi-square distribution\nis approximated correctly. More importantly, one would need the degrees of\nfreedom in both models which cannot be obtained since a calculation like df\n= N-q-1 (N = number of groups, q = number of independent parameters) would\nnot be possible as the parameters are not independent from each other. Is\nthis brief depiction of the problem correct?\n\n\n\nI am currently working with a logistic multi-level model with a binary\ndependent variable, this is why I was confronted with this question.\n\n\n\nIn the model summary I can see that glmer provides p-values not on the\nbasis of a likelihood ratio test but from simply dividing the coefficient\nby its SE and comparing this value to a z distribution. I have the nagging\nfeeling that I cannot trust this p value either. But why?\n\n\n\nIs this because we cannot interpret the estimate of the standard error (SE)\nas we would interpret ordinary SEs? How can it be interpreted?\n\nI understand the SE is estimated by ML or REML in glmer but does this\nestimation already involve knowing how many degrees of freedom one has in\nthe model? Can the estimate of the SE be trusted?\n\n\n\nDoes the interpretation of the SE change between different kinds of GLMMs\nbecause, for example in the logistic GLMM the residual variance is\nrestricted?\n\n\n\n\n\nI would be more than thankful if you could explain this to me. Feel free to\nrestrict the explanation to logistic multilevel models with a binary\noutcome variable.\n\n\n\nKind regards,\n\nFelix Süßenbach\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Prof. Bates and colleagues,\n\n\n\nI have read your comments about the problem of significance testing in\ngeneralized linear mixed models (GLMM). If I understood it correctly\nsignificance testing of ",
       "thread_id": "thread-f308c7ccba93",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/a5b24451/attachment.pl"
+      ]
     },
     {
       "id": "msg-7b69fabc76de",
@@ -101,11 +110,14 @@
       "references": [
         "<1406843586618.8714@student.otago.ac.nz>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/71d8e658/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/71d8e658/attachment.pl>",
+      "body_plain": "You've already asked this question and gotten answers (from \"marKo\" and\nChris Howden), but I'll add these points:\n\n* for a non-binary GLMM (which seems to be your case), the sum of the\nsquared Pearson residuals should be *approximately* chi-square distributed\n(subject also to various guesses about the appropriate calculation for the\nresidual degrees of freedom) (not sure where you got your number 952.5 from\n-- the sum of squares of the deviance residuals should also work adequately)\n\n*  You got zero because your fit is very bad, i.e. the probability of the\nobserved (or more extreme) statistic is *very* small.  A more accurate\nversion of 1-pchisq(952.5144 , df=251) is\npchisq(952.5144,df=251,lower.tail=FALSE)  which tells you the p-value is\n10^{-82} (you may also want `log.p=TRUE` for even more extreme p-values).\n\n* Chris Howden is probably right that your GLM and GLMM fits are probably\nsimilar because your random effects variance has collapsed to zero.\n\n* possibly most important: I think it would be a VERY bad idea to draw any\nconclusions whatsoever from this model before you inspect the data and the\ngraphical model diagnostics to try to see what's giving you so much\noverdispersion/such a bad fit (see http://rpubs.com/bbolker/glmmchapter for\nexamples)\n\n\n\nOn Thu, Jul 31, 2014 at 5:53 PM, Yuki Fujita <fujyu654 at student.otago.ac.nz>\nwrote:\n\n> Hi\n>\n>\n> I need a help with testing goodness of fit for Generalized linear mixed\n> model.\n>\n> It seems there is no solid way of doing it, but I'd like to make sure the\n> model is a good fit.\n>\n>\n> My model is\n>\n>\n> model1 <- glmer(cbind(CorrectHits,12-CorrectHits)~ ADHDYN*Condition + (1\n> |ï..ID),\n>                 data = bert, family=\"binomial\")\n>\n>\n> where ADHDYN has a 2 levels and 3 levels in Condition, and interaction.\n> (so 6 fixed effect parameters). We have allowed random inetrcept for\n> individuals. The number of observation is 258.\n>\n>\n> I tried to carry our the goodness of fit test by using chi-square test,\n> but I get 0 as a answer so I am not sure if I did right.\n>\n> # The degrees of freedom is obtained by number of obs - number of fixed\n> params\n> df <- length(bert$ï..ID)-6;df\n> 1-pchisq(952.5144 , df=251) # The output was 0\n>\n>\n> Any better way of testing the goodness of fit?\n>\n>\n> We carried out the same model but with glm, but we want to compare which\n> model gives us smaller Satandard error. The estimate of coefficients were\n> very similay between GLm and GLMM models.\n>\n>\n> Thanks in advance\n>\n> Yuki\n>\n>         [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "You've already asked this question and gotten answers (from \"marKo\" and\nChris Howden), but I'll add these points:\n\n* for a non-binary GLMM (which seems to be your case), the sum of the\nsquared Pearson",
       "thread_id": "thread-7b69fabc76de",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/71d8e658/attachment.pl"
+      ]
     },
     {
       "id": "msg-9a6514829133",
@@ -120,11 +132,14 @@
         "<CAGwfgc6uN05Xf5q=rMfwzXR0zoFK2YtK9dJtn4GnraAEfxPr7A@mail.gmail.com>",
         "<CABghstR6VF+FMULjNHsj=AM2SoZgVBTDVgDeT8tg29TGz-ANSA@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/114a6cc8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/114a6cc8/attachment.pl>",
+      "body_plain": "[forwarding to r-sig-mixed-models as well]\n\n---------- Forwarded message ----------\nFrom: Ben Bolker <bbolker at gmail.com>\nDate: Sat, Aug 2, 2014 at 6:09 PM\nSubject: Re: [R-sig-ME] Standard errors in generalised linear mixed models?\nTo: Felix Suessenbach <felix.suessenbach at googlemail.com>\n\n\nA lot of this is discussed at http://glmm.wikidot.com/faq ...\n\n I've given some answers below, invite further explication from other list\nreaders ...\n\n\nOn Sat, Aug 2, 2014 at 12:13 PM, Felix Suessenbach <\nfelix.suessenbach at googlemail.com> wrote:\n\n> Dear Prof. Bates and colleagues,\n>\n>\n>\n> I have read your comments about the problem of significance testing in\n> generalized linear mixed models (GLMM). If I understood it correctly\n> significance testing of a predictor in GLMMs is tricky because when\n> performing a likelihood ratio test (model comparison with and without the\n> predictor) one cannot be sure that the underlying chi-square distribution\n> is approximated correctly. More importantly, one would need the degrees of\n> freedom in both models which cannot be obtained since a calculation like df\n> = N-q-1 (N = number of groups, q = number of independent parameters) would\n> not be possible as the parameters are not independent from each other. Is\n> this brief depiction of the problem correct?\n>\n\n   More or less.  The problem is not specifically that the parameters \"are\nnot independent from each other\" (this is actually typical of any linear\nmodel that is *not* balanced with orthogonal contrasts, and any\nnon-Gaussian generalized linear model).  It is that the sampling\ndistribution of the summary statistic that would correspond to an F\nstatistic is not actually F-distributed.\n\n>\n>\n>\n> I am currently working with a logistic multi-level model with a binary\n> dependent variable, this is why I was confronted with this question.\n>\n>\n>\n> In the model summary I can see that glmer provides p-values not on the\n> basis of a likelihood ratio test but from simply dividing the coefficient\n> by its SE and comparing this value to a z distribution. I have the nagging\n> feeling that I cannot trust this p value either. But why?\n>\n>\n  These are Wald statistics (again see glmm FAQ URL referenced above),\nwhich involve a different approximation (quadratic log-likelihood surface).\n\n\n> Is this because we cannot interpret the estimate of the standard error (SE)\n> as we would interpret ordinary SEs? How can it be interpreted?\n>\n> I understand the SE is estimated by ML or REML in glmer but does this\n> estimation already involve knowing how many degrees of freedom one has in\n> the model? Can the estimate of the SE be trusted?\n>\n>\nIt's not estimated in REML for GLMMs because we don't think we know how to\ndo that (again see the GLMM FAQ).  The estimate of the SE should be a\nreasonable estimate of the uncertainty of the parameter if the sample size\nis large enough, parameters are not too extreme, etc..  If you are\nconcerned, estimate the confidence intervals by profiling or parametric\nbootstrap (see ?confint.merMod), and compare with the Wald estimate.\n\n\n\n> Does the interpretation of the SE change between different kinds of GLMMs\n> because, for example in the logistic GLMM the residual variance is\n> restricted?\n>\n>\n  Not really\n\n\n>\n>\n> I would be more than thankful if you could explain this to me. Feel free to\n> restrict the explanation to logistic multilevel models with a binary\n> outcome variable.\n>\n>\n>\n> Kind regards,\n>\n> Felix Süßenbach\n>\n>         [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "[forwarding to r-sig-mixed-models as well]\n\n---------- Forwarded message ----------\nFrom: Ben Bolker <bbolker at gmail.com>\nDate: Sat, Aug 2, 2014 at 6:09 PM\nSubject: Re: [R-sig-ME] Standard errors in",
       "thread_id": "thread-9a6514829133",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140802/114a6cc8/attachment.pl"
+      ]
     },
     {
       "id": "msg-d6e87a15d4e9",
@@ -186,11 +201,14 @@
       "subject_clean": "parallel MCMCglmm execution",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/6068f15a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/6068f15a/attachment.pl>",
+      "body_plain": "Dear list,\n\nwould someone be willing to share her or his efforts in parallelising a MCMCglmm analysis?\n\nI had something viable using harvestr that seemed to properly initialise\nthe starting values from different random number streams (which is desirable,\nas far as I could find out), but I ended up being unable to use harvestr, because\nit uses an old version of plyr, where parallelisation works only for multicore, not for\nMPI.\n\nI pasted my working version, that does not do anything about starting values or RNG\nat the end of this email. I can try to fumble further in the dark or try to update harvestr,\nbut maybe someone has gone through all this already.\n\nI'd also appreciate any tips for elegantly post-processing such parallel data, as some of my usual\nextraction functions and routines are hampered by the fact that some coda functions\ndo not aggregate results over chains. (What I get from a single-chain summary in MCMCglmm\nis a bit more comprehensive, than what I managed to cobble together with my own extraction\nfunctions).\n\nThe reason I'm parallelising my analyses is that I'm having trouble getting a good effective\nsample size for any parameter having to do with the many zeroes in my data.\nAny pointers are very appreciated, I'm quite inexperienced with MCMCglmm.\n\nBest wishes\n\nRuben\n\n# bsub -q mpi-short -W 2:00 -n 42 -R np20 mpirun -H localhost -n 41 R --slave -f \"rpqa/rpqa_main/rpqa_children_parallel.r\"\nlibrary(doMPI)\ncl <- startMPIcluster()\nregisterDoMPI(cl)\nChildren_mcmc1 = foreach(i=1:40) %dopar% {\n\tlibrary(MCMCglmm)\n\tload(\"rpqa1.rdata\")\n\t\n\tnitt = 40000; thin = 100; burnin = 10000\n\tprior = list(\n\t\tR = list(V = diag(c(1,1)), nu = 0.002),\n\t\tG=list(list(V=diag(c(1,1e-6)),nu=0.002))\n\t)\n\t\n\tMCMCglmm( children ~ trait -1 + at.level(trait,1):male + at.level(trait,1):urban + at.level(trait,1):spouses + at.level(trait,1):paternalage.mean + at.level(trait,1):paternalage.factor,\n\t\trcov=~us(trait):units,\n\t\trandom=~us(trait):idParents,\n\t\tfamily=\"zapoisson\",\n\t\tprior = prior,\n\t\tdata=rpqa.1, \n\t\tpr = F, saveX = T, saveZ = T,\n\t\tnitt=nitt,thin=thin,burnin=burnin)\n}\n\nlibrary(coda)\nmcmclist = mcmc.list(lapply(Children_mcmc1,FUN=function(x) { x$Sol}))\nsave(Children_mcmc1,mcmclist, file = \"rpqa_mcmc_kids_za.rdata\")\ncloseCluster(cl)\nmpi.quit()\n\n\n--\nRuben C. Arslan\n\nGeorg August University Göttingen\nBiological Personality Psychology and Psychological Assessment\nGeorg Elias Müller Institute of Psychology\nGoßlerstr. 14\n37073 Göttingen\nGermany\nTel.: +49 551 3920704\nhttps://psych.uni-goettingen.de/en/biopers/team/arslan\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list,\n\nwould someone be willing to share her or his efforts in parallelising a MCMCglmm analysis?\n\nI had something viable using harvestr that seemed to properly initialise\nthe starting values fro",
       "thread_id": "thread-2f473dd1e707",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/6068f15a/attachment.pl"
+      ]
     },
     {
       "id": "msg-92a9b7013514",
@@ -202,11 +220,14 @@
       "subject_clean": "Looking for differences in G structure among factor levels",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/90f04f1b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/90f04f1b/attachment.pl>",
+      "body_plain": "Hi everyone.\n\nI am working with a multi-trait MCMCglmm model. The model has four plant \ntraits,\na three levels treatment is considered as a \"fixed\" factor and, as a \nrandom factor,\nI included the term family (64 full maternal siblings).\nWhat I am willing to know is the syntax that allow me to estimate the \ngenetic variance-covariance matrices\nfor each treatment.\n\nIn general, I am looking for differences in G structure among factor \nlevels. I guess that it should be\nsomething like\n\nG-structure: ~ us (trait):fam\n              ~ us (trait):fam:tratA\n           ~ us (trait):fam:tratB\n              ~ us (trait):fam:tratC\n\nR-structure: ~us(trait):units\n\n\n\nThis was my last attempt.\n\nprior2<-list(G=list(G1=list(V=phen.var1/4,n=2),\n                       G2=list(V=phen.var1/4,n=2)),\n                       R=list(V=phen.var1/4,n=2))\n\nbayes.global1<-MCMCglmm(cbind(crece, \nR,flor,frutos)~trait+trat+trait:trat-1,random = \n~us(trait):fam+us(trait):fam:trat2,\nrcov = ~us(trait):units, family = c(\"gaussian\", \"gaussian\",\"gaussian\", \n\"poisson\"),\ndata = na.omit(basep), prior = prior2, verbose = FALSE,singular.ok=TRUE,\nnitt=13000, thin=10, burnin=3000)\n\nThis is part of the summary.\n\n\n  G-structure:  ~us(trait):fam\n\n                    post.mean   l-95% CI  u-95% CI eff.samp\ncrece:crece.fam    0.0043452  0.0015103 8.050e-03   1000.0\nR:crece.fam       -0.0002719 -0.0014696 9.586e-04   1000.0\nflor:crece.fam     0.0436852 -0.0689005 1.670e-01   1000.0\nfrutos:crece.fam   0.0053743 -0.0247571 4.286e-02   1000.0\netc...\n\n     ~us(trait):fam:trat2\n\n                          post.mean   l-95% CI  u-95% CI eff.samp\ncrece:crece.fam:trat2    0.0039826  0.0015898 6.967e-03    655.9\nR:crece.fam:trat2       -0.0001361 -0.0010399 8.509e-04    900.4\nflor:crece.fam:trat2     0.0237493 -0.0580506 1.238e-01    588.7\nfrutos:crece.fam:trat2   0.0046849 -0.0135320 2.080e-02   1000.0\netc...\n\n  R-structure:  ~us(trait):units\n\n                      post.mean  l-95% CI  u-95% CI eff.samp\ncrece:crece.units    0.0454059  0.038990  0.051924    848.7\nR:crece.units       -0.0008172 -0.002948  0.001473   1000.0\nflor:crece.units    -0.0084173 -0.201620  0.199751   1000.0\nfrutos:crece.units   0.0729428  0.048952  0.096300   1000.0\ncrece:R.units       -0.0008172 -0.002948  0.001473   1000.0\n\n\nLocation effects: cbind(crece, R, flor, frutos) ~ trait + trat2 + \ntrait:trat2 - 1\n\n                    post.mean  l-95% CI  u-95% CI eff.samp pMCMC\ntraitcrece          0.708005  0.660129  0.754760     1000 <0.001 ***\ntraitR              1.310004  1.287974  1.332702     1000 <0.001 ***\ntraitflor          56.262578 54.290430 58.332811     1000 <0.001 ***\ntraitfrutos         1.675350  1.189332  2.296322     1000 <0.001 ***\ntrat22              0.005729 -0.057418  0.058968     1000 0.810\ntrat23              0.014290 -0.045559  0.070862     1000 0.652\ntraitR:trat22      -0.134281 -0.199170 -0.061456     1421 <0.001 ***\ntraitflor:trat22   -3.233360 -5.507265 -0.632871     1263  0.014 *\ntraitfrutos:trat22  0.008789 -0.417274  0.505621     1000 0.998\ntraitR:trat23      -0.111668 -0.179654 -0.047945     1000 <0.001 ***\ntraitflor:trat23   -0.210391 -2.620701  2.472176     1000 0.912\ntraitfrutos:trat23 -0.145282 -0.724167  0.288831     1000 0.570\n\nMany thanks\n\nMuchas Gracias\n\n-- \nDr. Diego Carmona\nLab Interacción Planta-Animal\nInstituto de Ecología\nUNAM\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone.\n\nI am working with a multi-trait MCMCglmm model. The model has four plant \ntraits,\na three levels treatment is considered as a \"fixed\" factor and, as a \nrandom factor,\nI included the term",
       "thread_id": "thread-92a9b7013514",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140804/90f04f1b/attachment.pl"
+      ]
     },
     {
       "id": "msg-c47d01c94998",
@@ -255,11 +276,14 @@
         "<1407247408285.41264@qub.ac.uk>",
         "<1407247881674.74780@qub.ac.uk>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140805/f88644fd/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140805/f88644fd/attachment.pl>",
+      "body_plain": "A few thoughts:\n\n* your data didn't make it through to the list as far as I can see -- any\nchance you can post it somewhere (or send it to me)?\n* have you explored your data graphically to see what's going on with Day?\n* we know that Gamma models are somewhat fragile (it will be good to try\nthis example out to make them more robust); if you don't have a strong\nattachment to Gamma (for theoretical or cultural reasons), it is often\npractically easier to do log-Normal rather than Gamma models (i.e. take\nlogs of the response variable and fit a LMM).  (McCullagh and Nelder talk\nabout this issue a little bit in their GLM book.)\n\nLess important:\n\n* Round/Tank/Pair/Fish (four levels of nested variation) looks like a\npretty complicated random effects specification: do you have enough data to\nfit that many random effects?\n\nEven less important:\n\n* in the R formula syntax, Treatment + Day + Treatment*Day is equivalent to\njust Treatment*Day (or Treatment + Day + Treatment:Day)\n\n\nOn Tue, Aug 5, 2014 at 10:11 AM, Kirsty McLaughlin <kmclaughlin23 at qub.ac.uk>\nwrote:\n\n>\n> To whom it may concern,\n>\n>\n> I am a novice in the use of R, however I have been trying my best to\n> assess the effect of noise treatment over a three day period on the time\n> spent carrying out certain behaviours. I am using a GLMM as I don't have\n> sample independence and my response variables are non-normally distributed\n> and skewed. I have been using Family Gamma for my analysis.\n>\n>\n> When running a model on 'TTAgressionCon' (time spent being aggressive)\n> including the predictor variable Day (3 levels) I get the above error\n> message. When the model runs with other predictor variables e.g. Gender, I\n> do not get this error.\n>\n>\n> I have the most up to date version of lme4.\n>\n>\n> Below is the model that generated the error message:\n>\n> model1 <- glmer(TTAggressionCon ~ Treatment + Day + Treatment*Day +\n> (1|Round/Tank/Pair/Fish), data = data1, family = Gamma)\n>\n>\n> I have attached my data if this helps with diagnosis or suggestions.\n>\n>\n> Any help or guidance on this matter would be greatly appreciated.\n>\n>\n>\n> Kind regards\n> Kirsty McLaughlin\n>\n> PhD student\n> Queen's University Belfast\n> School of Biological Sciences\n> Medical Biology Centre\n> 97 Lisburn Road\n> Belfast, BT9 7GT\n>\n> Tel: 028 90 972103\n> Email: kmclaughlin23 at qub.ac.uk\n> Web: www.animal-behaviour.eu<http://www.animal-behaviour.eu>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "A few thoughts:\n\n* your data didn't make it through to the list as far as I can see -- any\nchance you can post it somewhere (or send it to me)?\n* have you explored your data graphically to see what's ",
       "thread_id": "thread-c47d01c94998",
       "thread_depth": 2,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140805/f88644fd/attachment.pl"
+      ]
     },
     {
       "id": "msg-c01d121008b4",
@@ -287,11 +311,14 @@
       "subject_clean": "lmer not working",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear list,\n\nI am using the lme4 package on R studio (v.0.98.994)****. I haven't used \nit in a while but I have been regularly updating my packages.  Recently \nI attempted to run a simple mixed model:> \nlmer(mean.perDay~complexity+(1|regime),data) and I get the following \nerror message:\n\nError in get(name, envir = asNamespace(pkg), inherits = FALSE) :\n   object '.setDummyField' not found\n\n\nMy question is, has anyone else faced any difficulty using lmer and if \nso can you advise me on how to fix my problem?  I am a PC (windows 7) user.\n\nThanks,\n\nGeorgina\n\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/7a6345e0/attachment.pl>",
+      "body_plain": "Dear list,\n\nI am using the lme4 package on R studio (v.0.98.994)****. I haven't used \nit in a while but I have been regularly updating my packages.  Recently \nI attempted to run a simple mixed model:> \nlmer(mean.perDay~complexity+(1|regime),data) and I get the following \nerror message:\n\nError in get(name, envir = asNamespace(pkg), inherits = FALSE) :\n   object '.setDummyField' not found\n\n\nMy question is, has anyone else faced any difficulty using lmer and if \nso can you advise me on how to fix my problem?  I am a PC (windows 7) user.\n\nThanks,\n\nGeorgina\n\n-------------- next part --------------\nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Dear list,\n\nI am using the lme4 package on R studio (v.0.98.994)****. I haven't used \nit in a while but I have been regularly updating my packages.  Recently \nI attempted to run a simple mixed model:>",
       "thread_id": "thread-c0a8c7492790",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/7a6345e0/attachment.pl"
+      ]
     },
     {
       "id": "msg-73a4ae034777",
@@ -305,11 +332,14 @@
       "references": [
         "<mailman.3.1407319203.9169.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/f0089a3b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/f0089a3b/attachment.pl>",
+      "body_plain": "Dear Paul,\n\nIt's certainly an issue that's coming up in various research domains with\nwhich I'm familiar. I agree that the absence of any way of allowing for\nautocorrelation (temporal AND spatial) is becoming an important limitation.\n\nI looked at the issue a bit in a paper that came out in Political Science\nResearch and Methods earlier this year, but only by using simulations to\nsee how much of an effect longitudinally autocorrelated errors might have\nin one context.\n\nHacking lme4 (or MCMCglmm -- see\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016684.html) to\ninclude something like corStruct is well beyond my abilities, but I would\nbe very happy to see you (or someone else) do it!\n\nCheers,\nMalcolm\n\n\n\n> Date: Tue, 5 Aug 2014 18:23:38 -0500\n> From: Paul Johnson <pauljohn32 at gmail.com>\n> To: \"R-SIG-Mixed-Models at r-project.org\"\n>         <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] autocorrelated errors\n>\n> Sorry to bother you, but\n>\n> I ask here every year or so if anybody is working on lme4 with time or\n> spatially correlated random errors. Bring corStruct back to life?\n>\n> If nobody is, maybe we could start a project together? I'm getting\n> great & fast estimates from lme4 with the cross sectional models, but\n> to work on longitudinal panels, we need some AR(1) error terms, or\n> such.\n>\n> pj\n> --\n> Paul E. Johnson\n> Professor, Political Science      Assoc. Director\n> 1541 Lilac Lane, Room 504      Center for Research Methods\n> University of Kansas                 University of Kansas\n> http://pj.freefaculty.org               http://quant.ku.edu\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Paul,\n\nIt's certainly an issue that's coming up in various research domains with\nwhich I'm familiar. I agree that the absence of any way of allowing for\nautocorrelation (temporal AND spatial) is ",
       "thread_id": "thread-73a4ae034777",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/f0089a3b/attachment.pl"
+      ]
     },
     {
       "id": "msg-2e8883e730bc",
@@ -321,11 +351,14 @@
       "subject_clean": "discrepency with paired test when adding concordant paired data to lmer()",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/50eaeb13/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/50eaeb13/attachment.pl>",
+      "body_plain": "Dear mixed modelers,\n\nI am trying to test a continues, normally distributed, variable (Y) within sibling pairs which are discordant, or concordant, for an exposure, also including singleton exposed or unexposed down the line.\nThe inclusion of singletons excludes a simple lm() model like:\nlm(Y~exposure+family_id)\n\n\nI tried starting simple, by making the model comparable to the simple lm model by including only the discordant and concordant pairs... leaving the singletons out the mix for now... but this has already proven surprisingly hard!\nIf I test the discordant sibling pairs only, the following models yields the exact same outcome as a paired t-test (& lm(Y~exposure+fam_id), as it should).\nlmer(Y~exposure+(1|family_id))\n\nHowever, adding exposure concordant pairs to the discordant pairs set (non-exposed & non-exposed : \"0\"-\"0\" pairs....) yields completely different results between lmer and lm.\nOverall, the t-values are (much) higher than with lm(). I am tasting many Y's.. (in genomics), so this inflation is very apparent.\n\nDoes anybody have an idea on why  lm() and lmer() differ in their t-value estimates when exposure concordant pairs are added?\n\nTo make things more complicated, we also have strong evidence that not all exposed siblings within a discordant pair will respond the same amounts of Y, but that the response is variable.\nTherefore I added exposure status also as random slope, to keep things 'maximal' (?).\n\n\nA standardized example:\n\nlibrary(lme4.0)  # I am using the old stable version\n\nset.seed(20289457)\n# normally distributed variable, with added 'effect' to part of the individuals (exposed within certain sibling pairs)\nY <- rnorm(n=200, m=0.25, sd=0.06)+c(rnorm(n=50,m=0.05,sd=0.03),rep(0,150))\nfamily_id <- as.factor(rep(seq(1,100,by=1),2))\nexposure <- c(rep(1,50),rep(0,150))\nsiblingtype <- c(rep(1,50),rep(0,50),rep(1,50),rep(0,50))\n\ndataset <- data.frame(Y,family_id,exposure, siblingtype)\n\n# first we take a look at the outcome in the exposure discordant pairs.\ncoefficients(summary(lm(Y~exposure+family_id, data=dataset, subset= siblingtype==1)))[c(1,2),]\nt.test(Y[1:50],Y[101:150],paired=T)\nlmer(Y~exposure+(1|family_id), data=dataset, subset= siblingtype==1)\nlmer(Y~exposure+(1+exposure|family_id), data=dataset, subset= siblingtype==1)\n# all have identical t-values; paired tests are identical to the mixed models\n\n# the unexposed-unexposed pairs have:\nt.test(Y[51:100],Y[151:200],paired=T)\n# no evidence for a difference, which should boost confidence on observed difference?\n\ncoefficients(summary(lm(Y~exposure+family_id, data=dataset)))[c(1,2),]\n# indeed, in a simple lm() the t-value increases.\nlmer(Y~exposure+(1|family_id), data=dataset)\n# also in a lmer, but now with much greater t-value: of note after testing 100K's of Y's I can definetly say that this is an inflated statistic!\nlmer(Y~exposure+(1+exposure|family_id), data=dataset)\n# adding the random intercept somewhat downplays this increase. But the outcome is not identical. The inflation of the statistic remains!\n# off note, in my real data the Corr of the random effects is ~0.2-0.3\n\n\n\nsessionInfo()\nR version 3.0.2 (2013-09-25)\nPlatform: x86_64-w64-mingw32/x64 (64-bit)\n\nlocale:\n[1] LC_COLLATE=Dutch_Netherlands.1252  LC_CTYPE=Dutch_Netherlands.1252    LC_MONETARY=Dutch_Netherlands.1252\n[4] LC_NUMERIC=C                       LC_TIME=Dutch_Netherlands.1252\n\nattached base packages:\n[1] splines   stats     graphics  grDevices utils     datasets  methods   base\n\nother attached packages:\n[1] coxme_2.2-3       bdsmatrix_1.3-1   survival_2.37-7   gee_4.13-18       nlme_3.1-117      lme4.0_0.999999-4 lattice_0.20-29\n[8] Matrix_1.1-4      plyr_1.8.1\n\nloaded via a namespace (and not attached):\n[1] grid_3.0.2   Rcpp_0.11.2  stats4_3.0.2 tools_3.0.2\n\n\nAny insight is highly appreciated.\n\n\nBest wishes,\nTobi\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mixed modelers,\n\nI am trying to test a continues, normally distributed, variable (Y) within sibling pairs which are discordant, or concordant, for an exposure, also including singleton exposed or",
       "thread_id": "thread-2e8883e730bc",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/50eaeb13/attachment.pl"
+      ]
     },
     {
       "id": "msg-6e6407ec7682",
@@ -410,11 +443,14 @@
       "subject_clean": "Model diagnostics for a glmmadmb negative binomial",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/03c9471a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/03c9471a/attachment.pl>",
+      "body_plain": "plot(glmmadmb_object) gives an error message \"..'x' is a list, but does not\nhave components 'x' and 'y' \"\n\nMy work around has been:\n\nres<-residuals(glmmadmb_object, type=\"repsonse\")\nplot(exp(predict(glmmadmb_object)), res) #for residual plot\nqqnorm(res) #for a qqplot\n\nI'm looking for confirmation that my work around is correct, or how to\nsolve the issue of the error message.\n\nThanks everyone,\nReuben\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "plot(glmmadmb_object) gives an error message \"..'x' is a list, but does not\nhave components 'x' and 'y' \"\n\nMy work around has been:\n\nres<-residuals(glmmadmb_object, type=\"repsonse\")\nplot(exp(predict(g",
       "thread_id": "thread-412e2365f659",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140806/03c9471a/attachment.pl"
+      ]
     },
     {
       "id": "msg-d9878860d769",
@@ -465,11 +501,14 @@
       "subject_clean": "tolPwrss threshold",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/d2686434/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/d2686434/attachment.pl>",
+      "body_plain": "Hi All,\n\nI have a very basic question about the lme4 package and glmer model convergence:\n\nIs there a threshold for tolPwrss after which results are no longer reliable? I noticed a post online indicating that increasing tolPwrss to 0.01 or 0.1 might inflate fixed effect coefficients. On a related, how can one detect when coefficient inflation has occurred?\n\nAny suggestions on reference material to read further on this subject would be greatly appreciated! \n\nThank you very much in advance,\n\nZofia Taranu\n\nStagiaire Postdoctoral Université de Montréal\nDépartement de sciences biologiques\nPavillon Marie-Victorin\n90, av. Vincent-d'Indy\nOutremont, QC H2V 2S9\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All,\n\nI have a very basic question about the lme4 package and glmer model convergence:\n\nIs there a threshold for tolPwrss after which results are no longer reliable? I noticed a post online indicat",
       "thread_id": "thread-8d1e05e55dc3",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/d2686434/attachment.pl"
+      ]
     },
     {
       "id": "msg-d620cb261d22",
@@ -481,11 +520,14 @@
       "subject_clean": "Summary of Subgroups",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/a9574c36/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/a9574c36/attachment.pl>",
+      "body_plain": "Dear R group,\n\nI have a query about summarizing the sub groups. I want to calculate mean\nor median of  BMI & SWTZ of ID 1 to 3 as shown in below table. Actually I\nhave 4500 ID's.\nI appreciate your assistance and guidance.\n\n  ID BMI SWTZ  1 22.3 97.7  1 22.3 116  1 22.3 116  1 22.3 110.8  1 22.3\n110.8  2 27.3 135.8  2 23 119  2 29.4 65.4  2 29.4 65.4  2 29.4 65.4  3 22.3\n128.1  3 22.3 128.1  3 22.3 128.1  3 22.3 128.1  3 22.3 114.7\n\nThank you very much in advance.\n-- \nRegards,\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear R group,\n\nI have a query about summarizing the sub groups. I want to calculate mean\nor median of  BMI & SWTZ of ID 1 to 3 as shown in below table. Actually I\nhave 4500 ID's.\nI appreciate your ass",
       "thread_id": "thread-d620cb261d22",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/a9574c36/attachment.pl"
+      ]
     },
     {
       "id": "msg-87a73c7f52d9",
@@ -535,11 +577,14 @@
       "references": [
         "<BB38D68A-BD4E-4D0F-AE6C-EF8965264E8D@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/f5b820b6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/f5b820b6/attachment.pl>",
+      "body_plain": "On Thu, Aug 7, 2014 at 10:13 AM, Zofia Ecaterina Taranu <\nzofia.taranu at gmail.com> wrote:\n\n> Hi All,\n>\n> I have a very basic question about the lme4 package and glmer model\n> convergence:\n>\n> Is there a threshold for tolPwrss after which results are no longer\n> reliable? I noticed a post online indicating that increasing tolPwrss to\n> 0.01 or 0.1 might inflate fixed effect coefficients. On a related, how can\n> one detect when coefficient inflation has occurred?\n>\n> Any suggestions on reference material to read further on this subject\n> would be greatly appreciated!\n>\n> Thank you very much in advance,\n>\n> Zofia Taranu\n>\n\n  It's been quite a  while since I did any experimenting with the tolPwrss\nsettings -- recent versions (e.g. in the past year or so) have been\nsufficiently stable that I haven't needed to mess with the tolPwrss\nsettings.  If you do, it sounds like you've got a fairly unstable problem\n-- have you looked at the data for outliers, weird data, etc.?  Have you\ntried with other optimizers (e.g.\nhttps://github.com/lme4/lme4/blob/master/misc/issues/allFit.R ) ?\n\nhttp://www.math.mcmaster.ca/bolker/R/misc/NM_tolpwrss_vs_deviance.pdf\nshows one example of the effects of using different tolerances (I think on\nthe standard cbpp example included with the package -- I could dig out the\ncode) -- but this is from a very old version of lme4, don't know what it\nwould look like if re-done with the current version.\n\nThe only real way to know that something bad has happened (as far as I\nknow) is to test with simulations, i.e. in cases where you know the true\nanswer.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "On Thu, Aug 7, 2014 at 10:13 AM, Zofia Ecaterina Taranu <\nzofia.taranu at gmail.com> wrote:\n\n> Hi All,\n>\n> I have a very basic question about the lme4 package and glmer model\n> convergence:\n>\n> Is the",
       "thread_id": "thread-8d1e05e55dc3",
       "thread_depth": 1,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/f5b820b6/attachment.pl"
+      ]
     },
     {
       "id": "msg-705cbcda2f12",
@@ -553,11 +598,14 @@
       "references": [
         "<CAFFAEtjoa8o55bJnaW=Xn4Cpxyf2Dd1dCTADTtcvVqZnEvjMfg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/6aacd346/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/6aacd346/attachment.pl>",
+      "body_plain": "This looks reasonable, but I think you should probably use Pearson\n(or possibly deviance) residuals for the most part.\n  One way to check would be compare the results for lme4 and glmmADMB\nfor a model that they can both run (e.g. Poisson), and make sure you\nget similar answers.\n\n  Ben Bolker\n\n\n\n\n\nOn Wed, Aug 6, 2014 at 1:33 PM, Reuben Smit <smit.reuben at gmail.com> wrote:\n\n> plot(glmmadmb_object) gives an error message \"..'x' is a list, but does not\n> have components 'x' and 'y' \"\n>\n> My work around has been:\n>\n> res<-residuals(glmmadmb_object, type=\"repsonse\")\n> plot(exp(predict(glmmadmb_object)), res) #for residual plot\n> qqnorm(res) #for a qqplot\n>\n> I'm looking for confirmation that my work around is correct, or how to\n> solve the issue of the error message.\n>\n> Thanks everyone,\n> Reuben\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "This looks reasonable, but I think you should probably use Pearson\n(or possibly deviance) residuals for the most part.\n  One way to check would be compare the results for lme4 and glmmADMB\nfor a model",
       "thread_id": "thread-412e2365f659",
       "thread_depth": 1,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140807/6aacd346/attachment.pl"
+      ]
     },
     {
       "id": "msg-f347b63e77d9",
@@ -569,11 +617,14 @@
       "subject_clean": "Non-conformable arguments while predicting with glmmadmb_model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140808/52cedda6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140808/52cedda6/attachment.pl>",
+      "body_plain": "I am attempting to do an observed versus predicted assessment of a negative\nbinomial glmm.\n\nMy first step was to simply use the predict( ) function with my glmmadmb\nobject on the dataset used to generate the model:\n\nglmm_dataset$prediction<-predict(glmmadmb_object, glmm_dataset,\ntype=\"response\")\n\nBut the error message results:\nError in X %*% beta : non-conformable arguments\n\nWhat has baffled me is that when I use the same glmmadmb_object to predict\nonto newdata, in the same way above, it runs the predictions fine, with no\nerror message and credible results.\n\nDoes anybody have ideas about what is going on here?\n\nThanks,\nReuben\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am attempting to do an observed versus predicted assessment of a negative\nbinomial glmm.\n\nMy first step was to simply use the predict( ) function with my glmmadmb\nobject on the dataset used to gener",
       "thread_id": "thread-f347b63e77d9",
       "thread_depth": 0,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140808/52cedda6/attachment.pl"
+      ]
     },
     {
       "id": "msg-514a6011c2e8",
@@ -621,11 +672,14 @@
       "references": [
         "<53E6647E.40207@psychologie.uni-freiburg.de>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140809/46146037/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140809/46146037/attachment.pl>",
+      "body_plain": "Hi Henrik,\n\nIt's not obvious to me that what the model is doing is necessarily \"wrong.\" In your data, the effect of IV on DV depends on group size. One possibility is to model this relationship explicitly by including group size as predictor in the model which interacts with IV. \n\ndat <- within(dat, {\n  size <- table(group)[paste(group)]\n  ivC <- iv - mean(iv)\n  sizeC <- size - mean(table(group))\n})\nsummary(lmer(dv ~ ivC*sizeC + (ivC|group), data=dat))\n\nThere is a size*IV interaction, t = 2.39. At the average group size (n=46) there is a negative effect of IV on DV, t = -2.82. At the grand mean of the group sizes (n=85; larger groups have more influence here), there is not a reliable relationship, t = -0.62.\n\nYou could also try looking at separating out the within-group and between-group effects of the IV, as described by Bell & Jones (2014) and others.\n\nBell, A., & Jones, K. (2014). Explaining fixed effects:\nRandom effects modeling of time-series cross-sectional and panel data. Political Science Research and Methods.\n\nJake\n\n> Date: Sat, 9 Aug 2014 20:12:14 +0200\n> From: henrik.singmann at psychologie.uni-freiburg.de\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] Group size in mixed/multilevel model: How to obtain\tweighted effects.\n> \n> Dear list,\n> \n> I have a relatively basic question regarding the influence of group size in a simple mixed model with 1 grouping factor (i.e., a one-level multilevel model). My data has one numerical DV, one numerical IV, and one grouping factor with 19 levels. Importantly, the number of observations in each group dramatically differs, from 5 to 136 (complete data and code is given below).\n> \n> My problem is that it seems that (a) only the small groups show an effect and not the large groups and furthermore (b) results of a simple mixed model are not taking into account that the larger groups do not show an effect but tend to reflect something like an unweighted means (i.e., weighing the effect of each groups identically).\n> \n> In other words: When looking at the data the overall or weighted mean (i.e., not taking grouping into account) and overall correlation between DV and IV are basically 0: Mean = -0.2 and r = -0.04.\n> In contrast, unweighted means (i.e., same weight for each group) show rather strong effects: Mean = -1.1 and r = -.26. Now it seems that the mixed model points strongly towards the unweighted means although there are dramatic differences in group sizes. The estimates mean is -1.0 and the estimated effect of the IV is also substantial.\n> \n> After removing the four smallest groups which amount to less than 4% of all data points and are basically the only ones showing a dramatic effect, the values become much more reasonable. Estimated mean = -0.5 and effect of IV also smaller.\n> \n> My question is what to do in such a situation:\n> - Is it a good reasons to remove small groups because of this?\n> - Is there a way to take group size into account like in a meta-analysis?\n> - Is there literature discussing this issue?\n> \n> Thanks in advance,\n> Henrik\n> \n> \n> ###### Complete example code ######\n> \n> require(lattice)  # for plot of data\n> require(lme4)\n> require(plyr)  # for unweighted means\n> dat <- read.table(\"http://pastebin.com/raw.php?i=KiQ1kkew\")\n> \n> #plot data\n> dat_print <- within(dat, levels(group) <- paste0(levels(group), \", n= \", table(group)))\n> xyplot(dv ~ iv|group, dat_print, panel = function(x, y) {\n>           panel.xyplot(x, y)\n>           panel.abline(lm(y ~ x))\n>         })  # number is group size\n> \n> # weighted means\n> cor(dat$dv, dat$iv)\n> mean(dat$dv)\n> \n> # unweighted means:\n> mean(daply(dat, .(group), function(x) cor(x$dv, x$iv)))\n> mean(daply(dat, .(group), function(x) mean(x$dv)))\n> \n> \n> # full model:\n> summary(lmer(dv~I(scale(iv, scale=FALSE))+(iv|group), dat))\n> \n> # model with small groups removed:\n> groups_exclude <- c(\"b\", \"c\", \"d\", \"s\")\n> ndat <- dat[!(dat$group %in% groups_exclude),]\n> summary(lmer(dv~I(scale(iv, scale=FALSE))+(iv|group), ndat))\n> \n> \n> \n> -- \n> Dr. Henrik Singmann\n> PostDoc\n> Albert-Ludwigs-Universität Freiburg, Germany\n> http://www.psychologie.uni-freiburg.de/Members/singmann\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Henrik,\n\nIt's not obvious to me that what the model is doing is necessarily \"wrong.\" In your data, the effect of IV on DV depends on group size. One possibility is to model this relationship explic",
       "thread_id": "thread-ade2c25333b6",
       "thread_depth": 1,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140809/46146037/attachment.pl"
+      ]
     },
     {
       "id": "msg-ba171f789f5c",
@@ -676,11 +730,14 @@
         "<BAY172-W44A571071071EC88520221CBEF0@phx.gbl>",
         "<53E79AE6.4040505@psychologie.uni-freiburg.de>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140810/d3fc43c3/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140810/d3fc43c3/attachment.pl>",
+      "body_plain": "Yes, that is what I meant, sorry for being unclear.\n\nJake\n\n> To: r-sig-mixed-models at r-project.org\n> From: henrik.singmann at psychologie.uni-freiburg.de\n> Date: Sun, 10 Aug 2014 18:16:38 +0200\n> Subject: Re: [R-sig-ME] Group size in mixed/multilevel model: How to obtain weighted effects.\n> \n> Hi Jake,\n> \n> I fully agree that what the model does is not necessarily wrong. It may well be that the groups should be treated equally. However in my case, each data point corresponds to one participant and each group to one study (with somewhat different characteristics). Hence, I would like to obtain the weighted estimate and rather treat each data point equal (and not each group).\n> \n> Your idea of specifically modeling group size is quite appealing. I am however somewhat unsure on how to interpret the \"grand mean of the group sizes\". Is this the \"weighted effect estimate\" in which each data point (i.e., participant) is weighted equally? Given that this is how the grand mean of the group size is created it seems to be the case.\n> \n> Thanks for the pointer to the paper. Will read it carefully.\n> \n> Cheers,\n> Henrik\n> \n> \n> PS: For interested readers, this is how to obtain the estimate with \"grand mean of group sizes\":\n> \n> dat <- within(dat, {\n>    size <- table(group)[paste(group)]\n>    ivC <- iv - mean(iv)\n>    sizeC <- size - mean(size)  # \"mean(sizes)\" is the grand mean of group sizes\n> })\n> summary(lmer(dv ~ ivC*sizeC + (ivC|group), data=dat))\n> \n> \n> Am 10.08.2014 01:13, schrieb Jake Westfall:\n> > Hi Henrik,\n> >\n> > It's not obvious to me that what the model is doing is necessarily \"wrong.\" In your data, the effect of IV on DV depends on group size. One possibility is to model this relationship explicitly by including group size as predictor in the model which interacts with IV.\n> >\n> > dat <- within(dat, {\n> >    size <- table(group)[paste(group)]\n> >    ivC <- iv - mean(iv)\n> >    sizeC <- size - mean(table(group))\n> > })\n> > summary(lmer(dv ~ ivC*sizeC + (ivC|group), data=dat))\n> >\n> > There is a size*IV interaction, t = 2.39. At the average group size (n=46) there is a negative effect of IV on DV, t = -2.82. At the grand mean of the group sizes (n=85; larger groups have more influence here), there is not a reliable relationship, t = -0.62.\n> >\n> > You could also try looking at separating out the within-group and between-group effects of the IV, as described by Bell & Jones (2014) and others.\n> >\n> > Bell, A., & Jones, K. (2014). Explaining fixed effects:\n> > Random effects modeling of time-series cross-sectional and panel data. Political Science Research and Methods.\n> >\n> > Jake\n> >\n> >> Date: Sat, 9 Aug 2014 20:12:14 +0200\n> >> From: henrik.singmann at psychologie.uni-freiburg.de\n> >> To: r-sig-mixed-models at r-project.org\n> >> Subject: [R-sig-ME] Group size in mixed/multilevel model: How to obtain\tweighted effects.\n> >>\n> >> Dear list,\n> >>\n> >> I have a relatively basic question regarding the influence of group size in a simple mixed model with 1 grouping factor (i.e., a one-level multilevel model). My data has one numerical DV, one numerical IV, and one grouping factor with 19 levels. Importantly, the number of observations in each group dramatically differs, from 5 to 136 (complete data and code is given below).\n> >>\n> >> My problem is that it seems that (a) only the small groups show an effect and not the large groups and furthermore (b) results of a simple mixed model are not taking into account that the larger groups do not show an effect but tend to reflect something like an unweighted means (i.e., weighing the effect of each groups identically).\n> >>\n> >> In other words: When looking at the data the overall or weighted mean (i.e., not taking grouping into account) and overall correlation between DV and IV are basically 0: Mean = -0.2 and r = -0.04.\n> >> In contrast, unweighted means (i.e., same weight for each group) show rather strong effects: Mean = -1.1 and r = -.26. Now it seems that the mixed model points strongly towards the unweighted means although there are dramatic differences in group sizes. The estimates mean is -1.0 and the estimated effect of the IV is also substantial.\n> >>\n> >> After removing the four smallest groups which amount to less than 4% of all data points and are basically the only ones showing a dramatic effect, the values become much more reasonable. Estimated mean = -0.5 and effect of IV also smaller.\n> >>\n> >> My question is what to do in such a situation:\n> >> - Is it a good reasons to remove small groups because of this?\n> >> - Is there a way to take group size into account like in a meta-analysis?\n> >> - Is there literature discussing this issue?\n> >>\n> >> Thanks in advance,\n> >> Henrik\n> >>\n> >>\n> >> ###### Complete example code ######\n> >>\n> >> require(lattice)  # for plot of data\n> >> require(lme4)\n> >> require(plyr)  # for unweighted means\n> >> dat <- read.table(\"http://pastebin.com/raw.php?i=KiQ1kkew\")\n> >>\n> >> #plot data\n> >> dat_print <- within(dat, levels(group) <- paste0(levels(group), \", n= \", table(group)))\n> >> xyplot(dv ~ iv|group, dat_print, panel = function(x, y) {\n> >>            panel.xyplot(x, y)\n> >>            panel.abline(lm(y ~ x))\n> >>          })  # number is group size\n> >>\n> >> # weighted means\n> >> cor(dat$dv, dat$iv)\n> >> mean(dat$dv)\n> >>\n> >> # unweighted means:\n> >> mean(daply(dat, .(group), function(x) cor(x$dv, x$iv)))\n> >> mean(daply(dat, .(group), function(x) mean(x$dv)))\n> >>\n> >>\n> >> # full model:\n> >> summary(lmer(dv~I(scale(iv, scale=FALSE))+(iv|group), dat))\n> >>\n> >> # model with small groups removed:\n> >> groups_exclude <- c(\"b\", \"c\", \"d\", \"s\")\n> >> ndat <- dat[!(dat$group %in% groups_exclude),]\n> >> summary(lmer(dv~I(scale(iv, scale=FALSE))+(iv|group), ndat))\n> >>\n> >>\n> >>\n> >> --\n> >> Dr. Henrik Singmann\n> >> PostDoc\n> >> Albert-Ludwigs-Universität Freiburg, Germany\n> >> http://www.psychologie.uni-freiburg.de/Members/singmann\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >   \t\t \t   \t\t\n> > \t[[alternative HTML version deleted]]\n> >\n> >\n> >\n> \n> -- \n> Dr. Henrik Singmann\n> Albert-Ludwigs-Universität Freiburg, Germany\n> http://www.psychologie.uni-freiburg.de/Members/singmann\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Yes, that is what I meant, sorry for being unclear.\n\nJake\n\n> To: r-sig-mixed-models at r-project.org\n> From: henrik.singmann at psychologie.uni-freiburg.de\n> Date: Sun, 10 Aug 2014 18:16:38 +0200\n> Su",
       "thread_id": "thread-ade2c25333b6",
       "thread_depth": 3,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140810/d3fc43c3/attachment.pl"
+      ]
     },
     {
       "id": "msg-3738c76f3a1c",
@@ -814,11 +871,14 @@
       "references": [
         "<53E937ED.70707@gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140811/3fe422f0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140811/3fe422f0/attachment.pl>",
+      "body_plain": "All you need to do is set up your own dummy variable (e.g.\nntreat=as.numeric(treat)-1, or ntreat=as.numeric(treat==\"1\"), or\nntreat=(original treat variable before using factor(treat) and then use\n(ntreat||group) or (1|group)+(0+ntreat|group)\n\n This is related but not identical to the last example in ?lmer ; it's\ncaused by an interaction between the way that R constructs model matrices\nfrom factors and the way lme4 uses that functionality.\n\n\n\nOn Mon, Aug 11, 2014 at 2:38 PM, Gustaf Granath <gustaf.granath at gmail.com>\nwrote:\n\n> Hi\n> I want to model random slope and intercept without a correlation between\n> the two. Is it possible to do this in lmer when the predictor is a factor?\n>\n> For example, imagine that x has 2 levels (control and treatment). In nlme,\n> I have been modeling uncorrelated intercept and slope like this:\n> lme(y ~ x, random=list(x = pdDiag(~ group)) ) where group is a random\n> factor.\n> It gives me the random intercept and random slope (i.e. variation in\n> treatment effect among groups).\n>\n> In lmer, I think the corresponding model is defined as:\n> lmer( y ~ x + (x||rand) and I guess this gives me differences (variation\n> in differences to the intercept), but it includes a covariance term.\n>\n> Is it possible to reproduce the above lme() model in lmer?\n>\n> I have a strong feeling that Im missing something here. Most of the\n> literature on this subject (and R-list questions) deals with continuous\n> variables so pls let me know if there is a good source on this topic.\n>\n> Below follows a small example.\n>\n> Cheers\n>\n> Gustaf\n>\n>\n> set.seed(1)\n> treat = rep(c(0, 1), each = 5, 10)\n> group = rep(1:10, each = 10)\n> rand.int = rep( rnorm( 10, 0, 1), each = 10)\n> rand.slop = rep( rnorm(10, 0, 1), each = 10)\n> e = rnorm(100, 0, 0.5)\n> y = 10 + rand.int + treat + rand.slop*treat + e\n> treat = factor(treat)\n>\n> #lmer\n> library(lme4)\n> # with correlation between intercept and slope\n> mod = lmer(y ~ treat + (treat|group) )\n> # without correlation between intercept and slope\n> # gives lots of error msgs\n> mod2 = lmer(y ~ treat + (treat||group) )\n> summary(mod)\n> summary(mod2)\n> # var-covar matrix\n> VarCorr(mod)$group\n> VarCorr(mod2)$group.1 #still a covariance term\n>\n> #nlme\n> # without correlation\n> library(nlme)\n> lme.mod <- lme(y ~ treat, random=list(group = pdDiag(~ treat)) )\n> summary(lme.mod)\n> getVarCov(lme.mod)\n>\n> --\n> Gustaf Granath (PhD)\n> Post doc\n> McMaster University\n> School of Geography & Earth Sciences\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "All you need to do is set up your own dummy variable (e.g.\nntreat=as.numeric(treat)-1, or ntreat=as.numeric(treat==\"1\"), or\nntreat=(original treat variable before using factor(treat) and then use\n(ntr",
       "thread_id": "thread-89c7b103a74a",
       "thread_depth": 1,
-      "month": "2014-08"
+      "month": "2014-08",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20140811/3fe422f0/attachment.pl"
+      ]
     },
     {
       "id": "msg-b5ab4cf75d45",

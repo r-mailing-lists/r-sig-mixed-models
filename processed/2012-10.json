@@ -16,11 +16,14 @@
         "<1349019834.24153.YahooMailNeo@web160702.mail.bf1.yahoo.com>",
         "<loom.20121001T004255-34@post.gmane.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/fc364cc9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/fc364cc9/attachment.pl>",
+      "body_plain": "Hi, Ben, thanks for your response. See below.\n\n\n\n>  Can you explain in slightly greater detail?  What are the\n> parameters you're taking the gradient and hessian with respect\n> to -- sounds like the fixed-effect parameters (beta)?  \n\nYes, both gradient and hessian would be taken with respect to the fixed effects parameters.\n\n> How do you define \"subject-wise\"?\n\nAssuming I have a single grouping factor, then \"subject-wise\" would be \"by each level of the grouping factor\".\n\n> The marginal likelihood is only defined with respect to the full data set, isn't it?\n\nCorrect me if I'm wrong, but isn't the marginal log-likelihood of the model a sum of the contribution from each grouping level? E.g., if I have $N$ subjects ($i = 1,..., N$), then\n $l(y | \\beta, \\sigma) = \\sum^N_{i = 1} l_i(y_i | \\beta, \\sigma)$, where $l_i(y_i | \\beta, \\sigma) = \\int^\\infty_{-\\infty} f(y_i | \\beta, u_i) g(u_i | \\sigma) du_i$. What I'm interested in is the first and second order derivatives of $l_i$ with respect to $\\beta$.\n\n>   I assume you're already using the development version, as\n> the deviance function is only available in the development version?\n\n\nNo, I'm using version 0.999999-0 from CRAN. I was bluntly trying to make it work with .Call('mer_update_dev',...).\n\nThanks,\nRubem\n\n\n\n________________________________\n De: Ben Bolker <bbolker at gmail.com>\nPara: r-sig-mixed-models at r-project.org \nEnviadas: Domingo, 30 de Setembro de 2012 19:47\nAssunto: Re: [R-sig-ME] Subject-wise log-likelihood gradient and hessian\n\nRubem Kaipper Ceratti <rubem_ceratti at ...> writes:\n\n> \n> Hi all,\n> \n> I'd like to know if it's possible to extract the subject-wise \n> gradient and hessian of the marginal\n> log-likelihood from a 'mer' object. \n\n  Can you explain in slightly greater detail?  What are the\nparameters you're taking the gradient and hessian with respect\nto -- sounds like the fixed-effect parameters (beta)?  How do\nyou define \"subject-wise\"?  The marginal likelihood is only\ndefined with respect to the full data set, isn't it?\n\n> Using the 'cbpp' dataset as an example:\n> \n> library(lme4)\n> \n> (m1 <- glmer(size ~ period+(1|herd), cbpp, poisson))\n\n\n> Since apparently there's no way to get what I need directly, I've\n> thought about splitting the data frame by 'herd', updating m1 on\n> each subset and then calling numDeriv::grad() and\n> numDeriv::hessian() on the deviance function of each updated object\n> at the estimates from m1, but I couldn't get this approach to work.\n> Any input is appreciated. \n\n  I assume you're already using the development version, as\nthe deviance function is only available in the development version?\n\n>  Thanks (and sorry for the broken english),\n\nEnglish seems fine -- it's the technical description that's\neluding me a bit.\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi, Ben, thanks for your response. See below.\n\n\n\n>  Can you explain in slightly greater detail?  What are the\n> parameters you're taking the gradient and hessian with respect\n> to -- sounds like the f",
       "thread_id": "thread-b687339e7d49",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/fc364cc9/attachment.pl"
+      ]
     },
     {
       "id": "msg-bf6a061e23aa",
@@ -32,11 +35,14 @@
       "subject_clean": "user-defined covariance matrix for linear mixed models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/1d05d081/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/1d05d081/attachment.pl>",
+      "body_plain": "I am looking for an R package or function that would estimate the\nvariance-covariance matrix of a linear mixed model.\nI have used pedigreemm and lme4 for simple examples but I would like to\nknow how to provide my own covariance structure.\nE.g. G, the variance-covariance matrix of a lmm model will typically be the\ntensor product of a typically small matrix g (e.g. a 2 x2 matrix of 3\nvariance-covariance parameters to estimate : sigxx,sigxy,sigyy) with of a\nknown matrix A. I wish to read matrix A from a file, and ask the R function\nto estimate g. I am not interested only in the case of diagonal g matrices.\n\nIs anybody aware of an interface e.g. to lme4, that would allow users to\nspecify and fit their models in such, flexible, way?\nPlease specify in your answer the input format for A (i.e sparse CSR,\ndense, trios, or any) - (g is in dense format).\n\nNote that a package like Jarrod Hadfield's MCMCglmm allows such flexible\ndefinitions. However, I am looking for a non MCMC estimator (e.g. REML).\n\nP.Fullsack\nDalhousie University\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I am looking for an R package or function that would estimate the\nvariance-covariance matrix of a linear mixed model.\nI have used pedigreemm and lme4 for simple examples but I would like to\nknow how t",
       "thread_id": "thread-bf6a061e23aa",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/1d05d081/attachment.pl"
+      ]
     },
     {
       "id": "msg-9b2807116c57",
@@ -84,11 +90,14 @@
       "subject_clean": "fixed or random effects?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a3b7c717/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a3b7c717/attachment.pl>",
+      "body_plain": "Hello R list\n\n \n\nI'm modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis, and have a little problem,\nhopefully simple to resolve. My explanatory variables are group size, fish\nlength and temperature and I sampled in two consecutive years, in spring. My\nproblem is that I'm not sure whether I should consider year as a random or a\nfixed effect. I wonder if you could help me.\n\nThank you. \n\n \n\nAll the best\n\nJoana\n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello R list\n\n \n\nI'm modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis, and have a little problem,\nhopefully simple to resolve. My explanat",
       "thread_id": "thread-a089736bace2",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a3b7c717/attachment.pl"
+      ]
     },
     {
       "id": "msg-04792244a006",
@@ -158,11 +167,14 @@
         "<CAKryudea3WUV4uO8bJA1qedm9i7itLQETfvDRG1yD9aFTo2a_w@mail.gmail.com>",
         "<F4BE9DC74ACC435B908CB3FFBF37714C@PCderobo>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/9eec339a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/9eec339a/attachment.pl>",
+      "body_plain": "Thank you very much Vincent,\nYour answer is completely acceptable. I have used (occasionally) ASReml and\nam aware of your solution. However, I would prefer staying within the R\nframework (i.e. use CRAN open source packages). Similar requests have been\nmade in November 2011, but are still unanswered as far as I know.\n\nPhilippe\n\nOn Mon, Oct 1, 2012 at 1:28 PM, Vincent Careau <vcareau at ucr.edu> wrote:\n\n> Hi,\n> I would say ASReml-R. It is free for academics using Windows. I don't know\n> if someone else figured out how to do an animal model (that seems like what\n> you want to do - or something very similar) with other mixed model packages\n> in R.  ASReml-R uses the Average Information algorithm. Perhaps the typical\n> methods used for the R packages would take too long with as many random\n> effects as an animal model is trying to estimate.\n>\n> By the way, Matt Wolak just created the \"nadiv\" package that you can use to\n> include dominance in your animal model, given you have the pedigree links\n> to\n> estimate it independently from additive genetic variance.\n> Good luck,\n> vc\n>\n> Vincent Careau\n> NSERC Postdoctoral fellow\n> Department of Biology\n> University of California\n> Riverside, CA, 92521\n> http://faculty.ucr.edu/~vcareau/\n>\n>\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org\n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of philippe\n> fullsack\n> Sent: Monday, October 01, 2012 5:58 AM\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] user-defined covariance matrix for linear mixed models\n>\n> I am looking for an R package or function that would estimate the\n> variance-covariance matrix of a linear mixed model.\n> I have used pedigreemm and lme4 for simple examples but I would like to\n> know how to provide my own covariance structure.\n> E.g. G, the variance-covariance matrix of a lmm model will typically be the\n> tensor product of a typically small matrix g (e.g. a 2 x2 matrix of 3\n> variance-covariance parameters to estimate : sigxx,sigxy,sigyy) with of a\n> known matrix A. I wish to read matrix A from a file, and ask the R function\n> to estimate g. I am not interested only in the case of diagonal g matrices.\n>\n> Is anybody aware of an interface e.g. to lme4, that would allow users to\n> specify and fit their models in such, flexible, way?\n> Please specify in your answer the input format for A (i.e sparse CSR,\n> dense, trios, or any) - (g is in dense format).\n>\n> Note that a package like Jarrod Hadfield's MCMCglmm allows such flexible\n> definitions. However, I am looking for a non MCMC estimator (e.g. REML).\n>\n> P.Fullsack\n> Dalhousie University\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you very much Vincent,\nYour answer is completely acceptable. I have used (occasionally) ASReml and\nam aware of your solution. However, I would prefer staying within the R\nframework (i.e. use CRA",
       "thread_id": "thread-bf6a061e23aa",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/9eec339a/attachment.pl"
+      ]
     },
     {
       "id": "msg-2e591226e454",
@@ -199,11 +211,14 @@
         "<CAKryudfx3WB9+T52Xy4o7B5BV2+FSrjQ5O1LwWROpGLiwszEMA@mail.gmail.com>",
         "<Pine.LNX.4.64.1210021013210.12813@orpheus.qimr.edu.au>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a798d5cd/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a798d5cd/attachment.pl>",
+      "body_plain": "Thank you very much David,\nAre you suggesting to use the regress function with Vformula:\n     G = sxx. [ A  0 ]      + sxy  [ 0 A ]    + syy [ 0 0 ]\n                   [ 0  0 ]                 [ A 0 ]             [ 0 A ]\n( a linear combination of known symmetric matrices)\n\nassuming a blocking of random effects : G = cov([u1,u2],[u1,u2]) ?\n\n\n\nOn Mon, Oct 1, 2012 at 9:14 PM, David Duffy <David.Duffy at qimr.edu.au> wrote:\n\n> On Mon, 1 Oct 2012, philippe fullsack wrote:\n>\n>  Thank you very much Vincent,\n>> Your answer is completely acceptable. I have used (occasionally) ASReml\n>> and\n>> am aware of your solution. However, I would prefer staying within the R\n>> framework (i.e. use CRAN open source packages). Similar requests have been\n>> made in November 2011, but are still unanswered as far as I know.\n>>\n>> Philippe\n>>\n>>\n>  library(help=regress)\n>\n>\n> Version:              1.3-8\n> Date:                 2012-03-19\n> Title:                Gaussian linear models with linear covariance\n>                       structure\n> Author:               David Clifford and Peter McCullagh. Additional\n>                       contributions by HJ Auinger.\n> Maintainer:           David Clifford <david.clifford at csiro.au>\n> Description:          Functions to fit Gaussian linear model by\n>                       maximising the residual log likelihood where the\n>                       covariance structure can be written as a linear\n>                       combination of known matrices.  Can be used for\n>                       multivariate models and random effects models.\n>                       Easy straight forward manner to specify random\n>                       effects models, including random interactions.\n>\n>\n>\n> --\n> | David Duffy (MBBS PhD)                                         ,-_|\\\n> | email: davidD at qimr.edu.au  ph: INT+61+7+3362-0217 fax: -0101  /     *\n> | Epidemiology Unit, Queensland Institute of Medical Research   \\_,-._/\n> | 300 Herston Rd, Brisbane, Queensland 4029, Australia  GPG 4D0B994A v\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you very much David,\nAre you suggesting to use the regress function with Vformula:\n     G = sxx. [ A  0 ]      + sxy  [ 0 A ]    + syy [ 0 0 ]\n                   [ 0  0 ]                 [ A 0 ]",
       "thread_id": "thread-bf6a061e23aa",
       "thread_depth": 4,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121001/a798d5cd/attachment.pl"
+      ]
     },
     {
       "id": "msg-d171dd218428",
@@ -265,11 +280,14 @@
       "subject_clean": "lmer multivariate longitudinal model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/81fef38a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/81fef38a/attachment.pl>",
+      "body_plain": "Dear list users,\n\ntrying to run a multisite longitudinal model with multiple response which\nare multiple similar measures for each subject and thus could covary.\nI did it by reshaping the data setting the variable as factor in the model\nas follows:\n>\nlmer1<-lmer(value~0+variable/(condition/time+confounds...)+other_confounds...+(1|site_id)+(-1+variable|subject_id),data=data1,REML=FALSE)\nbut running such model outputs the following warning:\n      caught warning: failure to converge in 10000 evaluations\nand trying to add a control parameter to change number of evaluation as:\n> ...,control=list(maxFN=20000))\nwhich add another warning to the output:\n      caught warning: unused control arguments ignored\nBut in both cases a results is stored in the lmer1 variable.\nMy questions are:\n-Is that the right way to model such a multivariate model? How many\nresponse is it reasonable to include in a faked multivariate model? To what\nI can understand, adding more response would virtually increase the number\nof observations thus not decreasing DFs number as part of the random/fixed\nfactors are \"variable independent\". I am wrong?\n\n-Does the first warning implies that the outputted estimate is wrong?\n\n-Why are the control arguments not taken into account? (sessionInfo outputs\nlme4_0.99999911-0 as version) Does it makes any sense trying to change\nthese to remove the warning?\n\nThanks for your help.\nBests.\n\nbasile\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list users,\n\ntrying to run a multisite longitudinal model with multiple response which\nare multiple similar measures for each subject and thus could covary.\nI did it by reshaping the data setting",
       "thread_id": "thread-eb111e447219",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/81fef38a/attachment.pl"
+      ]
     },
     {
       "id": "msg-8582ef7bb4f0",
@@ -415,11 +433,14 @@
       "references": [
         "<CADyNcx8hK_A28GV-UoKcNORnOcoJ-O1=EwStvKbfavkd5+Yowg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/2df17a60/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/2df17a60/attachment.pl>",
+      "body_plain": "Dear list users,\n\ntrying to run a multisite longitudinal model with multiple response which\nare multiple similar measures for each subject and thus could covary.\nI did it by reshaping the data setting the variable as factor in the model\nas follows:\n>\nlmer1<-lmer(value~0+variable/(condition/time+confounds...)+other_confounds...+(1|site_id)+(-1+variable|subject_id),data=data1,REML=FALSE)\nbut running such model outputs the following warning:\n      caught warning: failure to converge in 10000 evaluations\nand trying to add a control parameter to change number of evaluation as:\n> ...,control=list(maxFN=20000))\nwhich add another warning to the output:\n      caught warning: unused control arguments ignored\nBut in both cases a results is stored in the lmer1 variable.\nMy questions are:\n-Is that the right way to model such a multivariate model? How many\nresponse is it reasonable to include in a faked multivariate model? To what\nI can understand, adding more response would virtually increase the number\nof observations thus not decreasing DFs number as part of the random/fixed\nfactors are \"variable independent\". I am wrong?\n\n-Does the first warning implies that the outputted estimate is wrong?\n\n-Why are the control arguments not taken into account? (sessionInfo outputs\nlme4_0.99999911-0 as version) Does it makes any sense trying to change\nthese to remove the warning?\n\nThanks for your help.\nBests.\nbasile\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list users,\n\ntrying to run a multisite longitudinal model with multiple response which\nare multiple similar measures for each subject and thus could covary.\nI did it by reshaping the data setting",
       "thread_id": "thread-eb111e447219",
       "thread_depth": 1,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/2df17a60/attachment.pl"
+      ]
     },
     {
       "id": "msg-60431c458bc9",
@@ -431,11 +452,14 @@
       "subject_clean": "Mixed model and negative binomial distribution",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/88c0ed85/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/88c0ed85/attachment.pl>",
+      "body_plain": "Dear mixed-model brain trust: \n\n \n\nI am comparing snag (dead tree) densities 1 year and 5 years after\nsilvicultural treatment in forest plots to densities prior to treatment. In\nnlme, my model is \n\n \n\nlme(snagnum~treatment, random=(~1|plot), correlation=corExp(form=~year)). \n\n \n\n{Treatment is a factor with values of Pre/1-year post/5-year post}. This\ngives reasonable output, but I'm having a niggling doubt that I should be\nusing something akin to a negative binomial distribution, since about half\nof the values are zeros (i.e., many plots had no snags prior to treatment,\nand did not gain additional snags as a result of treatment). Can anyone\nsuggest an appropriate package and associated syntax for doing this mixed\nmodel based on an alternative probability density function?\n\n \n\n--Seth W. Bigelow\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mixed-model brain trust: \n\n \n\nI am comparing snag (dead tree) densities 1 year and 5 years after\nsilvicultural treatment in forest plots to densities prior to treatment. In\nnlme, my model is \n\n \n",
       "thread_id": "thread-60431c458bc9",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121003/88c0ed85/attachment.pl"
+      ]
     },
     {
       "id": "msg-8cb2db15ba15",
@@ -520,11 +544,14 @@
         "<CADyNcx8S6Oy-SqK1DsL8OHzowUBLL23ZcM5HRpiPRovFxL5WAg@mail.gmail.com>",
         "<CAEn158QR5w9kG1hDpPt=sBPtBZoPAMftSNyej+TZ37jhMeZDTg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/3ec2f000/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/3ec2f000/attachment.pl>",
+      "body_plain": "Thanks for your answer.\n\nThe outcome variables are correlations of measures from different regions\nof interest in images, which enables them to be regressed by common\nvariables (that I named 'other_confounds' in the formula). The data is the\noriginal data reshaped (with melt from reshape package) so that 'variable'\ncontains the name of the outcome and value it's value.\n\nAbout the non-convergence, being new to R, I was myself surprised that lmer\nreturns result object event if this results does not makes sense, that is\nwhy I do asked about this warning.\nThe second warning is independent of the convergence problem that have to\nbe fixed and which is mainly due to the fact of having that many variables\ninto the model.\nThis second warning seems to say that the control parameters are not taken\ninto account whatsoever.\n\nI have been looking at SabeR and exploring MCMCglmm today as multivariate\nsupport seems built-in, but there are so many packages that it is difficult\nas a newbie to make a choice.\n\nbasile\n\n\nOn Thu, Oct 4, 2012 at 9:18 PM, Joerg Luedicke <joerg.luedicke at gmail.com>wrote:\n\n> It is not clear to me how your data structure looks like, what your\n> outcome variables are, whether you got reasonable results from\n> separate model fits, what exactly you did by reshaping, and so on.\n> Thus I will only throw in some 2c regarding the two questions at the\n> bottom of your post (see below):\n>\n> On Wed, Oct 3, 2012 at 3:45 AM, basile pinsard\n> <basile.pinsard at imed.jussieu.fr> wrote:\n> >\n> > -Does the first warning implies that the outputted estimate is wrong?\n> >\n> The warning message means what it says: your model did not converge.\n> The results in the mer object are (I would think) the estimates from\n> the last iteration. However, since your model did not converge, these\n> results are at least untrustworthy.\n>\n> > -Why are the control arguments not taken into account? (sessionInfo\n> outputs\n> > lme4_0.99999911-0 as version) Does it makes any sense trying to change\n> > these to remove the warning?\n>\n> The fact that your model did not converge can have many reasons,\n> including data management issues. So your question should rather be\n> \"Why is my model not converging?\" instead of trying to \"remove the\n> warning\"! If you are unsure about what convergence means in this\n> context you should probably do some basic read-up.\n>\n> Joerg\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks for your answer.\n\nThe outcome variables are correlations of measures from different regions\nof interest in images, which enables them to be regressed by common\nvariables (that I named 'other_co",
       "thread_id": "thread-eb111e447219",
       "thread_depth": 3,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/3ec2f000/attachment.pl"
+      ]
     },
     {
       "id": "msg-33ae4d72bf7e",
@@ -557,11 +584,14 @@
       "subject_clean": "Mixed Effects Model with ordered dependent variable and random slopes",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/603eef4a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/603eef4a/attachment.pl>",
+      "body_plain": "Is there a plugin/toolbox for R that can handle 1) ordered dependent\nvariables and 2) has both random intercept and random slope implemented (as\nfar as I understand CLMM / ORDINAL doesn't do random slopes).\n\nThanks\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Is there a plugin/toolbox for R that can handle 1) ordered dependent\nvariables and 2) has both random intercept and random slope implemented (as\nfar as I understand CLMM / ORDINAL doesn't do random sl",
       "thread_id": "thread-0894d0b3ffae",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121004/603eef4a/attachment.pl"
+      ]
     },
     {
       "id": "msg-99005c5a4d95",
@@ -593,11 +623,14 @@
       "references": [
         "<29D19369-EFB3-4391-8B99-F5B54A3BAB6B@ethz.ch>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/77f64280/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/77f64280/attachment.pl>",
+      "body_plain": "Hi Judith,\n\nYou might want to check out the GLMM FAQ http://glmm.wikidot.com/faq\nYour questions are pretty basic stuff which has been covered a number of\ntimes on the list i think.\n\n1) check the FAQ for the P-Value issue. Options include pamer.fnc in\nLMERConvenienceFunctions or pvals.fnc in the LanguageR packages for easy\ncomputations. The FAQ has other comments on this though. Your fourth\nquestion is also a method of determining P-Vals.\n2) What do you mean by an \"overall model statistic\"? R2 or similar? The FAQ\ncovers this too.\n\nYour model summary does just that - it summarises the model: reports\ncoefficients etc\n\nBy comparing the models you can test to see if spec improves the model (it\ndoesnt for your minimised dataset). Look up likelihood ratio tests.\n\nCheck the multcomp package for post hoc tests. It does Tukey tests, not\nsure about LSD though\n\nRe your random plots - 5 is a very small number (in fact its often regarded\nas the absolute minimum of levels for a RE). It could produce quite bad\nestimates of variance (as you can see for your model with 2 plots : the\nrandom effects part of the summary output).\n\n\nHTH\n\nAlan\n\n\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\nOn 4 October 2012 11:41, Riedel Judith <judith.riedel at ipw.agrl.ethz.ch>wrote:\n\n> Dear people of the help list\n>\n> I am drying to analyze my data using the 'lmer' function and I keep having\n> problems.\n>\n> This is the model:\n> > fm1<-lmer(dbh~spec+scheme+(1|Plot),data=d, REML=FALSE).\n>\n> I analyse tree size (dbh) of  3 different species (spec) and  3 planting\n> schemes (scheme). I have 5 plots, which I hope to model as a random factor.\n> (However, the subsequent output is based on some simplified dummy data,\n> which is based on only two plots and ha only few observations).\n>\n> No I do:\n> > anova(fm1)\n> and I get some output, which I don't understand. Looks like this:\n>\n> Analysis of Variance Table\n>        Df Sum Sq Mean Sq F value\n> spec    2 6.098 3.0490  0.6142\n> scheme  2 13.161  6.5803  1.3255\n>\n> The problems I have are:\n> (1) How can I get the P-values?\n> (2) How can I get the overall model statistic?\n>\n> Than I do:\n> > summary(fm1)\n>\n> and get:\n> Linear mixed model fit by maximum likelihood\n> Formula: dbh ~ spec + scheme + (1 | Plot)\n>    Data: d\n>    AIC BIC logLik deviance REMLdev\n>  147.2 157  -66.6    133.2   125.8\n> Random effects:\n>  Groups   Name        Variance Std.Dev.\n>  Plot     (Intercept) 0.0000   0.0000\n>  Residual             4.9644   2.2281\n> Number of obs: 30, groups: Plot, 2\n>\n> Fixed effects:\n>             Estimate Std. Error t value\n> (Intercept)   6.9074     0.9424   7.329\n> specCED       0.3859     1.0265   0.376\n> specTAB       0.8585     0.9828   0.874\n> schemeMON     0.6572     0.9554   0.688\n> schemePRO    -1.0344     1.1259  -0.919\n>\n> Correlation of Fixed Effects:\n>           (Intr) spcCED spcTAB schMON\n> specCED   -0.537\n> specTAB   -0.529  0.500\n> schemeMON -0.588  0.002 -0.072\n> schemePRO -0.565  0.064  0.063  0.510\n>\n> What is this? What does it tell me?\n>\n> The statistics help advised me to do a second model, like this:\n> > fm2<-lmer(dbh~scheme+(1|Plot),data=d,REML=FALSE)\n> > anova(fm1,fm2)\n>\n> But why would I compare the two models?\n>\n>  What I get is:\n> Data: d\n> Models:\n> fm2: dbh ~ scheme + (1 | Plot)\n> fm1: dbh ~ spec + scheme + (1 | Plot)\n>     Df    AIC    BIC  logLik  Chisq Chi Df Pr(>Chisq)\n> fm2  5 143.96 150.97 -66.982\n> fm1  7 147.21 157.01 -66.602 0.7584      2     0.6844\n>\n> What does this mean? Why Chi?\n>\n> Finally I would like to do some LSD post hoc tests, but I have no idea how\n> to do it.\n>\n> In the end I would like to be able to report something like: 'DBH differed\n> significantly between, species, planting schemes, and plots (Fx,xx = X; P =\n> X). DBH of species 1 was significantly larger than DBH of species 2 (LSD\n> post hoc test, P = X)'.\n>\n> I greatly appreciate any suggestions! Thank You a lot for Your help!\n>\n> Kind regards,\n>\n> Judith\n> XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n> Judith Riedel\n> ETH Zurich\n> Institute of Agricultural Sciences\n> Applied Entomology\n> Schmelzbergstrasse 9/LFO\n> 8092 Zurich\n> Switzerland\n>\n> Tel:  ++41 44 632 3923\n> Fax: ++41 44 632 1171\n> judith.riedel at ipw.agrl.ethz.ch<mailto:judith.riedel at ipw.agrl.ethz.ch>\n> http://www.em.ipw.agrl.ethz.ch\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Judith,\n\nYou might want to check out the GLMM FAQ http://glmm.wikidot.com/faq\nYour questions are pretty basic stuff which has been covered a number of\ntimes on the list i think.\n\n1) check the FAQ f",
       "thread_id": "thread-136b29a6911f",
       "thread_depth": 1,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/77f64280/attachment.pl"
+      ]
     },
     {
       "id": "msg-34bdc3b9d421",
@@ -633,11 +666,14 @@
         "<CADyNcx8DKzVo5jLVUnB9irUzpFSRgyyQrZhCF34iYJEo8xWC5g@mail.gmail.com>",
         "<CAEn158QSQy_W2T+Syy1yt54As=-jHWvUUCbUz7JQB4yAmtMzuQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/40f5e632/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/40f5e632/attachment.pl>",
+      "body_plain": "To be honest, sure there is problem with the data as they have many source\nof noise (and it's variance is really important) and probably non-linear\nconfounds some of them we cannot control for neither measure.\nTo be more precise these are longitudinal measure of interactions between\nregions in a brain at \"rest\" so we did not controlled what the subject\ncoffee uptake was for example, neither how well he slept etc... the\nresiduals are expected to be high.\nMy aim is mainly to assess the variance of interest over the one of noise\nconfound and residuals by fitting a sensible linear model over the\navailable variables supposed to have a role in the outcome.\n\nI tried fitting with single outcome and it was converging.\nThe results make sense regarding  but the effects variance are really weak\ncompare to noise variable variance and residuals. I am not aiming to find\nprecise estimate but mainly to find what parameters have the highest\ninfluence on these measures.\nThe results obtained with MCMCglmm also makes sense.\n\nThanks for the wiki pointer.\n\nbasile\n\n\nOn Thu, Oct 4, 2012 at 11:13 PM, Joerg Luedicke <joerg.luedicke at gmail.com>wrote:\n\n> Before checking out other packages, I would first try to figure out\n> the reason(s) for the convergence issues. More often than not the\n> reason is just some trivial issue with the data, but could of course\n> also be due to analyzing some complex data, a problem in the model\n> set-up itself etc. Did you fit separate models for each of your\n> outcome variables? Did you experience any convergence problems there?\n> Did the results made sense, based on your knowledge of the data?\n>\n> Re multilevel/mixed-effects modeling in R, if you did not have\n> already, maybe have a look at this page:\n>\n> http://glmm.wikidot.com/faq\n>\n> Joerg\n>\n>\n> On Thu, Oct 4, 2012 at 3:36 PM, basile pinsard\n> <basile.pinsard at imed.jussieu.fr> wrote:\n> > Thanks for your answer.\n> >\n> > The outcome variables are correlations of measures from different\n> regions of\n> > interest in images, which enables them to be regressed by common\n> variables\n> > (that I named 'other_confounds' in the formula). The data is the original\n> > data reshaped (with melt from reshape package) so that 'variable'\n> contains\n> > the name of the outcome and value it's value.\n> >\n> > About the non-convergence, being new to R, I was myself surprised that\n> lmer\n> > returns result object event if this results does not makes sense, that is\n> > why I do asked about this warning.\n> > The second warning is independent of the convergence problem that have\n> to be\n> > fixed and which is mainly due to the fact of having that many variables\n> into\n> > the model.\n> > This second warning seems to say that the control parameters are not\n> taken\n> > into account whatsoever.\n> >\n> > I have been looking at SabeR and exploring MCMCglmm today as multivariate\n> > support seems built-in, but there are so many packages that it is\n> difficult\n> > as a newbie to make a choice.\n> >\n> > basile\n> >\n> >\n> > On Thu, Oct 4, 2012 at 9:18 PM, Joerg Luedicke <joerg.luedicke at gmail.com\n> >\n> > wrote:\n> >>\n> >> It is not clear to me how your data structure looks like, what your\n> >> outcome variables are, whether you got reasonable results from\n> >> separate model fits, what exactly you did by reshaping, and so on.\n> >> Thus I will only throw in some 2c regarding the two questions at the\n> >> bottom of your post (see below):\n> >>\n> >> On Wed, Oct 3, 2012 at 3:45 AM, basile pinsard\n> >> <basile.pinsard at imed.jussieu.fr> wrote:\n> >> >\n> >> > -Does the first warning implies that the outputted estimate is wrong?\n> >> >\n> >> The warning message means what it says: your model did not converge.\n> >> The results in the mer object are (I would think) the estimates from\n> >> the last iteration. However, since your model did not converge, these\n> >> results are at least untrustworthy.\n> >>\n> >> > -Why are the control arguments not taken into account? (sessionInfo\n> >> > outputs\n> >> > lme4_0.99999911-0 as version) Does it makes any sense trying to change\n> >> > these to remove the warning?\n> >>\n> >> The fact that your model did not converge can have many reasons,\n> >> including data management issues. So your question should rather be\n> >> \"Why is my model not converging?\" instead of trying to \"remove the\n> >> warning\"! If you are unsure about what convergence means in this\n> >> context you should probably do some basic read-up.\n> >>\n> >> Joerg\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "To be honest, sure there is problem with the data as they have many source\nof noise (and it's variance is really important) and probably non-linear\nconfounds some of them we cannot control for neither",
       "thread_id": "thread-eb111e447219",
       "thread_depth": 5,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/40f5e632/attachment.pl"
+      ]
     },
     {
       "id": "msg-6d64a78f1411",
@@ -720,11 +756,14 @@
       "references": [
         "<506EB868.20200@highstat.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/96a04144/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/96a04144/attachment.pl>",
+      "body_plain": "-------- Original Message --------\nSubject: \tRe: Mixed model and negative binomial distribution\nDate: \tFri, 05 Oct 2012 12:37:28 +0200\nFrom: \tHighland Statistics Ltd <highstat at highstat.com>\nTo: \tr-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n\n\n\n------------------------------\n\nMessage: 2\nDate: Fri, 5 Oct 2012 04:32:36 +0000 (UTC)\nFrom: Ben Bolker <bbolker at gmail.com>\nTo: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Mixed model and negative binomial distribution\nMessage-ID: <loom.20121005T062854-986 at post.gmane.org>\nContent-Type: text/plain; charset=us-ascii\n\nSeth W. Bigelow <seth at ...> writes:\n\n>\n> Dear mixed-model brain trust:\n>\n> I am comparing snag (dead tree) densities 1 year and 5 years after\n> silvicultural treatment in forest plots to densities prior to treatment. In\n> nlme, my model is\n>\n> lme(snagnum~treatment, random=(~1|plot), correlation=corExp(form=~year)).\n>\n> {Treatment is a factor with values of Pre/1-year post/5-year post}. This\n> gives reasonable output, but I'm having a niggling doubt that I should be\n> using something akin to a negative binomial distribution, since about half\n> of the values are zeros (i.e., many plots had no snags prior to treatment,\n> and did not gain additional snags as a result of treatment). Can anyone\n> suggest an appropriate package and associated syntax for doing this mixed\n> model based on an alternative probability density function?\n\n>  Negative binomial would be a reasonable distribution; the other\n>answer gives you some methods for doing this.  *However*, incorporating\n>both serial correlation and non-Gaussian errors in a model of this form\n>is a bit of a nuisance.\n>The model you want might be something like\n\n>  snagnum ~ Poisson(lambda)\n>  lambda ~ MVN(mean=treatment,Sigma=...)\n\n>where the variance-covariance matrix gives you both some extra-Poisson\n>variation (to handle overdispersion) and some correlation between\n>observations.  I'm hoping Alain Zuur will pop up shortly to point you\n>to a reference in his new book that will tell you how to do this in\n>WinBUGS ...\n\n\n\n-----------\nYesterday, Alain was on a nice beach in the Caribbean enjoying his wedding. Now he is close to the north pole.\n\n\nYes....this sounds MCMC. And code for NB GLMM with AR1 correlation and zero inflation is indeed in the 2012 book.\nHowever...if the zeros are sequential in time then the correlation and zero inflation components may fight\nfor the same information. And the NB distribution may try to take its share of zeros as well. Better start with\nthe Poisson version of it....and if a Poisson + correlation + ZIP still shows problems, then consider the NB.\nFor irregular time series consider a CAR correlation.\n\nAs to the implementation..try WinBUGS, OpenBUGS, JAGS....code is nearly the same. I recently downloaded STAN...looks promising too.\n\nYou may also want to have a look at \"Generalized Additive Mixed Model Analysis via gammSlice\" by Pham and Wand.\nGAMM is essentially a GLMM.... But I don;t think it can do zero inflation....but perhaps it does NB GLMM. Not sure.\n\n\n\nAlain\n\n-- \n\nDr. Alain F. Zuur\nFirst author of:\n\n1. Analysing Ecological Data (2007).\nZuur, AF, Ieno, EN and Smith, GM. Springer. 680 p.\nURL: www.springer.com/0-387-45967-7\n\n\n2. Mixed effects models and extensions in ecology with R. (2009).\nZuur, AF, Ieno, EN, Walker, N, Saveliev, AA, and Smith, GM. Springer.\nhttp://www.springer.com/life+sci/ecology/book/978-0-387-87457-9\n\n\n3. A Beginner's Guide to R (2009).\nZuur, AF, Ieno, EN, Meesters, EHWG. Springer\nhttp://www.springer.com/statistics/computational/book/978-0-387-93836-3\n\n\n4. Zero Inflated Models and Generalized Linear Mixed Models with R. (2012) Zuur, Saveliev, Ieno.\nhttp://www.highstat.com/book4.htm\n\nOther books: http://www.highstat.com/books.htm\n\n\nStatistical consultancy, courses, data analysis and software\nHighland Statistics Ltd.\n6 Laverock road\nUK - AB41 6FN Newburgh\nTel: 0044 1358 788177\nEmail: highstat at highstat.com\nURL: www.highstat.com\nURL: www.brodgar.com\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "-------- Original Message --------\nSubject: \tRe: Mixed model and negative binomial distribution\nDate: \tFri, 05 Oct 2012 12:37:28 +0200\nFrom: \tHighland Statistics Ltd <highstat at highstat.com>\nTo: \tr-",
       "thread_id": "thread-cf9dfa99929e",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/96a04144/attachment.pl"
+      ]
     },
     {
       "id": "msg-daf784ce97b0",
@@ -755,11 +794,14 @@
       "subject_clean": "Random Effects on Linear Mixed Models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/001cf5a0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/001cf5a0/attachment.pl>",
+      "body_plain": "Dear List Servers,\n\nI have some question regarding random effects in linear mixed models.\n\nMy data is a large survey (N=82,000) conducted between Jan - Nov 2004 to\nmeasure individuals' political preferences.  I want to explore the effect\nof TV political ads in shaping those preferences especially among\nthose citizens who consider themselves as independent in terms of political\npredispositions.  Most TV political ads are concentrated on those states\nwhere both candidates (Bush & Kerry) believed they had a chance to win\n(battleground states).\n\nDependent variable: Bush's Favorability measured at individual level\n(ranges from 0 - to 10)\nKey independent variable : Bush.ads (measured at individual level based on\nthe numbers of ads aired in respondent's state during the last week\nprevious to the day of interview)\n\nThese are the effects that I want to test:\n\n\n   1. Were Bush's ads effective in increasing his favorability?\n   2. Were Bush's ads effective in increasing his favorability among\n   independents?\n   3. Did the effect of Bush's ads change before and after the democratic\n   convention?\n   4. In which states and on what weeks did Bush's ads have a significant\n   impact on his favorability (in general and among independents)?\n   5. Did the number of ads aired matter in increasing Bush's favorability?\n   6. How to incorporate the analysis of Kerry's campaign?\n\n\nThis is the model I am running to test those effects:\n\ncampaign.model <- lmer (bush.fav ~ Independent + Bush.ads +\n Independent:Bush.ads   (1+ Independent + Bush.ads\n+  Independent:Bush.ads |State) ))\n\nThese are my strategies to answer above questions and my doubts about them:\n\n   1. Answered based on the fixed coefficient of Bush.ads\n   2. Answered based on the fixed coefficient of the\n   interaction Independent:Bush.ads\n   3. Answered by splitting the dataset in before-after convention, running\n   the same model, and comparing the coefficient for Bush.ads in both datasets\n   4. Answered by running separated models for each week and retrieving\n   random effects by state to find substantive and statistically significant\n   results\n   5. This one I'm not sure.  The initial analysis uses dummy variables for\n   Bush'ads . Bush.ads; however, (in its original metric)\n   is always positive and ranges from 0 to 1187. Zero has a substantive\n   meaning in terms of the campaigns' strategies that's why I'm not sure of\n   using a logged measure. At the same time I have read in this list that it\n   is not recommendable to include categorical predictors in the fixed and the\n   random part to avoid overfitting problems.  Should I model the effects of\n   Bush.ads (binary) as a function of the number of Bush's ads (original\n   scale)? What are the alternatives?\n   6. Not sure again.  Bush.ads and Kerry.ads are strongly correlated (0.9)\n   but this varies across states and weeks.  I'm not sure whether\n   is preferable to include Kerry's variables and their interactions in the\n   same model  (potential overfitting problems again) or run separate analysis\n   for each campaign\n\nI'd really appreciate any feedback and guidance that anyone can provide me.\n\nThanks,\n\nDavid Llanos\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear List Servers,\n\nI have some question regarding random effects in linear mixed models.\n\nMy data is a large survey (N=82,000) conducted between Jan - Nov 2004 to\nmeasure individuals' political prefe",
       "thread_id": "thread-4287eb7e181a",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121005/001cf5a0/attachment.pl"
+      ]
     },
     {
       "id": "msg-44edcbaa3eff",
@@ -833,11 +875,14 @@
         "<CAMt7gbMt_ibwtn3v9GydvOXep7kL-kqQH=H0GJBiUQH7HRj1xQ@mail.gmail.com>",
         "<20121006223636.39373n36z3niymis@www.staffmail.ed.ac.uk>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121006/a5b162df/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121006/a5b162df/attachment.pl>",
+      "body_plain": "Thanks!\n\nThat plus removing the R structure (which I didn't think I should have had\nin there anyhow) is exactly what made it work.\n\nRobin Jeffries\nMS, DrPH Candidate\nDepartment of Biostatistics,\nUCLA\n\n\n\n\n\n\nOn Sat, Oct 6, 2012 at 2:36 PM, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n\n> Hi,\n>\n> Sorry - I should have a more useful error message. Th argument to tune\n> needs to be a matrix.\n>\n> Cheers,\n>\n> Jarrod\n>\n>\n>\n> Quoting Robin Jeffries <rjeffries at ucla.edu> on Fri, 5 Oct 2012 13:28:55\n> -0700:\n>\n>  I am encountering the same problem of defining the starting values,\n>> yet for a different model. I am running a survival model with no\n>> random effects on n subjects.\n>>\n>> run1 <- MCMCglmm(cbind(low, up) ~ var1 + var2,\n>>               family=\"cengaussian\", data=sex,\n>>               nitt=2100, thin=5, burnin=100,\n>>               prior = prior1, tune=NULL, pl=TRUE)\n>>\n>> prior1 <- list(R = list(V=1, n=0.002),\n>>                        B = list(mu=rep(0,2), V=prior.var))\n>>\n>> Since I have no random effects, there is no G matrix and  the\n>> liabilities are just a single vector with a scalar variance.\n>> So for example, say I want to start the liabilities at 1\n>> prop.mean <- as.matrix(rep(1,n))\n>> and a prior variance\n>> prop.var <- 3\n>>\n>> If I don't provide starting value for my residuals, R,\n>> test2a <- MCMCglmm(cbind(low, up) ~ var1 + var2,\n>>                  family=\"cengaussian\", data=sex,\n>>                  nitt=2100, thin=5, burnin=100,\n>>                  prior = prior1, tune=prop.var,\n>>                  start=list( liab=prop.mean, QUASI=FALSE),\n>>                  pl=TRUE)\n>>\n>> I get the error message: Error in if (dim(tune[[i]])[1] !=\n>> dim(tune[[i]])[2] | dim(tune[[i]])[2] !=  :\n>>   argument is of length zero\n>>\n>> Since R is a scalar, I tried to use the same structure as the prior\n>> run2b <- MCMCglmm(cbind(low, up) ~ var1 + var2,\n>>                  family=\"cengaussian\", data=sex,\n>>                  nitt=2100, thin=5, burnin=100,\n>>                  prior = prior1, tune=prop.var,\n>>                  start=list(R=list(V=1),\n>>                             liab=prop.mean,\n>>                             QUASI=FALSE),\n>>                  pl=TRUE)\n>> but got the same dimension mis-match error.\n>>\n>> If i use the error term from run1  as starting values for R,\n>> run2c <- MCMCglmm(cbind(low, up) ~ var1 + var2,\n>>                  family=\"cengaussian\", data=sex,\n>>                  nitt=2100, thin=5, burnin=100,\n>>                  prior = prior1, tune=prop.var,\n>>                  start=list(R=list(V=run1$**error.term),\n>>                             liab=prop.mean,\n>>                             QUASI=FALSE),\n>>                  pl=TRUE)\n>>\n>> I get the error: Error in eigen(m, only.values = TRUE) :\n>>   (list) object cannot be coerced to type 'double'\n>>\n>> At this point I cannot decipher what it is I need to change to\n>> properly provide starting values.\n>>\n>> Thanks,\n>> -Robin\n>>\n>>\n>> On Tue, Jun 7, 2011 at 9:26 PM, Jarrod Hadfield <j.hadfield at ed.ac.uk>\n>> wrote:\n>>\n>>>\n>>> Hi,\n>>>\n>>> A bug has crept into MCMCglmm at some point when specifying starting\n>>> values. The correct syntax should be start2c for which you get an error\n>>> message. I will update as soon I have finished some of the other updates\n>>> I am working on. As a work around you can add another matrix to the G\n>>> element:\n>>>\n>>> start2c$G[[5]]<-diag(2)\n>>>\n>>> It will be ignored but will alow the code to run.\n>>>\n>>> Sorry,\n>>>\n>>> Jarrod\n>>>\n>>>\n>>>\n>>>\n>>>\n>>> On Tue, 2011-06-07 at 10:34 -0700, Robin Jeffries wrote:\n>>> > I am having some difficulty defining the correct structure for the\n>>> > starting values in MCMCglmm.\n>>> > Several prior google searches for examples of starting values for\n>>> > MCMCglmm resulted only in one unhelpful L-serv posting where the\n>>> > poster was subsequently told to RTM and quit posting. I hope that I\n>>> > show that I have spent time trying to find the answer on my own prior\n>>> > to posting.\n>>> >\n>>> >\n>>> > My prior structure is:\n>>> >\n>>> > prior1 = list(R = list(V = 1, nu = .002),\n>>> >   G = list(\n>>> >    G1 = list(V = diag(3), n=4),\n>>> >    G2 = list(V = diag(3), n=4),\n>>> >    G3 = list(V = 1, nu=1),\n>>> >    G4 = list(V = 1, nu=1)\n>>> > ))\n>>> >\n>>> >\n>>> > To set up starting values I first set Rc and Gc to be vectors of\n>>> > length 1 and 20 respectively. I then tried the starting value\n>>> > structure as\n>>> >\n>>> > start2a = list( R = Rc,\n>>> >   G = list(\n>>> >    G1 = Gc[1:9],\n>>> >    G2 = Gc[10:18],\n>>> >    G3 = Gc[19],\n>>> >    G4 = Gc[20]),\n>>> > QUASI=FALSE)\n>>> >\n>>> > which gives me the error \"V is the wrong dimension for some\n>>> > startG/startR elements\"\n>>> > So I tried to structure it exactly as the priors (with lists and\n>>> matricies)\n>>> >\n>>> > start2b = list(R = list(V =Rc),\n>>> > G = list(\n>>> >  G1 = list(V = matrix(Gc[1:9], nrow=3, ncol=3)),\n>>> >  G2 = list(V = matrix(Gc[10:18], nrow=3, ncol=3)),\n>>> >  G3 = list(V = Gc[19]),\n>>> >  G4 = list(V = Gc[20])\n>>> > ))\n>>> >\n>>> > and got the same error message.\n>>> >\n>>> > Since the help file/notes/vignette says that \"the starting values is a\n>>> > list of 4 possible elements, where G itself is also a list with as\n>>> > many elements as RE components\" I tried a combination of the above\n>>> > two:\n>>> >\n>>> > start2c = list(\n>>> > R = Rc,\n>>> > G = list(\n>>> >  G1 = matrix(Gc[1:9], nrow=3, ncol=3),\n>>> >  G2 = matrix(Gc[10:18], nrow=3, ncol=3),\n>>> >  G3 = Gc[19],\n>>> >  G4 = Gc[20]),\n>>> > QUASI=FALSE)\n>>> >\n>>> > but then was greeted with the error \"Error in start$G[[r]] : subscript\n>>> > out of bounds\"\n>>> >\n>>> > If someone could help me out with what the structure of the starting\n>>> > values is supposed to look like, it would be appreciated.\n>>> >\n>>> >\n>>> > Robin Jeffries\n>>> > MS, DrPH Candidate\n>>> > Department of Biostatistics\n>>> > UCLA\n>>> > 530-633-STAT(7828)\n>>> >\n>>> > ______________________________**_________________\n>>> > R-sig-mixed-models at r-project.**org <R-sig-mixed-models at r-project.org>mailing list\n>>> > https://stat.ethz.ch/mailman/**listinfo/r-sig-mixed-models<https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>> >\n>>>\n>>>\n>>>\n>>> --\n>>> The University of Edinburgh is a charitable body, registered in\n>>> Scotland, with registration number SC005336.\n>>>\n>>>\n>>\n>>\n>\n>\n> --\n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks!\n\nThat plus removing the R structure (which I didn't think I should have had\nin there anyhow) is exactly what made it work.\n\nRobin Jeffries\nMS, DrPH Candidate\nDepartment of Biostatistics,\nUCLA\n",
       "thread_id": "thread-daf784ce97b0",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121006/a5b162df/attachment.pl"
+      ]
     },
     {
       "id": "msg-9bc4eb4e6cd6",
@@ -927,11 +972,14 @@
       "subject_clean": "visualizing effects of fixed factors and partial/whole model statistics",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/c71301bf/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/c71301bf/attachment.pl>",
+      "body_plain": "Hi All,\n\nI have two related practical questions concerning GLMMs. I hope my\nquestions aren't too simplistic for this list, but other forums have been\nnot been responsive.\n\nMy model is specified as follows:\n\nlmer(countData ~ 3LevelFactor + continuous + (1|5LevelFactor),\nfamily=poisson)\n\nand there is some redundancy between the fixed components and between the\ncontinuous variable and random factor, but not loads.\n\n1) How can I visualize the effect of the fixed factor while accounting for\nthe continuous variable and random factor?\n\nI'm looking to make a column graph with standard error bars that would be\nthe multiple-regression equivalent of a partial plot. I think some people\nwould refer to this as a \"least-squared means\" plot? Ideally, I could\nobtain a vector of adjusted values for the dependent variable and plot them\nover levels of the factor. Because redundancy is low, I'm OK with plotting\nraw data, but on principle I like my visualizations to accurately reflect\nmy analysis if possible.\n\n2) Are there statistics like the R-sq of linear regression that will denote\nhow much variation in my dependent variable is explained by my model? What\nabout statistics like partial-R-sq, that denote the amount of variation\nexplained by individual fixed parameters?\n\nCheers,\n\ntim\n--\n\nTimothy E. Farkas\nDept. Animal and Plant Sciences\nAlfred Denny Building\nUniversity of Sheffield\nWestern Bank\nSheffield S10 2TN\nUnited Kingdom\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All,\n\nI have two related practical questions concerning GLMMs. I hope my\nquestions aren't too simplistic for this list, but other forums have been\nnot been responsive.\n\nMy model is specified as fol",
       "thread_id": "thread-896fcba43bac",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/c71301bf/attachment.pl"
+      ]
     },
     {
       "id": "msg-ea7a8e4eb578",
@@ -961,11 +1009,14 @@
       "subject_clean": "random effect",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/57e46c10/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/57e46c10/attachment.pl>",
+      "body_plain": "Dear list\n\n \n\nI’m modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis. My explanatory variables are\ngroup size, fish length, temperature and year. Because year has only two\nlevels I know I can’t use it as a random effect. However, do you think that\nconsidering year a fixed effect will affect the relationship between the\nother explanatory variables and the response? If the answer is yes, do you\nknow of other statistical technique I could use?\n\nThank you\n\n \n\nAll the best \n\nJoana\n\n \n\n \n\nJoana Martelo, PhD Student\n\nCentro de Biologia Ambiental\n\nDepartamento de Biologia Animal\n\nFaculdade de Ciências, Edificio C2,5ºPiso,Sala 2.5.15B\n\n1749-016 Lisboa, Portugal\n\nhttp://ffishgul.fc.ul.pt \n\n \n\n \n\n \n\n \n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list\n\n \n\nI’m modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis. My explanatory variables are\ngroup size, fish length, temperature and ",
       "thread_id": "thread-1cd6ceb016a7",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/57e46c10/attachment.pl"
+      ]
     },
     {
       "id": "msg-60eba1ff0c9c",
@@ -977,11 +1028,14 @@
       "subject_clean": "Linear Mixed Effects vs. Repeated Measures",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/2c351206/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/2c351206/attachment.pl>",
+      "body_plain": "Hi All,\n\nI have 46 replicate trees I sampled in a 2 year survey. \nMy objective is: To estimate the proportion of variation among-trees w/in year, and proportion variation due to among year and tree interaction.\n\nResponse\tYear\tTree\n23\tA\t1\n12\tA\t2\n54\tA\t3\n23\tB\t1\n12\tB\t2\n9\tB\t3\nThe above is an example of my dataset\n\n\nCircularity was violated, so instead of running a Repeated Measures I am running a mixed effects model. With trees as random and year as fixed. I'm then running a variance components analysis.\n\nQ1. Is this a good way to test the above questions?\n\nMy model is this: lme <-lme(response~year,random=~1|tree/year,df)\n\nI am not getting an interaction term here, nor do I when I run an aov model using tree*year as a factor.\n\nQ2. I'm wondering why I'm not coming up with an interaction term for year and tree using aov or lme even though my variance comp. analysis says that most of the variation (55%) is due to year and tree interaction.\n\nThanks!!\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi All,\n\nI have 46 replicate trees I sampled in a 2 year survey. \nMy objective is: To estimate the proportion of variation among-trees w/in year, and proportion variation due to among year and tree in",
       "thread_id": "thread-60eba1ff0c9c",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121007/2c351206/attachment.pl"
+      ]
     },
     {
       "id": "msg-27efe8b75684",
@@ -1136,11 +1190,14 @@
       "subject_clean": "ASReml - heritability errors",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/d0651ab3/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/d0651ab3/attachment.pl>",
+      "body_plain": "Hi everyone,\n\nI'm starting to use ASReml-R in my analyses and I'm wondering if it's\npossible to compute using is's procedures approximate errors for variance\nfunctions such as heritability? Or - if the previous one isn't possible -\nto extract (co)variance matrix for random effects that could be used in\ndelta method (e.g. inside the 'msm' library).\n\nCheers,\nsz.\n\n-- \nSzymon Drobniak, PhD. || Population Ecology Group\nInstitute of Environmental Sciences, Jagiellonian University\nul. Gronostajowa 7, 30-387 Kraków, POLAND\ntel.: +48 12 664 51 79 fax: +48 12 664 69 12\nszymek.drobniak at uj.edu.pl\nwww.eko.uj.edu.pl/drobniak\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nI'm starting to use ASReml-R in my analyses and I'm wondering if it's\npossible to compute using is's procedures approximate errors for variance\nfunctions such as heritability? Or - if th",
       "thread_id": "thread-38b79289278b",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/d0651ab3/attachment.pl"
+      ]
     },
     {
       "id": "msg-023c0a67b164",
@@ -1209,11 +1266,14 @@
         "<CAE9UE+9pXiJcaCkJg+a7Bnv_QUyk-Vs01j34G-4ut_kzOOG=+w@mail.gmail.com>",
         "<Pine.LNX.4.64.1209260717440.6759@orpheus.qimr.edu.au>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/e9f9746e/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/e9f9746e/attachment.pl>",
+      "body_plain": "Thanks for the suggestion David. My sessionInfo() is below:\n\nNew computer/32bit R:\n\nR version 2.15.1 (2012-06-22)\nPlatform: i386-pc-mingw32/i386 (32-bit)\n\nlocale:\n[1] LC_COLLATE=English_South Africa.1252  LC_CTYPE=English_South\nAfrica.1252\n[3] LC_MONETARY=English_South Africa.1252 LC_NUMERIC=C\n\n[5] LC_TIME=English_South Africa.1252\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base\n\nother attached packages:\n[1] lme4_0.999999-0 Matrix_1.0-6    lattice_0.20-6  car_2.0-13\n[5] nnet_7.3-1      MASS_7.3-18\n\nloaded via a namespace (and not attached):\n[1] grid_2.15.1   nlme_3.1-104  stats4_2.15.1\n\nOld computer/32bit R:\n\nR version 2.13.1 (2011-07-08)\nPlatform: i386-pc-mingw32/i386 (32-bit)\n\nlocale:\n[1] LC_COLLATE=English_South Africa.1252  LC_CTYPE=English_South\nAfrica.1252\n[3] LC_MONETARY=English_South Africa.1252 LC_NUMERIC=C\n\n[5] LC_TIME=English_South Africa.1252\n\nattached base packages:\n[1] splines   stats     graphics  grDevices utils     datasets  methods\n[8] base\n\nother attached packages:\n[1] lme4_0.999375-42   Matrix_0.9996875-3 lattice_0.19-30    car_2.0-11\n\n[5] survival_2.36-9    nnet_7.3-1         MASS_7.3-13\n\nloaded via a namespace (and not attached):\n[1] grid_2.13.1   nlme_3.1-101  stats4_2.13.1 tools_2.13.1\n\n\nHope that this helps!\n\nLuke Duncan\n\n*Lecturer & Post-doctoral** Fellow*\n*School of Animal, Plant and Environmental Sciences*\n*University of the Witwatersrand*\n*Johannesburg, South Africa*\n**\n*+27 72 312 0330*\n*+27 11 717 6452*\n\n\n\nOn Tue, Sep 25, 2012 at 11:21 PM, David Duffy <David.Duffy at qimr.edu.au>wrote:\n\n> You need to provide boring details like \"sessionInfo()\" on old and new\n> machines, so we can see which versions of the packages you actually have\n> installed, and whether your locale is weird...\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks for the suggestion David. My sessionInfo() is below:\n\nNew computer/32bit R:\n\nR version 2.15.1 (2012-06-22)\nPlatform: i386-pc-mingw32/i386 (32-bit)\n\nlocale:\n[1] LC_COLLATE=English_South Africa.1",
       "thread_id": "thread-84bd62de069e",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/e9f9746e/attachment.pl"
+      ]
     },
     {
       "id": "msg-38e515c62575",
@@ -1228,11 +1288,14 @@
         "<CANXb-o5930Paf1BAsYss6Xy+0-1yZtGPgCuqtxGyd7Z14h7ZyQ@mail.gmail.com>",
         "<20121009160750.42882p8c3tocjum8@www.staffmail.ed.ac.uk>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/245cc970/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/245cc970/attachment.pl>",
+      "body_plain": "Hello again! Thank you all for your help. I have however another problem:\nthe AI matrix from model$ai is different from the matrix from .vvp file\nfrom ASReml (for exactly the same model) - and provides estimates of SE\nwhen applied within Delta method different than those returned after\nrunning the .pin file in ASReml. Does anybody know how to rescale model$ai\nso that it's equal to .vvp-one? I tried the .vvp matrix in my delta\nfunction and it returns the same SE as in ASReml. Apparently the pincalc\nfunction provided through the VSN Forum also uses model$ai - but clearly\nsomething is wrong here (?)\n\nCheers,\nsz.\n\n-- \nSzymon Drobniak, PhD. || Population Ecology Group\nInstitute of Environmental Sciences, Jagiellonian University\nul. Gronostajowa 7, 30-387 Kraków, POLAND\ntel.: +48 12 664 51 79 fax: +48 12 664 69 12\nszymek.drobniak at uj.edu.pl\nwww.eko.uj.edu.pl/drobniak\n\n\n---------- Forwarded message ----------\nFrom: Jarrod Hadfield <j.hadfield at ed.ac.uk>\nDate: 9 October 2012 17:07\nSubject: Re: [R-sig-ME] ASReml - heritability errors\nTo: Szymek Drobniak <geralttee at gmail.com>\nCc: r-sig-mixed-models at r-project.org\n\n\nHi,\n\nDo you mean the `(co)variance matrix for random effects' or the approximate\nsampling (co)variance matrix of the estimates of the (co)variance\nparameters?  If the latter,  I think you can find it in asreml.model$ai\n\nCheers,\n\nJarrod\n\n\n\n\nQuoting Szymek Drobniak <geralttee at gmail.com> on Tue, 9 Oct 2012 16:46:45\n+0200:\n\n Hi everyone,\n>\n> I'm starting to use ASReml-R in my analyses and I'm wondering if it's\n> possible to compute using is's procedures approximate errors for variance\n> functions such as heritability? Or - if the previous one isn't possible -\n> to extract (co)variance matrix for random effects that could be used in\n> delta method (e.g. inside the 'msm' library).\n>\n> Cheers,\n> sz.\n>\n> --\n> Szymon Drobniak, PhD. || Population Ecology Group\n> Institute of Environmental Sciences, Jagiellonian University\n> ul. Gronostajowa 7, 30-387 Kraków, POLAND\n> tel.: +48 12 664 51 79 fax: +48 12 664 69 12\n> szymek.drobniak at uj.edu.pl\n> www.eko.uj.edu.pl/drobniak\n>\n>         [[alternative HTML version deleted]]\n>\n>\n>\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello again! Thank you all for your help. I have however another problem:\nthe AI matrix from model$ai is different from the matrix from .vvp file\nfrom ASReml (for exactly the same model) - and provide",
       "thread_id": "thread-38b79289278b",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/245cc970/attachment.pl"
+      ]
     },
     {
       "id": "msg-7ea4745b80a3",
@@ -1244,11 +1307,14 @@
       "subject_clean": "problem with a mixed linear model interpretation",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/c439e8a0/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/c439e8a0/attachment.pl>",
+      "body_plain": "Dear mixed models community,\n\n\nI'm encountering some difficulties with analysis of recent psychophysical\ndata. I would appreciate some help.\n\nI would like to examine the relationship between the mean and standard\ndeviation (std) of each of my 12 experimental conditions (this is a 6(color\nsaturation levels) * 2(spatial compatibility between stimulus and response)\nwithin-subjects design; 13 subjects participated in the experiment). The\nWagenmaker's law holds that the relationship between mean and std across\nexperimental conditions should be perfectly linear.\n\nI find a perfect linear relationship across color saturation levels, but\nfor each stimulus-response mapping separatly. In line with this\nobservation, I would like to demonstrate that the parameters of the linear\nrelationship between mean and std are influenced by random variability\nacross subjects as well as compatibility between stimulus and response.\n\nI played with lme4 and found that the model with the lower BIC index was\nstd ~ mean + compatibility + (1|subject)]. MCMC p-values showed that both\nmean and compatibility were significant (p < .0001). Note that the\ninteraction term mean*compatibility was not significant and its parameter\nwas closed to zero.\n\n\nI concluded the following:\n\n \"\"There is a robust linear relationship between mean and SD, but the\n compatibility factor modulates its intercept. The best-fitting parameter\n for the effect of compatibility indicated that the intercept was lowered\n by 15 SD units in the incompatible condition. \"\" Is imy conclusion correct?\n\n\n\nBest,\n\nMat\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear mixed models community,\n\n\nI'm encountering some difficulties with analysis of recent psychophysical\ndata. I would appreciate some help.\n\nI would like to examine the relationship between the mean ",
       "thread_id": "thread-7ea4745b80a3",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121009/c439e8a0/attachment.pl"
+      ]
     },
     {
       "id": "msg-4b8b6dbe2942",
@@ -1403,11 +1469,14 @@
       "subject_clean": "random as fixed effect",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/24dbb9a8/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/24dbb9a8/attachment.pl>",
+      "body_plain": "Dear list\n\n \n\nI’m modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis. My explanatory variables are\ngroup size, fish length, temperature and year. Because year has only two\nlevels I know I can’t use it as a random effect. However, do you think that\nconsidering year a fixed effect will inflate the effect of the other\nexplanatory variables? If the answer is yes, do you know of other\nstatistical technique I could use?\n\n \n\nThank you\n\n \n\nAll the best \n\nJoana\n\n \n\n \n\n \n\nJoana Martelo, PhD Student\n\nCentro de Biologia Ambiental\n\nDepartamento de Biologia Animal\n\nFaculdade de Ciências, Edificio C2,5ºPiso,Sala 2.5.15B\n\n1749-016 Lisboa, Portugal\n\nhttp://ffishgul.fc.ul.pt \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list\n\n \n\nI’m modeling fish activity data with a gaussian distribution for scores\nobtained from Principal Component Analysis. My explanatory variables are\ngroup size, fish length, temperature and ",
       "thread_id": "thread-ec715743e0cf",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/24dbb9a8/attachment.pl"
+      ]
     },
     {
       "id": "msg-3cfec7584224",
@@ -1453,11 +1522,14 @@
       "subject_clean": "random effect",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7877438/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7877438/attachment.pl>",
+      "body_plain": "Dear Ben\n\n \n\nMany thanks for your reply. Yes, there are interactions between year and\nshoal size.\n\nCheers\n\nJoana\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Ben\n\n \n\nMany thanks for your reply. Yes, there are interactions between year and\nshoal size.\n\nCheers\n\nJoana\n\n\n\t[[alternative HTML version deleted]]",
       "thread_id": "thread-3df5b7b8c681",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7877438/attachment.pl"
+      ]
     },
     {
       "id": "msg-d678b51bc2df",
@@ -1550,11 +1622,14 @@
       "subject_clean": "modeling with hierarchical data",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7708cb9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7708cb9/attachment.pl>",
+      "body_plain": "Dear All,\n \nI am working with a large dataset that deals with Plasmodium\ninfection status of individually sampled birds. Each record is also associated\nwith individual traits such as the species of the individual bird (16 levels),\nthe age (2 levels), year at the time of sampling (2 levels) and period at the\ntime of sampling (broken down into 12 2-week periods across the transmission\nseason). \n \nI am currently trying to use this dataset to explain\nvariation in the prevalence of Plasmodium parasites across host species.  Host species in the same community can have\nvery disparate prevalence levels.  I\nwould like to test a simple hypothesis, namely that variation in Plasmodium\nprevalence is related to mosquito feeding preferences between potential host\nspecies.  In other words, species of\nbirds that are bit by these vectors more often should higher Plasmodium\nprevalence.  I have information on\nmosquito feeding preferences measured as Manly selection ratio indices for each\nhost species (selection ratio = (proportion of mosquito bloodmeals of host\nspecies i)/(proportion of host species i in the host community), basically\nuse/availability). At some level, I assume this index is proportional to the\namount of successful mosquito bites an individual of host species i receives. \n \nMy difficulty in this analysis lies in the hierarchical\nnature of the data.  Infection status and\nother predictors that likely influence infection status (age, period, year)\napply to the level of the individual bird sampled (Level 1). However, the\nselection ratio (the main predictor of interest in this analysis) applies to a\nLevel 2 group, namely the host species. I have limited experience with mixed\nmodels, but I do understand that that they can be used to handle this\nhierarchical structure in the data (and avoid having to average up Level 1 data\nto answer a Level 2 problem). I am confused, however about the\nimplementation.  Would an appropriate\nmodel to include all effects look something like this:\n \nm1<-glmer(CMD$plas~1+CMD$yr+CMD$age+CMD$MFI.cx+(CMD$yr|CMD$spe)+(CMD$age|CMD$spe),\nfamily=binomial) \n \nwhere plas is\ninfection status, yr is a 2-level-factor (2006/7), age is a 2 level-factor\n(AHY/HY), and MFI.cx is the selection ratio (continuous) measured at the\nspecies (spe) level.  Realize,\nthis is largely a shot in the dark with GLMM. Any insights would be helpful.\n \nThanks immensely for your time,\nMatthew Medeiros\nUniversity of Missouri-St. Louis\nPhD candidate\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear All,\n \nI am working with a large dataset that deals with Plasmodium\ninfection status of individually sampled birds. Each record is also associated\nwith individual traits such as the species of th",
       "thread_id": "thread-02959c0813b6",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121011/a7708cb9/attachment.pl"
+      ]
     },
     {
       "id": "msg-388e55fd2ff7",
@@ -1611,11 +1686,14 @@
       "references": [
         "<1349974773.71836.YahooMailNeo@web142301.mail.bf1.yahoo.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121012/7251bb1b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121012/7251bb1b/attachment.pl>",
+      "body_plain": "Hi Matt,\n\n1) I assume you have ID for each individual bird? If so, I would include\nthat, possibly as a nested random effect within\nspecies:(1|spe/individual.ID)\n\n2) Without having seen your data, I'm guessing that your m1 is\nover-fitting. Do you have reason to believe that year and age\n(respectively) have correlated random slope and intercept within species?\n\n3) I think people such as Ben Bolker would tell you that it's more\npreferable to use the \"data=\" statement in the model than embedding the\ndata name in each term.\n\nSo I'd probably start with something like:\n\nm0 <- glmer(plas ~ 1+yr+age+MFI.cx+(1|spe/individual.ID), family=binomial,\ndata=CMD)\n\nAnd I would check the variances of the random effects. Just my two cents.\nHopefully the more experienced members of this list would chime in, and\nprovide more insightful suggestions.\n\nAlso, have you tried checking out http://glmm.wikidot.com/faq for some\npointers on GLMM modeling?\n\nCheers,\nGeorge Wang\n\nOn Thu, Oct 11, 2012 at 12:59 PM, Matthew Medeiros <elepaio44 at yahoo.com>wrote:\n\n>\n> Dear All,\n>\n> I am working with a large dataset that deals with Plasmodium\n> infection status of individually sampled birds. Each record is also\n> associated\n> with individual traits such as the species of the individual bird (16\n> levels),\n> the age (2 levels), year at the time of sampling (2 levels) and period at\n> the\n> time of sampling (broken down into 12 2-week periods across the\n> transmission\n> season).\n>\n> I am currently trying to use this dataset to explain\n> variation in the prevalence of Plasmodium parasites across host species.\n> Host species in the same community can have\n> very disparate prevalence levels.  I\n> would like to test a simple hypothesis, namely that variation in Plasmodium\n> prevalence is related to mosquito feeding preferences between potential\n> host\n> species.  In other words, species of\n> birds that are bit by these vectors more often should higher Plasmodium\n> prevalence.  I have information on\n> mosquito feeding preferences measured as Manly selection ratio indices for\n> each\n> host species (selection ratio = (proportion of mosquito bloodmeals of host\n> species i)/(proportion of host species i in the host community), basically\n> use/availability). At some level, I assume this index is proportional to\n> the\n> amount of successful mosquito bites an individual of host species i\n> receives.\n>\n> My difficulty in this analysis lies in the hierarchical\n> nature of the data.  Infection status and\n> other predictors that likely influence infection status (age, period, year)\n> apply to the level of the individual bird sampled (Level 1). However, the\n> selection ratio (the main predictor of interest in this analysis) applies\n> to a\n> Level 2 group, namely the host species. I have limited experience with\n> mixed\n> models, but I do understand that that they can be used to handle this\n> hierarchical structure in the data (and avoid having to average up Level 1\n> data\n> to answer a Level 2 problem). I am confused, however about the\n> implementation.  Would an appropriate\n> model to include all effects look something like this:\n>\n>\n> m1<-glmer(CMD$plas~1+CMD$yr+CMD$age+CMD$MFI.cx+(CMD$yr|CMD$spe)+(CMD$age|CMD$spe),\n> family=binomial)\n>\n> where plas is\n> infection status, yr is a 2-level-factor (2006/7), age is a 2 level-factor\n> (AHY/HY), and MFI.cx is the selection ratio (continuous) measured at the\n> species (spe) level.  Realize,\n> this is largely a shot in the dark with GLMM. Any insights would be\n> helpful.\n>\n> Thanks immensely for your time,\n> Matthew Medeiros\n> University of Missouri-St. Louis\n> PhD candidate\n>         [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Matt,\n\n1) I assume you have ID for each individual bird? If so, I would include\nthat, possibly as a nested random effect within\nspecies:(1|spe/individual.ID)\n\n2) Without having seen your data, I'm ",
       "thread_id": "thread-02959c0813b6",
       "thread_depth": 1,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121012/7251bb1b/attachment.pl"
+      ]
     },
     {
       "id": "msg-df4a1e5e7974",
@@ -1751,11 +1829,14 @@
       "subject_clean": "lmer and truncated gaussian distributions",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121015/7397842c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121015/7397842c/attachment.pl>",
+      "body_plain": "Hello folks,\nIs it ok to use lmer() when the distribution of the response data resembles\na truncated gaussian?  I have data where the response variable is\nconstrained in [0,15] but has a mean of 12.63 and a S.D. of 2.25, based on\n130 observations.  Graphs of dnorm() look symmetrical near the mean and\nlog-transformation doesn't help; thus I think the data is best treated as\ntruncated rather than skewed.\nRegards,\n-- dan\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello folks,\nIs it ok to use lmer() when the distribution of the response data resembles\na truncated gaussian?  I have data where the response variable is\nconstrained in [0,15] but has a mean of 12.63",
       "thread_id": "thread-794f20d7405e",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121015/7397842c/attachment.pl"
+      ]
     },
     {
       "id": "msg-f553f9750627",
@@ -1767,11 +1848,14 @@
       "subject_clean": "Question about truncated poisson vs. normal poisson \"minus one\" & Co. in winbugs or glmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/d64c434b/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/d64c434b/attachment.pl>",
+      "body_plain": "Hello altogether!\n\nI just have one major question and one minor one, which I coudn't solve for myself yet and I have to admit that both of these are really becoming really a pain in the neck. I am not a statistician, so I do not come from a backround where such \"normal\" problems do get discussed a lot, accordingly I am a little bit stuck here. Any help would be really appreciated. And sorry in advance for the long text in the following... :-(\n\n1.) (Major Q.) I want to fit a (bayesian) hurdle poisson model (glmm with no false zeros possible in this outcome variable) making use of winbugs/openbugs via two separate models (one binomial, one truncated poisson), but as I can see until now the implementation via openbugs (which allows truncation, winbugs not - I think?!?) with a truncated pois-distribution (as coded as RESPONSES[i] ~ dpois(mu[i])T(1,36) ) brings the simluation time to almost something where I feel I am faster by hand (5134 sec. for 10000 iterations burn in).\nI think that I may do some mistakes regarding the uninformative priors (maybe to wide?) or the starting values (maybe to far away?) or is the \"T(x,x)\"-Coding wrong? Implementation via winbugs and openbugs just as a poisson glmm (ignoring the truncation at one) is going fast and reveals nearly the same estimates as in glmer for a poisson glmm (winbugs-coding here is nearly the same as in chapter 4 of zuur et al 2012 for a poisson glmm with one random group-factor).\nProblem: Do I going to have a type-I-error-increase because of ignoring the truncation? Would it be statistical okay to just incorporate the response-variable for the poisson-model as (RESPONSES-1), pushing the whole variable one value lower, or does this implements something like noise into the mean and sd-estimates or into something else I cannot see from my \"non-statistician\"-perspective?!?! Do I overestimate something at an overall level, because I manually separate the data into \"all\" with RESPONSES Zero vs. One and a minor data-set where the \"Ones\" of the former data set are fitted as a truncated poisson?\nDo I have to aim for the master goal, striktly speaking to aim at the whole model all in once into one coding, making use of the zero-ones-trick (an approach which maybe could give the opportunity to implement a car-structure (time) later on for the whole datat set, too)?\nI tried to work out how to set up something like a (literally-speaking) \"hurdle\"-model as the one in pscl-package, but also accounting for a random intercept (glm to glmm-\"upgrade\"), which is something I could not find something similar of but gibs-sampling... I consultated zuur 2012, kery 2010, ntzoufras 2009, neelon 2010 (journal article in \"Statistical Modelling\"), gelman 2007 and more, but to summarize, I think many of these books and many of the things I found on the net or in the mailing list posts do not think of such an amateur question like mine, so I didn't found an answer... Could anybody give me a hint? Neelon et al. seem to incorporate all in once, but they are using a response variable what I think is a kind of proportion and I didn't find out how to cope with my own data in such a \"coding environment\" yet...\n\n2.) (Minor Q.) When I try to implement a predictive check via a replicated data set in the same model (like proposed by zuur, kery and ntzoufras), I end up in a winbugs- or openbugs- crash at about 70% of trials (all stucks at gen.inits) and I really think I have to specify inits myself for the replicates, but firstly I do not find any examples doing so (or I am blind) and secondly I am very insecure about how to choose good inits here...anybody a hint for this? maybe it also depends on how I choose the priors?\n\nThanks to everyone for any help, I really am a bit exhausted after reading every bit of paper I could get a grip on in the last month to learn R, LMMs and GLMMS from the scratch for myself alone, but at the monent I stuck at these two problems for about two weeks and I do not know where to look any further.\n\nKind Regards, Ulf\n\nP.S. Would an implementation into JAGS or STAN be faster than winbugs or openbugs regarding the slow mixing and simulation time?\n--\nPflichtangaben gemäß Gesetz über elektronische Handelsregister und Genossenschaftsregister sowie das Unternehmensregister (EHUG):\n\nUniversitätsklinikum Hamburg-Eppendorf; Körperschaft des öffentlichen Rechts; Gerichtsstand: Hamburg\n\nVorstandsmitglieder: Prof. Dr. med. Martin Zeitz (Vorsitzender), Dr. Alexander Kirstein, Joachim Prölß, Prof. Dr. Dr. Uwe Koch-Gromus\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello altogether!\n\nI just have one major question and one minor one, which I coudn't solve for myself yet and I have to admit that both of these are really becoming really a pain in the neck. I am not",
       "thread_id": "thread-f553f9750627",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/d64c434b/attachment.pl"
+      ]
     },
     {
       "id": "msg-723e4d229cb5",
@@ -1936,11 +2020,14 @@
       "subject_clean": "error in lmer: length(f1) == length(f2) is not TRUE",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/64393e76/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/64393e76/attachment.pl>",
+      "body_plain": "Dear list\n\n \n\nI'm trying to model fish data with a gaussian distribution for prey reactive\ndistance obtained in lab experiments. Each experimental trial consisted of\ngiving 1 prey to fish every x min., for a total of 20 prey, and measuring\nthe reactive distance of fish to the prey. My explanatory variables are\ncurrent velocity (0, 8, 12, 26 cm/s), fish size (small, medium and large),\ndensity (2, 4 and 6 fish), trial and fish.id, and I did 3 replicates of each\ntrial, using each fish only once. Because not all fish reacted to the prey,\nthe number of reactive distances is not the same for each fish, and hence\nnot the same for each trial. I wonder whether with this experimental design\nI can consider fish.ID and trial as random effects and treat the other\nvariables as fixed effects. \n\n \n\nI’m using lme4 and tried:\n\n \n\nmodel<-lmer(reactive.dist~velocity+density+(1|trial/fish.id),family=gaussian\n)\n\n \n\nbut got this error and warning:\n\n \n\nError: length(f1) == length(f2) is not TRUE\n\nIn addition: Warning messages:\n\n1: In fish.id:trial :\n\n  numerical expression has 2518 elements: only the first used\n\n2: In fish.id:trial :\n\n  numerical expression has 2518 elements: only the first used\n\n \n\nIs this because I don’t have the same number of reactive distances per fish?\n\n\n \n\nWhen I do:\n\nmodel<-lmer(reactive.dist~velocity+density(1|fish.id),family=gaussian)\n\nit works fine…….\n\nAny suggestions would be greatly appreciated! \n\nThe best\n\nJoana\n\n \n\nJoana Martelo, PhD Student\n\nCentro de Biologia Ambiental\n\nDepartamento de Biologia Animal\n\nFaculdade de Ciências, Edificio C2,5ºPiso,Sala 2.5.15B\n\n1749-016 Lisboa, Portugal\n\nhttp://ffishgul.fc.ul.pt \n\n \n\n \n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list\n\n \n\nI'm trying to model fish data with a gaussian distribution for prey reactive\ndistance obtained in lab experiments. Each experimental trial consisted of\ngiving 1 prey to fish every x min.",
       "thread_id": "thread-98f49524287d",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/64393e76/attachment.pl"
+      ]
     },
     {
       "id": "msg-a1bd3ca1c84b",
@@ -1986,11 +2073,14 @@
       "subject_clean": "degrees of freedom for a mixed effect model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/2eb1d00f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/2eb1d00f/attachment.pl>",
+      "body_plain": "Hi.\nHow would you calculate df for a mixed effect model?    In evaluating\ncontribution of an additional term to a previous model, I use\n  -2*log[ Like.reduced.model / Like.larger.model], which follows Chisquare\ndistribution.   Using \"lme4\" package, the output from \"anova(reduced.model,\nlarger.model)\" includes df of each model.  However, I have no clue of how\nthe df is calculated.   I greatly appreciate your response if you have an\nidea.   Thank you,\nSaang-Yoon\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi.\nHow would you calculate df for a mixed effect model?    In evaluating\ncontribution of an additional term to a previous model, I use\n  -2*log[ Like.reduced.model / Like.larger.model], which follows",
       "thread_id": "thread-da5c2ec19212",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121016/2eb1d00f/attachment.pl"
+      ]
     },
     {
       "id": "msg-d7aaac1bbca2",
@@ -2149,11 +2239,14 @@
       "subject_clean": "model selection with ordered probit of three categories",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/7b4690c6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/7b4690c6/attachment.pl>",
+      "body_plain": "Dear all,\n\nThis is my first time using this kind of model, so apologize for any\ninconvenience I might say below.\n\nI want to select the best combination of factors explaining a variable that\nmay take 3 values. The variable represents risk levels: 1= no risk, 2=\nmoderate, and 3= high.\n\nI know that some of the potential factors in the model have a linear\nrelationship with Y .\nHowever, others generate an increase in the frequancy of the value 2.\n\nMy initial question is:\n1) Which kind of approach should I use to select the best combination of\nfactors, taking into account factors that can have these two behaviors.\nShould I select over mixed models, using probit as link function and\nbinomial distribution?\n\n2) is there any easy document helping to understand the interpretation of\nthe R output of the fitting of a model like this?\n\nThanks in advance\n Agus\n\n-- \nAgustín Camacho Guerrero.\nDoutorando em Zoologia.\nLaboratório de Herpetologia, Departamento de Zoologia, Instituto de\nBiociências, USP.\nRua do Matão, trav. 14, nº 321, Cidade Universitária,\nSão Paulo - SP, CEP: 05508-090, Brasil.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nThis is my first time using this kind of model, so apologize for any\ninconvenience I might say below.\n\nI want to select the best combination of factors explaining a variable that\nmay take 3",
       "thread_id": "thread-7b15df56fda4",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/7b4690c6/attachment.pl"
+      ]
     },
     {
       "id": "msg-88416aaf9fc4",
@@ -2167,11 +2260,14 @@
       "references": [
         "<1350485890.5642.YahooMailNeo@web142302.mail.bf1.yahoo.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/cc1b7315/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/cc1b7315/attachment.pl>",
+      "body_plain": "Hi Matt,\n\n(I'm CC-ing this back to the list in the hope of also getting input from\nothers. See my response below.)\n\nOn Wed, Oct 17, 2012 at 10:58 AM, Matthew Medeiros <elepaio44 at yahoo.com>wrote:\n\n> Hey George-\n>\n> Thanks for the response.\n>\n> I followed your advice and fit m0 <- glmer(plas ~ 1+age+MFI.cx+(1|\n> spe/individual.ID), family=binomial, data=CMD).\n>  I also added an interaction term to the model. The interaction was\n> \"significant\" by a parametric bootstrap test.  I split the dataset across\n> the two levels of age to explore the effect more. However, can I have only\n> level 2 predictors in the model (with an intercept, of course)? In other\n> words is\n> m0 <- glmer(plas ~ 1+MFI.cx+(1|spe/individual.ID), family=binomial,\n> data=CMD) a reasonable model (with plas being a level 1 dependent\n> variable and MFI being a level 2 variable grouped across spe (species))?\n>\n\nI think this is reasonable. The nested random effect should take care of\nthe two different levels of the variables.\n\nHowever, I'm not sure of the advantage of splitting the dataset into two.\nIf the interaction term is significant, I would think that you would get\nmore information by keeping the interaction term in your model and using\nthe full dataset.\n\nHave you considered using information criteria or LRT to compare a few\nmodels?\n\n-George\n\n>\n>\n>\n>\n>\n>\n>\n>\n> Hi Matt,\n>\n> 1) I assume you have ID for each individual bird? If so, I would include\n> that, possibly as a nested random effect within\n> species:(1|spe/individual.ID)\n>\n> 2) Without having seen your data, I'm guessing that your m1 is\n> over-fitting. Do you have reason to believe that year and age\n> (respectively) have correlated random slope and intercept within species?\n>\n> 3) I think people such as Ben Bolker would tell you that it's more\n> preferable to use the \"data=\" statement in the model than embedding the\n> data name in each term.\n>\n> So I'd probably start with something like:\n>\n> m0 <- glmer(plas ~ 1+yr+age+MFI.cx+(1|spe/individual.ID), family=binomial,\n> data=CMD)\n>\n> And I would check the variances of the random effects. Just my two cents.\n> Hopefully the more experienced members of this list would chime in, and\n> provide more insightful suggestions.\n>\n> Also, have you tried checking out http://glmm.wikidot.com/faq for some\n> pointers on GLMM modeling?\n>\n> Cheers,\n> George Wang\n>\n> On Thu, Oct 11, 2012 at 12:59 PM, Matthew Medeiros <elepaio44 at yahoo.com>wrote:\n>\n> Dear All,\n>\n> I am working with a large dataset that deals with Plasmodium\n> infection status of individually sampled birds. Each record is also\n> associated\n> with individual traits such as the species of the individual bird (16\n> levels),\n> the age (2 levels), year at the time of sampling (2 levels) and period at\n> the\n> time of sampling (broken down into 12 2-week periods across the\n> transmission\n> season).\n>\n> I am currently trying to use this dataset to explain\n> variation in the prevalence of Plasmodium parasites across host species.\n> Host species in the same community can have\n> very disparate prevalence levels.  I\n> would like to test a simple hypothesis, namely that variation in Plasmodium\n> prevalence is related to mosquito feeding preferences between potential\n> host\n> species.  In other words, species of\n> birds that are bit by these vectors more often should higher Plasmodium\n> prevalence.  I have information on\n> mosquito feeding preferences measured as Manly selection ratio indices for\n> each\n> host species (selection ratio = (proportion of mosquito bloodmeals of host\n> species i)/(proportion of host species i in the host community), basically\n> use/availability). At some level, I assume this index is proportional to\n> the\n> amount of successful mosquito bites an individual of host species i\n> receives.\n>\n> My difficulty in this analysis lies in the hierarchical\n> nature of the data.  Infection status and\n> other predictors that likely influence infection status (age, period, year)\n> apply to the level of the individual bird sampled (Level 1). However, the\n> selection ratio (the main predictor of interest in this analysis) applies\n> to a\n> Level 2 group, namely the host species. I have limited experience with\n> mixed\n> models, but I do understand that that they can be used to handle this\n> hierarchical structure in the data (and avoid having to average up Level 1\n> data\n> to answer a Level 2 problem). I am confused, however about the\n> implementation.  Would an appropriate\n> model to include all effects look something like this:\n>\n>\n> m1<-glmer(CMD$plas~1+CMD$yr+CMD$age+CMD$MFI.cx+(CMD$yr|CMD$spe)+(CMD$age|CMD$spe),\n> family=binomial)\n>\n> where plas is\n> infection status, yr is a 2-level-factor (2006/7), age is a 2 level-factor\n> (AHY/HY), and MFI.cx is the selection ratio (continuous) measured at the\n> species (spe) level.  Realize,\n> this is largely a shot in the dark with GLMM. Any insights would be\n> helpful.\n>\n> Thanks immensely for your time,\n> Matthew Medeiros\n> University of Missouri-St. Louis\n> PhD candidate\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Matt,\n\n(I'm CC-ing this back to the list in the hope of also getting input from\nothers. See my response below.)\n\nOn Wed, Oct 17, 2012 at 10:58 AM, Matthew Medeiros <elepaio44 at yahoo.com>wrote:\n\n>",
       "thread_id": "thread-88416aaf9fc4",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121018/cc1b7315/attachment.pl"
+      ]
     },
     {
       "id": "msg-3fd3afc5edaa",
@@ -2199,11 +2295,14 @@
       "subject_clean": "nlme, biexponential PK model simulation",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121020/036bf15e/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121020/036bf15e/attachment.pl>",
+      "body_plain": "All,\n\nI'm simulating the biexponential model that  is commonly used in\npopulation PK models.  I have a rough idea of the fixed effects I'd like to use\nbut less of an idea of the random effects.  Using nlme, I'm interested in the\ndistribution of the the estimated fixed effect of a subject-level covariate at a\ngiven sample size, and also want to to compare results under dense vs sparse\nsampling per subject.\n\nBelow is a reproducible example.  It runs for the given input values but\nwhen I experiment with different inputs for the fixed and random effects,\nvarious error messages RE convergence and other issues prevent the simulation\nfrom completing.  I'm using N=250 subjects, which is more than one usually\nfinds in these types of studies, and I'm also fitting the exact model that generated\nthe data.\n\nAny suggestions RE alternations to this simulation such that the desired\nassessment can be made for various input values?\n\nThanks!\nDavid\n\n--\nDavid Afshartous, Ph.D.\nResearch Associate Professor\nPSTAT®: ASA Accredited Professional Statistician\nDepartment of Biostatistics\nVanderbilt University Medical Center\n\n##############################################\n##  function to simulate the data, estimate the true model #########\n## and asess estimate of fixed effect of interest               #########\n###############################################\n\nsim.results.test <- function(N, K, t.values, A1, A2, lrc1, lrc2, A1.RE.sd, A2.RE.sd,\n                        lrc1.RE.sd, lrc2.RE.sd, covariate.slope, resid.sd) {\ndose.c.slope <- numeric(K)\nfor (k in 1:K) {\nY <- NULL; X <- NULL\nfor (i in 1:N) {\n  i.A1.RE <- rnorm(1, 0, A1.RE.sd)\n  i.A2.RE <- rnorm(1, 0, A2.RE.sd)\n  i.lrc1.RE <- rnorm(1, 0, lrc1.RE.sd)\n  i.lrc2.RE <- rnorm(1, 0, lrc2.RE.sd)\n  x.new.c <- rnorm(1, 0, 14)\n  y.i <-\n    (A1 + i.A1.RE)* exp( -exp (lrc1 + covariate.slope*x.new.c + i.lrc1.RE) * t.values) +\n    (A2 + i.A2.RE)* exp( -exp (lrc2 + i.lrc2.RE) * t.values) +\n    rnorm(1,0, resid.sd)\n  y.i[y.i < 0] <- 0\n  Y <- c(Y, y.i)\n  X <- c(X, rep(x.new.c, length(t.values)))\n}\ndat.sim <- data.frame(Subject = rep(seq(1,N), each = length(t.values)),\n                      time = rep(t.values,N), conc = Y, dose.c = X)\ndat.sim <- groupedData(conc ~ time | Subject, data = dat.sim, order.groups=F)\ndat.sim.nlme <- nlme(conc ~ SSbiexp(time, A1, lrc1, A2, lrc2),\n    data = dat.sim, fixed = list(A1 ~ 1, lrc1 ~ dose.c, A2 ~ 1, lrc2 ~ 1),\n    random = pdDiag(A1 + lrc1 + A2 + lrc2 ~ 1),\n    start = c(A1, lrc1, covariate.slope, A2, lrc2))\ndose.c.slope[k] <- fixef(dat.sim.nlme)[[3]]\n  }\n dose.c.slope\n}\n\nlibrary(nlme)\nt.values.dense <- c(seq(0,4, .25), 8)\n\n## these inputs work okay:\nset.seed(101)\nden.results <- sim.results(N=250, K=50, t.values.dense, A1=200, A2=41, lrc1=1.6, lrc2=0.13,\n   A1.RE.sd=40, A2.RE.sd=4,lrc1.RE.sd=0.16, lrc2.RE.sd=0.01, covariate.slope=0.02, resid.sd=3)\nmean(den.results) ## 0.0202; true value = 0.02\nsd(den.results) ## 0.0007\n\n## example of inputs that do not work okay; just 1 simulation run:\nden.results.5 <- sim.results(N=250, K=1, t.values.dense, A1=300, A2=100, lrc1=4, lrc2=0.13,\n   A1.RE.sd=40, A2.RE.sd=20,lrc1.RE.sd=.5, lrc2.RE.sd=0.02, covariate.slope=0.02, resid.sd=3)\n\n## example what the exponential looks like\nA1 <- 445; A2 <- 41\nlrc1 <- 1.6; lrc2 <- -0.133\nparam <- c(A1, lrc1, A2, lrc2)\nbiexp.fun <- function(t) {\n    (param[1])* exp( -exp (param[2] * t) )+  (param[3])* exp( -exp (param[4] * t))\n    }\ncurve(biexp.fun, .1, 2)\n\n\n\n--\nDavid Afshartous, Ph.D.\nResearch Associate Professor\nPSTAT®: ASA Accredited Professional Statistician\nDepartment of Biostatistics\nVanderbilt University Medical Center\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "All,\n\nI'm simulating the biexponential model that  is commonly used in\npopulation PK models.  I have a rough idea of the fixed effects I'd like to use\nbut less of an idea of the random effects.  Using",
       "thread_id": "thread-7811a5a3f7ce",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121020/036bf15e/attachment.pl"
+      ]
     },
     {
       "id": "msg-4007656f4963",
@@ -2272,11 +2371,14 @@
       "subject_clean": "convergence in GLMM (lme4 package)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/3c435255/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/3c435255/attachment.pl>",
+      "body_plain": "I’m working on the simulation results and I would like to know the\nconvergence of the GLMM model. For example, if I want to obtain the\nconverge in the glm case with R, I can extract:\n\nmodel1<-glm(................family=\" \",data=)\n\n*model1$converged*\n\n[1] TRUE\n\nI don’t know if exist a similar function in the lme4 package (glmer ).\n\nThanks in advance,\n\nMartí Casals\n\n\n-- \nMartí Casals Toquero\n\nCentre d' Investigació Biomèdica d'Epidemiología i Salut Pública\n\nAgència de Salut Pública de Barcelona\n\nServei d' Epidemiologia\n\nTel. 932384545 extensió: 391\n\nmcasals at aspb.es\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I’m working on the simulation results and I would like to know the\nconvergence of the GLMM model. For example, if I want to obtain the\nconverge in the glm case with R, I can extract:\n\nmodel1<-glm(....",
       "thread_id": "thread-fd6b7af1d8fc",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/3c435255/attachment.pl"
+      ]
     },
     {
       "id": "msg-6002922410e1",
@@ -2362,11 +2464,14 @@
         "<CADtmEn5SjY2gqTfZ4JLZ5Wz=QcN+tvJMpC4RWkqGm9P5kaT9_A@mail.gmail.com>",
         "<loom.20121023T195352-241@post.gmane.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/f6f746a6/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/f6f746a6/attachment.pl>",
+      "body_plain": "Thank you so much Ben!!\n\nMartí\n\n2012/10/23 Ben Bolker <bbolker at gmail.com>\n\n> Martí Casals <mcasals at ...> writes:\n>\n> >\n> > I’m working on the simulation results and I would like to know the\n> > convergence of the GLMM model. For example, if I want to obtain the\n> > converge in the glm case with R, I can extract:\n> >\n> > model1<-glm(................family=\" \",data=)\n> >\n> > *model1$converged*\n> >\n> > [1] TRUE\n> >\n> > I don’t know if exist a similar function in the lme4 package (glmer ).\n> >\n>\n>   I think not.\n>   I believe the only way to do this (it may have been discussed before)\n> is to use options(warning=2) to promote warnings to errors, then to use\n> tryCatch() etc. to intercept the errors and store the information\n> somewhere.\n>\n> http://comments.gmane.org/gmane.comp.lang.r.lme4.devel/8691\n> https://stat.ethz.ch/pipermail/r-help/2012-February/302767.html\n>\n>   I've added a bit on this to http://glmm.wikidot.com/faq, since it's\n> not the first time it has come up ...\n>\n>  Ben Bolker\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nMartí Casals Toquero\n\nCentre d' Investigació Biomèdica d'Epidemiología i Salut Pública\n\nAgència de Salut Pública de Barcelona\n\nServei d' Epidemiologia\n\nTel. 932384545 extensió: 391\n\nmcasals at aspb.es\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you so much Ben!!\n\nMartí\n\n2012/10/23 Ben Bolker <bbolker at gmail.com>\n\n> Martí Casals <mcasals at ...> writes:\n>\n> >\n> > I’m working on the simulation results and I would like to know the\n> > c",
       "thread_id": "thread-fd6b7af1d8fc",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121023/f6f746a6/attachment.pl"
+      ]
     },
     {
       "id": "msg-28627f29e230",
@@ -2380,11 +2485,14 @@
       "references": [
         "<mailman.3094.1351022253.4555.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121024/0e8321c1/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121024/0e8321c1/attachment.pl>",
+      "body_plain": "I want to use a parametric bootstrap on a GLMM to to determine parameter bias (http://www.bris.ac.uk/cmm/team/hg/bias-correction.pdf) and hopefully to estimate effect confidence intervals (http://glmm.wikidot.com/faq).\n\nI'm using glmmPQL{MASS} since I need to include an AR1 correlation structure, but there are no existing parametric bootstrap routines for this. I'm writing my own, but am coming unstuck when trying to simulate a response from the model:\n\nm1<-glmmPQL(y ~ trt , random = ~ 1 | ID, correlation=corAR1(form=~week), family = binomial, data = bacteria)\nsimulate(m1)\n\n\tError in simulate.lme(m1) : \n  \t\tModels with corStruct and/or varFunc objects not allowed.\n\nI'm trying to write my own simulation code by modifying that from lme4 [getMethod('simulate',signature='mer')]. I'm not sure if or how I should be including the correlation structure though, and guess there's a very good reason why simulate.lme doesn't work with a corStruct.\n\nIf anyone can give me an idea of how to simulate samples from a glmmPQL object with a corStruct, or if it's possible, then I'd be very grateful. Or just a way of obtaining a rough estimate of the bias would be great. Would a non-parametric bootstrap be completely out of the question here (e.g. http://cran.r-project.org/doc/contrib/Fox-Companion/appendix-bootstrapping.pdf)?\n\nThanks,\n\nAndrew \n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "I want to use a parametric bootstrap on a GLMM to to determine parameter bias (http://www.bris.ac.uk/cmm/team/hg/bias-correction.pdf) and hopefully to estimate effect confidence intervals (http://glmm",
       "thread_id": "thread-28627f29e230",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121024/0e8321c1/attachment.pl"
+      ]
     },
     {
       "id": "msg-7ade792c6266",
@@ -2417,11 +2525,14 @@
       "references": [
         "<mailman.4.1351072802.16573.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/29fc9b55/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/29fc9b55/attachment.pl>",
+      "body_plain": "Thanks very much explaining so clearly why this is complicated! Your help is much appreciated. Given that parametric bootstrapping a binomial glmmPQL model is so tricky, I think I might back out and go down the GEE route instead. GEEs give similar parameter estimates to glmmPQL for my problem, and in light of the comments I've received would appear to be a more suitable choice.\n\nThanks again.\n\n> \n> From: Ben Bolker <bbolker at gmail.com>\n> Subject: Re: [R-sig-ME] Simulate samples from glmmPQL\n> Date: 24 October 2012 10:35:52 NZDT\n> To: r-sig-mixed-models at r-project.org\n> \n> \n> Andrew Digby <andrewdigby at ...> writes:\n> \n>> I want to use a parametric bootstrap on a GLMM to to determine\n>> parameter bias\n>> (http://www.bris.ac.uk/cmm/team/hg/bias-correction.pdf) and\n>> hopefully to estimate effect confidence intervals\n>> (http://glmm.wikidot.com/faq).\n> \n>> I'm using glmmPQL{MASS} since I need to include an AR1 correlation\n>> structure, but there are no existing parametric bootstrap routines\n>> for this. I'm writing my own, but am coming unstuck when trying to\n>> simulate a response from the model:\n> \n>> m1<-glmmPQL(y ~ trt , random = ~ 1 | ID, correlation=corAR1(form=~week), \n>> family = binomial, data = bacteria)\n>> simulate(m1)\n>> \n>> \tError in simulate.lme(m1) : \n>>  \t\tModels with corStruct and/or varFunc objects not allowed.\n> \n>> I'm trying to write my own simulation code by modifying that from\n>> lme4 [getMethod('simulate',signature='mer')]. I'm not sure if or how\n>> I should be including the correlation structure though, and guess\n>> there's a very good reason why simulate.lme doesn't work with a\n>> corStruct.\n> \n>> If anyone can give me an idea of how to simulate samples from a\n>> glmmPQL object with a corStruct, or if it's possible, then I'd be\n>> very grateful. Or just a way of obtaining a rough estimate of the\n>> bias would be great.  Would a non-parametric bootstrap be completely\n>> out of the question here\n>> (e.g.\n>> http://cran.r-project.org/doc/contrib/Fox-Companion/\n>>  appendix-bootstrapping.pdf)?\n> \n>  This seems tricky to me.\n> \n> 1. generating correlated _Gaussian_ variables is no big deal (you can use\n> the RandomFields package, which is a bit of a sledgehammer/nutcracker scenario\n> for an AR(1) variable, or more simply construct your variance-covariance matrix\n> and use MASS::mvrnorm), but ...\n> \n> 2. Integrating this in order to write your own version of simulate.lme() that\n> did corStruct models might be hairy -- the internals of simulate.lme() are\n> a little complicated (but it still might be the best solution).\n> \n> 3. As Doug Bates has said here, it's not entirely clear whether the\n> model glmmPQL is fitting (essentially, a marginal model of the\n> variance-covariance structure) actually corresponds to anything you\n> could actually simulate.  A well-formed model of this sort would look\n> like:\n> \n>   y ~ Binomial(plogis(X %*% beta + Z %*% b + eps))\n>   b ~ Sigma_b (from G-side/block structure)\n>   eps ~ MVN(AR(1))\n> \n> this is a little crude, but the idea is that you actually break the model into \n> well-defined hierarchical bits.  It's not clear (to me at least) whether the\n> model glmmPQL fits in this case actually corresponds to this statistical model\n> or not.  (INLA appears like it might be the best way forward on this front ...)\n> (The advantage of hacking simulate.lme is that you'd be taking advantage\n> of whatever simulate.lme is doing ...)\n> \n> 4. It turns out that corAR1 is not the only problem: even a 'plain' glmmPQL\n> call (without any correlations) uses a varStruct internally, which breaks\n> simulate.lme (there is no simulate.glmmPQL, so simulate falls back on\n> simulate.lme).  It seems to me that if you could hack simulate.lme you\n> could get a result with the right _variance-covariance structure_, but it\n> wouldn't be Bernoulli -- it would be normally distributed.  And, just\n> to add insult to injury, simulate.lme doesn't work the way simulate\n> methods work in the rest of R -- simulate.lme was written earlier,\n> and does a bunch of refitting (essentially, parametric bootstrapping!)\n> stuff rather than returning the raw simulation values.\n> \n> \n> \n> \n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks very much explaining so clearly why this is complicated! Your help is much appreciated. Given that parametric bootstrapping a binomial glmmPQL model is so tricky, I think I might back out and g",
       "thread_id": "thread-4efe8158b443",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/29fc9b55/attachment.pl"
+      ]
     },
     {
       "id": "msg-ef711e85caff",
@@ -2433,11 +2544,14 @@
       "subject_clean": "model averaging",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/73be6bd9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/73be6bd9/attachment.pl>",
+      "body_plain": "Dear list\n\n \n\nIs it possible to do model averaging with GLMM, using lme4? I don't think it\nis because I couldn't find any info on how to do it, but maybe I'm missing\nsomething.\n\n \n\nMany thanks\n\nThe best\n\n \n\nJoana Martelo\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear list\n\n \n\nIs it possible to do model averaging with GLMM, using lme4? I don't think it\nis because I couldn't find any info on how to do it, but maybe I'm missing\nsomething.\n\n \n\nMany thanks\n\nThe be",
       "thread_id": "thread-ef711e85caff",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/73be6bd9/attachment.pl"
+      ]
     },
     {
       "id": "msg-0334ed336579",
@@ -2451,11 +2565,14 @@
       "references": [
         "<001a01cdb29f$76b092c0$6411b840$@ul.pt>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/34558243/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/34558243/attachment.pl>",
+      "body_plain": "Hi,\n\nYou might want to look at the MuMIn and/or AICcmodavg packages. Not\nentirely sure if GLMMs are supported, LMM certainly are though.\n\n\nHTH\n\nAlan\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\nOn 25 October 2012 12:57, joana martelo <jmmartelo at fc.ul.pt> wrote:\n\n> Dear list\n>\n>\n>\n> Is it possible to do model averaging with GLMM, using lme4? I don't think\n> it\n> is because I couldn't find any info on how to do it, but maybe I'm missing\n> something.\n>\n>\n>\n> Many thanks\n>\n> The best\n>\n>\n>\n> Joana Martelo\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nYou might want to look at the MuMIn and/or AICcmodavg packages. Not\nentirely sure if GLMMs are supported, LMM certainly are though.\n\n\nHTH\n\nAlan\n\n--------------------------------------------------",
       "thread_id": "thread-ef711e85caff",
       "thread_depth": 1,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/34558243/attachment.pl"
+      ]
     },
     {
       "id": "msg-f01f7a84bf42",
@@ -2470,11 +2587,14 @@
         "<001a01cdb29f$76b092c0$6411b840$@ul.pt>",
         "<CAPdSD+4BjGomYU9gbtg5EbjPb2mA95+6GE-bQT6Cjc_0uP_Y+Q@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/9facccd3/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/9facccd3/attachment.pl>",
+      "body_plain": "Thanks Alan\n\n \n\nI’ll look at those packages but I believe they are only for GLMM or LMM.\n\n \n\nJoana\n\n \n\nDe: Alan Haynes [mailto:aghaynes at gmail.com] \nEnviada: quinta-feira, 25 de Outubro de 2012 12:11\nPara: joanamartelo\nCc: r-sig-mixed-models at r-project.org\nAssunto: Re: [R-sig-ME] model averaging\n\n \n\nHi,\n\nYou might want to look at the MuMIn and/or AICcmodavg packages. Not entirely\nsure if GLMMs are supported, LMM certainly are though.\n\n\nHTH\n\nAlan\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\n\nOn 25 October 2012 12:57, joana martelo <jmmartelo at fc.ul.pt> wrote:\n\nDear list\n\n\n\nIs it possible to do model averaging with GLMM, using lme4? I don't think it\nis because I couldn't find any info on how to do it, but maybe I'm missing\nsomething.\n\n\n\nMany thanks\n\nThe best\n\n\n\nJoana Martelo\n\n\n        [[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n  _____  \n\nNão foram detectados vírus nesta mensagem.\nVerificado por AVG - www.avg.com\nVersão: 2012.0.2221 / Base de dados de Vírus: 2441/5352 - Data de\nLançamento: 10/24/12\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Alan\n\n \n\nI’ll look at those packages but I believe they are only for GLMM or LMM.\n\n \n\nJoana\n\n \n\nDe: Alan Haynes [mailto:aghaynes at gmail.com] \nEnviada: quinta-feira, 25 de Outubro de 2012 12:1",
       "thread_id": "thread-ef711e85caff",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/9facccd3/attachment.pl"
+      ]
     },
     {
       "id": "msg-ff7309488c14",
@@ -2490,11 +2610,14 @@
         "<CAPdSD+4BjGomYU9gbtg5EbjPb2mA95+6GE-bQT6Cjc_0uP_Y+Q@mail.gmail.com>",
         "<002201cdb2ac$f0cc43d0$d264cb70$@ul.pt>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/410f773f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/410f773f/attachment.pl>",
+      "body_plain": "Isnt that what you want to do? Model averaging on GLMM models? Both\npackages accept lmer objects, its just the *G*LMM im unsure about. I.e.\nlmer(Y ~ X + (1|G), data= data)\n works, but im not sure if (e.g.)\nlmer(Y ~ X + (1|G), data= data, family=\"binomial\")\ndoes.\n\nHTH\n\nAlan\n\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\nOn 25 October 2012 14:33, joana martelo <jmmartelo at fc.ul.pt> wrote:\n\n> Thanks Alan****\n>\n> ** **\n>\n> I’ll look at those packages but I believe they are only for GLMM or LMM.**\n> **\n>\n> ** **\n>\n> Joana****\n>\n> ** **\n>\n> *De:* Alan Haynes [mailto:aghaynes at gmail.com]\n> *Enviada:* quinta-feira, 25 de Outubro de 2012 12:11\n> *Para:* joanamartelo\n> *Cc:* r-sig-mixed-models at r-project.org\n> *Assunto:* Re: [R-sig-ME] model averaging****\n>\n> ** **\n>\n> Hi,\n>\n> You might want to look at the MuMIn and/or AICcmodavg packages. Not\n> entirely sure if GLMMs are supported, LMM certainly are though.\n>\n>\n> HTH\n>\n> Alan\n>\n> --------------------------------------------------\n> Email: aghaynes at gmail.com\n> Mobile: +41794385586\n> Skype: aghaynes\n>\n> ****\n>\n> On 25 October 2012 12:57, joana martelo <jmmartelo at fc.ul.pt> wrote:****\n>\n> Dear list\n>\n>\n>\n> Is it possible to do model averaging with GLMM, using lme4? I don't think\n> it\n> is because I couldn't find any info on how to do it, but maybe I'm missing\n> something.\n>\n>\n>\n> Many thanks\n>\n> The best\n>\n>\n>\n> Joana Martelo\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models****\n>\n> ** **\n> ------------------------------\n>\n> Não foram detectados vírus nesta mensagem.\n> Verificado por AVG - www.avg.com\n> Versão: 2012.0.2221 / Base de dados de Vírus: 2441/5352 - Data de\n> Lançamento: 10/24/12****\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Isnt that what you want to do? Model averaging on GLMM models? Both\npackages accept lmer objects, its just the *G*LMM im unsure about. I.e.\nlmer(Y ~ X + (1|G), data= data)\n works, but im not sure if (",
       "thread_id": "thread-ef711e85caff",
       "thread_depth": 3,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/410f773f/attachment.pl"
+      ]
     },
     {
       "id": "msg-f7a04411aa1b",
@@ -2511,11 +2634,14 @@
         "<002201cdb2ac$f0cc43d0$d264cb70$@ul.pt>",
         "<CAPdSD+6hAGMv=N2jDQhOVjWH1t22-1YkuVUMOZvayYqBjAssmg@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/b943ba9a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/b943ba9a/attachment.pl>",
+      "body_plain": "Oh! Yes, I’m sorry, I wanted to write GLM.\n\nI’ll have a look.\n\nThanks again!\n\n \n\nJoana\n\n \n\nDe: Alan Haynes [mailto:aghaynes at gmail.com] \nEnviada: quinta-feira, 25 de Outubro de 2012 13:59\nPara: joanamartelo\nCc: r-sig-mixed-models at r-project.org\nAssunto: Re: [R-sig-ME] model averaging\n\n \n\nIsnt that what you want to do? Model averaging on GLMM models? Both packages\naccept lmer objects, its just the *G*LMM im unsure about. I.e. \nlmer(Y ~ X + (1|G), data= data)\n works, but im not sure if (e.g.)\nlmer(Y ~ X + (1|G), data= data, family=\"binomial\")\ndoes.\n\nHTH\n\nAlan\n\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\n\nOn 25 October 2012 14:33, joana martelo <jmmartelo at fc.ul.pt> wrote:\n\nThanks Alan\n\n\n\nI’ll look at those packages but I believe they are only for GLMM or LMM.\n\n\n\nJoana\n\n\n\nDe: Alan Haynes [mailto:aghaynes at gmail.com] \nEnviada: quinta-feira, 25 de Outubro de 2012 12:11\nPara: joanamartelo\nCc: r-sig-mixed-models at r-project.org\nAssunto: Re: [R-sig-ME] model averaging\n\n\n\nHi,\n\nYou might want to look at the MuMIn and/or AICcmodavg packages. Not entirely\nsure if GLMMs are supported, LMM certainly are though.\n\n\nHTH\n\nAlan\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586 <tel:%2B41794385586> \nSkype: aghaynes\n\nOn 25 October 2012 12:57, joana martelo <jmmartelo at fc.ul.pt> wrote:\n\nDear list\n\n\n\nIs it possible to do model averaging with GLMM, using lme4? I don't think it\nis because I couldn't find any info on how to do it, but maybe I'm missing\nsomething.\n\n\n\nMany thanks\n\nThe best\n\n\n\nJoana Martelo\n\n\n        [[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n  _____  \n\nNão foram detectados vírus nesta mensagem.\nVerificado por AVG - www.avg.com\nVersão: 2012.0.2221 / Base de dados de Vírus: 2441/5352 - Data de\nLançamento: 10/24/12\n\n\n\n  _____  \n\nNão foram detectados vírus nesta mensagem.\nVerificado por AVG - www.avg.com\nVersão: 2012.0.2221 / Base de dados de Vírus: 2441/5352 - Data de\nLançamento: 10/24/12\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Oh! Yes, I’m sorry, I wanted to write GLM.\n\nI’ll have a look.\n\nThanks again!\n\n \n\nJoana\n\n \n\nDe: Alan Haynes [mailto:aghaynes at gmail.com] \nEnviada: quinta-feira, 25 de Outubro de 2012 13:59\nPara: joan",
       "thread_id": "thread-ef711e85caff",
       "thread_depth": 4,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121025/b943ba9a/attachment.pl"
+      ]
     },
     {
       "id": "msg-bf29d4ecd6a2",
@@ -2545,11 +2671,14 @@
       "references": [
         "<mailman.3.1351332002.17851.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121028/0b9c56a9/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121028/0b9c56a9/attachment.pl>",
+      "body_plain": "Greetings list members,\n\nIs there a way to weight observations in a glmmadmb model?  glm, lmer, etc. allow a \"weights= ...\" argument, but glmmadmb doesn't and I haven't found a work-around.  Many thanks.\n\nGiancarlo\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Greetings list members,\n\nIs there a way to weight observations in a glmmadmb model?  glm, lmer, etc. allow a \"weights= ...\" argument, but glmmadmb doesn't and I haven't found a work-around.  Many than",
       "thread_id": "thread-fcdafbe1403f",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121028/0b9c56a9/attachment.pl"
+      ]
     },
     {
       "id": "msg-1732fc65fce2",
@@ -2561,11 +2690,14 @@
       "subject_clean": "error question",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/f453ba5a/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/f453ba5a/attachment.pl>",
+      "body_plain": "Hi everyone,\n\nI am running Poisson mixed models in R and I get this error message:\n\nMensajes de aviso perdidos\nIn aic(y, n, mu, weights, dev) : non-integer x = 2.500000\n\nAny clues on what it means and how to solve it???\n\nThanks\nAlejandro\n\n******************************\nDr. Alejandro Martínez Abraín\nInvestigador postdoctoral Parga-Pondal\nUniversidade da Coruña\nDepartamento de Bioloxía Animal, Bioloxía Vexetal e Ecoloxía\nCampus da Zapateira s/n\n E-15071 A Coruña, Spain\nhttp://lapoesiadelconocimiento.blogspot.com/\n_______________________\nPopulation Ecology Group\nIMEDEA (CSIC-UIB)\nC/Miquel Marquès 21\n07190 Esporles (Mallorca), Spain\nVoice: +34971611929\nE-mail: a.abrain at uib.es\nhttp://imedea.uib-csic.es/bc/gep\nhttp://lapoesiadelconocimiento.blogspot.com/\n\nMientras el cerebro sea un misterio el universo entero seguirá siendo un\nmisterio (Ramón y Cajal)\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi everyone,\n\nI am running Poisson mixed models in R and I get this error message:\n\nMensajes de aviso perdidos\nIn aic(y, n, mu, weights, dev) : non-integer x = 2.500000\n\nAny clues on what it means and",
       "thread_id": "thread-1732fc65fce2",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/f453ba5a/attachment.pl"
+      ]
     },
     {
       "id": "msg-33b267358cab",
@@ -2632,11 +2764,14 @@
       "subject_clean": "Heritability of ordinal data in MCMCglmm and estimating fixed effects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/2a846084/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/2a846084/attachment.pl>",
+      "body_plain": "Hi\nI am estimating the heritability of an ordinal trait using MCMCglmm and \nhave come across two problems: one regarding heritability and one \nspecific to ordinal data sets.\n\n_My data_\nTrait1 = ordinal score from 0 - 4\nColony = factor with 2 options\nID = repeated measures per individual (818 individuals)\n\n/prior2.1 <- list(G = list(G1=list(V=1, nu=1000, alpha.mu=0, alpha.V=1),/\n/G2=list(V=1, nu=1000, alpha.mu=0, alpha.V=1)), /\n/R = list(V = 1, fix = 1)) /\n\nThe simplest model just estimates Va (animal) and Vi (ID):\n/model2.1<- MCMCglmm(Trait1~ Colony , random =~animal+ID, pedigree = \nPed3, data = Data, prior = prior2.1, family='ordinal',burnin = 20000, \nnitt = 500000, thin = 200, pr=TRUE)/\n\nWhen I extract the variance components:\n/posterior.mode(model2.1$VCV)/\n/HPDinterval(model2.1$VCV)/\n\n/animal = //0.89 (0.05-1.69/\n/ID = 0.61 (0.00-1.60)/\n\nSo the heritability:\n\n/posterior.heritability1.1 <- model2.1$VCV[, \"animal\"]/(model2.1$VCV[, \n\"animal\"]+ model2.1$VCV[, \"ID\"] + model2.1$VCV[, \"units\"]+1)/\n/posterior.mode(posterior.heritability1.1)/\n/h^2 = 0.21 (0.05- 0.45)/\n\n/Now if I fit the full model (prior structure changed accordingly): /\n\n/model2.2<-MCMCglmm(Trait1~ Colony , random =~animal + BYEAR + MOTHER + \nID, pedigree = Ped3, data = Data, prior = prior2.1, \nfamily='ordinal',burnin = 20000, nitt = 500000, thin = 200, pr=TRUE)/\n\nAnd then extract the variance components and heritability as above:\n\n/animal = //0.00 (0.00-0.37)///\n\n/BYEAR = //0.00 (0.00-1.47)///\n\n/MOTHER=//0.00 (0.00-0.25)///\n\n/ID=//0.00 (0.00-1.45)/\n\n/h^2 = /0.00 (0.00-0.37)\n\nI have read about using DIC for model comparisons for non guassian data \nand I think I understand why it is problematic \n(https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q2/018096.html).\n\nHowever, for Gaussian models, using MCMCglmm, to estimate heritability, \nmodel selection using DIC is the norm (e.g. Charmantier et al 2011, J \nEvol Bio; Taylor et al 2012, J Evol Bio).I have seen some posts that \nsuggest that model selection is unnecessary for Bayesian models but as \nyou can see from the output above, including all possible random effects \nin this model pushes the variance components to zero, and dramatically \nchanges the interpretation of the results.I was just wondering if anyone \nhas any thoughts on how to chose the best model or does it simple \ninvolve deciding the best biological reasoning, and fitting this model?I \nam relatively new to these analyses but the dramatic change in variance \nestimates seems worrying to me.\n\nMy second question is specific to ordinal analyses:As I understand, for \nany fixed effect, I can estimate a probability matrix, such that I get a \nprobability of having a specific score:\n\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003671.html\n\nSo if I fit the model:\n/model2.1<- MCMCglmm(Trait1~ ID , random =~ year, pedigree = Ped3, data \n= Data, prior = prior2.1, family='ordinal',burnin = 20000, nitt = \n500000, thin = 200, pr=TRUE)/\n\nAnd there are 800 individuals (ID) and 5 ordinal levels of trait 1, I \nthink I will have a 800 x 5 matrix, with a probability of each \nindividual having each value of trait 1.  As in example the first line \nmay read:\n\nIndividual01234\n\n10.90.050.0500\n\nHowever, I need to extract one score per individual and I wondered if \nanyone knows if there is any methods for doing this?I can fit ID as a \nrandom effect but I am not sure this changes anything, and is associated \nwith the curse of BLUPS. I have been looking for weeks for specific \ninformation on this but I can not find anyone discussing it.\n\nI can happily provide data if it helps.\n\nMany Thanks\nSam //\n\n\n\n-- \n\nDr Samantha Patrick\nPost Doctoral Fellow\nCentre d'Etudes Biologiques de Chizé - CNRS\n79360 Villiers-en-Bois\nFrance\nT:+33 5 49 09 78 46\nM:+33 6 75 06 34 51\nSkype: sammy_patrick\nhttp://www.cebc.cnrs.fr/Fidentite/patrick/patrick.htm\nhttp://www.researchgate.net/profile/Samantha_Patrick/\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi\nI am estimating the heritability of an ordinal trait using MCMCglmm and \nhave come across two problems: one regarding heritability and one \nspecific to ordinal data sets.\n\n_My data_\nTrait1 = ordina",
       "thread_id": "thread-71fd8960d7a2",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121029/2a846084/attachment.pl"
+      ]
     },
     {
       "id": "msg-739b37a0cc81",
@@ -2650,11 +2785,14 @@
       "references": [
         "<B6D5D22DF5E8C94B90086FC29BCFAF520CE77890E5@hosting-exch>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/92fa3ace/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/92fa3ace/attachment.pl>",
+      "body_plain": "Dear Madam or Sir\n\nI am writing you hoping, that you can help me with a problem concerning the output of regressions done with the function lme in R.\n\nI would need the standard deviations for intercepts and predictors, but in the output I can only find those for the intercepts. Could it be, that this is my fault? (I am just a beginner with R and multilevel modeling).\n\nI am sorry to annoy you with this problem but I could not deal with the problem with the help of books, internet or friends. So my hope is that you would be so kind and you find some minutes to look through one of my examples.\nI would be deeply greatful.\n\nMy R script:\n\nlibrary (nlme)  #Datei laden\nrandomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random = ~1|Klnr, method = \"ML\", na.action = na.exclude)\nsummary (randomInterceptDIQAGQ)\nintervals (randomInterceptDIQAGQ)\n\nmy Output:\n\n\nFinal model, : 2 predictors, no RandomSlope\n\n> randomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random = ~1|Klnr, method = \"ML\", na.action = na.exclude)\n\n> summary (randomInterceptDIQAGQ)\n\nLinear mixed-effects model fit by maximum likelihood\n\n Data: Gind\n\n       AIC      BIC    logLik\n\n  943.9653 964.7289 -466.9826\n\nRandom effects:\n\n Formula: ~1 | Klnr\n\n(Intercept)  Residual\n\nStdDev:   0.3208885 0.6210003\n\n Fixed effects: NoteD ~ IQ + AGQ\n\nValue  Std.Error  DF    t-value p-value\n\n(Intercept)  1.8093739 0.06661912 439  27.159979  0.0000\n\nIQ          -0.1565731 0.04810124 439  -3.255074  0.0012\n\nAGQ         -0.4987539 0.04430031 439 -11.258476  0.0000\n\n Correlation:\n\n(Intr) IQ\n\nIQ   0.001\n\nAGQ  0.005 -0.503\n\nStandardized Within-Group Residuals:\n\n        Min          Q1         Med          Q3         Max\n\n-2.40082246 -0.62266936 -0.07491225  0.54494014  3.77426037\n\nNumber of Observations: 470\n\nNumber of Groups: 29\n\nWith best regards from Austria\nSylvia Opriessnig\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Madam or Sir\n\nI am writing you hoping, that you can help me with a problem concerning the output of regressions done with the function lme in R.\n\nI would need the standard deviations for intercep",
       "thread_id": "thread-739b37a0cc81",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/92fa3ace/attachment.pl"
+      ]
     },
     {
       "id": "msg-694e42934264",
@@ -2666,11 +2804,14 @@
       "subject_clean": "R-square in lme",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/1eb07e4f/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/1eb07e4f/attachment.pl>",
+      "body_plain": "Dear Madam or Sir\n\nThank you very much for your replies of my former question concerning the calculating of standard deviation/variance in lme.\n\nI would have one further question, maybe anyone can give me an answer of it?\n\nDo you know whether there exists a way to calculate a value similar to R² in R or do you also think, that this does not make sense for mixed linear models?\n\nI am looking forward to your replies and thank you in advance\n\nYours, sincerely\nSylvia\n\nMy R script:\nlibrary (nlme) #Datei laden\nrandomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random = ~1|Klnr, method = \"ML\", na.action = na.exclude)\nsummary (randomInterceptDIQAGQ)\nintervals (randomInterceptDIQAGQ)\nmy Output:\n\nFinal model, : 2 predictors, no RandomSlope\n\n> randomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random = ~1|Klnr, method = \"ML\", na.action = na.exclude)\n\n> summary (randomInterceptDIQAGQ)\n\nLinear mixed-effects model fit by maximum likelihood\n\n Data: Gind\n\n       AIC      BIC    logLik\n\n  943.9653 964.7289 -466.9826\n\nRandom effects:\n\n Formula: ~1 | Klnr\n\n(Intercept)  Residual\n\nStdDev:   0.3208885 0.6210003\n\n Fixed effects: NoteD ~ IQ + AGQ\n\nValue  Std.Error  DF    t-value p-value\n\n(Intercept)  1.8093739 0.06661912 439  27.159979  0.0000\n\nIQ          -0.1565731 0.04810124 439  -3.255074  0.0012\n\nAGQ         -0.4987539 0.04430031 439 -11.258476  0.0000\n\n Correlation:\n\n(Intr) IQ\n\nIQ   0.001\n\nAGQ  0.005 -0.503\n\nStandardized Within-Group Residuals:\n\n        Min          Q1         Med          Q3         Max\n\n-2.40082246 -0.62266936 -0.07491225  0.54494014  3.77426037\n\nNumber of Observations: 470\n\nNumber of Groups: 29\n\n\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Madam or Sir\n\nThank you very much for your replies of my former question concerning the calculating of standard deviation/variance in lme.\n\nI would have one further question, maybe anyone can giv",
       "thread_id": "thread-694e42934264",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/1eb07e4f/attachment.pl"
+      ]
     },
     {
       "id": "msg-e0929d1a0351",
@@ -2684,11 +2825,14 @@
       "references": [
         "<B6D5D22DF5E8C94B90086FC29BCFAF520CE7789100@hosting-exch>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/27672b1d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/27672b1d/attachment.pl>",
+      "body_plain": "Dear Sylvia,\n\nYou might want to check out the lme4 FAQ where this question, and loads of\nother stuff related to (G)LMMs, is covered:\nhttp://glmm.wikidot.com/faq\n\nHTH\n\nAlan\n\n--------------------------------------------------\nEmail: aghaynes at gmail.com\nMobile: +41794385586\nSkype: aghaynes\n\n\nOn 30 October 2012 15:31, Sylvia Opriessnig <Sylvia.Opriessnig at noe-lak.at>wrote:\n\n> Dear Madam or Sir\n>\n> Thank you very much for your replies of my former question concerning the\n> calculating of standard deviation/variance in lme.\n>\n> I would have one further question, maybe anyone can give me an answer of\n> it?\n>\n> Do you know whether there exists a way to calculate a value similar to R²\n> in R or do you also think, that this does not make sense for mixed linear\n> models?\n>\n> I am looking forward to your replies and thank you in advance\n>\n> Yours, sincerely\n> Sylvia\n>\n> My R script:\n> library (nlme) #Datei laden\n> randomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random =\n> ~1|Klnr, method = \"ML\", na.action = na.exclude)\n> summary (randomInterceptDIQAGQ)\n> intervals (randomInterceptDIQAGQ)\n> my Output:\n>\n> Final model, : 2 predictors, no RandomSlope\n>\n> > randomInterceptDIQAGQ <- lme(NoteD ~ IQ + AGQ, data = Gind, random =\n> ~1|Klnr, method = \"ML\", na.action = na.exclude)\n>\n> > summary (randomInterceptDIQAGQ)\n>\n> Linear mixed-effects model fit by maximum likelihood\n>\n>  Data: Gind\n>\n>        AIC      BIC    logLik\n>\n>   943.9653 964.7289 -466.9826\n>\n> Random effects:\n>\n>  Formula: ~1 | Klnr\n>\n> (Intercept)  Residual\n>\n> StdDev:   0.3208885 0.6210003\n>\n>  Fixed effects: NoteD ~ IQ + AGQ\n>\n> Value  Std.Error  DF    t-value p-value\n>\n> (Intercept)  1.8093739 0.06661912 439  27.159979  0.0000\n>\n> IQ          -0.1565731 0.04810124 439  -3.255074  0.0012\n>\n> AGQ         -0.4987539 0.04430031 439 -11.258476  0.0000\n>\n>  Correlation:\n>\n> (Intr) IQ\n>\n> IQ   0.001\n>\n> AGQ  0.005 -0.503\n>\n> Standardized Within-Group Residuals:\n>\n>         Min          Q1         Med          Q3         Max\n>\n> -2.40082246 -0.62266936 -0.07491225  0.54494014  3.77426037\n>\n> Number of Observations: 470\n>\n> Number of Groups: 29\n>\n>\n>\n>\n>\n>\n>         [[alternative HTML version deleted]]\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear Sylvia,\n\nYou might want to check out the lme4 FAQ where this question, and loads of\nother stuff related to (G)LMMs, is covered:\nhttp://glmm.wikidot.com/faq\n\nHTH\n\nAlan\n\n---------------------------",
       "thread_id": "thread-694e42934264",
       "thread_depth": 1,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121030/27672b1d/attachment.pl"
+      ]
     },
     {
       "id": "msg-ce4d6130d10c",
@@ -2787,11 +2931,14 @@
       "subject_clean": "problems in fitting GLMM Poisson with crossed random effects in both lme4 and glmmADMB",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/208cf884/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/208cf884/attachment.pl>",
+      "body_plain": "Dear all,\nI am experiencing problems when trying to fit the following GLMM with\nlibrary lme4:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|año) +(1|grado),weight=n.lances,family=\"poisson\"))\n\nThe response variable are counts (number of species), and there are four\nexplanatory variables with fixed effects: three continuous variables (SSTA,\narrastre, prof) and one is a three-level factor (zona). There are two\ncrossed (uncorrelated random effects): (1|año) with año having 24 levels;\nthe other random effect (1|grado) has by coincidence also 24 levels. The DF\nhas 419 rows and no missing values.\nThe numbers of cases for each of the random effects are unbalanced but not\nzero:\n> with(DF2, table(año))\n1984 1985 1987 1988 1989 1991 1992 1993 1994 1995 1996 1997 1998 1999 2000\n2001 2002 2003 2005 2006 2007 2008 2009 2010\n   3       4       3       29    12     23      8        8      40   31\n  9      12   12         6     14   32       7      8       28      31\n35     26    26     12\n> with(DF2, table(grado))\n333 342 343 344 345 352 353 354 355 356 363 364 365 366 374 375 376 385 386\n387 395 396 397 398\n  7    35    22  18    9    22   31    25  18  17    28   32  10     6\n22  26   11   13   18  13      9     9   12   6\n> with(DF2, table(grado, año)) is very sparse, which is why I am trying to\nfit uncorrelated random effects.\n\nI have used the very same dataset, with the same model structure) for other\nanalyses with response variables having Gaussian distribution and have had\nno problems at all.\n\nI invariably obtain the error message:\nError in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\nIn addition: Warning messages:\n1: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n2: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n\nI have absolutely no idea how to interpret this message or resolve the\nerror.\n\nAfter trying to fit the same model with library glmmAMDB, I obtain another\n(equally cryptical) error message:\nError in II[, ii] = II[, ii] + REmat$codes[[i]] :\n  number of items to replace is not a multiple of replacement length\nIn addition: Warning messages:\n1: In glmmadmb(n.spp ~ log(hs.arrastre + 1) + zona + prof + SSTA +  :\n  NAs removed in constructing fixed-effect model frame: you should probably\nremove them manually, e.g. with na.omit()\n2: In II[, ii] + REmat$codes[[i]] :\n  longer object length is not a multiple of shorter object length:\n\nI have tried many of the control options of either library (i.e. changing\nthe # of iterations, of evaluations, etc) but the error messages remain\nunchanged.\n\nI would really appreciate if any of you could possible spare some minutes\nand suggest some alternative.\nMany thanks in advance,\nCheers\nPablo\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI am experiencing problems when trying to fit the following GLMM with\nlibrary lme4:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|a",
       "thread_id": "thread-78362286f207",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/208cf884/attachment.pl"
+      ]
     },
     {
       "id": "msg-c643ded782a8",
@@ -2803,11 +2950,14 @@
       "subject_clean": "problems fitting GLMM poisson with cross random effects in lme4 and glmmADMB",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/baa65e8d/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/baa65e8d/attachment.pl>",
+      "body_plain": "Dear all,\nI am experiencing problems when trying to fit the following GLMM with\nlibrary lme4:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|año) +(1|grado),weight=n.lances,family=\"poisson\"))\n\nThe response variable are counts (number of species), and there are four\nexplanatory variables with fixed effects: three continuous variables (SSTA,\narrastre, prof) and one is a three-level factor (zona). There are two\ncrossed (uncorrelated random effects): (1|año) with año having 24 levels;\nthe other random effect (1|grado) has by coincidence also 24 levels. The DF\nhas 419 rows and no missing values.\nThe numbers of cases for each of the random effects are unbalanced but not\nzero:\n> with(DF2, table(año))\n1984 1985 1987 1988 1989 1991 1992 1993 1994 1995 1996 1997 1998 1999 2000\n2001 2002 2003 2005 2006 2007 2008 2009 2010\n   3       4       3       29    12     23      8        8      40   31\n  9      12   12         6     14   32       7      8       28      31\n35     26    26     12\n> with(DF2, table(grado))\n333 342 343 344 345 352 353 354 355 356 363 364 365 366 374 375 376 385 386\n387 395 396 397 398\n  7    35    22  18    9    22   31    25  18  17    28   32  10     6\n22  26   11   13   18  13      9     9   12   6\n> with(DF2, table(grado, año)) is very sparse, which is why I am trying to\nfit uncorrelated random effects.\n\nI have used the very same dataset, with the same model structure) for other\nanalyses with response variables having Gaussian distribution and have had\nno problems at all.\n\nI invariably obtain the error message:\nError in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\nIn addition: Warning messages:\n1: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n2: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n\nI have absolutely no idea how to interpret this message or resolve the\nerror.\n\nAfter trying to fit the same model with library glmmAMDB, I obtain another\n(equally cryptical) error message:\nError in II[, ii] = II[, ii] + REmat$codes[[i]] :\n  number of items to replace is not a multiple of replacement length\nIn addition: Warning messages:\n1: In glmmadmb(n.spp ~ log(hs.arrastre + 1) + zona + prof + SSTA +  :\n  NAs removed in constructing fixed-effect model frame: you should probably\nremove them manually, e.g. with na.omit()\n2: In II[, ii] + REmat$codes[[i]] :\n  longer object length is not a multiple of shorter object length:\n\nI have tried many of the control options of either library (i.e. changing\nthe # of iterations, of evaluations, etc) but the error messages remain\nunchanged.\n\nI would really appreciate if any of you could possible spare some minutes\nand suggest some alternative.\nMany thanks in advance,\nCheers\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nI am experiencing problems when trying to fit the following GLMM with\nlibrary lme4:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|a",
       "thread_id": "thread-c643ded782a8",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/baa65e8d/attachment.pl"
+      ]
     },
     {
       "id": "msg-6aa826a2210c",
@@ -2840,11 +2990,14 @@
         "<CAGdDvs2B+gx50bUSNj-qZtGvgc0Zi4G=AywWM6V1X_yUHH5wkg@mail.gmail.com>",
         "<CAO7JsnQtri3rp6=fOpYo2DGtjZwDqehwCrUpQOwb-YvUzSf=1w@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/bb7f6c95/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/bb7f6c95/attachment.pl>",
+      "body_plain": "Douglas,\nMany thanks for the speedy response.\nWhen I tried:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|año)+(1|grado),weight=n.lances,family=\"poisson\", verbose=T))\n  0:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n-0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n-0.0626493 -0.000706752 -0.000404302\n  1:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n-0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n-0.0626493 -0.000706752 -0.000404302\nError in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\nIn addition: Warning messages:\n1: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n2: In mer_finalize(ans) :\n  Cholmod warning 'not positive definite' at\nfile:../Cholesky/t_cholmod_rowfac.c, line 432\n\nI cannot tell to the correspondence of the parameter values in the first\ntwo iteractions with the parameters in the model. Guessing that\nthe 1150.8846 (a huge value?) corresponds to the intercept, I suppose that\nI could provide other initial values? I added: start=rep(0.5,15) since\nthere are 15 columns in the failed output above, but I could not change the\ninitial values.\nAny suggestions?\n\nThanks in advance\nCheers\nPablo\n\n\nOn 31 October 2012 15:29, Douglas Bates <bates at stat.wisc.edu> wrote:\n\n> On Wed, Oct 31, 2012 at 12:00 PM, Pablo Inchausti\n> <pablo.inchausti.f at gmail.com> wrote:\n> > Dear all,\n> > I am experiencing problems when trying to fit the following GLMM with\n> > library lme4:\n> >\n> m5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n> > (1|año) +(1|grado),weight=n.lances,family=\"poisson\"))\n> >\n> > The response variable are counts (number of species), and there are four\n> > explanatory variables with fixed effects: three continuous variables\n> (SSTA,\n> > arrastre, prof) and one is a three-level factor (zona). There are two\n> > crossed (uncorrelated random effects): (1|año) with año having 24 levels;\n> > the other random effect (1|grado) has by coincidence also 24 levels. The\n> DF\n> > has 419 rows and no missing values.\n> > The numbers of cases for each of the random effects are unbalanced but\n> not\n> > zero:\n> >> with(DF2, table(año))\n> > 1984 1985 1987 1988 1989 1991 1992 1993 1994 1995 1996 1997 1998 1999\n> 2000\n> > 2001 2002 2003 2005 2006 2007 2008 2009 2010\n> >    3       4       3       29    12     23      8        8      40   31\n> >   9      12   12         6     14   32       7      8       28      31\n> > 35     26    26     12\n> >> with(DF2, table(grado))\n> > 333 342 343 344 345 352 353 354 355 356 363 364 365 366 374 375 376 385\n> 386\n> > 387 395 396 397 398\n> >   7    35    22  18    9    22   31    25  18  17    28   32  10     6\n> > 22  26   11   13   18  13      9     9   12   6\n> >> with(DF2, table(grado, año)) is very sparse, which is why I am trying to\n> > fit uncorrelated random effects.\n> >\n> > I have used the very same dataset, with the same model structure) for\n> other\n> > analyses with response variables having Gaussian distribution and have\n> had\n> > no problems at all.\n> >\n> > I invariably obtain the error message:\n> > Error in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\n> > In addition: Warning messages:\n> > 1: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> > 2: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n>\n> > I have absolutely no idea how to interpret this message or resolve the\n> > error.\n>\n> The error messages are coming from the sparse matrix library CHOLMOD.\n> One of the disadvantages of adopting such code in the Matrix package\n> for R is that it wants to provide its own error messages and without\n> considerable effort at rewriting it, which would need to be repeated\n> every time a new version is released, these messages show up as R\n> error messages.\n>\n> The best thing to do is to trace the progress of the iterations in the\n> optimization of the parameter estimates.  You will likely find that\n> the fixed-effects parameters or the random effects are heading to\n> extreme values.\n>\n> > After trying to fit the same model with library glmmAMDB, I obtain\n> another\n> > (equally cryptical) error message:\n> > Error in II[, ii] = II[, ii] + REmat$codes[[i]] :\n> >   number of items to replace is not a multiple of replacement length\n> > In addition: Warning messages:\n> > 1: In glmmadmb(n.spp ~ log(hs.arrastre + 1) + zona + prof + SSTA +  :\n> >   NAs removed in constructing fixed-effect model frame: you should\n> probably\n> > remove them manually, e.g. with na.omit()\n> > 2: In II[, ii] + REmat$codes[[i]] :\n> >   longer object length is not a multiple of shorter object length:\n> >\n> > I have tried many of the control options of either library (i.e. changing\n> > the # of iterations, of evaluations, etc) but the error messages remain\n> > unchanged.\n> >\n> > I would really appreciate if any of you could possible spare some minutes\n> > and suggest some alternative.\n> > Many thanks in advance,\n> > Cheers\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Douglas,\nMany thanks for the speedy response.\nWhen I tried:\nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n(1|año)+(1|grado),weight=n.lances,fami",
       "thread_id": "thread-c643ded782a8",
       "thread_depth": 2,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/bb7f6c95/attachment.pl"
+      ]
     },
     {
       "id": "msg-f7fc655a3d2b",
@@ -2876,11 +3029,14 @@
       "subject_clean": "lmer and log link",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/8b028031/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/8b028031/attachment.pl>",
+      "body_plain": "Hello all,\n\n \n\nI am running a lmer model with two random effect levels, household nested in village, with two categorical predictors and a binomial outcome. I would like to obtain risk ratios and so am using the term family=binomial(link=log). However, using this link doesn’t allow the model to converge properly and I get the following message:\n\n \n\nError in\nmer_finalize(ans) : \n\n  mu[i]\nmust be in the range (0,1): mu = 18.3133, i = 166\n\n \n\nAs I understand it from posts elsewhere, this is due to the fact that one or more observations producing a linear predictor that, when mapped to a predicted probability, falls outside the admissible range of [0,1]. Does anyone know of a way to overcome this?Thank you!Hugh\nHugh Sturrock \n\n\n \t\t \t   \t\t  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello all,\n\n \n\nI am running a lmer model with two random effect levels, household nested in village, with two categorical predictors and a binomial outcome. I would like to obtain risk ratios and so a",
       "thread_id": "thread-3fcc47f1e0ee",
       "thread_depth": 0,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/8b028031/attachment.pl"
+      ]
     },
     {
       "id": "msg-3eb7c995b3d8",
@@ -2896,11 +3052,14 @@
         "<loom.20121023T195352-241@post.gmane.org>",
         "<CADtmEn4GJDbnT96dXtm+TFKnL3xG0M_mUKhqOX__-rHQtcgfHQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/c89db334/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/c89db334/attachment.pl>",
+      "body_plain": "Hi Ben,\nThank you very much for all your help, so far. Nonetheless, there is still\nsomething not working. If you could have a look at the following code, I\nwould highly appreciate it. It's about how to count convergence problems of\nfunction glmer within a simulation. I tried to adapt your proposal to my\nmodels, but something's not working, probably to me lack of knowledge of\nfunctions like tryCatch and withCallingHandlers.\nI try the following (where alldata is a list of different data frames):\n\noptions(warn=2)\n\nwarn<-rep(NA,1000)\n\nestglmer<-vector('list',1)\nnames(estglmer)<-'conv'\n\nfor(i in 1:1000){\n    # The data to be used\n    dd<-alldata[[i]]\n\n    # The model to be fitted (Y, Category, fallswinner & ncombat are\nvariables in data frame dd)\n\nmod<-glmer(Y~Category+fallswinner+(1|id),offset=(log(ncombat)),nAGQ=50,family=\"poisson\",data=dd)\n\n    # Here, we want to extract possible error/warning messages, but this\ndoes not work\n    estglmer$conv[i]<-withCallingHandlers(tryCatch(mod,\n                      error = function(e) {\n                          warn[i] <<- paste(\"ERROR:\",e$message)\n                          NA_ans\n                      }),\n                      warning = function(w) {\n                          warn[i] <<- w$message\n                          invokeRestart(\"muffleWarning\")\n                      })\n}\n\n\nI'm thinking about the topic and I don't know if it’s useful to obtain the\nwarnings/errors, because I should  look at each error and then I should\ndecide what I can do.\n\nI only want to inform about percentage of convergence of GLMM, that is the\nconverge is true or false.  I understand that a model is considered as not\nconvergent  either if the estimation process did not converge or if the\nestimate or its standard error was not provided. For example, in some cases\nthe parameter can be estimated but the estimation process was unable to\nprovide a positive definite variance-covariance matrix of the parameters\n(problems with Hessian), mainly due to the instability of the model.\n\nThank you very much in advance for your suggestions.\n\nMartí\n\n\n2012/10/23 Martí Casals <mcasals at aspb.cat>\n\n> Thank you so much Ben!!\n>\n> Martí\n>\n>\n> 2012/10/23 Ben Bolker <bbolker at gmail.com>\n>\n>> Martí Casals <mcasals at ...> writes:\n>>\n>> >\n>> > I’m working on the simulation results and I would like to know the\n>> > convergence of the GLMM model. For example, if I want to obtain the\n>> > converge in the glm case with R, I can extract:\n>> >\n>> > model1<-glm(................family=\" \",data=)\n>> >\n>> > *model1$converged*\n>> >\n>> > [1] TRUE\n>> >\n>> > I don’t know if exist a similar function in the lme4 package (glmer ).\n>> >\n>>\n>>   I think not.\n>>   I believe the only way to do this (it may have been discussed before)\n>> is to use options(warning=2) to promote warnings to errors, then to use\n>> tryCatch() etc. to intercept the errors and store the information\n>> somewhere.\n>>\n>> http://comments.gmane.org/gmane.comp.lang.r.lme4.devel/8691\n>> https://stat.ethz.ch/pipermail/r-help/2012-February/302767.html\n>>\n>>   I've added a bit on this to http://glmm.wikidot.com/faq, since it's\n>> not the first time it has come up ...\n>>\n>>  Ben Bolker\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n> --\n> Martí Casals Toquero\n>\n> Centre d' Investigació Biomèdica d'Epidemiología i Salut Pública\n>\n> Agència de Salut Pública de Barcelona\n>\n> Servei d' Epidemiologia\n>\n> Tel. 932384545 extensió: 391\n>\n> mcasals at aspb.es\n>\n\n\n\n-- \nMartí Casals Toquero\n\nCentre d' Investigació Biomèdica d'Epidemiología i Salut Pública\n\nAgència de Salut Pública de Barcelona\n\nServei d' Epidemiologia\n\nTel. 932384545 extensió: 391\n\nmcasals at aspb.es\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Ben,\nThank you very much for all your help, so far. Nonetheless, there is still\nsomething not working. If you could have a look at the following code, I\nwould highly appreciate it. It's about how t",
       "thread_id": "thread-fd6b7af1d8fc",
       "thread_depth": 3,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/c89db334/attachment.pl"
+      ]
     },
     {
       "id": "msg-efe47a530fd1",
@@ -2953,11 +3112,14 @@
         "<CAGdDvs1Cf8ZtpGOWBRvboC2=EKARAQp6ih=Z7bsqH90nef3bHw@mail.gmail.com>",
         "<CAO7JsnQcYXU=frOAh4QxOxod0+t=2u77ZogSiyYQ-rSE0mreAQ@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/71177b2c/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/71177b2c/attachment.pl>",
+      "body_plain": "My apologies for posting yet another message.\nI have tried several options to change the initial values of the model\nparameters for my GLMM poisson since it does seem to get stuck at just two\nevaluations (see below). Following your suggestion, I discarded the value\nof the deviance (the first one), and wrote start=rep(1,14) or\nstart=c(1,1,1,1,1,etc).  Following the example in the lmer help page, I\nhave also tried giving parameter name= parameter value but this option is\ninvalid. The only example in the lmer help page seems to apply only to a\ndifferent case:\n\n## nonlinear mixed models\n(nm1 <- nlmer(circumference ~ SSlogis(age, Asym, xmid, scal) ~\nAsym|Tree,Orange, start = c(Asym = 200, xmid = 725, scal = 350)))\n\nHowever, I do not think that I manage to ever change the initial parameter\nvalues, and would need some extra help on how to do it (if this is what I\nshould actually do). All my attempts have always yielded  the same two\nlines of the verbose output that are posted below. I should add that there\nis no problem in fitting the same model with just one of the random effects\n(either one), which suggests to me that the problem may lie in their being\ntwo uncorrelated random effects (but this is only my crude guess). I could\nof course provide my data if needed.\nThanks in advance,\nCheers\nPablo\n\nOn 31 October 2012 15:56, Douglas Bates <bates at stat.wisc.edu> wrote:\n\n> On Wed, Oct 31, 2012 at 12:40 PM, Pablo Inchausti\n> <pablo.inchausti.f at gmail.com> wrote:\n> > Douglas,\n> > Many thanks for the speedy response.\n> > When I tried:\n> >\n> m5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n> > (1|año)+(1|grado),weight=n.lances,family=\"poisson\", verbose=T))\n> >   0:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n> > -0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n> > -0.0626493 -0.000706752 -0.000404302\n> >   1:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n> > -0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n> > -0.0626493 -0.000706752 -0.000404302\n> > Error in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\n> > In addition: Warning messages:\n> > 1: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> > 2: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n>\n> The value before the ':' is the objective function, in this case the\n> deviance.  The parameters are listed after the deviance.  If I recall\n> correctly they are in the order of the standard deviations of the\n> random effects (both around 0.39) and then the fixed-effects\n> parameters.\n>\n> > I cannot tell to the correspondence of the parameter values in the first\n> two\n> > iteractions with the parameters in the model. Guessing that the\n> 1150.8846 (a\n> > huge value?) corresponds to the intercept, I suppose that I could provide\n> > other initial values? I added: start=rep(0.5,15) since there are 15\n> columns\n> > in the failed output above, but I could not change the initial values.\n> > Any suggestions?\n> >\n> > Thanks in advance\n> > Cheers\n> > Pablo\n> >\n> >\n> > On 31 October 2012 15:29, Douglas Bates <bates at stat.wisc.edu> wrote:\n> >>\n> >> On Wed, Oct 31, 2012 at 12:00 PM, Pablo Inchausti\n> >> <pablo.inchausti.f at gmail.com> wrote:\n> >> > Dear all,\n> >> > I am experiencing problems when trying to fit the following GLMM with\n> >> > library lme4:\n> >> >\n> >> >\n> m5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n> >> > (1|año) +(1|grado),weight=n.lances,family=\"poisson\"))\n> >> >\n> >> > The response variable are counts (number of species), and there are\n> four\n> >> > explanatory variables with fixed effects: three continuous variables\n> >> > (SSTA,\n> >> > arrastre, prof) and one is a three-level factor (zona). There are two\n> >> > crossed (uncorrelated random effects): (1|año) with año having 24\n> >> > levels;\n> >> > the other random effect (1|grado) has by coincidence also 24 levels.\n> The\n> >> > DF\n> >> > has 419 rows and no missing values.\n> >> > The numbers of cases for each of the random effects are unbalanced but\n> >> > not\n> >> > zero:\n> >> >> with(DF2, table(año))\n> >> > 1984 1985 1987 1988 1989 1991 1992 1993 1994 1995 1996 1997 1998 1999\n> >> > 2000\n> >> > 2001 2002 2003 2005 2006 2007 2008 2009 2010\n> >> >    3       4       3       29    12     23      8        8      40\n> 31\n> >> >   9      12   12         6     14   32       7      8       28      31\n> >> > 35     26    26     12\n> >> >> with(DF2, table(grado))\n> >> > 333 342 343 344 345 352 353 354 355 356 363 364 365 366 374 375 376\n> 385\n> >> > 386\n> >> > 387 395 396 397 398\n> >> >   7    35    22  18    9    22   31    25  18  17    28   32  10     6\n> >> > 22  26   11   13   18  13      9     9   12   6\n> >> >> with(DF2, table(grado, año)) is very sparse, which is why I am trying\n> >> >> to fit uncorrelated random effects.\n> >> >\n> >> > I have used the very same dataset, with the same model structure) for\n> >> > other analyses with response variables having Gaussian distribution\n> and have\n> >> > had no problems at all.\n> >> >\n> >> > I invariably obtain the error message:\n> >> > Error in mer_finalize(ans) : Downdated X'X is not positive definite,\n> 1.\n> >> > In addition: Warning messages:\n> >> > 1: In mer_finalize(ans) :\n> >> >   Cholmod warning 'not positive definite' at\n> >> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> >> > 2: In mer_finalize(ans) :\n> >> >   Cholmod warning 'not positive definite' at\n> >> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> >>\n> >> > I have absolutely no idea how to interpret this message or resolve the\n> >> > error.\n> >>\n> >> The error messages are coming from the sparse matrix library CHOLMOD.\n> >> One of the disadvantages of adopting such code in the Matrix package\n> >> for R is that it wants to provide its own error messages and without\n> >> considerable effort at rewriting it, which would need to be repeated\n> >> every time a new version is released, these messages show up as R\n> >> error messages.\n> >>\n> >> The best thing to do is to trace the progress of the iterations in the\n> >> optimization of the parameter estimates.  You will likely find that\n> >> the fixed-effects parameters or the random effects are heading to\n> >> extreme values.\n> >>\n> >> > After trying to fit the same model with library glmmAMDB, I obtain\n> >> > another\n> >> > (equally cryptical) error message:\n> >> > Error in II[, ii] = II[, ii] + REmat$codes[[i]] :\n> >> >   number of items to replace is not a multiple of replacement length\n> >> > In addition: Warning messages:\n> >> > 1: In glmmadmb(n.spp ~ log(hs.arrastre + 1) + zona + prof + SSTA +  :\n> >> >   NAs removed in constructing fixed-effect model frame: you should\n> >> > probably\n> >> > remove them manually, e.g. with na.omit()\n> >> > 2: In II[, ii] + REmat$codes[[i]] :\n> >> >   longer object length is not a multiple of shorter object length:\n> >> >\n> >> > I have tried many of the control options of either library (i.e.\n> >> > changing\n> >> > the # of iterations, of evaluations, etc) but the error messages\n> remain\n> >> > unchanged.\n> >> >\n> >> > I would really appreciate if any of you could possible spare some\n> >> > minutes\n> >> > and suggest some alternative.\n> >> > Many thanks in advance,\n> >> > Cheers\n> >> >\n> >> >         [[alternative HTML version deleted]]\n> >> >\n> >> >\n> >> > _______________________________________________\n> >> > R-sig-mixed-models at r-project.org mailing list\n> >> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >> >\n> >\n> >\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "My apologies for posting yet another message.\nI have tried several options to change the initial values of the model\nparameters for my GLMM poisson since it does seem to get stuck at just two\nevaluati",
       "thread_id": "thread-c643ded782a8",
       "thread_depth": 4,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/71177b2c/attachment.pl"
+      ]
     },
     {
       "id": "msg-718ad1fdb941",
@@ -2975,11 +3137,14 @@
         "<CAO7JsnQcYXU=frOAh4QxOxod0+t=2u77ZogSiyYQ-rSE0mreAQ@mail.gmail.com>",
         "<CAGdDvs0pFQcHGpdUH0BG7F52vcGf0gW0Nar0KT=WWgChNs+=UA@mail.gmail.com>"
       ],
-      "body_plain": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/d56c56de/attachment.pl>",
-      "body_snippet": "An embedded and charset-unspecified text was scrubbed...\nName: not available\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/d56c56de/attachment.pl>",
+      "body_plain": "Hola Pablo,\n\nhave you tried standardising (mean centreing and dividing by sd) your \npredictor variables? Sometimes it solves some of these problems.\n\nHTH\n\nLuca\n\n\n\n------------------------------------------------------------------\nLuca Börger\nCentre d’Etudes Biologiques de Chizé\nCNRS (U.P.R. 1934) & INRA (USC 1339)\n79360 Villiers-en-Bois\nFrance\n*****\nSkype: luca.borger\nlborger at cebc.cnrs.fr\nTel: +33 (0)549 099613\nhttp://cnrs.academia.edu/LucaBorger\nhttp://www.cebc.cnrs.fr/Fidentite/borger/borger.htm\n------------------------------------------------------------------\n* new book chapter:\nBörger & Fryxell (2012) Quantifying individual differences\nin dispersal using the net squared displacement statistics. \nCh. 17 In: Dispersal and Spatial Evolutionary Ecology.\nEditors: Clobert J., Baguette M., Benton T., Bullock J.\nOxford University Press, Oxford (UK).\n\n-----Original Message-----\nFrom: Pablo Inchausti <pablo.inchausti.f at gmail.com>\nTo: Douglas Bates <bates at stat.wisc.edu>\nCc: r-sig-mixed-models at r-project.org\nDate: Wed, 31 Oct 2012 18:15:38 -0200\nSubject: Re: [R-sig-ME] problems fitting GLMM poisson with cross random \neffects in lme4 and glmmADMB\n\nMy apologies for posting yet another message.\nI have tried several options to change the initial values of the model\nparameters for my GLMM poisson since it does seem to get stuck at just two\nevaluations (see below). Following your suggestion, I discarded the value\nof the deviance (the first one), and wrote start=rep(1,14) or\nstart=c(1,1,1,1,1,etc).  Following the example in the lmer help page, I\nhave also tried giving parameter name= parameter value but this option is\ninvalid. The only example in the lmer help page seems to apply only to a\ndifferent case:\n\n## nonlinear mixed models\n(nm1 <- nlmer(circumference ~ SSlogis(age, Asym, xmid, scal) ~\nAsym|Tree,Orange, start = c(Asym = 200, xmid = 725, scal = 350)))\n\nHowever, I do not think that I manage to ever change the initial parameter\nvalues, and would need some extra help on how to do it (if this is what I\nshould actually do). All my attempts have always yielded  the same two\nlines of the verbose output that are posted below. I should add that there\nis no problem in fitting the same model with just one of the random effects\n(either one), which suggests to me that the problem may lie in their being\ntwo uncorrelated random effects (but this is only my crude guess). I could\nof course provide my data if needed.\nThanks in advance,\nCheers\nPablo\n\nOn 31 October 2012 15:56, Douglas Bates <bates at stat.wisc.edu> wrote:\n\n> On Wed, Oct 31, 2012 at 12:40 PM, Pablo Inchausti\n> <pablo.inchausti.f at gmail.com> wrote:\n> > Douglas,\n> > Many thanks for the speedy response.\n> > When I tried:\n> >\n> \nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n> > (1|año)+(1|grado),weight=n.lances,family=\"poisson\", verbose=T))\n> >   0:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n> > -0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n> > -0.0626493 -0.000706752 -0.000404302\n> >   1:     1150.8846: 0.396545 0.388196  2.44097 0.0156075 -0.221623\n> > -0.0492026 -0.000271677 0.0909335 -0.0106744 -0.00526810 -0.161031\n> > -0.0626493 -0.000706752 -0.000404302\n> > Error in mer_finalize(ans) : Downdated X'X is not positive definite, 1.\n> > In addition: Warning messages:\n> > 1: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> > 2: In mer_finalize(ans) :\n> >   Cholmod warning 'not positive definite' at\n> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n>\n> The value before the ':' is the objective function, in this case the\n> deviance.  The parameters are listed after the deviance.  If I recall\n> correctly they are in the order of the standard deviations of the\n> random effects (both around 0.39) and then the fixed-effects\n> parameters.\n>\n> > I cannot tell to the correspondence of the parameter values in the first\n> two\n> > iteractions with the parameters in the model. Guessing that the\n> 1150.8846 (a\n> > huge value?) corresponds to the intercept, I suppose that I could \nprovide\n> > other initial values? I added: start=rep(0.5,15) since there are 15\n> columns\n> > in the failed output above, but I could not change the initial values.\n> > Any suggestions?\n> >\n> > Thanks in advance\n> > Cheers\n> > Pablo\n> >\n> >\n> > On 31 October 2012 15:29, Douglas Bates <bates at stat.wisc.edu> wrote:\n> >>\n> >> On Wed, Oct 31, 2012 at 12:00 PM, Pablo Inchausti\n> >> <pablo.inchausti.f at gmail.com> wrote:\n> >> > Dear all,\n> >> > I am experiencing problems when trying to fit the following GLMM with\n> >> > library lme4:\n> >> >\n> >> >\n> \nm5=with(DF3,lmer(n.spp~log(hs.arrastre+1)+zona+prof+SSTA+zona*log(hs.arrastre+1)+zona*SSTA+zona*prof+\n> >> > (1|año) +(1|grado),weight=n.lances,family=\"poisson\"))\n> >> >\n> >> > The response variable are counts (number of species), and there are\n> four\n> >> > explanatory variables with fixed effects: three continuous variables\n> >> > (SSTA,\n> >> > arrastre, prof) and one is a three-level factor (zona). There are two\n> >> > crossed (uncorrelated random effects): (1|año) with año having 24\n> >> > levels;\n> >> > the other random effect (1|grado) has by coincidence also 24 levels.\n> The\n> >> > DF\n> >> > has 419 rows and no missing values.\n> >> > The numbers of cases for each of the random effects are unbalanced \nbut\n> >> > not\n> >> > zero:\n> >> >> with(DF2, table(año))\n> >> > 1984 1985 1987 1988 1989 1991 1992 1993 1994 1995 1996 1997 1998 1999\n> >> > 2000\n> >> > 2001 2002 2003 2005 2006 2007 2008 2009 2010\n> >> >    3       4       3       29    12     23      8        8      40\n> 31\n> >> >   9      12   12         6     14   32       7      8       28      \n31\n> >> > 35     26    26     12\n> >> >> with(DF2, table(grado))\n> >> > 333 342 343 344 345 352 353 354 355 356 363 364 365 366 374 375 376\n> 385\n> >> > 386\n> >> > 387 395 396 397 398\n> >> >   7    35    22  18    9    22   31    25  18  17    28   32  10     \n6\n> >> > 22  26   11   13   18  13      9     9   12   6\n> >> >> with(DF2, table(grado, año)) is very sparse, which is why I am \ntrying\n> >> >> to fit uncorrelated random effects.\n> >> >\n> >> > I have used the very same dataset, with the same model structure) for\n> >> > other analyses with response variables having Gaussian distribution\n> and have\n> >> > had no problems at all.\n> >> >\n> >> > I invariably obtain the error message:\n> >> > Error in mer_finalize(ans) : Downdated X'X is not positive definite,\n> 1.\n> >> > In addition: Warning messages:\n> >> > 1: In mer_finalize(ans) :\n> >> >   Cholmod warning 'not positive definite' at\n> >> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> >> > 2: In mer_finalize(ans) :\n> >> >   Cholmod warning 'not positive definite' at\n> >> > file:../Cholesky/t_cholmod_rowfac.c, line 432\n> >>\n> >> > I have absolutely no idea how to interpret this message or resolve \nthe\n> >> > error.\n> >>\n> >> The error messages are coming from the sparse matrix library CHOLMOD.\n> >> One of the disadvantages of adopting such code in the Matrix package\n> >> for R is that it wants to provide its own error messages and without\n> >> considerable effort at rewriting it, which would need to be repeated\n> >> every time a new version is released, these messages show up as R\n> >> error messages.\n> >>\n> >> The best thing to do is to trace the progress of the iterations in the\n> >> optimization of the parameter estimates.  You will likely find that\n> >> the fixed-effects parameters or the random effects are heading to\n> >> extreme values.\n> >>\n> >> > After trying to fit the same model with library glmmAMDB, I obtain\n> >> > another\n> >> > (equally cryptical) error message:\n> >> > Error in II[, ii] = II[, ii] + REmat$codes[[i]] :\n> >> >   number of items to replace is not a multiple of replacement length\n> >> > In addition: Warning messages:\n> >> > 1: In glmmadmb(n.spp ~ log(hs.arrastre + 1) + zona + prof + SSTA +  :\n> >> >   NAs removed in constructing fixed-effect model frame: you should\n> >> > probably\n> >> > remove them manually, e.g. with na.omit()\n> >> > 2: In II[, ii] + REmat$codes[[i]] :\n> >> >   longer object length is not a multiple of shorter object length:\n> >> >\n> >> > I have tried many of the control options of either library (i.e.\n> >> > changing\n> >> > the # of iterations, of evaluations, etc) but the error messages\n> remain\n> >> > unchanged.\n> >> >\n> >> > I would really appreciate if any of you could possible spare some\n> >> > minutes\n> >> > and suggest some alternative.\n> >> > Many thanks in advance,\n> >> > Cheers\n> >> >\n> >> >         [[alternative HTML version deleted]]\n> >> >\n> >> >\n> >> > _______________________________________________\n> >> > R-sig-mixed-models at r-project.org mailing list\n> >> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >> >\n> >\n> >\n>\n\n   [[alternative HTML version deleted]]\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hola Pablo,\n\nhave you tried standardising (mean centreing and dividing by sd) your \npredictor variables? Sometimes it solves some of these problems.\n\nHTH\n\nLuca\n\n\n\n-------------------------------------",
       "thread_id": "thread-c643ded782a8",
       "thread_depth": 5,
-      "month": "2012-10"
+      "month": "2012-10",
+      "restored_from": [
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121031/d56c56de/attachment.pl"
+      ]
     }
   ],
   "threads": [
