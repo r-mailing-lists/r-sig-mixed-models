@@ -20,6 +20,7 @@
       "thread_id": "thread-c81905d27de7",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020380.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130601/01de565a/attachment.pl"
       ]
@@ -39,6 +40,7 @@
       "thread_id": "thread-c8dc1ab95a6b",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020383.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130601/476488d6/attachment.pl"
       ]
@@ -58,6 +60,7 @@
       "thread_id": "thread-d240b93de593",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020381.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130601/034204dd/attachment.pl"
       ]
@@ -79,7 +82,8 @@
       "body_snippet": "Daniel Anderson <daniela at ...> writes:\n\n> \n> Hey Ben, I would love to provide the dataset but \n> unfortunately I don't think it's possible. It's an entire\n> state's educational accountability testin",
       "thread_id": "thread-c81905d27de7",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020382.html"
     },
     {
       "id": "msg-92e731c46301",
@@ -95,7 +99,8 @@
       "body_snippet": "Dear list members,\n\nI am evaluating subject choices between three possible responses in three conditions. \nEach of 10 subject made the choice in six variations in the three conditions. I therefore wan",
       "thread_id": "thread-92e731c46301",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020384.html"
     },
     {
       "id": "msg-49e447e2cd7b",
@@ -112,6 +117,7 @@
       "thread_id": "thread-49e447e2cd7b",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020385.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130602/0fac1005/attachment.pl"
       ]
@@ -131,6 +137,7 @@
       "thread_id": "thread-68eeca81fd02",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020389.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130603/75080482/attachment.pl"
       ]
@@ -151,7 +158,8 @@
       "body_snippet": "Dear Joshua,\n\nThe weights in a binomial glmer are used to indicate the sample size when the response is a proportion. Hence the effect on the standard errors.\n\nBest regards,\n\nThierry\n\nir. Thierry Onke",
       "thread_id": "thread-49e447e2cd7b",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020386.html"
     },
     {
       "id": "msg-bf93d1422390",
@@ -169,7 +177,8 @@
       "body_snippet": "Dear Andrey,\n\nDon't use dummy variables, use a factor instead.\n\nThen your formula reduces to\n\nOutcomes ~ offset(log(N)) + 0 + disease:(Gender  + FE1 + FE2 + FE3) +  (0 + disease|State) + (0 + disease|",
       "thread_id": "thread-c8dc1ab95a6b",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020387.html"
     },
     {
       "id": "msg-8150a7e6d429",
@@ -186,6 +195,7 @@
       "thread_id": "thread-8150a7e6d429",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020388.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130603/0d796dd3/attachment.pl"
       ]
@@ -202,11 +212,12 @@
       "references": [
         "<D3DE3F1835C46041B40A30A77D8EBC9C45585B06@P2KITMBX02WC01.unicph.domain>"
       ],
-      "body_plain": "Hi,\n\nIf you add:\n\ndata$ymax<-ifelse(data$y <= log(0.4), log(0.4), data$y)\n\nand then fit cbind(ymin, ymax) as the response you should get the  \nanswer you expect. In your simulation ymax is the actual value of y,  \nwhereas in my simulation actual values less than log(0.4) are missing  \nbut known to be less than log(0.4). Values greater than log(0.4) are  \nuncensored. I think this is the usual definition of left-censoring (?).\n\nCheers,\n\nJarrod\n\n\n\nQuoting Anders Bjerring Strathe <strathe at sund.ku.dk> on Mon, 3 Jun  \n2013 08:25:55 +0000:\n\n> Dear all,\n>\n> I am trying to fit a linear mixed model for left censored Gaussian  \n> data that originates from a pedigreed population. I have used  \n> MCMCglmm in the past and I want to use it for this problem as well.  \n> I have simulated some data in order to understand how MCMCglmm  \n> syntax should be specified.\n>\n> The tutorial states that for left censored data use -Inf in the 1st  \n> column and for right censored data use Inf in the second column. If  \n> a particular data point is not censored have the same value in both  \n> columns.\n>\n> The R-code for my simple simulation is given below. I have  \n> implemented the model in OpenBUGS and it works well by returning  \n> estimates that correspond well with the true. I could fit the animal  \n> model with OpenBUGS, but I have >10.000 records and it is easy (to  \n> compared to BUGS) to fit an animal model with MCMCglmm, thanks to  \n> Jarrod Had?eld? I get biased results with MCMCglmm and hence I think  \n> that the syntax is not correct and I hope that some of you could  \n> show me how it is done?\n>\n> Thanks a lot in advance,\n> Anders Strathe\n>\n> # R-code\n> sim <- function(N=2, M=100, cv.beta=0.75, cv.err=0.15){\n>   beta <- rep(rnorm(M, mean=0, sd=cv.beta), each=N)\n>   err  <- rnorm(M*N, mean=0, sd=cv.err)\n>   y <- log(0.8) + beta + err\n>   data.frame(grp=rep(1:M, each=N), y)\n> }\n>\n>\n> data <- sim(M=1000)\n> data$ymin <- ifelse(data$y <= log(0.4), -Inf, data$y)\n>\n> p.var <- var(data$y, na.rm=TRUE)\n> prior <- list(G=list(G1=list(V=matrix(p.var/2),n=1)),  \n> R=list(V=matrix(p.var/2),n=1))\n>\n> m1 <- MCMCglmm(cbind(ymin, y) ~ 1, random = ~ grp,  \n> family=\"cengaussian\", data=data,\n>                prior=prior, nitt=20000, thin=1, burnin=10000,\n>                start= list(G=runif(1, 0, 100), R=runif(1, 0, 100)),  \n> verbose=FALSE)\n>\n> summary(sqrt(m1$VCV))[[1]]\n>\n> # TRUE values: cv.beta=0.75 (grp);  cv.err=0.15 (units)\n>\n> # OpenBUGS model:\n> model\n> {\n>     for (i in 1:N) {\n>         y[i] ~ dnorm(beta[id[i]], tau)C( , LQD[i])\n>     }\n>     for (j in 1:M) {\n>         beta[j] ~ dnorm(alpha, tau.id)\n>     }\n>     tau ~ dgamma(0.001, 0.001)\n>     sigma <- 1/sqrt(tau)\n>     tau.id ~ dgamma(0.001, 0.001)\n>     sigma.id <- 1/sqrt(tau.id)\n>     alpha ~ dnorm(0.00000E+00, 1.00000E-06)\n>     mu <- exp(alpha)\n> }\n>\n>\n>\n>\n>\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "Hi,\n\nIf you add:\n\ndata$ymax<-ifelse(data$y <= log(0.4), log(0.4), data$y)\n\nand then fit cbind(ymin, ymax) as the response you should get the  \nanswer you expect. In your simulation ymax is the actual value of y,  \nwhereas in my simulation actual values less than log(0.4) are missing  \nbut known to be less than log(0.4). Values greater than log(0.4) are  \nuncensored. I think this is the usual definition of left-censoring (?).\n\nCheers,\n\nJarrod\n\n\n\nQuoting Anders Bjerring Strathe <strathe at sund.ku.dk> on Mon, 3 Jun  \n2013 08:25:55 +0000:\n\n> Dear all,\n>\n> I am trying to fit a linear mixed model for left censored Gaussian  \n> data that originates from a pedigreed population. I have used  \n> MCMCglmm in the past and I want to use it for this problem as well.  \n> I have simulated some data in order to understand how MCMCglmm  \n> syntax should be specified.\n>\n> The tutorial states that for left censored data use -Inf in the 1st  \n> column and for right censored data use Inf in the second column. If  \n> a particular data point is not censored have the same value in both  \n> columns.\n>\n> The R-code for my simple simulation is given below. I have  \n> implemented the model in OpenBUGS and it works well by returning  \n> estimates that correspond well with the true. I could fit the animal  \n> model with OpenBUGS, but I have >10.000 records and it is easy (to  \n> compared to BUGS) to fit an animal model with MCMCglmm, thanks to  \n> Jarrod Hadﬁeld… I get biased results with MCMCglmm and hence I think  \n> that the syntax is not correct and I hope that some of you could  \n> show me how it is done…\n>\n> Thanks a lot in advance,\n> Anders Strathe\n>\n> # R-code\n> sim <- function(N=2, M=100, cv.beta=0.75, cv.err=0.15){\n>   beta <- rep(rnorm(M, mean=0, sd=cv.beta), each=N)\n>   err  <- rnorm(M*N, mean=0, sd=cv.err)\n>   y <- log(0.8) + beta + err\n>   data.frame(grp=rep(1:M, each=N), y)\n> }\n>\n>\n> data <- sim(M=1000)\n> data$ymin <- ifelse(data$y <= log(0.4), -Inf, data$y)\n>\n> p.var <- var(data$y, na.rm=TRUE)\n> prior <- list(G=list(G1=list(V=matrix(p.var/2),n=1)),  \n> R=list(V=matrix(p.var/2),n=1))\n>\n> m1 <- MCMCglmm(cbind(ymin, y) ~ 1, random = ~ grp,  \n> family=\"cengaussian\", data=data,\n>                prior=prior, nitt=20000, thin=1, burnin=10000,\n>                start= list(G=runif(1, 0, 100), R=runif(1, 0, 100)),  \n> verbose=FALSE)\n>\n> summary(sqrt(m1$VCV))[[1]]\n>\n> # TRUE values: cv.beta=0.75 (grp);  cv.err=0.15 (units)\n>\n> # OpenBUGS model:\n> model\n> {\n>     for (i in 1:N) {\n>         y[i] ~ dnorm(beta[id[i]], tau)C( , LQD[i])\n>     }\n>     for (j in 1:M) {\n>         beta[j] ~ dnorm(alpha, tau.id)\n>     }\n>     tau ~ dgamma(0.001, 0.001)\n>     sigma <- 1/sqrt(tau)\n>     tau.id ~ dgamma(0.001, 0.001)\n>     sigma.id <- 1/sqrt(tau.id)\n>     alpha ~ dnorm(0.00000E+00, 1.00000E-06)\n>     mu <- exp(alpha)\n> }\n>\n>\n>\n>\n>\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi,\n\nIf you add:\n\ndata$ymax<-ifelse(data$y <= log(0.4), log(0.4), data$y)\n\nand then fit cbind(ymin, ymax) as the response you should get the  \nanswer you expect. In your simulation ymax is the actual ",
       "thread_id": "thread-68eeca81fd02",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020390.html"
     },
     {
       "id": "msg-2716597c32cd",
@@ -226,6 +237,7 @@
       "thread_id": "thread-49e447e2cd7b",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020391.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130603/4af897e8/attachment.pl"
       ]
@@ -246,7 +258,8 @@
       "body_snippet": "Hi,\n\nYou should expect different answers depending on which category you  \nhave as base-line using the model you have. The model has two  \nresponses (trait): trait 1 is log(Pr(c1))-log(Pr(c3)) and tra",
       "thread_id": "thread-92e731c46301",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020392.html"
     },
     {
       "id": "msg-81af71f23ad6",
@@ -264,7 +277,8 @@
       "body_snippet": "Dear Adam,\n\nThis is a complex model and I'm not sure MCMCglmm is going to be able  \nto do all that you wish of it.\n\nThe key thing that you point out is that you want to estimate the  \ncovariance betwe",
       "thread_id": "thread-81af71f23ad6",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020393.html"
     },
     {
       "id": "msg-f49c96566584",
@@ -282,7 +296,8 @@
       "body_snippet": "Hi Ian,\n\nYour interpretation of the models makes sense. Note that mc1 is a  \nspecial case of mc2 when all cells of the mc2 covariance matrix are  \nidentical (i.e. homogeneous variances and correlation",
       "thread_id": "thread-f49c96566584",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020394.html"
     },
     {
       "id": "msg-63bf9a0c0451",
@@ -300,7 +315,8 @@
       "body_snippet": "Hi Ian,\n\nYour interpretation of the models makes sense. Note that mc1 is a  \nspecial case of mc2 when all cells of the mc2 covariance matrix are  \nidentical (i.e. homogeneous variances and correlation",
       "thread_id": "thread-63bf9a0c0451",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020395.html"
     },
     {
       "id": "msg-8d30ac4f2932",
@@ -318,7 +334,8 @@
       "body_snippet": "Hi,\n\n1) If you only have one observation per individual you should drop the  \nrandom effects (random=~us(trait):Bird) and have  \nrcov=~us(trait):units. The posterior correlation can be found as  \npost",
       "thread_id": "thread-8d30ac4f2932",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020396.html"
     },
     {
       "id": "msg-e4689219edbb",
@@ -336,7 +353,8 @@
       "body_snippet": "Hi,\n\nrbv does not provide estaimted breeding values it simulates random  \nbreeding values down a pedigree (conditional on the genetic  \n(co)variances provided).\n\nTo get the posterior distribution of b",
       "thread_id": "thread-e4689219edbb",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020397.html"
     },
     {
       "id": "msg-91eaff77b0e4",
@@ -353,6 +371,7 @@
       "thread_id": "thread-91eaff77b0e4",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020398.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/3a7bf666/attachment.pl"
       ]
@@ -373,7 +392,8 @@
       "body_snippet": "Dear List,\n\nI'm analysing call counts of a nocturnal species in response to temporal and environmental effects. Over a period of 3 years I divide each night into 10 equal-length blocks, and count the ",
       "thread_id": "thread-e7aca159d397",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020399.html"
     },
     {
       "id": "msg-9e809bc859ec",
@@ -390,6 +410,7 @@
       "thread_id": "thread-9e809bc859ec",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020400.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/3d6b03fe/attachment.pl"
       ]
@@ -409,6 +430,7 @@
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020401.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/43ec324a/attachment.pl"
       ]
@@ -429,7 +451,8 @@
       "body_snippet": "Hi Roey,\ndo you mean as Z-matrix or as var-covar relationship matrix? For the \nlater see lmekin (coxme package). There you can specify a similarity \nmatrix (K) for a random effect (u):\nu ~ N(0, sigma_",
       "thread_id": "thread-9e809bc859ec",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020402.html"
     },
     {
       "id": "msg-9e7d56ff504b",
@@ -447,7 +470,8 @@
       "body_snippet": "Steve Candy <Steve.Candy at ...> writes:\n\n> \n> I am yet to see any response from the developers/maintainers of\n> lme4 with respect to my posting from 25\n> Feburary on the R-sig-mixed-models Digest, Vo",
       "thread_id": "thread-91eaff77b0e4",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020403.html"
     },
     {
       "id": "msg-490f5f77322c",
@@ -465,7 +489,8 @@
       "body_snippet": "Callie Baird <calliebaird at ...> writes:\n\n> \n> I am trying to fit multilevel models, allowing negative variance estimates.\n>  Is there a way to allow negative variance estimates as in nobound in SAS?",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020405.html"
     },
     {
       "id": "msg-149dfd98e5b5",
@@ -484,6 +509,7 @@
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020404.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/83d25de6/attachment.pl"
       ]
@@ -505,7 +531,8 @@
       "body_snippet": "Hi,\n\nNegative variance estimates could make sense if viewed as covariances.  \nFor example, you could imagine controlling the amount of food for a  \nnest of chicks very carefully such that negative cor",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020406.html"
     },
     {
       "id": "msg-48a411e39974",
@@ -525,6 +552,7 @@
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020407.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/5b53431d/attachment.pl"
       ]
@@ -547,7 +575,8 @@
       "body_snippet": "On 13-06-04 12:00 PM, Jarrod Hadfield wrote:\n> Hi,\n> \n> Negative variance estimates could make sense if viewed as covariances.\n> For example, you could imagine controlling the amount of food for a nes",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 3,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020408.html"
     },
     {
       "id": "msg-7f1427343a24",
@@ -565,7 +594,8 @@
       "body_snippet": "You could also consider using a geostatistical model such as found in the\nspBayes package. \n\nSteve \n\n\n-----Original Message-----\nFrom: Roey Angel [mailto:angel at mpi-marburg.mpg.de] \nSent: Tuesday, J",
       "thread_id": "thread-9e809bc859ec",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020409.html"
     },
     {
       "id": "msg-0b67f70ff349",
@@ -582,6 +612,7 @@
       "thread_id": "thread-0b67f70ff349",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020410.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/d2f2dbe9/attachment.pl"
       ]
@@ -601,6 +632,7 @@
       "thread_id": "thread-46ac91db4342",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020411.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/b96cac2f/attachment.pl"
       ]
@@ -623,7 +655,8 @@
       "body_snippet": "Callie Baird <calliebaird at ...> writes:\n\n> \n> I would like to analyze the results of allowing negative variance as part\n> of a simulation study, to understand if and how the negative variance \n> cas",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 3,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020412.html"
     },
     {
       "id": "msg-29258e9a7127",
@@ -642,7 +675,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> Steve Candy <Steve.Candy <at> ...> writes:\n> \n> > \n> > I am yet to see any response from the developers/maintainers of\n> > lme4 with respect to my posting fro",
       "thread_id": "thread-91eaff77b0e4",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020413.html"
     },
     {
       "id": "msg-afa566fbb7c6",
@@ -664,6 +698,7 @@
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 4,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020414.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/051efa73/attachment.pl"
       ]
@@ -686,6 +721,7 @@
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020415.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/0c127aa6/attachment.pl"
       ]
@@ -704,7 +740,8 @@
       "body_snippet": "Hi Han-Gyol,\n\nI'm personally yet to see any context in which it makes sense to\ninclude a variable on *both* sides of the \"|\", so I for one am\nsceptical of \"(1 + item | subject) + (1 + trial + environm",
       "thread_id": "thread-f7bc9a1459ab",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020416.html"
     },
     {
       "id": "msg-918c81bc1d3a",
@@ -721,6 +758,7 @@
       "thread_id": "thread-918c81bc1d3a",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020417.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130604/2cf7cc4c/attachment.pl"
       ]
@@ -742,7 +780,8 @@
       "body_snippet": "Negative variance estimates can be very useful in alerting that the\nvariance-covariance structure is not what one expects.  Or they may\nallow the simplest way of specifying the overall variance-covari",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020418.html"
     },
     {
       "id": "msg-922d91b91001",
@@ -759,6 +798,7 @@
       "thread_id": "thread-922d91b91001",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020419.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130605/492514d3/attachment.pl"
       ]
@@ -780,6 +820,7 @@
       "thread_id": "thread-df33b32da21f",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020427.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130605/d67c401b/attachment.pl"
       ]
@@ -802,7 +843,8 @@
       "body_snippet": "John Maindonald <john.maindonald at ...> writes:\n\n> \n> Negative variance estimates can be very useful in alerting that the\n> variance-covariance structure is not what one expects.  Or they may\n> allow",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 3,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020420.html"
     },
     {
       "id": "msg-c9c6e6923093",
@@ -820,7 +862,8 @@
       "body_snippet": "D Gill <oceancurrents at ...> writes:\n\n> \n> Hello,  I am a student working on fisheries data using a mixed linear\n> model. I have a question about the varIdent function. I have information on\n> 140 fi",
       "thread_id": "thread-0b67f70ff349",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020421.html"
     },
     {
       "id": "msg-464e10c8b31c",
@@ -839,7 +882,8 @@
       "body_snippet": "Andrew Digby <andrewdigby at ...> writes:\n\n> I'm analysing call counts of a nocturnal species in \n> response to temporal and environmental effects. Over a\n> period of 3 years I divide each night into ",
       "thread_id": "thread-e7aca159d397",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020422.html"
     },
     {
       "id": "msg-2072010f82da",
@@ -860,7 +904,8 @@
       "body_snippet": "A variance components model that has a variance structure \n\n  block variance + plot (within block) variance + subplot (within plot) variance\n\nmakes sense only if blocks take out some part of the varia",
       "thread_id": "thread-71bbc93c5f61",
       "thread_depth": 4,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020423.html"
     },
     {
       "id": "msg-c18888ff3eb2",
@@ -877,6 +922,7 @@
       "thread_id": "thread-c18888ff3eb2",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020426.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130605/aabc9d29/attachment.pl"
       ]
@@ -895,7 +941,8 @@
       "body_snippet": "Dear All\nI am trying to use the coxme function to compare survival among 6 experimental \ngroups.\nI have a fixed factor (group), a random factor (brood), and a censoring \nvariable (0 = still alive;\n1 =",
       "thread_id": "thread-856b1208affe",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020424.html"
     },
     {
       "id": "msg-8989134beace",
@@ -913,7 +960,8 @@
       "body_snippet": "Hi David,\ncoxme now uses the lme4 syntax or you have to specify fixed and random:\n\ncoxme (Surv(time,status) ~ group + (1|nest), data=females) # or\n\ncoxme (fixed=Surv(time,status) ~ group, random=~1|ne",
       "thread_id": "thread-856b1208affe",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020425.html"
     },
     {
       "id": "msg-6087e2b82bd3",
@@ -932,7 +980,8 @@
       "body_snippet": "Samuel Bussmann <bussmann.1 at ...> writes:\n\n>  I have a question concerning the lme4 package -- specifically the\n> glmer function.  I am attempting to use doFit=FALSE to output and\n> make edits to mo",
       "thread_id": "thread-df33b32da21f",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020428.html"
     },
     {
       "id": "msg-edd67f439b4e",
@@ -950,7 +999,8 @@
       "body_snippet": "On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n> Hi all,\n> \n<snip />\n> \n> I searched in R for confidence intervals in GAMM4 but I did not find it. I\n> could obtain variance and std deviation",
       "thread_id": "thread-edd67f439b4e",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020429.html"
     },
     {
       "id": "msg-c1772456a731",
@@ -966,7 +1016,8 @@
       "body_snippet": "Hello all:\n\nThis is my first foray into mixed effects modelling and I have a couple \nof questions.\n\nI have data that I would like to analyize and I believe that a mixed \neffects model is the proper th",
       "thread_id": "thread-c1772456a731",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020430.html"
     },
     {
       "id": "msg-c84eee17fb61",
@@ -985,6 +1036,7 @@
       "thread_id": "thread-c84eee17fb61",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020431.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130606/d24baeb6/attachment.pl"
       ]
@@ -1005,7 +1057,8 @@
       "body_snippet": "Dear Stefan,\n\nYour model specification seems to be correct.\n\nNested random effects are straightforward in lme\n\nlme(HEIGHT~ISO, random =  ~ 1|EX/EX_TP/TP_PLANT, data=z)\n\nCrossed random effects are hard",
       "thread_id": "thread-c1772456a731",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020432.html"
     },
     {
       "id": "msg-f94cc2d10010",
@@ -1024,7 +1077,8 @@
       "body_snippet": "On Thu, 2013-06-06 at 16:29 +1200, Andrew Digby wrote:\n> > \n> > From: Ben Bolker <bbolker at gmail.com>\n> > Subject: Re: [R-sig-ME] Autocorrelation in a GAMM for nightly time series\n> > Date: 5 June 2",
       "thread_id": "thread-c84eee17fb61",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020433.html"
     },
     {
       "id": "msg-020b41fae8db",
@@ -1043,6 +1097,7 @@
       "thread_id": "thread-f7bc9a1459ab",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020434.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130606/d28f65ae/attachment.pl"
       ]
@@ -1065,6 +1120,7 @@
       "thread_id": "thread-f7bc9a1459ab",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020435.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130606/b33fc20b/attachment.pl"
       ]
@@ -1086,7 +1142,8 @@
       "body_snippet": "Thierry,\n\nThank you for the help.  I needed to also include a PLANT:POSITION \nnesting to account for pseudoreplication within plant.\n\npart of the output reads:\n\n  PLANT_POSITION (Intercept) 3.5074e-16",
       "thread_id": "thread-906b21068a05",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020437.html"
     },
     {
       "id": "msg-13e000d851e2",
@@ -1107,6 +1164,7 @@
       "thread_id": "thread-13e000d851e2",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020436.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130606/42ec93a7/attachment.pl"
       ]
@@ -1129,7 +1187,8 @@
       "body_snippet": "On 7/06/2013, at 02:42 , Gavin Simpson <gavin.simpson at ucl.ac.uk> wrote:\n\n> On Thu, 2013-06-06 at 16:29 +1200, Andrew Digby wrote:\n>>> \n>>> From: Ben Bolker <bbolker at gmail.com>\n>>> Subject: Re: [",
       "thread_id": "thread-c84eee17fb61",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020438.html"
     },
     {
       "id": "msg-bd272d6f2439",
@@ -1145,7 +1204,8 @@
       "body_snippet": "I fit this model:\n\nrepeated_measure_height <- lmer(HEIGHT~ISO+(TIME|EX_PLANT), data=x)\n\nI would like to test if the mean levels of ISO are sig diff. from each \nother (Is the difference greater than of",
       "thread_id": "thread-bd272d6f2439",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020439.html"
     },
     {
       "id": "msg-aed839e7bef7",
@@ -1165,7 +1225,8 @@
       "body_snippet": "Dear Stephen,\n\nI prefer to keep those random effects in the model because they reflect the design of the experiment.\n\nBest regards,\n\nThierry\n\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoe",
       "thread_id": "thread-906b21068a05",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020440.html"
     },
     {
       "id": "msg-ebe742960da9",
@@ -1182,6 +1243,7 @@
       "thread_id": "thread-ebe742960da9",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020441.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130607/29d05e0a/attachment.pl"
       ]
@@ -1202,7 +1264,8 @@
       "body_snippet": "On Thu, 2013-06-06 at 18:02 -0500, Stephen Sefick wrote:\n> I fit this model:\n> \n> repeated_measure_height <- lmer(HEIGHT~ISO+(TIME|EX_PLANT), data=x)\n> \n> I would like to test if the mean levels of IS",
       "thread_id": "thread-bd272d6f2439",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020442.html"
     },
     {
       "id": "msg-383904d83558",
@@ -1214,11 +1277,12 @@
       "subject_clean": "How to analyze a 2x2 crossover with baseline in R?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI have to test for the effect of a treatment in a crossover design\nwith the two sequences TP/PT (T = treatment, P = placebo), but with\nalso a single baseline measurement, before period 1. Sample data are\ngiven at the end of this message.\n\nI can do the analysis without the baseline measurement, but when I try\nto include in it in the model, lme fails with the message\n\n> lme( X7_SRF ~ Traitement + Periode, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) )\nErreur dans MEEM(object, conLin, control$niterEM) : \n  Singularit? rencontr?e en r?solution inverse au niveau 0, bloc 1\n\nwhich should be in English something like ? Error in MEEM(...).\nSingularity encountred when backsolving at level 0, bloc 1 ?.\n\nlmer also fails complaing for a non-definite matrix.\n\nI guess this is related to the fact that period J0 is confounded with\ntreatment = Baseline, as seen in \n\n> with( donnees, table( Periode, Traitement ) )\n       Traitement\nPeriode Baseline Treatment Placebo\n     J0       16         0       0\n     M1        0         8       8\n     M2        0         8       7\n\nas may also suggest the fact that not using both Periode and\nTraitement makes lme succeeds.\n\nBut how to write the model to fit, trying to reproduce the whole\ntime-evolution of the patient outcome knowing the time and the\ncondition? Does it make sense anyway, or fit periode 1 vs baseline and\nperiod 2 vs periode 1 the only way to to something?\n\nWhen I use lm, using the patient as a fixed effect, it seems to work\n(some coefficients are NA, in agreement with the above problem I\nguess), and results suggests there is no period or sequence effect,\nespecially if considering\nbut I am not very satisfied with it...\n\n> anova( lm( X7_SRF ~ Traitement + Periode + Sequence + Numero,\n             data = donnees ) ) )\nAnalysis of Variance Table\n\nResponse: X7_SRF\n           Df Sum Sq Mean Sq F value  Pr(>F)    \nTraitement  2 106533   53266    4,36 0,02248 *  \nPeriode     1  10721   10721    0,88 0,35694    \nSequence    1   2542    2542    0,21 0,65182    \nNumero     14 829085   59220    4,85 0,00019 ***\nResiduals  28 342135   12219                    \n\nSame thing using aov, but there is a (slight) unbalance since one\npatient leaved before the end, so how far can it be trusted?\n\n> summary( aov( X7_SRF ~ Traitement + Periode + Sequence + Error(Numero),\n                data = donnees ) ) )\nError: Numero\n           Df Sum Sq Mean Sq F value Pr(>F)\nTraitement  1  79638   79638    1,36   0,27\nSequence    1     24      24    0,00   0,98\nResiduals  13 763423   58725               \n\nError: Within\n           Df Sum Sq Mean Sq F value Pr(>F)  \nTraitement  2 101121   50561    4,14  0,027 *\nPeriode     1   4673    4673    0,38  0,541  \nResiduals  28 342135   12219                 \n\nThanks in advance for your advices,\n\nThe data:\n> donnees\n   X7_SRF Periode Sequence Traitement Numero\n1     548      J0 Groupe A   Baseline      1\n2     351      M1 Groupe A  Treatment      1\n3     418      M2 Groupe A    Placebo      1\n4     300      J0 Groupe A   Baseline     10\n5     180      M1 Groupe A  Treatment     10\n6     153      M2 Groupe A    Placebo     10\n7     652      J0 Groupe A   Baseline     11\n8     638      M1 Groupe A  Treatment     11\n10    491      J0 Groupe B   Baseline     12\n11    488      M1 Groupe B    Placebo     12\n12    443      M2 Groupe B  Treatment     12\n13    376      J0 Groupe B   Baseline     14\n14    466      M1 Groupe B    Placebo     14\n15    447      M2 Groupe B  Treatment     14\n16    638      J0 Groupe A   Baseline     15\n17    628      M1 Groupe A  Treatment     15\n18    872      M2 Groupe A    Placebo     15\n19    459      J0 Groupe A   Baseline     16\n20    191      M1 Groupe A  Treatment     16\n21    206      M2 Groupe A    Placebo     16\n22    731      J0 Groupe B   Baseline     17\n23    536      M1 Groupe B    Placebo     17\n24    584      M2 Groupe B  Treatment     17\n25    462      J0 Groupe B   Baseline      2\n26    373      M1 Groupe B    Placebo      2\n27    400      M2 Groupe B  Treatment      2\n28    197      J0 Groupe B   Baseline      3\n29    291      M1 Groupe B    Placebo      3\n30    160      M2 Groupe B  Treatment      3\n31    768      J0 Groupe B   Baseline      4\n32    260      M1 Groupe B    Placebo      4\n33    238      M2 Groupe B  Treatment      4\n34    606      J0 Groupe A   Baseline      5\n35    629      M1 Groupe A  Treatment      5\n36    350      M2 Groupe A    Placebo      5\n37    424      J0 Groupe A   Baseline      6\n38    304      M1 Groupe A  Treatment      6\n39    439      M2 Groupe A    Placebo      6\n40    538      J0 Groupe A   Baseline      7\n41    511      M1 Groupe A  Treatment      7\n42    501      M2 Groupe A    Placebo      7\n43    524      J0 Groupe B   Baseline      8\n44    601      M1 Groupe B    Placebo      8\n45    298      M2 Groupe B  Treatment      8\n46    511      J0 Groupe B   Baseline      9\n47    513      M1 Groupe B    Placebo      9\n48    444      M2 Groupe B  Treatment      9\n\n-- \n                                Emmanuel CURIS\n                                emmanuel.curis at parisdescartes.fr\n\nPage WWW: http://emmanuel.curis.online.fr/index.html",
+      "body_plain": "Hello,\n\nI have to test for the effect of a treatment in a crossover design\nwith the two sequences TP/PT (T = treatment, P = placebo), but with\nalso a single baseline measurement, before period 1. Sample data are\ngiven at the end of this message.\n\nI can do the analysis without the baseline measurement, but when I try\nto include in it in the model, lme fails with the message\n\n> lme( X7_SRF ~ Traitement + Periode, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) )\nErreur dans MEEM(object, conLin, control$niterEM) : \n  Singularité rencontrée en résolution inverse au niveau 0, bloc 1\n\nwhich should be in English something like « Error in MEEM(...).\nSingularity encountred when backsolving at level 0, bloc 1 ».\n\nlmer also fails complaing for a non-definite matrix.\n\nI guess this is related to the fact that period J0 is confounded with\ntreatment = Baseline, as seen in \n\n> with( donnees, table( Periode, Traitement ) )\n       Traitement\nPeriode Baseline Treatment Placebo\n     J0       16         0       0\n     M1        0         8       8\n     M2        0         8       7\n\nas may also suggest the fact that not using both Periode and\nTraitement makes lme succeeds.\n\nBut how to write the model to fit, trying to reproduce the whole\ntime-evolution of the patient outcome knowing the time and the\ncondition? Does it make sense anyway, or fit periode 1 vs baseline and\nperiod 2 vs periode 1 the only way to to something?\n\nWhen I use lm, using the patient as a fixed effect, it seems to work\n(some coefficients are NA, in agreement with the above problem I\nguess), and results suggests there is no period or sequence effect,\nespecially if considering\nbut I am not very satisfied with it...\n\n> anova( lm( X7_SRF ~ Traitement + Periode + Sequence + Numero,\n             data = donnees ) ) )\nAnalysis of Variance Table\n\nResponse: X7_SRF\n           Df Sum Sq Mean Sq F value  Pr(>F)    \nTraitement  2 106533   53266    4,36 0,02248 *  \nPeriode     1  10721   10721    0,88 0,35694    \nSequence    1   2542    2542    0,21 0,65182    \nNumero     14 829085   59220    4,85 0,00019 ***\nResiduals  28 342135   12219                    \n\nSame thing using aov, but there is a (slight) unbalance since one\npatient leaved before the end, so how far can it be trusted?\n\n> summary( aov( X7_SRF ~ Traitement + Periode + Sequence + Error(Numero),\n                data = donnees ) ) )\nError: Numero\n           Df Sum Sq Mean Sq F value Pr(>F)\nTraitement  1  79638   79638    1,36   0,27\nSequence    1     24      24    0,00   0,98\nResiduals  13 763423   58725               \n\nError: Within\n           Df Sum Sq Mean Sq F value Pr(>F)  \nTraitement  2 101121   50561    4,14  0,027 *\nPeriode     1   4673    4673    0,38  0,541  \nResiduals  28 342135   12219                 \n\nThanks in advance for your advices,\n\nThe data:\n> donnees\n   X7_SRF Periode Sequence Traitement Numero\n1     548      J0 Groupe A   Baseline      1\n2     351      M1 Groupe A  Treatment      1\n3     418      M2 Groupe A    Placebo      1\n4     300      J0 Groupe A   Baseline     10\n5     180      M1 Groupe A  Treatment     10\n6     153      M2 Groupe A    Placebo     10\n7     652      J0 Groupe A   Baseline     11\n8     638      M1 Groupe A  Treatment     11\n10    491      J0 Groupe B   Baseline     12\n11    488      M1 Groupe B    Placebo     12\n12    443      M2 Groupe B  Treatment     12\n13    376      J0 Groupe B   Baseline     14\n14    466      M1 Groupe B    Placebo     14\n15    447      M2 Groupe B  Treatment     14\n16    638      J0 Groupe A   Baseline     15\n17    628      M1 Groupe A  Treatment     15\n18    872      M2 Groupe A    Placebo     15\n19    459      J0 Groupe A   Baseline     16\n20    191      M1 Groupe A  Treatment     16\n21    206      M2 Groupe A    Placebo     16\n22    731      J0 Groupe B   Baseline     17\n23    536      M1 Groupe B    Placebo     17\n24    584      M2 Groupe B  Treatment     17\n25    462      J0 Groupe B   Baseline      2\n26    373      M1 Groupe B    Placebo      2\n27    400      M2 Groupe B  Treatment      2\n28    197      J0 Groupe B   Baseline      3\n29    291      M1 Groupe B    Placebo      3\n30    160      M2 Groupe B  Treatment      3\n31    768      J0 Groupe B   Baseline      4\n32    260      M1 Groupe B    Placebo      4\n33    238      M2 Groupe B  Treatment      4\n34    606      J0 Groupe A   Baseline      5\n35    629      M1 Groupe A  Treatment      5\n36    350      M2 Groupe A    Placebo      5\n37    424      J0 Groupe A   Baseline      6\n38    304      M1 Groupe A  Treatment      6\n39    439      M2 Groupe A    Placebo      6\n40    538      J0 Groupe A   Baseline      7\n41    511      M1 Groupe A  Treatment      7\n42    501      M2 Groupe A    Placebo      7\n43    524      J0 Groupe B   Baseline      8\n44    601      M1 Groupe B    Placebo      8\n45    298      M2 Groupe B  Treatment      8\n46    511      J0 Groupe B   Baseline      9\n47    513      M1 Groupe B    Placebo      9\n48    444      M2 Groupe B  Treatment      9\n\n-- \n                                Emmanuel CURIS\n                                emmanuel.curis at parisdescartes.fr\n\nPage WWW: http://emmanuel.curis.online.fr/index.html",
       "body_snippet": "Hello,\n\nI have to test for the effect of a treatment in a crossover design\nwith the two sequences TP/PT (T = treatment, P = placebo), but with\nalso a single baseline measurement, before period 1. Samp",
       "thread_id": "thread-383904d83558",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020443.html"
     },
     {
       "id": "msg-9527e8bc891e",
@@ -1232,11 +1296,12 @@
       "references": [
         "<20130608153249.GA22563@info124.pharmacie.univ-paris5.fr>"
       ],
-      "body_plain": "Emmanuel Curis <emmanuel.curis at ...> writes:\n\n> \n> Hello,\n> \n> I have to test for the effect of a treatment in a crossover design\n> with the two sequences TP/PT (T = treatment, P = placebo), but with\n> also a single baseline measurement, before period 1. Sample data are\n> given at the end of this message.\n> \n> I can do the analysis without the baseline measurement, but when I try\n> to include in it in the model, lme fails with the message\n> \n\n> Erreur dans MEEM(object, conLin, control$niterEM) : \n>   Singularit? rencontr?e en r?solution inverse au niveau 0, bloc 1\n> \n> which should be in English something like ? Error in MEEM(...).\n> Singularity encountred when backsolving at level 0, bloc 1 ?.\n> \n> lmer also fails complaing for a non-definite matrix.\n> \n> I guess this is related to the fact that period J0 is confounded with\n> treatment = Baseline, as seen in \n> \n> > with( donnees, table( Periode, Traitement ) )\n>        Traitement\n> Periode Baseline Treatment Placebo\n>      J0       16         0       0\n>      M1        0         8       8\n>      M2        0         8       7\n> \n> as may also suggest the fact that not using both Periode and\n> Traitement makes lme succeeds.\n> \n> But how to write the model to fit, trying to reproduce the whole\n> time-evolution of the patient outcome knowing the time and the\n> condition? Does it make sense anyway, or fit periode 1 vs baseline and\n> period 2 vs periode 1 the only way to to something?\n> \n> When I use lm, using the patient as a fixed effect, it seems to work\n> (some coefficients are NA, in agreement with the above problem I\n> guess), and results suggests there is no period or sequence effect,\n> especially if considering\n> but I am not very satisfied with it...\n> \n\n  The basic recipe here is to collapse your analysis into\na one-way analysis and then (hopefully) to reconstruct the\ndesired the contrasts.  I started to do this (below), but didn't\nhave quite enough time to finish it ...\n\ndonnees <- read.table(header=TRUE,\ntext=\"X7_SRF Periode Sequence Traitement Numero\n548      J0 Groupe.A   Baseline      1\n351      M1 Groupe.A  Treatment      1\n418      M2 Groupe.A    Placebo      1\n300      J0 Groupe.A   Baseline     10\n180      M1 Groupe.A  Treatment     10\n153      M2 Groupe.A    Placebo     10\n652      J0 Groupe.A   Baseline     11\n638      M1 Groupe.A  Treatment     11\n491      J0 Groupe.B   Baseline     12\n488      M1 Groupe.B    Placebo     12\n443      M2 Groupe.B  Treatment     12\n376      J0 Groupe.B   Baseline     14\n466      M1 Groupe.B    Placebo     14\n447      M2 Groupe.B  Treatment     14\n638      J0 Groupe.A   Baseline     15\n628      M1 Groupe.A  Treatment     15\n872      M2 Groupe.A    Placebo     15\n459      J0 Groupe.A   Baseline     16\n191      M1 Groupe.A  Treatment     16\n206      M2 Groupe.A    Placebo     16\n731      J0 Groupe.B   Baseline     17\n536      M1 Groupe.B    Placebo     17\n584      M2 Groupe.B  Treatment     17\n462      J0 Groupe.B   Baseline      2\n373      M1 Groupe.B    Placebo      2\n400      M2 Groupe.B  Treatment      2\n197      J0 Groupe.B   Baseline      3\n291      M1 Groupe.B    Placebo      3\n160      M2 Groupe.B  Treatment      3\n768      J0 Groupe.B   Baseline      4\n260      M1 Groupe.B    Placebo      4\n238      M2 Groupe.B  Treatment      4\n606      J0 Groupe.A   Baseline      5\n629      M1 Groupe.A  Treatment      5\n350      M2 Groupe.A    Placebo      5\n424      J0 Groupe.A   Baseline      6\n304      M1 Groupe.A  Treatment      6\n439      M2 Groupe.A    Placebo      6\n538      J0 Groupe.A   Baseline      7\n511      M1 Groupe.A  Treatment      7\n501      M2 Groupe.A    Placebo      7\n524      J0 Groupe.B   Baseline      8\n601      M1 Groupe.B    Placebo      8\n298      M2 Groupe.B  Treatment      8\n511      J0 Groupe.B   Baseline      9\n513      M1 Groupe.B    Placebo      9\n444      M2 Groupe.B  Treatment      9\")\n\nlibrary(\"nlme\")\ntry(m1 <- lme( X7_SRF ~ Traitement + Periode, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) ))\n\ndonnees <- transform(donnees,TP=interaction(Traitement,Periode,drop=TRUE))\n\nm2 <- lme( X7_SRF ~ TP, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) )\nsummary(m2)$tTable\n\nI didn't succeed in the rest of this, but see\nhttp://www.math.mcmaster.ca/~bolker/classes/s4c03/hw/hw2_s4c03.pdf\nOR:\nhttp://stackoverflow.com/questions/9335708/\n   contrasts-for-lm-using-contrast-package\n(broken URL)\n\nfor more information ...\n\ncontr1 <- matrix(\n                 c(1,0,0,0,0,             # baseline\n                    -1,1/2,1/2,0,0,       # baseline vs M1\n                    0,-1/2,-1/2,1/2,1/2, # M1 vs M2\n                   -1,1/2,0,1/2,0,       # baseline vs placebo\n                    0,-1/2,1/2,-1/2,1/2), # placebo vs treatment\n                    ## 0,1/2,-1/2,-1/2,1/2), # interaction:\n                                          # (T2-P2)-(T1-P1) = T2+P1-T1-P2\n              byrow=TRUE,ncol=5,\n      dimnames=list(c(\"b\",\"b_vs_M1\",\"M1_vs_M2\",\"b_vs_P\",\"P_vs_T\"),\n                      c(\"B\",\"PM1\",\"TM1\",\"PM2\",\"TM2\")))\n                  \nsolve(contr1)",
+      "body_plain": "Emmanuel Curis <emmanuel.curis at ...> writes:\n\n> \n> Hello,\n> \n> I have to test for the effect of a treatment in a crossover design\n> with the two sequences TP/PT (T = treatment, P = placebo), but with\n> also a single baseline measurement, before period 1. Sample data are\n> given at the end of this message.\n> \n> I can do the analysis without the baseline measurement, but when I try\n> to include in it in the model, lme fails with the message\n> \n\n> Erreur dans MEEM(object, conLin, control$niterEM) : \n>   Singularité rencontrée en résolution inverse au niveau 0, bloc 1\n> \n> which should be in English something like « Error in MEEM(...).\n> Singularity encountred when backsolving at level 0, bloc 1 ».\n> \n> lmer also fails complaing for a non-definite matrix.\n> \n> I guess this is related to the fact that period J0 is confounded with\n> treatment = Baseline, as seen in \n> \n> > with( donnees, table( Periode, Traitement ) )\n>        Traitement\n> Periode Baseline Treatment Placebo\n>      J0       16         0       0\n>      M1        0         8       8\n>      M2        0         8       7\n> \n> as may also suggest the fact that not using both Periode and\n> Traitement makes lme succeeds.\n> \n> But how to write the model to fit, trying to reproduce the whole\n> time-evolution of the patient outcome knowing the time and the\n> condition? Does it make sense anyway, or fit periode 1 vs baseline and\n> period 2 vs periode 1 the only way to to something?\n> \n> When I use lm, using the patient as a fixed effect, it seems to work\n> (some coefficients are NA, in agreement with the above problem I\n> guess), and results suggests there is no period or sequence effect,\n> especially if considering\n> but I am not very satisfied with it...\n> \n\n  The basic recipe here is to collapse your analysis into\na one-way analysis and then (hopefully) to reconstruct the\ndesired the contrasts.  I started to do this (below), but didn't\nhave quite enough time to finish it ...\n\ndonnees <- read.table(header=TRUE,\ntext=\"X7_SRF Periode Sequence Traitement Numero\n548      J0 Groupe.A   Baseline      1\n351      M1 Groupe.A  Treatment      1\n418      M2 Groupe.A    Placebo      1\n300      J0 Groupe.A   Baseline     10\n180      M1 Groupe.A  Treatment     10\n153      M2 Groupe.A    Placebo     10\n652      J0 Groupe.A   Baseline     11\n638      M1 Groupe.A  Treatment     11\n491      J0 Groupe.B   Baseline     12\n488      M1 Groupe.B    Placebo     12\n443      M2 Groupe.B  Treatment     12\n376      J0 Groupe.B   Baseline     14\n466      M1 Groupe.B    Placebo     14\n447      M2 Groupe.B  Treatment     14\n638      J0 Groupe.A   Baseline     15\n628      M1 Groupe.A  Treatment     15\n872      M2 Groupe.A    Placebo     15\n459      J0 Groupe.A   Baseline     16\n191      M1 Groupe.A  Treatment     16\n206      M2 Groupe.A    Placebo     16\n731      J0 Groupe.B   Baseline     17\n536      M1 Groupe.B    Placebo     17\n584      M2 Groupe.B  Treatment     17\n462      J0 Groupe.B   Baseline      2\n373      M1 Groupe.B    Placebo      2\n400      M2 Groupe.B  Treatment      2\n197      J0 Groupe.B   Baseline      3\n291      M1 Groupe.B    Placebo      3\n160      M2 Groupe.B  Treatment      3\n768      J0 Groupe.B   Baseline      4\n260      M1 Groupe.B    Placebo      4\n238      M2 Groupe.B  Treatment      4\n606      J0 Groupe.A   Baseline      5\n629      M1 Groupe.A  Treatment      5\n350      M2 Groupe.A    Placebo      5\n424      J0 Groupe.A   Baseline      6\n304      M1 Groupe.A  Treatment      6\n439      M2 Groupe.A    Placebo      6\n538      J0 Groupe.A   Baseline      7\n511      M1 Groupe.A  Treatment      7\n501      M2 Groupe.A    Placebo      7\n524      J0 Groupe.B   Baseline      8\n601      M1 Groupe.B    Placebo      8\n298      M2 Groupe.B  Treatment      8\n511      J0 Groupe.B   Baseline      9\n513      M1 Groupe.B    Placebo      9\n444      M2 Groupe.B  Treatment      9\")\n\nlibrary(\"nlme\")\ntry(m1 <- lme( X7_SRF ~ Traitement + Periode, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) ))\n\ndonnees <- transform(donnees,TP=interaction(Traitement,Periode,drop=TRUE))\n\nm2 <- lme( X7_SRF ~ TP, random = ~ 1|Numero,\n       data = donnees,\n       control = list( msVerbose = TRUE ) )\nsummary(m2)$tTable\n\nI didn't succeed in the rest of this, but see\nhttp://www.math.mcmaster.ca/~bolker/classes/s4c03/hw/hw2_s4c03.pdf\nOR:\nhttp://stackoverflow.com/questions/9335708/\n   contrasts-for-lm-using-contrast-package\n(broken URL)\n\nfor more information ...\n\ncontr1 <- matrix(\n                 c(1,0,0,0,0,             # baseline\n                    -1,1/2,1/2,0,0,       # baseline vs M1\n                    0,-1/2,-1/2,1/2,1/2, # M1 vs M2\n                   -1,1/2,0,1/2,0,       # baseline vs placebo\n                    0,-1/2,1/2,-1/2,1/2), # placebo vs treatment\n                    ## 0,1/2,-1/2,-1/2,1/2), # interaction:\n                                          # (T2-P2)-(T1-P1) = T2+P1-T1-P2\n              byrow=TRUE,ncol=5,\n      dimnames=list(c(\"b\",\"b_vs_M1\",\"M1_vs_M2\",\"b_vs_P\",\"P_vs_T\"),\n                      c(\"B\",\"PM1\",\"TM1\",\"PM2\",\"TM2\")))\n                  \nsolve(contr1)",
       "body_snippet": "Emmanuel Curis <emmanuel.curis at ...> writes:\n\n> \n> Hello,\n> \n> I have to test for the effect of a treatment in a crossover design\n> with the two sequences TP/PT (T = treatment, P = placebo), but wit",
       "thread_id": "thread-383904d83558",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020444.html"
     },
     {
       "id": "msg-9505434a3023",
@@ -1251,11 +1316,12 @@
         "<CAE5HZZ+h=qE4Ntrn=1ofwyxU24WrJQCPYki2Px34UgsEPn+1sw@mail.gmail.com>",
         "<1370453771.3634.56.camel@haul.biol.uregina.ca>"
       ],
-      "body_plain": "Um texto embutido e sem conjunto de caracteres especificado foi limpo...\nNome: n?o dispon?vel\nUrl: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130611/2c509498/attachment.pl>",
-      "body_snippet": "Um texto embutido e sem conjunto de caracteres especificado foi limpo...\nNome: n?o dispon?vel\nUrl: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130611/2c509498/attachment.pl>",
+      "body_plain": "Um texto embutido e sem conjunto de caracteres especificado foi limpo...\nNome: não disponível\nUrl: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130611/2c509498/attachment.pl>",
+      "body_snippet": "Um texto embutido e sem conjunto de caracteres especificado foi limpo...\nNome: não disponível\nUrl: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130611/2c509498/attachment.pl>",
       "thread_id": "thread-edd67f439b4e",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020445.html"
     },
     {
       "id": "msg-c4e470c10286",
@@ -1271,11 +1337,12 @@
         "<1370453771.3634.56.camel@haul.biol.uregina.ca>",
         "<CAE5HZZKkEmyCYre6NgJb3fciLX5pA8ZwkhaAuaXTR4=htY2ZWw@mail.gmail.com>"
       ],
-      "body_plain": "On Tue, 2013-06-11 at 09:02 -0300, Rodrigo Tardin wrote:\n> Hi Gavin and other member of the list\n> \n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n> no, without any specification of correlation structure it does not account\n> for autcorrelation in the residuals. Because my data do have a problem of\n> autocorrelation on the residuals.\n\nThere is an induced correlation due to the random effect - all\nobservations within a level of RANDOM have the same estimated\ncorrelation, IIRC. The AR(1) you hoped to specify would have that\ncorrelation decline by the absolute power of the separation in time\n(i.e. exponentially), so they are different.\n\nIf the residuals are correlated then you should do something about it if\nyou can as it may change which terms are significant in the model (as\nstandard errors are to narrow), and also with GAMMs where the smoothness\nof the splines is determined from the data the procedure may tend to\nunder-smooth the data because it assumes that they are less correlated\nthan they really are.\n\nHTH\n\nG\n\n> Thanks in advance\n> Rodrigo\n> \n> \n> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> \n> > On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n> > > Hi all,\n> > >\n> > <snip />\n> > >\n> > > I searched in R for confidence intervals in GAMM4 but I did not find it.\n> > I\n> > > could obtain variance and std deviation for the random and fixed effects\n> > > Groups Name             Variance            Std.Dev.\n> > >  RANDOM (Intercept)  1.4973e+01        3.8694319\n> > >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n> > >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n> > >\n> > >\n> > > Here it is my model.\n> > > n3 <- gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random = ~\n> > > (1|RANDOM),correlation=corAR1(),method=\"ML\", family=binomial,data=bryde3)\n> >\n> > Unfortunately, this is *totally* wrong. There is no `correlation`\n> > argument in `gamm4()` nor `glmer()`, which is the underlying fitting\n> > function. That this didn't raise an error is due to `gamm4()` etc having\n> > argument `...` which silently mops up any left over, non-used arguments.\n> >\n> > `gamm()` in package *mgcv* does have a `correlation` argument but that\n> > will fit your binomial GLMM via PQL which isn't such a good solution for\n> > such models.\n> >\n> > In nlme:::lme there was a function intervals() which could provide the\n> > CI on the REs - see if there is an equivalent for lme4:::glmer. IIRC\n> > Doug has something on this in his in-prep book on mixed effects models\n> > via lme4, see chapter 1 in\n> > http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n> >\n> > That presumes that you sort out the AR(1) business; you can't do that in\n> > glmer().\n> >\n> > Options are to move back to mgcv::gamm() but as I said, PQL isn't great\n> > of binomial models. If your REs are simple, then mgcv::gam() can be\n> > used. Again this doesn't have a correlation argument but ?magic (after\n> > loading mgcv) has an example of including the correlation in the fit via\n> > some jiggery-pokery. Alternatively and related to gam() is mgcv::bam()\n> > which can take a known AR(1) parameter into account during the fitting.\n> > This fits the AR(1) given the ordering of the data, which is what\n> > `correlation=corAR1()` would have done - perhaps this just plain won't\n> > work in nlme:::lme if you don't specify any ordering variable? - but I'm\n> > not sure that will be correct given that your data are strictly time\n> > ordered.\n> >\n> > HTH\n> >\n> > G\n> >\n> > > The OFFSET is the boat route (the number of times the boat searched for\n> > > whales in each 2x2km grid)\n> > > RANDOM is the individual whale as done in previous studies (Hazen et al\n> > > 2009 - MEPS - doi:10.3354/meps08108)\n> > >\n> > > Can someone help me, please?\n> > > Sincerely,\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> > --\n> > Gavin Simpson, PhD                          [t] +1 306 337 8863\n> > Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n> > Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n> > 523 Research and Innovation Centre          [tw] @ucfagls\n> > University of Regina\n> > Regina, SK S4S 0A2, Canada\n> >\n> >\n> >\n> >\n> \n> \n> Hi Gavin and other member of the list\n> \n> \n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation\n> or no, without any specification of correlation structure it does not\n> account for autcorrelation in the residuals. Because my data do have a\n> problem of autocorrelation on the residuals.\n> \n> \n> Thanks in advance\n> Rodrigo\n> \n> \n> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>         On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>         > Hi all,\n>         >\n>         <snip />\n>         >\n>         > I searched in R for confidence intervals in GAMM4 but I did\n>         not find it. I\n>         > could obtain variance and std deviation for the random and\n>         fixed effects\n>         > Groups Name             Variance            Std.Dev.\n>         >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>         >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>         >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>         >\n>         >\n>         > Here it is my model.\n>         > n3 <-\n>         gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random\n>         = ~\n>         > (1|RANDOM),correlation=corAR1(),method=\"ML\",\n>         family=binomial,data=bryde3)\n>         \n>         \n>         Unfortunately, this is *totally* wrong. There is no\n>         `correlation`\n>         argument in `gamm4()` nor `glmer()`, which is the underlying\n>         fitting\n>         function. That this didn't raise an error is due to `gamm4()`\n>         etc having\n>         argument `...` which silently mops up any left over, non-used\n>         arguments.\n>         \n>         `gamm()` in package *mgcv* does have a `correlation` argument\n>         but that\n>         will fit your binomial GLMM via PQL which isn't such a good\n>         solution for\n>         such models.\n>         \n>         In nlme:::lme there was a function intervals() which could\n>         provide the\n>         CI on the REs - see if there is an equivalent for\n>         lme4:::glmer. IIRC\n>         Doug has something on this in his in-prep book on mixed\n>         effects models\n>         via lme4, see chapter 1 in\n>         http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>         \n>         That presumes that you sort out the AR(1) business; you can't\n>         do that in\n>         glmer().\n>         \n>         Options are to move back to mgcv::gamm() but as I said, PQL\n>         isn't great\n>         of binomial models. If your REs are simple, then mgcv::gam()\n>         can be\n>         used. Again this doesn't have a correlation argument\n>         but ?magic (after\n>         loading mgcv) has an example of including the correlation in\n>         the fit via\n>         some jiggery-pokery. Alternatively and related to gam() is\n>         mgcv::bam()\n>         which can take a known AR(1) parameter into account during the\n>         fitting.\n>         This fits the AR(1) given the ordering of the data, which is\n>         what\n>         `correlation=corAR1()` would have done - perhaps this just\n>         plain won't\n>         work in nlme:::lme if you don't specify any ordering variable?\n>         - but I'm\n>         not sure that will be correct given that your data are\n>         strictly time\n>         ordered.\n>         \n>         HTH\n>         \n>         G\n>         \n>         > The OFFSET is the boat route (the number of times the boat\n>         searched for\n>         > whales in each 2x2km grid)\n>         > RANDOM is the individual whale as done in previous studies\n>         (Hazen et al\n>         > 2009 - MEPS - doi:10.3354/meps08108)\n>         >\n>         > Can someone help me, please?\n>         > Sincerely,\n>         \n>         > _______________________________________________\n>         > R-sig-mixed-models at r-project.org mailing list\n>         > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>         \n>         --\n>         Gavin Simpson, PhD                          [t] +1 306 337\n>         8863\n>         Adjunct Professor, Department of Biology    [f] +1 306 337\n>         2410\n>         Institute of Environmental Change & Society [e]\n>         gavin.simpson at uregina.ca\n>         523 Research and Innovation Centre          [tw] @ucfagls\n>         University of Regina\n>         Regina, SK S4S 0A2, Canada\n>         \n>         \n>         \n> \n> \n> \n> \n> -- \n> Rodrigo Tardin\n> \n> Doutorando em Ecologia e Conserva??o - IBRAG - UERJ\n> Mestre em Biologia Animal - PPGBA - UFRRJ\n> Especialista em Doc?ncia do Ensino Superior - IAVM\n> Laborat?rio de Bioac?stica e Ecologia de Cet?ceos - UFRRJ/ IF/ DCA\n\n-- \nGavin Simpson, PhD                          [t] +1 306 337 8863\nAdjunct Professor, Department of Biology    [f] +1 306 337 2410\nInstitute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n523 Research and Innovation Centre          [tw] @ucfagls\nUniversity of Regina\nRegina, SK S4S 0A2, Canada",
+      "body_plain": "On Tue, 2013-06-11 at 09:02 -0300, Rodrigo Tardin wrote:\n> Hi Gavin and other member of the list\n> \n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n> no, without any specification of correlation structure it does not account\n> for autcorrelation in the residuals. Because my data do have a problem of\n> autocorrelation on the residuals.\n\nThere is an induced correlation due to the random effect - all\nobservations within a level of RANDOM have the same estimated\ncorrelation, IIRC. The AR(1) you hoped to specify would have that\ncorrelation decline by the absolute power of the separation in time\n(i.e. exponentially), so they are different.\n\nIf the residuals are correlated then you should do something about it if\nyou can as it may change which terms are significant in the model (as\nstandard errors are to narrow), and also with GAMMs where the smoothness\nof the splines is determined from the data the procedure may tend to\nunder-smooth the data because it assumes that they are less correlated\nthan they really are.\n\nHTH\n\nG\n\n> Thanks in advance\n> Rodrigo\n> \n> \n> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> \n> > On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n> > > Hi all,\n> > >\n> > <snip />\n> > >\n> > > I searched in R for confidence intervals in GAMM4 but I did not find it.\n> > I\n> > > could obtain variance and std deviation for the random and fixed effects\n> > > Groups Name             Variance            Std.Dev.\n> > >  RANDOM (Intercept)  1.4973e+01        3.8694319\n> > >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n> > >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n> > >\n> > >\n> > > Here it is my model.\n> > > n3 <- gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random = ~\n> > > (1|RANDOM),correlation=corAR1(),method=\"ML\", family=binomial,data=bryde3)\n> >\n> > Unfortunately, this is *totally* wrong. There is no `correlation`\n> > argument in `gamm4()` nor `glmer()`, which is the underlying fitting\n> > function. That this didn't raise an error is due to `gamm4()` etc having\n> > argument `...` which silently mops up any left over, non-used arguments.\n> >\n> > `gamm()` in package *mgcv* does have a `correlation` argument but that\n> > will fit your binomial GLMM via PQL which isn't such a good solution for\n> > such models.\n> >\n> > In nlme:::lme there was a function intervals() which could provide the\n> > CI on the REs - see if there is an equivalent for lme4:::glmer. IIRC\n> > Doug has something on this in his in-prep book on mixed effects models\n> > via lme4, see chapter 1 in\n> > http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n> >\n> > That presumes that you sort out the AR(1) business; you can't do that in\n> > glmer().\n> >\n> > Options are to move back to mgcv::gamm() but as I said, PQL isn't great\n> > of binomial models. If your REs are simple, then mgcv::gam() can be\n> > used. Again this doesn't have a correlation argument but ?magic (after\n> > loading mgcv) has an example of including the correlation in the fit via\n> > some jiggery-pokery. Alternatively and related to gam() is mgcv::bam()\n> > which can take a known AR(1) parameter into account during the fitting.\n> > This fits the AR(1) given the ordering of the data, which is what\n> > `correlation=corAR1()` would have done - perhaps this just plain won't\n> > work in nlme:::lme if you don't specify any ordering variable? - but I'm\n> > not sure that will be correct given that your data are strictly time\n> > ordered.\n> >\n> > HTH\n> >\n> > G\n> >\n> > > The OFFSET is the boat route (the number of times the boat searched for\n> > > whales in each 2x2km grid)\n> > > RANDOM is the individual whale as done in previous studies (Hazen et al\n> > > 2009 - MEPS - doi:10.3354/meps08108)\n> > >\n> > > Can someone help me, please?\n> > > Sincerely,\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> > --\n> > Gavin Simpson, PhD                          [t] +1 306 337 8863\n> > Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n> > Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n> > 523 Research and Innovation Centre          [tw] @ucfagls\n> > University of Regina\n> > Regina, SK S4S 0A2, Canada\n> >\n> >\n> >\n> >\n> \n> \n> Hi Gavin and other member of the list\n> \n> \n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation\n> or no, without any specification of correlation structure it does not\n> account for autcorrelation in the residuals. Because my data do have a\n> problem of autocorrelation on the residuals.\n> \n> \n> Thanks in advance\n> Rodrigo\n> \n> \n> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>         On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>         > Hi all,\n>         >\n>         <snip />\n>         >\n>         > I searched in R for confidence intervals in GAMM4 but I did\n>         not find it. I\n>         > could obtain variance and std deviation for the random and\n>         fixed effects\n>         > Groups Name             Variance            Std.Dev.\n>         >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>         >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>         >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>         >\n>         >\n>         > Here it is my model.\n>         > n3 <-\n>         gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random\n>         = ~\n>         > (1|RANDOM),correlation=corAR1(),method=\"ML\",\n>         family=binomial,data=bryde3)\n>         \n>         \n>         Unfortunately, this is *totally* wrong. There is no\n>         `correlation`\n>         argument in `gamm4()` nor `glmer()`, which is the underlying\n>         fitting\n>         function. That this didn't raise an error is due to `gamm4()`\n>         etc having\n>         argument `...` which silently mops up any left over, non-used\n>         arguments.\n>         \n>         `gamm()` in package *mgcv* does have a `correlation` argument\n>         but that\n>         will fit your binomial GLMM via PQL which isn't such a good\n>         solution for\n>         such models.\n>         \n>         In nlme:::lme there was a function intervals() which could\n>         provide the\n>         CI on the REs - see if there is an equivalent for\n>         lme4:::glmer. IIRC\n>         Doug has something on this in his in-prep book on mixed\n>         effects models\n>         via lme4, see chapter 1 in\n>         http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>         \n>         That presumes that you sort out the AR(1) business; you can't\n>         do that in\n>         glmer().\n>         \n>         Options are to move back to mgcv::gamm() but as I said, PQL\n>         isn't great\n>         of binomial models. If your REs are simple, then mgcv::gam()\n>         can be\n>         used. Again this doesn't have a correlation argument\n>         but ?magic (after\n>         loading mgcv) has an example of including the correlation in\n>         the fit via\n>         some jiggery-pokery. Alternatively and related to gam() is\n>         mgcv::bam()\n>         which can take a known AR(1) parameter into account during the\n>         fitting.\n>         This fits the AR(1) given the ordering of the data, which is\n>         what\n>         `correlation=corAR1()` would have done - perhaps this just\n>         plain won't\n>         work in nlme:::lme if you don't specify any ordering variable?\n>         - but I'm\n>         not sure that will be correct given that your data are\n>         strictly time\n>         ordered.\n>         \n>         HTH\n>         \n>         G\n>         \n>         > The OFFSET is the boat route (the number of times the boat\n>         searched for\n>         > whales in each 2x2km grid)\n>         > RANDOM is the individual whale as done in previous studies\n>         (Hazen et al\n>         > 2009 - MEPS - doi:10.3354/meps08108)\n>         >\n>         > Can someone help me, please?\n>         > Sincerely,\n>         \n>         > _______________________________________________\n>         > R-sig-mixed-models at r-project.org mailing list\n>         > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>         \n>         --\n>         Gavin Simpson, PhD                          [t] +1 306 337\n>         8863\n>         Adjunct Professor, Department of Biology    [f] +1 306 337\n>         2410\n>         Institute of Environmental Change & Society [e]\n>         gavin.simpson at uregina.ca\n>         523 Research and Innovation Centre          [tw] @ucfagls\n>         University of Regina\n>         Regina, SK S4S 0A2, Canada\n>         \n>         \n>         \n> \n> \n> \n> \n> -- \n> Rodrigo Tardin\n> \n> Doutorando em Ecologia e Conservação - IBRAG - UERJ\n> Mestre em Biologia Animal - PPGBA - UFRRJ\n> Especialista em Docência do Ensino Superior - IAVM\n> Laboratório de Bioacústica e Ecologia de Cetáceos - UFRRJ/ IF/ DCA\n\n-- \nGavin Simpson, PhD                          [t] +1 306 337 8863\nAdjunct Professor, Department of Biology    [f] +1 306 337 2410\nInstitute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n523 Research and Innovation Centre          [tw] @ucfagls\nUniversity of Regina\nRegina, SK S4S 0A2, Canada",
       "body_snippet": "On Tue, 2013-06-11 at 09:02 -0300, Rodrigo Tardin wrote:\n> Hi Gavin and other member of the list\n> \n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, ",
       "thread_id": "thread-edd67f439b4e",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020446.html"
     },
     {
       "id": "msg-95f74d0d71c4",
@@ -1292,11 +1359,12 @@
         "<CAE5HZZKkEmyCYre6NgJb3fciLX5pA8ZwkhaAuaXTR4=htY2ZWw@mail.gmail.com>",
         "<1370966901.18170.4.camel@haul.biol.uregina.ca>"
       ],
-      "body_plain": "Hi Rodrigo,\n\nIf you have some knowledge about relations among the residuals, rather\nthan put a structure on the residuals, I would propose you try to it\ninto the model.\n\nIf within your level 2 units, you believe there are residual\ncorrelations over time, this argues for a time effect in the model.\nIf you already have time in the model, and the residuals are still\ncorrelated, then I would say either:\n\n1) The treatment of time is insufficient --- for example using a\nlinear effect when you need some other functional form (since you are\nusing gams anyway, why not put a smooth term on time?)\n2) Making the time effect a random effect\n\nThis should effectively take an effect that used to have nowhere to go\nbut the residuals and explicitly put it into the model.\n\nCheers,\n\nJosh\n\n\n\nOn Tue, Jun 11, 2013 at 9:08 AM, Gavin Simpson <gavin.simpson at ucl.ac.uk> wrote:\n> On Tue, 2013-06-11 at 09:02 -0300, Rodrigo Tardin wrote:\n>> Hi Gavin and other member of the list\n>>\n>> Thanks a lot for your response. You are right about the correlation\n>> structure. I was not aware, thank you.\n>> One other question that may look like very basic:\n>> Without the correlation structure (that as you said, does not exist in\n>> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n>> no, without any specification of correlation structure it does not account\n>> for autcorrelation in the residuals. Because my data do have a problem of\n>> autocorrelation on the residuals.\n>\n> There is an induced correlation due to the random effect - all\n> observations within a level of RANDOM have the same estimated\n> correlation, IIRC. The AR(1) you hoped to specify would have that\n> correlation decline by the absolute power of the separation in time\n> (i.e. exponentially), so they are different.\n>\n> If the residuals are correlated then you should do something about it if\n> you can as it may change which terms are significant in the model (as\n> standard errors are to narrow), and also with GAMMs where the smoothness\n> of the splines is determined from the data the procedure may tend to\n> under-smooth the data because it assumes that they are less correlated\n> than they really are.\n>\n> HTH\n>\n> G\n>\n>> Thanks in advance\n>> Rodrigo\n>>\n>>\n>> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>>\n>> > On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>> > > Hi all,\n>> > >\n>> > <snip />\n>> > >\n>> > > I searched in R for confidence intervals in GAMM4 but I did not find it.\n>> > I\n>> > > could obtain variance and std deviation for the random and fixed effects\n>> > > Groups Name             Variance            Std.Dev.\n>> > >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>> > >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>> > >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>> > >\n>> > >\n>> > > Here it is my model.\n>> > > n3 <- gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random = ~\n>> > > (1|RANDOM),correlation=corAR1(),method=\"ML\", family=binomial,data=bryde3)\n>> >\n>> > Unfortunately, this is *totally* wrong. There is no `correlation`\n>> > argument in `gamm4()` nor `glmer()`, which is the underlying fitting\n>> > function. That this didn't raise an error is due to `gamm4()` etc having\n>> > argument `...` which silently mops up any left over, non-used arguments.\n>> >\n>> > `gamm()` in package *mgcv* does have a `correlation` argument but that\n>> > will fit your binomial GLMM via PQL which isn't such a good solution for\n>> > such models.\n>> >\n>> > In nlme:::lme there was a function intervals() which could provide the\n>> > CI on the REs - see if there is an equivalent for lme4:::glmer. IIRC\n>> > Doug has something on this in his in-prep book on mixed effects models\n>> > via lme4, see chapter 1 in\n>> > http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>> >\n>> > That presumes that you sort out the AR(1) business; you can't do that in\n>> > glmer().\n>> >\n>> > Options are to move back to mgcv::gamm() but as I said, PQL isn't great\n>> > of binomial models. If your REs are simple, then mgcv::gam() can be\n>> > used. Again this doesn't have a correlation argument but ?magic (after\n>> > loading mgcv) has an example of including the correlation in the fit via\n>> > some jiggery-pokery. Alternatively and related to gam() is mgcv::bam()\n>> > which can take a known AR(1) parameter into account during the fitting.\n>> > This fits the AR(1) given the ordering of the data, which is what\n>> > `correlation=corAR1()` would have done - perhaps this just plain won't\n>> > work in nlme:::lme if you don't specify any ordering variable? - but I'm\n>> > not sure that will be correct given that your data are strictly time\n>> > ordered.\n>> >\n>> > HTH\n>> >\n>> > G\n>> >\n>> > > The OFFSET is the boat route (the number of times the boat searched for\n>> > > whales in each 2x2km grid)\n>> > > RANDOM is the individual whale as done in previous studies (Hazen et al\n>> > > 2009 - MEPS - doi:10.3354/meps08108)\n>> > >\n>> > > Can someone help me, please?\n>> > > Sincerely,\n>> > > _______________________________________________\n>> > > R-sig-mixed-models at r-project.org mailing list\n>> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> >\n>> > --\n>> > Gavin Simpson, PhD                          [t] +1 306 337 8863\n>> > Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n>> > Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n>> > 523 Research and Innovation Centre          [tw] @ucfagls\n>> > University of Regina\n>> > Regina, SK S4S 0A2, Canada\n>> >\n>> >\n>> >\n>> >\n>>\n>>\n>> Hi Gavin and other member of the list\n>>\n>>\n>> Thanks a lot for your response. You are right about the correlation\n>> structure. I was not aware, thank you.\n>> One other question that may look like very basic:\n>> Without the correlation structure (that as you said, does not exist in\n>> GAMM4 or lme4) in the mixed model, does it account for autocorrelation\n>> or no, without any specification of correlation structure it does not\n>> account for autcorrelation in the residuals. Because my data do have a\n>> problem of autocorrelation on the residuals.\n>>\n>>\n>> Thanks in advance\n>> Rodrigo\n>>\n>>\n>> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>>         On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>>         > Hi all,\n>>         >\n>>         <snip />\n>>         >\n>>         > I searched in R for confidence intervals in GAMM4 but I did\n>>         not find it. I\n>>         > could obtain variance and std deviation for the random and\n>>         fixed effects\n>>         > Groups Name             Variance            Std.Dev.\n>>         >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>>         >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>>         >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>>         >\n>>         >\n>>         > Here it is my model.\n>>         > n3 <-\n>>         gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random\n>>         = ~\n>>         > (1|RANDOM),correlation=corAR1(),method=\"ML\",\n>>         family=binomial,data=bryde3)\n>>\n>>\n>>         Unfortunately, this is *totally* wrong. There is no\n>>         `correlation`\n>>         argument in `gamm4()` nor `glmer()`, which is the underlying\n>>         fitting\n>>         function. That this didn't raise an error is due to `gamm4()`\n>>         etc having\n>>         argument `...` which silently mops up any left over, non-used\n>>         arguments.\n>>\n>>         `gamm()` in package *mgcv* does have a `correlation` argument\n>>         but that\n>>         will fit your binomial GLMM via PQL which isn't such a good\n>>         solution for\n>>         such models.\n>>\n>>         In nlme:::lme there was a function intervals() which could\n>>         provide the\n>>         CI on the REs - see if there is an equivalent for\n>>         lme4:::glmer. IIRC\n>>         Doug has something on this in his in-prep book on mixed\n>>         effects models\n>>         via lme4, see chapter 1 in\n>>         http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>>\n>>         That presumes that you sort out the AR(1) business; you can't\n>>         do that in\n>>         glmer().\n>>\n>>         Options are to move back to mgcv::gamm() but as I said, PQL\n>>         isn't great\n>>         of binomial models. If your REs are simple, then mgcv::gam()\n>>         can be\n>>         used. Again this doesn't have a correlation argument\n>>         but ?magic (after\n>>         loading mgcv) has an example of including the correlation in\n>>         the fit via\n>>         some jiggery-pokery. Alternatively and related to gam() is\n>>         mgcv::bam()\n>>         which can take a known AR(1) parameter into account during the\n>>         fitting.\n>>         This fits the AR(1) given the ordering of the data, which is\n>>         what\n>>         `correlation=corAR1()` would have done - perhaps this just\n>>         plain won't\n>>         work in nlme:::lme if you don't specify any ordering variable?\n>>         - but I'm\n>>         not sure that will be correct given that your data are\n>>         strictly time\n>>         ordered.\n>>\n>>         HTH\n>>\n>>         G\n>>\n>>         > The OFFSET is the boat route (the number of times the boat\n>>         searched for\n>>         > whales in each 2x2km grid)\n>>         > RANDOM is the individual whale as done in previous studies\n>>         (Hazen et al\n>>         > 2009 - MEPS - doi:10.3354/meps08108)\n>>         >\n>>         > Can someone help me, please?\n>>         > Sincerely,\n>>\n>>         > _______________________________________________\n>>         > R-sig-mixed-models at r-project.org mailing list\n>>         > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>         --\n>>         Gavin Simpson, PhD                          [t] +1 306 337\n>>         8863\n>>         Adjunct Professor, Department of Biology    [f] +1 306 337\n>>         2410\n>>         Institute of Environmental Change & Society [e]\n>>         gavin.simpson at uregina.ca\n>>         523 Research and Innovation Centre          [tw] @ucfagls\n>>         University of Regina\n>>         Regina, SK S4S 0A2, Canada\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>> --\n>> Rodrigo Tardin\n>>\n>> Doutorando em Ecologia e Conserva??o - IBRAG - UERJ\n>> Mestre em Biologia Animal - PPGBA - UFRRJ\n>> Especialista em Doc?ncia do Ensino Superior - IAVM\n>> Laborat?rio de Bioac?stica e Ecologia de Cet?ceos - UFRRJ/ IF/ DCA\n>\n> --\n> Gavin Simpson, PhD                          [t] +1 306 337 8863\n> Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n> Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n> 523 Research and Innovation Centre          [tw] @ucfagls\n> University of Regina\n> Regina, SK S4S 0A2, Canada\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n-- \nJoshua Wiley\nPh.D. Student, Health Psychology\nUniversity of California, Los Angeles\nhttp://joshuawiley.com/\nSenior Analyst - Elkhart Group Ltd.\nhttp://elkhartgroup.com",
+      "body_plain": "Hi Rodrigo,\n\nIf you have some knowledge about relations among the residuals, rather\nthan put a structure on the residuals, I would propose you try to it\ninto the model.\n\nIf within your level 2 units, you believe there are residual\ncorrelations over time, this argues for a time effect in the model.\nIf you already have time in the model, and the residuals are still\ncorrelated, then I would say either:\n\n1) The treatment of time is insufficient --- for example using a\nlinear effect when you need some other functional form (since you are\nusing gams anyway, why not put a smooth term on time?)\n2) Making the time effect a random effect\n\nThis should effectively take an effect that used to have nowhere to go\nbut the residuals and explicitly put it into the model.\n\nCheers,\n\nJosh\n\n\n\nOn Tue, Jun 11, 2013 at 9:08 AM, Gavin Simpson <gavin.simpson at ucl.ac.uk> wrote:\n> On Tue, 2013-06-11 at 09:02 -0300, Rodrigo Tardin wrote:\n>> Hi Gavin and other member of the list\n>>\n>> Thanks a lot for your response. You are right about the correlation\n>> structure. I was not aware, thank you.\n>> One other question that may look like very basic:\n>> Without the correlation structure (that as you said, does not exist in\n>> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n>> no, without any specification of correlation structure it does not account\n>> for autcorrelation in the residuals. Because my data do have a problem of\n>> autocorrelation on the residuals.\n>\n> There is an induced correlation due to the random effect - all\n> observations within a level of RANDOM have the same estimated\n> correlation, IIRC. The AR(1) you hoped to specify would have that\n> correlation decline by the absolute power of the separation in time\n> (i.e. exponentially), so they are different.\n>\n> If the residuals are correlated then you should do something about it if\n> you can as it may change which terms are significant in the model (as\n> standard errors are to narrow), and also with GAMMs where the smoothness\n> of the splines is determined from the data the procedure may tend to\n> under-smooth the data because it assumes that they are less correlated\n> than they really are.\n>\n> HTH\n>\n> G\n>\n>> Thanks in advance\n>> Rodrigo\n>>\n>>\n>> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>>\n>> > On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>> > > Hi all,\n>> > >\n>> > <snip />\n>> > >\n>> > > I searched in R for confidence intervals in GAMM4 but I did not find it.\n>> > I\n>> > > could obtain variance and std deviation for the random and fixed effects\n>> > > Groups Name             Variance            Std.Dev.\n>> > >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>> > >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>> > >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>> > >\n>> > >\n>> > > Here it is my model.\n>> > > n3 <- gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random = ~\n>> > > (1|RANDOM),correlation=corAR1(),method=\"ML\", family=binomial,data=bryde3)\n>> >\n>> > Unfortunately, this is *totally* wrong. There is no `correlation`\n>> > argument in `gamm4()` nor `glmer()`, which is the underlying fitting\n>> > function. That this didn't raise an error is due to `gamm4()` etc having\n>> > argument `...` which silently mops up any left over, non-used arguments.\n>> >\n>> > `gamm()` in package *mgcv* does have a `correlation` argument but that\n>> > will fit your binomial GLMM via PQL which isn't such a good solution for\n>> > such models.\n>> >\n>> > In nlme:::lme there was a function intervals() which could provide the\n>> > CI on the REs - see if there is an equivalent for lme4:::glmer. IIRC\n>> > Doug has something on this in his in-prep book on mixed effects models\n>> > via lme4, see chapter 1 in\n>> > http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>> >\n>> > That presumes that you sort out the AR(1) business; you can't do that in\n>> > glmer().\n>> >\n>> > Options are to move back to mgcv::gamm() but as I said, PQL isn't great\n>> > of binomial models. If your REs are simple, then mgcv::gam() can be\n>> > used. Again this doesn't have a correlation argument but ?magic (after\n>> > loading mgcv) has an example of including the correlation in the fit via\n>> > some jiggery-pokery. Alternatively and related to gam() is mgcv::bam()\n>> > which can take a known AR(1) parameter into account during the fitting.\n>> > This fits the AR(1) given the ordering of the data, which is what\n>> > `correlation=corAR1()` would have done - perhaps this just plain won't\n>> > work in nlme:::lme if you don't specify any ordering variable? - but I'm\n>> > not sure that will be correct given that your data are strictly time\n>> > ordered.\n>> >\n>> > HTH\n>> >\n>> > G\n>> >\n>> > > The OFFSET is the boat route (the number of times the boat searched for\n>> > > whales in each 2x2km grid)\n>> > > RANDOM is the individual whale as done in previous studies (Hazen et al\n>> > > 2009 - MEPS - doi:10.3354/meps08108)\n>> > >\n>> > > Can someone help me, please?\n>> > > Sincerely,\n>> > > _______________________________________________\n>> > > R-sig-mixed-models at r-project.org mailing list\n>> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> >\n>> > --\n>> > Gavin Simpson, PhD                          [t] +1 306 337 8863\n>> > Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n>> > Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n>> > 523 Research and Innovation Centre          [tw] @ucfagls\n>> > University of Regina\n>> > Regina, SK S4S 0A2, Canada\n>> >\n>> >\n>> >\n>> >\n>>\n>>\n>> Hi Gavin and other member of the list\n>>\n>>\n>> Thanks a lot for your response. You are right about the correlation\n>> structure. I was not aware, thank you.\n>> One other question that may look like very basic:\n>> Without the correlation structure (that as you said, does not exist in\n>> GAMM4 or lme4) in the mixed model, does it account for autocorrelation\n>> or no, without any specification of correlation structure it does not\n>> account for autcorrelation in the residuals. Because my data do have a\n>> problem of autocorrelation on the residuals.\n>>\n>>\n>> Thanks in advance\n>> Rodrigo\n>>\n>>\n>> 2013/6/5 Gavin Simpson <gavin.simpson at ucl.ac.uk>\n>>         On Thu, 2013-05-30 at 12:12 -0300, Rodrigo Tardin wrote:\n>>         > Hi all,\n>>         >\n>>         <snip />\n>>         >\n>>         > I searched in R for confidence intervals in GAMM4 but I did\n>>         not find it. I\n>>         > could obtain variance and std deviation for the random and\n>>         fixed effects\n>>         > Groups Name             Variance            Std.Dev.\n>>         >  RANDOM (Intercept)  1.4973e+01        3.8694319\n>>         >  Xr.0   s(DISTCOAST)  4.7361e-02        0.2176263\n>>         >  Xr     s(DEPTH)          1.9779e-06        0.0014064\n>>         >\n>>         >\n>>         > Here it is my model.\n>>         > n3 <-\n>>         gamm4(OCC_BIN~s(DEPTH)+s(DISTANCE_TO_COAST)+offset(RT),random\n>>         = ~\n>>         > (1|RANDOM),correlation=corAR1(),method=\"ML\",\n>>         family=binomial,data=bryde3)\n>>\n>>\n>>         Unfortunately, this is *totally* wrong. There is no\n>>         `correlation`\n>>         argument in `gamm4()` nor `glmer()`, which is the underlying\n>>         fitting\n>>         function. That this didn't raise an error is due to `gamm4()`\n>>         etc having\n>>         argument `...` which silently mops up any left over, non-used\n>>         arguments.\n>>\n>>         `gamm()` in package *mgcv* does have a `correlation` argument\n>>         but that\n>>         will fit your binomial GLMM via PQL which isn't such a good\n>>         solution for\n>>         such models.\n>>\n>>         In nlme:::lme there was a function intervals() which could\n>>         provide the\n>>         CI on the REs - see if there is an equivalent for\n>>         lme4:::glmer. IIRC\n>>         Doug has something on this in his in-prep book on mixed\n>>         effects models\n>>         via lme4, see chapter 1 in\n>>         http://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n>>\n>>         That presumes that you sort out the AR(1) business; you can't\n>>         do that in\n>>         glmer().\n>>\n>>         Options are to move back to mgcv::gamm() but as I said, PQL\n>>         isn't great\n>>         of binomial models. If your REs are simple, then mgcv::gam()\n>>         can be\n>>         used. Again this doesn't have a correlation argument\n>>         but ?magic (after\n>>         loading mgcv) has an example of including the correlation in\n>>         the fit via\n>>         some jiggery-pokery. Alternatively and related to gam() is\n>>         mgcv::bam()\n>>         which can take a known AR(1) parameter into account during the\n>>         fitting.\n>>         This fits the AR(1) given the ordering of the data, which is\n>>         what\n>>         `correlation=corAR1()` would have done - perhaps this just\n>>         plain won't\n>>         work in nlme:::lme if you don't specify any ordering variable?\n>>         - but I'm\n>>         not sure that will be correct given that your data are\n>>         strictly time\n>>         ordered.\n>>\n>>         HTH\n>>\n>>         G\n>>\n>>         > The OFFSET is the boat route (the number of times the boat\n>>         searched for\n>>         > whales in each 2x2km grid)\n>>         > RANDOM is the individual whale as done in previous studies\n>>         (Hazen et al\n>>         > 2009 - MEPS - doi:10.3354/meps08108)\n>>         >\n>>         > Can someone help me, please?\n>>         > Sincerely,\n>>\n>>         > _______________________________________________\n>>         > R-sig-mixed-models at r-project.org mailing list\n>>         > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>         --\n>>         Gavin Simpson, PhD                          [t] +1 306 337\n>>         8863\n>>         Adjunct Professor, Department of Biology    [f] +1 306 337\n>>         2410\n>>         Institute of Environmental Change & Society [e]\n>>         gavin.simpson at uregina.ca\n>>         523 Research and Innovation Centre          [tw] @ucfagls\n>>         University of Regina\n>>         Regina, SK S4S 0A2, Canada\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>> --\n>> Rodrigo Tardin\n>>\n>> Doutorando em Ecologia e Conservação - IBRAG - UERJ\n>> Mestre em Biologia Animal - PPGBA - UFRRJ\n>> Especialista em Docência do Ensino Superior - IAVM\n>> Laboratório de Bioacústica e Ecologia de Cetáceos - UFRRJ/ IF/ DCA\n>\n> --\n> Gavin Simpson, PhD                          [t] +1 306 337 8863\n> Adjunct Professor, Department of Biology    [f] +1 306 337 2410\n> Institute of Environmental Change & Society [e] gavin.simpson at uregina.ca\n> 523 Research and Innovation Centre          [tw] @ucfagls\n> University of Regina\n> Regina, SK S4S 0A2, Canada\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n-- \nJoshua Wiley\nPh.D. Student, Health Psychology\nUniversity of California, Los Angeles\nhttp://joshuawiley.com/\nSenior Analyst - Elkhart Group Ltd.\nhttp://elkhartgroup.com",
       "body_snippet": "Hi Rodrigo,\n\nIf you have some knowledge about relations among the residuals, rather\nthan put a structure on the residuals, I would propose you try to it\ninto the model.\n\nIf within your level 2 units, ",
       "thread_id": "thread-edd67f439b4e",
       "thread_depth": 3,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020447.html"
     },
     {
       "id": "msg-0565fb44333f",
@@ -1315,7 +1383,8 @@
       "body_snippet": "Hello,\n\nThank you very much for the hint and the sample code. I'll make some\ntests with this, and take the time to carefully write the needed\ncontrasts, including in addition the Sequence effect...\n\nO",
       "thread_id": "thread-383904d83558",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020448.html"
     },
     {
       "id": "msg-a477f68da7f8",
@@ -1332,6 +1401,7 @@
       "thread_id": "thread-a477f68da7f8",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020449.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130611/392c70b9/attachment.pl"
       ]
@@ -1348,11 +1418,12 @@
       "references": [
         "<mailman.7729.1370968964.4595.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "> ----------------------------------------------------------------------\n>\n> Message: 1\n> Date: Tue, 11 Jun 2013 09:02:22 -0300\n> From: Rodrigo Tardin <rhtardin at gmail.com>\n> To: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Confidence intervals in GAMM4\n> Message-ID:\n> \t<CAE5HZZKkEmyCYre6NgJb3fciLX5pA8ZwkhaAuaXTR4=htY2ZWw at mail.gmail.com>\n> Content-Type: text/plain\n>\n> Hi Gavin and other member of the list\n>\n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n> no, without any specification of correlation structure it does not account\n> for autcorrelation in the residuals. Because my data do have a problem of\n> autocorrelation on the residuals.\n\nHello,\nHere is an alternative (and probably the only) approach:\n\n1. Write your smoother as X * beta + Z * b (e.g. using an O'Sullivan spline)\n2. Add more covariates to your predictor function (if needed)\n3. Add random effects to the predictor function, and also an \nauto-regressive correlation structure on the residuals in the predictor \nfunction.\n4. Put the whole thing in JAGS and let it run for a while\n\nPlenty of papers are available for step 1...see for example:\n\nON SEMIPARAMETRIC REGRESSION WITH O?SULLIVAN PENALIZED SPLINES\nM. P. WAND AND J. T. ORMEROD\n\nThey also provide R code for such smoothers. No need to dive into the \nunderlying stats.\n\n\nSteps 3 & 4 are described in our upcoming book\n'Beginner's Guide to GLM & GLMM with R\"\nZuur, Hilbe, Ieno\n\navailable next week\n\nOther smoother options are described in 'A Beginner's Guide to GAM', \nZuur (2012)\nOr in Wood (2006), or Ruppert et al. (2003). Plus a whole bunch of \npapers from Wand.\n\n\nAlain\n> Thanks in advance\n> Rodrigo\n\n\n\n\n-- \n\nDr. Alain F. Zuur\nFirst author of:\n\n1. Analysing Ecological Data (2007).\nZuur, AF, Ieno, EN and Smith, GM. Springer. 680 p.\nURL: www.springer.com/0-387-45967-7\n\n\n2. Mixed effects models and extensions in ecology with R. (2009).\nZuur, AF, Ieno, EN, Walker, N, Saveliev, AA, and Smith, GM. Springer.\nhttp://www.springer.com/life+sci/ecology/book/978-0-387-87457-9\n\n\n3. A Beginner's Guide to R (2009).\nZuur, AF, Ieno, EN, Meesters, EHWG. Springer\nhttp://www.springer.com/statistics/computational/book/978-0-387-93836-3\n\n\n4. Zero Inflated Models and Generalized Linear Mixed Models with R. (2012) Zuur, Saveliev, Ieno.\nhttp://www.highstat.com/book4.htm\n\nOther books: http://www.highstat.com/books.htm\n\n\nStatistical consultancy, courses, data analysis and software\nHighland Statistics Ltd.\n6 Laverock road\nUK - AB41 6FN Newburgh\nTel: 0044 1358 788177\nEmail: highstat at highstat.com\nURL: www.highstat.com\nURL: www.brodgar.com",
+      "body_plain": "> ----------------------------------------------------------------------\n>\n> Message: 1\n> Date: Tue, 11 Jun 2013 09:02:22 -0300\n> From: Rodrigo Tardin <rhtardin at gmail.com>\n> To: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Confidence intervals in GAMM4\n> Message-ID:\n> \t<CAE5HZZKkEmyCYre6NgJb3fciLX5pA8ZwkhaAuaXTR4=htY2ZWw at mail.gmail.com>\n> Content-Type: text/plain\n>\n> Hi Gavin and other member of the list\n>\n> Thanks a lot for your response. You are right about the correlation\n> structure. I was not aware, thank you.\n> One other question that may look like very basic:\n> Without the correlation structure (that as you said, does not exist in\n> GAMM4 or lme4) in the mixed model, does it account for autocorrelation or\n> no, without any specification of correlation structure it does not account\n> for autcorrelation in the residuals. Because my data do have a problem of\n> autocorrelation on the residuals.\n\nHello,\nHere is an alternative (and probably the only) approach:\n\n1. Write your smoother as X * beta + Z * b (e.g. using an O'Sullivan spline)\n2. Add more covariates to your predictor function (if needed)\n3. Add random effects to the predictor function, and also an \nauto-regressive correlation structure on the residuals in the predictor \nfunction.\n4. Put the whole thing in JAGS and let it run for a while\n\nPlenty of papers are available for step 1...see for example:\n\nON SEMIPARAMETRIC REGRESSION WITH O’SULLIVAN PENALIZED SPLINES\nM. P. WAND AND J. T. ORMEROD\n\nThey also provide R code for such smoothers. No need to dive into the \nunderlying stats.\n\n\nSteps 3 & 4 are described in our upcoming book\n'Beginner's Guide to GLM & GLMM with R\"\nZuur, Hilbe, Ieno\n\navailable next week\n\nOther smoother options are described in 'A Beginner's Guide to GAM', \nZuur (2012)\nOr in Wood (2006), or Ruppert et al. (2003). Plus a whole bunch of \npapers from Wand.\n\n\nAlain\n> Thanks in advance\n> Rodrigo\n\n\n\n\n-- \n\nDr. Alain F. Zuur\nFirst author of:\n\n1. Analysing Ecological Data (2007).\nZuur, AF, Ieno, EN and Smith, GM. Springer. 680 p.\nURL: www.springer.com/0-387-45967-7\n\n\n2. Mixed effects models and extensions in ecology with R. (2009).\nZuur, AF, Ieno, EN, Walker, N, Saveliev, AA, and Smith, GM. Springer.\nhttp://www.springer.com/life+sci/ecology/book/978-0-387-87457-9\n\n\n3. A Beginner's Guide to R (2009).\nZuur, AF, Ieno, EN, Meesters, EHWG. Springer\nhttp://www.springer.com/statistics/computational/book/978-0-387-93836-3\n\n\n4. Zero Inflated Models and Generalized Linear Mixed Models with R. (2012) Zuur, Saveliev, Ieno.\nhttp://www.highstat.com/book4.htm\n\nOther books: http://www.highstat.com/books.htm\n\n\nStatistical consultancy, courses, data analysis and software\nHighland Statistics Ltd.\n6 Laverock road\nUK - AB41 6FN Newburgh\nTel: 0044 1358 788177\nEmail: highstat at highstat.com\nURL: www.highstat.com\nURL: www.brodgar.com",
       "body_snippet": "> ----------------------------------------------------------------------\n>\n> Message: 1\n> Date: Tue, 11 Jun 2013 09:02:22 -0300\n> From: Rodrigo Tardin <rhtardin at gmail.com>\n> To: Gavin Simpson <gavi",
       "thread_id": "thread-d9bbdeb521ba",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020450.html"
     },
     {
       "id": "msg-c0ccf4639c3a",
@@ -1369,6 +1440,7 @@
       "thread_id": "thread-c0ccf4639c3a",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020451.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130612/c596f4cc/attachment.pl"
       ]
@@ -1389,7 +1461,8 @@
       "body_snippet": "Jennifer Bufford <jbufford at ...> writes:\n\n>\n\n[snip]\n \n> I am working on my dissertation and using mixed models for quite a bit of\n> my analysis. Here are some details about my experiment and data:\n\n",
       "thread_id": "thread-a477f68da7f8",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020452.html"
     },
     {
       "id": "msg-2c56feb4f4d0",
@@ -1406,6 +1479,7 @@
       "thread_id": "thread-2c56feb4f4d0",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020453.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130612/94c3dcd6/attachment.pl"
       ]
@@ -1426,7 +1500,8 @@
       "body_snippet": "Andrew McFadden (Andy <Andrew.McFadden at ...> writes:\n\n> I am trying to run MLWIN within R. I have used an example put\n> together by the developers of the package (R2MLwiN) but get an error\n> message",
       "thread_id": "thread-2c56feb4f4d0",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020454.html"
     },
     {
       "id": "msg-6a143493aad8",
@@ -1444,7 +1519,8 @@
       "body_snippet": "On 06/12/13 13:37, Bob Wiley wrote:\n> Hello,\n> \n> Let me start by briefly explaining my dataset and the question I'm trying\n> to answer:\n> Subjects saw pairs of letters and responded either \"same\" or ",
       "thread_id": "thread-c0ccf4639c3a",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020455.html"
     },
     {
       "id": "msg-eb0aa7075a6f",
@@ -1464,6 +1540,7 @@
       "thread_id": "thread-c0ccf4639c3a",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020456.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130613/649ad104/attachment.pl"
       ]
@@ -1483,6 +1560,7 @@
       "thread_id": "thread-b38ea9d5cd0c",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020457.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130613/d6398466/attachment.pl"
       ]
@@ -1506,6 +1584,7 @@
       "thread_id": "thread-c0ccf4639c3a",
       "thread_depth": 3,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020458.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130613/ec1c2d81/attachment.pl"
       ]
@@ -1525,6 +1604,7 @@
       "thread_id": "thread-b3c5dcc1a14d",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020459.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130614/d5c9c940/attachment.pl"
       ]
@@ -1541,11 +1621,12 @@
       "references": [
         "<CAP4wOgAu5vMp+Ca7QOJFSxOHWiUHjdcm-jtfXrTh1d_JCF3x4w@mail.gmail.com>"
       ],
-      "body_plain": "Donald Edward Frederick <donald at ...> writes:\n\n> \n> Hello all,\n> \n......\n> Rats (n=8) are trained to discriminate between two stimuli (A,B).\n> Each rat is tested on four (4) different stimulus pairs (\n> (A1,B1),(A2,B2),...).\n> Each rat is tested on each pair for three days. The stimulus pair\n> presentation order is randomly selected.\n> Each day consists of ~300 trials evenly split between the two stimuli.\n> \n> I would like to construct a psychometric curve of performance against\n> sampling duration. The rats select their own 'sampling duration' for each\n> presentation on each trial. I am interested in knowing if there is a\n> general effect where stimulus sampling duration predicts performance (I\n> expect a sigmoidal relationship). I also want to model the effects of the\n> stimulus set, the stimulus (A,B), and day when accounting for the random\n> effects (Subject, StimulusSet, Day).\n> \n.....\n> My current model is:\n> \n> glmer(Correct ~\n> SampleDuration+StimulusSet+Stimulus+Day+(StimulusSet:Day|Subject),\n> family=binomial(link=\"logit\"), data=g)\n> \n> When I run this, my results are not unexpected, but I'm always leery of\n> this. I *think* that this model fits the fixed effects of \n(SampleDuration,\n> StimulusSet,Stimulus, and Day). Additionally, I fit a \nrandom intercept for\n> each subject and a random slope for each subject that varies by\n> StimulusSet:Day.\n> \n> I expect that there are some individual differences \nbetween the Subjects. I\n> also expect that there will be differences between \nStimulusSets and Days.\n> Specifically, some StimulusSets are easier than others and there is\n> learning from Day 1 to Day 3.\n> \n> Does this all make sense, or, have I ventured down a terrible path?\n> \n> Thanks\n> \n> Donald\n> \n\nA couple of thoughts.\n\nIs Correct a binary variable representing the response on individual\ntrials, i.e., taking on two values, say 0/1?  or is it either the\nproportion of correct responses or the number?  If it is the\nproportion then you want to include a weights argument with\nthe number of trials and if it is the number, then it would\nbe better that Correct is a 2 column matrix with Correct\nand Incorrect columns.\n\nIs this a two-alternative forced-choice situation, i.e., \nwould the sigmoids lower asymptote be expected to\nbe at 0.5 instead of 0?  If so, you might consider using\nthe mafc.logit link function from the psyphy package\nbut you would have to use the development version\nof lme4 for it to work.\n\nSince rats choose SampleDuration, do you want it to be\na random slope term as well?\n\nYour random term, (StimulusSet:Day|Subject), gives the overall\nvariability for subject within each combination of StimulusSet and Day.\nYou might want to consider terms like (1 | Subject/Day) that\ngive a random intercept for both Subject and Subject:Day. This is\nequivalent to having terms (1 | Subject) + (1 | Subject:Day).\nYou would have to think more deeply as to how to include all of the\nterms in your experiment but that might get you started.\n\nHope that is helpful.\n\nbest,\n\nKen\n\n-- \nKenneth Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Donald Edward Frederick <donald at ...> writes:\n\n> \n> Hello all,\n> \n......\n> Rats (n=8) are trained to discriminate between two stimuli (A,B).\n> Each rat is tested on four (4) different stimulus pairs (\n> (A1,B1),(A2,B2),...).\n> Each rat is tested on each pair for three days. The stimulus pair\n> presentation order is randomly selected.\n> Each day consists of ~300 trials evenly split between the two stimuli.\n> \n> I would like to construct a psychometric curve of performance against\n> sampling duration. The rats select their own 'sampling duration' for each\n> presentation on each trial. I am interested in knowing if there is a\n> general effect where stimulus sampling duration predicts performance (I\n> expect a sigmoidal relationship). I also want to model the effects of the\n> stimulus set, the stimulus (A,B), and day when accounting for the random\n> effects (Subject, StimulusSet, Day).\n> \n.....\n> My current model is:\n> \n> glmer(Correct ~\n> SampleDuration+StimulusSet+Stimulus+Day+(StimulusSet:Day|Subject),\n> family=binomial(link=\"logit\"), data=g)\n> \n> When I run this, my results are not unexpected, but I'm always leery of\n> this. I *think* that this model fits the fixed effects of \n(SampleDuration,\n> StimulusSet,Stimulus, and Day). Additionally, I fit a \nrandom intercept for\n> each subject and a random slope for each subject that varies by\n> StimulusSet:Day.\n> \n> I expect that there are some individual differences \nbetween the Subjects. I\n> also expect that there will be differences between \nStimulusSets and Days.\n> Specifically, some StimulusSets are easier than others and there is\n> learning from Day 1 to Day 3.\n> \n> Does this all make sense, or, have I ventured down a terrible path?\n> \n> Thanks\n> \n> Donald\n> \n\nA couple of thoughts.\n\nIs Correct a binary variable representing the response on individual\ntrials, i.e., taking on two values, say 0/1?  or is it either the\nproportion of correct responses or the number?  If it is the\nproportion then you want to include a weights argument with\nthe number of trials and if it is the number, then it would\nbe better that Correct is a 2 column matrix with Correct\nand Incorrect columns.\n\nIs this a two-alternative forced-choice situation, i.e., \nwould the sigmoids lower asymptote be expected to\nbe at 0.5 instead of 0?  If so, you might consider using\nthe mafc.logit link function from the psyphy package\nbut you would have to use the development version\nof lme4 for it to work.\n\nSince rats choose SampleDuration, do you want it to be\na random slope term as well?\n\nYour random term, (StimulusSet:Day|Subject), gives the overall\nvariability for subject within each combination of StimulusSet and Day.\nYou might want to consider terms like (1 | Subject/Day) that\ngive a random intercept for both Subject and Subject:Day. This is\nequivalent to having terms (1 | Subject) + (1 | Subject:Day).\nYou would have to think more deeply as to how to include all of the\nterms in your experiment but that might get you started.\n\nHope that is helpful.\n\nbest,\n\nKen\n\n-- \nKenneth Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Donald Edward Frederick <donald at ...> writes:\n\n> \n> Hello all,\n> \n......\n> Rats (n=8) are trained to discriminate between two stimuli (A,B).\n> Each rat is tested on four (4) different stimulus pairs",
       "thread_id": "thread-b38ea9d5cd0c",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020460.html"
     },
     {
       "id": "msg-0019dbfa5444",
@@ -1561,7 +1642,8 @@
       "body_snippet": "Dear All,\n\nI am trying to wrap my head around using logistic random-effects regression models for the analysis of matched data and the results I obtain with lmer() when using this approach. So, let's ",
       "thread_id": "thread-0019dbfa5444",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020461.html"
     },
     {
       "id": "msg-1cc19c610fdd",
@@ -1579,7 +1661,8 @@
       "body_snippet": "Viechtbauer Wolfgang (STAT <wolfgang.viechtbauer at ...> writes:\n\n> \n> Dear All,\n \n> I am trying to wrap my head around using logistic random-effects\n> regression models for the analysis of matched da",
       "thread_id": "thread-0019dbfa5444",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020462.html"
     },
     {
       "id": "msg-c2cff470f93e",
@@ -1596,6 +1679,7 @@
       "thread_id": "thread-c2cff470f93e",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020463.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130618/7a04ba79/attachment.pl"
       ]
@@ -1617,6 +1701,7 @@
       "thread_id": "thread-c2cff470f93e",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020464.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130618/ebe484f1/attachment.pl"
       ]
@@ -1639,6 +1724,7 @@
       "thread_id": "thread-c2cff470f93e",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020465.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130618/2c821714/attachment.pl"
       ]
@@ -1658,6 +1744,7 @@
       "thread_id": "thread-586eb9febc50",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020466.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130618/da9e1981/attachment.pl"
       ]
@@ -1677,6 +1764,7 @@
       "thread_id": "thread-eb3a8e185aed",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020469.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130619/e192ecde/attachment.pl"
       ]
@@ -1698,7 +1786,8 @@
       "body_snippet": "Thanks for looking into this. Yes, for nAGQ values above ~10, it's indeed pretty stable, regardless of the version, and it does give the right value. I was just worried about the behavior for a smalle",
       "thread_id": "thread-0019dbfa5444",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020467.html"
     },
     {
       "id": "msg-12567f5a016a",
@@ -1714,7 +1803,8 @@
       "body_snippet": "Hi,\n\nI'm fitting negative binomial GLMMs in glmmadmb using  glmmabmb(?, family = \"nbinom\"). I'm interested in making inferences about the amount of overdispersion in each model, and comparing overdisp",
       "thread_id": "thread-12567f5a016a",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020468.html"
     },
     {
       "id": "msg-38966c3ef393",
@@ -1732,7 +1822,8 @@
       "body_snippet": "Hi Paul,\n\nStandard errors on variance components do not provide a consistent\nmeans to assess either significance or create confidence intervals.\nIn part because variances are fundamentally bounded, so",
       "thread_id": "thread-12567f5a016a",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020470.html"
     },
     {
       "id": "msg-d285fa559eaf",
@@ -1748,7 +1839,8 @@
       "body_snippet": "Members of this mailing list may be interested in the following new book:\n\n\nBeginner's Guide to GLM and GLMM with R.\n- A frequentist and Bayesian perspective for ecologists -\n\nZuur AF, Hilbe JM and Ie",
       "thread_id": "thread-d285fa559eaf",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020471.html"
     },
     {
       "id": "msg-554a58afa5dd",
@@ -1767,7 +1859,8 @@
       "body_snippet": "Thanks very much for these suggestions and for the code, Josh and Dave. As far as I remember MCMCglmm allows the residual variance to differ between groups, so I guess I could estimate the separate va",
       "thread_id": "thread-12567f5a016a",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020472.html"
     },
     {
       "id": "msg-176961499ec4",
@@ -1787,7 +1880,8 @@
       "body_snippet": "Hi Paul,\n\nSure you can estimate separate overdispersion parameters by some\ngrouping variable in MCMCglmm.  Then just plot those densities, or the\nHPD intervals.\n\nActually, if you can put them together",
       "thread_id": "thread-12567f5a016a",
       "thread_depth": 3,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020473.html"
     },
     {
       "id": "msg-c18bea5f7838",
@@ -1805,7 +1899,8 @@
       "body_snippet": ">>>\n>>> On Wed, Jun 19, 2013 at 5:17 AM, Paul Johnson\n>>> <paul.johnson at glasgow.ac.uk> wrote:\n>>>> Hi,\n>>>>\n>>>> I'm fitting negative binomial GLMMs in glmmadmb using  glmmabmb(?, family = \"nbinom\"",
       "thread_id": "thread-c18bea5f7838",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020474.html"
     },
     {
       "id": "msg-127292ee85a3",
@@ -1823,7 +1918,8 @@
       "body_snippet": "Hi,\n\nIs the error meassage\n\nError in priorformat(if (NOpriorG) { :   V is the wrong dimension for  \nsome prior$G/prior$R elements\n\nor\n\nError in priorformat(if (NOpriorG) { :  alpha.V is the wrong dime",
       "thread_id": "thread-586eb9febc50",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020475.html"
     },
     {
       "id": "msg-8b487d7a310d",
@@ -1841,7 +1937,8 @@
       "body_snippet": "Hi,\n\nIs the error message\n\nError in priorformat(if (NOpriorG) { :   V is the wrong dimension for  \nsome prior$G/prior$R elements\n\nor\n\nError in priorformat(if (NOpriorG) { :  alpha.V is the wrong dimen",
       "thread_id": "thread-586eb9febc50",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020476.html"
     },
     {
       "id": "msg-6cc71bf9ec79",
@@ -1858,6 +1955,7 @@
       "thread_id": "thread-6cc71bf9ec79",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020477.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130624/3d2e9049/attachment.pl"
       ]
@@ -1878,7 +1976,8 @@
       "body_snippet": "Hi,\n\n> require(MCMCglmm)\n> Ndata <- data.frame(y = rnorm(5, mean = 0, sd = sqrt(1)))\n> m1 <- MCMCglmm(y ~ 1, data = Ndata,verbose = FALSE)\n> m2<- MCMCglmm(y ~ 1, data = Ndata,verbose = FALSE)\n> m3<- M",
       "thread_id": "thread-6cc71bf9ec79",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020478.html"
     },
     {
       "id": "msg-e9e7bd35e945",
@@ -1897,6 +1996,7 @@
       "thread_id": "thread-6cc71bf9ec79",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020485.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130624/f4310ca1/attachment.pl"
       ]
@@ -1916,6 +2016,7 @@
       "thread_id": "thread-5603fc1d9283",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020479.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130624/079969af/attachment.pl"
       ]
@@ -1936,7 +2037,8 @@
       "body_snippet": "tommy gaillard <tommy.gaillard40 at ...> writes:\n\n> \n>  Dear all,\n> \n>  I am currently trying to quantify between-individual differences in\n> intercept and slope of vigilance behavior.\n>  Here is my m",
       "thread_id": "thread-5603fc1d9283",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020480.html"
     },
     {
       "id": "msg-669e8cbe536b",
@@ -1956,6 +2058,7 @@
       "thread_id": "thread-5603fc1d9283",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020481.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130624/11e40d51/attachment.pl"
       ]
@@ -1974,7 +2077,8 @@
       "body_snippet": "Dear all,\n\nI am getting the error \"Error in eval(expr, envir, enclos) : object 'a' not\nfound\" when I want to model fixed effects in the *nlme package*:\n\nlibrary(nlme)\nmetdata <- read.csv(\"metdataf.csv",
       "thread_id": "thread-91556ced90e7",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020482.html"
     },
     {
       "id": "msg-f0ca9de5b1ad",
@@ -1990,7 +2094,8 @@
       "body_snippet": "Hi all:\n\nI'm searching for an R package or function that can handle a multinomial outcome in a hierarchical generalized linear mixed model.\n\nThanks,\n\nAaron Baggett\nDept. of Psychology\nUniversity of Ma",
       "thread_id": "thread-f0ca9de5b1ad",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020483.html"
     },
     {
       "id": "msg-874af40751a1",
@@ -2009,6 +2114,7 @@
       "thread_id": "thread-f0ca9de5b1ad",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020484.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130624/c1452a48/attachment.pl"
       ]
@@ -2031,6 +2137,7 @@
       "thread_id": "thread-f0ca9de5b1ad",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020486.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130625/574399f7/attachment.pl"
       ]
@@ -2049,7 +2156,8 @@
       "body_snippet": "Hi,\n\nI am trying to use nlme and lme4 packages to perform a nonlinear mixed\neffects model, but just with the fixed effects first. (The fixed with\nrandom effects models do work). I created a custom mod",
       "thread_id": "thread-92aa054858d3",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020487.html"
     },
     {
       "id": "msg-0553eee1f094",
@@ -2061,11 +2169,12 @@
       "subject_clean": "Bug in anova.mer with models in a list (CRAN lme4 and lme4.0 only)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi all,\n\nthere seems to be a bug in the anova method for mer objects with two models when both models are inside a list:\n\nrequire(lme4)\n\n# from ?lmer\nfm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)\nfm2 <- lmer(Reaction ~ Days + (1|Subject) + (0+Days|Subject), sleepstudy)\n\n# both models inside a list do not work:\nanova(list(fm1)[[1]], list(fm2)[[1]])\n\n## Error in names(mods) <- sapply(as.list(mCall)[c(FALSE, TRUE, modp)], as.character) :\n##   'names' attribute [6] must be the same length as the vector [2]\n\n# no list or one list works:\nanova(fm1, fm2)\nanova(list(fm1)[[1]], fm2)\nanova(fm1, list(fm2)[[1]])\n\nThis bug most likely resides in the sapply statement on lines 1029 and 1030 in lmer.R (CRAN tar.gz of lme4):\nnames(mods) <- sapply(as.list(mCall)[c(FALSE, TRUE, modp)],\n\t\t\t\t    as.character)\nmods is only of length 2, but the sapply call evaluates to:\n      object\n[1,] \"[[\"        \"[[\"\n[2,] \"list(fm1)\" \"list(fm2)\"\n[3,] \"1\"         \"1\"\n\n\nThis problem occurs for both CRAN lme4 and r-forge lme4.0, but not lme4 devel from github.\n\nI do not think this bug is critical and it is relatively easy to circumvent (i.e., simply assign one of the list models to a non-list object prior) but couldn't find it documented somewhere, so I thought it would be nice to report it.\n\nCheers,\nHenrik\n\n\n-- \nDipl. Psych. Henrik Singmann\nPhD Student\nAlbert-Ludwigs-Universit?t Freiburg, Germany\nhttp://www.psychologie.uni-freiburg.de/Members/singmann",
+      "body_plain": "Hi all,\n\nthere seems to be a bug in the anova method for mer objects with two models when both models are inside a list:\n\nrequire(lme4)\n\n# from ?lmer\nfm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)\nfm2 <- lmer(Reaction ~ Days + (1|Subject) + (0+Days|Subject), sleepstudy)\n\n# both models inside a list do not work:\nanova(list(fm1)[[1]], list(fm2)[[1]])\n\n## Error in names(mods) <- sapply(as.list(mCall)[c(FALSE, TRUE, modp)], as.character) :\n##   'names' attribute [6] must be the same length as the vector [2]\n\n# no list or one list works:\nanova(fm1, fm2)\nanova(list(fm1)[[1]], fm2)\nanova(fm1, list(fm2)[[1]])\n\nThis bug most likely resides in the sapply statement on lines 1029 and 1030 in lmer.R (CRAN tar.gz of lme4):\nnames(mods) <- sapply(as.list(mCall)[c(FALSE, TRUE, modp)],\n\t\t\t\t    as.character)\nmods is only of length 2, but the sapply call evaluates to:\n      object\n[1,] \"[[\"        \"[[\"\n[2,] \"list(fm1)\" \"list(fm2)\"\n[3,] \"1\"         \"1\"\n\n\nThis problem occurs for both CRAN lme4 and r-forge lme4.0, but not lme4 devel from github.\n\nI do not think this bug is critical and it is relatively easy to circumvent (i.e., simply assign one of the list models to a non-list object prior) but couldn't find it documented somewhere, so I thought it would be nice to report it.\n\nCheers,\nHenrik\n\n\n-- \nDipl. Psych. Henrik Singmann\nPhD Student\nAlbert-Ludwigs-Universität Freiburg, Germany\nhttp://www.psychologie.uni-freiburg.de/Members/singmann",
       "body_snippet": "Hi all,\n\nthere seems to be a bug in the anova method for mer objects with two models when both models are inside a list:\n\nrequire(lme4)\n\n# from ?lmer\nfm1 <- lmer(Reaction ~ Days + (Days|Subject), slee",
       "thread_id": "thread-0553eee1f094",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020488.html"
     },
     {
       "id": "msg-4e3f39f0e6fd",
@@ -2082,6 +2191,7 @@
       "thread_id": "thread-4e3f39f0e6fd",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020489.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130626/3af41079/attachment.pl"
       ]
@@ -2100,7 +2210,8 @@
       "body_snippet": "Hello,\n\nI'm quite new to LMEs and have a question to which I did not find an \nanswer in the archives or in the P&B chapter 5 (allthough I have \nproblems undestanding the latter, fully).\nIm trying to f",
       "thread_id": "thread-cd82fd6bdcf1",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020490.html"
     },
     {
       "id": "msg-8048cec26191",
@@ -2118,7 +2229,8 @@
       "body_snippet": "Am 6/26/2013 5:29 PM, schrieb Friso Muijsers:\n> Hello,\n>\n> I'm quite new to LMEs and have a question to which I did not find an \n> answer in the archives or in the P&B chapter 5 (allthough I have \n> p",
       "thread_id": "thread-cd82fd6bdcf1",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020491.html"
     },
     {
       "id": "msg-aa61e016132b",
@@ -2135,6 +2247,7 @@
       "thread_id": "thread-aa61e016132b",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020492.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/ef404387/attachment.pl"
       ]
@@ -2154,6 +2267,7 @@
       "thread_id": "thread-2358378a2789",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020493.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/2e1a3382/attachment.pl"
       ]
@@ -2173,6 +2287,7 @@
       "thread_id": "thread-d965da31bc60",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020494.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/30befca2/attachment.pl"
       ]
@@ -2194,6 +2309,7 @@
       "thread_id": "thread-2358378a2789",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020495.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/8eb7cea9/attachment.pl"
       ]
@@ -2216,6 +2332,7 @@
       "thread_id": "thread-2358378a2789",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020496.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/48f84adc/attachment.pl"
       ]
@@ -2234,7 +2351,8 @@
       "body_snippet": "Dear R-sig-me,\n\nHow can I validate the fit of a bionomial (presence/absence) GLM?\n\nNormally in linear modelling there is a nice array of tools\n(tukey-anscombe, QQ plots, residuals vs explanatory varia",
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020497.html"
     },
     {
       "id": "msg-f3bbd2dc30ab",
@@ -2253,6 +2371,7 @@
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 1,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020498.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/98259f26/attachment.pl"
       ]
@@ -2275,6 +2394,7 @@
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 2,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020499.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130627/d6d22610/attachment.pl"
       ]
@@ -2298,6 +2418,7 @@
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 3,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020500.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130628/1a74d55f/attachment.pl"
       ]
@@ -2321,7 +2442,8 @@
       "body_snippet": "Chris Howden <chris at ...> writes:\n\n> \n> This is something I always battle with given the plethora of great model\n> fitting methods available for other models.\n> \n> I always use a variant of Hugh's s",
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 4,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020501.html"
     },
     {
       "id": "msg-2d2de3a6efa2",
@@ -2343,7 +2465,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> Chris Howden <chris <at> ...> writes:\n> \n> > \n> > This is something I always battle with given the plethora of great model\n> > fitting methods available for o",
       "thread_id": "thread-aceeb0114c74",
       "thread_depth": 5,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020502.html"
     },
     {
       "id": "msg-59435818d1ab",
@@ -2359,7 +2482,8 @@
       "body_snippet": "The lme4 developers are happy to announce a scheduled release of lme4\nversion 1.0 (!!). We plan a feature freeze on July 8 and a release on\nAugust 1.\n\nWe strongly encourage all users, and especially d",
       "thread_id": "thread-59435818d1ab",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020503.html"
     },
     {
       "id": "msg-45894a5c8177",
@@ -2376,6 +2500,7 @@
       "thread_id": "thread-45894a5c8177",
       "thread_depth": 0,
       "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020504.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20130629/cbff4376/attachment.pl"
       ]
@@ -2396,7 +2521,8 @@
       "body_snippet": "Tom Wenseleers <Tom.Wenseleers at ...> writes:\n\n> \n> Dear all,\n> I was just trying to analyse some microarray gene expression\n> data using mixed models in R.\n> Based on the SAS code given here\n> http:",
       "thread_id": "thread-45894a5c8177",
       "thread_depth": 1,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020505.html"
     },
     {
       "id": "msg-2cced4a0b36a",
@@ -2412,7 +2538,8 @@
       "body_snippet": "Hi,\n\nHi,\n\nThis might be a double post because my previous entry bounced.  If so,\nI apoogize.\n\nI have not found a method to extract partial residuals plots given a\nnonlinear model employed in gnls.\n\nMy",
       "thread_id": "thread-2cced4a0b36a",
       "thread_depth": 0,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q2/020506.html"
     },
     {
       "id": "msg-ee7591a8180a",
@@ -2431,7 +2558,8 @@
       "body_snippet": "Dear Ben,\nMany thanks for your message - after some experimentation I did indeed confirm that the correct specification in lmer was the one you mentioned, i.e. the correct code to get almost identical",
       "thread_id": "thread-45894a5c8177",
       "thread_depth": 2,
-      "month": "2013-06"
+      "month": "2013-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2013q3/020507.html"
     }
   ],
   "threads": [

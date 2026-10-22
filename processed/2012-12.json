@@ -15,11 +15,12 @@
       "references": [
         "<20121130193341.Horde.p_32ZuanEAJQuQoVyXuT4aA@mail.sapo.pt>"
       ],
-      "body_plain": "<chico3 at ...> writes:\n\n>\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have light  \n> on and two luminaires have no light. Below the luminaires I have two  \n> treatments. Each treatment has four replicates that were randomly  \n> distributed below the luminaires. Moreover, I have made all the  \n> possible combinations of presence absence of light and treatments.\n> \n> I want to check if there is a effect of each treatment and the  \n> interactions between all the combinations.The response variable is a  \n> proportion (number of specific specie/total number of species)\n> \n> Treatment1<-as.factor(?Yes?,?No?)\n> Treatment2<- as.factor(?Yes?,?No?)\n> Light<- as.factor(?Yes?,?No?)\n> Response<-cbind(number_of_specific_species, total_species)\n> \n> I have made this model,\n> \n>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light), family=binomial)\n> \n> However this doesn?t allow to see the effect of light or the  \n> interaction between light and treatments. Moreover, I don?t know how  \n> to include overdispersion, since glmer doesn?t allow quasi families  \n> such as glm.\n> \n> I know this is a simple question, but I greatly would appreciate some  \n> clues on how to proceed.\n\nI may be missing something here, but it doesn't make sense to me\nto treat Light as a random effect (one criterion -- the levels \"Light\"\nand \"No light\" aren't *exchangeable*, i.e. you couldn't switch\nthe factor labels without changing the meaning of the experiment).\nI would say you are looking for something more like\n\nglmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire), family=binomial)\n\nwhere the luminaires are labeled uniquely (e.g.\n\"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n\nIt sounds like this is a randomized block design (i.e. every level of\nTreat1*Treat2 is present at each luminaire), so you could test the\ninteraction between Treat1*Treat2 and luminaire via\n(Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\nSchielzeth 2009), although you may find that this leads to estimates\nof zero variance (overfitting the data).",
+      "body_plain": "<chico3 at ...> writes:\n\n>\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have light  \n> on and two luminaires have no light. Below the luminaires I have two  \n> treatments. Each treatment has four replicates that were randomly  \n> distributed below the luminaires. Moreover, I have made all the  \n> possible combinations of presence absence of light and treatments.\n> \n> I want to check if there is a effect of each treatment and the  \n> interactions between all the combinations.The response variable is a  \n> proportion (number of specific specie/total number of species)\n> \n> Treatment1<-as.factor(“Yes”,”No”)\n> Treatment2<- as.factor(“Yes”,”No”)\n> Light<- as.factor(“Yes”,”No”)\n> Response<-cbind(number_of_specific_species, total_species)\n> \n> I have made this model,\n> \n>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light), family=binomial)\n> \n> However this doesn´t allow to see the effect of light or the  \n> interaction between light and treatments. Moreover, I don´t know how  \n> to include overdispersion, since glmer doesn´t allow quasi families  \n> such as glm.\n> \n> I know this is a simple question, but I greatly would appreciate some  \n> clues on how to proceed.\n\nI may be missing something here, but it doesn't make sense to me\nto treat Light as a random effect (one criterion -- the levels \"Light\"\nand \"No light\" aren't *exchangeable*, i.e. you couldn't switch\nthe factor labels without changing the meaning of the experiment).\nI would say you are looking for something more like\n\nglmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire), family=binomial)\n\nwhere the luminaires are labeled uniquely (e.g.\n\"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n\nIt sounds like this is a randomized block design (i.e. every level of\nTreat1*Treat2 is present at each luminaire), so you could test the\ninteraction between Treat1*Treat2 and luminaire via\n(Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\nSchielzeth 2009), although you may find that this leads to estimates\nof zero variance (overfitting the data).",
       "body_snippet": "<chico3 at ...> writes:\n\n>\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have light  \n> on and two luminaires have no light. Below the luminaires I have two  \n> treatments. Ea",
       "thread_id": "thread-c5a1b45e2c5e",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019517.html"
     },
     {
       "id": "msg-a20e0331dd11",
@@ -31,11 +32,12 @@
       "subject_clean": "R-sig-mixed-models Digest, Vol 72, Issue 1",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "I Ben,\n\n\nI think that you are right. Thank you so much for your answer. I was  \nalmost given up :).\n\n\nCheers,\n\n\nFrancisco\n\n\n\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have  \n> light  on and two luminaires have no light. Below the luminaires I  \n> have two  treatments. Each treatment has four replicates that were  \n> randomly  distributed below the luminaires. Moreover, I have made  \n> all the  possible combinations of presence absence of light and  \n> treatments.\n>\n> I want to check if there is a effect of each treatment and the   \n> interactions between all the combinations.The response variable is a  \n>  proportion (number of specific specie/total number of species)\n>\n> Treatment1<-as.factor(?Yes?,?No?)\n> Treatment2<- as.factor(?Yes?,?No?)\n> Light<- as.factor(?Yes?,?No?)\n> Response<-cbind(number_of_specific_species, total_species)\n>\n> I have made this model,\n>\n>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light), family=binomial)\n>\n> However this doesn?t allow to see the effect of light or the   \n> interaction between light and treatments. Moreover, I don?t know how  \n>  to include overdispersion, since glmer doesn?t allow quasi families  \n>  such as glm.\n>\n> I know this is a simple question, but I greatly would appreciate  \n> some  clues on how to proceed.\n\nI may be missing something here, but it doesn't make sense to me\nto treat Light as a random effect (one criterion -- the levels \"Light\"\nand \"No light\" aren't *exchangeable*, i.e. you couldn't switch\nthe factor labels without changing the meaning of the experiment).\nI would say you are looking for something more like\n\nglmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire), family=binomial)\n\nwhere the luminaires are labeled uniquely (e.g.\n\"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n\nIt sounds like this is a randomized block design (i.e. every level of\nTreat1*Treat2 is present at each luminaire), so you could test the\ninteraction between Treat1*Treat2 and luminaire via\n(Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\nSchielzeth 2009), although you may find that this leads to estimates\nof zero variance (overfitting the data).",
+      "body_plain": "I Ben,\n\n\nI think that you are right. Thank you so much for your answer. I was  \nalmost given up :).\n\n\nCheers,\n\n\nFrancisco\n\n\n\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have  \n> light  on and two luminaires have no light. Below the luminaires I  \n> have two  treatments. Each treatment has four replicates that were  \n> randomly  distributed below the luminaires. Moreover, I have made  \n> all the  possible combinations of presence absence of light and  \n> treatments.\n>\n> I want to check if there is a effect of each treatment and the   \n> interactions between all the combinations.The response variable is a  \n>  proportion (number of specific specie/total number of species)\n>\n> Treatment1<-as.factor(“Yes”,”No”)\n> Treatment2<- as.factor(“Yes”,”No”)\n> Light<- as.factor(“Yes”,”No”)\n> Response<-cbind(number_of_specific_species, total_species)\n>\n> I have made this model,\n>\n>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light), family=binomial)\n>\n> However this doesn´t allow to see the effect of light or the   \n> interaction between light and treatments. Moreover, I don´t know how  \n>  to include overdispersion, since glmer doesn´t allow quasi families  \n>  such as glm.\n>\n> I know this is a simple question, but I greatly would appreciate  \n> some  clues on how to proceed.\n\nI may be missing something here, but it doesn't make sense to me\nto treat Light as a random effect (one criterion -- the levels \"Light\"\nand \"No light\" aren't *exchangeable*, i.e. you couldn't switch\nthe factor labels without changing the meaning of the experiment).\nI would say you are looking for something more like\n\nglmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire), family=binomial)\n\nwhere the luminaires are labeled uniquely (e.g.\n\"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n\nIt sounds like this is a randomized block design (i.e. every level of\nTreat1*Treat2 is present at each luminaire), so you could test the\ninteraction between Treat1*Treat2 and luminaire via\n(Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\nSchielzeth 2009), although you may find that this leads to estimates\nof zero variance (overfitting the data).",
       "body_snippet": "I Ben,\n\n\nI think that you are right. Thank you so much for your answer. I was  \nalmost given up :).\n\n\nCheers,\n\n\nFrancisco\n\n\n\n\n[snip]\n\n> I have four luminaires randomly distributed. Two luminaires have",
       "thread_id": "thread-a20e0331dd11",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019518.html"
     },
     {
       "id": "msg-45c7911f2d61",
@@ -49,11 +51,12 @@
       "references": [
         "<mailman.5.1354359601.23898.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "Quoting r-sig-mixed-models-request at r-project.org:\n\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n>\n> To subscribe or unsubscribe via the World Wide Web, visit\n> \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help' to\n> \tr-sig-mixed-models-request at r-project.org\n>\n> You can reach the person managing the list at\n> \tr-sig-mixed-models-owner at r-project.org\n>\n> When replying, please edit your Subject line so it is more specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n>\n>\n> Today's Topics:\n>\n>    1. mer_optimize (Ivar Herfindal)\n>    2. glmer, split-plot design simple question (chico3 at sapo.pt)\n>    3. Re: glmer, split-plot design simple question (Ben Bolker)\n>\n>\n> ----------------------------------------------------------------------\n>\n> Message: 1\n> Date: Fri, 30 Nov 2012 13:57:09 +0000\n> From: Ivar Herfindal <ivar.herfindal at ntnu.no>\n> To: \"r-sig-mixed-models at r-project.org\"\n> \t<r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] mer_optimize\n> Message-ID:\n> \t<D6C55C60CCF1AC44AF5805862F86F997022BA378 at WAREHOUSE04.win.ntnu.no>\n> Content-Type: text/plain\n>\n> Hi all\n>\n> Some time ago, I raised a question on this mailing list about using  \n> .Call(\"mer_optimize\", mymodel, PACKAGE=\"lme4\") for a model that  \n> failed to converge, see:\n> https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001354.html\n>\n> As a \"horrible hack\" solution to my problem, I added a few lines  \n> with .Call(\"mer_optimize\", mymodel, PACKAGE=\"lme4\") in my script,  \n> and was satisfied that the model seemed to converge after a few of  \n> these runs. Then I forgot it all, until I recently ran the same  \n> script but on a different model.\n>\n> This new model did not have problem with convergence (at least not  \n> any problem that are reported), it is a simple linear mixed model  \n> with one random factor. I was therefore surprised that the  \n> log-likelihood and parameter estimates change after I run  \n> .Call(\"mer_optimize\"...) on the model. Since I use log-likelihoods  \n> to compare models (likelihood-ratio tests or AICc), it is quite  \n> important to have the most \"correct\" log-likelihood. The change is  \n> quite big (change of 2 - 3 in AICc) and differs between candidate  \n> models, such that it can have impact on the ranking of models. Also,  \n> the parameter estimates and their SE change, which affect the  \n> corresponding t-values. It seems that more complex models have the  \n> largest change after calling mer_optimize.\n>\n> My question is then: Should I continue to use  \n> .Call(\"mer_optimize\"...) on my models until log-Likelihood not  \n> change for a model, or can I trust the first run of lmer as long as  \n> I do not get any warnings about convergence?\n>\n> I attach below example for a model summary before and after running  \n> mer_optimize. Unfortunately, I have not been able to make a small,  \n> reproducible example.\n>\n> Best regards\n>\n> Ivar\n>\n> ##########################################################################\n>> mod <- lmer(LRS ~ Apr*ALR + I(ALR^2) + (1|Lok), data=LRStab, REML=FALSE)\n>> mod\n>> mod\n> Linear mixed model fit by maximum likelihood\n> Formula: LRS ~ Apr * ALR + I(ALR^2) + (1 | Lok)\n>    Data: LRStab\n>   AIC  BIC logLik deviance REMLdev\n>  1724 1751   -855     1710    1730\n> Random effects:\n>  Groups     Name        Variance   Std.Dev.\n>  Lok        (Intercept) 4.1578e-09 6.4481e-05\n>  Residual               6.6801e+00 2.5846e+00\n> Number of obs: 361, groups: Lok, 99\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept) -1.611300   1.359076  -1.186\n> Apr          0.075193   0.205390   0.366\n> ALR          2.677924   0.365207   7.333\n> I(ALR^2)     0.004942   0.013571   0.364\n> Apr:ALR     -0.118061   0.049655  -2.378\n>\n>> .Call(\"mer_optimize\", mod, PACKAGE=\"lme4\")\n> NULL\n>> mod\n> Linear mixed model fit by maximum likelihood\n> Formula: LRS ~ Apr * ALR + I(ALR^2) + (1 | Lok)\n>    Data: LRStab\n>   AIC  BIC logLik deviance REMLdev\n>  1723 1750 -854.3     1709    1728\n> Random effects:\n>  Groups     Name        Variance Std.Dev.\n>  Lok        (Intercept) 0.33923  0.58243\n>  Residual               6.34722  2.51937\n> Number of obs: 361, groups: Lok, 99\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept) -1.620101   1.355985  -1.195\n> Apr          0.074193   0.204893   0.362\n> ALR          2.714618   0.364657   7.444\n> I(ALR^2)     0.004308   0.013566   0.318\n> Apr:ALR     -0.121868   0.049614  -2.456\n>\n>\n>> sessionInfo()\n> R version 2.14.2 (2012-02-29)\n> Platform: i386-pc-mingw32/i386 (32-bit)\n>\n> locale:\n> [1] LC_COLLATE=Norwegian (Bokm?l)_Norway.1252  LC_CTYPE=Norwegian  \n> (Bokm?l)_Norway.1252\n> [3] LC_MONETARY=Norwegian (Bokm?l)_Norway.1252 LC_NUMERIC=C\n> [5] LC_TIME=Norwegian (Bokm?l)_Norway.1252\n>\n> attached base packages:\n> [1] stats     graphics  grDevices utils     datasets  methods   base\n>\n> other attached packages:\n>  [1] arm_1.5-03       foreign_0.8-49   abind_1.4-0       \n> R2WinBUGS_2.1-18 coda_0.14-6\n>  [6] car_2.0-12       nnet_7.3-1       MASS_7.3-17       \n> languageR_1.4    lme4_0.999375-42\n> [11] Matrix_1.0-4     lattice_0.20-0\n>\n> loaded via a namespace (and not attached):\n> [1] grid_2.14.2   nlme_3.1-103  stats4_2.14.2\n>>\n> ########################################################\n>\n> --------------------------------------------------\n> Ivar Herfindal (PhD, Researcher)\n> Centre for Conservation Biology\n> Department of Biology\n> Norwegian University for Science and Technology\n> N-7491 Trondheim, Norway\n>\n> email:     Ivar.Herfindal at bio.ntnu.no\n> web:       http://www.ntnu.no/employees/ivar.herfindal\n> phone:     +47 73596253\n> Cellphone: +47 91625333\n> fax:       +47 73596090\n> --------------------------------------------------\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n>\n> ------------------------------\n>\n> Message: 2\n> Date: Fri, 30 Nov 2012 19:33:41 +0000\n> From: chico3 at sapo.pt\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] glmer, split-plot design simple question\n> Message-ID:\n> \t<20121130193341.Horde.p_32ZuanEAJQuQoVyXuT4aA at mail.sapo.pt>\n> Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes\n>\n>\n> Dear experts,\n>\n> I have a question concerning the implementation of a mixed model in my\n> specific experiment. I have search the archives and found no answer to\n> my problem.\n>\n> I have four luminaires randomly distributed. Two luminaires have light\n> on and two luminaires have no light. Below the luminaires I have two\n> treatments. Each treatment as four replicates that were randomly\n> distributed below the luminaires. Moreover, I have made all the\n> possible combinations of presence absence of light and treatments.\n>\n> I want to check if there is a effect of each treatment and the\n> interactions between all the combinations.The response variable is a\n> proportion (number of specific specie/total number of species)\n>\n> Treatment1<-as.factor(?Yes?,?No?)\n> Treatment2<- as.factor(?Yes?,?No?)\n> Light<- as.factor(?Yes?,?No?)\n> Response<-cbind(number_of_specific_species, total_species)\n>\n> I have made this model,\n>\n>   model<-glmer(Response ~ Treatmen1*Treatment2 + (1|Light), family=binomial)\n>\n> However this doesn?t allow to see the effect of light or the\n> interaction between light and treatments. Moreover, I don?t know how\n> to include overdispersion, since glmer doesn?t allow quasi families\n> such as glm.\n>\n> I know this is a simple question, but I greatly would appreciate some\n> clues on how to proceed.\n>\n>\n>\n> ------------------------------\n>\n> Message: 3\n> Date: Sat, 1 Dec 2012 02:30:07 +0000 (UTC)\n> From: Ben Bolker <bbolker at gmail.com>\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] glmer, split-plot design simple question\n> Message-ID: <loom.20121201T032348-561 at post.gmane.org>\n> Content-Type: text/plain; charset=utf-8\n>\n>  <chico3 at ...> writes:\n>\n>>\n>\n> [snip]\n>\n>> I have four luminaires randomly distributed. Two luminaires have light\n>> on and two luminaires have no light. Below the luminaires I have two\n>> treatments. Each treatment has four replicates that were randomly\n>> distributed below the luminaires. Moreover, I have made all the\n>> possible combinations of presence absence of light and treatments.\n>>\n>> I want to check if there is a effect of each treatment and the\n>> interactions between all the combinations.The response variable is a\n>> proportion (number of specific specie/total number of species)\n>>\n>> Treatment1<-as.factor(?Yes?,?No?)\n>> Treatment2<- as.factor(?Yes?,?No?)\n>> Light<- as.factor(?Yes?,?No?)\n>> Response<-cbind(number_of_specific_species, total_species)\n>>\n>> I have made this model,\n>>\n>>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light),  \n>> family=binomial)\n>>\n>> However this doesn?t allow to see the effect of light or the\n>> interaction between light and treatments. Moreover, I don?t know how\n>> to include overdispersion, since glmer doesn?t allow quasi families\n>> such as glm.\n>>\n>> I know this is a simple question, but I greatly would appreciate some\n>> clues on how to proceed.\n>\n> I may be missing something here, but it doesn't make sense to me\n> to treat Light as a random effect (one criterion -- the levels \"Light\"\n> and \"No light\" aren't *exchangeable*, i.e. you couldn't switch\n> the factor labels without changing the meaning of the experiment).\n> I would say you are looking for something more like\n>\n> glmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire),  \n> family=binomial)\n>\n> where the luminaires are labeled uniquely (e.g.\n> \"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n>\n> It sounds like this is a randomized block design (i.e. every level of\n> Treat1*Treat2 is present at each luminaire), so you could test the\n> interaction between Treat1*Treat2 and luminaire via\n> (Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\n> Schielzeth 2009), although you may find that this leads to estimates\n> of zero variance (overfitting the data).\n>\n>\n>\n> ------------------------------\n>\n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> End of R-sig-mixed-models Digest, Vol 72, Issue 1\n> *************************************************",
+      "body_plain": "Quoting r-sig-mixed-models-request at r-project.org:\n\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n>\n> To subscribe or unsubscribe via the World Wide Web, visit\n> \thttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help' to\n> \tr-sig-mixed-models-request at r-project.org\n>\n> You can reach the person managing the list at\n> \tr-sig-mixed-models-owner at r-project.org\n>\n> When replying, please edit your Subject line so it is more specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n>\n>\n> Today's Topics:\n>\n>    1. mer_optimize (Ivar Herfindal)\n>    2. glmer, split-plot design simple question (chico3 at sapo.pt)\n>    3. Re: glmer, split-plot design simple question (Ben Bolker)\n>\n>\n> ----------------------------------------------------------------------\n>\n> Message: 1\n> Date: Fri, 30 Nov 2012 13:57:09 +0000\n> From: Ivar Herfindal <ivar.herfindal at ntnu.no>\n> To: \"r-sig-mixed-models at r-project.org\"\n> \t<r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] mer_optimize\n> Message-ID:\n> \t<D6C55C60CCF1AC44AF5805862F86F997022BA378 at WAREHOUSE04.win.ntnu.no>\n> Content-Type: text/plain\n>\n> Hi all\n>\n> Some time ago, I raised a question on this mailing list about using  \n> .Call(\"mer_optimize\", mymodel, PACKAGE=\"lme4\") for a model that  \n> failed to converge, see:\n> https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001354.html\n>\n> As a \"horrible hack\" solution to my problem, I added a few lines  \n> with .Call(\"mer_optimize\", mymodel, PACKAGE=\"lme4\") in my script,  \n> and was satisfied that the model seemed to converge after a few of  \n> these runs. Then I forgot it all, until I recently ran the same  \n> script but on a different model.\n>\n> This new model did not have problem with convergence (at least not  \n> any problem that are reported), it is a simple linear mixed model  \n> with one random factor. I was therefore surprised that the  \n> log-likelihood and parameter estimates change after I run  \n> .Call(\"mer_optimize\"...) on the model. Since I use log-likelihoods  \n> to compare models (likelihood-ratio tests or AICc), it is quite  \n> important to have the most \"correct\" log-likelihood. The change is  \n> quite big (change of 2 - 3 in AICc) and differs between candidate  \n> models, such that it can have impact on the ranking of models. Also,  \n> the parameter estimates and their SE change, which affect the  \n> corresponding t-values. It seems that more complex models have the  \n> largest change after calling mer_optimize.\n>\n> My question is then: Should I continue to use  \n> .Call(\"mer_optimize\"...) on my models until log-Likelihood not  \n> change for a model, or can I trust the first run of lmer as long as  \n> I do not get any warnings about convergence?\n>\n> I attach below example for a model summary before and after running  \n> mer_optimize. Unfortunately, I have not been able to make a small,  \n> reproducible example.\n>\n> Best regards\n>\n> Ivar\n>\n> ##########################################################################\n>> mod <- lmer(LRS ~ Apr*ALR + I(ALR^2) + (1|Lok), data=LRStab, REML=FALSE)\n>> mod\n>> mod\n> Linear mixed model fit by maximum likelihood\n> Formula: LRS ~ Apr * ALR + I(ALR^2) + (1 | Lok)\n>    Data: LRStab\n>   AIC  BIC logLik deviance REMLdev\n>  1724 1751   -855     1710    1730\n> Random effects:\n>  Groups     Name        Variance   Std.Dev.\n>  Lok        (Intercept) 4.1578e-09 6.4481e-05\n>  Residual               6.6801e+00 2.5846e+00\n> Number of obs: 361, groups: Lok, 99\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept) -1.611300   1.359076  -1.186\n> Apr          0.075193   0.205390   0.366\n> ALR          2.677924   0.365207   7.333\n> I(ALR^2)     0.004942   0.013571   0.364\n> Apr:ALR     -0.118061   0.049655  -2.378\n>\n>> .Call(\"mer_optimize\", mod, PACKAGE=\"lme4\")\n> NULL\n>> mod\n> Linear mixed model fit by maximum likelihood\n> Formula: LRS ~ Apr * ALR + I(ALR^2) + (1 | Lok)\n>    Data: LRStab\n>   AIC  BIC logLik deviance REMLdev\n>  1723 1750 -854.3     1709    1728\n> Random effects:\n>  Groups     Name        Variance Std.Dev.\n>  Lok        (Intercept) 0.33923  0.58243\n>  Residual               6.34722  2.51937\n> Number of obs: 361, groups: Lok, 99\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept) -1.620101   1.355985  -1.195\n> Apr          0.074193   0.204893   0.362\n> ALR          2.714618   0.364657   7.444\n> I(ALR^2)     0.004308   0.013566   0.318\n> Apr:ALR     -0.121868   0.049614  -2.456\n>\n>\n>> sessionInfo()\n> R version 2.14.2 (2012-02-29)\n> Platform: i386-pc-mingw32/i386 (32-bit)\n>\n> locale:\n> [1] LC_COLLATE=Norwegian (Bokmål)_Norway.1252  LC_CTYPE=Norwegian  \n> (Bokmål)_Norway.1252\n> [3] LC_MONETARY=Norwegian (Bokmål)_Norway.1252 LC_NUMERIC=C\n> [5] LC_TIME=Norwegian (Bokmål)_Norway.1252\n>\n> attached base packages:\n> [1] stats     graphics  grDevices utils     datasets  methods   base\n>\n> other attached packages:\n>  [1] arm_1.5-03       foreign_0.8-49   abind_1.4-0       \n> R2WinBUGS_2.1-18 coda_0.14-6\n>  [6] car_2.0-12       nnet_7.3-1       MASS_7.3-17       \n> languageR_1.4    lme4_0.999375-42\n> [11] Matrix_1.0-4     lattice_0.20-0\n>\n> loaded via a namespace (and not attached):\n> [1] grid_2.14.2   nlme_3.1-103  stats4_2.14.2\n>>\n> ########################################################\n>\n> --------------------------------------------------\n> Ivar Herfindal (PhD, Researcher)\n> Centre for Conservation Biology\n> Department of Biology\n> Norwegian University for Science and Technology\n> N-7491 Trondheim, Norway\n>\n> email:     Ivar.Herfindal at bio.ntnu.no\n> web:       http://www.ntnu.no/employees/ivar.herfindal\n> phone:     +47 73596253\n> Cellphone: +47 91625333\n> fax:       +47 73596090\n> --------------------------------------------------\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n>\n> ------------------------------\n>\n> Message: 2\n> Date: Fri, 30 Nov 2012 19:33:41 +0000\n> From: chico3 at sapo.pt\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] glmer, split-plot design simple question\n> Message-ID:\n> \t<20121130193341.Horde.p_32ZuanEAJQuQoVyXuT4aA at mail.sapo.pt>\n> Content-Type: text/plain; charset=UTF-8; format=flowed; DelSp=Yes\n>\n>\n> Dear experts,\n>\n> I have a question concerning the implementation of a mixed model in my\n> specific experiment. I have search the archives and found no answer to\n> my problem.\n>\n> I have four luminaires randomly distributed. Two luminaires have light\n> on and two luminaires have no light. Below the luminaires I have two\n> treatments. Each treatment as four replicates that were randomly\n> distributed below the luminaires. Moreover, I have made all the\n> possible combinations of presence absence of light and treatments.\n>\n> I want to check if there is a effect of each treatment and the\n> interactions between all the combinations.The response variable is a\n> proportion (number of specific specie/total number of species)\n>\n> Treatment1<-as.factor(?Yes?,?No?)\n> Treatment2<- as.factor(?Yes?,?No?)\n> Light<- as.factor(?Yes?,?No?)\n> Response<-cbind(number_of_specific_species, total_species)\n>\n> I have made this model,\n>\n>   model<-glmer(Response ~ Treatmen1*Treatment2 + (1|Light), family=binomial)\n>\n> However this doesn?t allow to see the effect of light or the\n> interaction between light and treatments. Moreover, I don?t know how\n> to include overdispersion, since glmer doesn?t allow quasi families\n> such as glm.\n>\n> I know this is a simple question, but I greatly would appreciate some\n> clues on how to proceed.\n>\n>\n>\n> ------------------------------\n>\n> Message: 3\n> Date: Sat, 1 Dec 2012 02:30:07 +0000 (UTC)\n> From: Ben Bolker <bbolker at gmail.com>\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] glmer, split-plot design simple question\n> Message-ID: <loom.20121201T032348-561 at post.gmane.org>\n> Content-Type: text/plain; charset=utf-8\n>\n>  <chico3 at ...> writes:\n>\n>>\n>\n> [snip]\n>\n>> I have four luminaires randomly distributed. Two luminaires have light\n>> on and two luminaires have no light. Below the luminaires I have two\n>> treatments. Each treatment has four replicates that were randomly\n>> distributed below the luminaires. Moreover, I have made all the\n>> possible combinations of presence absence of light and treatments.\n>>\n>> I want to check if there is a effect of each treatment and the\n>> interactions between all the combinations.The response variable is a\n>> proportion (number of specific specie/total number of species)\n>>\n>> Treatment1<-as.factor(?Yes?,?No?)\n>> Treatment2<- as.factor(?Yes?,?No?)\n>> Light<- as.factor(?Yes?,?No?)\n>> Response<-cbind(number_of_specific_species, total_species)\n>>\n>> I have made this model,\n>>\n>>   model<-glmer(Response ~ Treatment1*Treatment2 + (1|Light),  \n>> family=binomial)\n>>\n>> However this doesn?t allow to see the effect of light or the\n>> interaction between light and treatments. Moreover, I don?t know how\n>> to include overdispersion, since glmer doesn?t allow quasi families\n>> such as glm.\n>>\n>> I know this is a simple question, but I greatly would appreciate some\n>> clues on how to proceed.\n>\n> I may be missing something here, but it doesn't make sense to me\n> to treat Light as a random effect (one criterion -- the levels \"Light\"\n> and \"No light\" aren't *exchangeable*, i.e. you couldn't switch\n> the factor labels without changing the meaning of the experiment).\n> I would say you are looking for something more like\n>\n> glmer(Response ~ Treatment1*Treatment2*Light + (1|luminaire),  \n> family=binomial)\n>\n> where the luminaires are labeled uniquely (e.g.\n> \"Light1\",\"Light2\",\"Nolight1\",\"Nolight2\")\n>\n> It sounds like this is a randomized block design (i.e. every level of\n> Treat1*Treat2 is present at each luminaire), so you could test the\n> interaction between Treat1*Treat2 and luminaire via\n> (Treat1*Treat2|luminaire) instead of (1|luminaire) (see e.g.\n> Schielzeth 2009), although you may find that this leads to estimates\n> of zero variance (overfitting the data).\n>\n>\n>\n> ------------------------------\n>\n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> End of R-sig-mixed-models Digest, Vol 72, Issue 1\n> *************************************************",
       "body_snippet": "Quoting r-sig-mixed-models-request at r-project.org:\n\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n>\n> To subscribe or unsubscribe via the World Wide We",
       "thread_id": "thread-45c7911f2d61",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019519.html"
     },
     {
       "id": "msg-f938560c748f",
@@ -71,7 +74,8 @@
       "body_snippet": "Ivar Herfindal <ivar.herfindal at ...> writes:\n\n> Some time ago, I raised a question on this mailing list about using\n> .Call(\"mer_optimize\", mymodel, PACKAGE=\"lme4\") for a model that\n> failed to conv",
       "thread_id": "thread-f938560c748f",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019520.html"
     },
     {
       "id": "msg-1a7d4d533d46",
@@ -87,7 +91,8 @@
       "body_snippet": "Dear all,\n\nI am having quite a hard time in trying to figure out how to correctly\nspell out a model in R (a repeated-measures anova with a\nwithin-subject covariate, I guess).  Even though I have read ",
       "thread_id": "thread-1a7d4d533d46",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019530.html"
     },
     {
       "id": "msg-316a9598a5be",
@@ -103,7 +108,8 @@
       "body_snippet": "Dear experts,\n\n\n\nMy background with mixed models is very pour. However,With the  \nprecious help of this forum I have implement a glmer function to test  \nthe experiment described below (randomized blo",
       "thread_id": "thread-316a9598a5be",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019521.html"
     },
     {
       "id": "msg-fbf7c5a0d97a",
@@ -120,6 +126,7 @@
       "thread_id": "thread-fbf7c5a0d97a",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019522.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121203/62a4691c/attachment.pl"
       ]
@@ -140,7 +147,8 @@
       "body_snippet": "I haven't used Amelia before, but I have done multiple imputation, using \nthe mice package, followed by linear mixed models. I see on p13 of \nhttp://r.iq.harvard.edu/docs/amelia/amelia.pdf that write.",
       "thread_id": "thread-fbf7c5a0d97a",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019523.html"
     },
     {
       "id": "msg-80ba5c18f0dd",
@@ -159,7 +167,8 @@
       "body_snippet": "Hi:\n\nAfter imputation via amelia(), the output file is a list whose first\ncomponent, imputations, is a list containing the imputed data frames.\nGiven that the post-imputation object is named a.out, on",
       "thread_id": "thread-fbf7c5a0d97a",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019524.html"
     },
     {
       "id": "msg-1fa9f5902a49",
@@ -177,7 +186,8 @@
       "body_snippet": "Hello,\n\nI am an epidemiologist working with spatially correlated data. I am using glmmPQL to fit spatial generalized linear mixed models (and have no alternative options as this seems to be the only w",
       "thread_id": "thread-1fa9f5902a49",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019531.html"
     },
     {
       "id": "msg-76f0568df5ea",
@@ -198,6 +208,7 @@
       "thread_id": "thread-fbf7c5a0d97a",
       "thread_depth": 3,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019525.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121204/6a4d83cb/attachment.pl"
       ]
@@ -216,7 +227,8 @@
       "body_snippet": "Dear all,\n\nI am having quite a hard time in trying to figure out how to correctly\nspell out a model in R (a repeated-measures anova with a\nwithin-subject covariate, I guess).  Even though I have read ",
       "thread_id": "thread-96807f33430d",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019526.html"
     },
     {
       "id": "msg-5709b061b3f8",
@@ -228,11 +240,12 @@
       "subject_clean": "number of random-effects levels",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello\n\nI am fitting a classroom data set with lmer() with completely nested data, i.e. pupils are nested within classes, and classes are nested within schools. I have read about the random effects levels: \"...there must be a reasonable number of random-effects levels (e.g. blocks) ? more than 5 or 6 at a minimum.\" (http://glmm.wikidot.com/faq).\n\nThe model looks like\n\nfit0 <- lmer(theta ~ (1|CLASSID) + (1|SCHOOLID), data.ml)\n\nand the contingency table looks like\n\nxtabs(~ SCHOOLID, unique(subset(data.ml, select=c(SCHOOLID,CLASSID))))\n\nSCHOOLID\n1  2  3  5  6  7  8  9 10 12 13 14 15 16 \n5  3  3  4  8  3  1  3  4  2  5  3  3  2 \n\nMy question is, whether the reasonable number of random-effects levels of 5 or 6 means the total number of levels (i.e. 49 for CLASSID, and 14 for SCHOOLID) or the numbers of levels for CLASSID within SCHOOLID (i.e. 1 to 8 for CLASSID).\n\nAny idea?\n\nThanks a lot, \nAndrea\n\n__________________________________________\n\nAndrea Cantieni\n\nInstitut f?r Medien und Schule IMS\nP?dagogische Hochschule Zentralschweiz\nHochschule Schwyz\nZaystrasse 42\nCH-6410 Goldau\n\nandrea.cantieni at phsz.ch\nhttp://www.ims.phz.ch",
+      "body_plain": "Hello\n\nI am fitting a classroom data set with lmer() with completely nested data, i.e. pupils are nested within classes, and classes are nested within schools. I have read about the random effects levels: \"...there must be a reasonable number of random-effects levels (e.g. blocks) — more than 5 or 6 at a minimum.\" (http://glmm.wikidot.com/faq).\n\nThe model looks like\n\nfit0 <- lmer(theta ~ (1|CLASSID) + (1|SCHOOLID), data.ml)\n\nand the contingency table looks like\n\nxtabs(~ SCHOOLID, unique(subset(data.ml, select=c(SCHOOLID,CLASSID))))\n\nSCHOOLID\n1  2  3  5  6  7  8  9 10 12 13 14 15 16 \n5  3  3  4  8  3  1  3  4  2  5  3  3  2 \n\nMy question is, whether the reasonable number of random-effects levels of 5 or 6 means the total number of levels (i.e. 49 for CLASSID, and 14 for SCHOOLID) or the numbers of levels for CLASSID within SCHOOLID (i.e. 1 to 8 for CLASSID).\n\nAny idea?\n\nThanks a lot, \nAndrea\n\n__________________________________________\n\nAndrea Cantieni\n\nInstitut für Medien und Schule IMS\nPädagogische Hochschule Zentralschweiz\nHochschule Schwyz\nZaystrasse 42\nCH-6410 Goldau\n\nandrea.cantieni at phsz.ch\nhttp://www.ims.phz.ch",
       "body_snippet": "Hello\n\nI am fitting a classroom data set with lmer() with completely nested data, i.e. pupils are nested within classes, and classes are nested within schools. I have read about the random effects lev",
       "thread_id": "thread-5709b061b3f8",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019527.html"
     },
     {
       "id": "msg-2c910017f2c0",
@@ -250,7 +263,8 @@
       "body_snippet": "[I'm taking the liberty of cc'ing r-sig-mixed-models ... I strongly\nprefer *not* to answer mixed models questions offline, for a variety of\nreasons.]\n\nOn 12-12-03 02:12 PM, Justin Chase wrote:\n> Hi th",
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019528.html"
     },
     {
       "id": "msg-fdcbd6381291",
@@ -270,6 +284,7 @@
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019529.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121204/2fdeaf6c/attachment.pl"
       ]
@@ -292,7 +307,8 @@
       "body_snippet": "Dear Justin,\n\nThe documentation in ?anova.lme seems very clear to me -- what is described for type=\"marginal\" is what is often called type III tests, though for these to be sensible in models with int",
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019532.html"
     },
     {
       "id": "msg-e9561914541e",
@@ -314,6 +330,7 @@
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 3,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019533.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121204/0dac40d6/attachment.pl"
       ]
@@ -334,11 +351,12 @@
         "<web-435327152@cgpsrv2.cis.mcmaster.ca>",
         "<CAMkX5N_HNfyb+LmVSia+hwauv9twBDeEuj5_V=+9GOrwUCS-SA@mail.gmail.com>"
       ],
-      "body_plain": "It does appear however that (as Justin said in the first place) that\ncar::Anova.lme does only chi-squared and not F tests (car 2.0-15).  I\nhaven't looked to see how hard it would be to extract the information\nfrom the lme object to get the relevant denominator df (and I don't know\nif there are theoretical complications ...)\n   Even the two-model anova.lme doesn't do F tests, only likelihood\nratio tests.  Again, don't know whether this is an oversight or whether\nthere's some reason *not* to provide the option.  (In contrast\nanova.glm() *does* provide an F test, for testing nested models with\nestimated scale parameters.)\n\n\nOn 12-12-04 08:19 PM, Justin Chase wrote:\n> Thanks Dr. Fox.\n> \n> I only just figured out today that there were specific help files like\n> ?anova.lme. I was trying to figure out the function using only ?anova,\n> which says very little.\n> That said, I did come across the package \"pbkrtest\" today and found that\n> it provides a nice approximate type II F test (the Kenward-Roger\n> approximation) for mixed effects models from lme4. I may wait for the\n> Halekoh and H?jsgaard paper to come out in the Journal of Statistical\n> Software before I switch to this approach, but I would be interested to\n> see what others in the R community think about the package and the K-R f\n> test.\n> \n> Thanks again!\n> \n> Justin\n> \n> On Tue, Dec 4, 2012 at 8:32 PM, John Fox <jfox at mcmaster.ca\n> <mailto:jfox at mcmaster.ca>> wrote:\n> \n>     Dear Justin,\n> \n>     The documentation in ?anova.lme seems very clear to me -- what is\n>     described for type=\"marginal\" is what is often called type III\n>     tests, though for these to be sensible in models with interactions,\n>     careful attention has to be paid to contrast coding. The Anova()\n>     function in the car package has methods for type II tests for models\n>     fit by lme() in the nlme package and lmer() in the lme4 package.\n> \n>     I hope this helps,\n>      John\n> \n>     ------------------------------------------------\n>     John Fox\n>     Sen. William McMaster Prof. of Social Statistics\n>     Department of Sociology\n>     McMaster University\n>     Hamilton, Ontario, Canada\n>     http://socserv.mcmaster.ca/jfox/\n> \n>     On Tue, 4 Dec 2012 11:15:56 -0400\n>      Justin Chase <justinwchase1 at gmail.com\n>     <mailto:justinwchase1 at gmail.com>> wrote:\n>     > Thanks Dr. Bolker!  I have one issue though: I was able to\n>     generate F tests\n>     > for my lme models using your suggestion anova(fm1,type=\"marginal\")   ,\n>     > however, it is my understanding that \"marginal\" typically refers\n>     to Type 3\n>     > sums-of-squares, which is discouraged. I'm looking to generate\n>     Type 2 tests\n>     > (i.e., \"conditional\"). The help file for anova() does not explain\n>     what the\n>     > word \"marginal\" means in the context of the function, thus I've\n>     cc'd John\n>     > Fox, who may be able to confirm whether or not this is Type II SS.\n>     >\n>     > Thanks!\n>     >\n>     > Justin\n>     >\n>     > On Tue, Dec 4, 2012 at 10:12 AM, Ben Bolker <bbolker at gmail.com\n>     <mailto:bbolker at gmail.com>> wrote:\n>     >\n>     > >\n>     > > [I'm taking the liberty of cc'ing r-sig-mixed-models ... I strongly\n>     > > prefer *not* to answer mixed models questions offline, for a\n>     variety of\n>     > > reasons.]\n>     > >\n>     > > On 12-12-03 02:12 PM, Justin Chase wrote:\n>     > > > Hi there Dr. Bolker.\n>     > > >\n>     > > > I have a question regarding both your 2008 paper in TREE and your\n>     > > > response to Helios de Rosario's mixed model question on the\n>     > > > R-sig-mixed-models mailing list. I am analyzing count data\n>     (transformed\n>     > > > for normality) from a slightly unbalanced split-plot lab\n>     experiment. I\n>     > > > have two fixed factors, one whole-plot and one sub-plot, with\n>     \"plot\" as\n>     > > > random factor. the model looks like this:\n>     > > >\n>     > > > *y = ? + A_i + B_j + A*B_ij + C_k (B_i ) + A*C(B_i )_jk +\n>     e_l(ijk) *\n>     > > >\n>     > > > I have been using the nlme package in R to test the\n>     significance of\n>     > > > fixed factors and their interaction on my univariate data,\n>     following\n>     > > > chapter 19 in The R Book (Crawley 2007).\n>     > >\n>     > >   I don't actually have Crawley's book (although I probably\n>     should, if\n>     > >   only to find out what he's telling people to do).\n>     > >\n>     > > > However, I'm not interested in\n>     > > > analyzing coefficients of individual effects (treatment\n>     levels) like\n>     > > > Bates does, but just want a significance test for whole\n>     factors. Because\n>     > > > I don't want to prioritize either fixed factor, I prefer to\n>     generate\n>     > > > type II SS estimates. Like Helios de Rosario, I used the Anova\n>     function\n>     > > > in the car package to generate type II anova tables with\n>     Wald's Chi\n>     > > > Square test and P values (because the F test is not available\n>     for this\n>     > > > type of model). The results seem very reasonable and are fairly\n>     > > > consistent with some least squares tests I've done on the same\n>     data\n>     > > > using aov (reordering terms to get \"type II\" results). I've\n>     read your\n>     > > > response to Helios's inquiry but unfortunately it was a bit\n>     over my\n>     > > > head. According to your paper in TREE, my data should be\n>     analyzed with\n>     > > > REML and F tests, but only Wald's X2 is available in R. Do you\n>     think I'm\n>     > > > on the right track or should I just forget about using REML\n>     and analyze\n>     > > > with aov on least squares fits (laboriously rearranging model\n>     terms to\n>     > > > get type II tests)?\n>     > >\n>     > >   Hmm.  Obviously I don't have your exact model, but I'm trying to\n>     > > figure out what's wrong with, for example,\n>     > >\n>     > > library(nlme)\n>     > > fm1 <- lme(distance ~ age, data = Orthodont) # random is ~ age\n>     > > anova(fm1,type=\"marginal\")\n>     > >\n>     > > ##             numDF denDF  F-value p-value\n>     > > ## (Intercept)     1    80 467.4406  <.0001\n>     > > ## age             1    80  85.8464  <.0001\n>     > >\n>     > > ?  see anova.lme\n>     > >\n>     > > Some of the complexity of the 2008 paper is due to the fact\n>     > > that GLMMs are more challenging in several respects than LMMs.\n>     > >\n>     > > > Also, should I be testing for overdispersion when using the\n>     Wald test,\n>     > > > even though I'm just modelling Gaussian data with lme?\n>     > >\n>     > >   No. The Gaussian family has an adjustable scale parameter (i.e.,\n>     > > the variance is estimated from the data, rather than [as in the\n>     > > binomial or Poisson families] fixed at a theoretical value)\n>     > >\n>     > >\n>     > >\n>     >\n>     >\n>     > --\n>     > *Justin W. Chase*\n>     > MSc Candidate\n>     > Canadian Rivers Institute\n>     > University of New Brunswick\n>     > 506-452-7474 <tel:506-452-7474> (home*)\n>     > 506-453-4845 <tel:506-453-4845> (office)\n>     > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n>     > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n>     >\n>     >       [[alternative HTML version deleted]]\n>     >\n> \n> \n> \n> \n> \n> -- \n> *Justin W. Chase*\n> MSc Candidate\n> Canadian Rivers Institute\n> University of New Brunswick\n> 506-452-7474(home*)\n> 506-453-4845(office)\n> justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n>",
+      "body_plain": "It does appear however that (as Justin said in the first place) that\ncar::Anova.lme does only chi-squared and not F tests (car 2.0-15).  I\nhaven't looked to see how hard it would be to extract the information\nfrom the lme object to get the relevant denominator df (and I don't know\nif there are theoretical complications ...)\n   Even the two-model anova.lme doesn't do F tests, only likelihood\nratio tests.  Again, don't know whether this is an oversight or whether\nthere's some reason *not* to provide the option.  (In contrast\nanova.glm() *does* provide an F test, for testing nested models with\nestimated scale parameters.)\n\n\nOn 12-12-04 08:19 PM, Justin Chase wrote:\n> Thanks Dr. Fox.\n> \n> I only just figured out today that there were specific help files like\n> ?anova.lme. I was trying to figure out the function using only ?anova,\n> which says very little.\n> That said, I did come across the package \"pbkrtest\" today and found that\n> it provides a nice approximate type II F test (the Kenward-Roger\n> approximation) for mixed effects models from lme4. I may wait for the\n> Halekoh and Højsgaard paper to come out in the Journal of Statistical\n> Software before I switch to this approach, but I would be interested to\n> see what others in the R community think about the package and the K-R f\n> test.\n> \n> Thanks again!\n> \n> Justin\n> \n> On Tue, Dec 4, 2012 at 8:32 PM, John Fox <jfox at mcmaster.ca\n> <mailto:jfox at mcmaster.ca>> wrote:\n> \n>     Dear Justin,\n> \n>     The documentation in ?anova.lme seems very clear to me -- what is\n>     described for type=\"marginal\" is what is often called type III\n>     tests, though for these to be sensible in models with interactions,\n>     careful attention has to be paid to contrast coding. The Anova()\n>     function in the car package has methods for type II tests for models\n>     fit by lme() in the nlme package and lmer() in the lme4 package.\n> \n>     I hope this helps,\n>      John\n> \n>     ------------------------------------------------\n>     John Fox\n>     Sen. William McMaster Prof. of Social Statistics\n>     Department of Sociology\n>     McMaster University\n>     Hamilton, Ontario, Canada\n>     http://socserv.mcmaster.ca/jfox/\n> \n>     On Tue, 4 Dec 2012 11:15:56 -0400\n>      Justin Chase <justinwchase1 at gmail.com\n>     <mailto:justinwchase1 at gmail.com>> wrote:\n>     > Thanks Dr. Bolker!  I have one issue though: I was able to\n>     generate F tests\n>     > for my lme models using your suggestion anova(fm1,type=\"marginal\")   ,\n>     > however, it is my understanding that \"marginal\" typically refers\n>     to Type 3\n>     > sums-of-squares, which is discouraged. I'm looking to generate\n>     Type 2 tests\n>     > (i.e., \"conditional\"). The help file for anova() does not explain\n>     what the\n>     > word \"marginal\" means in the context of the function, thus I've\n>     cc'd John\n>     > Fox, who may be able to confirm whether or not this is Type II SS.\n>     >\n>     > Thanks!\n>     >\n>     > Justin\n>     >\n>     > On Tue, Dec 4, 2012 at 10:12 AM, Ben Bolker <bbolker at gmail.com\n>     <mailto:bbolker at gmail.com>> wrote:\n>     >\n>     > >\n>     > > [I'm taking the liberty of cc'ing r-sig-mixed-models ... I strongly\n>     > > prefer *not* to answer mixed models questions offline, for a\n>     variety of\n>     > > reasons.]\n>     > >\n>     > > On 12-12-03 02:12 PM, Justin Chase wrote:\n>     > > > Hi there Dr. Bolker.\n>     > > >\n>     > > > I have a question regarding both your 2008 paper in TREE and your\n>     > > > response to Helios de Rosario's mixed model question on the\n>     > > > R-sig-mixed-models mailing list. I am analyzing count data\n>     (transformed\n>     > > > for normality) from a slightly unbalanced split-plot lab\n>     experiment. I\n>     > > > have two fixed factors, one whole-plot and one sub-plot, with\n>     \"plot\" as\n>     > > > random factor. the model looks like this:\n>     > > >\n>     > > > *y = µ + A_i + B_j + A*B_ij + C_k (B_i ) + A*C(B_i )_jk +\n>     e_l(ijk) *\n>     > > >\n>     > > > I have been using the nlme package in R to test the\n>     significance of\n>     > > > fixed factors and their interaction on my univariate data,\n>     following\n>     > > > chapter 19 in The R Book (Crawley 2007).\n>     > >\n>     > >   I don't actually have Crawley's book (although I probably\n>     should, if\n>     > >   only to find out what he's telling people to do).\n>     > >\n>     > > > However, I'm not interested in\n>     > > > analyzing coefficients of individual effects (treatment\n>     levels) like\n>     > > > Bates does, but just want a significance test for whole\n>     factors. Because\n>     > > > I don't want to prioritize either fixed factor, I prefer to\n>     generate\n>     > > > type II SS estimates. Like Helios de Rosario, I used the Anova\n>     function\n>     > > > in the car package to generate type II anova tables with\n>     Wald's Chi\n>     > > > Square test and P values (because the F test is not available\n>     for this\n>     > > > type of model). The results seem very reasonable and are fairly\n>     > > > consistent with some least squares tests I've done on the same\n>     data\n>     > > > using aov (reordering terms to get \"type II\" results). I've\n>     read your\n>     > > > response to Helios's inquiry but unfortunately it was a bit\n>     over my\n>     > > > head. According to your paper in TREE, my data should be\n>     analyzed with\n>     > > > REML and F tests, but only Wald's X2 is available in R. Do you\n>     think I'm\n>     > > > on the right track or should I just forget about using REML\n>     and analyze\n>     > > > with aov on least squares fits (laboriously rearranging model\n>     terms to\n>     > > > get type II tests)?\n>     > >\n>     > >   Hmm.  Obviously I don't have your exact model, but I'm trying to\n>     > > figure out what's wrong with, for example,\n>     > >\n>     > > library(nlme)\n>     > > fm1 <- lme(distance ~ age, data = Orthodont) # random is ~ age\n>     > > anova(fm1,type=\"marginal\")\n>     > >\n>     > > ##             numDF denDF  F-value p-value\n>     > > ## (Intercept)     1    80 467.4406  <.0001\n>     > > ## age             1    80  85.8464  <.0001\n>     > >\n>     > > ?  see anova.lme\n>     > >\n>     > > Some of the complexity of the 2008 paper is due to the fact\n>     > > that GLMMs are more challenging in several respects than LMMs.\n>     > >\n>     > > > Also, should I be testing for overdispersion when using the\n>     Wald test,\n>     > > > even though I'm just modelling Gaussian data with lme?\n>     > >\n>     > >   No. The Gaussian family has an adjustable scale parameter (i.e.,\n>     > > the variance is estimated from the data, rather than [as in the\n>     > > binomial or Poisson families] fixed at a theoretical value)\n>     > >\n>     > >\n>     > >\n>     >\n>     >\n>     > --\n>     > *Justin W. Chase*\n>     > MSc Candidate\n>     > Canadian Rivers Institute\n>     > University of New Brunswick\n>     > 506-452-7474 <tel:506-452-7474> (home*)\n>     > 506-453-4845 <tel:506-453-4845> (office)\n>     > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n>     > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n>     >\n>     >       [[alternative HTML version deleted]]\n>     >\n> \n> \n> \n> \n> \n> -- \n> *Justin W. Chase*\n> MSc Candidate\n> Canadian Rivers Institute\n> University of New Brunswick\n> 506-452-7474(home*)\n> 506-453-4845(office)\n> justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n>",
       "body_snippet": "It does appear however that (as Justin said in the first place) that\ncar::Anova.lme does only chi-squared and not F tests (car 2.0-15).  I\nhaven't looked to see how hard it would be to extract the inf",
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 4,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019534.html"
     },
     {
       "id": "msg-3ce04b70b5f0",
@@ -357,11 +375,12 @@
         "<CAMkX5N_HNfyb+LmVSia+hwauv9twBDeEuj5_V=+9GOrwUCS-SA@mail.gmail.com>",
         "<50BEA509.50903@gmail.com>"
       ],
-      "body_plain": "Dear Ben.\n\nAnova.lme() in car does only chisquare tests, but Anova.lmer() also does F-tests using the KR df computed by the pbkrtest package only for models fit by lmer(). That package was also mentioned by Justin in his last posting.\n\nBest,\n John\n\nOn Tue, 04 Dec 2012 20:36:09 -0500\n Ben Bolker <bbolker at gmail.com> wrote:\n>   It does appear however that (as Justin said in the first place) that\n> car::Anova.lme does only chi-squared and not F tests (car 2.0-15).  I\n> haven't looked to see how hard it would be to extract the information\n> from the lme object to get the relevant denominator df (and I don't know\n> if there are theoretical complications ...)\n>    Even the two-model anova.lme doesn't do F tests, only likelihood\n> ratio tests.  Again, don't know whether this is an oversight or whether\n> there's some reason *not* to provide the option.  (In contrast\n> anova.glm() *does* provide an F test, for testing nested models with\n> estimated scale parameters.)\n> \n> \n> On 12-12-04 08:19 PM, Justin Chase wrote:\n> > Thanks Dr. Fox.\n> > \n> > I only just figured out today that there were specific help files like\n> > ?anova.lme. I was trying to figure out the function using only ?anova,\n> > which says very little.\n> > That said, I did come across the package \"pbkrtest\" today and found that\n> > it provides a nice approximate type II F test (the Kenward-Roger\n> > approximation) for mixed effects models from lme4. I may wait for the\n> > Halekoh and H?jsgaard paper to come out in the Journal of Statistical\n> > Software before I switch to this approach, but I would be interested to\n> > see what others in the R community think about the package and the K-R f\n> > test.\n> > \n> > Thanks again!\n> > \n> > Justin\n> > \n> > On Tue, Dec 4, 2012 at 8:32 PM, John Fox <jfox at mcmaster.ca\n> > <mailto:jfox at mcmaster.ca>> wrote:\n> > \n> >     Dear Justin,\n> > \n> >     The documentation in ?anova.lme seems very clear to me -- what is\n> >     described for type=\"marginal\" is what is often called type III\n> >     tests, though for these to be sensible in models with interactions,\n> >     careful attention has to be paid to contrast coding. The Anova()\n> >     function in the car package has methods for type II tests for models\n> >     fit by lme() in the nlme package and lmer() in the lme4 package.\n> > \n> >     I hope this helps,\n> >      John\n> > \n> >     ------------------------------------------------\n> >     John Fox\n> >     Sen. William McMaster Prof. of Social Statistics\n> >     Department of Sociology\n> >     McMaster University\n> >     Hamilton, Ontario, Canada\n> >     http://socserv.mcmaster.ca/jfox/\n> > \n> >     On Tue, 4 Dec 2012 11:15:56 -0400\n> >      Justin Chase <justinwchase1 at gmail.com\n> >     <mailto:justinwchase1 at gmail.com>> wrote:\n> >     > Thanks Dr. Bolker!  I have one issue though: I was able to\n> >     generate F tests\n> >     > for my lme models using your suggestion anova(fm1,type=\"marginal\")   ,\n> >     > however, it is my understanding that \"marginal\" typically refers\n> >     to Type 3\n> >     > sums-of-squares, which is discouraged. I'm looking to generate\n> >     Type 2 tests\n> >     > (i.e., \"conditional\"). The help file for anova() does not explain\n> >     what the\n> >     > word \"marginal\" means in the context of the function, thus I've\n> >     cc'd John\n> >     > Fox, who may be able to confirm whether or not this is Type II SS.\n> >     >\n> >     > Thanks!\n> >     >\n> >     > Justin\n> >     >\n> >     > On Tue, Dec 4, 2012 at 10:12 AM, Ben Bolker <bbolker at gmail.com\n> >     <mailto:bbolker at gmail.com>> wrote:\n> >     >\n> >     > >\n> >     > > [I'm taking the liberty of cc'ing r-sig-mixed-models ... I strongly\n> >     > > prefer *not* to answer mixed models questions offline, for a\n> >     variety of\n> >     > > reasons.]\n> >     > >\n> >     > > On 12-12-03 02:12 PM, Justin Chase wrote:\n> >     > > > Hi there Dr. Bolker.\n> >     > > >\n> >     > > > I have a question regarding both your 2008 paper in TREE and your\n> >     > > > response to Helios de Rosario's mixed model question on the\n> >     > > > R-sig-mixed-models mailing list. I am analyzing count data\n> >     (transformed\n> >     > > > for normality) from a slightly unbalanced split-plot lab\n> >     experiment. I\n> >     > > > have two fixed factors, one whole-plot and one sub-plot, with\n> >     \"plot\" as\n> >     > > > random factor. the model looks like this:\n> >     > > >\n> >     > > > *y = ? + A_i + B_j + A*B_ij + C_k (B_i ) + A*C(B_i )_jk +\n> >     e_l(ijk) *\n> >     > > >\n> >     > > > I have been using the nlme package in R to test the\n> >     significance of\n> >     > > > fixed factors and their interaction on my univariate data,\n> >     following\n> >     > > > chapter 19 in The R Book (Crawley 2007).\n> >     > >\n> >     > >   I don't actually have Crawley's book (although I probably\n> >     should, if\n> >     > >   only to find out what he's telling people to do).\n> >     > >\n> >     > > > However, I'm not interested in\n> >     > > > analyzing coefficients of individual effects (treatment\n> >     levels) like\n> >     > > > Bates does, but just want a significance test for whole\n> >     factors. Because\n> >     > > > I don't want to prioritize either fixed factor, I prefer to\n> >     generate\n> >     > > > type II SS estimates. Like Helios de Rosario, I used the Anova\n> >     function\n> >     > > > in the car package to generate type II anova tables with\n> >     Wald's Chi\n> >     > > > Square test and P values (because the F test is not available\n> >     for this\n> >     > > > type of model). The results seem very reasonable and are fairly\n> >     > > > consistent with some least squares tests I've done on the same\n> >     data\n> >     > > > using aov (reordering terms to get \"type II\" results). I've\n> >     read your\n> >     > > > response to Helios's inquiry but unfortunately it was a bit\n> >     over my\n> >     > > > head. According to your paper in TREE, my data should be\n> >     analyzed with\n> >     > > > REML and F tests, but only Wald's X2 is available in R. Do you\n> >     think I'm\n> >     > > > on the right track or should I just forget about using REML\n> >     and analyze\n> >     > > > with aov on least squares fits (laboriously rearranging model\n> >     terms to\n> >     > > > get type II tests)?\n> >     > >\n> >     > >   Hmm.  Obviously I don't have your exact model, but I'm trying to\n> >     > > figure out what's wrong with, for example,\n> >     > >\n> >     > > library(nlme)\n> >     > > fm1 <- lme(distance ~ age, data = Orthodont) # random is ~ age\n> >     > > anova(fm1,type=\"marginal\")\n> >     > >\n> >     > > ##             numDF denDF  F-value p-value\n> >     > > ## (Intercept)     1    80 467.4406  <.0001\n> >     > > ## age             1    80  85.8464  <.0001\n> >     > >\n> >     > > ?  see anova.lme\n> >     > >\n> >     > > Some of the complexity of the 2008 paper is due to the fact\n> >     > > that GLMMs are more challenging in several respects than LMMs.\n> >     > >\n> >     > > > Also, should I be testing for overdispersion when using the\n> >     Wald test,\n> >     > > > even though I'm just modelling Gaussian data with lme?\n> >     > >\n> >     > >   No. The Gaussian family has an adjustable scale parameter (i.e.,\n> >     > > the variance is estimated from the data, rather than [as in the\n> >     > > binomial or Poisson families] fixed at a theoretical value)\n> >     > >\n> >     > >\n> >     > >\n> >     >\n> >     >\n> >     > --\n> >     > *Justin W. Chase*\n> >     > MSc Candidate\n> >     > Canadian Rivers Institute\n> >     > University of New Brunswick\n> >     > 506-452-7474 <tel:506-452-7474> (home*)\n> >     > 506-453-4845 <tel:506-453-4845> (office)\n> >     > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> >     > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n> >     >\n> >     >       [[alternative HTML version deleted]]\n> >     >\n> > \n> > \n> > \n> > \n> > \n> > -- \n> > *Justin W. Chase*\n> > MSc Candidate\n> > Canadian Rivers Institute\n> > University of New Brunswick\n> > 506-452-7474(home*)\n> > 506-453-4845(office)\n> > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n> > \n>",
+      "body_plain": "Dear Ben.\n\nAnova.lme() in car does only chisquare tests, but Anova.lmer() also does F-tests using the KR df computed by the pbkrtest package only for models fit by lmer(). That package was also mentioned by Justin in his last posting.\n\nBest,\n John\n\nOn Tue, 04 Dec 2012 20:36:09 -0500\n Ben Bolker <bbolker at gmail.com> wrote:\n>   It does appear however that (as Justin said in the first place) that\n> car::Anova.lme does only chi-squared and not F tests (car 2.0-15).  I\n> haven't looked to see how hard it would be to extract the information\n> from the lme object to get the relevant denominator df (and I don't know\n> if there are theoretical complications ...)\n>    Even the two-model anova.lme doesn't do F tests, only likelihood\n> ratio tests.  Again, don't know whether this is an oversight or whether\n> there's some reason *not* to provide the option.  (In contrast\n> anova.glm() *does* provide an F test, for testing nested models with\n> estimated scale parameters.)\n> \n> \n> On 12-12-04 08:19 PM, Justin Chase wrote:\n> > Thanks Dr. Fox.\n> > \n> > I only just figured out today that there were specific help files like\n> > ?anova.lme. I was trying to figure out the function using only ?anova,\n> > which says very little.\n> > That said, I did come across the package \"pbkrtest\" today and found that\n> > it provides a nice approximate type II F test (the Kenward-Roger\n> > approximation) for mixed effects models from lme4. I may wait for the\n> > Halekoh and Højsgaard paper to come out in the Journal of Statistical\n> > Software before I switch to this approach, but I would be interested to\n> > see what others in the R community think about the package and the K-R f\n> > test.\n> > \n> > Thanks again!\n> > \n> > Justin\n> > \n> > On Tue, Dec 4, 2012 at 8:32 PM, John Fox <jfox at mcmaster.ca\n> > <mailto:jfox at mcmaster.ca>> wrote:\n> > \n> >     Dear Justin,\n> > \n> >     The documentation in ?anova.lme seems very clear to me -- what is\n> >     described for type=\"marginal\" is what is often called type III\n> >     tests, though for these to be sensible in models with interactions,\n> >     careful attention has to be paid to contrast coding. The Anova()\n> >     function in the car package has methods for type II tests for models\n> >     fit by lme() in the nlme package and lmer() in the lme4 package.\n> > \n> >     I hope this helps,\n> >      John\n> > \n> >     ------------------------------------------------\n> >     John Fox\n> >     Sen. William McMaster Prof. of Social Statistics\n> >     Department of Sociology\n> >     McMaster University\n> >     Hamilton, Ontario, Canada\n> >     http://socserv.mcmaster.ca/jfox/\n> > \n> >     On Tue, 4 Dec 2012 11:15:56 -0400\n> >      Justin Chase <justinwchase1 at gmail.com\n> >     <mailto:justinwchase1 at gmail.com>> wrote:\n> >     > Thanks Dr. Bolker!  I have one issue though: I was able to\n> >     generate F tests\n> >     > for my lme models using your suggestion anova(fm1,type=\"marginal\")   ,\n> >     > however, it is my understanding that \"marginal\" typically refers\n> >     to Type 3\n> >     > sums-of-squares, which is discouraged. I'm looking to generate\n> >     Type 2 tests\n> >     > (i.e., \"conditional\"). The help file for anova() does not explain\n> >     what the\n> >     > word \"marginal\" means in the context of the function, thus I've\n> >     cc'd John\n> >     > Fox, who may be able to confirm whether or not this is Type II SS.\n> >     >\n> >     > Thanks!\n> >     >\n> >     > Justin\n> >     >\n> >     > On Tue, Dec 4, 2012 at 10:12 AM, Ben Bolker <bbolker at gmail.com\n> >     <mailto:bbolker at gmail.com>> wrote:\n> >     >\n> >     > >\n> >     > > [I'm taking the liberty of cc'ing r-sig-mixed-models ... I strongly\n> >     > > prefer *not* to answer mixed models questions offline, for a\n> >     variety of\n> >     > > reasons.]\n> >     > >\n> >     > > On 12-12-03 02:12 PM, Justin Chase wrote:\n> >     > > > Hi there Dr. Bolker.\n> >     > > >\n> >     > > > I have a question regarding both your 2008 paper in TREE and your\n> >     > > > response to Helios de Rosario's mixed model question on the\n> >     > > > R-sig-mixed-models mailing list. I am analyzing count data\n> >     (transformed\n> >     > > > for normality) from a slightly unbalanced split-plot lab\n> >     experiment. I\n> >     > > > have two fixed factors, one whole-plot and one sub-plot, with\n> >     \"plot\" as\n> >     > > > random factor. the model looks like this:\n> >     > > >\n> >     > > > *y = µ + A_i + B_j + A*B_ij + C_k (B_i ) + A*C(B_i )_jk +\n> >     e_l(ijk) *\n> >     > > >\n> >     > > > I have been using the nlme package in R to test the\n> >     significance of\n> >     > > > fixed factors and their interaction on my univariate data,\n> >     following\n> >     > > > chapter 19 in The R Book (Crawley 2007).\n> >     > >\n> >     > >   I don't actually have Crawley's book (although I probably\n> >     should, if\n> >     > >   only to find out what he's telling people to do).\n> >     > >\n> >     > > > However, I'm not interested in\n> >     > > > analyzing coefficients of individual effects (treatment\n> >     levels) like\n> >     > > > Bates does, but just want a significance test for whole\n> >     factors. Because\n> >     > > > I don't want to prioritize either fixed factor, I prefer to\n> >     generate\n> >     > > > type II SS estimates. Like Helios de Rosario, I used the Anova\n> >     function\n> >     > > > in the car package to generate type II anova tables with\n> >     Wald's Chi\n> >     > > > Square test and P values (because the F test is not available\n> >     for this\n> >     > > > type of model). The results seem very reasonable and are fairly\n> >     > > > consistent with some least squares tests I've done on the same\n> >     data\n> >     > > > using aov (reordering terms to get \"type II\" results). I've\n> >     read your\n> >     > > > response to Helios's inquiry but unfortunately it was a bit\n> >     over my\n> >     > > > head. According to your paper in TREE, my data should be\n> >     analyzed with\n> >     > > > REML and F tests, but only Wald's X2 is available in R. Do you\n> >     think I'm\n> >     > > > on the right track or should I just forget about using REML\n> >     and analyze\n> >     > > > with aov on least squares fits (laboriously rearranging model\n> >     terms to\n> >     > > > get type II tests)?\n> >     > >\n> >     > >   Hmm.  Obviously I don't have your exact model, but I'm trying to\n> >     > > figure out what's wrong with, for example,\n> >     > >\n> >     > > library(nlme)\n> >     > > fm1 <- lme(distance ~ age, data = Orthodont) # random is ~ age\n> >     > > anova(fm1,type=\"marginal\")\n> >     > >\n> >     > > ##             numDF denDF  F-value p-value\n> >     > > ## (Intercept)     1    80 467.4406  <.0001\n> >     > > ## age             1    80  85.8464  <.0001\n> >     > >\n> >     > > ?  see anova.lme\n> >     > >\n> >     > > Some of the complexity of the 2008 paper is due to the fact\n> >     > > that GLMMs are more challenging in several respects than LMMs.\n> >     > >\n> >     > > > Also, should I be testing for overdispersion when using the\n> >     Wald test,\n> >     > > > even though I'm just modelling Gaussian data with lme?\n> >     > >\n> >     > >   No. The Gaussian family has an adjustable scale parameter (i.e.,\n> >     > > the variance is estimated from the data, rather than [as in the\n> >     > > binomial or Poisson families] fixed at a theoretical value)\n> >     > >\n> >     > >\n> >     > >\n> >     >\n> >     >\n> >     > --\n> >     > *Justin W. Chase*\n> >     > MSc Candidate\n> >     > Canadian Rivers Institute\n> >     > University of New Brunswick\n> >     > 506-452-7474 <tel:506-452-7474> (home*)\n> >     > 506-453-4845 <tel:506-453-4845> (office)\n> >     > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> >     > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n> >     >\n> >     >       [[alternative HTML version deleted]]\n> >     >\n> > \n> > \n> > \n> > \n> > \n> > -- \n> > *Justin W. Chase*\n> > MSc Candidate\n> > Canadian Rivers Institute\n> > University of New Brunswick\n> > 506-452-7474(home*)\n> > 506-453-4845(office)\n> > justinwchase1 at gmail.com <mailto:justinwchase1 at gmail.com>\n> > LinkedIn Profile <http://www.linkedin.com/in/justinwchase>\n> > \n>",
       "body_snippet": "Dear Ben.\n\nAnova.lme() in car does only chisquare tests, but Anova.lmer() also does F-tests using the KR df computed by the pbkrtest package only for models fit by lmer(). That package was also mentio",
       "thread_id": "thread-2c910017f2c0",
       "thread_depth": 5,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019535.html"
     },
     {
       "id": "msg-de5d9b32de98",
@@ -379,7 +398,8 @@
       "body_snippet": "Andrea Cantieni <andrea.cantieni at ...> writes:\n\n\n> I am fitting a classroom data set with lmer() with completely nested\n> data, i.e. pupils are nested within classes, and classes are nested\n> within",
       "thread_id": "thread-5709b061b3f8",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019536.html"
     },
     {
       "id": "msg-0089d397dfd9",
@@ -398,7 +418,8 @@
       "body_snippet": "Dear Ben,\n\nThank you very much! That helps me.\n\nBest, Andrea\n\n\nAm 05.12.2012 um 04:56 schrieb Ben Bolker <bbolker at gmail.com>:\n\n> Andrea Cantieni <andrea.cantieni at ...> writes:\n> \n> \n>> I am fitti",
       "thread_id": "thread-5709b061b3f8",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019537.html"
     },
     {
       "id": "msg-67171167e3fd",
@@ -414,7 +435,8 @@
       "body_snippet": "Dear all,\n\nI have sampled grasshoppers from a set of 40 sites on 10 transects per site.\n\nNow if I analyse the pooled data (N=40), the minimal adequate model is the null model.\n\nHowever, if I account f",
       "thread_id": "thread-67171167e3fd",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019538.html"
     },
     {
       "id": "msg-6207361d09e7",
@@ -431,6 +453,7 @@
       "thread_id": "thread-6207361d09e7",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019540.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121205/e0672d68/attachment.pl"
       ]
@@ -449,7 +472,8 @@
       "body_snippet": "http://ceramiccoatingsfl.com/www.ABCnews.newsreport.jobforyou35.php",
       "thread_id": "thread-154f821b0633",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019539.html"
     },
     {
       "id": "msg-0543a550f020",
@@ -469,6 +493,7 @@
       "thread_id": "thread-0543a550f020",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019541.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121205/53dbd389/attachment.pl"
       ]
@@ -493,6 +518,7 @@
       "thread_id": "thread-eb035dd1d35c",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019543.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121205/7def7024/attachment.pl"
       ]
@@ -512,6 +538,7 @@
       "thread_id": "thread-9aab801d3f3c",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019542.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121205/dac3a081/attachment.pl"
       ]
@@ -532,7 +559,8 @@
       "body_snippet": "Hi Robert,\n\nTry to clean up your code. Use the data argument instead of the $ notation. And use glmer instead of lmer for generalized models. Addingspacesmakesyourcodemuchmorereadable\n\nglmm1 <- glmer(",
       "thread_id": "thread-9aab801d3f3c",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019544.html"
     },
     {
       "id": "msg-125009033b10",
@@ -551,7 +579,8 @@
       "body_snippet": "Hi,\n\nI have a question about your data, but not sure if it is related to the problem. \n\"Species\" and \"Bee\" are the same, isn't it? Can we then put species as fix \nfaxtor and Bee as a random? \n\nBest,\nV",
       "thread_id": "thread-9aab801d3f3c",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019545.html"
     },
     {
       "id": "msg-0d86dc30f7cc",
@@ -567,7 +596,8 @@
       "body_snippet": "Hi all:\n\nI am wondering if anyone could explain to me the difference of lme4 that is in the CRAN and of the development version. The mathematics and the method to compute the estimates for the develop",
       "thread_id": "thread-0d86dc30f7cc",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019546.html"
     },
     {
       "id": "msg-d11a24117a88",
@@ -587,6 +617,7 @@
       "thread_id": "thread-9aab801d3f3c",
       "thread_depth": 2,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019547.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121206/db542188/attachment.pl"
       ]
@@ -608,6 +639,7 @@
       "thread_id": "thread-0d86dc30f7cc",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019548.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121206/0f615f1d/attachment.pl"
       ]
@@ -622,11 +654,12 @@
       "subject_clean": "lme4 glmer general help wanted - code included",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi guys,\n\nI'm very new to R and have been teaching myself over the past few months -?\nit's a great tool and I'm hoping to use it to analyse my PhD data.\nAs I'm a bit of a newb, I'd really appreciate any feedback and/or guidance?\nwith regards to the following questions that relate to generalized linear\nmixed modelling (or, at least, I think they do!)(if there is a 'better',?\nmore appropriate way that I could attempt to answer my questions, please let me know).\n\nI've spent a lot of time researching this approach on the internet, but can't\nseem to find any directly applicable examples.\n\nThanks in advance, and, if you need any further information, please let me know.\n\n# My experiment:\n# I have 1 site on 3 different rivers (independent)(sites 1,2 and 3).?\n# I visit each site 2 times (time 1 and 2).?\n# On each visit, I take 5x replicate insect samples and calculate total abundance for each replicate.\n# Site 1 is in an area called \"yellow\" and sites 2 and 3 are in an area called \"blue\".\n\n# My data frame:\n\n\ndata=data.frame(\nsite=c(rep(1,10),rep(2,10),rep(3,10)),\nreplicate=c(rep(1:5,6)),\ntime=c(rep(1,5),rep(2,5),rep(1,5),rep(2,5),rep(1,5),rep(2,5)),\nabundance=c(1,2,1,2,1,2,1,2,1,2,30,32,30,32,30,32,30,32,30,32,30,31,33,32,31,31,33,32,31,32),\nsitetype=c(rep(\"yellow\",10),rep(\"blue\",20))\n)\n\ndata$site=factor(data$site)\ndata$replicate=factor(data$replicate)\ndata$time=factor(data$time)\n\ndata\n\n\n# Initial remarks:?\n# As each replicate (1-5) was taken from within each site (1-3) on both sampling times (1-2),\n# I figure that 'replicate' should be treated as nested within 'site' and that both should be treated as random factors??\n\n# First question: Is there is difference in abundance between sites?\n# Second question: Is there is difference in abundance between sitetypes (blue or yellow)?\n\n\t#If my 'initial remarks' statement is correct (please tell me if not), then I think a generalized linear mixed model is?appropriate?and would be something along these lines:\n\n# Fitting the model:\n\n\t\trequire(lme4)\n\t\t\tglmm1=glmer(abundance~time+sitetype+(1|site/replicate),family=\"poisson\",data=data)\t#I chose to use poisson as abundance is count data... is this recommended?\n\t\t\t\tsummary(glmm1)\n\t#Output:\n\n################################################################\nGeneralized linear mixed model fit by the Laplace approximation?\nFormula: abundance ~ time + sitetype + (1 | site/replicate)?\n? ?Data: data?\n? ?AIC ? BIC logLik deviance\n?12.31 19.31 -1.153 ? ?2.306\nRandom effects:\n?Groups ? ? ? ? Name ? ? ? ?Variance Std.Dev.\n?replicate:site (Intercept) ?0 ? ? ? ?0 ? ? ?\n?site ? ? ? ? ? (Intercept) ?0 ? ? ? ?0 ? ? ?\nNumber of obs: 30, groups: replicate:site, 15; site, 3\n\nFixed effects:\n? ? ? ? ? ? ? ?Estimate Std. Error z value Pr(>|z|) ? ?\n(Intercept) ? ? 3.43579 ? ?0.05641 ? 60.91 ? <2e-16 ***\ntime2 ? ? ? ? ? 0.01560 ? ?0.07900 ? ?0.20 ? ?0.843 ? ?\nsitetypeyellow -3.03815 ? ?0.26127 ?-11.63 ? <2e-16 ***\n---\nSignif. codes: ?0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1?\n\nCorrelation of Fixed Effects:\n? ? ? ? ? ? (Intr) time2?\ntime2 ? ? ? -0.706 ? ? ??\nsitetypyllw -0.108 ?0.000\n################################################################\n\n# Inferences:\n\n\t\t#I'm unsure how to assess the variance and std dev scores for site... some guidance here would be appreciated....i.e. how do I answer my original question: Is there is difference in abundance between sites?\n\t\t#There is no statistically significant difference between the two time periods (P=>0.05)\n\t\t#Using the above output, the model suggests that there is a statistically significant difference between site types (p<0.05)\n\n# Further questions:?\n\n\t\t#1 Are the above inferences correct?\n\t\t#2 I have read about overdispersion.... how would I test for this in this example?\n\t\t#3 How could I build an interaction term into the model and answer the following: \"Is there a statistically significant site*time interaction?\"\n\t\t#4 Finally, are there any obvious steps or things I should be doing in order to get a 'robust' or 'correct' answer from this problem? i.e. further tests... alternative models and comparisons...\n\t\n\nThanks again,\n\nRob",
-      "body_snippet": "Hi guys,\n\nI'm very new to R and have been teaching myself over the past few months -?\nit's a great tool and I'm hoping to use it to analyse my PhD data.\nAs I'm a bit of a newb, I'd really appreciate a",
+      "body_plain": "Hi guys,\n\nI'm very new to R and have been teaching myself over the past few months - \nit's a great tool and I'm hoping to use it to analyse my PhD data.\nAs I'm a bit of a newb, I'd really appreciate any feedback and/or guidance \nwith regards to the following questions that relate to generalized linear\nmixed modelling (or, at least, I think they do!)(if there is a 'better', \nmore appropriate way that I could attempt to answer my questions, please let me know).\n\nI've spent a lot of time researching this approach on the internet, but can't\nseem to find any directly applicable examples.\n\nThanks in advance, and, if you need any further information, please let me know.\n\n# My experiment:\n# I have 1 site on 3 different rivers (independent)(sites 1,2 and 3). \n# I visit each site 2 times (time 1 and 2). \n# On each visit, I take 5x replicate insect samples and calculate total abundance for each replicate.\n# Site 1 is in an area called \"yellow\" and sites 2 and 3 are in an area called \"blue\".\n\n# My data frame:\n\n\ndata=data.frame(\nsite=c(rep(1,10),rep(2,10),rep(3,10)),\nreplicate=c(rep(1:5,6)),\ntime=c(rep(1,5),rep(2,5),rep(1,5),rep(2,5),rep(1,5),rep(2,5)),\nabundance=c(1,2,1,2,1,2,1,2,1,2,30,32,30,32,30,32,30,32,30,32,30,31,33,32,31,31,33,32,31,32),\nsitetype=c(rep(\"yellow\",10),rep(\"blue\",20))\n)\n\ndata$site=factor(data$site)\ndata$replicate=factor(data$replicate)\ndata$time=factor(data$time)\n\ndata\n\n\n# Initial remarks: \n# As each replicate (1-5) was taken from within each site (1-3) on both sampling times (1-2),\n# I figure that 'replicate' should be treated as nested within 'site' and that both should be treated as random factors? \n\n# First question: Is there is difference in abundance between sites?\n# Second question: Is there is difference in abundance between sitetypes (blue or yellow)?\n\n\t#If my 'initial remarks' statement is correct (please tell me if not), then I think a generalized linear mixed model is appropriate and would be something along these lines:\n\n# Fitting the model:\n\n\t\trequire(lme4)\n\t\t\tglmm1=glmer(abundance~time+sitetype+(1|site/replicate),family=\"poisson\",data=data)\t#I chose to use poisson as abundance is count data... is this recommended?\n\t\t\t\tsummary(glmm1)\n\t#Output:\n\n################################################################\nGeneralized linear mixed model fit by the Laplace approximation \nFormula: abundance ~ time + sitetype + (1 | site/replicate) \n   Data: data \n   AIC   BIC logLik deviance\n 12.31 19.31 -1.153    2.306\nRandom effects:\n Groups         Name        Variance Std.Dev.\n replicate:site (Intercept)  0 ? ? ? ?0 ? ?  \n site   ? ? ?   (Intercept)  0 ? ? ? ?0 ?    \nNumber of obs: 30, groups: replicate:site, 15; site, 3\n\nFixed effects:\n  ? ? ? ? ?    Estimate Std. Error z value Pr(>|z|)    \n(Intercept)     3.43579    0.05641   60.91   <2e-16 ***\ntime2   ? ? ?   0.01560    0.07900    0.20    0.843    \nsitetypeyellow -3.03815    0.26127  -11.63   <2e-16 ***\n---\nSignif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 \n\nCorrelation of Fixed Effects:\n  ? ? ? ?   (Intr) time2 \ntime2       -0.706       \nsitetypyllw -0.108  0.000\n################################################################\n\n# Inferences:\n\n\t\t#I'm unsure how to assess the variance and std dev scores for site... some guidance here would be appreciated....i.e. how do I answer my original question: Is there is difference in abundance between sites?\n\t\t#There is no statistically significant difference between the two time periods (P=>0.05)\n\t\t#Using the above output, the model suggests that there is a statistically significant difference between site types (p<0.05)\n\n# Further questions: \n\n\t\t#1 Are the above inferences correct?\n\t\t#2 I have read about overdispersion.... how would I test for this in this example?\n\t\t#3 How could I build an interaction term into the model and answer the following: \"Is there a statistically significant site*time interaction?\"\n\t\t#4 Finally, are there any obvious steps or things I should be doing in order to get a 'robust' or 'correct' answer from this problem? i.e. further tests... alternative models and comparisons...\n\t\n\nThanks again,\n\nRob",
+      "body_snippet": "Hi guys,\n\nI'm very new to R and have been teaching myself over the past few months - \nit's a great tool and I'm hoping to use it to analyse my PhD data.\nAs I'm a bit of a newb, I'd really appreciate a",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019553.html"
     },
     {
       "id": "msg-85a0107273ce",
@@ -643,6 +676,7 @@
       "thread_id": "thread-85a0107273ce",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019549.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121206/0aded67e/attachment.pl"
       ]
@@ -657,11 +691,12 @@
       "subject_clean": "Difference of lme4 between the CRAN version and the development version",
       "in_reply_to": "<1354828730.53221.YahooMailNeo@web171406.mail.ir2.yahoo.com>",
       "references": [],
-      "body_plain": "Hi Stephan:\n\nYes, I do. Thanks for the suggestion. Unfortunately, the options do not help---the error persists:\nIn updateXwts(Xwts) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 431\n\nThe model I am running is:\ny ~ Sex + Age + (...other fixed covariates...) + (1|patient_id)\n\nwhere there is one observation per patient. I use pedigreemm to attach the pedigree information to the patient_id.\n\nI understand that this model is an over-specified model because lme4 will normally throw an error. I bypassed that error by commenting the if statement that checks for it. The CRAN version of lme4 seems to run this model no problem, but the development lme4 seems to choke with CholMod complaint. Strangely enough, if I modify the model to:\n\ny ~ Sex + Age + (...other fixed covariates...) + (1|Batch) + (1|patient_id)\n\nthen the model runs fine in both the CRAN version and the development version of lme4, to my surprise. To me, this suggests that the development version would not simply choke on over-specified model. I am thinking if there are any underlying technical problems behind the errors that I could somehow \"fix\" or get around.\n\nI have read the theory and computational method for the development version of lme4. I found chapter 5 to be particularly helpful---the development lme4 also accommodates learners like me by having the parameters and variables named closely to the theory. I am in the process of reconstructing the deviance function in pure R for my learning purposes. I am digging for similar information in the CRAN version to do the same, but I have not been able to find some similar tutorial just yet. I hope that understanding the subtle nuances of the two implementations would shed lights toward the \"fix\".\n\nSincerely,\nRoby\n\nOn 12/6/12 4:18 PM, \"laurent stephane\" <laurent_step at yahoo.fr> wrote:\n\nHi Roby,\n\nWith the development version do you use the options optimizer=\"bobyqa\"  and  control=list(restart=TRUE)  when running lmer() ? Sometimes it solves some troubles.\n\nSt?phane\n\n\n\n\n\n________________________________\n De : \"Joehanes, Roby (NIH/NHLBI) [F]\" <roby.joehanes at nih.gov>\n ? : \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\n Envoy? le : Jeudi 6 d?cembre 2012 19h09\n Objet : [R-sig-ME] Difference of lme4 between the CRAN version and the development version\n\n\nHi all:\n\nI am wondering if anyone could explain to me the difference of lme4 that is in the CRAN and of the development version. The mathematics and the method to compute the estimates for the development version are covered in the following document:\nhttp://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n\nHowever, I do not know any such manual for the CRAN version. Could anyone point to me to the right direction? Are the vignette documents in CRAN the right ones ( http://cran.r-project.org/web/packages/lme4/index.html )?\n\nWith this information, I hope I could troubleshoot the errors I am encountering with it and pedigreemm, primarily the dreaded Cholmod error of \"Downdated X'X is not positive definite\" that I am getting with the development version, but not with the CRAN version).\n\nThank you,\nRoby",
+      "body_plain": "Hi Stephan:\n\nYes, I do. Thanks for the suggestion. Unfortunately, the options do not help---the error persists:\nIn updateXwts(Xwts) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 431\n\nThe model I am running is:\ny ~ Sex + Age + (...other fixed covariates...) + (1|patient_id)\n\nwhere there is one observation per patient. I use pedigreemm to attach the pedigree information to the patient_id.\n\nI understand that this model is an over-specified model because lme4 will normally throw an error. I bypassed that error by commenting the if statement that checks for it. The CRAN version of lme4 seems to run this model no problem, but the development lme4 seems to choke with CholMod complaint. Strangely enough, if I modify the model to:\n\ny ~ Sex + Age + (...other fixed covariates...) + (1|Batch) + (1|patient_id)\n\nthen the model runs fine in both the CRAN version and the development version of lme4, to my surprise. To me, this suggests that the development version would not simply choke on over-specified model. I am thinking if there are any underlying technical problems behind the errors that I could somehow \"fix\" or get around.\n\nI have read the theory and computational method for the development version of lme4. I found chapter 5 to be particularly helpful---the development lme4 also accommodates learners like me by having the parameters and variables named closely to the theory. I am in the process of reconstructing the deviance function in pure R for my learning purposes. I am digging for similar information in the CRAN version to do the same, but I have not been able to find some similar tutorial just yet. I hope that understanding the subtle nuances of the two implementations would shed lights toward the \"fix\".\n\nSincerely,\nRoby\n\nOn 12/6/12 4:18 PM, \"laurent stephane\" <laurent_step at yahoo.fr> wrote:\n\nHi Roby,\n\nWith the development version do you use the options optimizer=\"bobyqa\"  and  control=list(restart=TRUE)  when running lmer() ? Sometimes it solves some troubles.\n\nStéphane\n\n\n\n\n\n________________________________\n De : \"Joehanes, Roby (NIH/NHLBI) [F]\" <roby.joehanes at nih.gov>\n À : \"r-sig-mixed-models at r-project.org\" <r-sig-mixed-models at r-project.org>\n Envoyé le : Jeudi 6 décembre 2012 19h09\n Objet : [R-sig-ME] Difference of lme4 between the CRAN version and the development version\n\n\nHi all:\n\nI am wondering if anyone could explain to me the difference of lme4 that is in the CRAN and of the development version. The mathematics and the method to compute the estimates for the development version are covered in the following document:\nhttp://lme4.r-forge.r-project.org/lMMwR/lrgprt.pdf\n\nHowever, I do not know any such manual for the CRAN version. Could anyone point to me to the right direction? Are the vignette documents in CRAN the right ones ( http://cran.r-project.org/web/packages/lme4/index.html )?\n\nWith this information, I hope I could troubleshoot the errors I am encountering with it and pedigreemm, primarily the dreaded Cholmod error of \"Downdated X'X is not positive definite\" that I am getting with the development version, but not with the CRAN version).\n\nThank you,\nRoby",
       "body_snippet": "Hi Stephan:\n\nYes, I do. Thanks for the suggestion. Unfortunately, the options do not help---the error persists:\nIn updateXwts(Xwts) :\n  Cholmod warning 'not positive definite' at file:../Cholesky/t_ch",
       "thread_id": "thread-0d86dc30f7cc",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019550.html"
     },
     {
       "id": "msg-dcafc72cad27",
@@ -679,7 +714,8 @@
       "body_snippet": "On 07/12/12 10:43, Kirsty E. B. Gurney wrote:\n> Good afternoon;\n>\n> I have recently come across a *general question* about linear mixed models that I can't seem to find an answer for on my own.  I am ",
       "thread_id": "thread-85a0107273ce",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019551.html"
     },
     {
       "id": "msg-d27014988ae2",
@@ -698,6 +734,7 @@
       "thread_id": "thread-85a0107273ce",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019552.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121206/d5dd9409/attachment.pl"
       ]
@@ -718,7 +755,8 @@
       "body_snippet": "Dear Ben,\n\nYour dataset is to small for a mixed model. Just use a plain glm and glht() to test your hypotheses.\n\nmodel <- glm(abundance ~ site + time, data = data, family = quasipoisson)\nsummary(model",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019554.html"
     },
     {
       "id": "msg-cd356e1f4ab2",
@@ -737,7 +775,8 @@
       "body_snippet": "Thanks Thierry, that's very useful.\n\nJust to clarify, I was under the impression that as my sites were sampled through time (and thus individual samples were not independent of each other), I would ne",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019558.html"
     },
     {
       "id": "msg-2493352dbf0e",
@@ -757,7 +796,8 @@
       "body_snippet": "Have a look at http://glmm.wikidot.com/faq and look for (should I treat factor xxx as fixed or random).\n\nDid you post your real data? Is so there is hardly any difference among the replicates. In that",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 3,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019555.html"
     },
     {
       "id": "msg-4b61d2e8f518",
@@ -773,7 +813,8 @@
       "body_snippet": "Hi everybody,\n\nI am working on Atlantic salmon embryos and I wondered if anyone knows \nhow to compute heritabilities on binomial response variables like survival?\nHere is the model that I use to extra",
       "thread_id": "thread-4b61d2e8f518",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019562.html"
     },
     {
       "id": "msg-01fd87cc9901",
@@ -794,7 +835,8 @@
       "body_snippet": "Thanks again.\n\nNo the data were not real; I simplified them for the list.\n\nThanks for your assistance,\n\n----------------------------------------\n> From: Thierry.ONKELINX at inbo.be\n> To: nebstah at ho",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 4,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019559.html"
     },
     {
       "id": "msg-844cfa5659cc",
@@ -812,11 +854,12 @@
         "<AA818EAD2576BC488B4F623941DA742794779D20@inbomail.inbo.be>",
         "<DUB002-W10E43AFFBF4DF22586EF84A8440@phx.gbl>"
       ],
-      "body_plain": "Hi Thierry,\n\nOne final question:\n\nIn my actual dataset,?length(coef(model)) = 16 rather than 4 as in the example below.\n\nWhen applying the glht argument, do you know how best to specify the?linfct matrix argument if I just wanted to test my 'site' related hypothesis: is there a difference in abundance between sites?\n\nMany thanks,\n\n----------------------------------------\n> From: nebstah at hotmail.com\n> To: thierry.onkelinx at inbo.be; r-sig-mixed-models at r-project.org\n> Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> Date: Fri, 7 Dec 2012 12:45:02 +0000\n>\n> Thanks again.\n>\n> No the data were not real; I simplified them for the list.\n>\n> Thanks for your assistance,\n>\n> ----------------------------------------\n> > From: Thierry.ONKELINX at inbo.be\n> > To: nebstah at hotmail.com; r-sig-mixed-models at r-project.org\n> > Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> > Date: Fri, 7 Dec 2012 11:21:51 +0000\n> >\n> > Have a look at http://glmm.wikidot.com/faq and look for (should I treat factor xxx as fixed or random).\n> >\n> > Did you post your real data? Is so there is hardly any difference among the replicates. In that case I would aggregate the replicates prior to analysis.\n> >\n> > ir. Thierry Onkelinx\n> > Instituut voor natuur- en bosonderzoek / Research Institute for Nature and Forest\n> > team Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\n> > Kliniekstraat 25\n> > 1070 Anderlecht\n> > Belgium\n> > + 32 2 525 02 51\n> > + 32 54 43 61 85\n> > Thierry.Onkelinx at inbo.be\n> > www.inbo.be\n> >\n> > To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n> > ~ Sir Ronald Aylmer Fisher\n> >\n> > The plural of anecdote is not data.\n> > ~ Roger Brinner\n> >\n> > The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n> > ~ John Tukey\n> >\n> >\n> > -----Oorspronkelijk bericht-----\n> > Van: Rob Bodin [mailto:nebstah at hotmail.com]\n> > Verzonden: vrijdag 7 december 2012 11:07\n> > Aan: ONKELINX, Thierry; r-sig-mixed-models at r-project.org\n> > Onderwerp: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> >\n> > Thanks Thierry, that's very useful.\n> >\n> > Just to clarify, I was under the impression that as my sites were sampled through time (and thus individual samples were not independent of each other), I would need to treat them as random factors - is this not the case?\n> >\n> > Thanks again,\n> >\n> > ----------------------------------------\n> > > From: Thierry.ONKELINX at inbo.be\n> > > To: nebstah at hotmail.com; r-sig-mixed-models at r-project.org\n> > > Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> > > Date: Fri, 7 Dec 2012 09:49:14 +0000\n> > >\n> > > Dear Ben,\n> > >\n> > > Your dataset is to small for a mixed model. Just use a plain glm and glht() to test your hypotheses.\n> > >\n> > > model <- glm(abundance ~ site + time, data = data, family =\n> > > quasipoisson)\n> > > summary(model)\n> > >\n> > > library(multcomp)\n> > > K <- rbind(\n> > > SiteType = c(0, 0.5, 0.5, 0),\n> > > Site23 = c(0, 1, -1, 0)\n> > > )\n> > > summary(glht(model, K))\n> > >\n> > > Furthermore I would recommend that you do some reading (e.g. Mixed Effects Models and Extensions in Ecology with R by Zuur et al 2009) and get some local statistical advise.\n> > >\n> > > Best regards,\n> > >\n> > > ir. Thierry Onkelinx\n> > > Instituut voor natuur- en bosonderzoek / Research Institute for Nature\n> > > and Forest team Biometrie & Kwaliteitszorg / team Biometrics & Quality\n> > > Assurance Kliniekstraat 25\n> > > 1070 Anderlecht\n> > > Belgium\n> > > + 32 2 525 02 51\n> > > + 32 54 43 61 85\n> > > Thierry.Onkelinx at inbo.be\n> > > www.inbo.be\n> > >\n> > > To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n> > > ~ Sir Ronald Aylmer Fisher\n> > >\n> > > The plural of anecdote is not data.\n> > > ~ Roger Brinner\n> > >\n> > > The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n> > > ~ John Tukey\n> > >\n> > > -----Oorspronkelijk bericht-----\n> > > Van: r-sig-mixed-models-bounces at r-project.org\n> > > [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Ben Gillespie\n> > > Verzonden: donderdag 6 december 2012 22:23\n> > > Aan: r-sig-mixed-models at r-project.org\n> > > Onderwerp: [R-sig-ME] lme4 glmer general help wanted - code included\n> > >\n> > > Hi guys,\n> > >\n> > > I'm very new to R and have been teaching myself over the past few months - it's a great tool and I'm hoping to use it to analyse my PhD data.\n> > > As I'm a bit of a newb, I'd really appreciate any feedback and/or guidance with regards to the following questions that relate to generalized linear mixed modelling (or, at least, I think they do!)(if there is a 'better', more appropriate way that I could attempt to answer my questions, please let me know).\n> > >\n> > > I've spent a lot of time researching this approach on the internet, but can't seem to find any directly applicable examples.\n> > >\n> > > Thanks in advance, and, if you need any further information, please let me know.\n> > >\n> > > # My experiment:\n> > > # I have 1 site on 3 different rivers (independent)(sites 1,2 and 3). # I visit each site 2 times (time 1 and 2). # On each visit, I take 5x replicate insect samples and calculate total abundance for each replicate.\n> > > # Site 1 is in an area called \"yellow\" and sites 2 and 3 are in an area called \"blue\".\n> > >\n> > > # My data frame:\n> > >\n> > >\n> > > data=data.frame(\n> > > site=c(rep(1,10),rep(2,10),rep(3,10)),\n> > > replicate=c(rep(1:5,6)),\n> > > time=c(rep(1,5),rep(2,5),rep(1,5),rep(2,5),rep(1,5),rep(2,5)),\n> > > abundance=c(1,2,1,2,1,2,1,2,1,2,30,32,30,32,30,32,30,32,30,32,30,31,33\n> > > ,32,31,31,33,32,31,32),\n> > > sitetype=c(rep(\"yellow\",10),rep(\"blue\",20))\n> > > )\n> > >\n> > > data$site=factor(data$site)\n> > > data$replicate=factor(data$replicate)\n> > > data$time=factor(data$time)\n> > >\n> > > data\n> > >\n> > >\n> > > # Initial remarks:\n> > > # As each replicate (1-5) was taken from within each site (1-3) on both sampling times (1-2), # I figure that 'replicate' should be treated as nested within 'site' and that both should be treated as random factors?\n> > >\n> > > # First question: Is there is difference in abundance between sites?\n> > > # Second question: Is there is difference in abundance between sitetypes (blue or yellow)?\n> > >\n> > > #If my 'initial remarks' statement is correct (please tell me if not), then I think a generalized linear mixed model is appropriate and would be something along these lines:\n> > >\n> > > # Fitting the model:\n> > >\n> > > require(lme4)\n> > > glmm1=glmer(abundance~time+sitetype+(1|site/replicate),family=\"poisson\",data=data) #I chose to use poisson as abundance is count data... is this recommended?\n> > > summary(glmm1)\n> > > #Output:\n> > >\n> > > ################################################################\n> > > Generalized linear mixed model fit by the Laplace approximation\n> > > Formula: abundance ~ time + sitetype + (1 | site/replicate)\n> > > Data: data\n> > > AIC BIC logLik deviance\n> > > 12.31 19.31 -1.153 2.306\n> > > Random effects:\n> > > Groups Name Variance Std.Dev.\n> > > replicate:site (Intercept) 0 0\n> > > site (Intercept) 0 0 Number of obs: 30, groups: replicate:site, 15;\n> > > site, 3\n> > >\n> > > Fixed effects:\n> > > Estimate Std. Error z value Pr(>|z|)\n> > > (Intercept) 3.43579 0.05641 60.91 <2e-16 ***\n> > > time2 0.01560 0.07900 0.20 0.843\n> > > sitetypeyellow -3.03815 0.26127 -11.63 <2e-16 ***\n> > > ---\n> > > Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n> > >\n> > > Correlation of Fixed Effects:\n> > > (Intr) time2\n> > > time2 -0.706\n> > > sitetypyllw -0.108 0.000\n> > > ################################################################\n> > >\n> > > # Inferences:\n> > >\n> > > #I'm unsure how to assess the variance and std dev scores for site... some guidance here would be appreciated....i.e. how do I answer my original question: Is there is difference in abundance between sites?\n> > > #There is no statistically significant difference between the two time\n> > > periods (P=>0.05) #Using the above output, the model suggests that\n> > > there is a statistically significant difference between site types\n> > > (p<0.05)\n> > >\n> > > # Further questions:\n> > >\n> > > #1 Are the above inferences correct?\n> > > #2 I have read about overdispersion.... how would I test for this in this example?\n> > > #3 How could I build an interaction term into the model and answer the following: \"Is there a statistically significant site*time interaction?\"\n> > > #4 Finally, are there any obvious steps or things I should be doing in order to get a 'robust' or 'correct' answer from this problem? i.e. further tests... alternative models and comparisons...\n> > >\n> > >\n> > > Thanks again,\n> > >\n> > > Rob\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > > * * * * * * * * * * * * * D I S C L A I M E R * * * * * * * * * * * *\n> > > * Dit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer en binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is door een geldig ondertekend document.\n> > > The views expressed in this message and any annex are purely those of the writer and may not be regarded as stating an official position of INBO, as long as the message is not confirmed by a duly signed document.\n> > * * * * * * * * * * * * * D I S C L A I M E R * * * * * * * * * * * * *\n> > Dit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer en binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is door een geldig ondertekend document.\n> > The views expressed in this message and any annex are purely those of the writer and may not be regarded as stating an official position of INBO, as long as the message is not confirmed by a duly signed document.",
-      "body_snippet": "Hi Thierry,\n\nOne final question:\n\nIn my actual dataset,?length(coef(model)) = 16 rather than 4 as in the example below.\n\nWhen applying the glht argument, do you know how best to specify the?linfct mat",
+      "body_plain": "Hi Thierry,\n\nOne final question:\n\nIn my actual dataset, length(coef(model)) = 16 rather than 4 as in the example below.\n\nWhen applying the glht argument, do you know how best to specify the linfct matrix argument if I just wanted to test my 'site' related hypothesis: is there a difference in abundance between sites?\n\nMany thanks,\n\n----------------------------------------\n> From: nebstah at hotmail.com\n> To: thierry.onkelinx at inbo.be; r-sig-mixed-models at r-project.org\n> Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> Date: Fri, 7 Dec 2012 12:45:02 +0000\n>\n> Thanks again.\n>\n> No the data were not real; I simplified them for the list.\n>\n> Thanks for your assistance,\n>\n> ----------------------------------------\n> > From: Thierry.ONKELINX at inbo.be\n> > To: nebstah at hotmail.com; r-sig-mixed-models at r-project.org\n> > Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> > Date: Fri, 7 Dec 2012 11:21:51 +0000\n> >\n> > Have a look at http://glmm.wikidot.com/faq and look for (should I treat factor xxx as fixed or random).\n> >\n> > Did you post your real data? Is so there is hardly any difference among the replicates. In that case I would aggregate the replicates prior to analysis.\n> >\n> > ir. Thierry Onkelinx\n> > Instituut voor natuur- en bosonderzoek / Research Institute for Nature and Forest\n> > team Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\n> > Kliniekstraat 25\n> > 1070 Anderlecht\n> > Belgium\n> > + 32 2 525 02 51\n> > + 32 54 43 61 85\n> > Thierry.Onkelinx at inbo.be\n> > www.inbo.be\n> >\n> > To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n> > ~ Sir Ronald Aylmer Fisher\n> >\n> > The plural of anecdote is not data.\n> > ~ Roger Brinner\n> >\n> > The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n> > ~ John Tukey\n> >\n> >\n> > -----Oorspronkelijk bericht-----\n> > Van: Rob Bodin [mailto:nebstah at hotmail.com]\n> > Verzonden: vrijdag 7 december 2012 11:07\n> > Aan: ONKELINX, Thierry; r-sig-mixed-models at r-project.org\n> > Onderwerp: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> >\n> > Thanks Thierry, that's very useful.\n> >\n> > Just to clarify, I was under the impression that as my sites were sampled through time (and thus individual samples were not independent of each other), I would need to treat them as random factors - is this not the case?\n> >\n> > Thanks again,\n> >\n> > ----------------------------------------\n> > > From: Thierry.ONKELINX at inbo.be\n> > > To: nebstah at hotmail.com; r-sig-mixed-models at r-project.org\n> > > Subject: RE: [R-sig-ME] lme4 glmer general help wanted - code included\n> > > Date: Fri, 7 Dec 2012 09:49:14 +0000\n> > >\n> > > Dear Ben,\n> > >\n> > > Your dataset is to small for a mixed model. Just use a plain glm and glht() to test your hypotheses.\n> > >\n> > > model <- glm(abundance ~ site + time, data = data, family =\n> > > quasipoisson)\n> > > summary(model)\n> > >\n> > > library(multcomp)\n> > > K <- rbind(\n> > > SiteType = c(0, 0.5, 0.5, 0),\n> > > Site23 = c(0, 1, -1, 0)\n> > > )\n> > > summary(glht(model, K))\n> > >\n> > > Furthermore I would recommend that you do some reading (e.g. Mixed Effects Models and Extensions in Ecology with R by Zuur et al 2009) and get some local statistical advise.\n> > >\n> > > Best regards,\n> > >\n> > > ir. Thierry Onkelinx\n> > > Instituut voor natuur- en bosonderzoek / Research Institute for Nature\n> > > and Forest team Biometrie & Kwaliteitszorg / team Biometrics & Quality\n> > > Assurance Kliniekstraat 25\n> > > 1070 Anderlecht\n> > > Belgium\n> > > + 32 2 525 02 51\n> > > + 32 54 43 61 85\n> > > Thierry.Onkelinx at inbo.be\n> > > www.inbo.be\n> > >\n> > > To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n> > > ~ Sir Ronald Aylmer Fisher\n> > >\n> > > The plural of anecdote is not data.\n> > > ~ Roger Brinner\n> > >\n> > > The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n> > > ~ John Tukey\n> > >\n> > > -----Oorspronkelijk bericht-----\n> > > Van: r-sig-mixed-models-bounces at r-project.org\n> > > [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Ben Gillespie\n> > > Verzonden: donderdag 6 december 2012 22:23\n> > > Aan: r-sig-mixed-models at r-project.org\n> > > Onderwerp: [R-sig-ME] lme4 glmer general help wanted - code included\n> > >\n> > > Hi guys,\n> > >\n> > > I'm very new to R and have been teaching myself over the past few months - it's a great tool and I'm hoping to use it to analyse my PhD data.\n> > > As I'm a bit of a newb, I'd really appreciate any feedback and/or guidance with regards to the following questions that relate to generalized linear mixed modelling (or, at least, I think they do!)(if there is a 'better', more appropriate way that I could attempt to answer my questions, please let me know).\n> > >\n> > > I've spent a lot of time researching this approach on the internet, but can't seem to find any directly applicable examples.\n> > >\n> > > Thanks in advance, and, if you need any further information, please let me know.\n> > >\n> > > # My experiment:\n> > > # I have 1 site on 3 different rivers (independent)(sites 1,2 and 3). # I visit each site 2 times (time 1 and 2). # On each visit, I take 5x replicate insect samples and calculate total abundance for each replicate.\n> > > # Site 1 is in an area called \"yellow\" and sites 2 and 3 are in an area called \"blue\".\n> > >\n> > > # My data frame:\n> > >\n> > >\n> > > data=data.frame(\n> > > site=c(rep(1,10),rep(2,10),rep(3,10)),\n> > > replicate=c(rep(1:5,6)),\n> > > time=c(rep(1,5),rep(2,5),rep(1,5),rep(2,5),rep(1,5),rep(2,5)),\n> > > abundance=c(1,2,1,2,1,2,1,2,1,2,30,32,30,32,30,32,30,32,30,32,30,31,33\n> > > ,32,31,31,33,32,31,32),\n> > > sitetype=c(rep(\"yellow\",10),rep(\"blue\",20))\n> > > )\n> > >\n> > > data$site=factor(data$site)\n> > > data$replicate=factor(data$replicate)\n> > > data$time=factor(data$time)\n> > >\n> > > data\n> > >\n> > >\n> > > # Initial remarks:\n> > > # As each replicate (1-5) was taken from within each site (1-3) on both sampling times (1-2), # I figure that 'replicate' should be treated as nested within 'site' and that both should be treated as random factors?\n> > >\n> > > # First question: Is there is difference in abundance between sites?\n> > > # Second question: Is there is difference in abundance between sitetypes (blue or yellow)?\n> > >\n> > > #If my 'initial remarks' statement is correct (please tell me if not), then I think a generalized linear mixed model is appropriate and would be something along these lines:\n> > >\n> > > # Fitting the model:\n> > >\n> > > require(lme4)\n> > > glmm1=glmer(abundance~time+sitetype+(1|site/replicate),family=\"poisson\",data=data) #I chose to use poisson as abundance is count data... is this recommended?\n> > > summary(glmm1)\n> > > #Output:\n> > >\n> > > ################################################################\n> > > Generalized linear mixed model fit by the Laplace approximation\n> > > Formula: abundance ~ time + sitetype + (1 | site/replicate)\n> > > Data: data\n> > > AIC BIC logLik deviance\n> > > 12.31 19.31 -1.153 2.306\n> > > Random effects:\n> > > Groups Name Variance Std.Dev.\n> > > replicate:site (Intercept) 0 0\n> > > site (Intercept) 0 0 Number of obs: 30, groups: replicate:site, 15;\n> > > site, 3\n> > >\n> > > Fixed effects:\n> > > Estimate Std. Error z value Pr(>|z|)\n> > > (Intercept) 3.43579 0.05641 60.91 <2e-16 ***\n> > > time2 0.01560 0.07900 0.20 0.843\n> > > sitetypeyellow -3.03815 0.26127 -11.63 <2e-16 ***\n> > > ---\n> > > Signif. codes: 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n> > >\n> > > Correlation of Fixed Effects:\n> > > (Intr) time2\n> > > time2 -0.706\n> > > sitetypyllw -0.108 0.000\n> > > ################################################################\n> > >\n> > > # Inferences:\n> > >\n> > > #I'm unsure how to assess the variance and std dev scores for site... some guidance here would be appreciated....i.e. how do I answer my original question: Is there is difference in abundance between sites?\n> > > #There is no statistically significant difference between the two time\n> > > periods (P=>0.05) #Using the above output, the model suggests that\n> > > there is a statistically significant difference between site types\n> > > (p<0.05)\n> > >\n> > > # Further questions:\n> > >\n> > > #1 Are the above inferences correct?\n> > > #2 I have read about overdispersion.... how would I test for this in this example?\n> > > #3 How could I build an interaction term into the model and answer the following: \"Is there a statistically significant site*time interaction?\"\n> > > #4 Finally, are there any obvious steps or things I should be doing in order to get a 'robust' or 'correct' answer from this problem? i.e. further tests... alternative models and comparisons...\n> > >\n> > >\n> > > Thanks again,\n> > >\n> > > Rob\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> > > * * * * * * * * * * * * * D I S C L A I M E R * * * * * * * * * * * *\n> > > * Dit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer en binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is door een geldig ondertekend document.\n> > > The views expressed in this message and any annex are purely those of the writer and may not be regarded as stating an official position of INBO, as long as the message is not confirmed by a duly signed document.\n> > * * * * * * * * * * * * * D I S C L A I M E R * * * * * * * * * * * * *\n> > Dit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer en binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is door een geldig ondertekend document.\n> > The views expressed in this message and any annex are purely those of the writer and may not be regarded as stating an official position of INBO, as long as the message is not confirmed by a duly signed document.",
+      "body_snippet": "Hi Thierry,\n\nOne final question:\n\nIn my actual dataset, length(coef(model)) = 16 rather than 4 as in the example below.\n\nWhen applying the glht argument, do you know how best to specify the linfct mat",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 5,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019560.html"
     },
     {
       "id": "msg-c5b9b3bb0e95",
@@ -839,7 +882,8 @@
       "body_snippet": "That is described in the helpfile: ?multcomp::glht\n\n\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature and Forest\nteam Biometrie & Kwaliteitszorg / team Biome",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 6,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019556.html"
     },
     {
       "id": "msg-abcf756c8148",
@@ -863,7 +907,8 @@
       "body_snippet": "Thanks,\n\nI think I've got it:\n\n> m.abund <- glm(abund ~ site + date, data = e, family = quasipoisson)\n\n> coef(m.abund)\n? ?(Intercept) ? ? ? ? ?site6 ? ? ? ? ?site9 date2012-02-01 date2012-03-01 date20",
       "thread_id": "thread-6fd0cead4eb0",
       "thread_depth": 7,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019561.html"
     },
     {
       "id": "msg-c9ccd01eb700",
@@ -881,7 +926,8 @@
       "body_snippet": "kirsty, in addition to tom's comments, with which i agree, i wanted to ask if, in \"covariance parameter estimate for the intercept term in the random slope model\", you meant \"variance of intercept\".  ",
       "thread_id": "thread-85a0107273ce",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019557.html"
     },
     {
       "id": "msg-0e5e86273bab",
@@ -897,7 +943,8 @@
       "body_snippet": "Dear R community,\n\nI've been trying for a week to fit an non-linear mixed effect model where I want to estimate the fixed effect of two treatments on the parameters on the following equation Photo~(A*",
       "thread_id": "thread-0e5e86273bab",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019563.html"
     },
     {
       "id": "msg-f496171d0ffa",
@@ -914,6 +961,7 @@
       "thread_id": "thread-f496171d0ffa",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019564.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121207/519fc890/attachment.pl"
       ]
@@ -934,7 +982,8 @@
       "body_snippet": "Kirsty,\n\nI think the comment from Tom is a good place to start thinking about your\nquestion.  In addition, Gelman and Hill (2007) address your question\nspecifically on page 283.  Their short answer is",
       "thread_id": "thread-85a0107273ce",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019568.html"
     },
     {
       "id": "msg-be7cef81b4f7",
@@ -952,7 +1001,8 @@
       "body_snippet": "Matlack, Glenn <matlack at ...> writes:\n\n> \n> Dear R Sig Mixed,\n\n> I am having difficulty using Variogram within GLS to examine spatial\n> structure within a mixed model.  My data frame consists of\n> e",
       "thread_id": "thread-f496171d0ffa",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019565.html"
     },
     {
       "id": "msg-358e27fd9b17",
@@ -971,6 +1021,7 @@
       "thread_id": "thread-4b61d2e8f518",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019566.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121208/2b4db533/attachment.pl"
       ]
@@ -989,7 +1040,8 @@
       "body_snippet": "Dear experts,\n\n\n\n(This is the follow up of a previous question)\n\n\nMy background with mixed models is very pour. However,With the\nprecious help of this forum I have implement a glmer function to test\nt",
       "thread_id": "thread-b87d01949e9d",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019567.html"
     },
     {
       "id": "msg-ba21aa59fe17",
@@ -1006,6 +1058,7 @@
       "thread_id": "thread-ba21aa59fe17",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019569.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121210/3d75c01d/attachment.pl"
       ]
@@ -1025,6 +1078,7 @@
       "thread_id": "thread-0c22fdb48990",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019570.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121211/15825b13/attachment.pl"
       ]
@@ -1043,7 +1097,8 @@
       "body_snippet": "I am modelling data with a generalized mixed model with binomial error distribution and I am concerned about overdispersion. I know that dispersion parameter can \nbe measured as deviance/df, but for m",
       "thread_id": "thread-9c04a435b3f6",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019571.html"
     },
     {
       "id": "msg-09bfc6d623e9",
@@ -1057,11 +1112,12 @@
       "references": [
         "<59c91690ea43456c72e535661ae99314@mail.gmail.com>"
       ],
-      "body_plain": "Can you  PLEASE  stop spamming the  r-sig-mixed-models\nmailing list ?\n\nYour question ... now the  FOURTH  time, unchanged AFAICS,\nseems almost completely unrelated to the topics of this\nSIG (= Special Interest Group) mailing list...\nand that's why nobody has answered till now.\n\nMaybe rather use R-help,\n[ but first really change what you post: \n  Give much less R output of multinom() but possibly more detailed\n  description of your data design...\n  --> Read the posting guide,... which also mentions how to ask questions\n      that do evoke answers]\n\nRegards,\nMartin Maechler\n\n>>>>>     on Mon, 10 Dec 2012 17:00:53 -0700 writes:\n\n    > Hello,\n    > We?re exploring temporal change in summer range selection in radio-collared\n    > elk during a 3 decade period. Elk are marked on the wintering grounds and\n    > tracked back to one of 5 summer ranges. There are 180 individuals; most (n\n    > = 121) individuals were monitored >=2 years, resulting in a total of 546\n    > summer range observations from the 180 elk. We?ve run multinomial\n    > regression models with year as a predictor in packages ?mlogit? and ?nnet?\n    > using only the last summer range choice for each individual (n = 180):\n\n\n\n    > m2.year<-multinom(summercategory~n.year, data=elk, Hess=T)\n\n    > # weights:  15 (8 variable)\n\n    > initial  value 289.698824\n\n    > iter  10 value 237.592576\n\n    > final  value 237.060236\n\n    > converged\n\n    >> summary(m2.year)\n\n    > Call:\n\n    > multinom(formula = summercategory ~ n.year, data = elk, Hess = T)\n\n\n\n    > Coefficients:\n\n    > (Intercept)       n.year\n\n    > GTNPCEB   1.1306086  0.008673583\n\n    > GTNPS    -2.7164924  0.128711359\n\n    > TW       -0.4452291  0.007482690\n\n    > YNP       0.8210785 -0.042043091\n\n\n\n    > Std. Errors:\n\n    > (Intercept)     n.year\n\n    > GTNPCEB   0.3936527 0.01869625\n\n    > GTNPS     0.9689580 0.03476211\n\n    > TW        0.5450637 0.02550461\n\n    > YNP       0.4229157 0.02325437\n\n\n\n    > Residual Deviance: 474.1205\n\n    > AIC: 490.1205\n\n\n\n    > We?ve also run a mixed-effect model in nnet using the individual as a\n    > random effect to account for the longitudinal data of repeated observations\n    > through time for some individuals with all 546 observations.\n\n....................\n....................\n....................\n\n    > Thanks,\n\n    > Jeff\n\n    > [[alternative HTML version deleted]]\n\n    > _______________________________________________\n    > R-sig-mixed-models at r-project.org mailing list\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Can you  PLEASE  stop spamming the  r-sig-mixed-models\nmailing list ?\n\nYour question ... now the  FOURTH  time, unchanged AFAICS,\nseems almost completely unrelated to the topics of this\nSIG (= Special Interest Group) mailing list...\nand that's why nobody has answered till now.\n\nMaybe rather use R-help,\n[ but first really change what you post: \n  Give much less R output of multinom() but possibly more detailed\n  description of your data design...\n  --> Read the posting guide,... which also mentions how to ask questions\n      that do evoke answers]\n\nRegards,\nMartin Maechler\n\n>>>>>     on Mon, 10 Dec 2012 17:00:53 -0700 writes:\n\n    > Hello,\n    > We’re exploring temporal change in summer range selection in radio-collared\n    > elk during a 3 decade period. Elk are marked on the wintering grounds and\n    > tracked back to one of 5 summer ranges. There are 180 individuals; most (n\n    > = 121) individuals were monitored >=2 years, resulting in a total of 546\n    > summer range observations from the 180 elk. We’ve run multinomial\n    > regression models with year as a predictor in packages ‘mlogit’ and ‘nnet’\n    > using only the last summer range choice for each individual (n = 180):\n\n\n\n    > m2.year<-multinom(summercategory~n.year, data=elk, Hess=T)\n\n    > # weights:  15 (8 variable)\n\n    > initial  value 289.698824\n\n    > iter  10 value 237.592576\n\n    > final  value 237.060236\n\n    > converged\n\n    >> summary(m2.year)\n\n    > Call:\n\n    > multinom(formula = summercategory ~ n.year, data = elk, Hess = T)\n\n\n\n    > Coefficients:\n\n    > (Intercept)       n.year\n\n    > GTNPCEB   1.1306086  0.008673583\n\n    > GTNPS    -2.7164924  0.128711359\n\n    > TW       -0.4452291  0.007482690\n\n    > YNP       0.8210785 -0.042043091\n\n\n\n    > Std. Errors:\n\n    > (Intercept)     n.year\n\n    > GTNPCEB   0.3936527 0.01869625\n\n    > GTNPS     0.9689580 0.03476211\n\n    > TW        0.5450637 0.02550461\n\n    > YNP       0.4229157 0.02325437\n\n\n\n    > Residual Deviance: 474.1205\n\n    > AIC: 490.1205\n\n\n\n    > We’ve also run a mixed-effect model in nnet using the individual as a\n    > random effect to account for the longitudinal data of repeated observations\n    > through time for some individuals with all 546 observations.\n\n....................\n....................\n....................\n\n    > Thanks,\n\n    > Jeff\n\n    > [[alternative HTML version deleted]]\n\n    > _______________________________________________\n    > R-sig-mixed-models at r-project.org mailing list\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Can you  PLEASE  stop spamming the  r-sig-mixed-models\nmailing list ?\n\nYour question ... now the  FOURTH  time, unchanged AFAICS,\nseems almost completely unrelated to the topics of this\nSIG (= Special",
       "thread_id": "thread-ba21aa59fe17",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019572.html"
     },
     {
       "id": "msg-74c45d01a20a",
@@ -1073,11 +1129,12 @@
       "subject_clean": "Multinomial mixed-effect model in nnet",
       "in_reply_to": "<59c91690ea43456c72e535661ae99314@mail.gmail.com>",
       "references": [],
-      "body_plain": "Hi Jeffrey:\n\nYour concern about lack of multiple observations on about half of the\nsamples is indeed valid, but nnet is not a mixed model package. I think you\nshould clarify what you would like to accomplish with your data and what\nspecifically you want out of the mixed model to your analysis. If you want\nto establish association between \"summercategory\" and \"n.year\" after\naccounting for the elkid, then you can apply mixed model analysis. You may\nwant to look into glmmADMB package for doing so.\n\nHope this helps,\nRoby\n\nOn 12/10/12 7:00 PM, \"Jeffrey Warren\" <jeffrey_warren at fws.gov> wrote:\n\n> Hello,\n> \n> \n> \n> We?re exploring temporal change in summer range selection in radio-collared\n> elk during a 3 decade period. Elk are marked on the wintering grounds and\n> tracked back to one of 5 summer ranges. There are 180 individuals; most (n\n> = 121) individuals were monitored >=2 years, resulting in a total of 546\n> summer range observations from the 180 elk. We?ve run multinomial\n> regression models with year as a predictor in packages ?mlogit? and ?nnet?\n> using only the last summer range choice for each individual (n = 180):\n...\n[snip]",
+      "body_plain": "Hi Jeffrey:\n\nYour concern about lack of multiple observations on about half of the\nsamples is indeed valid, but nnet is not a mixed model package. I think you\nshould clarify what you would like to accomplish with your data and what\nspecifically you want out of the mixed model to your analysis. If you want\nto establish association between \"summercategory\" and \"n.year\" after\naccounting for the elkid, then you can apply mixed model analysis. You may\nwant to look into glmmADMB package for doing so.\n\nHope this helps,\nRoby\n\nOn 12/10/12 7:00 PM, \"Jeffrey Warren\" <jeffrey_warren at fws.gov> wrote:\n\n> Hello,\n> \n> \n> \n> We¹re exploring temporal change in summer range selection in radio-collared\n> elk during a 3 decade period. Elk are marked on the wintering grounds and\n> tracked back to one of 5 summer ranges. There are 180 individuals; most (n\n> = 121) individuals were monitored >=2 years, resulting in a total of 546\n> summer range observations from the 180 elk. We¹ve run multinomial\n> regression models with year as a predictor in packages Œmlogit¹ and Œnnet¹\n> using only the last summer range choice for each individual (n = 180):\n...\n[snip]",
       "body_snippet": "Hi Jeffrey:\n\nYour concern about lack of multiple observations on about half of the\nsamples is indeed valid, but nnet is not a mixed model package. I think you\nshould clarify what you would like to acc",
       "thread_id": "thread-ba21aa59fe17",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019573.html"
     },
     {
       "id": "msg-4a2a338b7981",
@@ -1095,7 +1152,8 @@
       "body_snippet": "<v_coudrain at ...> writes:\n\n>  I am modelling data with a generalized mixed model with binomial\n> error distribution and I am concerned about overdispersion. I know\n> that dispersion parameter can be",
       "thread_id": "thread-9c04a435b3f6",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019574.html"
     },
     {
       "id": "msg-7896d6dbd8df",
@@ -1109,11 +1167,12 @@
       "references": [
         "<1355219657.96199.YahooMailNeo@web171706.mail.ir2.yahoo.com>"
       ],
-      "body_plain": "laurent stephane <laurent_step at ...> writes:\n\n> \n> Hi, \n> \n> ?The lmer() function seems to work well for a mixed model having a random\neffect with only one level: it\n> doesn't crash and there's not even a warning. I'm not a specialist about the\nnumerical mathematics behind\n> lmer(), but isn't it possible to see somewhere in the output there's a problem\nsuch as a convergence\n> problem for instance ? (in such a situation SAS 9.2 returns a \"note\" about a\nproblem with some Hessian matrix).\n> \n> St?phane\n> \n\n  I tried out a trivial example.  I agree that it's a bit odd that\nthis doesn't break down anywhere, but the results are mostly sensible --\nor at least not dangerous.  The random-effects variance reported\nis meaningless, but the coefficients and residual variances are\ncorrect (they match the results of lm()), and the BLUP/conditional\nmode of the single random-effects level is essentially zero.\n\n  Does that agree with your results?\n\n  So it might be nice to have a warning, but it doesn't strike\nme as really dangerous.\n\n\nset.seed(101)\nd <- data.frame(x=runif(200),f=\"A\")\nd <- within(d, y <- rnorm(nrow(d),mean=2*x+3))\n\nlibrary(lme4)\nm2 <- lmer(y~x+(1|f),data=d)\nm3 <- lm(y~x,data=d)\nall.equal(fixef(m2),coef(m3)) ## TRUE\nall.equal(attr(VarCorr(m2),\"sc\"),summary(m3)$sigma)  ## TRUE\nranef(m2)  ## 2e-12",
-      "body_snippet": "laurent stephane <laurent_step at ...> writes:\n\n> \n> Hi, \n> \n> ?The lmer() function seems to work well for a mixed model having a random\neffect with only one level: it\n> doesn't crash and there's not ",
+      "body_plain": "laurent stephane <laurent_step at ...> writes:\n\n> \n> Hi, \n> \n>  The lmer() function seems to work well for a mixed model having a random\neffect with only one level: it\n> doesn't crash and there's not even a warning. I'm not a specialist about the\nnumerical mathematics behind\n> lmer(), but isn't it possible to see somewhere in the output there's a problem\nsuch as a convergence\n> problem for instance ? (in such a situation SAS 9.2 returns a \"note\" about a\nproblem with some Hessian matrix).\n> \n> Stéphane\n> \n\n  I tried out a trivial example.  I agree that it's a bit odd that\nthis doesn't break down anywhere, but the results are mostly sensible --\nor at least not dangerous.  The random-effects variance reported\nis meaningless, but the coefficients and residual variances are\ncorrect (they match the results of lm()), and the BLUP/conditional\nmode of the single random-effects level is essentially zero.\n\n  Does that agree with your results?\n\n  So it might be nice to have a warning, but it doesn't strike\nme as really dangerous.\n\n\nset.seed(101)\nd <- data.frame(x=runif(200),f=\"A\")\nd <- within(d, y <- rnorm(nrow(d),mean=2*x+3))\n\nlibrary(lme4)\nm2 <- lmer(y~x+(1|f),data=d)\nm3 <- lm(y~x,data=d)\nall.equal(fixef(m2),coef(m3)) ## TRUE\nall.equal(attr(VarCorr(m2),\"sc\"),summary(m3)$sigma)  ## TRUE\nranef(m2)  ## 2e-12",
+      "body_snippet": "laurent stephane <laurent_step at ...> writes:\n\n> \n> Hi, \n> \n>  The lmer() function seems to work well for a mixed model having a random\neffect with only one level: it\n> doesn't crash and there's not ",
       "thread_id": "thread-0c22fdb48990",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019575.html"
     },
     {
       "id": "msg-22a8eefd3c0c",
@@ -1133,6 +1192,7 @@
       "thread_id": "thread-0c22fdb48990",
       "thread_depth": 2,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019576.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121212/2983d477/attachment.pl"
       ]
@@ -1151,7 +1211,8 @@
       "body_snippet": "Dear All,\n\nI am currently working with some mixed-effects models for longitudinal data where I want to test hypotheses about the difference in the strength of the autocorrelation between two groups. I",
       "thread_id": "thread-436507ef96a9",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019577.html"
     },
     {
       "id": "msg-27863b582cfa",
@@ -1168,6 +1229,7 @@
       "thread_id": "thread-27863b582cfa",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019578.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121212/5311c2af/attachment.pl"
       ]
@@ -1189,6 +1251,7 @@
       "thread_id": "thread-27863b582cfa",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019579.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121212/4f5f0b35/attachment.pl"
       ]
@@ -1212,6 +1275,7 @@
       "thread_id": "thread-0c22fdb48990",
       "thread_depth": 3,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019580.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121212/ab0f6c97/attachment.pl"
       ]
@@ -1236,6 +1300,7 @@
       "thread_id": "thread-0c22fdb48990",
       "thread_depth": 4,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019581.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121212/d6af0330/attachment.pl"
       ]
@@ -1250,11 +1315,12 @@
       "subject_clean": "How to get dispersion parameter from a binomial mixed model?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Thank you very much for this link. The implemented function \"overdisp_fun\" allowed me to get what I want. \nMy data are indeed overdispersed and I think about adding an individual random effect, since quasi-binomial distribution are not supported by lmer. I may use \npenalized quasi likelihood, but I know that it is quite controverse. Maybe someone could give me some advice?\n\nBest wishes\nVal?rie\n___________________________________________________________\nAchetez votre tablette num?rique au meilleur prix gr?ce ? Voila http://shopping.voila.fr/vitrine/tablettes-pc",
+      "body_plain": "Thank you very much for this link. The implemented function \"overdisp_fun\" allowed me to get what I want. \nMy data are indeed overdispersed and I think about adding an individual random effect, since quasi-binomial distribution are not supported by lmer. I may use \npenalized quasi likelihood, but I know that it is quite controverse. Maybe someone could give me some advice?\n\nBest wishes\nValérie\n___________________________________________________________\nAchetez votre tablette numérique au meilleur prix grâce à Voila http://shopping.voila.fr/vitrine/tablettes-pc",
       "body_snippet": "Thank you very much for this link. The implemented function \"overdisp_fun\" allowed me to get what I want. \nMy data are indeed overdispersed and I think about adding an individual random effect, since ",
       "thread_id": "thread-c4fb4685f020",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019582.html"
     },
     {
       "id": "msg-9ba3da5f3726",
@@ -1274,6 +1340,7 @@
       "thread_id": "thread-27863b582cfa",
       "thread_depth": 2,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019583.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/eb09e76e/attachment.pl"
       ]
@@ -1293,6 +1360,7 @@
       "thread_id": "thread-0089956eec4d",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019584.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/78716823/attachment.pl"
       ]
@@ -1314,6 +1382,7 @@
       "thread_id": "thread-0089956eec4d",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019585.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/e24eb6b6/attachment.pl"
       ]
@@ -1333,6 +1402,7 @@
       "thread_id": "thread-f79b95173587",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019586.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/d4a97027/attachment.pl"
       ]
@@ -1355,6 +1425,7 @@
       "thread_id": "thread-0089956eec4d",
       "thread_depth": 2,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019587.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/8616c9b4/attachment.pl"
       ]
@@ -1374,6 +1445,7 @@
       "thread_id": "thread-abd530258b62",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019588.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121213/52cb3d17/attachment.pl"
       ]
@@ -1393,6 +1465,7 @@
       "thread_id": "thread-5b9e2d1678fe",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019589.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121214/8f0ebb23/attachment.pl"
       ]
@@ -1413,7 +1486,8 @@
       "body_snippet": "<v_coudrain at ...> writes:\n\n> Thank you very much for this link. The implemented function\n>  \"overdisp_fun\" allowed me to get what I want. \n> My data are indeed overdispersed and I think about adding",
       "thread_id": "thread-c4fb4685f020",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019590.html"
     },
     {
       "id": "msg-5a0babe648d7",
@@ -1425,11 +1499,12 @@
       "subject_clean": "How to get dispersion parameter from a binomial mixed model?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Thank you very much for these useful comments. I run my models with both penalized quasi likelihood and logistic-normal-binomial distribution and I found some \ndifferences suggesting that penalized quasi likelihood is more conservative, which is something that I already heard. I noticed that logistic-normal-binomial method is \ngaining importance in the recently published papers, so that it seems to be a good opportunity. Anyway it would be very useful to have good support from an in-\ndepth work-out of this method as you did for Poisson-overdispersion. I'm quite sure that it should appear in the next time. \nBest\n___________________________________________________________\nAchetez votre tablette num?rique au meilleur prix gr?ce ? Voila http://shopping.voila.fr/vitrine/tablettes-pc",
+      "body_plain": "Thank you very much for these useful comments. I run my models with both penalized quasi likelihood and logistic-normal-binomial distribution and I found some \ndifferences suggesting that penalized quasi likelihood is more conservative, which is something that I already heard. I noticed that logistic-normal-binomial method is \ngaining importance in the recently published papers, so that it seems to be a good opportunity. Anyway it would be very useful to have good support from an in-\ndepth work-out of this method as you did for Poisson-overdispersion. I'm quite sure that it should appear in the next time. \nBest\n___________________________________________________________\nAchetez votre tablette numérique au meilleur prix grâce à Voila http://shopping.voila.fr/vitrine/tablettes-pc",
       "body_snippet": "Thank you very much for these useful comments. I run my models with both penalized quasi likelihood and logistic-normal-binomial distribution and I found some \ndifferences suggesting that penalized qu",
       "thread_id": "thread-5a0babe648d7",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019591.html"
     },
     {
       "id": "msg-75fa9f234be2",
@@ -1447,7 +1522,8 @@
       "body_snippet": "------------------------------\n\nMessage: 2\nDate: Sat, 15 Dec 2012 03:13:30 +0000 (UTC)\nFrom: Ben Bolker <bbolker at gmail.com>\nTo: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] How to ge",
       "thread_id": "thread-75fa9f234be2",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019592.html"
     },
     {
       "id": "msg-0d9e5629113d",
@@ -1459,11 +1535,12 @@
       "subject_clean": "How to get dispersion parameter from a binomial\tmixed, model?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Thank you. That's true that after including an individual-level random effect, the model seems to be \"magically\" perfect, which may be doubtful. But it is certainly still a \nbetter choice than the overdispersed binomial model. I do not know about beta-binomial. I will have a look at it. Is there a good R package for computing it? \nKind regards\nVal?rie\n___________________________________________________________\nAchetez votre tablette num?rique au meilleur prix gr?ce ? Voila http://shopping.voila.fr/vitrine/tablettes-pc",
+      "body_plain": "Thank you. That's true that after including an individual-level random effect, the model seems to be \"magically\" perfect, which may be doubtful. But it is certainly still a \nbetter choice than the overdispersed binomial model. I do not know about beta-binomial. I will have a look at it. Is there a good R package for computing it? \nKind regards\nValérie\n___________________________________________________________\nAchetez votre tablette numérique au meilleur prix grâce à Voila http://shopping.voila.fr/vitrine/tablettes-pc",
       "body_snippet": "Thank you. That's true that after including an individual-level random effect, the model seems to be \"magically\" perfect, which may be doubtful. But it is certainly still a \nbetter choice than the ove",
       "thread_id": "thread-0d9e5629113d",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019593.html"
     },
     {
       "id": "msg-4f2f12eebbb7",
@@ -1483,7 +1560,8 @@
       "body_snippet": "laurent stephane <laurent_step at ...> writes:\n\n> \n> Thanks to Alan and Emmanuel for their help.\n> \n> There is a very nice function tryCatch.W.E() available by typing\ndemo(error.catching). \n> \n> It re",
       "thread_id": "thread-0089956eec4d",
       "thread_depth": 3,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019594.html"
     },
     {
       "id": "msg-9e697acd66f1",
@@ -1499,7 +1577,8 @@
       "body_snippet": "Hi All,\n\nThe subject pretty much says it all.  Using: lme4_0.999999-0\n\n>From the archives, I have seen Ben Bolker mention a function \"glmersim\".\n\n?mcmcsamp seems to indicate it can take model objects ",
       "thread_id": "thread-9e697acd66f1",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019595.html"
     },
     {
       "id": "msg-ffafd3694ed2",
@@ -1517,7 +1596,8 @@
       "body_snippet": "Joshua Wiley <jwiley.psych at ...> writes:\n\n> \n> Hi All,\n> \n> The subject pretty much says it all.  Using: lme4_0.999999-0\n> \n> >From the archives, I have seen Ben Bolker mention a function \"glmersim\"",
       "thread_id": "thread-9e697acd66f1",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019596.html"
     },
     {
       "id": "msg-42e24489c397",
@@ -1535,7 +1615,8 @@
       "body_snippet": "john benson <smilodon2000 at ...> writes:\n\n> \n\n[quoting modified to trick gmane into letting me post]\n\n# I am using generalized linear mixed models to investigate resource\n# selection of animals in a ",
       "thread_id": "thread-f79b95173587",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019597.html"
     },
     {
       "id": "msg-63cd566ebb7a",
@@ -1554,7 +1635,8 @@
       "body_snippet": "Highland Statistics Ltd <highstat at ...> writes:\n\n> From: Ben Bolker <bbolker at ...>\n>   <v_coudrain at ...> writes:\n> \n> > Thank you very much for this link. The implemented function\n> >  \"overdisp",
       "thread_id": "thread-75fa9f234be2",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019598.html"
     },
     {
       "id": "msg-e61c8f9d83ca",
@@ -1573,7 +1655,8 @@
       "body_snippet": "Hi Ben,\n\nThanks a lot!  I appreciate your comments.\n\nCheers,\n\nJosh\n\n\nOn Mon, Dec 17, 2012 at 8:09 AM, Ben Bolker <bbolker at gmail.com> wrote:\n> Joshua Wiley <jwiley.psych at ...> writes:\n>\n>>\n>> Hi A",
       "thread_id": "thread-9e697acd66f1",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019599.html"
     },
     {
       "id": "msg-ddb54878cbd8",
@@ -1590,6 +1673,7 @@
       "thread_id": "thread-ddb54878cbd8",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019600.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121220/90eac8d7/attachment.pl"
       ]
@@ -1608,7 +1692,8 @@
       "body_snippet": "Fellow R users,\n\nwhat package would you recommend for fitting a poisson glmm with one random effect and residuals that are correlated (most likely AR(1)) and have heterogeneity of variance?\n\nI have su",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019601.html"
     },
     {
       "id": "msg-2deb82aef49b",
@@ -1626,7 +1711,8 @@
       "body_snippet": "Hi Emilio,\n\nI would suggest doing it in MCMCglmm.  It can handle residual\nstructures too.  This is a nice starting guide:\nhttp://cran.r-project.org/web/packages/MCMCglmm/vignettes/CourseNotes.pdf\n\nChe",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019602.html"
     },
     {
       "id": "msg-da970e2a9380",
@@ -1646,7 +1732,8 @@
       "body_snippet": "Hi Emilio,\n\nHmm, well correlated/heterogeneous residuals is relatively easy, but\nthe ar1 aspect turned out to be less straightforward than I thought.\nI could not find an exact example (with a few quic",
       "thread_id": "thread-da970e2a9380",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019603.html"
     },
     {
       "id": "msg-61f133414abc",
@@ -1665,7 +1752,8 @@
       "body_snippet": "Joshua Wiley <jwiley.psych at ...> writes:\n\n> \n> Hi Emilio,\n> \n> I would suggest doing it in MCMCglmm.  It can handle residual\n> structures too.  This is a nice starting guide:\n> http://cran.r-project",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019604.html"
     },
     {
       "id": "msg-1853d6b0f042",
@@ -1685,7 +1773,8 @@
       "body_snippet": "Hi Emilio,\n\nasreml will fit such a model but the PQL method it uses for  \napproximating the likelihood can give dodgy results in some cases. For  \nPoisson data, particularly if it has high mean, it mi",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 3,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019605.html"
     },
     {
       "id": "msg-8a1360daea2e",
@@ -1705,7 +1794,8 @@
       "body_snippet": "Hi Emilio,\n\nasreml will fit such a model but the PQL method it uses for  \napproximating the likelihood can give dodgy results in some cases. For  \nPoisson data, particularly if it has high mean, it mi",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 3,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019606.html"
     },
     {
       "id": "msg-a2f1db20ec22",
@@ -1727,6 +1817,7 @@
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 4,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019607.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121220/3586ab47/attachment.pl"
       ]
@@ -1749,7 +1840,8 @@
       "body_snippet": "Ben,\n\nNo I was way off on this one (as in my previous reply to the OP).  I\nwas thinking general residual structures (not AR in particular) and I\nmissed the Poisson part so I thought SIR for spatial au",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 3,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019608.html"
     },
     {
       "id": "msg-0027be105e37",
@@ -1772,6 +1864,7 @@
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 5,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019609.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121221/c9307847/attachment.pl"
       ]
@@ -1797,7 +1890,8 @@
       "body_snippet": "The model I had in mind was hierarchical:\n\n  Y_i ~ Poisson(lambda_i)\n  lambda_i = exp(eta_i)\n  eta ~ MVN(mu=X beta, Sigma=sigma^2*C(rho))\n\nwhere C(rho) is [for example] the correlation matrix correspo",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 6,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019610.html"
     },
     {
       "id": "msg-039e5da8cc46",
@@ -1822,6 +1916,7 @@
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 7,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019611.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121221/226ce4cd/attachment.pl"
       ]
@@ -1848,7 +1943,8 @@
       "body_snippet": "Hi,\n\nAt least for asreml it is possible to fit the AR(1) process in the  \nG-structure and hence fit the model described, but I agree that it is  \nnot clear what a glmmPQL model is fitting. asreml seem",
       "thread_id": "thread-84de4d74f10f",
       "thread_depth": 7,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019612.html"
     },
     {
       "id": "msg-d3d4994047a0",
@@ -1865,6 +1961,7 @@
       "thread_id": "thread-d3d4994047a0",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019613.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121222/d5473eed/attachment.pl"
       ]
@@ -1886,6 +1983,7 @@
       "thread_id": "thread-436507ef96a9",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019614.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121226/74e80274/attachment.pl"
       ]
@@ -1906,7 +2004,8 @@
       "body_snippet": "Mart? Casals <mcasals at ...> writes:\n\n> \n> Hello,\n> \n> I have a question. I worked with a study about performance on basketball.\n> \n> The final data employed for the analysis were composed of 2187 ca",
       "thread_id": "thread-d3d4994047a0",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019615.html"
     },
     {
       "id": "msg-9ef62fe15b39",
@@ -1926,6 +2025,7 @@
       "thread_id": "thread-d3d4994047a0",
       "thread_depth": 2,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019616.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121226/332d500c/attachment.pl"
       ]
@@ -1947,6 +2047,7 @@
       "thread_id": "thread-436507ef96a9",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019617.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121226/429011d2/attachment.pl"
       ]
@@ -1970,6 +2071,7 @@
       "thread_id": "thread-d3d4994047a0",
       "thread_depth": 3,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019618.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121227/483de37e/attachment.pl"
       ]
@@ -1989,6 +2091,7 @@
       "thread_id": "thread-80ed5d3d434c",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019619.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121227/1d80555d/attachment.pl"
       ]
@@ -2009,7 +2112,8 @@
       "body_snippet": "Brad Buran <bburan at ...> writes:\n\n>  I'm attempting to fit a linear mixed model to my dataset.  This\n> data is the measure of stimulus-evoked power as a function of time.\n> We have 32 subjects from ",
       "thread_id": "thread-80ed5d3d434c",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019620.html"
     },
     {
       "id": "msg-e99845e1d792",
@@ -2025,7 +2129,8 @@
       "body_snippet": "That was very helpful.  It didn't occur to me that it was possible to use functions such as poly in the equation.  That said, it seems that none of the models (i.e. the ones I mentioned nor the ones y",
       "thread_id": "thread-e99845e1d792",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019621.html"
     },
     {
       "id": "msg-8ab177b771a9",
@@ -2044,6 +2149,7 @@
       "thread_id": "thread-e99845e1d792",
       "thread_depth": 1,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019622.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121227/37b888a7/attachment.pl"
       ]
@@ -2063,6 +2169,7 @@
       "thread_id": "thread-1a68277be22d",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019623.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121228/bf86d3f4/attachment.pl"
       ]
@@ -2083,7 +2190,8 @@
       "body_snippet": "On 12-12-27 05:31 PM, Brad Buran wrote:\n\n> That was very helpful.  It didn't occur to me that it was possible\n  to use functions such as poly in the equation.  That said, it seems\n  that none of the m",
       "thread_id": "thread-e99845e1d792",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019624.html"
     },
     {
       "id": "msg-1e1cf82aa00f",
@@ -2100,6 +2208,7 @@
       "thread_id": "thread-1e1cf82aa00f",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019625.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121228/8049ce68/attachment.pl"
       ]
@@ -2120,7 +2229,8 @@
       "body_snippet": "Edwin Lebrija Trejos <elebrija at ...> writes:\n\n\n> Dear mixed-modelers, I am analyzing seedling survival (0/1) as a\n> function of the density of neighbors with a different level of\n> relatedness to th",
       "thread_id": "thread-1a68277be22d",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019626.html"
     },
     {
       "id": "msg-a52e24002f04",
@@ -2138,7 +2248,8 @@
       "body_snippet": "Ryan King <c.ryan.king at ...> writes:\n\n> I see that a similar question has been asked in the past, but I am\n> not totally clear with the in-development status of lme4 if things\n> have changed.\n \n> Is",
       "thread_id": "thread-1e1cf82aa00f",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019627.html"
     },
     {
       "id": "msg-f51d88a13a74",
@@ -2154,7 +2265,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n\n  Inspired by a recent question of Diego Pujoni's on the list\n( http://article.gmane.org/gmane.comp.lang.r.lme4.devel/9363/match= ),\nI started working o",
       "thread_id": "thread-f51d88a13a74",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019628.html"
     },
     {
       "id": "msg-1982c63a146d",
@@ -2171,6 +2283,7 @@
       "thread_id": "thread-1982c63a146d",
       "thread_depth": 0,
       "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019629.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20121231/02c7a90f/attachment.pl"
       ]
@@ -2189,7 +2302,8 @@
       "body_snippet": "Dear Mike,\n\nThank you for the suggestion and the example. A latent growth model may indeed be a possibility, at least for the case where I want to let the autocorrelation differ between the two groups",
       "thread_id": "thread-ba5f7f7a6467",
       "thread_depth": 0,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019630.html"
     },
     {
       "id": "msg-79ad9910ba61",
@@ -2208,7 +2322,8 @@
       "body_snippet": "Thank you for the feedback. Indeed, that is a concern. Fortunately, I have highly repeated measurements (40-60 obs per person) and quite a large n, so I think I have enough information to fit such a m",
       "thread_id": "thread-436507ef96a9",
       "thread_depth": 2,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019631.html"
     },
     {
       "id": "msg-b0813cb3abc9",
@@ -2226,7 +2341,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> \n>   Inspired by a recent question of Diego Pujoni's on the list\n> ( http://article.gmane.org/gmane.comp.lang.r.lme4.devel/9363/match= ),\n> I started working ",
       "thread_id": "thread-f51d88a13a74",
       "thread_depth": 1,
-      "month": "2012-12"
+      "month": "2012-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q4/019633.html"
     }
   ],
   "threads": [

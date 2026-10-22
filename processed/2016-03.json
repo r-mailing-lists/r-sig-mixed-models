@@ -17,7 +17,8 @@
       "body_snippet": "Dear list,\nI am analyzing data with a logistic mixed effects model.\nI created the following model.\n\nmod1<-glmer(binomial_resposne ~ FactorA*FactorB*FactorC \n+(1+FactorA|subject)+(1+FactorA|speaker/ite",
       "thread_id": "thread-cec17b6bd84e",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024512.html"
     },
     {
       "id": "msg-21b45971ea3a",
@@ -32,11 +33,12 @@
         "<0AE1288CB7FB2C47B64B9DEF76DA1D332278F9@FCEXSEXM020P.dcl.int.dexwired.net>",
         "<CAE5vbru38Qc=akswmAOUN=bPfsBxFdV1t9gDSFZWMRD2KxJGPQ@mail.gmail.com>"
       ],
-      "body_plain": "Thank you very much Marko! I'll try this tomorrow.\n\nRegards,\n\nNicolas Olano\nRisk Quantification & Pricing\nDexia Group\n(+32) (0)2?213 5873\n\n-----Original Message-----\nFrom: marko.bachl at gmail.com [mailto:marko.bachl at gmail.com] On Behalf Of Marko Bachl\nSent: lundi 29 f?vrier 2016 19:53\nTo: OLANO NO Nicolas (Exterieur.DCL)\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Saving object into a Matrix/List\n\nHi Nicolas,\nI guess drop1(fitted_model, test = \"Chisq\") will give you the desired result for omitting each term:\n\nlibrary(lme4)\nfm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy) drop1(fm, test = \"Chisq\")\n\nIf you want to make more adjustments, you could save the fitted models to a list and then use do.call():\nfm_list = list()\nfm_list[1] <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy) fm_list[2] <- lmer(Reaction ~ Days + (1 | Subject), sleepstudy) do.call(\"anova\", fm_list)\n\nBest regards\nMarko\n\n\n\n\n2016-02-29 15:49 GMT+01:00 OLANO NO Nicolas (Exterieur.DCL)\n<nicolas.no.olano at dexia.com>:\n>\n> Hello,\n>\n> First of all, thank you very much for the package!\n>\n> I'm using the new version of lme4 and the function glmer and I would like to know if you could help me with one doubt.\n>\n> I want to compute the likelihood ratio test p value for each variable  (normally two or three variables) so run gm_original <- glmer (...~ X1 +  X2...), then gm_minus_X1 <- glmer (...~ X1...), finally anova(gm_original, gm_minus_X1).\n>\n> As I have to compute it in a for loop with a lot of combinations of  variables, I would like to know if there is any way to save the  results (gm_original) into a matrix or list to then use them to calculate the  p values (when I add the objet to a list, and then I to run an anova,  I receive the error that it cannot be computed from a list objet).\n>\n> Furthermore, is there any more efficient way to compute the likelihood  ratio test p value ?\n>\n> Thank you very much,\n>\n> Regards,\n>\n> Nicolas Olano\n> Risk Quantification & Pricing\n> Dexia Group\n> (+32) (0)2 213 5873\n>\n> ----------------------------------------------------------------------\n> ---\n> Dexia disclaimer:\n>\n> http://www.dexia.com/maildisclaimer.htm \n> <http://www.dexia.com/maildisclaimer.htm>\n> ----------------------------------------------------------------------\n> ---\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n\n--\nDr. Marko Bachl\nUniversit?t Hohenheim\nInstitut f?r Kommunikationswissenschaft (540C) T 0711 459 228 66 M marko.bachl at uni-hohenheim.de W www.komm.uni-hohenheim.de/bachl\n-------------------------------------------------------------------------\nDexia disclaimer:\n\nhttp://www.dexia.com/maildisclaimer.htm <http://www.dexia.com/maildisclaimer.htm>\n-------------------------------------------------------------------------",
-      "body_snippet": "Thank you very much Marko! I'll try this tomorrow.\n\nRegards,\n\nNicolas Olano\nRisk Quantification & Pricing\nDexia Group\n(+32) (0)2?213 5873\n\n-----Original Message-----\nFrom: marko.bachl at gmail.com [ma",
+      "body_plain": "Thank you very much Marko! I'll try this tomorrow.\n\nRegards,\n\nNicolas Olano\nRisk Quantification & Pricing\nDexia Group\n(+32) (0)2 213 5873\n\n-----Original Message-----\nFrom: marko.bachl at gmail.com [mailto:marko.bachl at gmail.com] On Behalf Of Marko Bachl\nSent: lundi 29 février 2016 19:53\nTo: OLANO NO Nicolas (Exterieur.DCL)\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Saving object into a Matrix/List\n\nHi Nicolas,\nI guess drop1(fitted_model, test = \"Chisq\") will give you the desired result for omitting each term:\n\nlibrary(lme4)\nfm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy) drop1(fm, test = \"Chisq\")\n\nIf you want to make more adjustments, you could save the fitted models to a list and then use do.call():\nfm_list = list()\nfm_list[1] <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy) fm_list[2] <- lmer(Reaction ~ Days + (1 | Subject), sleepstudy) do.call(\"anova\", fm_list)\n\nBest regards\nMarko\n\n\n\n\n2016-02-29 15:49 GMT+01:00 OLANO NO Nicolas (Exterieur.DCL)\n<nicolas.no.olano at dexia.com>:\n>\n> Hello,\n>\n> First of all, thank you very much for the package!\n>\n> I'm using the new version of lme4 and the function glmer and I would like to know if you could help me with one doubt.\n>\n> I want to compute the likelihood ratio test p value for each variable  (normally two or three variables) so run gm_original <- glmer (...~ X1 +  X2...), then gm_minus_X1 <- glmer (...~ X1...), finally anova(gm_original, gm_minus_X1).\n>\n> As I have to compute it in a for loop with a lot of combinations of  variables, I would like to know if there is any way to save the  results (gm_original) into a matrix or list to then use them to calculate the  p values (when I add the objet to a list, and then I to run an anova,  I receive the error that it cannot be computed from a list objet).\n>\n> Furthermore, is there any more efficient way to compute the likelihood  ratio test p value ?\n>\n> Thank you very much,\n>\n> Regards,\n>\n> Nicolas Olano\n> Risk Quantification & Pricing\n> Dexia Group\n> (+32) (0)2 213 5873\n>\n> ----------------------------------------------------------------------\n> ---\n> Dexia disclaimer:\n>\n> http://www.dexia.com/maildisclaimer.htm \n> <http://www.dexia.com/maildisclaimer.htm>\n> ----------------------------------------------------------------------\n> ---\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n\n--\nDr. Marko Bachl\nUniversität Hohenheim\nInstitut für Kommunikationswissenschaft (540C) T 0711 459 228 66 M marko.bachl at uni-hohenheim.de W www.komm.uni-hohenheim.de/bachl\n-------------------------------------------------------------------------\nDexia disclaimer:\n\nhttp://www.dexia.com/maildisclaimer.htm <http://www.dexia.com/maildisclaimer.htm>\n-------------------------------------------------------------------------",
+      "body_snippet": "Thank you very much Marko! I'll try this tomorrow.\n\nRegards,\n\nNicolas Olano\nRisk Quantification & Pricing\nDexia Group\n(+32) (0)2 213 5873\n\n-----Original Message-----\nFrom: marko.bachl at gmail.com [ma",
       "thread_id": "thread-21b45971ea3a",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024514.html"
     },
     {
       "id": "msg-f6a1b488ecc3",
@@ -52,7 +54,8 @@
       "body_snippet": "Hello Ben,\n\nThanks a lot for your feedback! I get it now, I think. My biggest concern was that the fitting itself, getting such an error made me a bit distrustful of the fitting result. But if I under",
       "thread_id": "thread-f6a1b488ecc3",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024513.html"
     },
     {
       "id": "msg-59efe8e20343",
@@ -68,7 +71,8 @@
       "body_snippet": "Hello everyone,\n\nI am trying to analyse a dataset using a multivariate MCMCglmm model, \nbut I cannot solve a syntax problem related to the structure of my dataset.\n\nBasically, 50 individuals were expo",
       "thread_id": "thread-59efe8e20343",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024515.html"
     },
     {
       "id": "msg-ff343ce15e2c",
@@ -86,7 +90,8 @@
       "body_snippet": "Hi Allan,\n\nThis model (explicitly nesting random replicates within treatments):\n\nfixed = var ~ 1 + treatment + cov1 + cov2,\nrandom = ~ treatment:replicate,\nrcov = ~ units\n\nexpanded to a multivariate m",
       "thread_id": "thread-59efe8e20343",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024516.html"
     },
     {
       "id": "msg-201ac98f740a",
@@ -104,7 +109,8 @@
       "body_snippet": "Dear list,\n\nI've made a puzzling observation concerning the bootstrap distribution \nof fixed effects in a logistic model after incorporating random slopes. \nI'm wondering whether that is actually to b",
       "thread_id": "thread-201ac98f740a",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024517.html"
     },
     {
       "id": "msg-b6d0ad5a33b1",
@@ -123,7 +129,8 @@
       "body_snippet": "Hi Paul,\n\nThank you very much for taking the time to have a look at this.\n\nNo need to modify the residual variance structure then? Just \"rcov = ~ \nus(trait):units\" ? And I don't need to change the syn",
       "thread_id": "thread-59efe8e20343",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024518.html"
     },
     {
       "id": "msg-b5ca84a64e1d",
@@ -143,7 +150,8 @@
       "body_snippet": "Hi Allan,\n\nMaybe take a look at the residuals, if they show independence and a lovely  \ndistribution for each trait (or even across traits after standardisation)  \nwhen plotted the \"us(trait):units\" w",
       "thread_id": "thread-59efe8e20343",
       "thread_depth": 3,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024519.html"
     },
     {
       "id": "msg-563ff6d21906",
@@ -159,7 +167,8 @@
       "body_snippet": "Dear R gurus,\nI am using the \"lsmeans\" function to extract predicted marginal means from \na Poisson family mixed model with a log link function. When I ask for the \n\"lsmeans\" on the scale of the linea",
       "thread_id": "thread-563ff6d21906",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024526.html"
     },
     {
       "id": "msg-4dec2de29672",
@@ -173,11 +182,12 @@
       "references": [
         "<159358923.6911237.1457300634490.JavaMail.yahoo.ref@mail.yahoo.com>"
       ],
-      "body_plain": "Hello\nI m trying to determine the effects of season and habitat on forage protein content. With my replica nested within location. \nmodel<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\nI am getting a warning when running my model. I have tried read on previous post and most?of the time?I get lost because I?fairly new to R.?I?understand there is a maximum \"maxlgradl\" of 0.001 that should be accepted in this kind of warnings. However, mine?is a?little higher?than that. Can someone advise how I can?proceed here and get an acceptable?output.\nI also tried using \"....family =Gamma(log)\"? instead of just \"....family = Gamma\" and it doesn't give me the warning. Can this be an acceptable option? \nModel and output below. I can provide data sample if?needed.\n> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\nWarning message:\nIn checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,? :\n? Model failed to converge with max|grad| = 0.00123611 (tol = 0.001, component 1)\n> model2<-glmer(Protein~Habitat+Season + (1|Location/Replica), family=Gamma)\nWarning message:\nIn checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,? :\n? Model failed to converge with max|grad| = 0.00254076 (tol = 0.001, component 1)\n\n\n?Thank you\n\nMoses SELEBATSO Home:?? ?(+267) 318 5219 (H)??Mobile: ?(+267) 716 39370? or? (+267) 738 39370\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hello\nI m trying to determine the effects of season and habitat on forage protein content. With my replica nested within location. \nmodel<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\nI am getting a warning when running my model. I have tried read on previous post and most of the time I get lost because I fairly new to R. I understand there is a maximum \"maxlgradl\" of 0.001 that should be accepted in this kind of warnings. However, mine is a little higher than that. Can someone advise how I can proceed here and get an acceptable output.\nI also tried using \"....family =Gamma(log)\"  instead of just \"....family = Gamma\" and it doesn't give me the warning. Can this be an acceptable option? \nModel and output below. I can provide data sample if needed.\n> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\nWarning message:\nIn checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n  Model failed to converge with max|grad| = 0.00123611 (tol = 0.001, component 1)\n> model2<-glmer(Protein~Habitat+Season + (1|Location/Replica), family=Gamma)\nWarning message:\nIn checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n  Model failed to converge with max|grad| = 0.00254076 (tol = 0.001, component 1)\n\n\n Thank you\n\nMoses SELEBATSO Home:    (+267) 318 5219 (H)  Mobile:  (+267) 716 39370  or  (+267) 738 39370\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hello\nI m trying to determine the effects of season and habitat on forage protein content. With my replica nested within location. \nmodel<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=G",
       "thread_id": "thread-4dec2de29672",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024520.html"
     },
     {
       "id": "msg-456fab0005ab",
@@ -193,7 +203,8 @@
       "body_snippet": "Dear R-Mixed-Modellers,\n\nI've come across some unusual behavior when using the predict function in\nnlme_3.1-125. If I allow fixed effects parameters to vary by levels of a\ncategorical variable, the pr",
       "thread_id": "thread-456fab0005ab",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024521.html"
     },
     {
       "id": "msg-5e13f6adb0a6",
@@ -212,7 +223,8 @@
       "body_snippet": "Short answers:\n\n(1) the decision whether to use a log or an inverse link function is\nat root a scientific one (i.e., is one functional form or the other\nmore sensible for your problem?), although it i",
       "thread_id": "thread-4dec2de29672",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024522.html"
     },
     {
       "id": "msg-a34323fa597a",
@@ -228,11 +240,12 @@
         "<159358923.6911237.1457300634490.JavaMail.yahoo@mail.yahoo.com>",
         "<CABghstQc+awKuAavXXMgGZ7CyQgGkac_pdxxtK1gh9VboLa0Qw@mail.gmail.com>"
       ],
-      "body_plain": "Thank you for the response. I have just gone through the convergence manual in?lme4 February 2016. I ran the singularity test?and this is the result\n> diag.vals <- getME(model,\"theta\")[getME(model,\"lower\") == 0]\n> any(diag.vals < 1e-6) # FALSE\n[1] FALSE\n\nMy interpretation is that there is one (1) diagonal element?that is zero or very small. Is that correct? If?so, the manual says then \"...the convergence??testing methods may be inappropriate..\" I do not know what this means exactly. Does it mean I should not use the test or there is not need to do tests, and so accept the model? \nThank you for your support and patience.\n,\nMoses SELEBATSO Home:?? ?(+267) 318 5219 (H)??Mobile: ?(+267) 716 39370? or? (+267) 738 39370 \n\n    On Monday, 7 March 2016, 3:55, Ben Bolker <bbolker at gmail.com> wrote:\n \n \n\n ? Short answers:\n\n(1) the decision whether to use a log or an inverse link function is\nat root a scientific one (i.e., is one functional form or the other\nmore sensible for your problem?), although it is generally the case\nthat log links are more stable.? You could also use AIC or\nlog-likelihood to choose among links if you wanted.\n(2) I would say that 0.0025 is *probably* acceptable, although it\nwould be best to try a different optimizer and see if you get similar\nresults; have you read the ?convergence manual page?\n\nOn Sun, Mar 6, 2016 at 4:43 PM, moses selebatso <selebatsom at yahoo.co.uk> wrote:\n> Hello\n> I m trying to determine the effects of season and habitat on forage protein content. With my replica nested within location.\n> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\n> I am getting a warning when running my model. I have tried read on previous post and most of the time I get lost because I fairly new to R. I understand there is a maximum \"maxlgradl\" of 0.001 that should be accepted in this kind of warnings. However, mine is a little higher than that. Can someone advise how I can proceed here and get an acceptable output.\n> I also tried using \"....family =Gamma(log)\"? instead of just \"....family = Gamma\" and it doesn't give me the warning. Can this be an acceptable option?\n> Model and output below. I can provide data sample if needed.\n>> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\n> Warning message:\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,? :\n>? Model failed to converge with max|grad| = 0.00123611 (tol = 0.001, component 1)\n>> model2<-glmer(Protein~Habitat+Season + (1|Location/Replica), family=Gamma)\n> Warning message:\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,? :\n>? Model failed to converge with max|grad| = 0.00254076 (tol = 0.001, component 1)\n>\n>\n>? Thank you\n>\n> Moses SELEBATSO Home:? ? (+267) 318 5219 (H)? Mobile:? (+267) 716 39370? or? (+267) 738 39370\n\n \n  \n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Thank you for the response. I have just gone through the convergence manual in?lme4 February 2016. I ran the singularity test?and this is the result\n> diag.vals <- getME(model,\"theta\")[getME(model,\"lo",
+      "body_plain": "Thank you for the response. I have just gone through the convergence manual in lme4 February 2016. I ran the singularity test and this is the result\n> diag.vals <- getME(model,\"theta\")[getME(model,\"lower\") == 0]\n> any(diag.vals < 1e-6) # FALSE\n[1] FALSE\n\nMy interpretation is that there is one (1) diagonal element that is zero or very small. Is that correct? If so, the manual says then \"...the convergence  testing methods may be inappropriate..\" I do not know what this means exactly. Does it mean I should not use the test or there is not need to do tests, and so accept the model? \nThank you for your support and patience.\n,\nMoses SELEBATSO Home:    (+267) 318 5219 (H)  Mobile:  (+267) 716 39370  or  (+267) 738 39370 \n\n    On Monday, 7 March 2016, 3:55, Ben Bolker <bbolker at gmail.com> wrote:\n \n \n\n   Short answers:\n\n(1) the decision whether to use a log or an inverse link function is\nat root a scientific one (i.e., is one functional form or the other\nmore sensible for your problem?), although it is generally the case\nthat log links are more stable.  You could also use AIC or\nlog-likelihood to choose among links if you wanted.\n(2) I would say that 0.0025 is *probably* acceptable, although it\nwould be best to try a different optimizer and see if you get similar\nresults; have you read the ?convergence manual page?\n\nOn Sun, Mar 6, 2016 at 4:43 PM, moses selebatso <selebatsom at yahoo.co.uk> wrote:\n> Hello\n> I m trying to determine the effects of season and habitat on forage protein content. With my replica nested within location.\n> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\n> I am getting a warning when running my model. I have tried read on previous post and most of the time I get lost because I fairly new to R. I understand there is a maximum \"maxlgradl\" of 0.001 that should be accepted in this kind of warnings. However, mine is a little higher than that. Can someone advise how I can proceed here and get an acceptable output.\n> I also tried using \"....family =Gamma(log)\"  instead of just \"....family = Gamma\" and it doesn't give me the warning. Can this be an acceptable option?\n> Model and output below. I can provide data sample if needed.\n>> model<-glmer(Protein~Habitat*Season + (1|Location/Replica), family=Gamma)\n> Warning message:\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n>  Model failed to converge with max|grad| = 0.00123611 (tol = 0.001, component 1)\n>> model2<-glmer(Protein~Habitat+Season + (1|Location/Replica), family=Gamma)\n> Warning message:\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n>  Model failed to converge with max|grad| = 0.00254076 (tol = 0.001, component 1)\n>\n>\n>  Thank you\n>\n> Moses SELEBATSO Home:    (+267) 318 5219 (H)  Mobile:  (+267) 716 39370  or  (+267) 738 39370\n\n \n  \n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thank you for the response. I have just gone through the convergence manual in lme4 February 2016. I ran the singularity test and this is the result\n> diag.vals <- getME(model,\"theta\")[getME(model,\"lo",
       "thread_id": "thread-4dec2de29672",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024523.html"
     },
     {
       "id": "msg-de421a885413",
@@ -253,7 +266,8 @@
       "body_snippet": "I think you've got this backwards:  FALSE means that the model\n*isn't* singular (please re-read the docs, and if you think they're\nunclear or wrong, post an issue at\nhttp://github.com/lme4/lme4/issues",
       "thread_id": "thread-4dec2de29672",
       "thread_depth": 3,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024524.html"
     },
     {
       "id": "msg-c78560de8b8d",
@@ -265,11 +279,12 @@
       "subject_clean": "Zero inflated negative binomial mixed models - glmmADMB help",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\nI am trying to fit zero inflated negative binomial models (using the package glmmADMB) but with no success.\nMy response variable is the lifetime reproductive success of a bird species.\nThe explanatory variable are sex (M vs. F), natal dispersal status (D vs. P), age (Y vs. O), brood size manipulation status (three levels) and the one order interaction between natal dispersal status and brood size manipulation as fixed effects. I also include a random effect which is the first year of breeding for a bird.\n\nI have several errors messages such as:\nParameters were estimated, but standard errors were not: the most likely problem is that the curvature at MLE was zero or negative\nErreur dans glmmadmb(LRS ~ sex + nataldisp + agecat + manipcat.control +  :\n  The function maximizer failed (couldn't find parameter file) Troubleshooting steps include (1) run with 'save.dir' set and inspect output files; (2) change run parameters: see '?admbControl';(3) re-run with debug=TRUE for more information on failure mode\nFurthermore : Warning message :\nl'ex?cution de la commande './glmmadmb -maxfn 500 -maxph 5' renvoie un statut 1\n\nI have been trying several solutions you already suggested such as:\n- admb.opts=admbControl(shess=FALSE,noinit=FALSE)\n- admb.opts=admbControl(shess=FALSE,noinit=FALSE, impSamp=200,maxfn=1000,imaxfn=500,maxph=5)\n\nI also tried to downgrading the package to an earlier version (0.7) but I did not succeed. I followed your instruction (found here http://lists.admb-project.org/pipermail/users/2012-January/001667.html) but it doesn?t work.\n\nI therefore have several questions. First, how could I know if I need to use a zero inflated model (until now, I used negative binomial mixed models). Second, do you have an idea of the reason of this error message ? I tried a zero inflated with a poisson distribution and I do not have any error message. I was wondering if the model could be overparametrized (n = 827). Finally, what could I do to resolve these problems ?\nThank you for helping,\nBest\nMarion\n\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all,\nI am trying to fit zero inflated negative binomial models (using the package glmmADMB) but with no success.\nMy response variable is the lifetime reproductive success of a bird species.\nThe explanatory variable are sex (M vs. F), natal dispersal status (D vs. P), age (Y vs. O), brood size manipulation status (three levels) and the one order interaction between natal dispersal status and brood size manipulation as fixed effects. I also include a random effect which is the first year of breeding for a bird.\n\nI have several errors messages such as:\nParameters were estimated, but standard errors were not: the most likely problem is that the curvature at MLE was zero or negative\nErreur dans glmmadmb(LRS ~ sex + nataldisp + agecat + manipcat.control +  :\n  The function maximizer failed (couldn't find parameter file) Troubleshooting steps include (1) run with 'save.dir' set and inspect output files; (2) change run parameters: see '?admbControl';(3) re-run with debug=TRUE for more information on failure mode\nFurthermore : Warning message :\nl'exécution de la commande './glmmadmb -maxfn 500 -maxph 5' renvoie un statut 1\n\nI have been trying several solutions you already suggested such as:\n- admb.opts=admbControl(shess=FALSE,noinit=FALSE)\n- admb.opts=admbControl(shess=FALSE,noinit=FALSE, impSamp=200,maxfn=1000,imaxfn=500,maxph=5)\n\nI also tried to downgrading the package to an earlier version (0.7) but I did not succeed. I followed your instruction (found here http://lists.admb-project.org/pipermail/users/2012-January/001667.html) but it doesn’t work.\n\nI therefore have several questions. First, how could I know if I need to use a zero inflated model (until now, I used negative binomial mixed models). Second, do you have an idea of the reason of this error message ? I tried a zero inflated with a poisson distribution and I do not have any error message. I was wondering if the model could be overparametrized (n = 827). Finally, what could I do to resolve these problems ?\nThank you for helping,\nBest\nMarion\n\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all,\nI am trying to fit zero inflated negative binomial models (using the package glmmADMB) but with no success.\nMy response variable is the lifetime reproductive success of a bird species.\nThe e",
       "thread_id": "thread-c78560de8b8d",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024525.html"
     },
     {
       "id": "msg-0563655d4885",
@@ -287,7 +302,8 @@
       "body_snippet": "I like to use to save.dir option of glmmadmb and run models from the \ncommand line\nusing the file glmmadmb.dat and glmmadmb.pin.\n\nIf you run the model from the command line and look at the\neigenvalues",
       "thread_id": "thread-c78560de8b8d",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024527.html"
     },
     {
       "id": "msg-f2c2cb91051d",
@@ -303,7 +319,8 @@
       "body_snippet": "Hi,\n\nI am trying to run a *posthoc* on a lme with the glht function and I get\nthis error that I can't figure out \"Error in contrMat(table(mf[[nm]]), type\n= types[pm]) :\n  less than two groups\"\n\nMy exp",
       "thread_id": "thread-f2c2cb91051d",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024528.html"
     },
     {
       "id": "msg-ec3f455314fe",
@@ -319,7 +336,8 @@
       "body_snippet": "Dear all,\n\nI am using lme() to run a mixed effects model on soil carbon observations,\nwith fixed effects specified for latitude (continuous), and dominant genera\nof tree (factor with five levels), and",
       "thread_id": "thread-ec3f455314fe",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024529.html"
     },
     {
       "id": "msg-84631974408b",
@@ -335,7 +353,8 @@
       "body_snippet": "Dear all,\n\nI am trying to figure out the syntax required to constrain a covariance\nmatrix in a particular way with MCMCglmm.\n\nI have a multivariate problem, so let's say my response variables are \"y1\"",
       "thread_id": "thread-84631974408b",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024530.html"
     },
     {
       "id": "msg-a56439a5f5dd",
@@ -353,7 +372,8 @@
       "body_snippet": "Hi,\n\nrandom = ~ \nus(trait:at.level(treatment,1)):individuals+us(trait:at.level(treatment,2)):individuals\n\ndoes what you want.\n\nCheers,\n\nJarrod\n\n\n\nOn 13/03/2016 11:22, Alexandre Courtiol wrote:\n> rando",
       "thread_id": "thread-84631974408b",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024531.html"
     },
     {
       "id": "msg-fd3cfc27dc9d",
@@ -371,7 +391,8 @@
       "body_snippet": "Hard to say in general without looking at the data in detail. \nPerhaps the Geomorphic information helps explain some of the variation \nin the response that is not otherwise well explained (e.g., leavi",
       "thread_id": "thread-ec3f455314fe",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024532.html"
     },
     {
       "id": "msg-c15dae556d8b",
@@ -387,7 +408,8 @@
       "body_snippet": "Hello,\n\nI ran a model as\n\nglmer(y ~ x, family = poisson, data, weights = w)\n\nand then tried to get confidence intervals with the following:\n\nconfint(model, method = \"boot\", parallel = \"multicore\", ncp",
       "thread_id": "thread-c15dae556d8b",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024533.html"
     },
     {
       "id": "msg-d48d0aa73d9b",
@@ -405,7 +427,8 @@
       "body_snippet": "The simulation function (sfun()) that's at the core of the parametric \nbootstrap algorithm is ignoring your specified prior weights.  Poisson \nmodels with weights are somewhat unusual; what are the we",
       "thread_id": "thread-c15dae556d8b",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024534.html"
     },
     {
       "id": "msg-e0b258b90e1a",
@@ -421,7 +444,8 @@
       "body_snippet": "Dear all,\n\nIs there a way to extend MCMC chains once a MCMCglmm fit is over?\n\nI am using a relatively big dataset (35000 rows) and a rather complex model\n(4 response variables, several fixed and rando",
       "thread_id": "thread-e0b258b90e1a",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024535.html"
     },
     {
       "id": "msg-a7da7aaac401",
@@ -437,7 +461,8 @@
       "body_snippet": "Hi Everyone,\n\n \n\nI'm absolutely stuck trying to figure this out, so I thought brighter minds\nhere may be able to shed some light on the situation. I'm relatively new to\nmixed modeling in R, so it coul",
       "thread_id": "thread-a7da7aaac401",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024536.html"
     },
     {
       "id": "msg-1a995a4ff50b",
@@ -455,7 +480,8 @@
       "body_snippet": "Hi Jacob,\n\nI will defer to Doug, as he is the ultimate source. \n\nI would not fret. It is all about numerical instability when trying to invert (Xprime\\Sigma X) matrix, I suspect. \n\nTim\n\nTimothy G. Gre",
       "thread_id": "thread-1a995a4ff50b",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024537.html"
     },
     {
       "id": "msg-ea09b822da44",
@@ -473,7 +499,8 @@
       "body_snippet": "Dear Igor,\n\nNote that corAR1() assumes that time is integer and increases by one after\neach time point. You need to check that.\n\nApart from that. A random slope along time and an AR1 model on the nois",
       "thread_id": "thread-a7da7aaac401",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024538.html"
     },
     {
       "id": "msg-e8f03d242a0e",
@@ -491,7 +518,8 @@
       "body_snippet": "Dear Annie,\n\nPlease don't use attach(). It's a recipe for disaster. Use the data\nargument instead.\n\nglht() can't handle interaction terms. You will have to specify the\ncontrasts manually. A workaround",
       "thread_id": "thread-f2c2cb91051d",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024539.html"
     },
     {
       "id": "msg-8500f20463bb",
@@ -507,7 +535,8 @@
       "body_snippet": "Dear R-Users and Developers of lme4,\n\nGood Morning.\n\n\n\nI am an Intermediate level R-user.\n\n\n\nI do follow Blogs and comments in variety of sources for e.g RPubs,Github\netc.\n\nI am facing some technical ",
       "thread_id": "thread-8500f20463bb",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024540.html"
     },
     {
       "id": "msg-b1cc5e621347",
@@ -523,7 +552,8 @@
       "body_snippet": "That's what I thought, that the weighting was not taken into account.\nThe weights are used to estimate an underlying causal model. The Poisson\nmodel is used as a Cox regression model with 2-level rand",
       "thread_id": "thread-b1cc5e621347",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024541.html"
     },
     {
       "id": "msg-eef28be1de63",
@@ -541,7 +571,8 @@
       "body_snippet": "In general profile confidence intervals (the default method for \nconfidence intervals) are a good intermediate between Wald intervals and \nbootstrap intervals, in both computational cost and accuracy.",
       "thread_id": "thread-b1cc5e621347",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024542.html"
     },
     {
       "id": "msg-e701b0e0c855",
@@ -553,11 +584,12 @@
       "subject_clean": "Back-transformation of Poisson model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi R-sig-mixed,\nI found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can?t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I?m still wondering about?should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\nNow for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can?t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\nthanks,\nMollie\n\nlibrary(lme4)\n\n# simulate Poisson data with random intercept\nset.seed(11)\ndat=data.frame(group=paste0('g', rep(1:10, each=100)))\nx=rnorm(10, mean=5,sd=2) \ndat$y = rpois(nrow(dat), exp(x[dat$group]))\nmean(dat$y)#observed mean\n\n# fit model\nm1=glmer(y ~ (1 | group), family = poisson, dat)\n\n#estract estimates\nstr(predict(m1,  type=\"response\", re.form=NA))\nexp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n#not very close to the mean\n\nnd=data.frame(group=paste0('g', -5:-1)) #add new levels\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA))\nstr(predict(m1, type=\"response\", re.form=NA))\nmean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n\n> \n> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>      Date: Tue, 12 Jan 2010 18:38:06 +0000\n>      From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>   Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>        To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n> \n> Dear Kevin,\n> \n> You will have to exponentiate the output from predict.\n> \n> It is worth noting there are three types of prediction (on the\n> data-scale) you could make:\n> \n> a) exp(Xb)\n> b) exp(Xb+Zu)\n> c) int exp(Xb)du assuming the u's are iid.\n> \n> X - fixed effect design matrix  b - fixed effects\n> Z - random effect design matrix  u - fixed effects\n> \n> You have done the first, but this can be very different from c, which\n> is what I expect you want: the predictions averaged over possible\n> realisations of the random effects.\n> \n> To obtain c use exp(Xb+0.5*v)\n> \n> where v is the sum of the variance components. If you use additive\n> over-dispersed models you want to include the \"residual\" variance in\n> v, also.\n> \n> Cheers,\n> \n> Jarrod\n> \n> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n> \n> > Hello,\n> >\n> > I'd like to know if predicted values from  a Poisson mixed model require\n> > back-transformation to get the 'real' predicted values or if this is\n> > done automatically? I assume that the predicted values are already\n> > back-transformed since my results are similar to the annual means.\n> >\n> > My model for estimating bird trends in lme4 is as such:\n> >\n> > lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n> > data=SWTH, family = poisson(link=log))\n> >\n> > I then took the coefficients from the mixed model and used them in a GLM\n> > to derive the predicted values.\n> > dd <-fixef(lme3) # gives coefficients\n> >\n> > lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n> > log)) # for poisson distribution\n> > lme_glmDEY$coefficients <- dd\n> >\n> > # create a data set of predicted values\n> > pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n> > pred_val <- as.data.frame(cbind(SWTH,pred))\n> >\n> > So, do I have to perform a back-transformation on the predicted values\n> > (ie., using exp())?\n> >\n> > Thanks,\n> >\n> > Kevin\n> >\n> > \t[[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> >\n> >\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ----- End forwarded message -----\n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n------------------------\nMollie Brooks, PhD\nPostdoctoral Researcher, Population Ecology Research Group\nDepartment of Evolutionary Biology & Environmental Studies, University of Z?rich\nhttp://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Hi R-sig-mixed,\nI found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can?t find a copy",
+      "body_plain": "Hi R-sig-mixed,\nI found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can’t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I’m still wondering about…should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\nNow for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can’t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\nthanks,\nMollie\n\nlibrary(lme4)\n\n# simulate Poisson data with random intercept\nset.seed(11)\ndat=data.frame(group=paste0('g', rep(1:10, each=100)))\nx=rnorm(10, mean=5,sd=2) \ndat$y = rpois(nrow(dat), exp(x[dat$group]))\nmean(dat$y)#observed mean\n\n# fit model\nm1=glmer(y ~ (1 | group), family = poisson, dat)\n\n#estract estimates\nstr(predict(m1,  type=\"response\", re.form=NA))\nexp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n#not very close to the mean\n\nnd=data.frame(group=paste0('g', -5:-1)) #add new levels\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA))\nstr(predict(m1, type=\"response\", re.form=NA))\nmean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n\n> \n> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>      Date: Tue, 12 Jan 2010 18:38:06 +0000\n>      From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>   Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>        To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n> \n> Dear Kevin,\n> \n> You will have to exponentiate the output from predict.\n> \n> It is worth noting there are three types of prediction (on the\n> data-scale) you could make:\n> \n> a) exp(Xb)\n> b) exp(Xb+Zu)\n> c) int exp(Xb)du assuming the u's are iid.\n> \n> X - fixed effect design matrix  b - fixed effects\n> Z - random effect design matrix  u - fixed effects\n> \n> You have done the first, but this can be very different from c, which\n> is what I expect you want: the predictions averaged over possible\n> realisations of the random effects.\n> \n> To obtain c use exp(Xb+0.5*v)\n> \n> where v is the sum of the variance components. If you use additive\n> over-dispersed models you want to include the \"residual\" variance in\n> v, also.\n> \n> Cheers,\n> \n> Jarrod\n> \n> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n> \n> > Hello,\n> >\n> > I'd like to know if predicted values from  a Poisson mixed model require\n> > back-transformation to get the 'real' predicted values or if this is\n> > done automatically? I assume that the predicted values are already\n> > back-transformed since my results are similar to the annual means.\n> >\n> > My model for estimating bird trends in lme4 is as such:\n> >\n> > lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n> > data=SWTH, family = poisson(link=log))\n> >\n> > I then took the coefficients from the mixed model and used them in a GLM\n> > to derive the predicted values.\n> > dd <-fixef(lme3) # gives coefficients\n> >\n> > lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n> > log)) # for poisson distribution\n> > lme_glmDEY$coefficients <- dd\n> >\n> > # create a data set of predicted values\n> > pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n> > pred_val <- as.data.frame(cbind(SWTH,pred))\n> >\n> > So, do I have to perform a back-transformation on the predicted values\n> > (ie., using exp())?\n> >\n> > Thanks,\n> >\n> > Kevin\n> >\n> > \t[[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n> >\n> >\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ----- End forwarded message -----\n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n------------------------\nMollie Brooks, PhD\nPostdoctoral Researcher, Population Ecology Research Group\nDepartment of Evolutionary Biology & Environmental Studies, University of Zürich\nhttp://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi R-sig-mixed,\nI found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can’t find a copy",
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024543.html"
     },
     {
       "id": "msg-06a8c79e3de3",
@@ -571,11 +603,12 @@
       "references": [
         "<86E759A5-4107-4730-AC32-7B9694CA2776@ufl.edu>"
       ],
-      "body_plain": "Hi Mollie,\n\nIn simple models it is the sum of the variance components, although with \nthings such as random regression it gets a bit more complicated.  For \nlog-link Poisson models the mean is simply the mean of a log-normal. For \nlogit models there is not an anlytical solution, and the approximation \nin the CourseNotes I certainly got from somewhere but can't now remember \nwhere from: somebody else has pointed out that my McCulloch & Searle \ncitation does not have the relevant material so I will try and hunt down \nwhere the result comes from.\n\nI think the deviation of your predicted and actual mean arises because \nof sampling error in the intercept/variance. The mean of an \nexponentiated sum of two normals will be larger than the exponentiated \nsum of the means of two normals. Consequently an unbiased estimator of \nthe intercept and variance would lead to an upwardly biased estimator of \nthe data-scale mean. Not sure about this though! Perhaps see if the \npredicted and actual mean become closer if you up the number of random \neffect levels (and so the intercept/variance become more precisely \nestimated).\n\nRegarding Q2 I'm also not sure. In predict.MCMCglmm you can specifiy the \nrandom effects you want to marginalise over, but I *think* this is not \nimplemented in lme4?\n\nCheers,\n\nJarrod\n\n\n\n\n\n\n\nOn 14/03/2016 16:34, Mollie Brooks wrote:\n> Hi R-sig-mixed,\n> I found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can?t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I?m still wondering about?should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\n> Now for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can?t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\n> thanks,\n> Mollie\n>\n> library(lme4)\n>\n> # simulate Poisson data with random intercept\n> set.seed(11)\n> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n> x=rnorm(10, mean=5,sd=2)\n> dat$y = rpois(nrow(dat), exp(x[dat$group]))\n> mean(dat$y)#observed mean\n>\n> # fit model\n> m1=glmer(y ~ (1 | group), family = poisson, dat)\n>\n> #estract estimates\n> str(predict(m1,  type=\"response\", re.form=NA))\n> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n> #not very close to the mean\n>\n> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n> str(predict(m1, type=\"response\", re.form=NA))\n> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n>\n>> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>>       Date: Tue, 12 Jan 2010 18:38:06 +0000\n>>       From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>    Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>         To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>\n>> Dear Kevin,\n>>\n>> You will have to exponentiate the output from predict.\n>>\n>> It is worth noting there are three types of prediction (on the\n>> data-scale) you could make:\n>>\n>> a) exp(Xb)\n>> b) exp(Xb+Zu)\n>> c) int exp(Xb)du assuming the u's are iid.\n>>\n>> X - fixed effect design matrix  b - fixed effects\n>> Z - random effect design matrix  u - fixed effects\n>>\n>> You have done the first, but this can be very different from c, which\n>> is what I expect you want: the predictions averaged over possible\n>> realisations of the random effects.\n>>\n>> To obtain c use exp(Xb+0.5*v)\n>>\n>> where v is the sum of the variance components. If you use additive\n>> over-dispersed models you want to include the \"residual\" variance in\n>> v, also.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>\n>>> Hello,\n>>>\n>>> I'd like to know if predicted values from  a Poisson mixed model require\n>>> back-transformation to get the 'real' predicted values or if this is\n>>> done automatically? I assume that the predicted values are already\n>>> back-transformed since my results are similar to the annual means.\n>>>\n>>> My model for estimating bird trends in lme4 is as such:\n>>>\n>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n>>> data=SWTH, family = poisson(link=log))\n>>>\n>>> I then took the coefficients from the mixed model and used them in a GLM\n>>> to derive the predicted values.\n>>> dd <-fixef(lme3) # gives coefficients\n>>>\n>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n>>> log)) # for poisson distribution\n>>> lme_glmDEY$coefficients <- dd\n>>>\n>>> # create a data set of predicted values\n>>> pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n>>> pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>\n>>> So, do I have to perform a back-transformation on the predicted values\n>>> (ie., using exp())?\n>>>\n>>> Thanks,\n>>>\n>>> Kevin\n>>>\n>>> \t[[alternative HTML version deleted]]\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>\n>>>\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>>\n>> ----- End forwarded message -----\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n> ------------------------\n> Mollie Brooks, PhD\n> Postdoctoral Researcher, Population Ecology Research Group\n> Department of Evolutionary Biology & Environmental Studies, University of Z?rich\n> http://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "Hi Mollie,\n\nIn simple models it is the sum of the variance components, although with \nthings such as random regression it gets a bit more complicated.  For \nlog-link Poisson models the mean is simply the mean of a log-normal. For \nlogit models there is not an anlytical solution, and the approximation \nin the CourseNotes I certainly got from somewhere but can't now remember \nwhere from: somebody else has pointed out that my McCulloch & Searle \ncitation does not have the relevant material so I will try and hunt down \nwhere the result comes from.\n\nI think the deviation of your predicted and actual mean arises because \nof sampling error in the intercept/variance. The mean of an \nexponentiated sum of two normals will be larger than the exponentiated \nsum of the means of two normals. Consequently an unbiased estimator of \nthe intercept and variance would lead to an upwardly biased estimator of \nthe data-scale mean. Not sure about this though! Perhaps see if the \npredicted and actual mean become closer if you up the number of random \neffect levels (and so the intercept/variance become more precisely \nestimated).\n\nRegarding Q2 I'm also not sure. In predict.MCMCglmm you can specifiy the \nrandom effects you want to marginalise over, but I *think* this is not \nimplemented in lme4?\n\nCheers,\n\nJarrod\n\n\n\n\n\n\n\nOn 14/03/2016 16:34, Mollie Brooks wrote:\n> Hi R-sig-mixed,\n> I found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can’t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I’m still wondering about…should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\n> Now for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can’t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\n> thanks,\n> Mollie\n>\n> library(lme4)\n>\n> # simulate Poisson data with random intercept\n> set.seed(11)\n> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n> x=rnorm(10, mean=5,sd=2)\n> dat$y = rpois(nrow(dat), exp(x[dat$group]))\n> mean(dat$y)#observed mean\n>\n> # fit model\n> m1=glmer(y ~ (1 | group), family = poisson, dat)\n>\n> #estract estimates\n> str(predict(m1,  type=\"response\", re.form=NA))\n> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n> #not very close to the mean\n>\n> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n> str(predict(m1, type=\"response\", re.form=NA))\n> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n>\n>> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>>       Date: Tue, 12 Jan 2010 18:38:06 +0000\n>>       From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>    Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>         To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>\n>> Dear Kevin,\n>>\n>> You will have to exponentiate the output from predict.\n>>\n>> It is worth noting there are three types of prediction (on the\n>> data-scale) you could make:\n>>\n>> a) exp(Xb)\n>> b) exp(Xb+Zu)\n>> c) int exp(Xb)du assuming the u's are iid.\n>>\n>> X - fixed effect design matrix  b - fixed effects\n>> Z - random effect design matrix  u - fixed effects\n>>\n>> You have done the first, but this can be very different from c, which\n>> is what I expect you want: the predictions averaged over possible\n>> realisations of the random effects.\n>>\n>> To obtain c use exp(Xb+0.5*v)\n>>\n>> where v is the sum of the variance components. If you use additive\n>> over-dispersed models you want to include the \"residual\" variance in\n>> v, also.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>\n>>> Hello,\n>>>\n>>> I'd like to know if predicted values from  a Poisson mixed model require\n>>> back-transformation to get the 'real' predicted values or if this is\n>>> done automatically? I assume that the predicted values are already\n>>> back-transformed since my results are similar to the annual means.\n>>>\n>>> My model for estimating bird trends in lme4 is as such:\n>>>\n>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n>>> data=SWTH, family = poisson(link=log))\n>>>\n>>> I then took the coefficients from the mixed model and used them in a GLM\n>>> to derive the predicted values.\n>>> dd <-fixef(lme3) # gives coefficients\n>>>\n>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n>>> log)) # for poisson distribution\n>>> lme_glmDEY$coefficients <- dd\n>>>\n>>> # create a data set of predicted values\n>>> pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n>>> pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>\n>>> So, do I have to perform a back-transformation on the predicted values\n>>> (ie., using exp())?\n>>>\n>>> Thanks,\n>>>\n>>> Kevin\n>>>\n>>> \t[[alternative HTML version deleted]]\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>\n>>>\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>>\n>> ----- End forwarded message -----\n>>\n>>\n>> -- \n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n> ------------------------\n> Mollie Brooks, PhD\n> Postdoctoral Researcher, Population Ecology Research Group\n> Department of Evolutionary Biology & Environmental Studies, University of Zürich\n> http://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi Mollie,\n\nIn simple models it is the sum of the variance components, although with \nthings such as random regression it gets a bit more complicated.  For \nlog-link Poisson models the mean is simply ",
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024544.html"
     },
     {
       "id": "msg-89a5eec76254",
@@ -590,11 +623,12 @@
         "<86E759A5-4107-4730-AC32-7B9694CA2776@ufl.edu>",
         "<56E7193F.3040107@ed.ac.uk>"
       ],
-      "body_plain": "Thanks Jarrod,\n\nYou?re right that the exp(Xb + 0.5v) correction for Jensen?s inequality is better in a model with more levels of the random effect. For 10,000 groups and 100 observations per group, it has about 10% error. I couldn?t do a ton of replicates because it?s slow. I rewrote the simple example (below) in case other people want to play around with it. \n\nI think the answer to Q2 may be that predict.merMod does not marginalize over random effects to get predictions on the response scale. A lot of people don?t realize this, so I might add an issue about documentation to the lme4 github page, unless the authors chime in.\n\ncheers,\nMollie\n\nlibrary(lme4)\n\n# simulate Poisson data with random intercept\nng=100 #number of groups\ndat=data.frame(group=paste0('g', rep(1:ng, each=100)))\nx=rnorm(ng, mean=5, sd=2) \ndat$y = rpois(nrow(dat), exp(x[dat$group]))\nmean(dat$y)\n\n# fit model\nm1=glmer(y ~ (1 | group), family = poisson, dat)\n#dat$obs=1:nrow(dat)\n#m2=glmer(y ~ (1 | group) + (1|obs), family = poisson, dat)\n\n#estract estimates\nsummary(m1)\nexp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n\nnd=data.frame(group=paste0('g', -5:-1)) #add new levels\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA))\nstr(predict(m1, type=\"response\", re.form=NA))\n\nmean(exp(coef(m1)[[1]][,1])) \n------------------------\nMollie Brooks, PhD\nPostdoctoral Researcher, Population Ecology Research Group\nDepartment of Evolutionary Biology & Environmental Studies, University of Z?rich\nhttp://www.popecol.org/team/mollie-brooks/\n\n> On 14Mar 2016, at 21:04, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> \n> Hi Mollie,\n> \n> In simple models it is the sum of the variance components, although with things such as random regression it gets a bit more complicated.  For log-link Poisson models the mean is simply the mean of a log-normal. For logit models there is not an anlytical solution, and the approximation in the CourseNotes I certainly got from somewhere but can't now remember where from: somebody else has pointed out that my McCulloch & Searle citation does not have the relevant material so I will try and hunt down where the result comes from.\n> \n> I think the deviation of your predicted and actual mean arises because of sampling error in the intercept/variance. The mean of an exponentiated sum of two normals will be larger than the exponentiated sum of the means of two normals. Consequently an unbiased estimator of the intercept and variance would lead to an upwardly biased estimator of the data-scale mean. Not sure about this though! Perhaps see if the predicted and actual mean become closer if you up the number of random effect levels (and so the intercept/variance become more precisely estimated).\n> \n> Regarding Q2 I'm also not sure. In predict.MCMCglmm you can specifiy the random effects you want to marginalise over, but I *think* this is not implemented in lme4?\n> \n> Cheers,\n> \n> Jarrod\n> \n> \n> \n> \n> \n> \n> \n> On 14/03/2016 16:34, Mollie Brooks wrote:\n>> Hi R-sig-mixed,\n>> I found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can?t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I?m still wondering about?should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\n>> Now for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can?t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\n>> thanks,\n>> Mollie\n>> \n>> library(lme4)\n>> \n>> # simulate Poisson data with random intercept\n>> set.seed(11)\n>> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n>> x=rnorm(10, mean=5,sd=2)\n>> dat$y = rpois(nrow(dat), exp(x[dat$group]))\n>> mean(dat$y)#observed mean\n>> \n>> # fit model\n>> m1=glmer(y ~ (1 | group), family = poisson, dat)\n>> \n>> #estract estimates\n>> str(predict(m1,  type=\"response\", re.form=NA))\n>> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n>> #not very close to the mean\n>> \n>> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n>> str(predict(m1, type=\"response\", re.form=NA))\n>> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n>> \n>>> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>>>      Date: Tue, 12 Jan 2010 18:38:06 +0000\n>>>      From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>   Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>>        To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>> \n>>> Dear Kevin,\n>>> \n>>> You will have to exponentiate the output from predict.\n>>> \n>>> It is worth noting there are three types of prediction (on the\n>>> data-scale) you could make:\n>>> \n>>> a) exp(Xb)\n>>> b) exp(Xb+Zu)\n>>> c) int exp(Xb)du assuming the u's are iid.\n>>> \n>>> X - fixed effect design matrix  b - fixed effects\n>>> Z - random effect design matrix  u - fixed effects\n>>> \n>>> You have done the first, but this can be very different from c, which\n>>> is what I expect you want: the predictions averaged over possible\n>>> realisations of the random effects.\n>>> \n>>> To obtain c use exp(Xb+0.5*v)\n>>> \n>>> where v is the sum of the variance components. If you use additive\n>>> over-dispersed models you want to include the \"residual\" variance in\n>>> v, also.\n>>> \n>>> Cheers,\n>>> \n>>> Jarrod\n>>> \n>>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>> \n>>>> Hello,\n>>>> \n>>>> I'd like to know if predicted values from  a Poisson mixed model require\n>>>> back-transformation to get the 'real' predicted values or if this is\n>>>> done automatically? I assume that the predicted values are already\n>>>> back-transformed since my results are similar to the annual means.\n>>>> \n>>>> My model for estimating bird trends in lme4 is as such:\n>>>> \n>>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n>>>> data=SWTH, family = poisson(link=log))\n>>>> \n>>>> I then took the coefficients from the mixed model and used them in a GLM\n>>>> to derive the predicted values.\n>>>> dd <-fixef(lme3) # gives coefficients\n>>>> \n>>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n>>>> log)) # for poisson distribution\n>>>> lme_glmDEY$coefficients <- dd\n>>>> \n>>>> # create a data set of predicted values\n>>>> pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n>>>> pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>> \n>>>> So, do I have to perform a back-transformation on the predicted values\n>>>> (ie., using exp())?\n>>>> \n>>>> Thanks,\n>>>> \n>>>> Kevin\n>>>> \n>>>> \t[[alternative HTML version deleted]]\n>>>> \n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>> \n>>>> \n>>> \n>>> \n>>> -- \n>>> The University of Edinburgh is a charitable body, registered in\n>>> Scotland, with registration number SC005336.\n>>> \n>>> \n>>> \n>>> ----- End forwarded message -----\n>>> \n>>> \n>>> -- \n>>> The University of Edinburgh is a charitable body, registered in\n>>> Scotland, with registration number SC005336.\n>>> \n>> ------------------------\n>> Mollie Brooks, PhD\n>> Postdoctoral Researcher, Population Ecology Research Group\n>> Department of Evolutionary Biology & Environmental Studies, University of Z?rich\n>> http://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n>> \t[[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Thanks Jarrod,\n\nYou?re right that the exp(Xb + 0.5v) correction for Jensen?s inequality is better in a model with more levels of the random effect. For 10,000 groups and 100 observations per group, it",
+      "body_plain": "Thanks Jarrod,\n\nYou’re right that the exp(Xb + 0.5v) correction for Jensen’s inequality is better in a model with more levels of the random effect. For 10,000 groups and 100 observations per group, it has about 10% error. I couldn’t do a ton of replicates because it’s slow. I rewrote the simple example (below) in case other people want to play around with it. \n\nI think the answer to Q2 may be that predict.merMod does not marginalize over random effects to get predictions on the response scale. A lot of people don’t realize this, so I might add an issue about documentation to the lme4 github page, unless the authors chime in.\n\ncheers,\nMollie\n\nlibrary(lme4)\n\n# simulate Poisson data with random intercept\nng=100 #number of groups\ndat=data.frame(group=paste0('g', rep(1:ng, each=100)))\nx=rnorm(ng, mean=5, sd=2) \ndat$y = rpois(nrow(dat), exp(x[dat$group]))\nmean(dat$y)\n\n# fit model\nm1=glmer(y ~ (1 | group), family = poisson, dat)\n#dat$obs=1:nrow(dat)\n#m2=glmer(y ~ (1 | group) + (1|obs), family = poisson, dat)\n\n#estract estimates\nsummary(m1)\nexp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n\nnd=data.frame(group=paste0('g', -5:-1)) #add new levels\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\nstr(predict(m1, newdata=nd, type=\"response\", re.form=NA))\nstr(predict(m1, type=\"response\", re.form=NA))\n\nmean(exp(coef(m1)[[1]][,1])) \n------------------------\nMollie Brooks, PhD\nPostdoctoral Researcher, Population Ecology Research Group\nDepartment of Evolutionary Biology & Environmental Studies, University of Zürich\nhttp://www.popecol.org/team/mollie-brooks/\n\n> On 14Mar 2016, at 21:04, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> \n> Hi Mollie,\n> \n> In simple models it is the sum of the variance components, although with things such as random regression it gets a bit more complicated.  For log-link Poisson models the mean is simply the mean of a log-normal. For logit models there is not an anlytical solution, and the approximation in the CourseNotes I certainly got from somewhere but can't now remember where from: somebody else has pointed out that my McCulloch & Searle citation does not have the relevant material so I will try and hunt down where the result comes from.\n> \n> I think the deviation of your predicted and actual mean arises because of sampling error in the intercept/variance. The mean of an exponentiated sum of two normals will be larger than the exponentiated sum of the means of two normals. Consequently an unbiased estimator of the intercept and variance would lead to an upwardly biased estimator of the data-scale mean. Not sure about this though! Perhaps see if the predicted and actual mean become closer if you up the number of random effect levels (and so the intercept/variance become more precisely estimated).\n> \n> Regarding Q2 I'm also not sure. In predict.MCMCglmm you can specifiy the random effects you want to marginalise over, but I *think* this is not implemented in lme4?\n> \n> Cheers,\n> \n> Jarrod\n> \n> \n> \n> \n> \n> \n> \n> On 14/03/2016 16:34, Mollie Brooks wrote:\n>> Hi R-sig-mixed,\n>> I found the below discussion of back-transformations from the log scale and the same formula is on page 46 of the MCMCglmm course notes pdf (version June 20, 2015). I can’t find a copy of the cited book McCulloch CE, Searle SR (2001) or any other source for this information. I have one point that I’m still wondering about…should v, the sum of the variance components, include residual error in any model, i.e. not just residual error that is part of an observation-level random effect for over-dispersed models? In the following example, the formula, exp(Xb+0.5*v) seems to be giving me an estimate that is consistently higher than my population mean. So adding the residual variance will make it even worse. Is this normal?\n>> Now for the R-specific part of the question... is there a version of predict.merMod that gives the the predictions on the response scale averaged over possible realizations of the random effects, i.e. marginalized with respect to the random effects? I can’t get any predictions close to the observed mean in the following example. I expected that a new level of the random effect would be given a marginalized prediction. Maybe this could be added to the documentation.\n>> thanks,\n>> Mollie\n>> \n>> library(lme4)\n>> \n>> # simulate Poisson data with random intercept\n>> set.seed(11)\n>> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n>> x=rnorm(10, mean=5,sd=2)\n>> dat$y = rpois(nrow(dat), exp(x[dat$group]))\n>> mean(dat$y)#observed mean\n>> \n>> # fit model\n>> m1=glmer(y ~ (1 | group), family = poisson, dat)\n>> \n>> #estract estimates\n>> str(predict(m1,  type=\"response\", re.form=NA))\n>> exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n>> #not very close to the mean\n>> \n>> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL, allow.new.levels=TRUE))\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA, allow.new.levels=TRUE))\n>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n>> str(predict(m1, type=\"response\", re.form=NA))\n>> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed mean\n>> \n>>> ----- Forwarded message from j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> -----\n>>>      Date: Tue, 12 Jan 2010 18:38:06 +0000\n>>>      From: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>   Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>>        To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>> \n>>> Dear Kevin,\n>>> \n>>> You will have to exponentiate the output from predict.\n>>> \n>>> It is worth noting there are three types of prediction (on the\n>>> data-scale) you could make:\n>>> \n>>> a) exp(Xb)\n>>> b) exp(Xb+Zu)\n>>> c) int exp(Xb)du assuming the u's are iid.\n>>> \n>>> X - fixed effect design matrix  b - fixed effects\n>>> Z - random effect design matrix  u - fixed effects\n>>> \n>>> You have done the first, but this can be very different from c, which\n>>> is what I expect you want: the predictions averaged over possible\n>>> realisations of the random effects.\n>>> \n>>> To obtain c use exp(Xb+0.5*v)\n>>> \n>>> where v is the sum of the variance components. If you use additive\n>>> over-dispersed models you want to include the \"residual\" variance in\n>>> v, also.\n>>> \n>>> Cheers,\n>>> \n>>> Jarrod\n>>> \n>>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>> \n>>>> Hello,\n>>>> \n>>>> I'd like to know if predicted values from  a Poisson mixed model require\n>>>> back-transformation to get the 'real' predicted values or if this is\n>>>> done automatically? I assume that the predicted values are already\n>>>> back-transformed since my results are similar to the annual means.\n>>>> \n>>>> My model for estimating bird trends in lme4 is as such:\n>>>> \n>>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) + (1|Site/Station),\n>>>> data=SWTH, family = poisson(link=log))\n>>>> \n>>>> I then took the coefficients from the mixed model and used them in a GLM\n>>>> to derive the predicted values.\n>>>> dd <-fixef(lme3) # gives coefficients\n>>>> \n>>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family = poisson(link =\n>>>> log)) # for poisson distribution\n>>>> lme_glmDEY$coefficients <- dd\n>>>> \n>>>> # create a data set of predicted values\n>>>> pred <- as.data.frame(predict(lme_glmDEY, SWTH , \"response\", se.fit=T))\n>>>> pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>> \n>>>> So, do I have to perform a back-transformation on the predicted values\n>>>> (ie., using exp())?\n>>>> \n>>>> Thanks,\n>>>> \n>>>> Kevin\n>>>> \n>>>> \t[[alternative HTML version deleted]]\n>>>> \n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models> mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>> \n>>>> \n>>> \n>>> \n>>> -- \n>>> The University of Edinburgh is a charitable body, registered in\n>>> Scotland, with registration number SC005336.\n>>> \n>>> \n>>> \n>>> ----- End forwarded message -----\n>>> \n>>> \n>>> -- \n>>> The University of Edinburgh is a charitable body, registered in\n>>> Scotland, with registration number SC005336.\n>>> \n>> ------------------------\n>> Mollie Brooks, PhD\n>> Postdoctoral Researcher, Population Ecology Research Group\n>> Department of Evolutionary Biology & Environmental Studies, University of Zürich\n>> http://www.popecol.org/team/mollie-brooks/ <http://www.popecol.org/team/mollie-brooks/>\n>> \t[[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> -- \n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks Jarrod,\n\nYou’re right that the exp(Xb + 0.5v) correction for Jensen’s inequality is better in a model with more levels of the random effect. For 10,000 groups and 100 observations per group, it",
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024545.html"
     },
     {
       "id": "msg-b73409dd3e2d",
@@ -610,11 +644,12 @@
         "<56E7193F.3040107@ed.ac.uk>",
         "<5A184EF2-CC22-4815-8E11-627A2ADCF731@gmail.com>"
       ],
-      "body_plain": "Please do submit an issue.\n\n   Thinking about marginalizing predictions opens up a lot of questions:\n\n   - marginalize by taking the mean of random samples?\n   - by doing numerical integration?\n   - by using the delta method?  (one might be able to use higher-order \nterms to reduce error ...)\n\n\n\nOn 16-03-15 02:27 PM, Mollie Brooks wrote:\n> Thanks Jarrod,\n>\n> You?re right that the exp(Xb + 0.5v) correction for Jensen?s\n> inequality is better in a model with more levels of the random\n> effect. For 10,000 groups and 100 observations per group, it has\n> about 10% error. I couldn?t do a ton of replicates because it?s slow.\n> I rewrote the simple example (below) in case other people want to\n> play around with it.\n>\n> I think the answer to Q2 may be that predict.merMod does not\n> marginalize over random effects to get predictions on the response\n> scale. A lot of people don?t realize this, so I might add an issue\n> about documentation to the lme4 github page, unless the authors chime\n> in.\n>\n> cheers, Mollie\n>\n> library(lme4)\n>\n> # simulate Poisson data with random intercept ng=100 #number of\n> groups dat=data.frame(group=paste0('g', rep(1:ng, each=100)))\n> x=rnorm(ng, mean=5, sd=2) dat$y = rpois(nrow(dat),\n> exp(x[dat$group])) mean(dat$y)\n>\n> # fit model m1=glmer(y ~ (1 | group), family = poisson, dat)\n> #dat$obs=1:nrow(dat) #m2=glmer(y ~ (1 | group) + (1|obs), family =\n> poisson, dat)\n>\n> #estract estimates summary(m1) exp(fixef(m1)+\n> 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n>\n> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL,\n> allow.new.levels=TRUE)) str(predict(m1, newdata=nd, type=\"response\",\n> re.form=NA, allow.new.levels=TRUE)) str(predict(m1, newdata=nd,\n> type=\"response\", re.form=NA)) str(predict(m1, type=\"response\",\n> re.form=NA))\n>\n> mean(exp(coef(m1)[[1]][,1])) ------------------------ Mollie Brooks,\n> PhD Postdoctoral Researcher, Population Ecology Research Group\n> Department of Evolutionary Biology & Environmental Studies,\n> University of Z?rich http://www.popecol.org/team/mollie-brooks/\n>\n>> On 14Mar 2016, at 21:04, Jarrod Hadfield <j.hadfield at ed.ac.uk>\n>> wrote:\n>>\n>> Hi Mollie,\n>>\n>> In simple models it is the sum of the variance components, although\n>> with things such as random regression it gets a bit more\n>> complicated.  For log-link Poisson models the mean is simply the\n>> mean of a log-normal. For logit models there is not an anlytical\n>> solution, and the approximation in the CourseNotes I certainly got\n>> from somewhere but can't now remember where from: somebody else has\n>> pointed out that my McCulloch & Searle citation does not have the\n>> relevant material so I will try and hunt down where the result\n>> comes from.\n>>\n>> I think the deviation of your predicted and actual mean arises\n>> because of sampling error in the intercept/variance. The mean of an\n>> exponentiated sum of two normals will be larger than the\n>> exponentiated sum of the means of two normals. Consequently an\n>> unbiased estimator of the intercept and variance would lead to an\n>> upwardly biased estimator of the data-scale mean. Not sure about\n>> this though! Perhaps see if the predicted and actual mean become\n>> closer if you up the number of random effect levels (and so the\n>> intercept/variance become more precisely estimated).\n>>\n>> Regarding Q2 I'm also not sure. In predict.MCMCglmm you can\n>> specifiy the random effects you want to marginalise over, but I\n>> *think* this is not implemented in lme4?\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>> On 14/03/2016 16:34, Mollie Brooks wrote:\n>>> Hi R-sig-mixed, I found the below discussion of\n>>> back-transformations from the log scale and the same formula is\n>>> on page 46 of the MCMCglmm course notes pdf (version June 20,\n>>> 2015). I can?t find a copy of the cited book McCulloch CE, Searle\n>>> SR (2001) or any other source for this information. I have one\n>>> point that I?m still wondering about?should v, the sum of the\n>>> variance components, include residual error in any model, i.e.\n>>> not just residual error that is part of an observation-level\n>>> random effect for over-dispersed models? In the following\n>>> example, the formula, exp(Xb+0.5*v) seems to be giving me an\n>>> estimate that is consistently higher than my population mean. So\n>>> adding the residual variance will make it even worse. Is this\n>>> normal? Now for the R-specific part of the question... is there a\n>>> version of predict.merMod that gives the the predictions on the\n>>> response scale averaged over possible realizations of the random\n>>> effects, i.e. marginalized with respect to the random effects? I\n>>> can?t get any predictions close to the observed mean in the\n>>> following example. I expected that a new level of the random\n>>> effect would be given a marginalized prediction. Maybe this could\n>>> be added to the documentation. thanks, Mollie\n>>>\n>>> library(lme4)\n>>>\n>>> # simulate Poisson data with random intercept set.seed(11)\n>>> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n>>> x=rnorm(10, mean=5,sd=2) dat$y = rpois(nrow(dat),\n>>> exp(x[dat$group])) mean(dat$y)#observed mean\n>>>\n>>> # fit model m1=glmer(y ~ (1 | group), family = poisson, dat)\n>>>\n>>> #estract estimates str(predict(m1,  type=\"response\",\n>>> re.form=NA)) exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from\n>>> MCMCglmm Coursenotes p.46 #not very close to the mean\n>>>\n>>> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n>>> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL,\n>>> allow.new.levels=TRUE)) str(predict(m1, newdata=nd,\n>>> type=\"response\", re.form=NA, allow.new.levels=TRUE))\n>>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n>>> str(predict(m1, type=\"response\", re.form=NA))\n>>> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed\n>>> mean\n>>>\n>>>> ----- Forwarded message from j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>> ----- Date: Tue, 12 Jan 2010 18:38:06 +0000 From: Jarrod\n>>>> Hadfield <j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>> Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>>> To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>>\n>>>> Dear Kevin,\n>>>>\n>>>> You will have to exponentiate the output from predict.\n>>>>\n>>>> It is worth noting there are three types of prediction (on the\n>>>> data-scale) you could make:\n>>>>\n>>>> a) exp(Xb) b) exp(Xb+Zu) c) int exp(Xb)du assuming the u's are\n>>>> iid.\n>>>>\n>>>> X - fixed effect design matrix  b - fixed effects Z - random\n>>>> effect design matrix  u - fixed effects\n>>>>\n>>>> You have done the first, but this can be very different from c,\n>>>> which is what I expect you want: the predictions averaged over\n>>>> possible realisations of the random effects.\n>>>>\n>>>> To obtain c use exp(Xb+0.5*v)\n>>>>\n>>>> where v is the sum of the variance components. If you use\n>>>> additive over-dispersed models you want to include the\n>>>> \"residual\" variance in v, also.\n>>>>\n>>>> Cheers,\n>>>>\n>>>> Jarrod\n>>>>\n>>>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>>>\n>>>>> Hello,\n>>>>>\n>>>>> I'd like to know if predicted values from  a Poisson mixed\n>>>>> model require back-transformation to get the 'real' predicted\n>>>>> values or if this is done automatically? I assume that the\n>>>>> predicted values are already back-transformed since my\n>>>>> results are similar to the annual means.\n>>>>>\n>>>>> My model for estimating bird trends in lme4 is as such:\n>>>>>\n>>>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) +\n>>>>> (1|Site/Station), data=SWTH, family = poisson(link=log))\n>>>>>\n>>>>> I then took the coefficients from the mixed model and used\n>>>>> them in a GLM to derive the predicted values. dd\n>>>>> <-fixef(lme3) # gives coefficients\n>>>>>\n>>>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family =\n>>>>> poisson(link = log)) # for poisson distribution\n>>>>> lme_glmDEY$coefficients <- dd\n>>>>>\n>>>>> # create a data set of predicted values pred <-\n>>>>> as.data.frame(predict(lme_glmDEY, SWTH , \"response\",\n>>>>> se.fit=T)) pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>>>\n>>>>> So, do I have to perform a back-transformation on the\n>>>>> predicted values (ie., using exp())?\n>>>>>\n>>>>> Thanks,\n>>>>>\n>>>>> Kevin\n>>>>>\n>>>>> [[alternative HTML version deleted]]\n>>>>>\n>>>>> _______________________________________________\n>>>>> R-sig-mixed-models at r-project.org\n>>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>>> mailing list\n>>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>>>\n>>>>>\n>>>>\n>>>>\n>>>> -- The University of Edinburgh is a charitable body, registered\n>>>> in Scotland, with registration number SC005336.\n>>>>\n>>>>\n>>>>\n>>>> ----- End forwarded message -----\n>>>>\n>>>>\n>>>> -- The University of Edinburgh is a charitable body, registered\n>>>> in Scotland, with registration number SC005336.\n>>>>\n>>> ------------------------ Mollie Brooks, PhD Postdoctoral\n>>> Researcher, Population Ecology Research Group Department of\n>>> Evolutionary Biology & Environmental Studies, University of\n>>> Z?rich http://www.popecol.org/team/mollie-brooks/\n>>> <http://www.popecol.org/team/mollie-brooks/> [[alternative HTML\n>>> version deleted]]\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>\n>> -- The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "Please do submit an issue.\n\n   Thinking about marginalizing predictions opens up a lot of questions:\n\n   - marginalize by taking the mean of random samples?\n   - by doing numerical integration?\n   - by using the delta method?  (one might be able to use higher-order \nterms to reduce error ...)\n\n\n\nOn 16-03-15 02:27 PM, Mollie Brooks wrote:\n> Thanks Jarrod,\n>\n> You’re right that the exp(Xb + 0.5v) correction for Jensen’s\n> inequality is better in a model with more levels of the random\n> effect. For 10,000 groups and 100 observations per group, it has\n> about 10% error. I couldn’t do a ton of replicates because it’s slow.\n> I rewrote the simple example (below) in case other people want to\n> play around with it.\n>\n> I think the answer to Q2 may be that predict.merMod does not\n> marginalize over random effects to get predictions on the response\n> scale. A lot of people don’t realize this, so I might add an issue\n> about documentation to the lme4 github page, unless the authors chime\n> in.\n>\n> cheers, Mollie\n>\n> library(lme4)\n>\n> # simulate Poisson data with random intercept ng=100 #number of\n> groups dat=data.frame(group=paste0('g', rep(1:ng, each=100)))\n> x=rnorm(ng, mean=5, sd=2) dat$y = rpois(nrow(dat),\n> exp(x[dat$group])) mean(dat$y)\n>\n> # fit model m1=glmer(y ~ (1 | group), family = poisson, dat)\n> #dat$obs=1:nrow(dat) #m2=glmer(y ~ (1 | group) + (1|obs), family =\n> poisson, dat)\n>\n> #estract estimates summary(m1) exp(fixef(m1)+\n> 0.5*VarCorr(m1)$group[1])#from MCMCglmm Coursenotes p.46\n>\n> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL,\n> allow.new.levels=TRUE)) str(predict(m1, newdata=nd, type=\"response\",\n> re.form=NA, allow.new.levels=TRUE)) str(predict(m1, newdata=nd,\n> type=\"response\", re.form=NA)) str(predict(m1, type=\"response\",\n> re.form=NA))\n>\n> mean(exp(coef(m1)[[1]][,1])) ------------------------ Mollie Brooks,\n> PhD Postdoctoral Researcher, Population Ecology Research Group\n> Department of Evolutionary Biology & Environmental Studies,\n> University of Zürich http://www.popecol.org/team/mollie-brooks/\n>\n>> On 14Mar 2016, at 21:04, Jarrod Hadfield <j.hadfield at ed.ac.uk>\n>> wrote:\n>>\n>> Hi Mollie,\n>>\n>> In simple models it is the sum of the variance components, although\n>> with things such as random regression it gets a bit more\n>> complicated.  For log-link Poisson models the mean is simply the\n>> mean of a log-normal. For logit models there is not an anlytical\n>> solution, and the approximation in the CourseNotes I certainly got\n>> from somewhere but can't now remember where from: somebody else has\n>> pointed out that my McCulloch & Searle citation does not have the\n>> relevant material so I will try and hunt down where the result\n>> comes from.\n>>\n>> I think the deviation of your predicted and actual mean arises\n>> because of sampling error in the intercept/variance. The mean of an\n>> exponentiated sum of two normals will be larger than the\n>> exponentiated sum of the means of two normals. Consequently an\n>> unbiased estimator of the intercept and variance would lead to an\n>> upwardly biased estimator of the data-scale mean. Not sure about\n>> this though! Perhaps see if the predicted and actual mean become\n>> closer if you up the number of random effect levels (and so the\n>> intercept/variance become more precisely estimated).\n>>\n>> Regarding Q2 I'm also not sure. In predict.MCMCglmm you can\n>> specifiy the random effects you want to marginalise over, but I\n>> *think* this is not implemented in lme4?\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>>\n>>\n>>\n>>\n>> On 14/03/2016 16:34, Mollie Brooks wrote:\n>>> Hi R-sig-mixed, I found the below discussion of\n>>> back-transformations from the log scale and the same formula is\n>>> on page 46 of the MCMCglmm course notes pdf (version June 20,\n>>> 2015). I can’t find a copy of the cited book McCulloch CE, Searle\n>>> SR (2001) or any other source for this information. I have one\n>>> point that I’m still wondering about…should v, the sum of the\n>>> variance components, include residual error in any model, i.e.\n>>> not just residual error that is part of an observation-level\n>>> random effect for over-dispersed models? In the following\n>>> example, the formula, exp(Xb+0.5*v) seems to be giving me an\n>>> estimate that is consistently higher than my population mean. So\n>>> adding the residual variance will make it even worse. Is this\n>>> normal? Now for the R-specific part of the question... is there a\n>>> version of predict.merMod that gives the the predictions on the\n>>> response scale averaged over possible realizations of the random\n>>> effects, i.e. marginalized with respect to the random effects? I\n>>> can’t get any predictions close to the observed mean in the\n>>> following example. I expected that a new level of the random\n>>> effect would be given a marginalized prediction. Maybe this could\n>>> be added to the documentation. thanks, Mollie\n>>>\n>>> library(lme4)\n>>>\n>>> # simulate Poisson data with random intercept set.seed(11)\n>>> dat=data.frame(group=paste0('g', rep(1:10, each=100)))\n>>> x=rnorm(10, mean=5,sd=2) dat$y = rpois(nrow(dat),\n>>> exp(x[dat$group])) mean(dat$y)#observed mean\n>>>\n>>> # fit model m1=glmer(y ~ (1 | group), family = poisson, dat)\n>>>\n>>> #estract estimates str(predict(m1,  type=\"response\",\n>>> re.form=NA)) exp(fixef(m1)+ 0.5*VarCorr(m1)$group[1])#from\n>>> MCMCglmm Coursenotes p.46 #not very close to the mean\n>>>\n>>> nd=data.frame(group=paste0('g', -5:-1)) #add new levels\n>>> str(predict(m1, newdata=nd, type=\"response\", re.form=NULL,\n>>> allow.new.levels=TRUE)) str(predict(m1, newdata=nd,\n>>> type=\"response\", re.form=NA, allow.new.levels=TRUE))\n>>> str(predict(m1, newdata=nd, type=\"response\", re.form=NA))\n>>> str(predict(m1, type=\"response\", re.form=NA))\n>>> mean(exp(coef(m1)[[1]][,1]))#only number close to the observed\n>>> mean\n>>>\n>>>> ----- Forwarded message from j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>> ----- Date: Tue, 12 Jan 2010 18:38:06 +0000 From: Jarrod\n>>>> Hadfield <j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>> Reply-To: Jarrod Hadfield <j.hadfield at ed.ac.uk\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>> Subject: Re: [R-sig-ME] Back-transformation of Poisson model\n>>>> To: \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>\n>>>>\n>>>> Dear Kevin,\n>>>>\n>>>> You will have to exponentiate the output from predict.\n>>>>\n>>>> It is worth noting there are three types of prediction (on the\n>>>> data-scale) you could make:\n>>>>\n>>>> a) exp(Xb) b) exp(Xb+Zu) c) int exp(Xb)du assuming the u's are\n>>>> iid.\n>>>>\n>>>> X - fixed effect design matrix  b - fixed effects Z - random\n>>>> effect design matrix  u - fixed effects\n>>>>\n>>>> You have done the first, but this can be very different from c,\n>>>> which is what I expect you want: the predictions averaged over\n>>>> possible realisations of the random effects.\n>>>>\n>>>> To obtain c use exp(Xb+0.5*v)\n>>>>\n>>>> where v is the sum of the variance components. If you use\n>>>> additive over-dispersed models you want to include the\n>>>> \"residual\" variance in v, also.\n>>>>\n>>>> Cheers,\n>>>>\n>>>> Jarrod\n>>>>\n>>>> Quoting \"Kardynal,Kevin [Yel]\" <Kevin.Kardynal at EC.gc.ca\n>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>>:\n>>>>\n>>>>> Hello,\n>>>>>\n>>>>> I'd like to know if predicted values from  a Poisson mixed\n>>>>> model require back-transformation to get the 'real' predicted\n>>>>> values or if this is done automatically? I assume that the\n>>>>> predicted values are already back-transformed since my\n>>>>> results are similar to the annual means.\n>>>>>\n>>>>> My model for estimating bird trends in lme4 is as such:\n>>>>>\n>>>>> lme3<-lmer(Abundance ~ Year +  (1|Observer) +\n>>>>> (1|Site/Station), data=SWTH, family = poisson(link=log))\n>>>>>\n>>>>> I then took the coefficients from the mixed model and used\n>>>>> them in a GLM to derive the predicted values. dd\n>>>>> <-fixef(lme3) # gives coefficients\n>>>>>\n>>>>> lme_glmDEY <- glm(Abundance ~ Year, data=SWTH, family =\n>>>>> poisson(link = log)) # for poisson distribution\n>>>>> lme_glmDEY$coefficients <- dd\n>>>>>\n>>>>> # create a data set of predicted values pred <-\n>>>>> as.data.frame(predict(lme_glmDEY, SWTH , \"response\",\n>>>>> se.fit=T)) pred_val <- as.data.frame(cbind(SWTH,pred))\n>>>>>\n>>>>> So, do I have to perform a back-transformation on the\n>>>>> predicted values (ie., using exp())?\n>>>>>\n>>>>> Thanks,\n>>>>>\n>>>>> Kevin\n>>>>>\n>>>>> [[alternative HTML version deleted]]\n>>>>>\n>>>>> _______________________________________________\n>>>>> R-sig-mixed-models at r-project.org\n>>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>>> mailing list\n>>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>>> <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>\n>>>>>\n>>>>>\n>>>>\n>>>>\n>>>> -- The University of Edinburgh is a charitable body, registered\n>>>> in Scotland, with registration number SC005336.\n>>>>\n>>>>\n>>>>\n>>>> ----- End forwarded message -----\n>>>>\n>>>>\n>>>> -- The University of Edinburgh is a charitable body, registered\n>>>> in Scotland, with registration number SC005336.\n>>>>\n>>> ------------------------ Mollie Brooks, PhD Postdoctoral\n>>> Researcher, Population Ecology Research Group Department of\n>>> Evolutionary Biology & Environmental Studies, University of\n>>> Zürich http://www.popecol.org/team/mollie-brooks/\n>>> <http://www.popecol.org/team/mollie-brooks/> [[alternative HTML\n>>> version deleted]]\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>>\n>> -- The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "Please do submit an issue.\n\n   Thinking about marginalizing predictions opens up a lot of questions:\n\n   - marginalize by taking the mean of random samples?\n   - by doing numerical integration?\n   - b",
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 3,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024546.html"
     },
     {
       "id": "msg-c7df0ac4b64f",
@@ -630,7 +665,8 @@
       "body_snippet": "?Dear colleagues!\n\nWe spent\n??\ncalculation of the gravity model in R and STATA software.\nFor calculations we used the standard package glmm in R (with parameter\nfamily = quasipoisson)\nand ppml in STAT",
       "thread_id": "thread-c7df0ac4b64f",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024547.html"
     },
     {
       "id": "msg-f124f8341ad9",
@@ -651,6 +687,7 @@
       "thread_id": "thread-e701b0e0c855",
       "thread_depth": 3,
       "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024548.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20160316/8627fd2f/attachment.pl"
       ]
@@ -669,7 +706,8 @@
       "body_snippet": "I am trying to fit a mixed effects binomial model.\n\nThe data consists of\n- A dependent variable consisting of Bernoulli trials (outcome)\n- A time variable (time), which has been mean centered\n- An id ",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024549.html"
     },
     {
       "id": "msg-8ae0fed7129a",
@@ -687,7 +725,8 @@
       "body_snippet": "Hi Chris,\n\nTry checking ?convergence....coincidentally, I was having a similar problem\njust yesterday. There are some step by step\ninstructions for trouble shooting/double checking convergence warning",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024550.html"
     },
     {
       "id": "msg-c14546206c71",
@@ -703,7 +742,8 @@
       "body_snippet": "We would like to announce a series of 8 statistics courses in Australia \nin June/July/August 2016. For details and registration:\n\nhttp://highstat.com/statscourse.htm\n\nKind regards,\n\nAlain Zuur\n\n\n\nCour",
       "thread_id": "thread-c14546206c71",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024551.html"
     },
     {
       "id": "msg-92ca218565b3",
@@ -722,7 +762,8 @@
       "body_snippet": "Good question.\n\n   I'm afraid that for data sets ~ 100,000 observations or bigger, our \nconvergence calculations aren't terribly reliable -- see e.g. the third \nset of figures under https://rpubs.com/",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024552.html"
     },
     {
       "id": "msg-8bd28d3fdf27",
@@ -742,7 +783,8 @@
       "body_snippet": "Thanks, Jacquelyn and Ben. Jacquelyn, did you mean to attach some code or\njust reference the site that Ben did? I had seen Ben's comments on\nStackOverflow about potential false convergence messages, s",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 3,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024553.html"
     },
     {
       "id": "msg-1bec75067202",
@@ -763,7 +805,8 @@
       "body_snippet": "Hi Chris,\n\nYou can find the example code I was talking about here if you haven't\ntracked it down already:\n\nhttp://127.0.0.1:29918/library/lme4/html/convergence.html\n\nJackie\n\n\n\nOn Wed, Mar 16, 2016 at ",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 4,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024554.html"
     },
     {
       "id": "msg-ed2224339a6f",
@@ -785,7 +828,8 @@
       "body_snippet": "Dear Jackie,\n\n127.0.01 points to localhost, which will work only on your computer.\n\nBest regards,\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature\nand Forest",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 5,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024555.html"
     },
     {
       "id": "msg-231463c0e0a4",
@@ -808,7 +852,8 @@
       "body_snippet": "Thanks, I'll read through the convergence help page in the lme4 package.\nChris\n\nOn Wed, Mar 16, 2016 at 3:12 PM, Thierry Onkelinx <thierry.onkelinx at inbo.be>\nwrote:\n\n> Dear Jackie,\n>\n> 127.0.01 poin",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 6,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024556.html"
     },
     {
       "id": "msg-f197d7d5b61a",
@@ -831,7 +876,8 @@
       "body_snippet": "https://github.com/lme4/lme4/blob/master/man/convergence.Rd\n\nOn Wed, Mar 16, 2016 at 4:12 PM, Thierry Onkelinx\n<thierry.onkelinx at inbo.be> wrote:\n> Dear Jackie,\n>\n> 127.0.01 points to localhost, whi",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 6,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024557.html"
     },
     {
       "id": "msg-daa17814cc51",
@@ -855,7 +901,8 @@
       "body_snippet": "To answer this particular question:\n\n   The importance of accuracy in the approximation of the integral over \nthe random effects (for which glmmPQL < Laplace < adaptive Gauss-Hermite \nquadrature) depe",
       "thread_id": "thread-5250338d3e5f",
       "thread_depth": 7,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024558.html"
     },
     {
       "id": "msg-372bbbe0306a",
@@ -871,7 +918,8 @@
       "body_snippet": "Hello,\n\nApologies if a similar question has been asked and answered before, but any\nhelp would be extremely appreciated\n\nI measured 4 behavioral traits in the same test over a period of 20\nminutes. Ea",
       "thread_id": "thread-372bbbe0306a",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024569.html"
     },
     {
       "id": "msg-cf1b8dea3984",
@@ -887,7 +935,8 @@
       "body_snippet": "Hello Everyone,\n\n \n\nI've run a number of mixed models using data from a two-group RCT evaluating\nan intervention over 3 time points  and am currently trying to figure out\nthe best way to graphically p",
       "thread_id": "thread-cf1b8dea3984",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024559.html"
     },
     {
       "id": "msg-3bcada813d68",
@@ -903,7 +952,8 @@
       "body_snippet": "Dear List, \n\nPlease advise.    I cannot get my head around modelling this data.\n\nStudy involves 200 individuals with several (not always the same number)\ndichotomous outcomes, at 10 different times.  ",
       "thread_id": "thread-3bcada813d68",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024560.html"
     },
     {
       "id": "msg-a19287933f48",
@@ -921,7 +971,8 @@
       "body_snippet": "Dear Lize,\n\nSo the response for individual i at time i is (x_it, n_it). Does the\npredictor has the same amount of trials as the responses (y_it, n_it)? If\nso, do you have information on the n_it Berno",
       "thread_id": "thread-3bcada813d68",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024561.html"
     },
     {
       "id": "msg-0e1a7fcc1141",
@@ -937,7 +988,8 @@
       "body_snippet": "I am using an lme to check the effect of 3 types of treatment (A,B, C) \non my variable, over time. I do not expect any effect of treatment A, \nwhich is a fake treatment.\n\nI have measurement over 5 per",
       "thread_id": "thread-0e1a7fcc1141",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024562.html"
     },
     {
       "id": "msg-c136f5f717ba",
@@ -956,7 +1008,8 @@
       "body_snippet": "Thank you for the quick response, Thierry.\n\nYes, unfortunately the response n_it_j does not equal the predictor n_it_j.\n\nI will go the INLA route. \n\nThanks again\n\nLize\n\n \n\n \n\n \n\n \n\nFrom: Thierry Onkel",
       "thread_id": "thread-3bcada813d68",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024563.html"
     },
     {
       "id": "msg-ecbcdc7ab943",
@@ -974,7 +1027,8 @@
       "body_snippet": "Dear Martina,\n\nI would reparametrise the model.\n\nlme(var ~ treatment + treatment:period+treatment:side,\n           method=\"ML\",\n           random=list(IDlog=~1), na.action=na.omit,\n           data=cha",
       "thread_id": "thread-0e1a7fcc1141",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024564.html"
     },
     {
       "id": "msg-9ace60c277c5",
@@ -990,7 +1044,8 @@
       "body_snippet": "Dear Colleagues,\nI am trying to analyze an experiment comparing consumption of 2 food types\nin a choice-type design. Subjects were offered a choice of 2 food types,\nand their daily consumption of each",
       "thread_id": "thread-9ace60c277c5",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024565.html"
     },
     {
       "id": "msg-7eea90b63d4c",
@@ -1008,7 +1063,8 @@
       "body_snippet": "? Can I do an internal validation in a mixed-effect-model?\n\nHere is some code:\n\n> \n> \n> \n>> \n>> \n>> I would like to do an internal validation of a discriminative ability of a mixed effects models.\n>> ",
       "thread_id": "thread-7eea90b63d4c",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024566.html"
     },
     {
       "id": "msg-6763e8cacbd0",
@@ -1024,7 +1080,8 @@
       "body_snippet": "Hello Everyone,\n\n \n\nDoes anyone know how to graph the results of a lme4 longitudinal multilevel\nmodel as a bar graph of Time (3 points) on x-axis with probability of\ngetting the 1 value on the outcome",
       "thread_id": "thread-6763e8cacbd0",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024567.html"
     },
     {
       "id": "msg-195f8538d803",
@@ -1042,7 +1099,8 @@
       "body_snippet": "Dear Igor,\nAm new to the list, so defer by all means to more experienced opinions.\nMy suggestion would be to use the \"lsmeans\" package and the inverse logit\ntransformation\n(to get back to the scale of",
       "thread_id": "thread-6763e8cacbd0",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024568.html"
     },
     {
       "id": "msg-91f9b3e9bf36",
@@ -1058,7 +1116,8 @@
       "body_snippet": "Dear list,\n\nI fitted a linear mixed effects model using lme in R on a relatively \nlarge data set. Now I want to extend this model, introducing an \nadditional fixed effect on a subset of the data witho",
       "thread_id": "thread-91f9b3e9bf36",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024570.html"
     },
     {
       "id": "msg-884f02ccc5b5",
@@ -1076,7 +1135,8 @@
       "body_snippet": "Dear Urs,\n\nWhat you can do is first get the predictions from m1 for dataset d and add\nit as a variable to dataset d. Then fit a model on dataset d using the\nprediction from m1 as an offset.\n\nd$M1 <- p",
       "thread_id": "thread-91f9b3e9bf36",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024571.html"
     },
     {
       "id": "msg-ea056e7fdab5",
@@ -1094,7 +1154,8 @@
       "body_snippet": "Hi,\n\nThe Dirichlet distribution is probably most appropriate for a \ncontinous-valued response, but I guess you could discretise it and treat \nit as multinomial. I'm not sure how the results will chang",
       "thread_id": "thread-372bbbe0306a",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024572.html"
     },
     {
       "id": "msg-15b093c7798e",
@@ -1110,7 +1171,8 @@
       "body_snippet": "Dear Sir,\n\nI'm currently a PhD student in cognitive neurosciences at the CerCo \nlaboratory, France.\n\nI'm dealing with a problematic trying to analyze my data with the \nglmmADMB function in R.\nI thank ",
       "thread_id": "thread-15b093c7798e",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024577.html"
     },
     {
       "id": "msg-52a30342d2a1",
@@ -1126,7 +1188,8 @@
       "body_snippet": "Hello R-users,\n\nI'm attempting to model differences in fork length over time for 4\ndifferent cross types of a species of freshwater fish using the most recent\nversion of nlme . Examining plots of the ",
       "thread_id": "thread-52a30342d2a1",
       "thread_depth": 0,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024573.html"
     },
     {
       "id": "msg-c9fe0a9e6661",
@@ -1144,7 +1207,8 @@
       "body_snippet": "Dear Jackie,\n\nI presume that the heteroscedasticy along age_bin is somewhat smooth. In\nsuch case you use a less parametrised model the variance. Like e.g.\nvarExp(form = ~age_bin|cross). ?varClasses gi",
       "thread_id": "thread-52a30342d2a1",
       "thread_depth": 1,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024574.html"
     },
     {
       "id": "msg-54cc09171301",
@@ -1163,7 +1227,8 @@
       "body_snippet": "Hi Thierry,\n\nThanks for the quick response! I've tried the following variance weight\nstructures:\n\nvf1 <- varIdent (form = ~ 1 | cross*age_bin)\n\nvf2 <- varExp (form = ~ age_bin | cross)\n\nvf3 <- varComb",
       "thread_id": "thread-52a30342d2a1",
       "thread_depth": 2,
-      "month": "2016-03"
+      "month": "2016-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q1/024575.html"
     }
   ],
   "threads": [
