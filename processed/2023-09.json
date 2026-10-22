@@ -17,7 +17,8 @@
       "body_snippet": "Dear all,\n \nWe hope this message finds you well. We are excited to announce our upcoming course on (GENERALISED) LINEAR MIXED MODELS IN R, which is set to take place from October 9th to 13th, 2023. To",
       "thread_id": "thread-2f6dbffcb9c9",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030487.html"
     },
     {
       "id": "msg-d2cbc15cc1b2",
@@ -40,7 +41,8 @@
       "body_snippet": "Sorry to flog a moribund horse, but it turns out I wasn't alone in my\nconfusion regarding \"marginal\" vs \"unconditional\": even the authors of the\ncAIC4 library, in the article\n<https://www.jstatsoft.or",
       "thread_id": "thread-d2cbc15cc1b2",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030488.html"
     },
     {
       "id": "msg-8128ca6c87a5",
@@ -52,11 +54,12 @@
       "subject_clean": "Question regarding the glmer function from the LME4 package",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear colleagues, \n\nI am using the LME4 package, in particular the glmer function, in the framework of an EM algorithm. I would need to retrieve individual log-likelihoods (for each observation) and I am wondering if that output can be obtained from the package. \n\nAs an example, here is a short code (in blue) :\n\nrequire(lme4)\nset.seed(1)\n\ntheta.star = 2.5\nbeta.star = -2\n\nz = rnorm(2000); \nx = rbinom(2000, 50, exp(beta.star + z * theta.star) / (1 + exp(beta.star + z * theta.star)))\ndat = data.frame(x = x, id = 1: length(x))\nfit = glmer(cbind(x, 50-x) ~ 1 + (1 | id), data = dat, family = \"binomial\")\n\ntheta = fit at theta \t\t# 2.499677\nbeta = fit at beta \t\t# -1.988883\n\n#individual loglik\nind.loglik = rep(NA, length(x))\nfor (i in 1:length(x)) {\n  f = function(u) dbinom(x[i], 50, exp(beta + theta * u) / (1 + exp(beta + theta * u))) * dnorm(u)\n  ind.loglik[i] = log(integrate(f, -5, 5)$val)\n}\n\nAs far as I understood you use Laplace or Gauss-Hermite method. I guess each individual log-likelihood is calculated for fitting the model.  Do you know any way for retrieving the vector of individual log-likelihood directly as an output from your package ? \n\nAlternatively, I read in your notes that The Laplace approximation correction terms for converting a conditional log-likelihood into a marginal log-likelihood are `gm1 at pp$sqrL(1)` and `gm1 at pp$ldL2()). Is it available at an individual level ? \n\nFurthermore, I am surprised that the results of the following two line codes are not almost equal and therefore I wonder if my understanding of the output in the above code is correct. \nsum(ind.loglik) \t# -6774.249\nlogLik(fit)\t \t\t# 'log Lik.' -6807.348 (df=2)\n\n\nKing regards, \nAlexandra Lefebvre \n\n?????????????\nPost-doctoral researcher at CIRB (Coll?ge de France) and LJLL (Sorbonne Universit?, Paris, France)\nCIRB - Coll?ge de France, 11, place Marcelin-Berthelot, 75231 Paris Cedex 05.\nBat.B niveau 1 - Pi?ce 104.\n\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear colleagues, \n\nI am using the LME4 package, in particular the glmer function, in the framework of an EM algorithm. I would need to retrieve individual log-likelihoods (for each observation) and I am wondering if that output can be obtained from the package. \n\nAs an example, here is a short code (in blue) :\n\nrequire(lme4)\nset.seed(1)\n\ntheta.star = 2.5\nbeta.star = -2\n\nz = rnorm(2000); \nx = rbinom(2000, 50, exp(beta.star + z * theta.star) / (1 + exp(beta.star + z * theta.star)))\ndat = data.frame(x = x, id = 1: length(x))\nfit = glmer(cbind(x, 50-x) ~ 1 + (1 | id), data = dat, family = \"binomial\")\n\ntheta = fit at theta \t\t# 2.499677\nbeta = fit at beta \t\t# -1.988883\n\n#individual loglik\nind.loglik = rep(NA, length(x))\nfor (i in 1:length(x)) {\n  f = function(u) dbinom(x[i], 50, exp(beta + theta * u) / (1 + exp(beta + theta * u))) * dnorm(u)\n  ind.loglik[i] = log(integrate(f, -5, 5)$val)\n}\n\nAs far as I understood you use Laplace or Gauss-Hermite method. I guess each individual log-likelihood is calculated for fitting the model.  Do you know any way for retrieving the vector of individual log-likelihood directly as an output from your package ? \n\nAlternatively, I read in your notes that The Laplace approximation correction terms for converting a conditional log-likelihood into a marginal log-likelihood are `gm1 at pp$sqrL(1)` and `gm1 at pp$ldL2()). Is it available at an individual level ? \n\nFurthermore, I am surprised that the results of the following two line codes are not almost equal and therefore I wonder if my understanding of the output in the above code is correct. \nsum(ind.loglik) \t# -6774.249\nlogLik(fit)\t \t\t# 'log Lik.' -6807.348 (df=2)\n\n\nKing regards, \nAlexandra Lefebvre \n\n???????????——\nPost-doctoral researcher at CIRB (Collège de France) and LJLL (Sorbonne Université, Paris, France)\nCIRB - Collège de France, 11, place Marcelin-Berthelot, 75231 Paris Cedex 05.\nBat.B niveau 1 - Pièce 104.\n\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear colleagues, \n\nI am using the LME4 package, in particular the glmer function, in the framework of an EM algorithm. I would need to retrieve individual log-likelihoods (for each observation) and I ",
       "thread_id": "thread-8128ca6c87a5",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030489.html"
     },
     {
       "id": "msg-988ca9046e6e",
@@ -70,11 +73,12 @@
       "references": [
         "<E74CADB5-60AF-47F7-A7B3-87770F22FCA4@math.cnrs.fr>"
       ],
-      "body_plain": "In your simulation it looks like you have a separate random effect (element\nof z) for each observation (element of y).  Is that intentional?\n\nIt seems that this model, while perhaps theoretically identifiable, is\ngoing to be poorly estimated as it will be difficult to separate the\ninfluence of the random effects from the per-observation noise.\n\nGenerally we think of each element of the random effects being associated\nwith several observations - that `id`, the grouping factor has fewer levels\nthan observations.  In such cases it is difficult to make sense of\ncontributions from individual observations to the log-likelihood.  If you\nonly have one grouping factor from random effects you can evaluate the\nlog-likelihood as a sum of contributions from each element of the random\neffects - which is why Gauss-Hermite integration can be applied to scalar\nintegrals instead of Laplace's approximation.  But still the log-likelihood\nrequires integration with respect to the random effects to obtain the\nmarginal distribution of the observations which is then evaluated at the\nobserved responses.\n\nI think the simplifications available in the generalized linear model (i.e.\na model without random effects) are a source of confusion here.  In that\ncase the deviance (negative twice the log-likelihood) can be expressed as\nthe sum of the \"unit deviances\" for each observation because the individual\nresponses are independent in the probability model.  That is not the case\nfor GLMMs.  We still use the unit deviances in the evaluation of\n(approximations to) the deviance of the GLMM but the sum of these unit\ndeviances is only part of the deviance of the model itself.\n\nI have written about how I understand the GLMM formulation in an appendix\nof the in-progress book\nhttps://juliamixedmodels.github.io/EmbraceUncertainty/  We use Julia and\nthe MixedModels.jl package in that book but the approach is similar to that\nin lme4.\n\nOn Mon, Sep 4, 2023 at 9:32?AM Alexandra Lefebvre <\nalexandra.lefebvre at math.cnrs.fr> wrote:\n\n> Dear colleagues,\n>\n> I am using the LME4 package, in particular the glmer function, in the\n> framework of an EM algorithm. I would need to retrieve individual\n> log-likelihoods (for each observation) and I am wondering if that output\n> can be obtained from the package.\n>\n> As an example, here is a short code (in blue) :\n>\n> require(lme4)\n> set.seed(1)\n>\n> theta.star = 2.5\n> beta.star = -2\n>\n> z = rnorm(2000);\n> x = rbinom(2000, 50, exp(beta.star + z * theta.star) / (1 + exp(beta.star\n> + z * theta.star)))\n> dat = data.frame(x = x, id = 1: length(x))\n> fit = glmer(cbind(x, 50-x) ~ 1 + (1 | id), data = dat, family = \"binomial\")\n>\n> theta = fit at theta               # 2.499677\n> beta = fit at beta                 # -1.988883\n>\n> #individual loglik\n> ind.loglik = rep(NA, length(x))\n> for (i in 1:length(x)) {\n>   f = function(u) dbinom(x[i], 50, exp(beta + theta * u) / (1 + exp(beta +\n> theta * u))) * dnorm(u)\n>   ind.loglik[i] = log(integrate(f, -5, 5)$val)\n> }\n>\n> As far as I understood you use Laplace or Gauss-Hermite method. I guess\n> each individual log-likelihood is calculated for fitting the model.  Do you\n> know any way for retrieving the vector of individual log-likelihood\n> directly as an output from your package ?\n>\n> Alternatively, I read in your notes that The Laplace approximation\n> correction terms for converting a conditional log-likelihood into a\n> marginal log-likelihood are `gm1 at pp$sqrL(1)` and `gm1 at pp$ldL2()). Is it\n> available at an individual level ?\n>\n> Furthermore, I am surprised that the results of the following two line\n> codes are not almost equal and therefore I wonder if my understanding of\n> the output in the above code is correct.\n> sum(ind.loglik)         # -6774.249\n> logLik(fit)                     # 'log Lik.' -6807.348 (df=2)\n>\n>\n> King regards,\n> Alexandra Lefebvre\n>\n> ?????????????\n> Post-doctoral researcher at CIRB (Coll?ge de France) and LJLL (Sorbonne\n> Universit?, Paris, France)\n> CIRB - Coll?ge de France, 11, place Marcelin-Berthelot, 75231 Paris Cedex\n> 05.\n> Bat.B niveau 1 - Pi?ce 104.\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "In your simulation it looks like you have a separate random effect (element\nof z) for each observation (element of y).  Is that intentional?\n\nIt seems that this model, while perhaps theoretically identifiable, is\ngoing to be poorly estimated as it will be difficult to separate the\ninfluence of the random effects from the per-observation noise.\n\nGenerally we think of each element of the random effects being associated\nwith several observations - that `id`, the grouping factor has fewer levels\nthan observations.  In such cases it is difficult to make sense of\ncontributions from individual observations to the log-likelihood.  If you\nonly have one grouping factor from random effects you can evaluate the\nlog-likelihood as a sum of contributions from each element of the random\neffects - which is why Gauss-Hermite integration can be applied to scalar\nintegrals instead of Laplace's approximation.  But still the log-likelihood\nrequires integration with respect to the random effects to obtain the\nmarginal distribution of the observations which is then evaluated at the\nobserved responses.\n\nI think the simplifications available in the generalized linear model (i.e.\na model without random effects) are a source of confusion here.  In that\ncase the deviance (negative twice the log-likelihood) can be expressed as\nthe sum of the \"unit deviances\" for each observation because the individual\nresponses are independent in the probability model.  That is not the case\nfor GLMMs.  We still use the unit deviances in the evaluation of\n(approximations to) the deviance of the GLMM but the sum of these unit\ndeviances is only part of the deviance of the model itself.\n\nI have written about how I understand the GLMM formulation in an appendix\nof the in-progress book\nhttps://juliamixedmodels.github.io/EmbraceUncertainty/  We use Julia and\nthe MixedModels.jl package in that book but the approach is similar to that\nin lme4.\n\nOn Mon, Sep 4, 2023 at 9:32 AM Alexandra Lefebvre <\nalexandra.lefebvre at math.cnrs.fr> wrote:\n\n> Dear colleagues,\n>\n> I am using the LME4 package, in particular the glmer function, in the\n> framework of an EM algorithm. I would need to retrieve individual\n> log-likelihoods (for each observation) and I am wondering if that output\n> can be obtained from the package.\n>\n> As an example, here is a short code (in blue) :\n>\n> require(lme4)\n> set.seed(1)\n>\n> theta.star = 2.5\n> beta.star = -2\n>\n> z = rnorm(2000);\n> x = rbinom(2000, 50, exp(beta.star + z * theta.star) / (1 + exp(beta.star\n> + z * theta.star)))\n> dat = data.frame(x = x, id = 1: length(x))\n> fit = glmer(cbind(x, 50-x) ~ 1 + (1 | id), data = dat, family = \"binomial\")\n>\n> theta = fit at theta               # 2.499677\n> beta = fit at beta                 # -1.988883\n>\n> #individual loglik\n> ind.loglik = rep(NA, length(x))\n> for (i in 1:length(x)) {\n>   f = function(u) dbinom(x[i], 50, exp(beta + theta * u) / (1 + exp(beta +\n> theta * u))) * dnorm(u)\n>   ind.loglik[i] = log(integrate(f, -5, 5)$val)\n> }\n>\n> As far as I understood you use Laplace or Gauss-Hermite method. I guess\n> each individual log-likelihood is calculated for fitting the model.  Do you\n> know any way for retrieving the vector of individual log-likelihood\n> directly as an output from your package ?\n>\n> Alternatively, I read in your notes that The Laplace approximation\n> correction terms for converting a conditional log-likelihood into a\n> marginal log-likelihood are `gm1 at pp$sqrL(1)` and `gm1 at pp$ldL2()). Is it\n> available at an individual level ?\n>\n> Furthermore, I am surprised that the results of the following two line\n> codes are not almost equal and therefore I wonder if my understanding of\n> the output in the above code is correct.\n> sum(ind.loglik)         # -6774.249\n> logLik(fit)                     # 'log Lik.' -6807.348 (df=2)\n>\n>\n> King regards,\n> Alexandra Lefebvre\n>\n> ????????????—\n> Post-doctoral researcher at CIRB (Collège de France) and LJLL (Sorbonne\n> Université, Paris, France)\n> CIRB - Collège de France, 11, place Marcelin-Berthelot, 75231 Paris Cedex\n> 05.\n> Bat.B niveau 1 - Pièce 104.\n>\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "In your simulation it looks like you have a separate random effect (element\nof z) for each observation (element of y).  Is that intentional?\n\nIt seems that this model, while perhaps theoretically iden",
       "thread_id": "thread-8128ca6c87a5",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030490.html"
     },
     {
       "id": "msg-9a2de1776d5e",
@@ -93,11 +97,12 @@
         "<aeed156c-5906-1b4d-6eb5-aced232864c5@phillipalday.com>",
         "<e10b4f4b-488b-add1-d60b-11146f243943@gmail.com>"
       ],
-      "body_plain": "Sorry if this one seems confusing.  I?ll be as clear as I can.\n\nI was originally using random intercept LMM to generate a Z score as the\ndifference between the predicted conditional mean from fixed effects and\nthe real observation, divided by the SD from the combined residual and\nrandom intercept variances.\n\nI?m now adding random slopes, plural.  AIC suggests much better fit.  But\nhere?s the problem:\n\nI had naively assumed I could estimate a random effects variance dependent\non the slope terms by estimating the sum of the random intercept plus the\nrandom slope times the value for each of the slope parameters, and then the\nvariance of that sum across the population.  (I?d then look for a curve\nthat described this variance as a function of the slope terms.)\n\nHowever, I had also had the assumption that the SD term for random\nintercept in the LMM summary (using lmer) was the standard deviation of the\nrandom effects for intercept.  I now realize that isn?t the case, as the\nsummary from lmer describes the multivariate Gaussian distribution giving\nrise to the random effects, not the random effects themselves.  (Entirely\npossible I have that wrong, too!)\n\nSo my question is, finally, is there a way to calculate a realistic SD\nestimate that varies with the slope parameters?  I was hoping to plug that\ninto my Z score calculation.\n\nI?m probably missing something basic..\n\nThanks in advance!\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Sorry if this one seems confusing.  I?ll be as clear as I can.\n\nI was originally using random intercept LMM to generate a Z score as the\ndifference between the predicted conditional mean from fixed ef",
+      "body_plain": "Sorry if this one seems confusing.  I’ll be as clear as I can.\n\nI was originally using random intercept LMM to generate a Z score as the\ndifference between the predicted conditional mean from fixed effects and\nthe real observation, divided by the SD from the combined residual and\nrandom intercept variances.\n\nI’m now adding random slopes, plural.  AIC suggests much better fit.  But\nhere’s the problem:\n\nI had naively assumed I could estimate a random effects variance dependent\non the slope terms by estimating the sum of the random intercept plus the\nrandom slope times the value for each of the slope parameters, and then the\nvariance of that sum across the population.  (I’d then look for a curve\nthat described this variance as a function of the slope terms.)\n\nHowever, I had also had the assumption that the SD term for random\nintercept in the LMM summary (using lmer) was the standard deviation of the\nrandom effects for intercept.  I now realize that isn’t the case, as the\nsummary from lmer describes the multivariate Gaussian distribution giving\nrise to the random effects, not the random effects themselves.  (Entirely\npossible I have that wrong, too!)\n\nSo my question is, finally, is there a way to calculate a realistic SD\nestimate that varies with the slope parameters?  I was hoping to plug that\ninto my Z score calculation.\n\nI’m probably missing something basic..\n\nThanks in advance!\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Sorry if this one seems confusing.  I’ll be as clear as I can.\n\nI was originally using random intercept LMM to generate a Z score as the\ndifference between the predicted conditional mean from fixed ef",
       "thread_id": "thread-9a2de1776d5e",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030491.html"
     },
     {
       "id": "msg-10b5ec3e5449",
@@ -113,7 +118,8 @@
       "body_snippet": "Hi,\n\nConditional setting here, with BLUPs of inherent interest (clusters likely\nto recur in future).\n\nWhen analyzing the importance of fixed effects in a conditional setting, is\nthere something wrong ",
       "thread_id": "thread-10b5ec3e5449",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030492.html"
     },
     {
       "id": "msg-719c536e0372",
@@ -129,7 +135,8 @@
       "body_snippet": "Hi all,\n\nFor people working with intensive longitudinal data as may be collected by methods such as 'ecological momentary assessment' (EMA) or the 'experience sampling method' (ESM), I am teaching a c",
       "thread_id": "thread-719c536e0372",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030493.html"
     },
     {
       "id": "msg-e78610862e92",
@@ -141,11 +148,12 @@
       "subject_clean": "Predicting the overall population trend from a GLMM with many sites (MCMCglmm)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nI have intermittent population counts of a single species at many sites\nthat are situated at different latitudes. I want to estimate the overall\npopulation trend across all sites (how much did the overall population\ndecline in 30 years?). I would appreciate clarification on precisely how I\nshould calculate a single, overall population trend estimate from a\nrandom-slope mixed model.\n\nThe model we fit is:\nmodel <- MCMCglmm(count ~ year * latitude, random = ~us(1 + year):site,\n                rcov=~units, family=\"poisson\", pr = T, data = df?)\n\nIf I were interested in site-level effects I would predict with random\neffects (set marginal to NULL):\npred <- data.frame(predict(model, newdata=df, type=\"response\",\nmarginal=NULL, interval=\"confidence\", posterior=\"all\"))\n\nWe can also marginalise the random effects ? this prediction is ?at the\npopulation level? and it may have poor site-level predictions if the random\neffect is important (e.g. some sites are increasing and others are\ndecreasing):\npred_margin <- data.frame(predict(model, newdata=df, type=\"response\",\nmarginal=model$Random$formula, interval=\"confidence\", posterior=\"all\"))\n\nBoth predictions above are made using a ?newdata? data frame that contains\n?site? ? this seems to be required by the ?predict? function. Thus, we\nalways end up with site-level data as output in the prediction data frame,\nregardless of whether the random effects were marginalised or not.\n\nI don?t know the best statistical approach to obtain a single population\ntrend estimate. My approach would be to predict with random effects, and\nsum the counts per site to get an overall estimate. This is the approach\nthat a colleague took (although he disregarded the random effects). His\ncalculations do not use the ?predict? function, but directly calculates\npopulation sizes from the model coefficients, for every posterior draw (to\npropagate uncertainty). He then estimates population sizes at two points\n(in 1990 and 2020) and asks whether the population decreased between these\ntwo points.\nThis approach and reproducible code is here:\nhttps://drive.google.com/drive/folders/1_thQQW9Vy3SxGi6WBkk-1CuqSpE6XaYy?usp=sharing\n\nIt is important that I get this right, so I hope someone can give me\nguidance. Thanks in advance!\nChris\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all,\n\nI have intermittent population counts of a single species at many sites\nthat are situated at different latitudes. I want to estimate the overall\npopulation trend across all sites (how much did the overall population\ndecline in 30 years?). I would appreciate clarification on precisely how I\nshould calculate a single, overall population trend estimate from a\nrandom-slope mixed model.\n\nThe model we fit is:\nmodel <- MCMCglmm(count ~ year * latitude, random = ~us(1 + year):site,\n                rcov=~units, family=\"poisson\", pr = T, data = df…)\n\nIf I were interested in site-level effects I would predict with random\neffects (set marginal to NULL):\npred <- data.frame(predict(model, newdata=df, type=\"response\",\nmarginal=NULL, interval=\"confidence\", posterior=\"all\"))\n\nWe can also marginalise the random effects – this prediction is “at the\npopulation level” and it may have poor site-level predictions if the random\neffect is important (e.g. some sites are increasing and others are\ndecreasing):\npred_margin <- data.frame(predict(model, newdata=df, type=\"response\",\nmarginal=model$Random$formula, interval=\"confidence\", posterior=\"all\"))\n\nBoth predictions above are made using a ‘newdata’ data frame that contains\n‘site’ – this seems to be required by the ‘predict’ function. Thus, we\nalways end up with site-level data as output in the prediction data frame,\nregardless of whether the random effects were marginalised or not.\n\nI don’t know the best statistical approach to obtain a single population\ntrend estimate. My approach would be to predict with random effects, and\nsum the counts per site to get an overall estimate. This is the approach\nthat a colleague took (although he disregarded the random effects). His\ncalculations do not use the ‘predict’ function, but directly calculates\npopulation sizes from the model coefficients, for every posterior draw (to\npropagate uncertainty). He then estimates population sizes at two points\n(in 1990 and 2020) and asks whether the population decreased between these\ntwo points.\nThis approach and reproducible code is here:\nhttps://drive.google.com/drive/folders/1_thQQW9Vy3SxGi6WBkk-1CuqSpE6XaYy?usp=sharing\n\nIt is important that I get this right, so I hope someone can give me\nguidance. Thanks in advance!\nChris\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all,\n\nI have intermittent population counts of a single species at many sites\nthat are situated at different latitudes. I want to estimate the overall\npopulation trend across all sites (how much ",
       "thread_id": "thread-e78610862e92",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030494.html"
     },
     {
       "id": "msg-7d0384c5fef5",
@@ -163,7 +171,8 @@
       "body_snippet": "HI,\n\nUsing marginal= ~us(1 + year):site in the predict function does not marginalise sites it marginalises *site effects*: the prediction will stary vary across sites because the sites will be at vary",
       "thread_id": "thread-e78610862e92",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030495.html"
     },
     {
       "id": "msg-a65c7042a1bc",
@@ -182,7 +191,8 @@
       "body_snippet": "Hi,\n\nThinking about it more, the expected proportional change in abundance per year is perhaps the most readily digestible number for an ecologist. To obtain it (with assumptions):\n\nThe slope for site",
       "thread_id": "thread-e78610862e92",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030496.html"
     },
     {
       "id": "msg-293a584acff6",
@@ -198,7 +208,8 @@
       "body_snippet": "I am trying to model round-robin data, typically analyzed with an ANOVA-based Social Relations Model (SRM), with a mixed model with cross-nested effects.\nFirst, I give a brief background to clarify th",
       "thread_id": "thread-293a584acff6",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030497.html"
     },
     {
       "id": "msg-6d1eb55dff66",
@@ -214,7 +225,8 @@
       "body_snippet": "Hi, I am running the following similar models using lme() and lmer():\n\nf = y ~ x + year * post_event + (year|user_id)\n\nwhere,\n\n  *   year (integer) ranges from 0 (for the year 2010) to 10 (for the yea",
       "thread_id": "thread-6d1eb55dff66",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030498.html"
     },
     {
       "id": "msg-12524332bd14",
@@ -230,7 +242,8 @@
       "body_snippet": "Dear List members, I am running into an error when specifying autoregressive correlation structure in lme(). Here are the model specifications:\n\nm1 = lme(y ~ time, random = ~1+time|fighter_id, data = ",
       "thread_id": "thread-12524332bd14",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030499.html"
     },
     {
       "id": "msg-98d25d6ecdfd",
@@ -248,7 +261,8 @@
       "body_snippet": "This is mildly surprising but not impossible. I haven't looked into \nit/run any experiments yet, but:\n\n  * lme handles a more restricted range of model types, so it's possible \nthat its algorithm is f",
       "thread_id": "thread-6d1eb55dff66",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030500.html"
     },
     {
       "id": "msg-f0c043ff1cf0",
@@ -264,7 +278,8 @@
       "body_snippet": "I am running a Generalized Additive Mixed Model with the R package, gamm4. Each model output includes a mer object and a gam object. I need to compare 26 model structures based on a combination of var",
       "thread_id": "thread-f0c043ff1cf0",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030501.html"
     },
     {
       "id": "msg-c421af249947",
@@ -276,11 +291,12 @@
       "subject_clean": "How to get prediction interval from R package MCMCglmm fitwith measurement error *and* a random effect?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "How to get prediction interval from R package MCMCglmm fit with\nmeasurement error *and* a random effect?\n\nI am having trouble producing a prediction interval from a model fit\nby the R package MCMCglmm, when both a random effect and a measurement\nerror is specified in the fit. Many thanks in advance for your time\nand any suggestions.\n\nI can reproduce the prediction interval examples in the package author\n(Jarrod Hadfield)?s MCMCglmm course notes [link\nhttp://cran.nexr.com/web/packages/MCMCglmm/vignettes/CourseNotes.pdf]\np.47, but with my own model structure I get this error:\n\nError in h(simpleError(msg, call)) :\n  error in evaluating the argument 'x' in selecting a method for\nfunction 't': invalid 'times' argument\n\n ?x? and ?t? aren?t variables I have declared so I imagine they must\nbe objects called internally by the predict function. In the MCMCglmm\ncourse notes (p.47 again), the author does note that the predict\nfunction for MCMCglmm is currently incomplete and needs further\ntesting, but should be OK for simpler models. Perhaps my model\nstructure is an instance of a more elaborate model not yet\naccommodated. Is there some other way I can generate a prediction\ninterval?\n\nFor context, I am studying the flying height of birds. We obtain\nobservations of height from satellite tags attached to birds. The\nobservations are recorded with large measurement error (often\nreporting negative height as if the birds were flying underground).\nThe variance of the measurement error can be predicted based on the\nnumber and position of available satellites. MCMCglmm has a facility\nfor users to specify a vector of measurement errors associated with\nobservations on the response variable. We also have repeat\nobservations on each tagged bird, so it?s desirable to also\nincorporate the flying height preferences of individual birds into the\nmodel.\n\nHere is a reproducible example:\n\nSession info?\nMCMCglmm_2.35\nR version 4.2.3 (2023-03-15)\nPlatform: aarch64-apple-darwin20 (64-bit)\nRunning under: macOS Ventura 13.4.1\n\n#Declare some parameters governing the flying height of the birds, for\npurposes of simulation\nset.seed(756)\nalt1 <- 20 # mean of true flying height, in metres above ground level\nsig <- 10 #variance in true flying height\n# gamma distribution scale parameter:\nbeta = sig/alt1\n#  gamma distribution shape parameter :\nalpha = alt1/beta\n\n #Additional variation in height amongst individual birds\nind.re <- rnorm(n= 20, mean=0, sd = 3) # ?ind.re? denotes individual\nrandom effects\n\n#Create dataframe containing simulation data\n#20 tagged birds, with 100 observations each = 2000 observations total\ndata.sim <- data.frame(BirdID = as.factor(rep(1:20, each=100) ) ) %>%\n                        mutate(., sig.obs = rep(5,2000), #std dev of\nmeasurement error, just for this example I'm imposing an identical\nerror for each observation\n            true.alt = #true altitude, drawn from a gamma distribution\n                         rgamma(n = 2000, shape = alpha, scale = beta) +\n                          ind.re[data.sim$BirdID], #individual\nvariation amongst birds\n             obs.alt = #observed altitude\n                             true.alt +\nrnorm(n = 2000, mean = 0, sd = sig.obs) # imprecision due to measurement error\n                        )\n\n #declare priors\nprior <- list(B = list(mu=0, V=1e10), #for fixed effects\n               R = list(V=1, nu=0.002),  #for residuals\n               G = list( #random effects\n                 G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n               ))\n\n#fit the glmm\nm <- MCMCglmm::MCMCglmm(\n            fixed = obs.alt ~ 1,\n            family = \"gaussian\",\n            random = ~BirdID,\n            mev = data.sim$sig.obs, #vector of measurement errors\n            prior = prior,\n            data = data.sim\n)\n#get a prediction interval\npredict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n\nNote that if the model is refit without BirdID as a random effect,\n(i.e. if we comment out ?random = ~BirdID,? above), or alternatively\nwithout the measurement error vector (?mev =  data.sim$sig.obs,?) then\nthe predict function works fine:\n\n(Output without random effect specified)\n       fit      lwr      upr\n1 20.33545 5.284893 33.06830\n2 20.72960 6.874275 35.33598\n3 20.57229 3.561330 33.84181\n\n Am I doing something wrong here, or is there a workaround? Many thanks again!\nFiona Scarff\nMurdoch University",
+      "body_plain": "How to get prediction interval from R package MCMCglmm fit with\nmeasurement error *and* a random effect?\n\nI am having trouble producing a prediction interval from a model fit\nby the R package MCMCglmm, when both a random effect and a measurement\nerror is specified in the fit. Many thanks in advance for your time\nand any suggestions.\n\nI can reproduce the prediction interval examples in the package author\n(Jarrod Hadfield)’s MCMCglmm course notes [link\nhttp://cran.nexr.com/web/packages/MCMCglmm/vignettes/CourseNotes.pdf]\np.47, but with my own model structure I get this error:\n\nError in h(simpleError(msg, call)) :\n  error in evaluating the argument 'x' in selecting a method for\nfunction 't': invalid 'times' argument\n\n ‘x’ and ‘t’ aren’t variables I have declared so I imagine they must\nbe objects called internally by the predict function. In the MCMCglmm\ncourse notes (p.47 again), the author does note that the predict\nfunction for MCMCglmm is currently incomplete and needs further\ntesting, but should be OK for simpler models. Perhaps my model\nstructure is an instance of a more elaborate model not yet\naccommodated. Is there some other way I can generate a prediction\ninterval?\n\nFor context, I am studying the flying height of birds. We obtain\nobservations of height from satellite tags attached to birds. The\nobservations are recorded with large measurement error (often\nreporting negative height as if the birds were flying underground).\nThe variance of the measurement error can be predicted based on the\nnumber and position of available satellites. MCMCglmm has a facility\nfor users to specify a vector of measurement errors associated with\nobservations on the response variable. We also have repeat\nobservations on each tagged bird, so it’s desirable to also\nincorporate the flying height preferences of individual birds into the\nmodel.\n\nHere is a reproducible example:\n\nSession info…\nMCMCglmm_2.35\nR version 4.2.3 (2023-03-15)\nPlatform: aarch64-apple-darwin20 (64-bit)\nRunning under: macOS Ventura 13.4.1\n\n#Declare some parameters governing the flying height of the birds, for\npurposes of simulation\nset.seed(756)\nalt1 <- 20 # mean of true flying height, in metres above ground level\nsig <- 10 #variance in true flying height\n# gamma distribution scale parameter:\nbeta = sig/alt1\n#  gamma distribution shape parameter :\nalpha = alt1/beta\n\n #Additional variation in height amongst individual birds\nind.re <- rnorm(n= 20, mean=0, sd = 3) # ‘ind.re’ denotes individual\nrandom effects\n\n#Create dataframe containing simulation data\n#20 tagged birds, with 100 observations each = 2000 observations total\ndata.sim <- data.frame(BirdID = as.factor(rep(1:20, each=100) ) ) %>%\n                        mutate(., sig.obs = rep(5,2000), #std dev of\nmeasurement error, just for this example I'm imposing an identical\nerror for each observation\n            true.alt = #true altitude, drawn from a gamma distribution\n                         rgamma(n = 2000, shape = alpha, scale = beta) +\n                          ind.re[data.sim$BirdID], #individual\nvariation amongst birds\n             obs.alt = #observed altitude\n                             true.alt +\nrnorm(n = 2000, mean = 0, sd = sig.obs) # imprecision due to measurement error\n                        )\n\n #declare priors\nprior <- list(B = list(mu=0, V=1e10), #for fixed effects\n               R = list(V=1, nu=0.002),  #for residuals\n               G = list( #random effects\n                 G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n               ))\n\n#fit the glmm\nm <- MCMCglmm::MCMCglmm(\n            fixed = obs.alt ~ 1,\n            family = \"gaussian\",\n            random = ~BirdID,\n            mev = data.sim$sig.obs, #vector of measurement errors\n            prior = prior,\n            data = data.sim\n)\n#get a prediction interval\npredict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n\nNote that if the model is refit without BirdID as a random effect,\n(i.e. if we comment out ‘random = ~BirdID,’ above), or alternatively\nwithout the measurement error vector (‘mev =  data.sim$sig.obs,’) then\nthe predict function works fine:\n\n(Output without random effect specified)\n       fit      lwr      upr\n1 20.33545 5.284893 33.06830\n2 20.72960 6.874275 35.33598\n3 20.57229 3.561330 33.84181\n\n Am I doing something wrong here, or is there a workaround? Many thanks again!\nFiona Scarff\nMurdoch University",
       "body_snippet": "How to get prediction interval from R package MCMCglmm fit with\nmeasurement error *and* a random effect?\n\nI am having trouble producing a prediction interval from a model fit\nby the R package MCMCglmm",
       "thread_id": "thread-c421af249947",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030503.html"
     },
     {
       "id": "msg-0d3c3a1a4559",
@@ -299,7 +315,8 @@
       "body_snippet": "Thank you, Dr. Bolker. The advice to set calc.derivs = FALSE is much appreciated.\n\nWe tried glmmTMB() for the same model and found it quite fast. Models converged with default optimizers.\n\nFollowing t",
       "thread_id": "thread-6d1eb55dff66",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030502.html"
     },
     {
       "id": "msg-b70dfe5e0bd5",
@@ -317,7 +334,8 @@
       "body_snippet": "I was puzzled by the fact that you save the output as an rds file. I suspect but am unable to confirm, that your result(s) include some representation of the data. You might instead return the models ",
       "thread_id": "thread-f0c043ff1cf0",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030504.html"
     },
     {
       "id": "msg-d36c607e81d1",
@@ -336,7 +354,8 @@
       "body_snippet": "________________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of David Winsemius <dwinsemius at comcast.net>\nSent: Tuesday, 19 September 202",
       "thread_id": "thread-f0c043ff1cf0",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030505.html"
     },
     {
       "id": "msg-0e446ceb154c",
@@ -352,7 +371,8 @@
       "body_snippet": "Hi,\n\n\n\nI am trying to model round-robin data, typically analyzed with an ANOVA-based Social Relations Model (SRM), with a mixed model with cross-nested effects.\n\nFirst, I give a brief background to cl",
       "thread_id": "thread-0e446ceb154c",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030506.html"
     },
     {
       "id": "msg-bcfbc2d19dec",
@@ -370,7 +390,8 @@
       "body_snippet": "Hi Fiona,\n\nIf you set up the measurement error model explicitly (without using mev ? see code below) the predict function should work. Note that the default is to have the random effects marginalised ",
       "thread_id": "thread-c421af249947",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030507.html"
     },
     {
       "id": "msg-5dabb12b8dea",
@@ -390,7 +411,8 @@
       "body_snippet": "You could take a look at the `strip_gamm4_env()` function here: \nhttps://github.com/bbolker/mmd_utils/blob/master/gamm4_utils.R ; it \ndefinitely reduces the sizes of stored objects, but you'll have to",
       "thread_id": "thread-f0c043ff1cf0",
       "thread_depth": 3,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030508.html"
     },
     {
       "id": "msg-f865a31b2bfa",
@@ -406,7 +428,8 @@
       "body_snippet": "In MCMCglmm, how can I obtain a posterior predictive distribution? I\nhave two random effects; individuals from which observations have been\nobtained, and a measurement error. I would like to marginali",
       "thread_id": "thread-f865a31b2bfa",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030509.html"
     },
     {
       "id": "msg-7f90e134e537",
@@ -424,7 +447,8 @@
       "body_snippet": "HI,\n\nYou can use simulate(model) in exactly the same way as predict(model) to generate posterior predictive distributions with various random effects marginalised using the argument marginal. The only",
       "thread_id": "thread-f865a31b2bfa",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030510.html"
     },
     {
       "id": "msg-d249e23161bb",
@@ -458,7 +482,8 @@
       "body_snippet": "Dear John, Georges, and other list members,\n\nI gather from the silence of the thread that no solution has emerged as of\nyet, and might still be years away. Therefore, since I have to present at\nleast ",
       "thread_id": "thread-d249e23161bb",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030511.html"
     },
     {
       "id": "msg-ff120b153a1b",
@@ -474,7 +499,8 @@
       "body_snippet": "Hi,\n\nI want to use the lme4 package for prediction of a longitudinal continuous\noutcome variable. How can I split data into train and test in longitudinal\ndata to compute predictive performance?\n\n\nBes",
       "thread_id": "thread-ff120b153a1b",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030512.html"
     },
     {
       "id": "msg-ef42f9d3c2f7",
@@ -492,7 +518,8 @@
       "body_snippet": "Train/test splits for longitudinal data are a little tricky, and not \nsomething that's dealt with explicitly in lme4.  For example, see the \n'rolling origin' sampler in the tidymodels package: \nhttps:",
       "thread_id": "thread-ff120b153a1b",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030513.html"
     },
     {
       "id": "msg-78da84b6f359",
@@ -511,7 +538,8 @@
       "body_snippet": "Dear Ben and Mina,\n\nGeorges Monette and I have coincidentally been working recently on a \ngeneral cross-validation package for R, which includes methods (which we \nregards as experimental) for mixed m",
       "thread_id": "thread-ff120b153a1b",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030514.html"
     },
     {
       "id": "msg-6184d9039ae6",
@@ -531,7 +559,8 @@
       "body_snippet": "I'm still a little surprised that lme4 is so slow.  Is there a \npossibility that you're using a parallelized BLAS and it's \nover-parallelizing (i.e., hogging lots of memory)?  What is the memory \nusag",
       "thread_id": "thread-6d1eb55dff66",
       "thread_depth": 3,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030515.html"
     },
     {
       "id": "msg-7f0432125c82",
@@ -547,7 +576,8 @@
       "body_snippet": "Dear all,\nThanks for taking the time to read and help if you can,\nI'll try to be as clear as I can, I am not a stat pro.\n\nI basically study three different fields (agricultural, herbal, pasture) and m",
       "thread_id": "thread-7f0432125c82",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030518.html"
     },
     {
       "id": "msg-7fe06529e388",
@@ -562,11 +592,12 @@
         "<CAP=UNakbZCjr5rOWG16YKW9L0e5L25CT9PM84u6i0oHZykr49g@mail.gmail.com>",
         "<AS8PR05MB8659610C4E42810112487E3CACFAA@AS8PR05MB8659.eurprd05.prod.outlook.com>"
       ],
-      "body_plain": "Thanks heaps Jarrod, that worked a treat.\n\nFiona\n\nOn Tue, Sep 19, 2023 at 7:30?PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> Hi Fiona,\n>\n>\n>\n> If you set up the measurement error model explicitly (without using mev ? see code below) the predict function should work. Note that the default is to have the random effects marginalised and so if you want them in the prediction interval you will need marginal = NULL or  marginal=~idh(sqrt(sig.obs)):units or marginal=~ BirdID dpending on exactly what you want.\n>\n>\n>\n> Cheers,\n>\n>\n>\n> Jarrod\n>\n>\n>\n> prior <- list(B = list(mu=0, V=1e10), #for fixed effects\n>                R = list(V=1, nu=0.002),  #for residuals\n>                G = list( #random effects\n>                  G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n>\n>                  G2 = list(V=1, fix=1) #mev random effects\n>                ))\n>\n> #fit the glmm\n> m <- MCMCglmm::MCMCglmm(\n>             fixed = obs.alt ~ 1,\n>             family = \"gaussian\",\n>             random = ~BirdID+idh(sqrt(sig.obs)):units,\n>             prior = prior,\n>             data = data.sim\n> )\n> #get a prediction interval\n> predict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n>\n>\n>\n>\n>\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Fiona Scarff <fiona.scarff.4 at gmail.com>\n> Date: Monday, 18 September 2023 at 16:29\n> To: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] How to get prediction interval from R package MCMCglmm fitwith measurement error *and* a random effect?\n>\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that the email is genuine and the content is safe.\n>\n> How to get prediction interval from R package MCMCglmm fit with\n> measurement error *and* a random effect?\n>\n> I am having trouble producing a prediction interval from a model fit\n> by the R package MCMCglmm, when both a random effect and a measurement\n> error is specified in the fit. Many thanks in advance for your time\n> and any suggestions.\n>\n> I can reproduce the prediction interval examples in the package author\n> (Jarrod Hadfield)?s MCMCglmm course notes [link\n> http://cran.nexr.com/web/packages/MCMCglmm/vignettes/CourseNotes.pdf]\n> p.47, but with my own model structure I get this error:\n>\n> Error in h(simpleError(msg, call)) :\n>   error in evaluating the argument 'x' in selecting a method for\n> function 't': invalid 'times' argument\n>\n>  ?x? and ?t? aren?t variables I have declared so I imagine they must\n> be objects called internally by the predict function. In the MCMCglmm\n> course notes (p.47 again), the author does note that the predict\n> function for MCMCglmm is currently incomplete and needs further\n> testing, but should be OK for simpler models. Perhaps my model\n> structure is an instance of a more elaborate model not yet\n> accommodated. Is there some other way I can generate a prediction\n> interval?\n>\n> For context, I am studying the flying height of birds. We obtain\n> observations of height from satellite tags attached to birds. The\n> observations are recorded with large measurement error (often\n> reporting negative height as if the birds were flying underground).\n> The variance of the measurement error can be predicted based on the\n> number and position of available satellites. MCMCglmm has a facility\n> for users to specify a vector of measurement errors associated with\n> observations on the response variable. We also have repeat\n> observations on each tagged bird, so it?s desirable to also\n> incorporate the flying height preferences of individual birds into the\n> model.\n>\n> Here is a reproducible example:\n>\n> Session info?\n> MCMCglmm_2.35\n> R version 4.2.3 (2023-03-15)\n> Platform: aarch64-apple-darwin20 (64-bit)\n> Running under: macOS Ventura 13.4.1\n>\n> #Declare some parameters governing the flying height of the birds, for\n> purposes of simulation\n> set.seed(756)\n> alt1 <- 20 # mean of true flying height, in metres above ground level\n> sig <- 10 #variance in true flying height\n> # gamma distribution scale parameter:\n> beta = sig/alt1\n> #  gamma distribution shape parameter :\n> alpha = alt1/beta\n>\n>  #Additional variation in height amongst individual birds\n> ind.re <- rnorm(n= 20, mean=0, sd = 3) # ?ind.re? denotes individual\n> random effects\n>\n> #Create dataframe containing simulation data\n> #20 tagged birds, with 100 observations each = 2000 observations total\n> data.sim <- data.frame(BirdID = as.factor(rep(1:20, each=100) ) ) %>%\n>                         mutate(., sig.obs = rep(5,2000), #std dev of\n> measurement error, just for this example I'm imposing an identical\n> error for each observation\n>             true.alt = #true altitude, drawn from a gamma distribution\n>                          rgamma(n = 2000, shape = alpha, scale = beta) +\n>                           ind.re[data.sim$BirdID], #individual\n> variation amongst birds\n>              obs.alt = #observed altitude\n>                              true.alt +\n> rnorm(n = 2000, mean = 0, sd = sig.obs) # imprecision due to measurement error\n>                         )\n>\n>  #declare priors\n> prior <- list(B = list(mu=0, V=1e10), #for fixed effects\n>                R = list(V=1, nu=0.002),  #for residuals\n>                G = list( #random effects\n>                  G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n>                ))\n>\n> #fit the glmm\n> m <- MCMCglmm::MCMCglmm(\n>             fixed = obs.alt ~ 1,\n>             family = \"gaussian\",\n>             random = ~BirdID,\n>             mev = data.sim$sig.obs, #vector of measurement errors\n>             prior = prior,\n>             data = data.sim\n> )\n> #get a prediction interval\n> predict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n>\n> Note that if the model is refit without BirdID as a random effect,\n> (i.e. if we comment out ?random = ~BirdID,? above), or alternatively\n> without the measurement error vector (?mev =  data.sim$sig.obs,?) then\n> the predict function works fine:\n>\n> (Output without random effect specified)\n>        fit      lwr      upr\n> 1 20.33545 5.284893 33.06830\n> 2 20.72960 6.874275 35.33598\n> 3 20.57229 3.561330 33.84181\n>\n>  Am I doing something wrong here, or is there a workaround? Many thanks again!\n> Fiona Scarff\n> Murdoch University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.",
-      "body_snippet": "Thanks heaps Jarrod, that worked a treat.\n\nFiona\n\nOn Tue, Sep 19, 2023 at 7:30?PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> Hi Fiona,\n>\n>\n>\n> If you set up the measurement error model explic",
+      "body_plain": "Thanks heaps Jarrod, that worked a treat.\n\nFiona\n\nOn Tue, Sep 19, 2023 at 7:30 PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> Hi Fiona,\n>\n>\n>\n> If you set up the measurement error model explicitly (without using mev – see code below) the predict function should work. Note that the default is to have the random effects marginalised and so if you want them in the prediction interval you will need marginal = NULL or  marginal=~idh(sqrt(sig.obs)):units or marginal=~ BirdID dpending on exactly what you want.\n>\n>\n>\n> Cheers,\n>\n>\n>\n> Jarrod\n>\n>\n>\n> prior <- list(B = list(mu=0, V=1e10), #for fixed effects\n>                R = list(V=1, nu=0.002),  #for residuals\n>                G = list( #random effects\n>                  G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n>\n>                  G2 = list(V=1, fix=1) #mev random effects\n>                ))\n>\n> #fit the glmm\n> m <- MCMCglmm::MCMCglmm(\n>             fixed = obs.alt ~ 1,\n>             family = \"gaussian\",\n>             random = ~BirdID+idh(sqrt(sig.obs)):units,\n>             prior = prior,\n>             data = data.sim\n> )\n> #get a prediction interval\n> predict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n>\n>\n>\n>\n>\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Fiona Scarff <fiona.scarff.4 at gmail.com>\n> Date: Monday, 18 September 2023 at 16:29\n> To: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] How to get prediction interval from R package MCMCglmm fitwith measurement error *and* a random effect?\n>\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that the email is genuine and the content is safe.\n>\n> How to get prediction interval from R package MCMCglmm fit with\n> measurement error *and* a random effect?\n>\n> I am having trouble producing a prediction interval from a model fit\n> by the R package MCMCglmm, when both a random effect and a measurement\n> error is specified in the fit. Many thanks in advance for your time\n> and any suggestions.\n>\n> I can reproduce the prediction interval examples in the package author\n> (Jarrod Hadfield)’s MCMCglmm course notes [link\n> http://cran.nexr.com/web/packages/MCMCglmm/vignettes/CourseNotes.pdf]\n> p.47, but with my own model structure I get this error:\n>\n> Error in h(simpleError(msg, call)) :\n>   error in evaluating the argument 'x' in selecting a method for\n> function 't': invalid 'times' argument\n>\n>  ‘x’ and ‘t’ aren’t variables I have declared so I imagine they must\n> be objects called internally by the predict function. In the MCMCglmm\n> course notes (p.47 again), the author does note that the predict\n> function for MCMCglmm is currently incomplete and needs further\n> testing, but should be OK for simpler models. Perhaps my model\n> structure is an instance of a more elaborate model not yet\n> accommodated. Is there some other way I can generate a prediction\n> interval?\n>\n> For context, I am studying the flying height of birds. We obtain\n> observations of height from satellite tags attached to birds. The\n> observations are recorded with large measurement error (often\n> reporting negative height as if the birds were flying underground).\n> The variance of the measurement error can be predicted based on the\n> number and position of available satellites. MCMCglmm has a facility\n> for users to specify a vector of measurement errors associated with\n> observations on the response variable. We also have repeat\n> observations on each tagged bird, so it’s desirable to also\n> incorporate the flying height preferences of individual birds into the\n> model.\n>\n> Here is a reproducible example:\n>\n> Session info…\n> MCMCglmm_2.35\n> R version 4.2.3 (2023-03-15)\n> Platform: aarch64-apple-darwin20 (64-bit)\n> Running under: macOS Ventura 13.4.1\n>\n> #Declare some parameters governing the flying height of the birds, for\n> purposes of simulation\n> set.seed(756)\n> alt1 <- 20 # mean of true flying height, in metres above ground level\n> sig <- 10 #variance in true flying height\n> # gamma distribution scale parameter:\n> beta = sig/alt1\n> #  gamma distribution shape parameter :\n> alpha = alt1/beta\n>\n>  #Additional variation in height amongst individual birds\n> ind.re <- rnorm(n= 20, mean=0, sd = 3) # ‘ind.re’ denotes individual\n> random effects\n>\n> #Create dataframe containing simulation data\n> #20 tagged birds, with 100 observations each = 2000 observations total\n> data.sim <- data.frame(BirdID = as.factor(rep(1:20, each=100) ) ) %>%\n>                         mutate(., sig.obs = rep(5,2000), #std dev of\n> measurement error, just for this example I'm imposing an identical\n> error for each observation\n>             true.alt = #true altitude, drawn from a gamma distribution\n>                          rgamma(n = 2000, shape = alpha, scale = beta) +\n>                           ind.re[data.sim$BirdID], #individual\n> variation amongst birds\n>              obs.alt = #observed altitude\n>                              true.alt +\n> rnorm(n = 2000, mean = 0, sd = sig.obs) # imprecision due to measurement error\n>                         )\n>\n>  #declare priors\n> prior <- list(B = list(mu=0, V=1e10), #for fixed effects\n>                R = list(V=1, nu=0.002),  #for residuals\n>                G = list( #random effects\n>                  G1 = list(V=1, nu=0.002) #first random effect, i.e. BirdID.\n>                ))\n>\n> #fit the glmm\n> m <- MCMCglmm::MCMCglmm(\n>             fixed = obs.alt ~ 1,\n>             family = \"gaussian\",\n>             random = ~BirdID,\n>             mev = data.sim$sig.obs, #vector of measurement errors\n>             prior = prior,\n>             data = data.sim\n> )\n> #get a prediction interval\n> predict(m,  type = \"response\", interval = \"prediction\", level = 0.95)[1:3, ]\n>\n> Note that if the model is refit without BirdID as a random effect,\n> (i.e. if we comment out ‘random = ~BirdID,’ above), or alternatively\n> without the measurement error vector (‘mev =  data.sim$sig.obs,’) then\n> the predict function works fine:\n>\n> (Output without random effect specified)\n>        fit      lwr      upr\n> 1 20.33545 5.284893 33.06830\n> 2 20.72960 6.874275 35.33598\n> 3 20.57229 3.561330 33.84181\n>\n>  Am I doing something wrong here, or is there a workaround? Many thanks again!\n> Fiona Scarff\n> Murdoch University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th’ ann an Oilthigh Dhùn Èideann, clàraichte an Alba, àireamh clàraidh SC005336.",
+      "body_snippet": "Thanks heaps Jarrod, that worked a treat.\n\nFiona\n\nOn Tue, Sep 19, 2023 at 7:30 PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> Hi Fiona,\n>\n>\n>\n> If you set up the measurement error model explic",
       "thread_id": "thread-c421af249947",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030516.html"
     },
     {
       "id": "msg-c175417e8ffa",
@@ -581,11 +612,12 @@
         "<CAP=UNa=3XfJnkmsdP7C0P0FxVBf0QJxNYznyGOmgrZgr2CcUzg@mail.gmail.com>",
         "<AS8PR05MB8659F7C231C051E8477CF56EACF9A@AS8PR05MB8659.eurprd05.prod.outlook.com>"
       ],
-      "body_plain": "Yes, I see. Thanks very much, that's very helpful.\n\nFiona\n\n\nOn Wed, Sep 20, 2023 at 10:25?PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> HI,\n>\n>\n>\n> You can use simulate(model) in exactly the same way as predict(model) to generate posterior predictive distributions with various random effects marginalised using the argument marginal. The only constraints that can be imposed are those that arise from the particular distribution fitted (e.g. if family=?poisson? the outcome is constrained to be non-negative integers) and so arbitrarily imposing a positive constraint is not possible.\n>\n>\n>\n> Cheers,\n>\n>\n>\n> Jarrod\n>\n>\n>\n>\n>\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Fiona Scarff <fiona.scarff.4 at gmail.com>\n> Date: Wednesday, 20 September 2023 at 13:31\n> To: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] How to obtain a posterior predictive distribution in MCMCglmm, and constrain it to non-negative values?\n>\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that the email is genuine and the content is safe.\n>\n> In MCMCglmm, how can I obtain a posterior predictive distribution? I\n> have two random effects; individuals from which observations have been\n> obtained, and a measurement error. I would like to marginalise only\n> over the individual random effect, and supply a single trivially small\n> measurement error for the prediction, so as to get the predicted\n> distribution of the true (rather than measured) response in any\n> unspecified individual.\n>\n> Can I further specify this in such a way as to constrain the\n> prediction to non-negative values? Naively, I could impose a\n> distribution like log-normal or poisson when fitting the glmm. But the\n> model fit needs to be able to handle negative values in the response,\n> which arise purely due to measurement error.\n>\n> Many thanks for your time and any suggestions!\n>\n> Fiona Scarff\n> Murdoch University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.",
-      "body_snippet": "Yes, I see. Thanks very much, that's very helpful.\n\nFiona\n\n\nOn Wed, Sep 20, 2023 at 10:25?PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> HI,\n>\n>\n>\n> You can use simulate(model) in exactly the ",
+      "body_plain": "Yes, I see. Thanks very much, that's very helpful.\n\nFiona\n\n\nOn Wed, Sep 20, 2023 at 10:25 PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> HI,\n>\n>\n>\n> You can use simulate(model) in exactly the same way as predict(model) to generate posterior predictive distributions with various random effects marginalised using the argument marginal. The only constraints that can be imposed are those that arise from the particular distribution fitted (e.g. if family=”poisson” the outcome is constrained to be non-negative integers) and so arbitrarily imposing a positive constraint is not possible.\n>\n>\n>\n> Cheers,\n>\n>\n>\n> Jarrod\n>\n>\n>\n>\n>\n> From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Fiona Scarff <fiona.scarff.4 at gmail.com>\n> Date: Wednesday, 20 September 2023 at 13:31\n> To: r-sig-mixed-models at r-project.org <r-sig-mixed-models at r-project.org>\n> Subject: [R-sig-ME] How to obtain a posterior predictive distribution in MCMCglmm, and constrain it to non-negative values?\n>\n> This email was sent to you by someone outside the University.\n> You should only click on links or attachments if you are certain that the email is genuine and the content is safe.\n>\n> In MCMCglmm, how can I obtain a posterior predictive distribution? I\n> have two random effects; individuals from which observations have been\n> obtained, and a measurement error. I would like to marginalise only\n> over the individual random effect, and supply a single trivially small\n> measurement error for the prediction, so as to get the predicted\n> distribution of the true (rather than measured) response in any\n> unspecified individual.\n>\n> Can I further specify this in such a way as to constrain the\n> prediction to non-negative values? Naively, I could impose a\n> distribution like log-normal or poisson when fitting the glmm. But the\n> model fit needs to be able to handle negative values in the response,\n> which arise purely due to measurement error.\n>\n> Many thanks for your time and any suggestions!\n>\n> Fiona Scarff\n> Murdoch University\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> The University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th’ ann an Oilthigh Dhùn Èideann, clàraichte an Alba, àireamh clàraidh SC005336.",
+      "body_snippet": "Yes, I see. Thanks very much, that's very helpful.\n\nFiona\n\n\nOn Wed, Sep 20, 2023 at 10:25 PM Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>\n> HI,\n>\n>\n>\n> You can use simulate(model) in exactly the ",
       "thread_id": "thread-f865a31b2bfa",
       "thread_depth": 2,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030517.html"
     },
     {
       "id": "msg-45e9b4019d11",
@@ -603,7 +635,8 @@
       "body_snippet": "Dear Gianni,\n\nAfter a quick look at the code, I think you miscoded the Sample. They\nshould have a unique identifier. You are reusing the identifiers between\nfields.\ndf$Sample <- interaction(df$Field, ",
       "thread_id": "thread-7f0432125c82",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030519.html"
     },
     {
       "id": "msg-d386d4a10628",
@@ -619,7 +652,8 @@
       "body_snippet": "We would like to announce the following on-line statistics course:\n\nCourse: Introduction to Linear Mixed-Effects Models, GLMM and \n*Multivariate GLMM* with R\n\nFormat: Online live course.\n\nWhen: 14.00 ",
       "thread_id": "thread-d386d4a10628",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030520.html"
     },
     {
       "id": "msg-1c6df8c4fda1",
@@ -635,7 +669,8 @@
       "body_snippet": "Dear lme4 users\ni have a question about mixed-effect in Pymer4 (same of lme4 but in python). My model is fitted under machine-learning to get the predicted values (Observed_values = predicted_values +",
       "thread_id": "thread-1c6df8c4fda1",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030521.html"
     },
     {
       "id": "msg-0c2e73d9b802",
@@ -651,7 +686,8 @@
       "body_snippet": "Dear all,\n\n\n\nThe Louisville Chapter of R-Ladies would like to invite you to a free virtual workshop hosted on Zoom titled ?An Introduction to Multiple Regression and Multilevel Modeling in R?! This pa",
       "thread_id": "thread-0c2e73d9b802",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030522.html"
     },
     {
       "id": "msg-eddfb003023b",
@@ -667,7 +703,8 @@
       "body_snippet": "Hello!\n\nCould any one help me out, if possible? I'm stuck here. How would \ntranslate the following command lines to lmer syntax\n\n```\n\nmodel <- aov(\n ? response ~ treatment*time + Error(id/time),\n ? da",
       "thread_id": "thread-eddfb003023b",
       "thread_depth": 0,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030523.html"
     },
     {
       "id": "msg-894941b80751",
@@ -685,7 +722,8 @@
       "body_snippet": "Is there any chance you could give us a reproducible example? (i.e., \neither post your data, or suggest an example based on a data set that's \nbuilt into base R or some common R package ...)\n\n   In ge",
       "thread_id": "thread-eddfb003023b",
       "thread_depth": 1,
-      "month": "2023-09"
+      "month": "2023-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030524.html"
     }
   ],
   "threads": [

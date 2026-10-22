@@ -19,7 +19,8 @@
       "body_snippet": "Hello,I studied agriculture. I have data related to a number of genotypes cultivated under two different environmental conditions (stress and normal) and I want to analyze these data with the BLUPs me",
       "thread_id": "thread-850277b591d1",
       "thread_depth": 0,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030680.html"
     },
     {
       "id": "msg-e8436975d769",
@@ -38,7 +39,8 @@
       "body_snippet": "Reza,\n\n   You have to give us a lot more information before we can help you.\n   By \"BLUPs method\" you probably mean a mixed model, but it's hard to \ntell.  Can you post a link or reference (presumably",
       "thread_id": "thread-850277b591d1",
       "thread_depth": 1,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030681.html"
     },
     {
       "id": "msg-aa84898722e4",
@@ -54,7 +56,8 @@
       "body_snippet": "Hello everyone,\n\nIf I may, I'd like to ask if I am visualising the correct syntax to use for a hypothetical situation using a mixed effects logistic regression with a 4 level hierarchy.\n\nSay we have n",
       "thread_id": "thread-aa84898722e4",
       "thread_depth": 0,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030682.html"
     },
     {
       "id": "msg-92efd2e78554",
@@ -72,7 +75,8 @@
       "body_snippet": "Dear Kim,\n\nSince every nurse has a single binary response, you can summarise the data\nat the ward level\nc(number of nurse success, number of nurses failure)\nIn this case the ward random effect would b",
       "thread_id": "thread-aa84898722e4",
       "thread_depth": 1,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030683.html"
     },
     {
       "id": "msg-febb3443207e",
@@ -88,7 +92,8 @@
       "body_snippet": "Dear community,\n\nI am currently evaluating the presence / absence of snails in the Southern part of Uganda. My study involves 56 water-contact sites, categorized into 4 types (lake, wetland, stream, s",
       "thread_id": "thread-febb3443207e",
       "thread_depth": 0,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030684.html"
     },
     {
       "id": "msg-676fdb56d3de",
@@ -100,11 +105,12 @@
       "subject_clean": "lme4 for a 4 level hierarchy : revisited",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello everyone,\n\nI am rephrasing the question I sent to the list yesterday for clarity and wondered if anyone has any further views?  \n\nMy example yesterday was hypothetical and I was questioning whether the syntax I provide below (including the term (1|region/hospital/ward)) is appropriate for a 4 level hierarchical model.  This term is an extension of that detailed for a 3 level hierarchy in Table 2 (page 7) of the paper \"Fitting Linear Mixed-Effects Models Using lme4\" by Douglas Bates, Martin M?chler, Ben Bolker and Steve Walker. In this document, the authors stipulate that a term of the form (1|g1/g2) would mean that a model would be generated with the intercept varying among (i) g1 and (ii) g2 within g1  (i.e. intercepts would be generated (i) for each level of g1 and (ii) for each level produced by the g1 x g2 combination).\n\nI discuss a mixed effects logistic regression below with a 4 level hierarchy but the term (1|region/hospital/ward) would be appropriate too if my response had been of a continuous nature and we were instead using lmer() rather than glmer().\n\nIn my hypothetical example, we have nurses which are nested within wards and the wards are nested within hospitals and hospitals are nested within regions of the UK. Each nurse has a binary response recorded (Y). Nurses are at level 1, wards at level 2, hospitals at level 3 and regions at level 4.  Say each ward has one category of an ordered 3 category intervention applied where a higher ordered category of intervention was hypothesised to affect a nurse's binary response.\n\nHypothetically, I wish to generate a model with a fixed effect for \"Intervention\" and intercepts for (i) each region, (ii) each region x hospital combination and (iii) each region x hospital x ward combination.  Additionally, an intercept would be included in the fixed-effects portion of the model by default.  Would the following syntax be appropriate?\n\nNote intervention appears in the model as a factor below.\n\nm1<-glmer(Y~interventionf+(1|region/hospital/ward),data=data,family=binomial,control=glmerControl(optimizer=\"bobyqa\"))\n\nVarious online sources have hinted that we could approach an example such as this by considering this as a 2 level hierarchy with nurses (level 1) nested within wards (level 2) and having variables which identify hospitals and regions merely added as predictors in the model - but this seems suspect to me as we would not be considering the full nested nature of the design.\n\nMany thanks for your views.\nKind regards,\nKim\n\nDr Kim Pearce PhD, CStat, Fellow HEA\nNewcastle University",
+      "body_plain": "Hello everyone,\n\nI am rephrasing the question I sent to the list yesterday for clarity and wondered if anyone has any further views?  \n\nMy example yesterday was hypothetical and I was questioning whether the syntax I provide below (including the term (1|region/hospital/ward)) is appropriate for a 4 level hierarchical model.  This term is an extension of that detailed for a 3 level hierarchy in Table 2 (page 7) of the paper \"Fitting Linear Mixed-Effects Models Using lme4\" by Douglas Bates, Martin Mächler, Ben Bolker and Steve Walker. In this document, the authors stipulate that a term of the form (1|g1/g2) would mean that a model would be generated with the intercept varying among (i) g1 and (ii) g2 within g1  (i.e. intercepts would be generated (i) for each level of g1 and (ii) for each level produced by the g1 x g2 combination).\n\nI discuss a mixed effects logistic regression below with a 4 level hierarchy but the term (1|region/hospital/ward) would be appropriate too if my response had been of a continuous nature and we were instead using lmer() rather than glmer().\n\nIn my hypothetical example, we have nurses which are nested within wards and the wards are nested within hospitals and hospitals are nested within regions of the UK. Each nurse has a binary response recorded (Y). Nurses are at level 1, wards at level 2, hospitals at level 3 and regions at level 4.  Say each ward has one category of an ordered 3 category intervention applied where a higher ordered category of intervention was hypothesised to affect a nurse's binary response.\n\nHypothetically, I wish to generate a model with a fixed effect for \"Intervention\" and intercepts for (i) each region, (ii) each region x hospital combination and (iii) each region x hospital x ward combination.  Additionally, an intercept would be included in the fixed-effects portion of the model by default.  Would the following syntax be appropriate?\n\nNote intervention appears in the model as a factor below.\n\nm1<-glmer(Y~interventionf+(1|region/hospital/ward),data=data,family=binomial,control=glmerControl(optimizer=\"bobyqa\"))\n\nVarious online sources have hinted that we could approach an example such as this by considering this as a 2 level hierarchy with nurses (level 1) nested within wards (level 2) and having variables which identify hospitals and regions merely added as predictors in the model - but this seems suspect to me as we would not be considering the full nested nature of the design.\n\nMany thanks for your views.\nKind regards,\nKim\n\nDr Kim Pearce PhD, CStat, Fellow HEA\nNewcastle University",
       "body_snippet": "Hello everyone,\n\nI am rephrasing the question I sent to the list yesterday for clarity and wondered if anyone has any further views?  \n\nMy example yesterday was hypothetical and I was questioning whet",
       "thread_id": "thread-676fdb56d3de",
       "thread_depth": 0,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030685.html"
     },
     {
       "id": "msg-ef7dd1679ca1",
@@ -120,7 +126,8 @@
       "body_snippet": "IN PERSON COURSE ? Hierarchical modelling in ecology (HMIE01) (Universit?\nde Sherbrooke, Canada)\n\nhttps://www.prstats.org/course/hierarchical-modelling-in-ecology-hmie01/\n\nWhere - Longueuil Campus <ht",
       "thread_id": "thread-ef7dd1679ca1",
       "thread_depth": 0,
-      "month": "2024-09"
+      "month": "2024-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q3/030686.html"
     }
   ],
   "threads": [

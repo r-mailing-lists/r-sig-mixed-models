@@ -17,7 +17,8 @@
       "body_snippet": "Hi everyone\n\nI do a research about the relationship between kid age and kids' height and other variables.\nIn my data, one mother has many kid, and a kid only have one mom.\nI have consider the nested k",
       "thread_id": "thread-be360c6967d8",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030461.html"
     },
     {
       "id": "msg-5ccc1a0b494e",
@@ -35,7 +36,8 @@
       "body_snippet": "You might look at the pedigreemm package, and the examples they analyse there. Because you only have nuclear families, the default genetic model pedigreemm \nuses is equivalent to what you want for the",
       "thread_id": "thread-be360c6967d8",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030462.html"
     },
     {
       "id": "msg-f1d150383660",
@@ -51,7 +53,8 @@
       "body_snippet": "ONLINE COURSE ? Introduction To Mixed Models Using R And Rstudio (IMMR07)\n\nhttps://www.prstatistics.com/course/introduction-to-mixed-models-using-r-and-rstudio-immr07/\n\n24th - 26th October\n\nPlease fee",
       "thread_id": "thread-f1d150383660",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030463.html"
     },
     {
       "id": "msg-ececacdc81b9",
@@ -67,7 +70,8 @@
       "body_snippet": "Dear all,\nWe're excited to introduce our upcoming course on (Generalised) Linear Mixed Models in R, scheduled to take place from October 9th to 13th, 2023. This intensive online course is tailored to ",
       "thread_id": "thread-ececacdc81b9",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030464.html"
     },
     {
       "id": "msg-b17ef0c3fd93",
@@ -83,7 +87,8 @@
       "body_snippet": "Hello,\n\nI hope I am still in the topic of this mailing list !\n\nA colleague of mine has performed experimental evolution of some \nbacteria populations in the presence of several antimicrobial agents. \n",
       "thread_id": "thread-b17ef0c3fd93",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030465.html"
     },
     {
       "id": "msg-07a1edca44ba",
@@ -99,7 +104,8 @@
       "body_snippet": "Hello,\nAm I talking to the author of the MCMCGlmm  packages ?\nIf it's right , I would have a question.\nWhen one adjusts an ordinal model with MCMCglmm, what coefficiens are\nestimated (coefficients acc",
       "thread_id": "thread-07a1edca44ba",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030466.html"
     },
     {
       "id": "msg-31cd0f46cecf",
@@ -115,7 +121,8 @@
       "body_snippet": "I am a SAS user, and I have just finished a near-final draft of an article\nabout identifying and specifying fixed and random effects for mixed models\nin SAS. At the moment, all I say about R is this: ",
       "thread_id": "thread-31cd0f46cecf",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030467.html"
     },
     {
       "id": "msg-3e6c1dade767",
@@ -133,7 +140,8 @@
       "body_snippet": "Will, an immediate comment is that what may be accommodated are\nvariance ?components'.  They are not the variances of any identifiable\nquantity. It is surely misleading to call them variances.  For re",
       "thread_id": "thread-31cd0f46cecf",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030468.html"
     },
     {
       "id": "msg-ce0f7d62e28c",
@@ -145,11 +153,12 @@
       "subject_clean": "Random slope specification with interactions in fixed effects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI am attempting to evaluate the influence of two main continuous\nindependent variables (?winter severity? aka WinterSeverity and ?% habitat\nalteration? aka Alteration), and their interaction, on a continuous\ndependent variable (?density?, measured as #animals/km2). I have reason to\nsuspect the impact of these two variables also depends on the underlying\nhabitat context (measured using a continuous variable, let?s say the\nNormalized Difference Vegetation Index ?NDVI?). From this, my base model is:\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n\nDensity is sampled in quadrats, with multiple quadrats clumped together in\n?clusters?; such that the ?cluster? is the true sample unit, if you will,\nand the quadrats are replicated samples of each ?cluster?.\n\nOne complicating twist is that the independent variables are all measured\nat each ?cluster?, such that there is no variation in the independent\nvariables within each cluster, but there is variation among clusters. Each\nof the quadrats within each cluster have different density values, but the\nsame value for winter severity, % habitat alteration, and NDVI.\n\nPutting the twist aside for a moment, my understanding is that I should be\nusing a random slope model to gain inference at the cluster level. The\nrandom effects would allow the covariate effects to vary among clusters and\nthe fixed effects would capture the average effect of each covariate across\nclusters. From this, the full specification of the model is (with\nappropriate specification of the family and link):\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n+ ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\nNDVI*WinterSeverity  |Cluster)\n\nThis model, however, appears to be too complex for my data and will not\nconverge. To that end, I have also considered the following reduced model\nthat does not include the interactions in the random effect structure (this\nmodel converges):\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n+ (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n\nI have two main questions:\n\n1.       For the simplified model, I am unsure of the interpretation of the\nbeta coefficients for the fixed-effect interactions if only the independent\nvariables with no interactions are specified as random slopes. Do the fixed\ncoefficients still yield inferences at the cluster level?\n\n2.       Is the lack of variation in independent variables within each\ncluster problematic? Is there an alternative way to model this that I am\nmissing?\nThank you for your help,\nMelanie\n-- \nMelanie Dickie\nPhD Candidate\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Hello,\n\nI am attempting to evaluate the influence of two main continuous\nindependent variables (?winter severity? aka WinterSeverity and ?% habitat\nalteration? aka Alteration), and their interaction, ",
+      "body_plain": "Hello,\n\nI am attempting to evaluate the influence of two main continuous\nindependent variables (“winter severity” aka WinterSeverity and “% habitat\nalteration” aka Alteration), and their interaction, on a continuous\ndependent variable (“density”, measured as #animals/km2). I have reason to\nsuspect the impact of these two variables also depends on the underlying\nhabitat context (measured using a continuous variable, let’s say the\nNormalized Difference Vegetation Index “NDVI”). From this, my base model is:\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n\nDensity is sampled in quadrats, with multiple quadrats clumped together in\n“clusters”; such that the “cluster” is the true sample unit, if you will,\nand the quadrats are replicated samples of each “cluster”.\n\nOne complicating twist is that the independent variables are all measured\nat each “cluster”, such that there is no variation in the independent\nvariables within each cluster, but there is variation among clusters. Each\nof the quadrats within each cluster have different density values, but the\nsame value for winter severity, % habitat alteration, and NDVI.\n\nPutting the twist aside for a moment, my understanding is that I should be\nusing a random slope model to gain inference at the cluster level. The\nrandom effects would allow the covariate effects to vary among clusters and\nthe fixed effects would capture the average effect of each covariate across\nclusters. From this, the full specification of the model is (with\nappropriate specification of the family and link):\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n+ ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\nNDVI*WinterSeverity  |Cluster)\n\nThis model, however, appears to be too complex for my data and will not\nconverge. To that end, I have also considered the following reduced model\nthat does not include the interactions in the random effect structure (this\nmodel converges):\n\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n+ (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n\nI have two main questions:\n\n1.       For the simplified model, I am unsure of the interpretation of the\nbeta coefficients for the fixed-effect interactions if only the independent\nvariables with no interactions are specified as random slopes. Do the fixed\ncoefficients still yield inferences at the cluster level?\n\n2.       Is the lack of variation in independent variables within each\ncluster problematic? Is there an alternative way to model this that I am\nmissing?\nThank you for your help,\nMelanie\n-- \nMelanie Dickie\nPhD Candidate\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hello,\n\nI am attempting to evaluate the influence of two main continuous\nindependent variables (“winter severity” aka WinterSeverity and “% habitat\nalteration” aka Alteration), and their interaction, ",
       "thread_id": "thread-ce0f7d62e28c",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030469.html"
     },
     {
       "id": "msg-5c015d4727b1",
@@ -163,11 +172,12 @@
       "references": [
         "<CAJn6-XAEdNf7Tf7woQLk42g0GYx4y5u_L3xF4UYEJTG4RDyfMA@mail.gmail.com>"
       ],
-      "body_plain": "Dear Melanie,\n\nFitting random slopes requires a range of values within each unit. Since\nyour covariates remain constant within the cluster, you can't estimate the\nslope within each cluster. Hence the model should be\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity +\n(1|Cluster)\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp di 22 aug 2023 om 15:13 schreef Melanie Dickie <mvezina at ualberta.ca>:\n\n> Hello,\n>\n> I am attempting to evaluate the influence of two main continuous\n> independent variables (?winter severity? aka WinterSeverity and ?% habitat\n> alteration? aka Alteration), and their interaction, on a continuous\n> dependent variable (?density?, measured as #animals/km2). I have reason to\n> suspect the impact of these two variables also depends on the underlying\n> habitat context (measured using a continuous variable, let?s say the\n> Normalized Difference Vegetation Index ?NDVI?). From this, my base model\n> is:\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n>\n> Density is sampled in quadrats, with multiple quadrats clumped together in\n> ?clusters?; such that the ?cluster? is the true sample unit, if you will,\n> and the quadrats are replicated samples of each ?cluster?.\n>\n> One complicating twist is that the independent variables are all measured\n> at each ?cluster?, such that there is no variation in the independent\n> variables within each cluster, but there is variation among clusters. Each\n> of the quadrats within each cluster have different density values, but the\n> same value for winter severity, % habitat alteration, and NDVI.\n>\n> Putting the twist aside for a moment, my understanding is that I should be\n> using a random slope model to gain inference at the cluster level. The\n> random effects would allow the covariate effects to vary among clusters and\n> the fixed effects would capture the average effect of each covariate across\n> clusters. From this, the full specification of the model is (with\n> appropriate specification of the family and link):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\n> NDVI*WinterSeverity  |Cluster)\n>\n> This model, however, appears to be too complex for my data and will not\n> converge. To that end, I have also considered the following reduced model\n> that does not include the interactions in the random effect structure (this\n> model converges):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n>\n> I have two main questions:\n>\n> 1.       For the simplified model, I am unsure of the interpretation of the\n> beta coefficients for the fixed-effect interactions if only the independent\n> variables with no interactions are specified as random slopes. Do the fixed\n> coefficients still yield inferences at the cluster level?\n>\n> 2.       Is the lack of variation in independent variables within each\n> cluster problematic? Is there an alternative way to model this that I am\n> missing?\n> Thank you for your help,\n> Melanie\n> --\n> Melanie Dickie\n> PhD Candidate\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear Melanie,\n\nFitting random slopes requires a range of values within each unit. Since\nyour covariates remain constant within the cluster, you can't estimate the\nslope within each cluster. Hence the model should be\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity +\n(1|Cluster)\n\nBest regards,\n\nir. Thierry Onkelinx\nStatisticus / Statistician\n\nVlaamse Overheid / Government of Flanders\nINSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND\nFOREST\nTeam Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\nthierry.onkelinx at inbo.be\nHavenlaan 88 bus 73, 1000 Brussel\nwww.inbo.be\n\n///////////////////////////////////////////////////////////////////////////////////////////\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n///////////////////////////////////////////////////////////////////////////////////////////\n\n<https://www.inbo.be>\n\n\nOp di 22 aug 2023 om 15:13 schreef Melanie Dickie <mvezina at ualberta.ca>:\n\n> Hello,\n>\n> I am attempting to evaluate the influence of two main continuous\n> independent variables (“winter severity” aka WinterSeverity and “% habitat\n> alteration” aka Alteration), and their interaction, on a continuous\n> dependent variable (“density”, measured as #animals/km2). I have reason to\n> suspect the impact of these two variables also depends on the underlying\n> habitat context (measured using a continuous variable, let’s say the\n> Normalized Difference Vegetation Index “NDVI”). From this, my base model\n> is:\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n>\n> Density is sampled in quadrats, with multiple quadrats clumped together in\n> “clusters”; such that the “cluster” is the true sample unit, if you will,\n> and the quadrats are replicated samples of each “cluster”.\n>\n> One complicating twist is that the independent variables are all measured\n> at each “cluster”, such that there is no variation in the independent\n> variables within each cluster, but there is variation among clusters. Each\n> of the quadrats within each cluster have different density values, but the\n> same value for winter severity, % habitat alteration, and NDVI.\n>\n> Putting the twist aside for a moment, my understanding is that I should be\n> using a random slope model to gain inference at the cluster level. The\n> random effects would allow the covariate effects to vary among clusters and\n> the fixed effects would capture the average effect of each covariate across\n> clusters. From this, the full specification of the model is (with\n> appropriate specification of the family and link):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\n> NDVI*WinterSeverity  |Cluster)\n>\n> This model, however, appears to be too complex for my data and will not\n> converge. To that end, I have also considered the following reduced model\n> that does not include the interactions in the random effect structure (this\n> model converges):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n>\n> I have two main questions:\n>\n> 1.       For the simplified model, I am unsure of the interpretation of the\n> beta coefficients for the fixed-effect interactions if only the independent\n> variables with no interactions are specified as random slopes. Do the fixed\n> coefficients still yield inferences at the cluster level?\n>\n> 2.       Is the lack of variation in independent variables within each\n> cluster problematic? Is there an alternative way to model this that I am\n> missing?\n> Thank you for your help,\n> Melanie\n> --\n> Melanie Dickie\n> PhD Candidate\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear Melanie,\n\nFitting random slopes requires a range of values within each unit. Since\nyour covariates remain constant within the cluster, you can't estimate the\nslope within each cluster. Hence the ",
       "thread_id": "thread-ce0f7d62e28c",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030470.html"
     },
     {
       "id": "msg-ffd159b1e141",
@@ -181,11 +191,12 @@
       "references": [
         "<CAJn6-XAEdNf7Tf7woQLk42g0GYx4y5u_L3xF4UYEJTG4RDyfMA@mail.gmail.com>"
       ],
-      "body_plain": "On 22/08/2023 00:52, Melanie Dickie wrote:\n> One complicating twist is that the independent variables are all measured\n> at each ?cluster?, such that there is no variation in the independent\n> variables within each cluster, but there is variation among clusters. Each\n> of the quadrats within each cluster have different density values, but the\n> same value for winter severity, % habitat alteration, and NDVI.\nThis means that by-cluster random slopes should not be included, since \nyou cannot estimate their within-cluster effect.\n\nIf I'm seeing this correctly, the model that you're looking for is simply:\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + \nAlteration*WinterSeverity + (1|Cluster)\n\nJo?o\n\n> Putting the twist aside for a moment, my understanding is that I should be\n> using a random slope model to gain inference at the cluster level. The\n> random effects would allow the covariate effects to vary among clusters and\n> the fixed effects would capture the average effect of each covariate across\n> clusters. From this, the full specification of the model is (with\n> appropriate specification of the family and link):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\n> NDVI*WinterSeverity  |Cluster)\n>\n> This model, however, appears to be too complex for my data and will not\n> converge. To that end, I have also considered the following reduced model\n> that does not include the interactions in the random effect structure (this\n> model converges):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n>\n> I have two main questions:\n>\n> 1.       For the simplified model, I am unsure of the interpretation of the\n> beta coefficients for the fixed-effect interactions if only the independent\n> variables with no interactions are specified as random slopes. Do the fixed\n> coefficients still yield inferences at the cluster level?\n>\n> 2.       Is the lack of variation in independent variables within each\n> cluster problematic? Is there an alternative way to model this that I am\n> missing?\n> Thank you for your help,\n> Melanie",
-      "body_snippet": "On 22/08/2023 00:52, Melanie Dickie wrote:\n> One complicating twist is that the independent variables are all measured\n> at each ?cluster?, such that there is no variation in the independent\n> variabl",
+      "body_plain": "On 22/08/2023 00:52, Melanie Dickie wrote:\n> One complicating twist is that the independent variables are all measured\n> at each “cluster”, such that there is no variation in the independent\n> variables within each cluster, but there is variation among clusters. Each\n> of the quadrats within each cluster have different density values, but the\n> same value for winter severity, % habitat alteration, and NDVI.\nThis means that by-cluster random slopes should not be included, since \nyou cannot estimate their within-cluster effect.\n\nIf I'm seeing this correctly, the model that you're looking for is simply:\nDensity ~ NDVI*Alteration + NDVI*WinterSeverity + \nAlteration*WinterSeverity + (1|Cluster)\n\nJoão\n\n> Putting the twist aside for a moment, my understanding is that I should be\n> using a random slope model to gain inference at the cluster level. The\n> random effects would allow the covariate effects to vary among clusters and\n> the fixed effects would capture the average effect of each covariate across\n> clusters. From this, the full specification of the model is (with\n> appropriate specification of the family and link):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + ( NDVI*Alteration  |Cluster) + ( NDVI*WinterSeverity  |Cluster) + (\n> NDVI*WinterSeverity  |Cluster)\n>\n> This model, however, appears to be too complex for my data and will not\n> converge. To that end, I have also considered the following reduced model\n> that does not include the interactions in the random effect structure (this\n> model converges):\n>\n> Density ~ NDVI*Alteration + NDVI*WinterSeverity + Alteration*WinterSeverity\n> + (0+NDVI|Cluster) + (0+Alteration|Cluster) + (0+WinterSeverity|Cluster)\n>\n> I have two main questions:\n>\n> 1.       For the simplified model, I am unsure of the interpretation of the\n> beta coefficients for the fixed-effect interactions if only the independent\n> variables with no interactions are specified as random slopes. Do the fixed\n> coefficients still yield inferences at the cluster level?\n>\n> 2.       Is the lack of variation in independent variables within each\n> cluster problematic? Is there an alternative way to model this that I am\n> missing?\n> Thank you for your help,\n> Melanie",
+      "body_snippet": "On 22/08/2023 00:52, Melanie Dickie wrote:\n> One complicating twist is that the independent variables are all measured\n> at each “cluster”, such that there is no variation in the independent\n> variabl",
       "thread_id": "thread-ce0f7d62e28c",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030471.html"
     },
     {
       "id": "msg-1a5e2de9893d",
@@ -201,7 +212,8 @@
       "body_snippet": "Hi all,\n\nThis is my first time sending a question to this list so apologies if I\nmiss something that is typically expected. I am trying to fit an\ninterrupted time series type model on grouped data (by",
       "thread_id": "thread-1a5e2de9893d",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030472.html"
     },
     {
       "id": "msg-90f79fb0bf61",
@@ -219,7 +231,8 @@
       "body_snippet": "Check the section on \"bias adjustment\" in the emmeans vignette:\n\nhttps://cran.r-project.org/web/packages/emmeans/vignettes/transformations.html#bias-adj\n\n   I think? you can probably pass these option",
       "thread_id": "thread-1a5e2de9893d",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030473.html"
     },
     {
       "id": "msg-2e2b6423915e",
@@ -238,7 +251,8 @@
       "body_snippet": "Hello Ben,\n\nThanks for the reply I totally missed the part on \"bias adjustment\"; this\nseems to have done the trick. Wasn't able to figure out how to send it\nthrough to emmeans from ggmeans for whateve",
       "thread_id": "thread-1a5e2de9893d",
       "thread_depth": 2,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030474.html"
     },
     {
       "id": "msg-e18d6bd162cc",
@@ -256,7 +270,8 @@
       "body_snippet": "> On 18 Aug 2023, at 07.06, Will Hopkins <willthekiwi at gmail.com> wrote:\n> \n> I am a SAS user, and I have just finished a near-final draft of an article\n> about identifying and specifying fixed and ",
       "thread_id": "thread-31cd0f46cecf",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030476.html"
     },
     {
       "id": "msg-69655a5ecd8a",
@@ -274,7 +289,8 @@
       "body_snippet": "> On 18 Aug 2023, at 07.06, Will Hopkins <willthekiwi at gmail.com> wrote:\n> \n> I am a SAS user, and I have just finished a near-final draft of an article\n> about identifying and specifying fixed and ",
       "thread_id": "thread-31cd0f46cecf",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030475.html"
     },
     {
       "id": "msg-41f3116b8388",
@@ -290,7 +306,8 @@
       "body_snippet": "Hello,\n\nI performed an unpaired Wilcoxon test on a continuous measure with\nnon-parametric distribution and detected a significant difference between\ntwo levels of an independent variable. However, I s",
       "thread_id": "thread-41f3116b8388",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030477.html"
     },
     {
       "id": "msg-76afd8bca81a",
@@ -308,7 +325,8 @@
       "body_snippet": "Hello, Faith,\n\nthis is a rather not R-related, but statistical question for which you \nshould probably seek (professional?) advice. Nevertheless, as unspecific \nas you formulated it, you may want to l",
       "thread_id": "thread-41f3116b8388",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030478.html"
     },
     {
       "id": "msg-e344a7f900e0",
@@ -324,7 +342,8 @@
       "body_snippet": "Hi,\n\nI thought it was impossible for deviance to decrease when a term is\nremoved!?!? Yet I'm seeing it happen with this pair of relatively simple\nBernoulli GLMMs fit using lme4:glmer():\n\n> full <- glm",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 0,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030479.html"
     },
     {
       "id": "msg-8769a7839963",
@@ -342,7 +361,8 @@
       "body_snippet": "You say you are comparing conditional deviances rather than marginal\ndeviances.  Can you expand on that a bit further?  How are you evaluating\nthe conditional deviances?\n\nThe models are being fit acco",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 1,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030480.html"
     },
     {
       "id": "msg-f8b539a0d5e6",
@@ -361,7 +381,8 @@
       "body_snippet": ">\n> You say you are comparing conditional deviances rather than marginal\n> deviances.  Can you expand on that a bit further?\n>\n\nMy (possibly mistaken) understanding of the conditional deviance is that",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 2,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030481.html"
     },
     {
       "id": "msg-0b93fae82f30",
@@ -380,7 +401,8 @@
       "body_snippet": "I may have attributed the confusion about conditional and marginal\ndeviances to you, Juho, when in fact it is the fault of the authors of\nlme4, of whom I am one.  If so, I apologize.\n\nWe (the authors ",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 2,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030482.html"
     },
     {
       "id": "msg-dd0b4b53529c",
@@ -400,7 +422,8 @@
       "body_snippet": "I have written about how I now understand the evaluation of the likelihood\nof a GLMM in an appendix of the in-progress book at\nhttps://juliamixedmodels.github.io/EmbraceUncertainty\n\nIt is a difficult ",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 3,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030483.html"
     },
     {
       "id": "msg-e5414c4f52bc",
@@ -421,7 +444,8 @@
       "body_snippet": "I think this highlights the intersection of two big stumbling blocks:\n\n1. a lot of identities / niceness in classical GLM theory doesn't hold \nin the mixed models case. See also coefficient of determi",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 4,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030484.html"
     },
     {
       "id": "msg-9f546f637de9",
@@ -443,7 +467,8 @@
       "body_snippet": "For what it's worth we did attempt to document what we knew about \ndeviance here:\n\nhttps://github.com/lme4/lme4/blob/master/man/merMod-class.Rd\n(formatted version at  https://rdrr.io/cran/lme4/man/mer",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 5,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030485.html"
     },
     {
       "id": "msg-42bd963ad435",
@@ -466,7 +491,8 @@
       "body_snippet": "...and here I was thinking \"unconditional likelihood\" was just another\nsynonym for the \"marginal\" or \"average\" likelihood I see discussed in stats\nbooks...\n\nOh well, Douglas has succinctly solved my m",
       "thread_id": "thread-e344a7f900e0",
       "thread_depth": 6,
-      "month": "2023-08"
+      "month": "2023-08",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q3/030486.html"
     }
   ],
   "threads": [

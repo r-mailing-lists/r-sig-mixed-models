@@ -17,7 +17,8 @@
       "body_snippet": "Hello all,\n\nI'm trying to simulate about 50 datasets each with a beta-distributed\noutcome (Y) according to the R code below.\n\nFor each dataset, I would like to randomly determine the parameter\nvalues ",
       "thread_id": "thread-174a04f5786e",
       "thread_depth": 0,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030733.html"
     },
     {
       "id": "msg-262043835d26",
@@ -33,7 +34,8 @@
       "body_snippet": "Dear List,\n\nIn a paper taking a hypothesis testing approach, we are reporting the results based on the following mixed model:\n\nm = glmmTMB::glmmTMB(\n      agentic_language ~ time + event + time_since_",
       "thread_id": "thread-262043835d26",
       "thread_depth": 0,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030734.html"
     },
     {
       "id": "msg-54c26c447bb5",
@@ -49,7 +51,8 @@
       "body_snippet": "Dear R-SIG-Mixed-Models Maling List Recipients,\n\n\nI hope this email finds you well. My name is Manny, and I am a biostatistics analyst at NYU Langone Health in New York, NY. I am reaching out with a q",
       "thread_id": "thread-54c26c447bb5",
       "thread_depth": 0,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030735.html"
     },
     {
       "id": "msg-d3967974961c",
@@ -65,7 +68,8 @@
       "body_snippet": "ONLINE COURSE ? Introduction To Mixed Models Using R And Rstudio (IMMR09)\n\nhttps://www.prstats.org/course/introduction-to-mixed-models-using-r-and-rstudio-immr09/\n\n11th - 13th march 2025\n\nInstructor -",
       "thread_id": "thread-d3967974961c",
       "thread_depth": 0,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030736.html"
     },
     {
       "id": "msg-0a5f0040c1ae",
@@ -81,7 +85,8 @@
       "body_snippet": "Greetings,\n\nI'm trying to fit a linear mixed effect model using nlme::lme() that\nincludes heteroskedastic variances by group, where the variance for one\ngroup is fixed to a specific value. I *think* I",
       "thread_id": "thread-0a5f0040c1ae",
       "thread_depth": 0,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030737.html"
     },
     {
       "id": "msg-67dcf199f066",
@@ -95,11 +100,12 @@
       "references": [
         "<MN2PR18MB36887F79DC1F386795023BF8823B2@MN2PR18MB3688.namprd18.prod.outlook.com>"
       ],
-      "body_plain": "Hi, Manny:\n\nCan you give some details to help us understand this?  I'm guessing there\nis collinearity in the estimation process, but you need to help us with\nsome details. If you are allowed to share the full input, let us see.\nAlmost for sure, there's something unexpected in your data structure.\n\n1 It would help to know how big the sample is and how many individual\nobservations there are for each person.\n\nI've seen the error you describe when the numbers of observations are very\nsmall in some groups and the presence of cases in these small groups also\ncoincide with the other predictors in the model.\n\n2 You refer to several variables as confounders, which is a new usage of\nthat term for me.  Lets get some diagnostics. Please fit this with an\nordinary regression and then diagnose the multicollinearity among the\npredictors.\n\n3. How about fitting the model with just the one random effect term and\nthen review the magnitude of the differences in the predictions for the\ngroups of observations.\n\nI think its also possible that the assumption that the effects are normally\ndistributed is violated and the calculation process cannot find a way to\ntell you that.\n\nPJ\n\nOn Tue, Dec 17, 2024 at 3:36?PM Vazquez Sanchez, Manuel via\nR-sig-mixed-models <r-sig-mixed-models at r-project.org> wrote:\n\n> Dear R-SIG-Mixed-Models Maling List Recipients,\n>\n>\n> I hope this email finds you well. My name is Manny, and I am a\n> biostatistics analyst at NYU Langone Health in New York, NY. I am reaching\n> out with a question regarding the functionality of the lme4 (Version\n> 1.1-35.5) package, specifically its handling of model convergence in\n> longitudinal data analyses.\n>\n> One of the projects I am collaborating on involves analyzing longitudinal\n> data from the Women's Interagency HIV Study (WIHS). Our goal is to explore\n> the \"syndemic\" effects of individual-level exposures?such as depression,\n> physical and sexual abuse, and drug use?on health outcomes like sleep\n> quality and hypertension. The study cohort included 2,345 participants with\n> each participant having 1-36  visits. We are using longitudinal,\n> mixed-effects models to determine how the risk of hypertension status\n> (binary outcome) varies with different combinations of these exposures\n> while accounting for the repeated measurement over time as random effect.\n>\n>\n>\n> For this analysis, we are using the glmer() function from the lme4\n> package. Example model:\n>\n>\n> glmer(HTN ~ AGEATBL + RACE + EDUCATION + MARRIED + INCOME +\n> YearsFromBaseline + DRUGUSE + (1|ID), family = binomial(link = ?logit?))\n>\n>\n>\n> AGEATBL, RACE, EDUCATION, MARRIED, INCOME, and YearsFromBaseline  are\n> confounders, and DRUGUSE is one of the syndemic factors. The random effects\n> specified (1|ID) are to account for differences between individual\n> participants.\n>\n> In our analyses, we encounter a consistent issue: almost all of the models\n> return convergence warnings of the form:\n>\n>\n> Warning message:\n>\n>\n>\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n>\n>\n>\n>   Model failed to converge with max|grad| = 0.794027 (tol = 0.002,\n> component 1)\n>\n> To address this, we have tried the following strategies:\n>\n>   *   Changing the optimizer and increasing the number of iterations,\n> including using the built-in lme4 functions to identify the best optimizer.\n>   *   Reducing the dataset by limiting the number of participants to\n> decrease the levels of random effects.\n>   *   Excluding participants with either too few or too many visits to\n> regularize the time in study for the included participants.\n>   *\n> Employing confounder variable selection procedures for dimensionality\n> reduction.\n>\n>\n> Despite these efforts, the warnings persist. While the models do not\n> produce errors, the warnings raise concerns about the reliability of our\n> results.  We also checked the documentation on lme4 regarding performance\n> tips. Setting  `control=glmerControl(calc.derivs=FALSE)` eliminates the\n> warnings, but we need to report CI's and standard deviations of fixed\n> effects parameters for our paper.\n>\n>\n> I have two primary questions:\n>\n>   1.  How reliable are the results when convergence warnings are present?\n>      *   Are the parameter estimates and standard errors likely to be\n> biased or misleading?\n>   2.  If the results are not reliable, are there additional strategies you\n> recommend to improve model convergence or performance?\n>      *\n> For instance, would penalized likelihood approaches or modifications to\n> the random effects structure be viable options?\n>\n>\n>\n> I appreciate the robust functionality of the lme4 package and its critical\n> role in facilitating complex modeling. Any guidance you can provide on\n> addressing these convergence issues would be immensely helpful for our\n> work. Thank you for your time and invaluable contribution to the research\n> community. I look forward to any and all insights.\n>\n>\n>\n> Best regards,\n>\n> Manny\n>\n>\n> Manuel R. Vazquez-Sanchez, MS\n> Asst Research Scientist\n> Department of Population Health\n> Division of Biostatistics\n> NYU Grossman School of Medicine\n> Manuel.VazquezSanchez at nyulangone.org\n> (917) 581 2034\n>\n> NYU Langone Health\n> 180 Madison Avenue, 2nd Floor #2-32A\n> New York, NY 10016\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n-- \nPaul E. Johnson   http://pj.freefaculty.org\nDirector, Center for Research Methods and Data Analysis http://crmda.ku.edu\n\nTo write to me directly, please address me at pauljohn at ku.edu.\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi, Manny:\n\nCan you give some details to help us understand this?  I'm guessing there\nis collinearity in the estimation process, but you need to help us with\nsome details. If you are allowed to share the full input, let us see.\nAlmost for sure, there's something unexpected in your data structure.\n\n1 It would help to know how big the sample is and how many individual\nobservations there are for each person.\n\nI've seen the error you describe when the numbers of observations are very\nsmall in some groups and the presence of cases in these small groups also\ncoincide with the other predictors in the model.\n\n2 You refer to several variables as confounders, which is a new usage of\nthat term for me.  Lets get some diagnostics. Please fit this with an\nordinary regression and then diagnose the multicollinearity among the\npredictors.\n\n3. How about fitting the model with just the one random effect term and\nthen review the magnitude of the differences in the predictions for the\ngroups of observations.\n\nI think its also possible that the assumption that the effects are normally\ndistributed is violated and the calculation process cannot find a way to\ntell you that.\n\nPJ\n\nOn Tue, Dec 17, 2024 at 3:36 PM Vazquez Sanchez, Manuel via\nR-sig-mixed-models <r-sig-mixed-models at r-project.org> wrote:\n\n> Dear R-SIG-Mixed-Models Maling List Recipients,\n>\n>\n> I hope this email finds you well. My name is Manny, and I am a\n> biostatistics analyst at NYU Langone Health in New York, NY. I am reaching\n> out with a question regarding the functionality of the lme4 (Version\n> 1.1-35.5) package, specifically its handling of model convergence in\n> longitudinal data analyses.\n>\n> One of the projects I am collaborating on involves analyzing longitudinal\n> data from the Women's Interagency HIV Study (WIHS). Our goal is to explore\n> the \"syndemic\" effects of individual-level exposures—such as depression,\n> physical and sexual abuse, and drug use—on health outcomes like sleep\n> quality and hypertension. The study cohort included 2,345 participants with\n> each participant having 1-36  visits. We are using longitudinal,\n> mixed-effects models to determine how the risk of hypertension status\n> (binary outcome) varies with different combinations of these exposures\n> while accounting for the repeated measurement over time as random effect.\n>\n>\n>\n> For this analysis, we are using the glmer() function from the lme4\n> package. Example model:\n>\n>\n> glmer(HTN ~ AGEATBL + RACE + EDUCATION + MARRIED + INCOME +\n> YearsFromBaseline + DRUGUSE + (1|ID), family = binomial(link = “logit”))\n>\n>\n>\n> AGEATBL, RACE, EDUCATION, MARRIED, INCOME, and YearsFromBaseline  are\n> confounders, and DRUGUSE is one of the syndemic factors. The random effects\n> specified (1|ID) are to account for differences between individual\n> participants.\n>\n> In our analyses, we encounter a consistent issue: almost all of the models\n> return convergence warnings of the form:\n>\n>\n> Warning message:\n>\n>\n>\n> In checkConv(attr(opt, \"derivs\"), opt$par, ctrl = control$checkConv,  :\n>\n>\n>\n>   Model failed to converge with max|grad| = 0.794027 (tol = 0.002,\n> component 1)\n>\n> To address this, we have tried the following strategies:\n>\n>   *   Changing the optimizer and increasing the number of iterations,\n> including using the built-in lme4 functions to identify the best optimizer.\n>   *   Reducing the dataset by limiting the number of participants to\n> decrease the levels of random effects.\n>   *   Excluding participants with either too few or too many visits to\n> regularize the time in study for the included participants.\n>   *\n> Employing confounder variable selection procedures for dimensionality\n> reduction.\n>\n>\n> Despite these efforts, the warnings persist. While the models do not\n> produce errors, the warnings raise concerns about the reliability of our\n> results.  We also checked the documentation on lme4 regarding performance\n> tips. Setting  `control=glmerControl(calc.derivs=FALSE)` eliminates the\n> warnings, but we need to report CI's and standard deviations of fixed\n> effects parameters for our paper.\n>\n>\n> I have two primary questions:\n>\n>   1.  How reliable are the results when convergence warnings are present?\n>      *   Are the parameter estimates and standard errors likely to be\n> biased or misleading?\n>   2.  If the results are not reliable, are there additional strategies you\n> recommend to improve model convergence or performance?\n>      *\n> For instance, would penalized likelihood approaches or modifications to\n> the random effects structure be viable options?\n>\n>\n>\n> I appreciate the robust functionality of the lme4 package and its critical\n> role in facilitating complex modeling. Any guidance you can provide on\n> addressing these convergence issues would be immensely helpful for our\n> work. Thank you for your time and invaluable contribution to the research\n> community. I look forward to any and all insights.\n>\n>\n>\n> Best regards,\n>\n> Manny\n>\n>\n> Manuel R. Vazquez-Sanchez, MS\n> Asst Research Scientist\n> Department of Population Health\n> Division of Biostatistics\n> NYU Grossman School of Medicine\n> Manuel.VazquezSanchez at nyulangone.org\n> (917) 581 2034\n>\n> NYU Langone Health\n> 180 Madison Avenue, 2nd Floor #2-32A\n> New York, NY 10016\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n-- \nPaul E. Johnson   http://pj.freefaculty.org\nDirector, Center for Research Methods and Data Analysis http://crmda.ku.edu\n\nTo write to me directly, please address me at pauljohn at ku.edu.\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi, Manny:\n\nCan you give some details to help us understand this?  I'm guessing there\nis collinearity in the estimation process, but you need to help us with\nsome details. If you are allowed to share ",
       "thread_id": "thread-54c26c447bb5",
       "thread_depth": 1,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030738.html"
     },
     {
       "id": "msg-1bc3ede66551",
@@ -117,7 +123,8 @@
       "body_snippet": "I think it is unfortunate that varIdent() selects the reference category \nbased on how the data is sorted (using the first level that occurs). \nThere is also a corresponding bug report \n<https://bugs.",
       "thread_id": "thread-0a5f0040c1ae",
       "thread_depth": 1,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030739.html"
     },
     {
       "id": "msg-1bb88d2937c0",
@@ -136,7 +143,8 @@
       "body_snippet": "Hi Sebastian,\n\nThanks for your reply. This helped me figure out how to control the\nreference level for the particular model I'm working on. I wrote up what\nI've learned (in an excessive degree of deta",
       "thread_id": "thread-0a5f0040c1ae",
       "thread_depth": 2,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030740.html"
     },
     {
       "id": "msg-065965e075a4",
@@ -156,7 +164,8 @@
       "body_snippet": "Glad to hear that helped. Your exemplification of current varIdent \nbehaviour is also helpful, thanks. I'll revisit the bug with a closer \nlook next year.\n\nIn principle, it would be better for the ref",
       "thread_id": "thread-0a5f0040c1ae",
       "thread_depth": 3,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030741.html"
     },
     {
       "id": "msg-bc1c6401211d",
@@ -177,7 +186,8 @@
       "body_snippet": "Regarding your P.S., I've added a callout to the post noting that the bug\nhas been squashed.\nhttps://jepusto.com/posts/bug-in-nlme-getVarCov/\n\nKind Regards,\nJames\n\nOn Sun, Dec 29, 2024 at 5:23?PM Seba",
       "thread_id": "thread-0a5f0040c1ae",
       "thread_depth": 4,
-      "month": "2024-12"
+      "month": "2024-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2024q4/030742.html"
     }
   ],
   "threads": [

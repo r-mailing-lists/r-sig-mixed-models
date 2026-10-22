@@ -13,11 +13,12 @@
       "subject_clean": "Selecting a family in glmmTMB for continuous proportion data that includes 0 and 1",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI?ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I?ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently using \"family=beta_family(link=\"logit\"), ziformula= ~1? after making the 0s slightly non-zero (0.00001) and the 1s slightly smaller (0.99999) - I tried the solutions under zero inflation continuous data https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#continuous-data.\n\nHowever, is there a way to appropriately fit the data as is (true zeros and true ones)?\n\nI?ve attached an image of the distribution of the data.\n\nAny suggestions would be much appreciated!\n\nTake care,\nApril\n\n?\nDr. April Martinig, Ph.D., M.Sc.\nPostdoctoral fellow\nUniversity of New South Wales\nmartinig.weebly.com<http://martinig.weebly.com>\n?I do not accept the conventional order of things as a given.\"\n\n\n-------------- next part --------------\nA non-text attachment was scrubbed...\nName: plot.pdf\nType: application/pdf\nSize: 96651 bytes\nDesc: plot.pdf\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20230604/35bfa505/attachment-0001.pdf>",
-      "body_snippet": "Hello,\n\nI?ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I?ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently usi",
+      "body_plain": "Hello,\n\nI’ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I’ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently using \"family=beta_family(link=\"logit\"), ziformula= ~1” after making the 0s slightly non-zero (0.00001) and the 1s slightly smaller (0.99999) - I tried the solutions under zero inflation continuous data https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#continuous-data.\n\nHowever, is there a way to appropriately fit the data as is (true zeros and true ones)?\n\nI’ve attached an image of the distribution of the data.\n\nAny suggestions would be much appreciated!\n\nTake care,\nApril\n\n—\nDr. April Martinig, Ph.D., M.Sc.\nPostdoctoral fellow\nUniversity of New South Wales\nmartinig.weebly.com<http://martinig.weebly.com>\n“I do not accept the conventional order of things as a given.\"\n\n\n-------------- next part --------------\nA non-text attachment was scrubbed...\nName: plot.pdf\nType: application/pdf\nSize: 96651 bytes\nDesc: plot.pdf\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20230604/35bfa505/attachment-0001.pdf>",
+      "body_snippet": "Hello,\n\nI’ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I’ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently usi",
       "thread_id": "thread-c697a62d6b6b",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030407.html"
     },
     {
       "id": "msg-fcd3aed0cc74",
@@ -33,7 +34,8 @@
       "body_snippet": "Hi:\n\nThis may have already been covered though I did not see it in the archives\nafter a quick search. For linear mixed models, is there a way to get lmer\nto calculate the ICC automatically so as to ap",
       "thread_id": "thread-fcd3aed0cc74",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030408.html"
     },
     {
       "id": "msg-8bdf55e7623d",
@@ -47,11 +49,12 @@
       "references": [
         "<CAH_7VOkGSmc7P-M-G4CL2BSUaOj7K4C6a_+qGkhLSFE2snCD7w@mail.gmail.com>"
       ],
-      "body_plain": "The `summary()` method does not include the ICC. You can, however, use\n`performance::icc()` (see\nhttps://easystats.github.io/performance/reference/icc.html) to compute the\nICC; or use packages that create summary outputs including ICC, like the\nmodelsummary package. The parameters package, which returns \"tidy\" data\nframes of regression results (similar to broom, but with more extra features\nand nice printing) at least includes marginal/conditional R2.\n\nlibrary(lme4)\nlibrary(modelsummary)\nlibrary(parameters)\n\nm <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)\nmodelsummary(m)\nmodel_parameters(m, summary = TRUE)\n\nDaniel\n\n-----Urspr?ngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\nAuftrag von J.D. Haltigan\nGesendet: Sonntag, 4. Juni 2023 06:11\nAn: r-sig-mixed-models <r-sig-mixed-models at r-project.org>\nBetreff: [EXT] [R-sig-ME] ICC in lmer\n\nHi:\n\nThis may have already been covered though I did not see it in the archives\nafter a quick search. For linear mixed models, is there a way to get lmer\nto calculate the ICC automatically so as to appear in the summary output?\n\nThanks,\nJD\n\n\t[[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Christian Gerloff (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
+      "body_plain": "The `summary()` method does not include the ICC. You can, however, use\n`performance::icc()` (see\nhttps://easystats.github.io/performance/reference/icc.html) to compute the\nICC; or use packages that create summary outputs including ICC, like the\nmodelsummary package. The parameters package, which returns \"tidy\" data\nframes of regression results (similar to broom, but with more extra features\nand nice printing) at least includes marginal/conditional R2.\n\nlibrary(lme4)\nlibrary(modelsummary)\nlibrary(parameters)\n\nm <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)\nmodelsummary(m)\nmodel_parameters(m, summary = TRUE)\n\nDaniel\n\n-----Ursprüngliche Nachricht-----\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im\nAuftrag von J.D. Haltigan\nGesendet: Sonntag, 4. Juni 2023 06:11\nAn: r-sig-mixed-models <r-sig-mixed-models at r-project.org>\nBetreff: [EXT] [R-sig-ME] ICC in lmer\n\nHi:\n\nThis may have already been covered though I did not see it in the archives\nafter a quick search. For linear mixed models, is there a way to get lmer\nto calculate the ICC automatically so as to appear in the summary output?\n\nThanks,\nJD\n\n\t[[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversitätsklinikum Hamburg-Eppendorf; Körperschaft des öffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Christian Gerloff (Vorsitzender), Joachim Prölß, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
       "body_snippet": "The `summary()` method does not include the ICC. You can, however, use\n`performance::icc()` (see\nhttps://easystats.github.io/performance/reference/icc.html) to compute the\nICC; or use packages that cr",
       "thread_id": "thread-fcd3aed0cc74",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030409.html"
     },
     {
       "id": "msg-08116c26983b",
@@ -65,11 +68,12 @@
       "references": [
         "<CY8PR19MB7034F883BB49286C3A46B744AA4CA@CY8PR19MB7034.namprd19.prod.outlook.com>"
       ],
-      "body_plain": "You can use the ordered beta family (https://doi.org/10.1017/pan.2022.20), which is implemented in glmmTMB (family = ordbeta()).\n\n \n\nI also setup a page with overviews of modelling packages/functions for various outcome types:\n\nhttp://htmlpreview.github.io/?https://github.com/strengejacke/mixed-models-snippets/blob/master/overview_modelling_packages.html\n\n \n\n(comments welcome)\n\n \n\nDaniel\n\n \n\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im Auftrag von April Martinig\nGesendet: Sonntag, 4. Juni 2023 02:44\nAn: r-sig-mixed-models at r-project.org\nBetreff: [EXT] [R-sig-ME] Selecting a family in glmmTMB for continuous proportion data that includes 0 and 1\n\n \n\nHello,\n\nI?ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I?ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently using \"family=beta_family(link=\"logit\"), ziformula= ~1? after making the 0s slightly non-zero (0.00001) and the 1s slightly smaller (0.99999) - I tried the solutions under zero inflation continuous data https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#continuous-data.\n\nHowever, is there a way to appropriately fit the data as is (true zeros and true ones)?\n\nI?ve attached an image of the distribution of the data.\n\nAny suggestions would be much appreciated!\n\nTake care,\nApril\n\n?\nDr. April Martinig, Ph.D., M.Sc.\nPostdoctoral fellow\nUniversity of New South Wales\nmartinig.weebly.com<http://martinig.weebly.com>\n?I do not accept the conventional order of things as a given.\"\n\n_______________________________________________\nR-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org>  mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Christian Gerloff (Vorsitzender), Joachim Pr?l?, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "You can use the ordered beta family (https://doi.org/10.1017/pan.2022.20), which is implemented in glmmTMB (family = ordbeta()).\n\n \n\nI also setup a page with overviews of modelling packages/functions for various outcome types:\n\nhttp://htmlpreview.github.io/?https://github.com/strengejacke/mixed-models-snippets/blob/master/overview_modelling_packages.html\n\n \n\n(comments welcome)\n\n \n\nDaniel\n\n \n\nVon: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> Im Auftrag von April Martinig\nGesendet: Sonntag, 4. Juni 2023 02:44\nAn: r-sig-mixed-models at r-project.org\nBetreff: [EXT] [R-sig-ME] Selecting a family in glmmTMB for continuous proportion data that includes 0 and 1\n\n \n\nHello,\n\nI’ve noticed several questions about fitting proportion data with glmmTMB.\n\nEvery question I’ve encountered has been focused on 0 < x < 1. However, my data included 0 and 1. I am currently using \"family=beta_family(link=\"logit\"), ziformula= ~1” after making the 0s slightly non-zero (0.00001) and the 1s slightly smaller (0.99999) - I tried the solutions under zero inflation continuous data https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#continuous-data.\n\nHowever, is there a way to appropriately fit the data as is (true zeros and true ones)?\n\nI’ve attached an image of the distribution of the data.\n\nAny suggestions would be much appreciated!\n\nTake care,\nApril\n\n—\nDr. April Martinig, Ph.D., M.Sc.\nPostdoctoral fellow\nUniversity of New South Wales\nmartinig.weebly.com<http://martinig.weebly.com>\n“I do not accept the conventional order of things as a given.\"\n\n_______________________________________________\nR-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-project.org>  mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n--\n\n_____________________________________________________________________\n\nUniversitätsklinikum Hamburg-Eppendorf; Körperschaft des öffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Christian Gerloff (Vorsitzender), Joachim Prölß, Prof. Dr. Blanche Schwappach-Pignataro, Marya Verdel\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "You can use the ordered beta family (https://doi.org/10.1017/pan.2022.20), which is implemented in glmmTMB (family = ordbeta()).\n\n \n\nI also setup a page with overviews of modelling packages/functions ",
       "thread_id": "thread-c697a62d6b6b",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030410.html"
     },
     {
       "id": "msg-a40f29dcd3de",
@@ -85,7 +89,8 @@
       "body_snippet": "Dear Dr. Bolker,\n\nAs you are one of the authors of the lme4 package and you are so active in Stack Overflow, I'm reaching you for the following reason (any help would be appreciated):\n\nI'm building a ",
       "thread_id": "thread-a40f29dcd3de",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030411.html"
     },
     {
       "id": "msg-dfe461c45e73",
@@ -103,7 +108,8 @@
       "body_snippet": "(Note the list is not just me! -- I should have mentioned that when \nI asked you to forward this e-mail to the mailing list ...)\n\n   The CRAN mixed models task view \nhttps://cran.r-project.org/web/vie",
       "thread_id": "thread-a40f29dcd3de",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030412.html"
     },
     {
       "id": "msg-404a52a5503f",
@@ -121,7 +127,8 @@
       "body_snippet": "I will admit that I am having trouble getting the connection between \nthe phi parameters and the correlations.  However, the fitted models \n(and their implied correlation matrices) are the same:\n\nall.",
       "thread_id": "thread-404a52a5503f",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030413.html"
     },
     {
       "id": "msg-378ef7397b01",
@@ -137,7 +144,8 @@
       "body_snippet": "Hello All,\n\nI have two questions:\n\nFirst, I was wondering if \"model_2\" (even subset of items in model_1)\nand \"model_3\" (odd subset of items in model_1) results (fixed and\nrandom) can be derived from m",
       "thread_id": "thread-378ef7397b01",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030414.html"
     },
     {
       "id": "msg-6bad5e7b5260",
@@ -151,11 +159,12 @@
       "references": [
         "<CADreqiwGN7Oag4BvEts4ig6G=+p2HqWH0-PJNOUC732AE4W7kQ@mail.gmail.com>"
       ],
-      "body_plain": "I don't know if that can be derived from model1, but I believe with the \nformula\n-1/RT ~ item_num / Condition + (item_num / Condition | Subject)\nyou would be estimating the Condition effects for both 'even' and 'odd' \nitem_num, as well as the correlation between the two corresponding \nby-subject random slopes.\n\n-- \nJo?o Ver?ssimo\n\nOn 09/06/2023 21:29, Timothy MacKenzie wrote:\n> Hello All,\n>\n> I have two questions:\n>\n> First, I was wondering if \"model_2\" (even subset of items in model_1)\n> and \"model_3\" (odd subset of items in model_1) results (fixed and\n> random) can be derived from model_1?\n>\n> Second, from \"model_2\" and \"model_3\", suppose I draw the `Subject`\n> random effects and correlate them:\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n> **** Could we obtain the latent equivalent of the above correlation\n> (which may not be numerically the same as 0.849635) from\n> `VarCorr(model_1)`?\n>\n> Thank you all, Tim M\n>\n> ## Reproducible data and code:\n> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> library(optimx)\n> library(blme)\n>\n> model_1 = blmer(I(-1/RT) ~ Condition:item_num +\n> (Condition:item_num|Subject) + (Condition:item_num|Item), data = d,\n>               control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")))\n>\n> # Subset 1:\n> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>             subset = item_num == \"Even\")\n>\n> # Subset 2:\n> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>               subset = item_num == \"Odd\")\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org  mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \n*Jo?o Ver?ssimo*\nAssistant Professor | /Professor Auxiliar/\nSchool of Arts and Humanities | /Faculdade de Letras/\nUniversity of Lisbon | /Universidade de Lisboa/\n\t[[alternative HTML version deleted]]",
+      "body_plain": "I don't know if that can be derived from model1, but I believe with the \nformula\n-1/RT ~ item_num / Condition + (item_num / Condition | Subject)\nyou would be estimating the Condition effects for both 'even' and 'odd' \nitem_num, as well as the correlation between the two corresponding \nby-subject random slopes.\n\n-- \nJoão Veríssimo\n\nOn 09/06/2023 21:29, Timothy MacKenzie wrote:\n> Hello All,\n>\n> I have two questions:\n>\n> First, I was wondering if \"model_2\" (even subset of items in model_1)\n> and \"model_3\" (odd subset of items in model_1) results (fixed and\n> random) can be derived from model_1?\n>\n> Second, from \"model_2\" and \"model_3\", suppose I draw the `Subject`\n> random effects and correlate them:\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n> **** Could we obtain the latent equivalent of the above correlation\n> (which may not be numerically the same as 0.849635) from\n> `VarCorr(model_1)`?\n>\n> Thank you all, Tim M\n>\n> ## Reproducible data and code:\n> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> library(optimx)\n> library(blme)\n>\n> model_1 = blmer(I(-1/RT) ~ Condition:item_num +\n> (Condition:item_num|Subject) + (Condition:item_num|Item), data = d,\n>               control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")))\n>\n> # Subset 1:\n> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>             subset = item_num == \"Even\")\n>\n> # Subset 2:\n> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>               subset = item_num == \"Odd\")\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org  mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-- \n*João Veríssimo*\nAssistant Professor | /Professor Auxiliar/\nSchool of Arts and Humanities | /Faculdade de Letras/\nUniversity of Lisbon | /Universidade de Lisboa/\n\t[[alternative HTML version deleted]]",
       "body_snippet": "I don't know if that can be derived from model1, but I believe with the \nformula\n-1/RT ~ item_num / Condition + (item_num / Condition | Subject)\nyou would be estimating the Condition effects for both ",
       "thread_id": "thread-378ef7397b01",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030415.html"
     },
     {
       "id": "msg-c1fa84b83070",
@@ -171,7 +180,8 @@
       "body_snippet": "Hello All,\n\nI'm hoping to clarify my prior post to elicit an informative response\nfrom the experts on the list.\n\nCurrently, I'm running two models each using a subset of my data (below).\n\n<Question>: ",
       "thread_id": "thread-c1fa84b83070",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030416.html"
     },
     {
       "id": "msg-2f216be05ce1",
@@ -189,7 +199,8 @@
       "body_snippet": "Dear Timothy,\n\nAdd the interaction with item_num to every parameter and you should have\nthe same parameterization for both models in a single model.\n\n# gives similar parameters as both models\nI(-1/RT)",
       "thread_id": "thread-c1fa84b83070",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030417.html"
     },
     {
       "id": "msg-a48a7e142a20",
@@ -208,7 +219,8 @@
       "body_snippet": "Dear Thierry,\n\nThank you so much for your highly informative answer. If I may, I\nwanted to ask a follow-up question.\n\nPreviously, from the two separate models, I used to compute a\ncorrelation (0.84963",
       "thread_id": "thread-c1fa84b83070",
       "thread_depth": 2,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030418.html"
     },
     {
       "id": "msg-94d8c13e1ae4",
@@ -224,11 +236,12 @@
         "<CAJuCY5z52ka+4=vyTaKx9znui3+3HYWVKO1byMdukAKv226mbw@mail.gmail.com>",
         "<CADreqizdUMbQoeBjPz7rZ5guZSnzGXJMOcuuLykQpPk08JYtOw@mail.gmail.com>"
       ],
-      "body_plain": "Hi Timothy,\n\nThe formula I've suggested before is identical to the first \nparametrization in Thierry's answer, i.e., writing \"item_num / \nCondition\" is the same as writing \"item_num + item_num:Condition\".\nThat parametrization gives you estimates for the Condition slopes \nseparately for each level of item_num. So the correlation between the \ncorresponding by-subject random slopes is (I believe) what you want:\n\n> d <- read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\") > \nmodel_1 <- lmer(I(-1000/RT) ~ item_num / Condition + (item_num / \nCondition|Subject) + (item_num / Condition|Item), data = d)> re.corrs <- \nattr(VarCorr(model_1)$Subject, \"correlation\") > \nre.corrs[\"item_numEven:Conditionunrelated\", \n\"item_numOdd:Conditionunrelated\"] [1] 0.9499885\n\n\nJo?o\n\nOn 13/06/2023 18:36, Timothy MacKenzie wrote:\n> Dear Thierry,\n>\n> Thank you so much for your highly informative answer. If I may, I\n> wanted to ask a follow-up question.\n>\n> Previously, from the two separate models, I used to compute a\n> correlation (0.849635) between the random slopes of subjects in\n> 'Condition==unrelated' for Odd vs. Even items (shown below).\n>\n> **Question: Could we obtain the latent equivalent of the above\n> correlation (which may not be numerically the same as 0.849635) from\n> `attr(VarCorr(First_Parametrization_Model)$Subject, \"correlation\")`?\n>\n> Thank you so much again,\n> Tim M\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n>\n>\n>\n> On Mon, Jun 12, 2023 at 1:36?AM Thierry Onkelinx\n> <thierry.onkelinx at inbo.be>  wrote:\n>> Dear Timothy,\n>>\n>> Add the interaction with item_num to every parameter and you should have the same parameterization for both models in a single model.\n>>\n>> # gives similar parameters as both models\n>> I(-1/RT) ~ item_num + item_num:Condition + (item_num + item_num:Condition|Subject) + (item_num + item_num:Condition|Item)\n>> # same model fit, different parametrization\n>> I(-1/RT) ~ item_num*Condition + (item_num*Condition|Subject) + (item_num*Condition|Item)\n>>\n>> Best regards,\n>>\n>> ir. Thierry Onkelinx\n>> Statisticus / Statistician\n>>\n>> Vlaamse Overheid / Government of Flanders\n>> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n>> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n>> thierry.onkelinx at inbo.be\n>> Havenlaan 88 bus 73, 1000 Brussel\n>> www.inbo.be\n>>\n>> ///////////////////////////////////////////////////////////////////////////////////////////\n>> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n>> The plural of anecdote is not data. ~ Roger Brinner\n>> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n>> ///////////////////////////////////////////////////////////////////////////////////////////\n>>\n>>\n>>\n>>\n>> Op za 10 jun 2023 om 19:06 schreef Timothy MacKenzie<fswfswt at gmail.com>:\n>>> Hello All,\n>>>\n>>> I'm hoping to clarify my prior post to elicit an informative response\n>>> from the experts on the list.\n>>>\n>>> Currently, I'm running two models each using a subset of my data (below).\n>>>\n>>> <Question>: Instead of running two separate models, is it possible to\n>>> create one model that captures both these separate models?\n>>>\n>>> Thank you,\n>>> Tim M\n>>> ################\n>>> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n>>> library(optimx)\n>>> library(blme)\n>>>\n>>> # Subset 1:\n>>> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n>>> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>>>             subset = item_num == \"Even\")\n>>>\n>>> # Subset 2:\n>>> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n>>> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>>>               subset = item_num == \"Odd\")\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org  mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> _______________________________________________\n> R-sig-mixed-models at r-project.org  mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi Timothy,\n\nThe formula I've suggested before is identical to the first \nparametrization in Thierry's answer, i.e., writing \"item_num / \nCondition\" is the same as writing \"item_num + item_num:Condition\".\nThat parametrization gives you estimates for the Condition slopes \nseparately for each level of item_num. So the correlation between the \ncorresponding by-subject random slopes is (I believe) what you want:\n\n> d <- read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\") > \nmodel_1 <- lmer(I(-1000/RT) ~ item_num / Condition + (item_num / \nCondition|Subject) + (item_num / Condition|Item), data = d)> re.corrs <- \nattr(VarCorr(model_1)$Subject, \"correlation\") > \nre.corrs[\"item_numEven:Conditionunrelated\", \n\"item_numOdd:Conditionunrelated\"] [1] 0.9499885\n\n\nJoão\n\nOn 13/06/2023 18:36, Timothy MacKenzie wrote:\n> Dear Thierry,\n>\n> Thank you so much for your highly informative answer. If I may, I\n> wanted to ask a follow-up question.\n>\n> Previously, from the two separate models, I used to compute a\n> correlation (0.849635) between the random slopes of subjects in\n> 'Condition==unrelated' for Odd vs. Even items (shown below).\n>\n> **Question: Could we obtain the latent equivalent of the above\n> correlation (which may not be numerically the same as 0.849635) from\n> `attr(VarCorr(First_Parametrization_Model)$Subject, \"correlation\")`?\n>\n> Thank you so much again,\n> Tim M\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n>\n>\n>\n> On Mon, Jun 12, 2023 at 1:36 AM Thierry Onkelinx\n> <thierry.onkelinx at inbo.be>  wrote:\n>> Dear Timothy,\n>>\n>> Add the interaction with item_num to every parameter and you should have the same parameterization for both models in a single model.\n>>\n>> # gives similar parameters as both models\n>> I(-1/RT) ~ item_num + item_num:Condition + (item_num + item_num:Condition|Subject) + (item_num + item_num:Condition|Item)\n>> # same model fit, different parametrization\n>> I(-1/RT) ~ item_num*Condition + (item_num*Condition|Subject) + (item_num*Condition|Item)\n>>\n>> Best regards,\n>>\n>> ir. Thierry Onkelinx\n>> Statisticus / Statistician\n>>\n>> Vlaamse Overheid / Government of Flanders\n>> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n>> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n>> thierry.onkelinx at inbo.be\n>> Havenlaan 88 bus 73, 1000 Brussel\n>> www.inbo.be\n>>\n>> ///////////////////////////////////////////////////////////////////////////////////////////\n>> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n>> The plural of anecdote is not data. ~ Roger Brinner\n>> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n>> ///////////////////////////////////////////////////////////////////////////////////////////\n>>\n>>\n>>\n>>\n>> Op za 10 jun 2023 om 19:06 schreef Timothy MacKenzie<fswfswt at gmail.com>:\n>>> Hello All,\n>>>\n>>> I'm hoping to clarify my prior post to elicit an informative response\n>>> from the experts on the list.\n>>>\n>>> Currently, I'm running two models each using a subset of my data (below).\n>>>\n>>> <Question>: Instead of running two separate models, is it possible to\n>>> create one model that captures both these separate models?\n>>>\n>>> Thank you,\n>>> Tim M\n>>> ################\n>>> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n>>> library(optimx)\n>>> library(blme)\n>>>\n>>> # Subset 1:\n>>> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n>>> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>>>             subset = item_num == \"Even\")\n>>>\n>>> # Subset 2:\n>>> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n>>> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>>>               subset = item_num == \"Odd\")\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org  mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> _______________________________________________\n> R-sig-mixed-models at r-project.org  mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi Timothy,\n\nThe formula I've suggested before is identical to the first \nparametrization in Thierry's answer, i.e., writing \"item_num / \nCondition\" is the same as writing \"item_num + item_num:Conditi",
       "thread_id": "thread-c1fa84b83070",
       "thread_depth": 3,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030419.html"
     },
     {
       "id": "msg-1ec8f59ffe29",
@@ -245,11 +258,12 @@
         "<CADreqizdUMbQoeBjPz7rZ5guZSnzGXJMOcuuLykQpPk08JYtOw@mail.gmail.com>",
         "<52f8e21f-0bf4-a2de-bef7-3d45ede9450a@gmail.com>"
       ],
-      "body_plain": "Dear Jo?o,\n\nThank you for your clarification. You made two changes in your code\nthat I wanted to check with you.\n\nFirst, you rescaled the outcome from -1/RT to -1000/RT. I wonder in\nwhat way that improved the model?\n\nSecond, instead of blmer(), you used lmer() but your lmer() random\neffects matrix is singular which makes me think if the correlation\n(~0.95) estimated by lmer() is as dependable/reliable?\n\nThanks,\nTim M\n\nOn Tue, Jun 13, 2023 at 12:01?PM Jo?o Ver?ssimo <jl.verissimo at gmail.com> wrote:\n>\n> Hi Timothy,\n>\n> The formula I've suggested before is identical to the first parametrization in Thierry's answer, i.e., writing \"item_num / Condition\" is the same as writing \"item_num + item_num:Condition\".\n> That parametrization gives you estimates for the Condition slopes separately for each level of item_num. So the correlation between the corresponding by-subject random slopes is (I believe) what you want:\n>\n> > d <- read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> > model_1 <- lmer(I(-1000/RT) ~ item_num / Condition + (item_num / Condition|Subject) + (item_num / Condition|Item), data = d)\n> > re.corrs <- attr(VarCorr(model_1)$Subject, \"correlation\")\n> > re.corrs[\"item_numEven:Conditionunrelated\", \"item_numOdd:Conditionunrelated\"]\n> [1] 0.9499885\n>\n>\n> Jo?o\n>\n> On 13/06/2023 18:36, Timothy MacKenzie wrote:\n>\n> Dear Thierry,\n>\n> Thank you so much for your highly informative answer. If I may, I\n> wanted to ask a follow-up question.\n>\n> Previously, from the two separate models, I used to compute a\n> correlation (0.849635) between the random slopes of subjects in\n> 'Condition==unrelated' for Odd vs. Even items (shown below).\n>\n> **Question: Could we obtain the latent equivalent of the above\n> correlation (which may not be numerically the same as 0.849635) from\n> `attr(VarCorr(First_Parametrization_Model)$Subject, \"correlation\")`?\n>\n> Thank you so much again,\n> Tim M\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n>\n>\n>\n> On Mon, Jun 12, 2023 at 1:36?AM Thierry Onkelinx\n> <thierry.onkelinx at inbo.be> wrote:\n>\n> Dear Timothy,\n>\n> Add the interaction with item_num to every parameter and you should have the same parameterization for both models in a single model.\n>\n> # gives similar parameters as both models\n> I(-1/RT) ~ item_num + item_num:Condition + (item_num + item_num:Condition|Subject) + (item_num + item_num:Condition|Item)\n> # same model fit, different parametrization\n> I(-1/RT) ~ item_num*Condition + (item_num*Condition|Subject) + (item_num*Condition|Item)\n>\n> Best regards,\n>\n> ir. Thierry Onkelinx\n> Statisticus / Statistician\n>\n> Vlaamse Overheid / Government of Flanders\n> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n> thierry.onkelinx at inbo.be\n> Havenlaan 88 bus 73, 1000 Brussel\n> www.inbo.be\n>\n> ///////////////////////////////////////////////////////////////////////////////////////////\n> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n> ///////////////////////////////////////////////////////////////////////////////////////////\n>\n>\n>\n>\n> Op za 10 jun 2023 om 19:06 schreef Timothy MacKenzie <fswfswt at gmail.com>:\n>\n> Hello All,\n>\n> I'm hoping to clarify my prior post to elicit an informative response\n> from the experts on the list.\n>\n> Currently, I'm running two models each using a subset of my data (below).\n>\n> <Question>: Instead of running two separate models, is it possible to\n> create one model that captures both these separate models?\n>\n> Thank you,\n> Tim M\n> ################\n> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> library(optimx)\n> library(blme)\n>\n> # Subset 1:\n> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>            subset = item_num == \"Even\")\n>\n> # Subset 2:\n> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>              subset = item_num == \"Odd\")\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>",
-      "body_snippet": "Dear Jo?o,\n\nThank you for your clarification. You made two changes in your code\nthat I wanted to check with you.\n\nFirst, you rescaled the outcome from -1/RT to -1000/RT. I wonder in\nwhat way that impr",
+      "body_plain": "Dear João,\n\nThank you for your clarification. You made two changes in your code\nthat I wanted to check with you.\n\nFirst, you rescaled the outcome from -1/RT to -1000/RT. I wonder in\nwhat way that improved the model?\n\nSecond, instead of blmer(), you used lmer() but your lmer() random\neffects matrix is singular which makes me think if the correlation\n(~0.95) estimated by lmer() is as dependable/reliable?\n\nThanks,\nTim M\n\nOn Tue, Jun 13, 2023 at 12:01 PM João Veríssimo <jl.verissimo at gmail.com> wrote:\n>\n> Hi Timothy,\n>\n> The formula I've suggested before is identical to the first parametrization in Thierry's answer, i.e., writing \"item_num / Condition\" is the same as writing \"item_num + item_num:Condition\".\n> That parametrization gives you estimates for the Condition slopes separately for each level of item_num. So the correlation between the corresponding by-subject random slopes is (I believe) what you want:\n>\n> > d <- read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> > model_1 <- lmer(I(-1000/RT) ~ item_num / Condition + (item_num / Condition|Subject) + (item_num / Condition|Item), data = d)\n> > re.corrs <- attr(VarCorr(model_1)$Subject, \"correlation\")\n> > re.corrs[\"item_numEven:Conditionunrelated\", \"item_numOdd:Conditionunrelated\"]\n> [1] 0.9499885\n>\n>\n> João\n>\n> On 13/06/2023 18:36, Timothy MacKenzie wrote:\n>\n> Dear Thierry,\n>\n> Thank you so much for your highly informative answer. If I may, I\n> wanted to ask a follow-up question.\n>\n> Previously, from the two separate models, I used to compute a\n> correlation (0.849635) between the random slopes of subjects in\n> 'Condition==unrelated' for Odd vs. Even items (shown below).\n>\n> **Question: Could we obtain the latent equivalent of the above\n> correlation (which may not be numerically the same as 0.849635) from\n> `attr(VarCorr(First_Parametrization_Model)$Subject, \"correlation\")`?\n>\n> Thank you so much again,\n> Tim M\n>\n> ranef_model_2_even = data.frame(ranef(model_2)$Subject)\n> ranef_model_2_even$Subject <- row.names(ranef_model_2_even)\n> ranef_model_3_odd = data.frame(ranef(model_3)$Subject)\n> ranef_model_3_odd$Subject <- row.names(ranef_model_3_odd)\n>\n> Subject = merge(ranef_model_2_even, ranef_model_3_odd, by = \"Subject\",\n> suffixes = c(\"_even\", \"_odd\"))\n> cor(Subject$Conditionunrelated_even, Subject $Conditionunrelated_odd)\n> #  [1] 0.849635\n>\n>\n>\n>\n>\n> On Mon, Jun 12, 2023 at 1:36 AM Thierry Onkelinx\n> <thierry.onkelinx at inbo.be> wrote:\n>\n> Dear Timothy,\n>\n> Add the interaction with item_num to every parameter and you should have the same parameterization for both models in a single model.\n>\n> # gives similar parameters as both models\n> I(-1/RT) ~ item_num + item_num:Condition + (item_num + item_num:Condition|Subject) + (item_num + item_num:Condition|Item)\n> # same model fit, different parametrization\n> I(-1/RT) ~ item_num*Condition + (item_num*Condition|Subject) + (item_num*Condition|Item)\n>\n> Best regards,\n>\n> ir. Thierry Onkelinx\n> Statisticus / Statistician\n>\n> Vlaamse Overheid / Government of Flanders\n> INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE FOR NATURE AND FOREST\n> Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality Assurance\n> thierry.onkelinx at inbo.be\n> Havenlaan 88 bus 73, 1000 Brussel\n> www.inbo.be\n>\n> ///////////////////////////////////////////////////////////////////////////////////////////\n> To call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. ~ John Tukey\n> ///////////////////////////////////////////////////////////////////////////////////////////\n>\n>\n>\n>\n> Op za 10 jun 2023 om 19:06 schreef Timothy MacKenzie <fswfswt at gmail.com>:\n>\n> Hello All,\n>\n> I'm hoping to clarify my prior post to elicit an informative response\n> from the experts on the list.\n>\n> Currently, I'm running two models each using a subset of my data (below).\n>\n> <Question>: Instead of running two separate models, is it possible to\n> create one model that captures both these separate models?\n>\n> Thank you,\n> Tim M\n> ################\n> d = read.csv(\"https://raw.githubusercontent.com/fpqq/w/main/d3.csv\")\n> library(optimx)\n> library(blme)\n>\n> # Subset 1:\n> model_2 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>            subset = item_num == \"Even\")\n>\n> # Subset 2:\n> model_3 = blmer(I(-1/RT) ~ Condition + (Condition|Subject) + (Condition|Item),\n> data = d, control=lmerControl(optimizer=\"optimx\",optCtrl=list(method=\"nlminb\")),\n>              subset = item_num == \"Odd\")\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>",
+      "body_snippet": "Dear João,\n\nThank you for your clarification. You made two changes in your code\nthat I wanted to check with you.\n\nFirst, you rescaled the outcome from -1/RT to -1000/RT. I wonder in\nwhat way that impr",
       "thread_id": "thread-c1fa84b83070",
       "thread_depth": 4,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030420.html"
     },
     {
       "id": "msg-8862d7b53d9d",
@@ -265,7 +279,8 @@
       "body_snippet": "Dear list,\n\nI simulated the population trends of 26 populations over 60 years. Each\npopulation (site) was counted once every year. The population growth rate\n(lambda) correlates with a site's latitude",
       "thread_id": "thread-8862d7b53d9d",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030421.html"
     },
     {
       "id": "msg-56f5a2a3269b",
@@ -283,7 +298,8 @@
       "body_snippet": "Hi Chris,\n\n\nYou have marginalised the site effects in the prediction. Having marginal=NULL will fix the problem and glmer and MCMCglmm will give very similar answers. Also, better to use posterior=\"al",
       "thread_id": "thread-8862d7b53d9d",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030422.html"
     },
     {
       "id": "msg-1d4fc311e03e",
@@ -295,11 +311,12 @@
       "subject_clean": "Doubt of assumption test of proportionality in an Ordinal Mixed Model",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi,\n\nWe have a doubt regarding the assumption test of proportionality in a\nspecific case example of the Ordinal Mixed Model. In our analysis, we\nfitted a model with a nested random effect using the following code: \"mod\n<- clmm(NRS ~ sex + week + (week | id.player), data = dades_in)\". The\noutcome NRS is an ordinal categorical variable with three levels.\n\nOur inquiry revolves around whether there is a test available in R for\nassessing the assumption of proportionality within the context of GLMM\nOrdinal Mixed Models. We have explored various packages and functions such\nas clmm and GLMMadaptive, but we have been unable to locate a suitable test\nfor this scenario.\n\nAlternatively, we came across an article (\nhttps://link.springer.com/article/10.1007/s10260-018-00437-7) that suggests\nexamining the assumption through plots and Odds ratios. Would you recommend\nthis approach, or are there any other tests or methods that we should\nconsider?\n\nThank you in advance for your assistance.\n\nBest regards\n\n-- \n\nMart? Casals Toquero\n\nEstaT?stic. Sports Statistician/Biostatistician. Lecturer at University of\nVic - Central University of Catalonia (UVic-UCC).\n\nWebsite: https://marticasals.netlify.app/\n\n*marticasals at gmail.com <marticasals at gmail.com>*\n\n Twitter: @CasalsTMarti <https://twitter.com/CasalsTMarti>\n\nResearchgate: https://www.researchgate.net/profile/Marti_Casals\n<https://www.researchgate.net/home>\n\nLinkedin: *https://www.linkedin.com/in/marti-casalst-17101979/\n<https://www.linkedin.com/in/marti-casalst-17101979/>*\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi,\n\nWe have a doubt regarding the assumption test of proportionality in a\nspecific case example of the Ordinal Mixed Model. In our analysis, we\nfitted a model with a nested random effect using the following code: \"mod\n<- clmm(NRS ~ sex + week + (week | id.player), data = dades_in)\". The\noutcome NRS is an ordinal categorical variable with three levels.\n\nOur inquiry revolves around whether there is a test available in R for\nassessing the assumption of proportionality within the context of GLMM\nOrdinal Mixed Models. We have explored various packages and functions such\nas clmm and GLMMadaptive, but we have been unable to locate a suitable test\nfor this scenario.\n\nAlternatively, we came across an article (\nhttps://link.springer.com/article/10.1007/s10260-018-00437-7) that suggests\nexamining the assumption through plots and Odds ratios. Would you recommend\nthis approach, or are there any other tests or methods that we should\nconsider?\n\nThank you in advance for your assistance.\n\nBest regards\n\n-- \n\nMartí Casals Toquero\n\nEstaTístic. Sports Statistician/Biostatistician. Lecturer at University of\nVic - Central University of Catalonia (UVic-UCC).\n\nWebsite: https://marticasals.netlify.app/\n\n*marticasals at gmail.com <marticasals at gmail.com>*\n\n Twitter: @CasalsTMarti <https://twitter.com/CasalsTMarti>\n\nResearchgate: https://www.researchgate.net/profile/Marti_Casals\n<https://www.researchgate.net/home>\n\nLinkedin: *https://www.linkedin.com/in/marti-casalst-17101979/\n<https://www.linkedin.com/in/marti-casalst-17101979/>*\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi,\n\nWe have a doubt regarding the assumption test of proportionality in a\nspecific case example of the Ordinal Mixed Model. In our analysis, we\nfitted a model with a nested random effect using the fo",
       "thread_id": "thread-1d4fc311e03e",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030423.html"
     },
     {
       "id": "msg-0bbbf5c296d9",
@@ -315,7 +332,8 @@
       "body_snippet": "I am analyzing some longitudinal data (3 time points) where participants\nwere randomly assigned to either a treatment or control condition. Within\nthe treatment condition, participants were randomly a",
       "thread_id": "thread-0bbbf5c296d9",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030424.html"
     },
     {
       "id": "msg-b48896a82d1d",
@@ -331,7 +349,8 @@
       "body_snippet": "I've just joined this list to get answers to a few questions. I would have\nsearched the archive before posting, but there seems to be no way of\nsearching except via quarterly summaries. I searched the",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030425.html"
     },
     {
       "id": "msg-06ab7ad50c90",
@@ -349,7 +368,8 @@
       "body_snippet": "Hi, Will,\n\nGoogling\n\n  site:https://stat.ethz.ch/pipermail/r-sig-mixed-models/ \"negative \nvariance\"\n\nclaims to get you 67 results (although only 11 that Google considers \nworth displaying by default),",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030426.html"
     },
     {
       "id": "msg-3e24175ac056",
@@ -368,7 +388,8 @@
       "body_snippet": "Dear all,\n\nA negative variance seems odd to me. Isn't a variance positive by\ndefinition? How would you interpret a random intercept with a negative\nvariance?\n\nBest regards,\n\nir. Thierry Onkelinx\nStati",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 2,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030427.html"
     },
     {
       "id": "msg-ae5cc6353930",
@@ -382,11 +403,12 @@
       "references": [
         "<mailman.20107.3.1687255202.37610.r-sig-mixed-models@r-project.org>"
       ],
-      "body_plain": "Hi all,\n\nFor what it is worth, unfortunately it requires a license, you can \nobtain negative estimates of variance parameters in asreml-R. I agree \nwith Thierry that negative estimates of variances are odd, but I have \nseen at least one case where they were practical: to identify that \nobservations within a grouping level were actually very dissimilar while \nthere was almost no variation across grouping level averages. That \nresult was contrary to my expectation given the experimental design and \nI may have missed it otherwise. Arguably my models were misspecified, \nbut that odd result helped me understand the biology of my system and \nspecify more appropriate models later.\n\nAs for uncertainties of variances I usually go with Bayesian packages : \nMCMCglmm, brms, rstan, rjags... (or, again, asreml-R).\n\nBest regards,\n\n*************************************\nTimoth?e Bonnet, PhD\nCharg? de recherche / Researcher\n\nCentre d?Etudes Biologiques de Chiz?\nUMR 7372 Universit? de la Rochelle-CNRS\n405 route de Priss? la Charri?re\n79360 Villiers en Bois\n\ntimotheebonnetc at gmail.com\nhttps://timotheenivalis.github.io//",
+      "body_plain": "Hi all,\n\nFor what it is worth, unfortunately it requires a license, you can \nobtain negative estimates of variance parameters in asreml-R. I agree \nwith Thierry that negative estimates of variances are odd, but I have \nseen at least one case where they were practical: to identify that \nobservations within a grouping level were actually very dissimilar while \nthere was almost no variation across grouping level averages. That \nresult was contrary to my expectation given the experimental design and \nI may have missed it otherwise. Arguably my models were misspecified, \nbut that odd result helped me understand the biology of my system and \nspecify more appropriate models later.\n\nAs for uncertainties of variances I usually go with Bayesian packages : \nMCMCglmm, brms, rstan, rjags... (or, again, asreml-R).\n\nBest regards,\n\n*************************************\nTimothée Bonnet, PhD\nChargé de recherche / Researcher\n\nCentre d’Etudes Biologiques de Chizé\nUMR 7372 Université de la Rochelle-CNRS\n405 route de Prissé la Charrière\n79360 Villiers en Bois\n\ntimotheebonnetc at gmail.com\nhttps://timotheenivalis.github.io//",
       "body_snippet": "Hi all,\n\nFor what it is worth, unfortunately it requires a license, you can \nobtain negative estimates of variance parameters in asreml-R. I agree \nwith Thierry that negative estimates of variances ar",
       "thread_id": "thread-ae5cc6353930",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030428.html"
     },
     {
       "id": "msg-58b4124d99ce",
@@ -404,7 +426,8 @@
       "body_snippet": "Thierry,\nI have the same question that you posed, how can a variance, a measure that is squared be negative? Will, please enlighten us!\nJohn\nJohn David Sorkin M.D., Ph.D.\nProfessor of Medicine\nChief, ",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 3,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030429.html"
     },
     {
       "id": "msg-6801829ec1f6",
@@ -423,7 +446,8 @@
       "body_snippet": "From Molenberghs and Verbeke 2011:\n\nIn the first view, where the focus is entirely on the resulting marginal \nmodel (1.2), negative values for ?2 are perfectly acceptable (Nelder, \n1954; Verbeke and M",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 4,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030430.html"
     },
     {
       "id": "msg-610ec20b67da",
@@ -443,7 +467,8 @@
       "body_snippet": "Regarding standard errors for variance components: Will, I'm not sure if\nyou were asking about lme4::lmer() or nlme::lme(). If you're not familiar\nwith the latter, you might find it interesting. It is",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 5,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030431.html"
     },
     {
       "id": "msg-e2d312b5e7a9",
@@ -464,7 +489,8 @@
       "body_snippet": "Thanks heaps for the seven replies from five people on this list. In summary, it looks like standard errors could be derived for variances in R: with asreml-R (which you have to pay for?); possibly wi",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 6,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030432.html"
     },
     {
       "id": "msg-dc908d823a51",
@@ -486,7 +512,8 @@
       "body_snippet": "A few *short* responses below.\n\nOn 2023-06-20 8:08 p.m., Will Hopkins wrote:\n> Thanks heaps for the seven replies from five people on this list. In summary, it looks like standard errors could be deri",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 7,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030433.html"
     },
     {
       "id": "msg-e21e999cb45f",
@@ -509,7 +536,8 @@
       "body_snippet": "Just sayin'\nPart of the \"negative variance\" issue in this particular case could be due to using change scores as the dependent variable. Using the \"pre\" value as a covariate adjuster of the post value",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 8,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030434.html"
     },
     {
       "id": "msg-86c432bb630e",
@@ -528,7 +556,8 @@
       "body_snippet": "Dear  All,\nAs with the square root of -1, negative variances are a convenient \ncomputational fiction.  The square root of -1 is an invitation to move\nto a 2-dimensional word, where they make perfect s",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 4,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030435.html"
     },
     {
       "id": "msg-28e9d396ee5c",
@@ -550,7 +579,8 @@
       "body_snippet": "Someone emailed me personally to point out a mistake in my SAS random-effects code for individual responses. I had random xVarExpt*SubjectID, which is correct, but it is equivalent to random xVarExpt/",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 7,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030436.html"
     },
     {
       "id": "msg-6c15c66f796c",
@@ -569,7 +599,8 @@
       "body_snippet": "Another way to look at the issue is that variance components are just\nthat ? components that cannot necessarily be interpreted as variances.\nThey cannot even necessarily be interpreted in a particular",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 4,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030437.html"
     },
     {
       "id": "msg-e6f731c5ee4e",
@@ -589,7 +620,8 @@
       "body_snippet": "This negative variance issue crops up in factor analysis oftentimes with\nHeywood cases etc. One approach that has often been invoked in this\nliterature is to set them to zero, though it has been some ",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 5,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030438.html"
     },
     {
       "id": "msg-d8093cb6a663",
@@ -612,7 +644,8 @@
       "body_snippet": "Hi Will,\n\nI was wondering if your \"strange variance\" result is basically comparable\nto the following simple R script. Data are simulated, with no higher level\nat all. For each \"subject\" there is only ",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 8,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030439.html"
     },
     {
       "id": "msg-3257bf566d07",
@@ -628,11 +661,12 @@
         "<8C00A1BC-1807-4996-9687-8F616F5A2F58@som.umaryland.edu>",
         "<A9F40D25-C319-4948-AF05-6A8632B81E77@gmail.com>"
       ],
-      "body_plain": "In response to John Maindonald's latest post... John, you suggested that the variance components \"cannot necessarily be interpreted as variances\". I don?t think so. For any real data, variance components can and should be interpreted as the square of standard deviations, which have a direct interpretation in terms of differences between and/or changes within subjects and/or settings. You only have to simulate data to realize that: all the random effects are generated randomly with a mean of zero and a given SD. (Admittedly the data have to be generated with positive SDs. I'm not sure how to simulate data directly with a negative SD, although I can do it indirectly by adding random variability in the \"wrong\" or unexpected place.) To allow for sampling variation in the estimation of the SD, you have to allow negative variance. When you do that, you estimate the simulated SD without bias, and the confidence intervals have correct coverage. If you don't allow negative variance, you will get bias and unrealistic upper confidence limits, with small sample sizes anyway. Negative point estimates and negative lower confidence limits are realistic in the sense that they properly allow for sampling uncertainty, and in any case they may be real, in the sense that the extra variance could be in a different place from what you expected and modeled.\n\nin response to Ben Pelzer's latest post... Ben, you can't get the extra variance with only one observation per subject in one group. You can get it with two observations on the same subject in one group; so for a group of subjects measured in two trials, without necessarily anything else happening, you can estimate the variance representing true differences between subjects with random int/subject=SubjectID and two residual variances with repeated/group=Trial. And with the same data and exactly the same results, you can estimate one residual variance and the difference between the residuals as extra variance, either on the first trial or the second trial, and it will positive or negative variance, depending on which residual was greater with the repeated/group=Trial analysis. (The variances add up exactly, but the predicted values differ very slightly between the models where the extra variance is positive and negative.) Here is the SAS code for doing all that, written with macro variables to allow you to change values of means, SDs and sample size. Remember that sample size has to large to get good precision for the SDs. I've set the sample size to 100. If you make it 10, there's huge uncertainty, and sometimes it gives infinite likelihood (although you can probably overcome that with suitable starting values for the covparms). Note that I have not added extra variance representing individual responses in Trial 2 (as shown with %let ir=0;), so half the simulations will produce negative extra variance in Trial 2, and you can play with estimating the extra variance in either of the trials to see that you get the same extra variance differing only in sign, and the same standard error.\n\n*Simple test-retest reliability, allowing for different residuals in the two trials\n and individual responses in the second trial;\n*Modify the program as shown in the proc mixed step to estimate one residual\n and extra variance one or other trial;\n\n%let mean=100; *true grand mean in the first test;\n%let sd=10; *true between-subject SD;\n%let tem=5; *typical (standard) error of measurement;\n%let deltamean=2; *change in mean test2-test1;\n%let ir=0; *SD for individual responses (in Trial 2);\n%let ss=100; *sample size;\n\n*generate the data;\ndata dat1;\ndo SubjectID=1 to &ss;\n  TruePerform=&mean+&sd*rannor(0);\n  Trial=1;\n  IndivResp=0;\n  ObsvdPerform=TruePerform+&tem*rannor(0)+IndivResp;\n  output;\n  Trial=2;\n  IndivResp=&ir*rannor(0);\n  ObsvdPerform=TruePerform+&tem*rannor(0)+&deltamean+IndivResp;\n  output;\n  end;\n\ntitle \"Raw data, first 10 observations\";\nproc print data=dat1(obs=10);\nformat TruePerform ObsvdPerform IndivResp 5.1;\nrun;\n\ntitle \"Simple stats\";\nproc means maxdec=1;\nvar TruePerform ObsvdPerform IndivResp;\nclass Trial;\nrun;\n\n*Set up dummy variables for estimating extra variance in Trial 1 or Trial 2;\ndata dat2;\nset dat1;\nxVarTrial1=0;\nif Trial=1 then xVarTrial1=1;\nxVarTrial2=0;\nif Trial=2 then xVarTrial2=1;\n\nods select none;\ntitle \"Rely mixed model, ssize=&ss\";\ntitle2 \"True mean=&mean, true between SD=&sd, TEM=&tem, delta mean=&deltamean\";\nproc mixed data=dat2 covtest cl alpha=0.1 nobound;\nclass SubjectID Trial;\nmodel ObsvdPerform=Trial/noint ddfm=sat solution cl alpha=0.1 outp=pred alphap=0.1;\nrandom int/subject=SubjectID s cl alpha=0.1; *This estimates true differences between subjects;\nrepeated/group=Trial; *This estimates different residuals in Trial 1 and 2;\n*Star off the above two lines and unstar one or other (but not both) of the following two lines...;\n*...to estimate one residual and extra variance on either Trial 1 or Trial 2;\n*random int xVarTrial1/subject=SubjectID s cl alpha=0.1; *extra error on Trial 1;\n*random int xVarTrial2/subject=SubjectID s cl alpha=0.1; *or extra variance on Trial 1;\nestimate \"Trial 2-1\" Trial -1 1/cl alpha=0.1;\nods output classlevels=clev;\nods output covparms=cov;\nods output solutionf=solf;\nods output solutionr=solr;\nods output estimates=est;\nrun;\nods select all;\n\ntitle3 \"Class levels\";\nproc print data=clev;\nrun;\n\ntitle3 \"Covparms\";\nproc print data=cov;\nrun;\n\ntitle3 \"Predicteds and residuals, first 10 observations\";\nproc print data=pred(obs=10);\nrun;\n\ntitle3 \"Fixed-effects solution\";\nproc print data=solf;\nrun;\n\ntitle3 \"Random-effects solution, first 10 observations\";\nproc print data=solr(obs=10);\nrun;\n\ntitle3 \"Estimates\";\nproc print data=est;\nrun;",
-      "body_snippet": "In response to John Maindonald's latest post... John, you suggested that the variance components \"cannot necessarily be interpreted as variances\". I don?t think so. For any real data, variance compone",
+      "body_plain": "In response to John Maindonald's latest post... John, you suggested that the variance components \"cannot necessarily be interpreted as variances\". I don’t think so. For any real data, variance components can and should be interpreted as the square of standard deviations, which have a direct interpretation in terms of differences between and/or changes within subjects and/or settings. You only have to simulate data to realize that: all the random effects are generated randomly with a mean of zero and a given SD. (Admittedly the data have to be generated with positive SDs. I'm not sure how to simulate data directly with a negative SD, although I can do it indirectly by adding random variability in the \"wrong\" or unexpected place.) To allow for sampling variation in the estimation of the SD, you have to allow negative variance. When you do that, you estimate the simulated SD without bias, and the confidence intervals have correct coverage. If you don't allow negative variance, you will get bias and unrealistic upper confidence limits, with small sample sizes anyway. Negative point estimates and negative lower confidence limits are realistic in the sense that they properly allow for sampling uncertainty, and in any case they may be real, in the sense that the extra variance could be in a different place from what you expected and modeled.\n\nin response to Ben Pelzer's latest post... Ben, you can't get the extra variance with only one observation per subject in one group. You can get it with two observations on the same subject in one group; so for a group of subjects measured in two trials, without necessarily anything else happening, you can estimate the variance representing true differences between subjects with random int/subject=SubjectID and two residual variances with repeated/group=Trial. And with the same data and exactly the same results, you can estimate one residual variance and the difference between the residuals as extra variance, either on the first trial or the second trial, and it will positive or negative variance, depending on which residual was greater with the repeated/group=Trial analysis. (The variances add up exactly, but the predicted values differ very slightly between the models where the extra variance is positive and negative.) Here is the SAS code for doing all that, written with macro variables to allow you to change values of means, SDs and sample size. Remember that sample size has to large to get good precision for the SDs. I've set the sample size to 100. If you make it 10, there's huge uncertainty, and sometimes it gives infinite likelihood (although you can probably overcome that with suitable starting values for the covparms). Note that I have not added extra variance representing individual responses in Trial 2 (as shown with %let ir=0;), so half the simulations will produce negative extra variance in Trial 2, and you can play with estimating the extra variance in either of the trials to see that you get the same extra variance differing only in sign, and the same standard error.\n\n*Simple test-retest reliability, allowing for different residuals in the two trials\n and individual responses in the second trial;\n*Modify the program as shown in the proc mixed step to estimate one residual\n and extra variance one or other trial;\n\n%let mean=100; *true grand mean in the first test;\n%let sd=10; *true between-subject SD;\n%let tem=5; *typical (standard) error of measurement;\n%let deltamean=2; *change in mean test2-test1;\n%let ir=0; *SD for individual responses (in Trial 2);\n%let ss=100; *sample size;\n\n*generate the data;\ndata dat1;\ndo SubjectID=1 to &ss;\n  TruePerform=&mean+&sd*rannor(0);\n  Trial=1;\n  IndivResp=0;\n  ObsvdPerform=TruePerform+&tem*rannor(0)+IndivResp;\n  output;\n  Trial=2;\n  IndivResp=&ir*rannor(0);\n  ObsvdPerform=TruePerform+&tem*rannor(0)+&deltamean+IndivResp;\n  output;\n  end;\n\ntitle \"Raw data, first 10 observations\";\nproc print data=dat1(obs=10);\nformat TruePerform ObsvdPerform IndivResp 5.1;\nrun;\n\ntitle \"Simple stats\";\nproc means maxdec=1;\nvar TruePerform ObsvdPerform IndivResp;\nclass Trial;\nrun;\n\n*Set up dummy variables for estimating extra variance in Trial 1 or Trial 2;\ndata dat2;\nset dat1;\nxVarTrial1=0;\nif Trial=1 then xVarTrial1=1;\nxVarTrial2=0;\nif Trial=2 then xVarTrial2=1;\n\nods select none;\ntitle \"Rely mixed model, ssize=&ss\";\ntitle2 \"True mean=&mean, true between SD=&sd, TEM=&tem, delta mean=&deltamean\";\nproc mixed data=dat2 covtest cl alpha=0.1 nobound;\nclass SubjectID Trial;\nmodel ObsvdPerform=Trial/noint ddfm=sat solution cl alpha=0.1 outp=pred alphap=0.1;\nrandom int/subject=SubjectID s cl alpha=0.1; *This estimates true differences between subjects;\nrepeated/group=Trial; *This estimates different residuals in Trial 1 and 2;\n*Star off the above two lines and unstar one or other (but not both) of the following two lines...;\n*...to estimate one residual and extra variance on either Trial 1 or Trial 2;\n*random int xVarTrial1/subject=SubjectID s cl alpha=0.1; *extra error on Trial 1;\n*random int xVarTrial2/subject=SubjectID s cl alpha=0.1; *or extra variance on Trial 1;\nestimate \"Trial 2-1\" Trial -1 1/cl alpha=0.1;\nods output classlevels=clev;\nods output covparms=cov;\nods output solutionf=solf;\nods output solutionr=solr;\nods output estimates=est;\nrun;\nods select all;\n\ntitle3 \"Class levels\";\nproc print data=clev;\nrun;\n\ntitle3 \"Covparms\";\nproc print data=cov;\nrun;\n\ntitle3 \"Predicteds and residuals, first 10 observations\";\nproc print data=pred(obs=10);\nrun;\n\ntitle3 \"Fixed-effects solution\";\nproc print data=solf;\nrun;\n\ntitle3 \"Random-effects solution, first 10 observations\";\nproc print data=solr(obs=10);\nrun;\n\ntitle3 \"Estimates\";\nproc print data=est;\nrun;",
+      "body_snippet": "In response to John Maindonald's latest post... John, you suggested that the variance components \"cannot necessarily be interpreted as variances\". I don’t think so. For any real data, variance compone",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 5,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030440.html"
     },
     {
       "id": "msg-1219405b494c",
@@ -652,7 +686,8 @@
       "body_snippet": "What I am saying is that if in a randomized  block design blocks are \nchosen to be overly heterogeneous, the within blocks component \nof variance will be exaggerated, and the between blocks component\n",
       "thread_id": "thread-b48896a82d1d",
       "thread_depth": 5,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030441.html"
     },
     {
       "id": "msg-49d864cf9ff3",
@@ -668,7 +703,8 @@
       "body_snippet": "Hello,\n\nHope you all had a nice day. My name is Yuqing Fan and I am a Bachelor student. I am doing a longitudinal analysis using GLMM model, and now I encounter some diffculties.\n\nAs you might see in ",
       "thread_id": "thread-49d864cf9ff3",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030442.html"
     },
     {
       "id": "msg-b1a49a684b32",
@@ -686,7 +722,8 @@
       "body_snippet": "I think the code you reference was in an attachment, which didn't make it through the list serve. Can you post the relevant code in the email message body directy? \n\n> Yu qing Fan <yqfan at uwaterloo.",
       "thread_id": "thread-49d864cf9ff3",
       "thread_depth": 1,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030443.html"
     },
     {
       "id": "msg-1240f3016c62",
@@ -702,7 +739,8 @@
       "body_snippet": "I am currently modelling fish catch in the Amazon River in response to variables such as habitat, effort, gear type, and spatial locations. The model we have selected to accomplish this task is a GAMM",
       "thread_id": "thread-1240f3016c62",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030444.html"
     },
     {
       "id": "msg-36b83d54e6a4",
@@ -722,7 +760,8 @@
       "body_snippet": "But you do have several treatments where some individuals die ?\n\nIf no individual died in one level of your variable, then simply say \"no \nindividuals died in treatment ...\", and interpret the rest of",
       "thread_id": "thread-36b83d54e6a4",
       "thread_depth": 0,
-      "month": "2023-06"
+      "month": "2023-06",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q2/030445.html"
     }
   ],
   "threads": [

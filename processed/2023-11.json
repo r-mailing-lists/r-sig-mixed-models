@@ -17,7 +17,8 @@
       "body_snippet": "Hello all!\n\nI am having trouble specifying my priors for a bivariate model in MCMCglmm with two response variable distributions.  I want to see if they covary at the among-individual level (\"ID\"). I h",
       "thread_id": "thread-53ca1e6ad70f",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030535.html"
     },
     {
       "id": "msg-e908e38c88e3",
@@ -29,11 +30,12 @@
       "subject_clean": "Non-zero residual sums, correlation structure (nlme)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi all,\n\nMy colleague and I were working through some examples in the Pinheiro and\nBates book, and ran into a bit of a puzzle. When we try fitting a simple\nintercept-only model to the default Orthodont dataset that includes a\ncorrelation structure, the residuals of the model no longer add up to 0 -\nrather, they diverge from zero quite a bit. This divergence seems to be\nmuch larger than we would expect simply from finite computational error.\n\nI'm sure that the answer is that I'm missing something fundamental about\nwhat the correlation structure is doing to the model residuals, but after\nquite a bit of Googling, I'm none the wiser.\n\nCan anyone suggest a source that I could read (or an answer) that could\nexplain this behaviour?\n\nMany thanks,\nAdam Clark\n\n\n### example code\nrequire(nlme)\ndata(Orthodont)\n## 1. fit mixed model\nmod_lme = lme(distance ~ 1, Orthodont, random = ~1|Subject)\nresid_lme = Orthodont$distance-predict(mod_lme, level = 0)\n\n# raw residuals\nsum(resid_lme) # ~0\n\n# normalised residuals\nsum(residuals(mod_lme, type = \"n\")) # ~0\n\n\n## 2. fit mixed model with correlation structure\nmod_lme2 = lme(distance ~ 1, Orthodont, random = ~1|Subject, correlation =\ncorSymm(form = ~1|Subject))\nresid_lme2 = Orthodont$distance-predict(mod_lme2, level = 0)\n\n# raw residuals\nsum(resid_lme2) # -11.9!\n\n# normalised residuals\nsum(residuals(mod_lme2, type = \"n\")) # 17.8!\n\n-- \nAdam Thomas Clark\nAsst. Professor\nKarl-Franzens-Universit?t Graz\nInstitut f?r Biologie\nwww.adamclarktheecologist.com\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi all,\n\nMy colleague and I were working through some examples in the Pinheiro and\nBates book, and ran into a bit of a puzzle. When we try fitting a simple\nintercept-only model to the default Orthodont dataset that includes a\ncorrelation structure, the residuals of the model no longer add up to 0 -\nrather, they diverge from zero quite a bit. This divergence seems to be\nmuch larger than we would expect simply from finite computational error.\n\nI'm sure that the answer is that I'm missing something fundamental about\nwhat the correlation structure is doing to the model residuals, but after\nquite a bit of Googling, I'm none the wiser.\n\nCan anyone suggest a source that I could read (or an answer) that could\nexplain this behaviour?\n\nMany thanks,\nAdam Clark\n\n\n### example code\nrequire(nlme)\ndata(Orthodont)\n## 1. fit mixed model\nmod_lme = lme(distance ~ 1, Orthodont, random = ~1|Subject)\nresid_lme = Orthodont$distance-predict(mod_lme, level = 0)\n\n# raw residuals\nsum(resid_lme) # ~0\n\n# normalised residuals\nsum(residuals(mod_lme, type = \"n\")) # ~0\n\n\n## 2. fit mixed model with correlation structure\nmod_lme2 = lme(distance ~ 1, Orthodont, random = ~1|Subject, correlation =\ncorSymm(form = ~1|Subject))\nresid_lme2 = Orthodont$distance-predict(mod_lme2, level = 0)\n\n# raw residuals\nsum(resid_lme2) # -11.9!\n\n# normalised residuals\nsum(residuals(mod_lme2, type = \"n\")) # 17.8!\n\n-- \nAdam Thomas Clark\nAsst. Professor\nKarl-Franzens-Universität Graz\nInstitut für Biologie\nwww.adamclarktheecologist.com\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi all,\n\nMy colleague and I were working through some examples in the Pinheiro and\nBates book, and ran into a bit of a puzzle. When we try fitting a simple\nintercept-only model to the default Orthodon",
       "thread_id": "thread-e908e38c88e3",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030530.html"
     },
     {
       "id": "msg-1a04e3e1c7c6",
@@ -49,7 +51,8 @@
       "body_snippet": "Hello all,\nI am looking for an R package that can implement multi-level finite mixture models with more than 2 levels (at least 3 levels).\n\nI know flexmix() can implement repeated measure but that's a",
       "thread_id": "thread-1a04e3e1c7c6",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030531.html"
     },
     {
       "id": "msg-41dbb4eb5618",
@@ -67,7 +70,8 @@
       "body_snippet": "Unfortunately that's sort of off-topic for this list (which covers \n*mixed* models, i.e. hierarchical models where there are *observed* \ngrouping variables, not *finite/discrete mixture* models, which",
       "thread_id": "thread-1a04e3e1c7c6",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030532.html"
     },
     {
       "id": "msg-e8915d003fc3",
@@ -83,7 +87,8 @@
       "body_snippet": "I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which returns the variance covariance matrix between t",
       "thread_id": "thread-e8915d003fc3",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030533.html"
     },
     {
       "id": "msg-bda71f5ea142",
@@ -101,7 +106,8 @@
       "body_snippet": "On 2023-11-07 3:46 p.m., Olaifa, Julius wrote:\n> I am trying to obtain the Fisher Information matrix or variance covariance matrix for a glmmTMB model. The model implements model$sdr$cov.fixed?  which",
       "thread_id": "thread-e8915d003fc3",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030534.html"
     },
     {
       "id": "msg-f432f3f878a6",
@@ -115,11 +121,12 @@
       "references": [
         "<SN4PR03MB676775497B8C71920466176B8DAAA@SN4PR03MB6767.namprd03.prod.outlook.com>"
       ],
-      "body_plain": "Hi,\n\nBy specifying propfledged as ?categorical? you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of the form cbind(number_successes, number_failures)~ with family=?multinomial2?. The priors should then ?work? in the sense that they are of the right dimension. However, you shouldn?t fix the residual variance unless the binomial only has 1 trial (i.e. is Bernoulli).\n\nCheers,\n\nJarrod\n\n\n\n\nOn 6 Nov 2023, at 13:00, Cones, Alexandra G. <alex.cones at uky.edu> wrote:\n\npropfledged\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th? ann an Oilthigh Dh?n ?ideann, cl?raichte an Alba, ?ireamh cl?raidh SC005336.\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Hi,\n\nBy specifying propfledged as ?categorical? you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of th",
+      "body_plain": "Hi,\n\nBy specifying propfledged as “categorical” you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of the form cbind(number_successes, number_failures)~ with family=“multinomial2”. The priors should then ‘work’ in the sense that they are of the right dimension. However, you shouldn’t fix the residual variance unless the binomial only has 1 trial (i.e. is Bernoulli).\n\nCheers,\n\nJarrod\n\n\n\n\nOn 6 Nov 2023, at 13:00, Cones, Alexandra G. <alex.cones at uky.edu> wrote:\n\npropfledged\n\nThe University of Edinburgh is a charitable body, registered in Scotland, with registration number SC005336. Is e buidheann carthannais a th’ ann an Oilthigh Dhùn Èideann, clàraichte an Alba, àireamh clàraidh SC005336.\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi,\n\nBy specifying propfledged as “categorical” you are treating each unique value of propfledged as a categorical variable. My guesses that this is not your intention. Binomial models should be of th",
       "thread_id": "thread-53ca1e6ad70f",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030536.html"
     },
     {
       "id": "msg-52d1c564d652",
@@ -135,7 +142,8 @@
       "body_snippet": "Hello all\n\nAre the archives of this list still at\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? If so, then it\nappears to be down on my side. Or have they been moved somewhere else ?\n\nChe",
       "thread_id": "thread-52d1c564d652",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030537.html"
     },
     {
       "id": "msg-90598c6a7f81",
@@ -153,7 +161,8 @@
       "body_snippet": ">>>>> Robert Long \n>>>>>     on Thu, 9 Nov 2023 12:08:54 +0000 writes:\n\n    > Hello all\n\n    > Are the archives of this list still at\n    > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models ? I",
       "thread_id": "thread-52d1c564d652",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030538.html"
     },
     {
       "id": "msg-744b3577fe44",
@@ -169,7 +178,8 @@
       "body_snippet": "Hi,\n\nI am trying to use glmmTMB. I am getting this error :\nError in qr.default(X) : too large a matrix for LINPACK\nCalls: glmmTMB ... .adjustX -> <Anonymous> -> <Anonymous> -> qr.default\nExecution hal",
       "thread_id": "thread-744b3577fe44",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030539.html"
     },
     {
       "id": "msg-cf9b69395964",
@@ -187,7 +197,8 @@
       "body_snippet": "We'd love to help, but we can't help much without more information. \nHow large is your data set, what analysis are you running?\n\n   Based on the minimal info in the error message, it looks like the \nm",
       "thread_id": "thread-744b3577fe44",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030540.html"
     },
     {
       "id": "msg-8d0ab9aea096",
@@ -203,7 +214,8 @@
       "body_snippet": "Dear all,\n\nIn glmmTMB we have these nice heterogeneous variances models like compound\nsymmetry, ar1, toeplitz and unstructured, for the covariance matrix over\ntime, say. For a course I'm teaching, I w",
       "thread_id": "thread-8d0ab9aea096",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030541.html"
     },
     {
       "id": "msg-f7cd944eadd0",
@@ -221,7 +233,8 @@
       "body_snippet": "They're not available because no-one has gotten around to writing \nthem yet. Pull requests welcome ...\n\n   There are a few notes here (search for \"Adding a covariance \nstructure\") about what needs to ",
       "thread_id": "thread-8d0ab9aea096",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030542.html"
     },
     {
       "id": "msg-46757efe2ef5",
@@ -240,7 +253,8 @@
       "body_snippet": "Thanks for your reply Ben, I've tried your \"maps\" suggestion for a Toeplitz\nmodel and that works fine. Indeed it looks scary, as you say, but then\nagain this is also true for the way it is done in gls",
       "thread_id": "thread-8d0ab9aea096",
       "thread_depth": 2,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030543.html"
     },
     {
       "id": "msg-7a5c52d1eb6e",
@@ -256,7 +270,8 @@
       "body_snippet": "Dear all,\nI would like to cite this information:\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#testing-significance-of-random-effects\n\nDo you know which format should I use?\n\nThanks in advan",
       "thread_id": "thread-7a5c52d1eb6e",
       "thread_depth": 0,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030544.html"
     },
     {
       "id": "msg-8c15a3bcf7d8",
@@ -274,7 +289,8 @@
       "body_snippet": "Isn't this driven by the conventions of the publishing context?\n\nOn November 30, 2023 2:09:59 AM PST, Toni Hernandez-Matias <ahmatias at gmail.com> wrote:\n>Dear all,\n>I would like to cite this informa",
       "thread_id": "thread-7a5c52d1eb6e",
       "thread_depth": 1,
-      "month": "2023-11"
+      "month": "2023-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2023q4/030545.html"
     }
   ],
   "threads": [
