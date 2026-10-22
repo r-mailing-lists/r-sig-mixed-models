@@ -13,11 +13,12 @@
       "subject_clean": "glmm on paired data with repeated measures",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi everyone. I'd really appreciate help with the following analysis.\nApologies for such a basic question; I looked for previous queries on\nsimilar data, but none seem to quite fit what I am after.\n\nI have a field experiment aimed at understanding how the presence of\n\"bodyguard\" ants regulates the abundance of butterfly eggs and larvae (and\nthe damage the latter cause) on a focal plant species.\nFor this, I set up fourteen pairs of plants in a nature reserve and then\nassigned each plant in each pair to one of two treatments, either \"with\nants\" or \"without ants\", by applying a physical barrier at the base of the\nplant.\nIn the following nine weeks I measured four response variables once a week\non a subsample of ten randomly chosen leaves of each plant. I thus have\nnine repeated measures on each plant.\n\nMy response variables are:\nants: number of ants (this was measured just to check the physical barrier\nhad worked OK)\neggs: number of butterfly eggs\nlarvae: number of butterfly larvae\ndam: percent leaf damage (percentage eaten by larvae)\n\nMy explanatory variables are:\ntreat: treatment (two levels: \"con\" and \"sin\" mean with and without ants,\nrespectively)\npair: plant pair\ndate\n\nFor each response variable I would like to build a model that accounts for\nthe lack of independence of data within each pair, and that considers the\nfact that data come from repeated measures (so, for instance, leaf damage\ntends to accumulate).\nMy specific question is if including the random term \"pair\" in the model\naccomplishes both things. I guess it probably doesn't, so I'd appreciate\nany suggestions.\nThe results indicate plants without ants have a higher number of eggs\n(which is what we expected, yeaeee), but without proper control of the\nautocorrelations I mentioned I am not convinced.\nI provide a workable example below.\n\n#read data from Google drive\n#each line represents the variables measured on a single leaf of a single\nplant on a single date.\n\nid <- \"0Bzd8I1jr8z_iU0h6R0hxaElseDA\" # google file ID\ngaston <- read.table(sprintf(\"\nhttps://docs.google.com/uc?id=%s&export=download\", id), head=T)\n\n#GLMM\nrequire(lme4); require(effects)\nM1 <- glmer(eggs ~ treat + (1|pair), data=gaston, family=poisson)\n\n#check if there are any significant effects of treatment\nsummary(M1)\nallEffects(M1)\n\nThanks in advance for your help.\n\nBest,\n\nMariano\n\n\n*Dr. Mariano Devoto*\n\nProfesor Adjunto - C?tedra de Bot?nica General, Facultad de Agronom?a de la\nUBA\nInvestigador Adjunto del CONICET\n\nAv. San Mart?n 4453 - C1417DSE - C. A. de Buenos Aires - Argentina\n+5411 4524-8069\nhttp://www.agro.uba.ar/users/mdevoto/\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi everyone. I'd really appreciate help with the following analysis.\nApologies for such a basic question; I looked for previous queries on\nsimilar data, but none seem to quite fit what I am after.\n\nI have a field experiment aimed at understanding how the presence of\n\"bodyguard\" ants regulates the abundance of butterfly eggs and larvae (and\nthe damage the latter cause) on a focal plant species.\nFor this, I set up fourteen pairs of plants in a nature reserve and then\nassigned each plant in each pair to one of two treatments, either \"with\nants\" or \"without ants\", by applying a physical barrier at the base of the\nplant.\nIn the following nine weeks I measured four response variables once a week\non a subsample of ten randomly chosen leaves of each plant. I thus have\nnine repeated measures on each plant.\n\nMy response variables are:\nants: number of ants (this was measured just to check the physical barrier\nhad worked OK)\neggs: number of butterfly eggs\nlarvae: number of butterfly larvae\ndam: percent leaf damage (percentage eaten by larvae)\n\nMy explanatory variables are:\ntreat: treatment (two levels: \"con\" and \"sin\" mean with and without ants,\nrespectively)\npair: plant pair\ndate\n\nFor each response variable I would like to build a model that accounts for\nthe lack of independence of data within each pair, and that considers the\nfact that data come from repeated measures (so, for instance, leaf damage\ntends to accumulate).\nMy specific question is if including the random term \"pair\" in the model\naccomplishes both things. I guess it probably doesn't, so I'd appreciate\nany suggestions.\nThe results indicate plants without ants have a higher number of eggs\n(which is what we expected, yeaeee), but without proper control of the\nautocorrelations I mentioned I am not convinced.\nI provide a workable example below.\n\n#read data from Google drive\n#each line represents the variables measured on a single leaf of a single\nplant on a single date.\n\nid <- \"0Bzd8I1jr8z_iU0h6R0hxaElseDA\" # google file ID\ngaston <- read.table(sprintf(\"\nhttps://docs.google.com/uc?id=%s&export=download\", id), head=T)\n\n#GLMM\nrequire(lme4); require(effects)\nM1 <- glmer(eggs ~ treat + (1|pair), data=gaston, family=poisson)\n\n#check if there are any significant effects of treatment\nsummary(M1)\nallEffects(M1)\n\nThanks in advance for your help.\n\nBest,\n\nMariano\n\n\n*Dr. Mariano Devoto*\n\nProfesor Adjunto - Cátedra de Botánica General, Facultad de Agronomía de la\nUBA\nInvestigador Adjunto del CONICET\n\nAv. San Martín 4453 - C1417DSE - C. A. de Buenos Aires - Argentina\n+5411 4524-8069\nhttp://www.agro.uba.ar/users/mdevoto/\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi everyone. I'd really appreciate help with the following analysis.\nApologies for such a basic question; I looked for previous queries on\nsimilar data, but none seem to quite fit what I am after.\n\nI ",
       "thread_id": "thread-65a819eda7e2",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025478.html"
     },
     {
       "id": "msg-0d07afd89c2c",
@@ -33,7 +34,8 @@
       "body_snippet": "Dear Professor Bolker\n\nI have 100 applicants (A). They are nested in Streams (S). Applicants are\nnested in days (D). Applicants nested in sessions (S) and Applicants\ncrossed in Question (Q), the depen",
       "thread_id": "thread-0d07afd89c2c",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025479.html"
     },
     {
       "id": "msg-453359262ff6",
@@ -51,7 +53,8 @@
       "body_snippet": "* this is a general mailing list (I asked you to redirect an off-line\nquery to r-sig-mixed-models, but I think I suggested that you change the\nsalutation ...).\n\n * a more informative subject would hel",
       "thread_id": "thread-0d07afd89c2c",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025480.html"
     },
     {
       "id": "msg-57b50fb430fa",
@@ -69,7 +72,8 @@
       "body_snippet": "Dear Rose,\n\nLet's clear two misunderstandings on your side. 1) This the\nr-sig-mixed-models mailing list, not prof. Bolker's private address. 2) The\ngoal of this mailing list is to help each other. Mos",
       "thread_id": "thread-0d07afd89c2c",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025481.html"
     },
     {
       "id": "msg-e772638f5f76",
@@ -85,7 +89,8 @@
       "body_snippet": "Dear Advisors\n\nWould you please advise me. I would like to fit my model, but I struggled\nto do it\n\n\n  A= Applicant = 10 persons\n  S= Stream ( four levels, 1, 2)\n  D= Day   (1,2)\n S1= Session ( 1,2)\n Q",
       "thread_id": "thread-e772638f5f76",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025482.html"
     },
     {
       "id": "msg-a19bcbf22ff6",
@@ -103,7 +108,8 @@
       "body_snippet": "On 17-03-08 02:01 PM, Rose Rosei wrote:\n> Dear Advisors\n> \n> Would you please advise me. I would like to fit my model, but I struggled\n> to do it\n> \n> \n>   A= Applicant = 10 persons\n>   S= Stream ( fo",
       "thread_id": "thread-e772638f5f76",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025483.html"
     },
     {
       "id": "msg-1006b0fd1ca7",
@@ -123,7 +129,8 @@
       "body_snippet": "Many thanks, Professor Bolker- Very Much appriciated\n\nWhen I use this model:\n\nlmer(mark~ (1|A)+(1+D)+(1|S)+(1|Q)+ S1+ (1|S1/D/S/A), R) # session as a\nfiexed effect\n\nI got the following results, which ",
       "thread_id": "thread-1006b0fd1ca7",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025484.html"
     },
     {
       "id": "msg-fa4805584ed5",
@@ -139,7 +146,8 @@
       "body_snippet": "Dear all,\n\nI'll try to keep this as brief as possible. Some time ago I asked about joint \n(linear mixed-effects) modelling of two correlated outcomes, of the form:\n\nm1 <- lmer(Y1 ~ age + X + (age | id",
       "thread_id": "thread-fa4805584ed5",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025485.html"
     },
     {
       "id": "msg-d919142dca13",
@@ -155,7 +163,8 @@
       "body_snippet": "There are a few remaining seats on the following course:\n\n\n\nCourse: Data exploration, regression, GLM & GAM with R\n\nWhere:  HCMR, Crete, Greece\n\nWhen:   24-28 April 2017\n\nCourse website: http://www.hi",
       "thread_id": "thread-d919142dca13",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025486.html"
     },
     {
       "id": "msg-1d0d82553537",
@@ -167,11 +176,12 @@
       "subject_clean": "Quadratic term in linear model and model over-parameterization",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nI?m new to this mailing list and really hope that somebody here can help me with the following issue:\n\nI calculated the following linear models on a BoxCox transformed response variable with 382 data points:\nModel 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+?+(a*b*c)+(a*b*d)+(a*b*e)+?\na: 'Experimental Temperature' (Temp1, Temp2)\nb: 'Host Population' (PopX, PopY)\nc: 'Parasite Population' (PopX, PopY)\nd: 'Host Gender' (male, female)\nAdditionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n\nIn model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n\nI am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n\nWe sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n\nThus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n\nThe significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n\nHere are my questions:\n1. Why is it that including the quadratic term removes some significant effects while adding others?\n2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n5. Which model can I trust?\n\nThank you very much in advance for any advice you can give me,\n\nFred.",
-      "body_snippet": "Dear all,\n\nI?m new to this mailing list and really hope that somebody here can help me with the following issue:\n\nI calculated the following linear models on a BoxCox transformed response variable wit",
+      "body_plain": "Dear all,\n\nI’m new to this mailing list and really hope that somebody here can help me with the following issue:\n\nI calculated the following linear models on a BoxCox transformed response variable with 382 data points:\nModel 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+…+(a*b*c)+(a*b*d)+(a*b*e)+…\na: 'Experimental Temperature' (Temp1, Temp2)\nb: 'Host Population' (PopX, PopY)\nc: 'Parasite Population' (PopX, PopY)\nd: 'Host Gender' (male, female)\nAdditionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n\nIn model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n\nI am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n\nWe sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n\nThus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n\nThe significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n\nHere are my questions:\n1. Why is it that including the quadratic term removes some significant effects while adding others?\n2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n5. Which model can I trust?\n\nThank you very much in advance for any advice you can give me,\n\nFred.",
+      "body_snippet": "Dear all,\n\nI’m new to this mailing list and really hope that somebody here can help me with the following issue:\n\nI calculated the following linear models on a BoxCox transformed response variable wit",
       "thread_id": "thread-1d0d82553537",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025487.html"
     },
     {
       "id": "msg-3050ff778c6b",
@@ -185,11 +195,12 @@
       "references": [
         "<permail-201703150946028218e1ae00007d18-f_fran03@message-id.uni-muenster.de>"
       ],
-      "body_plain": "Dear Fred,\n\nThis looks like a linear model and not a linear mixed model. This\nmailing list is dedicated to mixed models.\n\nI strongly recommend to find a local statistician. All your models\nseem way to complex given the data. As a rule of thumb you need at\nleast 10 observations for each parameter in your model. Adding the\nquadratic terms increases the number of parameters and only make the\nproblem worse.\n\nBest regards,\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature\nand Forest\nteam Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\nKliniekstraat 25\n1070 Anderlecht\nBelgium\n\nTo call in the statistician after the experiment is done may be no\nmore than asking him to perform a post-mortem examination: he may be\nable to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does\nnot ensure that a reasonable answer can be extracted from a given body\nof data. ~ John Tukey\n\n\n2017-03-15 10:46 GMT+01:00  <f_fran03 at uni-muenster.de>:\n> Dear all,\n>\n> I?m new to this mailing list and really hope that somebody here can help me with the following issue:\n>\n> I calculated the following linear models on a BoxCox transformed response variable with 382 data points:\n> Model 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+?+(a*b*c)+(a*b*d)+(a*b*e)+?\n> a: 'Experimental Temperature' (Temp1, Temp2)\n> b: 'Host Population' (PopX, PopY)\n> c: 'Parasite Population' (PopX, PopY)\n> d: 'Host Gender' (male, female)\n> Additionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n>\n> In model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n>\n> I am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n>\n> We sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n>\n> Thus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n>\n> The significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n>\n> Here are my questions:\n> 1. Why is it that including the quadratic term removes some significant effects while adding others?\n> 2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n> 3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n> 4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n> 5. Which model can I trust?\n>\n> Thank you very much in advance for any advice you can give me,\n>\n> Fred.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Dear Fred,\n\nThis looks like a linear model and not a linear mixed model. This\nmailing list is dedicated to mixed models.\n\nI strongly recommend to find a local statistician. All your models\nseem way to complex given the data. As a rule of thumb you need at\nleast 10 observations for each parameter in your model. Adding the\nquadratic terms increases the number of parameters and only make the\nproblem worse.\n\nBest regards,\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature\nand Forest\nteam Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\nKliniekstraat 25\n1070 Anderlecht\nBelgium\n\nTo call in the statistician after the experiment is done may be no\nmore than asking him to perform a post-mortem examination: he may be\nable to say what the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does\nnot ensure that a reasonable answer can be extracted from a given body\nof data. ~ John Tukey\n\n\n2017-03-15 10:46 GMT+01:00  <f_fran03 at uni-muenster.de>:\n> Dear all,\n>\n> I’m new to this mailing list and really hope that somebody here can help me with the following issue:\n>\n> I calculated the following linear models on a BoxCox transformed response variable with 382 data points:\n> Model 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+…+(a*b*c)+(a*b*d)+(a*b*e)+…\n> a: 'Experimental Temperature' (Temp1, Temp2)\n> b: 'Host Population' (PopX, PopY)\n> c: 'Parasite Population' (PopX, PopY)\n> d: 'Host Gender' (male, female)\n> Additionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n>\n> In model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n>\n> I am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n>\n> We sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n>\n> Thus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n>\n> The significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n>\n> Here are my questions:\n> 1. Why is it that including the quadratic term removes some significant effects while adding others?\n> 2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n> 3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n> 4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n> 5. Which model can I trust?\n>\n> Thank you very much in advance for any advice you can give me,\n>\n> Fred.\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Dear Fred,\n\nThis looks like a linear model and not a linear mixed model. This\nmailing list is dedicated to mixed models.\n\nI strongly recommend to find a local statistician. All your models\nseem way to",
       "thread_id": "thread-1d0d82553537",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025488.html"
     },
     {
       "id": "msg-53e4c268889e",
@@ -203,11 +214,12 @@
       "references": [
         "<permail-201703150946028218e1ae00007d18-f_fran03@message-id.uni-muenster.de>"
       ],
-      "body_plain": "Dear Fred,\n\nI have to say... wow! Really, you got *only* the comment about adding a\nquadratic effect to the model?!? The review process itself seems to be\nmuch more ill-conditioned these days than I thought...\n\nFirst, this is the mailing list for mixed effects models, i.e.,\nmultilevel models. Your question seems to be on \"normal\" linear models\n(which are a special case of the former without any random effects) and\nyou offered no hint on any pseudoreplication in your data, i.e., no\nrandom effects that you fitted. Are all of your data points really\nindependent? If so, this might not be the right mailing list to ask your\nquestion.\n\nSecond, to give you some hints about where to start your modelling\nendeavour:\n\nYou need about 10-15 data points (rule of thumb) to reliably estimate\none parameter, so you have about 382 / 15 = 25 possible parameters you\ncan estimate. Your models are overfitted! And the p-values you are\ngetting are totally nonsensical in my opinion (besides the discussion\nabout the sense of p-values at all).\n\nSo, regarding your question 5: NONE!\n\nYou should start at reading Frank Harrell's 2015 book \"Regression\nModeling Strategies (2nd-Ed)\" to give yourself a better foundation about\nlinear models. You really have to begin with the basics of what you are\ndoing...\nAnd in that book you'll also find answers to all the other question you\nasked.\n\nSorry for being a bit harsh here, but I do not know another way of\ntelling you this.\n\nGood luck!\n\n\n\n\nAm 15.03.2017 um 10:46 schrieb f_fran03 at uni-muenster.de:\n> Dear all,\n> \n> I?m new to this mailing list and really hope that somebody here can help me with the following issue:\n> \n> I calculated the following linear models on a BoxCox transformed response variable with 382 data points:\n> Model 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+?+(a*b*c)+(a*b*d)+(a*b*e)+?\n> a: 'Experimental Temperature' (Temp1, Temp2)\n> b: 'Host Population' (PopX, PopY)\n> c: 'Parasite Population' (PopX, PopY)\n> d: 'Host Gender' (male, female)\n> Additionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n> \n> In model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n> \n> I am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n> \n> We sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n> \n> Thus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n> \n> The significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n> \n> Here are my questions:\n> 1. Why is it that including the quadratic term removes some significant effects while adding others?\n> 2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n> 3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n> 4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n> 5. Which model can I trust?\n> \n> Thank you very much in advance for any advice you can give me,\n> \n> Fred.\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n--\n\n_____________________________________________________________________\n\nUniversit?tsklinikum Hamburg-Eppendorf; K?rperschaft des ?ffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard G?ke (Vorsitzender), Prof. Dr. Dr. Uwe Koch-Gromus, Joachim Pr?l?, Rainer Schoppik\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
+      "body_plain": "Dear Fred,\n\nI have to say... wow! Really, you got *only* the comment about adding a\nquadratic effect to the model?!? The review process itself seems to be\nmuch more ill-conditioned these days than I thought...\n\nFirst, this is the mailing list for mixed effects models, i.e.,\nmultilevel models. Your question seems to be on \"normal\" linear models\n(which are a special case of the former without any random effects) and\nyou offered no hint on any pseudoreplication in your data, i.e., no\nrandom effects that you fitted. Are all of your data points really\nindependent? If so, this might not be the right mailing list to ask your\nquestion.\n\nSecond, to give you some hints about where to start your modelling\nendeavour:\n\nYou need about 10-15 data points (rule of thumb) to reliably estimate\none parameter, so you have about 382 / 15 = 25 possible parameters you\ncan estimate. Your models are overfitted! And the p-values you are\ngetting are totally nonsensical in my opinion (besides the discussion\nabout the sense of p-values at all).\n\nSo, regarding your question 5: NONE!\n\nYou should start at reading Frank Harrell's 2015 book \"Regression\nModeling Strategies (2nd-Ed)\" to give yourself a better foundation about\nlinear models. You really have to begin with the basics of what you are\ndoing...\nAnd in that book you'll also find answers to all the other question you\nasked.\n\nSorry for being a bit harsh here, but I do not know another way of\ntelling you this.\n\nGood luck!\n\n\n\n\nAm 15.03.2017 um 10:46 schrieb f_fran03 at uni-muenster.de:\n> Dear all,\n> \n> I’m new to this mailing list and really hope that somebody here can help me with the following issue:\n> \n> I calculated the following linear models on a BoxCox transformed response variable with 382 data points:\n> Model 1: Y~x+a+b+c+d+e+(a*b)+(a*c)+ (a*d)+…+(a*b*c)+(a*b*d)+(a*b*e)+…\n> a: 'Experimental Temperature' (Temp1, Temp2)\n> b: 'Host Population' (PopX, PopY)\n> c: 'Parasite Population' (PopX, PopY)\n> d: 'Host Gender' (male, female)\n> Additionally, I included the continuous predictor variable 'Parasite Weight' (e) and all possible 2-way (10 interactions) and 3-way (10 interactions) interactions into the model.\n> \n> In model 2 I replaced the two main effects 'Host Population' and 'Parasite Population' with one variable ('Sympatry/Allopatry') that combines the two effects. Apart from this, model 2 (six 2-way interactions and four 3-way interactions) was identical to model 1.\n> \n> I am interested now in all interactions that include the continuous predictor variable 'Parasite Weight'. I got such a significant interaction ('Experimental Temperature x Parasite Population x Parasite Weight', p = 0.010) from model 1.\n> \n> We sent a manuscript containing these two models to a journal for review and got it back now with a comment from a reviewer who suggested that we look for non-linear relationships involving 'Parasite Weight'.\n> \n> Thus, I calculated model 1.2 which corresponds to model 1 but additionally added the quadratic term of 'Parasite Weight' ('Parasite Weight^2') and the respective interactions (in total 14 x 2-way interactions and 16 x 3-way interactions). I did the same for model 2, which resulted in model 2.2 with nine 2-way interactions and seven 3-way interactions.\n> \n> The significant interaction I found with model 1 was not significant anymore with model 1.2 and in model 2.2 two interactions became significant ('Host Gender x Sympatry/Allopatry x Parasite Weight', p = 0.038 and 'Host Gender x Sympatry/Allopatry x Parasite Weight^2', p = 0.044) that were not significant in model 2.\n> \n> Here are my questions:\n> 1. Why is it that including the quadratic term removes some significant effects while adding others?\n> 2. What does it mean when both an interaction including the linear term and the same interaction including the quadratic term become significant? Does this suggest a non-linear relationship or both a linear and a non-linear relationship?\n> 3. Could it be that the disappearance of the interaction that was significant in model 1, is caused by an over-parameterization of model 1.2 and how can I prove this (with all the models we have the potential problem of many interactions and main effects)?\n> 4. Are there any general arguments for when to include a quadratic term into a model and when quadratic terms should be avoided?\n> 5. Which model can I trust?\n> \n> Thank you very much in advance for any advice you can give me,\n> \n> Fred.\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n--\n\n_____________________________________________________________________\n\nUniversitätsklinikum Hamburg-Eppendorf; Körperschaft des öffentlichen Rechts; Gerichtsstand: Hamburg | www.uke.de\nVorstandsmitglieder: Prof. Dr. Burkhard Göke (Vorsitzender), Prof. Dr. Dr. Uwe Koch-Gromus, Joachim Prölß, Rainer Schoppik\n_____________________________________________________________________\n\nSAVE PAPER - THINK BEFORE PRINTING",
       "body_snippet": "Dear Fred,\n\nI have to say... wow! Really, you got *only* the comment about adding a\nquadratic effect to the model?!? The review process itself seems to be\nmuch more ill-conditioned these days than I t",
       "thread_id": "thread-1d0d82553537",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025489.html"
     },
     {
       "id": "msg-2d5ebb7a6550",
@@ -219,11 +231,12 @@
       "subject_clean": "GLMM - selection of models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all. I am working with a GLMM in the lme4 package using 6 fixed\nfactors and 1 random factor (plot). The syntax of my model is as follows:\n\n M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+width+\n(1|plot), data = comuni1, family = poisson)\n\nI need to make a selection of models to get rid of non relevant variables,\nbut the \"step\" function in lme4 is not appropriate for GLMM models.\nWhich function can I use for a selection of models in GLMM?\n\nThanks in advance for you kind help.\n\n----\nBi?l. Marcos Monasterolo\nBecario doctoral - C?tedra de Bot?nica General, Facultad de Agronom?a, UBA\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all. I am working with a GLMM in the lme4 package using 6 fixed\nfactors and 1 random factor (plot). The syntax of my model is as follows:\n\n M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+width+\n(1|plot), data = comuni1, family = poisson)\n\nI need to make a selection of models to get rid of non relevant variables,\nbut the \"step\" function in lme4 is not appropriate for GLMM models.\nWhich function can I use for a selection of models in GLMM?\n\nThanks in advance for you kind help.\n\n----\nBiól. Marcos Monasterolo\nBecario doctoral - Cátedra de Botánica General, Facultad de Agronomía, UBA\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all. I am working with a GLMM in the lme4 package using 6 fixed\nfactors and 1 random factor (plot). The syntax of my model is as follows:\n\n M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+e",
       "thread_id": "thread-2d5ebb7a6550",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025490.html"
     },
     {
       "id": "msg-bc8075b2224a",
@@ -237,11 +250,12 @@
       "references": [
         "<CAJ-MGDTqJV+i22CwXCy5JJJskbO3+qhhi0NijPANimtzYfyQHQ@mail.gmail.com>"
       ],
-      "body_plain": "There are strong theoretical arguments for **not** doing stepwise\nselection on models (any kind, at all), e.g.\nhttp://www.stata.com/support/faqs/statistics/stepwise-regression-problems/.\nIf you must, you can use `drop1()` to semi-automate the process, or\nyou can use MuMIn::dredge to do all-subsets fitting.\n\nOn Thu, Mar 16, 2017 at 5:15 PM, Marcos Monasterolo\n<mmonasterolo at agro.uba.ar> wrote:\n> Dear all. I am working with a GLMM in the lme4 package using 6 fixed\n> factors and 1 random factor (plot). The syntax of my model is as follows:\n>\n>  M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+width+\n> (1|plot), data = comuni1, family = poisson)\n>\n> I need to make a selection of models to get rid of non relevant variables,\n> but the \"step\" function in lme4 is not appropriate for GLMM models.\n> Which function can I use for a selection of models in GLMM?\n>\n> Thanks in advance for you kind help.\n>\n> ----\n> Bi?l. Marcos Monasterolo\n> Becario doctoral - C?tedra de Bot?nica General, Facultad de Agronom?a, UBA\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "There are strong theoretical arguments for **not** doing stepwise\nselection on models (any kind, at all), e.g.\nhttp://www.stata.com/support/faqs/statistics/stepwise-regression-problems/.\nIf you must, you can use `drop1()` to semi-automate the process, or\nyou can use MuMIn::dredge to do all-subsets fitting.\n\nOn Thu, Mar 16, 2017 at 5:15 PM, Marcos Monasterolo\n<mmonasterolo at agro.uba.ar> wrote:\n> Dear all. I am working with a GLMM in the lme4 package using 6 fixed\n> factors and 1 random factor (plot). The syntax of my model is as follows:\n>\n>  M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+width+\n> (1|plot), data = comuni1, family = poisson)\n>\n> I need to make a selection of models to get rid of non relevant variables,\n> but the \"step\" function in lme4 is not appropriate for GLMM models.\n> Which function can I use for a selection of models in GLMM?\n>\n> Thanks in advance for you kind help.\n>\n> ----\n> Biól. Marcos Monasterolo\n> Becario doctoral - Cátedra de Botánica General, Facultad de Agronomía, UBA\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "There are strong theoretical arguments for **not** doing stepwise\nselection on models (any kind, at all), e.g.\nhttp://www.stata.com/support/faqs/statistics/stepwise-regression-problems/.\nIf you must, ",
       "thread_id": "thread-2d5ebb7a6550",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025491.html"
     },
     {
       "id": "msg-786a6599a3ad",
@@ -253,11 +267,12 @@
       "subject_clean": "Multilevel Model in R",
       "in_reply_to": "<730754761.13398048.1489701160041.JavaMail.zimbra@izmirekonomi.edu.tr>",
       "references": [],
-      "body_plain": "Dear all! \nMy study consists of 3 trials and each trial includes four different n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back conditions, in a different order. Therefore, my design is within-subject design. Participants are between factors and gender of the participant is the covariate of that between factor. \n\n\nWhile participants were performing n-back task, I have measured their dorsolateral prefrontal cortex activation via 16-channeled fNIR and obtained oxygenated hemoglobin measures from each of the 16 channels and I'm trying to conduct multilevel analysis by using R. My fixed variable is gender and my random variable is Nback Types (which has 4 levels, 0-, 1-, 2-, and 3-back) which is categorical. In my model, participants are nested within nback types. \n\n\n\n\nBecause NbackType is categorical, I've wondered whether it is okay to test random slopes. \n\n\n\n\nLast but not least, would you share your opinions about how to interpret this random slopes model? \n\n\n\n\n\n#Null model \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m1 = lmer (Optode1 ~ 1 + \n(1|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m1) \n\n\n##Nback model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m2 = lmer (Optode1 ~ NbackType + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m2) \n\n##Nback model Random slope \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m3 = lmer (Optode1 ~ NbackType + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m3) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m4 = lmer (Optode1 ~ NbackType + gender + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m4) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m5 = lmer (Optode1 ~ NbackType + gender + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m5) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m6 = lmer (Optode1 ~ NbackType * gender + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m6) \n\n\n\n\n##Nback gender interaction model Random slope \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m7 = lmer (Optode1 ~ NbackType * gender + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m7) \n\n\n\n\nanova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7) \n\n\nIlg?m Hepdarcan \nIzmir University of Economics \nExperimental Psychology MD \n\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all! \nMy study consists of 3 trials and each trial includes four different n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back conditions, in a different order. Therefore, my design is within-subject design. Participants are between factors and gender of the participant is the covariate of that between factor. \n\n\nWhile participants were performing n-back task, I have measured their dorsolateral prefrontal cortex activation via 16-channeled fNIR and obtained oxygenated hemoglobin measures from each of the 16 channels and I'm trying to conduct multilevel analysis by using R. My fixed variable is gender and my random variable is Nback Types (which has 4 levels, 0-, 1-, 2-, and 3-back) which is categorical. In my model, participants are nested within nback types. \n\n\n\n\nBecause NbackType is categorical, I've wondered whether it is okay to test random slopes. \n\n\n\n\nLast but not least, would you share your opinions about how to interpret this random slopes model? \n\n\n\n\n\n#Null model \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m1 = lmer (Optode1 ~ 1 + \n(1|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m1) \n\n\n##Nback model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m2 = lmer (Optode1 ~ NbackType + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m2) \n\n##Nback model Random slope \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m3 = lmer (Optode1 ~ NbackType + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m3) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m4 = lmer (Optode1 ~ NbackType + gender + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m4) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m5 = lmer (Optode1 ~ NbackType + gender + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m5) \n\n\n\n\n##Nback gender model Random intercept \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m6 = lmer (Optode1 ~ NbackType * gender + \n(1|participant:NbackType), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m6) \n\n\n\n\n##Nback gender interaction model Random slope \n#Optode1 \nlibrary(lme4) \nlibrary(lmerTest) \nOptode1.m7 = lmer (Optode1 ~ NbackType * gender + \n(NbackType|participant), \nna.action = na.exclude, \ndata=oxyHbConditionCellbyCell, \nREML=FALSE) \nsummary(Optode1.m7) \n\n\n\n\nanova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7) \n\n\nIlgým Hepdarcan \nIzmir University of Economics \nExperimental Psychology MD \n\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all! \nMy study consists of 3 trials and each trial includes four different n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back conditions, in a different order. Therefore, my design is ",
       "thread_id": "thread-786a6599a3ad",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025500.html"
     },
     {
       "id": "msg-1899c01335b4",
@@ -272,11 +287,12 @@
         "<CAJ-MGDTqJV+i22CwXCy5JJJskbO3+qhhi0NijPANimtzYfyQHQ@mail.gmail.com>",
         "<CABghstT7pVrvuUG8popHkhijQuYgkNGLaDebyaVSEV2xUF7xfg@mail.gmail.com>"
       ],
-      "body_plain": "In addition to what Dr. Bolker wrote, note that for family=poisson, as you\nadd or drop fixed effects, there will be different amounts of\noverdispersion among the models fits.  This can be an issue that affects\nboth the mechanics and interpretation of any form of model selection or\naveraging.  May you be luckier with your data and overdispersion than I\ntend to be with mine.\n\nTom 2\n\n\nOn Thu, Mar 16, 2017 at 2:31 PM, Ben Bolker <bbolker at gmail.com> wrote:\n\n> There are strong theoretical arguments for **not** doing stepwise\n> selection on models (any kind, at all), e.g.\n> http://www.stata.com/support/faqs/statistics/stepwise-regression-problems/\n> .\n> If you must, you can use `drop1()` to semi-automate the process, or\n> you can use MuMIn::dredge to do all-subsets fitting.\n>\n> On Thu, Mar 16, 2017 at 5:15 PM, Marcos Monasterolo\n> <mmonasterolo at agro.uba.ar> wrote:\n> > Dear all. I am working with a GLMM in the lme4 package using 6 fixed\n> > factors and 1 random factor (plot). The syntax of my model is as follows:\n> >\n> >  M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+\n> width+\n> > (1|plot), data = comuni1, family = poisson)\n> >\n> > I need to make a selection of models to get rid of non relevant\n> variables,\n> > but the \"step\" function in lme4 is not appropriate for GLMM models.\n> > Which function can I use for a selection of models in GLMM?\n> >\n> > Thanks in advance for you kind help.\n> >\n> > ----\n> > Bi?l. Marcos Monasterolo\n> > Becario doctoral - C?tedra de Bot?nica General, Facultad de Agronom?a,\n> UBA\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "In addition to what Dr. Bolker wrote, note that for family=poisson, as you\nadd or drop fixed effects, there will be different amounts of\noverdispersion among the models fits.  This can be an issue that affects\nboth the mechanics and interpretation of any form of model selection or\naveraging.  May you be luckier with your data and overdispersion than I\ntend to be with mine.\n\nTom 2\n\n\nOn Thu, Mar 16, 2017 at 2:31 PM, Ben Bolker <bbolker at gmail.com> wrote:\n\n> There are strong theoretical arguments for **not** doing stepwise\n> selection on models (any kind, at all), e.g.\n> http://www.stata.com/support/faqs/statistics/stepwise-regression-problems/\n> .\n> If you must, you can use `drop1()` to semi-automate the process, or\n> you can use MuMIn::dredge to do all-subsets fitting.\n>\n> On Thu, Mar 16, 2017 at 5:15 PM, Marcos Monasterolo\n> <mmonasterolo at agro.uba.ar> wrote:\n> > Dear all. I am working with a GLMM in the lme4 package using 6 fixed\n> > factors and 1 random factor (plot). The syntax of my model is as follows:\n> >\n> >  M1 <- glmer(riquinsec~  adjacent field+ exph200+db500+exph500+db200+\n> width+\n> > (1|plot), data = comuni1, family = poisson)\n> >\n> > I need to make a selection of models to get rid of non relevant\n> variables,\n> > but the \"step\" function in lme4 is not appropriate for GLMM models.\n> > Which function can I use for a selection of models in GLMM?\n> >\n> > Thanks in advance for you kind help.\n> >\n> > ----\n> > Biól. Marcos Monasterolo\n> > Becario doctoral - Cátedra de Botánica General, Facultad de Agronomía,\n> UBA\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "In addition to what Dr. Bolker wrote, note that for family=poisson, as you\nadd or drop fixed effects, there will be different amounts of\noverdispersion among the models fits.  This can be an issue tha",
       "thread_id": "thread-2d5ebb7a6550",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025492.html"
     },
     {
       "id": "msg-a8686a4cea5f",
@@ -292,7 +308,8 @@
       "body_snippet": "Dear members,\n\nI am trying to set some code running on Windows, which calculates and\nreturns the Laplace-based maximum likelihood estimates of a generalized\nlinear mixed model.\nBoth glmer and glmmTMB ",
       "thread_id": "thread-a8686a4cea5f",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025493.html"
     },
     {
       "id": "msg-7b758292d299",
@@ -306,11 +323,12 @@
       "references": [
         "<CAO4gA+og=a8u4EB9Ry8cWwQL6arpcV+dXZu+qrkLx9pLx+b-XQ@mail.gmail.com>"
       ],
-      "body_plain": "Hi Sophia,\n\nNot sure why this happens, but using <<- assignment seems to work.\n(i.e., dat <<- ..., rather than dat <- ...)\n\nJo?o\n\nOn Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> Dear members,\n> \n> I am trying to set some code running on Windows, which calculates and\n> returns the Laplace-based maximum likelihood estimates of a generalized\n> linear mixed model.\n> Both glmer and glmmTMB functions work on R 3.3.3 when the code is executed\n> sequentially.\n> However, when I use the parallel algorithm, then glmer still works, but\n> glmmTMB does not.\n> The error I get is Error in { : task 1 failed - \"object 'dat' not found\" ,\n> where dat is the simulated dataset in each replication.\n> \n> Any ideas on how to tackle this error? I am interested in using glmmTMB\n> instead of lme4, because I need some of glmmTMB output components.\n> \n> Below is a sample code that illustrates the above:\n> \n> \n> library(doParallel)\n> library(glmmTMB)\n> library(lme4)\n> \n> simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> \n> ## Sequential version\n> LA <- LA2 <- matrix(NA,3,10)\n> for (i in 1:10){\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),y=simSamples[,i],yprop=simSamples[,i]/6)\n> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,weights=m,data=dat)\n> LA[,i] <- fitLA$fit$par\n> fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> }\n> \n> \n> ## Parallel version\n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\")) %dopar% {\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),yprop=simSamples[,i]/6)\n> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,weights=m,data=dat)\n> fitLA$fit$par\n> }\n> stopCluster(cl)\n> \n> \n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\")) %dopar% {\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),y=simSamples[,i])\n> fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> }\n> stopCluster(cl)\n> \n> Any help is much appreciated.\n> Thanks in advance!\n> Sophia\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
-      "body_snippet": "Hi Sophia,\n\nNot sure why this happens, but using <<- assignment seems to work.\n(i.e., dat <<- ..., rather than dat <- ...)\n\nJo?o\n\nOn Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> Dear membe",
+      "body_plain": "Hi Sophia,\n\nNot sure why this happens, but using <<- assignment seems to work.\n(i.e., dat <<- ..., rather than dat <- ...)\n\nJoão\n\nOn Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> Dear members,\n> \n> I am trying to set some code running on Windows, which calculates and\n> returns the Laplace-based maximum likelihood estimates of a generalized\n> linear mixed model.\n> Both glmer and glmmTMB functions work on R 3.3.3 when the code is executed\n> sequentially.\n> However, when I use the parallel algorithm, then glmer still works, but\n> glmmTMB does not.\n> The error I get is Error in { : task 1 failed - \"object 'dat' not found\" ,\n> where dat is the simulated dataset in each replication.\n> \n> Any ideas on how to tackle this error? I am interested in using glmmTMB\n> instead of lme4, because I need some of glmmTMB output components.\n> \n> Below is a sample code that illustrates the above:\n> \n> \n> library(doParallel)\n> library(glmmTMB)\n> library(lme4)\n> \n> simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> \n> ## Sequential version\n> LA <- LA2 <- matrix(NA,3,10)\n> for (i in 1:10){\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),y=simSamples[,i],yprop=simSamples[,i]/6)\n> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,weights=m,data=dat)\n> LA[,i] <- fitLA$fit$par\n> fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> }\n> \n> \n> ## Parallel version\n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\")) %dopar% {\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),yprop=simSamples[,i]/6)\n> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,weights=m,data=dat)\n> fitLA$fit$par\n> }\n> stopCluster(cl)\n> \n> \n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\")) %dopar% {\n> dat <-\n> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),y=simSamples[,i])\n> fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> }\n> stopCluster(cl)\n> \n> Any help is much appreciated.\n> Thanks in advance!\n> Sophia\n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Hi Sophia,\n\nNot sure why this happens, but using <<- assignment seems to work.\n(i.e., dat <<- ..., rather than dat <- ...)\n\nJoão\n\nOn Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> Dear membe",
       "thread_id": "thread-a8686a4cea5f",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025494.html"
     },
     {
       "id": "msg-bd9826b0a026",
@@ -325,11 +343,12 @@
         "<CAO4gA+og=a8u4EB9Ry8cWwQL6arpcV+dXZu+qrkLx9pLx+b-XQ@mail.gmail.com>",
         "<1489705792.3479.3.camel@gmail.com>"
       ],
-      "body_plain": "Thanks Jo?o, indeed the scoping assignment works.\nAll the best,\nSophia\n\nOn Fri, Mar 17, 2017 at 1:09 AM, Jo?o Ver?ssimo <jl.verissimo at gmail.com>\nwrote:\n\n> Hi Sophia,\n>\n> Not sure why this happens, but using <<- assignment seems to work.\n> (i.e., dat <<- ..., rather than dat <- ...)\n>\n> Jo?o\n>\n> On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> > Dear members,\n> >\n> > I am trying to set some code running on Windows, which calculates and\n> > returns the Laplace-based maximum likelihood estimates of a generalized\n> > linear mixed model.\n> > Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n> executed\n> > sequentially.\n> > However, when I use the parallel algorithm, then glmer still works, but\n> > glmmTMB does not.\n> > The error I get is Error in { : task 1 failed - \"object 'dat' not found\"\n> ,\n> > where dat is the simulated dataset in each replication.\n> >\n> > Any ideas on how to tackle this error? I am interested in using glmmTMB\n> > instead of lme4, because I need some of glmmTMB output components.\n> >\n> > Below is a sample code that illustrates the above:\n> >\n> >\n> > library(doParallel)\n> > library(glmmTMB)\n> > library(lme4)\n> >\n> > simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> >\n> > ## Sequential version\n> > LA <- LA2 <- matrix(NA,3,10)\n> > for (i in 1:10){\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> y=simSamples[,i],yprop=simSamples[,i]/6)\n> > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n> > LA[,i] <- fitLA$fit$par\n> > fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> > }\n> >\n> >\n> > ## Parallel version\n> > cl <- makeCluster(3)\n> > registerDoParallel(cl)\n> > TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n> %dopar% {\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> yprop=simSamples[,i]/6)\n> > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n> > fitLA$fit$par\n> > }\n> > stopCluster(cl)\n> >\n> >\n> > cl <- makeCluster(3)\n> > registerDoParallel(cl)\n> > LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\")) %dopar%\n> {\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> y=simSamples[,i])\n> > fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> > }\n> > stopCluster(cl)\n> >\n> > Any help is much appreciated.\n> > Thanks in advance!\n> > Sophia\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Thanks Jo?o, indeed the scoping assignment works.\nAll the best,\nSophia\n\nOn Fri, Mar 17, 2017 at 1:09 AM, Jo?o Ver?ssimo <jl.verissimo at gmail.com>\nwrote:\n\n> Hi Sophia,\n>\n> Not sure why this happens, ",
+      "body_plain": "Thanks João, indeed the scoping assignment works.\nAll the best,\nSophia\n\nOn Fri, Mar 17, 2017 at 1:09 AM, João Veríssimo <jl.verissimo at gmail.com>\nwrote:\n\n> Hi Sophia,\n>\n> Not sure why this happens, but using <<- assignment seems to work.\n> (i.e., dat <<- ..., rather than dat <- ...)\n>\n> João\n>\n> On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> > Dear members,\n> >\n> > I am trying to set some code running on Windows, which calculates and\n> > returns the Laplace-based maximum likelihood estimates of a generalized\n> > linear mixed model.\n> > Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n> executed\n> > sequentially.\n> > However, when I use the parallel algorithm, then glmer still works, but\n> > glmmTMB does not.\n> > The error I get is Error in { : task 1 failed - \"object 'dat' not found\"\n> ,\n> > where dat is the simulated dataset in each replication.\n> >\n> > Any ideas on how to tackle this error? I am interested in using glmmTMB\n> > instead of lme4, because I need some of glmmTMB output components.\n> >\n> > Below is a sample code that illustrates the above:\n> >\n> >\n> > library(doParallel)\n> > library(glmmTMB)\n> > library(lme4)\n> >\n> > simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> >\n> > ## Sequential version\n> > LA <- LA2 <- matrix(NA,3,10)\n> > for (i in 1:10){\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> y=simSamples[,i],yprop=simSamples[,i]/6)\n> > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n> > LA[,i] <- fitLA$fit$par\n> > fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> > }\n> >\n> >\n> > ## Parallel version\n> > cl <- makeCluster(3)\n> > registerDoParallel(cl)\n> > TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n> %dopar% {\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> yprop=simSamples[,i]/6)\n> > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n> > fitLA$fit$par\n> > }\n> > stopCluster(cl)\n> >\n> >\n> > cl <- makeCluster(3)\n> > registerDoParallel(cl)\n> > LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\")) %dopar%\n> {\n> > dat <-\n> > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> y=simSamples[,i])\n> > fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> > }\n> > stopCluster(cl)\n> >\n> > Any help is much appreciated.\n> > Thanks in advance!\n> > Sophia\n> >\n> >       [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thanks João, indeed the scoping assignment works.\nAll the best,\nSophia\n\nOn Fri, Mar 17, 2017 at 1:09 AM, João Veríssimo <jl.verissimo at gmail.com>\nwrote:\n\n> Hi Sophia,\n>\n> Not sure why this happens, ",
       "thread_id": "thread-a8686a4cea5f",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025495.html"
     },
     {
       "id": "msg-43d693aef84f",
@@ -345,11 +364,12 @@
         "<1489705792.3479.3.camel@gmail.com>",
         "<CAO4gA+qsECgv-pkJEGT6gVOF-63Rwj_vsskP-da0MOyPD6=-Ag@mail.gmail.com>"
       ],
-      "body_plain": "I try to avoid variable scoping (environment) confusion by wrapping my\ninner stuff as a simple function:\n\ncl <- makeCluster(3)\nregisterDoParallel(cl)\n\nfn <- function(i) {\n  dat <- data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\nyprop=simSamples[,i]/6)\n  fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\nweights=m,data=dat)\n  return(fitLA$fit$par)\n}\n\nTMBfit <- foreach(i=1:10, .combine= cbind, .inorder=FALSE,\n.packages=c(\"glmmTMB\")) %dopar% fn(i)\nstopCluster(cl)\n\nWith .inorder=FALSE you may or may not need to return a list with i as well:\nreturn(list(i=i,par=fitLA$fit$par))\n\nTom 2\n\n\n\n\n\nOn Thu, Mar 16, 2017 at 4:51 PM, Sophia Kyriakou <\nsophia.kyriakou17 at gmail.com> wrote:\n\n> Thanks Jo?o, indeed the scoping assignment works.\n> All the best,\n> Sophia\n>\n> On Fri, Mar 17, 2017 at 1:09 AM, Jo?o Ver?ssimo <jl.verissimo at gmail.com>\n> wrote:\n>\n> > Hi Sophia,\n> >\n> > Not sure why this happens, but using <<- assignment seems to work.\n> > (i.e., dat <<- ..., rather than dat <- ...)\n> >\n> > Jo?o\n> >\n> > On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> > > Dear members,\n> > >\n> > > I am trying to set some code running on Windows, which calculates and\n> > > returns the Laplace-based maximum likelihood estimates of a generalized\n> > > linear mixed model.\n> > > Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n> > executed\n> > > sequentially.\n> > > However, when I use the parallel algorithm, then glmer still works, but\n> > > glmmTMB does not.\n> > > The error I get is Error in { : task 1 failed - \"object 'dat' not\n> found\"\n> > ,\n> > > where dat is the simulated dataset in each replication.\n> > >\n> > > Any ideas on how to tackle this error? I am interested in using glmmTMB\n> > > instead of lme4, because I need some of glmmTMB output components.\n> > >\n> > > Below is a sample code that illustrates the above:\n> > >\n> > >\n> > > library(doParallel)\n> > > library(glmmTMB)\n> > > library(lme4)\n> > >\n> > > simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> > >\n> > > ## Sequential version\n> > > LA <- LA2 <- matrix(NA,3,10)\n> > > for (i in 1:10){\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > y=simSamples[,i],yprop=simSamples[,i]/6)\n> > > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> > weights=m,data=dat)\n> > > LA[,i] <- fitLA$fit$par\n> > > fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,\n> data=dat)\n> > > LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> > > }\n> > >\n> > >\n> > > ## Parallel version\n> > > cl <- makeCluster(3)\n> > > registerDoParallel(cl)\n> > > TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n> > %dopar% {\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > yprop=simSamples[,i]/6)\n> > > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> > weights=m,data=dat)\n> > > fitLA$fit$par\n> > > }\n> > > stopCluster(cl)\n> > >\n> > >\n> > > cl <- makeCluster(3)\n> > > registerDoParallel(cl)\n> > > LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\"))\n> %dopar%\n> > {\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > y=simSamples[,i])\n> > > fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > > c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> > > }\n> > > stopCluster(cl)\n> > >\n> > > Any help is much appreciated.\n> > > Thanks in advance!\n> > > Sophia\n> > >\n> > >       [[alternative HTML version deleted]]\n> > >\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n> >\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "I try to avoid variable scoping (environment) confusion by wrapping my\ninner stuff as a simple function:\n\ncl <- makeCluster(3)\nregisterDoParallel(cl)\n\nfn <- function(i) {\n  dat <- data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\nyprop=simSamples[,i]/6)\n  fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\nweights=m,data=dat)\n  return(fitLA$fit$par)\n}\n\nTMBfit <- foreach(i=1:10, .combine= cbind, .inorder=FALSE,\n.packages=c(\"glmmTMB\")) %dopar% fn(i)\nstopCluster(cl)\n\nWith .inorder=FALSE you may or may not need to return a list with i as well:\nreturn(list(i=i,par=fitLA$fit$par))\n\nTom 2\n\n\n\n\n\nOn Thu, Mar 16, 2017 at 4:51 PM, Sophia Kyriakou <\nsophia.kyriakou17 at gmail.com> wrote:\n\n> Thanks João, indeed the scoping assignment works.\n> All the best,\n> Sophia\n>\n> On Fri, Mar 17, 2017 at 1:09 AM, João Veríssimo <jl.verissimo at gmail.com>\n> wrote:\n>\n> > Hi Sophia,\n> >\n> > Not sure why this happens, but using <<- assignment seems to work.\n> > (i.e., dat <<- ..., rather than dat <- ...)\n> >\n> > João\n> >\n> > On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n> > > Dear members,\n> > >\n> > > I am trying to set some code running on Windows, which calculates and\n> > > returns the Laplace-based maximum likelihood estimates of a generalized\n> > > linear mixed model.\n> > > Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n> > executed\n> > > sequentially.\n> > > However, when I use the parallel algorithm, then glmer still works, but\n> > > glmmTMB does not.\n> > > The error I get is Error in { : task 1 failed - \"object 'dat' not\n> found\"\n> > ,\n> > > where dat is the simulated dataset in each replication.\n> > >\n> > > Any ideas on how to tackle this error? I am interested in using glmmTMB\n> > > instead of lme4, because I need some of glmmTMB output components.\n> > >\n> > > Below is a sample code that illustrates the above:\n> > >\n> > >\n> > > library(doParallel)\n> > > library(glmmTMB)\n> > > library(lme4)\n> > >\n> > > simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n> > >\n> > > ## Sequential version\n> > > LA <- LA2 <- matrix(NA,3,10)\n> > > for (i in 1:10){\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > y=simSamples[,i],yprop=simSamples[,i]/6)\n> > > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> > weights=m,data=dat)\n> > > LA[,i] <- fitLA$fit$par\n> > > fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,\n> data=dat)\n> > > LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n> > > }\n> > >\n> > >\n> > > ## Parallel version\n> > > cl <- makeCluster(3)\n> > > registerDoParallel(cl)\n> > > TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n> > %dopar% {\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > yprop=simSamples[,i]/6)\n> > > fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> > weights=m,data=dat)\n> > > fitLA$fit$par\n> > > }\n> > > stopCluster(cl)\n> > >\n> > >\n> > > cl <- makeCluster(3)\n> > > registerDoParallel(cl)\n> > > LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\"))\n> %dopar%\n> > {\n> > > dat <-\n> > > data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> > y=simSamples[,i])\n> > > fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n> > > c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n> > > }\n> > > stopCluster(cl)\n> > >\n> > > Any help is much appreciated.\n> > > Thanks in advance!\n> > > Sophia\n> > >\n> > >       [[alternative HTML version deleted]]\n> > >\n> > > _______________________________________________\n> > > R-sig-mixed-models at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n> >\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "I try to avoid variable scoping (environment) confusion by wrapping my\ninner stuff as a simple function:\n\ncl <- makeCluster(3)\nregisterDoParallel(cl)\n\nfn <- function(i) {\n  dat <- data.frame(subject=r",
       "thread_id": "thread-a8686a4cea5f",
       "thread_depth": 3,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025496.html"
     },
     {
       "id": "msg-95baf52f3ee7",
@@ -365,7 +385,8 @@
       "body_snippet": "I am looking at medication adherence as a DV. I am having difficulty\nconsidering how to model adherence in LME4, as the distribution is very\nu-shaped.\n\nIn particular, the distribution is bimodal - par",
       "thread_id": "thread-95baf52f3ee7",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025497.html"
     },
     {
       "id": "msg-8e0a79d9f5b1",
@@ -383,7 +404,8 @@
       "body_snippet": "Given that you've only got 8 response options and the data are multimodal\nit's arguable that you're best off going with a discrete choice model like\nmultinomial or mixed logit. You can collapse adhere",
       "thread_id": "thread-95baf52f3ee7",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025498.html"
     },
     {
       "id": "msg-d58580a781b6",
@@ -400,11 +422,12 @@
         "<CAO4gA+qsECgv-pkJEGT6gVOF-63Rwj_vsskP-da0MOyPD6=-Ag@mail.gmail.com>",
         "<CAM9kYqjO69W48OKamDdYYf8MF6i9Jn93fnGHFjApwODcUAqNUw@mail.gmail.com>"
       ],
-      "body_plain": "Hi Sophia,\n\nI think we fixed this bug https://github.com/glmmTMB/glmmTMB/issues/209 <https://github.com/glmmTMB/glmmTMB/issues/209>\n\nHave you installed from GitHub  in the past 2 weeks? I think this should also be fixed in the CRAN version.\n\nIf updating from GitHub doesn?t fix the problem, please file an issue or let me know and I will.\n\ncheers,\nMollie\n\n???????????\nMollie E. Brooks, Ph.D.\nPostdoctoral Researcher\nNational Institute of Aquatic Resources\nTechnical University of Denmark\n\n> On 17Mar 2017, at 1:10, Philippi, Tom <tom_philippi at nps.gov> wrote:\n> \n> I try to avoid variable scoping (environment) confusion by wrapping my\n> inner stuff as a simple function:\n> \n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> \n> fn <- function(i) {\n>  dat <- data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> yprop=simSamples[,i]/6)\n>  fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n>  return(fitLA$fit$par)\n> }\n> \n> TMBfit <- foreach(i=1:10, .combine= cbind, .inorder=FALSE,\n> .packages=c(\"glmmTMB\")) %dopar% fn(i)\n> stopCluster(cl)\n> \n> With .inorder=FALSE you may or may not need to return a list with i as well:\n> return(list(i=i,par=fitLA$fit$par))\n> \n> Tom 2\n> \n> \n> \n> \n> \n> On Thu, Mar 16, 2017 at 4:51 PM, Sophia Kyriakou <\n> sophia.kyriakou17 at gmail.com> wrote:\n> \n>> Thanks Jo?o, indeed the scoping assignment works.\n>> All the best,\n>> Sophia\n>> \n>> On Fri, Mar 17, 2017 at 1:09 AM, Jo?o Ver?ssimo <jl.verissimo at gmail.com>\n>> wrote:\n>> \n>>> Hi Sophia,\n>>> \n>>> Not sure why this happens, but using <<- assignment seems to work.\n>>> (i.e., dat <<- ..., rather than dat <- ...)\n>>> \n>>> Jo?o\n>>> \n>>> On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n>>>> Dear members,\n>>>> \n>>>> I am trying to set some code running on Windows, which calculates and\n>>>> returns the Laplace-based maximum likelihood estimates of a generalized\n>>>> linear mixed model.\n>>>> Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n>>> executed\n>>>> sequentially.\n>>>> However, when I use the parallel algorithm, then glmer still works, but\n>>>> glmmTMB does not.\n>>>> The error I get is Error in { : task 1 failed - \"object 'dat' not\n>> found\"\n>>> ,\n>>>> where dat is the simulated dataset in each replication.\n>>>> \n>>>> Any ideas on how to tackle this error? I am interested in using glmmTMB\n>>>> instead of lme4, because I need some of glmmTMB output components.\n>>>> \n>>>> Below is a sample code that illustrates the above:\n>>>> \n>>>> \n>>>> library(doParallel)\n>>>> library(glmmTMB)\n>>>> library(lme4)\n>>>> \n>>>> simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n>>>> \n>>>> ## Sequential version\n>>>> LA <- LA2 <- matrix(NA,3,10)\n>>>> for (i in 1:10){\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> y=simSamples[,i],yprop=simSamples[,i]/6)\n>>>> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n>>> weights=m,data=dat)\n>>>> LA[,i] <- fitLA$fit$par\n>>>> fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,\n>> data=dat)\n>>>> LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n>>>> }\n>>>> \n>>>> \n>>>> ## Parallel version\n>>>> cl <- makeCluster(3)\n>>>> registerDoParallel(cl)\n>>>> TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n>>> %dopar% {\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> yprop=simSamples[,i]/6)\n>>>> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n>>> weights=m,data=dat)\n>>>> fitLA$fit$par\n>>>> }\n>>>> stopCluster(cl)\n>>>> \n>>>> \n>>>> cl <- makeCluster(3)\n>>>> registerDoParallel(cl)\n>>>> LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\"))\n>> %dopar%\n>>> {\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> y=simSamples[,i])\n>>>> fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n>>>> c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n>>>> }\n>>>> stopCluster(cl)\n>>>> \n>>>> Any help is much appreciated.\n>>>> Thanks in advance!\n>>>> Sophia\n>>>> \n>>>>      [[alternative HTML version deleted]]\n>>>> \n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>> \n>>> \n>>> \n>> \n>>        [[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi Sophia,\n\nI think we fixed this bug https://github.com/glmmTMB/glmmTMB/issues/209 <https://github.com/glmmTMB/glmmTMB/issues/209>\n\nHave you installed from GitHub  in the past 2 weeks? I think this should also be fixed in the CRAN version.\n\nIf updating from GitHub doesn’t fix the problem, please file an issue or let me know and I will.\n\ncheers,\nMollie\n\n—????????——\nMollie E. Brooks, Ph.D.\nPostdoctoral Researcher\nNational Institute of Aquatic Resources\nTechnical University of Denmark\n\n> On 17Mar 2017, at 1:10, Philippi, Tom <tom_philippi at nps.gov> wrote:\n> \n> I try to avoid variable scoping (environment) confusion by wrapping my\n> inner stuff as a simple function:\n> \n> cl <- makeCluster(3)\n> registerDoParallel(cl)\n> \n> fn <- function(i) {\n>  dat <- data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n> yprop=simSamples[,i]/6)\n>  fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n> weights=m,data=dat)\n>  return(fitLA$fit$par)\n> }\n> \n> TMBfit <- foreach(i=1:10, .combine= cbind, .inorder=FALSE,\n> .packages=c(\"glmmTMB\")) %dopar% fn(i)\n> stopCluster(cl)\n> \n> With .inorder=FALSE you may or may not need to return a list with i as well:\n> return(list(i=i,par=fitLA$fit$par))\n> \n> Tom 2\n> \n> \n> \n> \n> \n> On Thu, Mar 16, 2017 at 4:51 PM, Sophia Kyriakou <\n> sophia.kyriakou17 at gmail.com> wrote:\n> \n>> Thanks João, indeed the scoping assignment works.\n>> All the best,\n>> Sophia\n>> \n>> On Fri, Mar 17, 2017 at 1:09 AM, João Veríssimo <jl.verissimo at gmail.com>\n>> wrote:\n>> \n>>> Hi Sophia,\n>>> \n>>> Not sure why this happens, but using <<- assignment seems to work.\n>>> (i.e., dat <<- ..., rather than dat <- ...)\n>>> \n>>> João\n>>> \n>>> On Fri, 2017-03-17 at 00:34 +0200, Sophia Kyriakou wrote:\n>>>> Dear members,\n>>>> \n>>>> I am trying to set some code running on Windows, which calculates and\n>>>> returns the Laplace-based maximum likelihood estimates of a generalized\n>>>> linear mixed model.\n>>>> Both glmer and glmmTMB functions work on R 3.3.3 when the code is\n>>> executed\n>>>> sequentially.\n>>>> However, when I use the parallel algorithm, then glmer still works, but\n>>>> glmmTMB does not.\n>>>> The error I get is Error in { : task 1 failed - \"object 'dat' not\n>> found\"\n>>> ,\n>>>> where dat is the simulated dataset in each replication.\n>>>> \n>>>> Any ideas on how to tackle this error? I am interested in using glmmTMB\n>>>> instead of lme4, because I need some of glmmTMB output components.\n>>>> \n>>>> Below is a sample code that illustrates the above:\n>>>> \n>>>> \n>>>> library(doParallel)\n>>>> library(glmmTMB)\n>>>> library(lme4)\n>>>> \n>>>> simSamples <- matrix(sample(0:6,300,replace=TRUE),30,10)\n>>>> \n>>>> ## Sequential version\n>>>> LA <- LA2 <- matrix(NA,3,10)\n>>>> for (i in 1:10){\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> y=simSamples[,i],yprop=simSamples[,i]/6)\n>>>> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n>>> weights=m,data=dat)\n>>>> LA[,i] <- fitLA$fit$par\n>>>> fitLA2 <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,\n>> data=dat)\n>>>> LA2[,i] <- c(fixef(fitLA2),sqrt(unlist(VarCorr(fitLA2))))\n>>>> }\n>>>> \n>>>> \n>>>> ## Parallel version\n>>>> cl <- makeCluster(3)\n>>>> registerDoParallel(cl)\n>>>> TMBfit <- foreach(i=1:10, .combine= cbind, .packages=c(\"glmmTMB\"))\n>>> %dopar% {\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> yprop=simSamples[,i]/6)\n>>>> fitLA <- glmmTMB(yprop ~ x +(1|subject),family=binomial,\n>>> weights=m,data=dat)\n>>>> fitLA$fit$par\n>>>> }\n>>>> stopCluster(cl)\n>>>> \n>>>> \n>>>> cl <- makeCluster(3)\n>>>> registerDoParallel(cl)\n>>>> LME4fit <- foreach(i=1:10, .combine= cbind, .packages=c(\"lme4\"))\n>> %dopar%\n>>> {\n>>>> dat <-\n>>>> data.frame(subject=rep(1:15,each=2),x=-14:15,m=rep(6,30),\n>>> y=simSamples[,i])\n>>>> fitLA <- glmer(cbind(y,6-y) ~ x +(1|subject),family=binomial,data=dat)\n>>>> c(fixef(fitLA),sqrt(unlist(VarCorr(fitLA))))\n>>>> }\n>>>> stopCluster(cl)\n>>>> \n>>>> Any help is much appreciated.\n>>>> Thanks in advance!\n>>>> Sophia\n>>>> \n>>>>      [[alternative HTML version deleted]]\n>>>> \n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>> \n>>> \n>>> \n>> \n>>        [[alternative HTML version deleted]]\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n> \n> \t[[alternative HTML version deleted]]\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi Sophia,\n\nI think we fixed this bug https://github.com/glmmTMB/glmmTMB/issues/209 <https://github.com/glmmTMB/glmmTMB/issues/209>\n\nHave you installed from GitHub  in the past 2 weeks? I think this s",
       "thread_id": "thread-a8686a4cea5f",
       "thread_depth": 4,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025499.html"
     },
     {
       "id": "msg-cfc66e5a3fda",
@@ -419,11 +442,12 @@
         "<1417728076.13602003.1489951075478.JavaMail.zimbra@izmirekonomi.edu.tr>",
         "<843054155.13602331.1489951181822.JavaMail.zimbra@izmirekonomi.edu.tr>"
       ],
-      "body_plain": "On Sun, Mar 19, 2017 at 3:19 PM, Ilgim Hepdarcan\n<ilgim.hepdarcan at izmirekonomi.edu.tr> wrote:\n>  Dear all,\n>>\n>> I'm conducting multilevel linear mixed effects model analysis for my MD\n>> Thesis, but I've got confused about the models and the results of the\n>> models that I've tested.\n>>\n>> So, my study consists of 3 trials and each trial includes four different\n>> n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back\n>> conditions, in a different order. Therefore, my design is within-subject\n>> design. Participants are between factors and gender of the participant\n>> is the covariate of that between factor.\n>>\n>> While participants were performing n-back task, I have measured their\n>> dorsolateral prefrontal cortex activation via 16-channeled fNIR and\n>> obtained oxygenated hemoglobin measures from each of the 16 channels and\n>> I'm trying to conduct multilevel analysis by using R. My fixed variable\n>> is gender and my random variable is Nback Types (which has 4 levels, 0-,\n>> 1-, 2-, and 3-back) which is categorical. In my model, participants are\n>> nested within Nback types.\n\nThese statements seem a little surprising and inconsistent with what I\nunderstand about your\ndesign.  \"participants are nested within Nback types\" would suggest\nthat each participant\ngets only a single Nback type (and that there are multiple patients\nper Nback type),\nwhich seems inconsistent with your statement \"each participant had 12\nn-back conditions\".\n(Does each participant get each of the 4 n-back conditions exactly 3\ntimes?  That isn't\nnecessary but would probably maximize statistical power.) Also, you\nsay \"my random variable\nis Nback types\", which seems surprising and is inconsistent with the\nformulas you give\nbelow (which include Nback type as a fixed effect)\n\n>> Because NbackType is categorical, I've wondered whether it is okay to\n>> test random slopes.\n\n Yes: \"random slopes\" for categorical predictors equates to\n\"among-individual variation in effects\".\n\n>>\n>> #Null model\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m1 = lmer (Optode1 ~ 1 +\n>> (1|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m1)\n>>\n>> ##Nback model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m2 = lmer (Optode1 ~ NbackType +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m2)\n>> ##Nback model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m3 = lmer (Optode1 ~ NbackType +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m3)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m4 = lmer (Optode1 ~ NbackType + gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m4)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m5 = lmer (Optode1 ~ NbackType + gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m5)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m6 = lmer (Optode1 ~ NbackType * gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m6)\n>>\n>> ##Nback gender interaction model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m7 = lmer (Optode1 ~ NbackType * gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m7)\n>>\n>>\n>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>>\n>> Result of the ANOVA\n>>\n>>>\n>>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>> Data: oxyHbConditionCellbyCell\n>> Models:\n>> object: Optode1 ~ 1 + (1 | participant)\n>> ..1: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> ..3: Optode1 ~ NbackType + gender + (1 | participant:NbackType)\n>> ..5: Optode1 ~ NbackType * gender + (1 | participant:NbackType)\n>> ..2: Optode1 ~ NbackType + (NbackType | participant)\n>> ..4: Optode1 ~ NbackType + gender + (NbackType | participant)\n>> ..6: Optode1 ~ NbackType * gender + (NbackType | participant)\n>> Df AIC BIC logLik deviance Chisq Chi Df Pr(>Chisq)\n>> object 3 34885 34910 -17439.6 34879\n>> ..1 6 16010 16059 -7999.0 15998 18881.1967 3 < 2e-16 ***\n>> ..3 7 16012 16069 -7999.0 15998 0.0471 1 0.82819\n>> ..5 10 16011 16093 -7995.6 15991 6.8243 3 0.07771 .\n>> ..2 15 16013 16136 -7991.6 15983 8.0654 5 0.15267\n>> ..4 16 16015 16146 -7991.4 15983 0.4057 1 0.52416\n>> ..6 19 16014 16170 -7988.1 15976 6.4941 3 0.08990 .\n>> ---\n>> Signif. codes: 0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\n\nYou might want to make your null model\n\n ~ 1 + (1 | participant/NbackType)\n\nand your subsequent (non-random-slope) models should probably use the\nsame random effect term. This makes participants *crossed* with NbackType (there\nis a random effect of participant, potentially a fixed effect of NbackType, and\na random effect of the interaction between NbackType and participant).\n\n  Your anova above suggests that the *combination* of NbackType and variation\nof NbackType within participant is significant.\n\nWhile it's not impossible for the overall anova result to be\nsignificant while the individual\nlevels aren't, in this case I think the mismatch comes from the\nmismatch in the random\neffects term between the full and null models.\n\n>>\n>> As the ANOVA results indicated the significant model states at the below.\n>>\n>> Linear mixed model fit by maximum likelihood t-tests use Satterthwaite\n>> approximations to degrees of freedom [lmerMod]\n>> Formula: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> Data: oxyHbConditionCellbyCell\n>>\n>> AIC BIC logLik deviance df.resid\n>> 16010.1 16059.2 -7999.0 15998.1 26369\n>>\n>> Scaled residuals:\n>> Min 1Q Median 3Q Max\n>> -4.7604 -0.4671 -0.0612 0.4037 7.3160\n>>\n>> Random effects:\n>> Groups Name Variance Std.Dev.\n>> participant:NbackType (Intercept) 0.1653 0.4065\n>>  Residual 0.1036 0.3219\n>> Number of obs: 26375, groups: participant:NbackType, 172\n>>\n>> Fixed effects:\n>> Estimate Std. Error df t value Pr(>|t|)\n>> (Intercept) -0.05137 0.06212 172.02000 -0.827 0.409\n>> NbackTypeoneback 0.01459 0.08785 172.02000 0.166 0.868\n>> NbackTypetwoback 0.01540 0.08785 172.02000 0.175 0.861\n>> NbackTypethreeback -0.05264 0.08785 172.02000 -0.599 0.550\n>>\n>> But, none of them is significant even my Intercept. How should I\n>> interpret this result?\n>>\n>> Your answer is extremely important for me.\n>>\n>> Thank you in advance.\n>>\n>> Ilg?m Hepdarcan\n>> Experimental Psychology, MD",
+      "body_plain": "On Sun, Mar 19, 2017 at 3:19 PM, Ilgim Hepdarcan\n<ilgim.hepdarcan at izmirekonomi.edu.tr> wrote:\n>  Dear all,\n>>\n>> I'm conducting multilevel linear mixed effects model analysis for my MD\n>> Thesis, but I've got confused about the models and the results of the\n>> models that I've tested.\n>>\n>> So, my study consists of 3 trials and each trial includes four different\n>> n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back\n>> conditions, in a different order. Therefore, my design is within-subject\n>> design. Participants are between factors and gender of the participant\n>> is the covariate of that between factor.\n>>\n>> While participants were performing n-back task, I have measured their\n>> dorsolateral prefrontal cortex activation via 16-channeled fNIR and\n>> obtained oxygenated hemoglobin measures from each of the 16 channels and\n>> I'm trying to conduct multilevel analysis by using R. My fixed variable\n>> is gender and my random variable is Nback Types (which has 4 levels, 0-,\n>> 1-, 2-, and 3-back) which is categorical. In my model, participants are\n>> nested within Nback types.\n\nThese statements seem a little surprising and inconsistent with what I\nunderstand about your\ndesign.  \"participants are nested within Nback types\" would suggest\nthat each participant\ngets only a single Nback type (and that there are multiple patients\nper Nback type),\nwhich seems inconsistent with your statement \"each participant had 12\nn-back conditions\".\n(Does each participant get each of the 4 n-back conditions exactly 3\ntimes?  That isn't\nnecessary but would probably maximize statistical power.) Also, you\nsay \"my random variable\nis Nback types\", which seems surprising and is inconsistent with the\nformulas you give\nbelow (which include Nback type as a fixed effect)\n\n>> Because NbackType is categorical, I've wondered whether it is okay to\n>> test random slopes.\n\n Yes: \"random slopes\" for categorical predictors equates to\n\"among-individual variation in effects\".\n\n>>\n>> #Null model\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m1 = lmer (Optode1 ~ 1 +\n>> (1|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m1)\n>>\n>> ##Nback model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m2 = lmer (Optode1 ~ NbackType +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m2)\n>> ##Nback model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m3 = lmer (Optode1 ~ NbackType +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m3)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m4 = lmer (Optode1 ~ NbackType + gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m4)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m5 = lmer (Optode1 ~ NbackType + gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m5)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m6 = lmer (Optode1 ~ NbackType * gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m6)\n>>\n>> ##Nback gender interaction model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m7 = lmer (Optode1 ~ NbackType * gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m7)\n>>\n>>\n>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>>\n>> Result of the ANOVA\n>>\n>>>\n>>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>> Data: oxyHbConditionCellbyCell\n>> Models:\n>> object: Optode1 ~ 1 + (1 | participant)\n>> ..1: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> ..3: Optode1 ~ NbackType + gender + (1 | participant:NbackType)\n>> ..5: Optode1 ~ NbackType * gender + (1 | participant:NbackType)\n>> ..2: Optode1 ~ NbackType + (NbackType | participant)\n>> ..4: Optode1 ~ NbackType + gender + (NbackType | participant)\n>> ..6: Optode1 ~ NbackType * gender + (NbackType | participant)\n>> Df AIC BIC logLik deviance Chisq Chi Df Pr(>Chisq)\n>> object 3 34885 34910 -17439.6 34879\n>> ..1 6 16010 16059 -7999.0 15998 18881.1967 3 < 2e-16 ***\n>> ..3 7 16012 16069 -7999.0 15998 0.0471 1 0.82819\n>> ..5 10 16011 16093 -7995.6 15991 6.8243 3 0.07771 .\n>> ..2 15 16013 16136 -7991.6 15983 8.0654 5 0.15267\n>> ..4 16 16015 16146 -7991.4 15983 0.4057 1 0.52416\n>> ..6 19 16014 16170 -7988.1 15976 6.4941 3 0.08990 .\n>> ---\n>> Signif. codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\n\nYou might want to make your null model\n\n ~ 1 + (1 | participant/NbackType)\n\nand your subsequent (non-random-slope) models should probably use the\nsame random effect term. This makes participants *crossed* with NbackType (there\nis a random effect of participant, potentially a fixed effect of NbackType, and\na random effect of the interaction between NbackType and participant).\n\n  Your anova above suggests that the *combination* of NbackType and variation\nof NbackType within participant is significant.\n\nWhile it's not impossible for the overall anova result to be\nsignificant while the individual\nlevels aren't, in this case I think the mismatch comes from the\nmismatch in the random\neffects term between the full and null models.\n\n>>\n>> As the ANOVA results indicated the significant model states at the below.\n>>\n>> Linear mixed model fit by maximum likelihood t-tests use Satterthwaite\n>> approximations to degrees of freedom [lmerMod]\n>> Formula: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> Data: oxyHbConditionCellbyCell\n>>\n>> AIC BIC logLik deviance df.resid\n>> 16010.1 16059.2 -7999.0 15998.1 26369\n>>\n>> Scaled residuals:\n>> Min 1Q Median 3Q Max\n>> -4.7604 -0.4671 -0.0612 0.4037 7.3160\n>>\n>> Random effects:\n>> Groups Name Variance Std.Dev.\n>> participant:NbackType (Intercept) 0.1653 0.4065\n>>  Residual 0.1036 0.3219\n>> Number of obs: 26375, groups: participant:NbackType, 172\n>>\n>> Fixed effects:\n>> Estimate Std. Error df t value Pr(>|t|)\n>> (Intercept) -0.05137 0.06212 172.02000 -0.827 0.409\n>> NbackTypeoneback 0.01459 0.08785 172.02000 0.166 0.868\n>> NbackTypetwoback 0.01540 0.08785 172.02000 0.175 0.861\n>> NbackTypethreeback -0.05264 0.08785 172.02000 -0.599 0.550\n>>\n>> But, none of them is significant even my Intercept. How should I\n>> interpret this result?\n>>\n>> Your answer is extremely important for me.\n>>\n>> Thank you in advance.\n>>\n>> Ilgım Hepdarcan\n>> Experimental Psychology, MD",
       "body_snippet": "On Sun, Mar 19, 2017 at 3:19 PM, Ilgim Hepdarcan\n<ilgim.hepdarcan at izmirekonomi.edu.tr> wrote:\n>  Dear all,\n>>\n>> I'm conducting multilevel linear mixed effects model analysis for my MD\n>> Thesis, b",
       "thread_id": "thread-cfc66e5a3fda",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025501.html"
     },
     {
       "id": "msg-86fff96593fe",
@@ -439,11 +463,12 @@
         "<843054155.13602331.1489951181822.JavaMail.zimbra@izmirekonomi.edu.tr>",
         "<CABghstQZ=BowePv9vGaMWp2p9amjoaE6eOEJk1z4v8pKs+9f1A@mail.gmail.com>"
       ],
-      "body_plain": "Sorry for the inconsistency,\n\nI would say repeated measures are nested within participants. Each of the participants completed 4 NbackTypes for 3 times which is my independent variable (random effect). Gender of the participant (fixed effect) is also my other independent variable. My dependent variables are oxygenated hemoglobin from 16 channels.\n\nSo, I understand that I can use random slope model.\n\nBut, how about the none-significance of Intercept. \n\nThank you for your quick answer Mr. Bolker.\n\nIlg?m \n\n\n----- Original Message -----\nFrom: \"Ben Bolker\" <bbolker at gmail.com>\nTo: \"Ilgim Hepdarcan\" <ilgim.hepdarcan at izmirekonomi.edu.tr>\nCc: r-sig-mixed-models at r-project.org\nSent: Sunday, March 19, 2017 10:55:22 PM\nSubject: Re: How the interpret non-significant Intercept value in Fixed Effects Table?\n\nOn Sun, Mar 19, 2017 at 3:19 PM, Ilgim Hepdarcan\n<ilgim.hepdarcan at izmirekonomi.edu.tr> wrote:\n>  Dear all,\n>>\n>> I'm conducting multilevel linear mixed effects model analysis for my MD\n>> Thesis, but I've got confused about the models and the results of the\n>> models that I've tested.\n>>\n>> So, my study consists of 3 trials and each trial includes four different\n>> n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back\n>> conditions, in a different order. Therefore, my design is within-subject\n>> design. Participants are between factors and gender of the participant\n>> is the covariate of that between factor.\n>>\n>> While participants were performing n-back task, I have measured their\n>> dorsolateral prefrontal cortex activation via 16-channeled fNIR and\n>> obtained oxygenated hemoglobin measures from each of the 16 channels and\n>> I'm trying to conduct multilevel analysis by using R. My fixed variable\n>> is gender and my random variable is Nback Types (which has 4 levels, 0-,\n>> 1-, 2-, and 3-back) which is categorical. In my model, participants are\n>> nested within Nback types.\n\nThese statements seem a little surprising and inconsistent with what I\nunderstand about your\ndesign.  \"participants are nested within Nback types\" would suggest\nthat each participant\ngets only a single Nback type (and that there are multiple patients\nper Nback type),\nwhich seems inconsistent with your statement \"each participant had 12\nn-back conditions\".\n(Does each participant get each of the 4 n-back conditions exactly 3\ntimes?  That isn't\nnecessary but would probably maximize statistical power.) Also, you\nsay \"my random variable\nis Nback types\", which seems surprising and is inconsistent with the\nformulas you give\nbelow (which include Nback type as a fixed effect)\n\n>> Because NbackType is categorical, I've wondered whether it is okay to\n>> test random slopes.\n\n Yes: \"random slopes\" for categorical predictors equates to\n\"among-individual variation in effects\".\n\n>>\n>> #Null model\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m1 = lmer (Optode1 ~ 1 +\n>> (1|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m1)\n>>\n>> ##Nback model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m2 = lmer (Optode1 ~ NbackType +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m2)\n>> ##Nback model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m3 = lmer (Optode1 ~ NbackType +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m3)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m4 = lmer (Optode1 ~ NbackType + gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m4)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m5 = lmer (Optode1 ~ NbackType + gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m5)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m6 = lmer (Optode1 ~ NbackType * gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m6)\n>>\n>> ##Nback gender interaction model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m7 = lmer (Optode1 ~ NbackType * gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m7)\n>>\n>>\n>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>>\n>> Result of the ANOVA\n>>\n>>>\n>>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>> Data: oxyHbConditionCellbyCell\n>> Models:\n>> object: Optode1 ~ 1 + (1 | participant)\n>> ..1: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> ..3: Optode1 ~ NbackType + gender + (1 | participant:NbackType)\n>> ..5: Optode1 ~ NbackType * gender + (1 | participant:NbackType)\n>> ..2: Optode1 ~ NbackType + (NbackType | participant)\n>> ..4: Optode1 ~ NbackType + gender + (NbackType | participant)\n>> ..6: Optode1 ~ NbackType * gender + (NbackType | participant)\n>> Df AIC BIC logLik deviance Chisq Chi Df Pr(>Chisq)\n>> object 3 34885 34910 -17439.6 34879\n>> ..1 6 16010 16059 -7999.0 15998 18881.1967 3 < 2e-16 ***\n>> ..3 7 16012 16069 -7999.0 15998 0.0471 1 0.82819\n>> ..5 10 16011 16093 -7995.6 15991 6.8243 3 0.07771 .\n>> ..2 15 16013 16136 -7991.6 15983 8.0654 5 0.15267\n>> ..4 16 16015 16146 -7991.4 15983 0.4057 1 0.52416\n>> ..6 19 16014 16170 -7988.1 15976 6.4941 3 0.08990 .\n>> ---\n>> Signif. codes: 0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\n\nYou might want to make your null model\n\n ~ 1 + (1 | participant/NbackType)\n\nand your subsequent (non-random-slope) models should probably use the\nsame random effect term. This makes participants *crossed* with NbackType (there\nis a random effect of participant, potentially a fixed effect of NbackType, and\na random effect of the interaction between NbackType and participant).\n\n  Your anova above suggests that the *combination* of NbackType and variation\nof NbackType within participant is significant.\n\nWhile it's not impossible for the overall anova result to be\nsignificant while the individual\nlevels aren't, in this case I think the mismatch comes from the\nmismatch in the random\neffects term between the full and null models.\n\n>>\n>> As the ANOVA results indicated the significant model states at the below.\n>>\n>> Linear mixed model fit by maximum likelihood t-tests use Satterthwaite\n>> approximations to degrees of freedom [lmerMod]\n>> Formula: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> Data: oxyHbConditionCellbyCell\n>>\n>> AIC BIC logLik deviance df.resid\n>> 16010.1 16059.2 -7999.0 15998.1 26369\n>>\n>> Scaled residuals:\n>> Min 1Q Median 3Q Max\n>> -4.7604 -0.4671 -0.0612 0.4037 7.3160\n>>\n>> Random effects:\n>> Groups Name Variance Std.Dev.\n>> participant:NbackType (Intercept) 0.1653 0.4065\n>>  Residual 0.1036 0.3219\n>> Number of obs: 26375, groups: participant:NbackType, 172\n>>\n>> Fixed effects:\n>> Estimate Std. Error df t value Pr(>|t|)\n>> (Intercept) -0.05137 0.06212 172.02000 -0.827 0.409\n>> NbackTypeoneback 0.01459 0.08785 172.02000 0.166 0.868\n>> NbackTypetwoback 0.01540 0.08785 172.02000 0.175 0.861\n>> NbackTypethreeback -0.05264 0.08785 172.02000 -0.599 0.550\n>>\n>> But, none of them is significant even my Intercept. How should I\n>> interpret this result?\n>>\n>> Your answer is extremely important for me.\n>>\n>> Thank you in advance.\n>>\n>> Ilg?m Hepdarcan\n>> Experimental Psychology, MD",
+      "body_plain": "Sorry for the inconsistency,\n\nI would say repeated measures are nested within participants. Each of the participants completed 4 NbackTypes for 3 times which is my independent variable (random effect). Gender of the participant (fixed effect) is also my other independent variable. My dependent variables are oxygenated hemoglobin from 16 channels.\n\nSo, I understand that I can use random slope model.\n\nBut, how about the none-significance of Intercept. \n\nThank you for your quick answer Mr. Bolker.\n\nIlgım \n\n\n----- Original Message -----\nFrom: \"Ben Bolker\" <bbolker at gmail.com>\nTo: \"Ilgim Hepdarcan\" <ilgim.hepdarcan at izmirekonomi.edu.tr>\nCc: r-sig-mixed-models at r-project.org\nSent: Sunday, March 19, 2017 10:55:22 PM\nSubject: Re: How the interpret non-significant Intercept value in Fixed Effects Table?\n\nOn Sun, Mar 19, 2017 at 3:19 PM, Ilgim Hepdarcan\n<ilgim.hepdarcan at izmirekonomi.edu.tr> wrote:\n>  Dear all,\n>>\n>> I'm conducting multilevel linear mixed effects model analysis for my MD\n>> Thesis, but I've got confused about the models and the results of the\n>> models that I've tested.\n>>\n>> So, my study consists of 3 trials and each trial includes four different\n>> n-back types, 0-,1-,2-,3-back. Each participant had 12 n-back\n>> conditions, in a different order. Therefore, my design is within-subject\n>> design. Participants are between factors and gender of the participant\n>> is the covariate of that between factor.\n>>\n>> While participants were performing n-back task, I have measured their\n>> dorsolateral prefrontal cortex activation via 16-channeled fNIR and\n>> obtained oxygenated hemoglobin measures from each of the 16 channels and\n>> I'm trying to conduct multilevel analysis by using R. My fixed variable\n>> is gender and my random variable is Nback Types (which has 4 levels, 0-,\n>> 1-, 2-, and 3-back) which is categorical. In my model, participants are\n>> nested within Nback types.\n\nThese statements seem a little surprising and inconsistent with what I\nunderstand about your\ndesign.  \"participants are nested within Nback types\" would suggest\nthat each participant\ngets only a single Nback type (and that there are multiple patients\nper Nback type),\nwhich seems inconsistent with your statement \"each participant had 12\nn-back conditions\".\n(Does each participant get each of the 4 n-back conditions exactly 3\ntimes?  That isn't\nnecessary but would probably maximize statistical power.) Also, you\nsay \"my random variable\nis Nback types\", which seems surprising and is inconsistent with the\nformulas you give\nbelow (which include Nback type as a fixed effect)\n\n>> Because NbackType is categorical, I've wondered whether it is okay to\n>> test random slopes.\n\n Yes: \"random slopes\" for categorical predictors equates to\n\"among-individual variation in effects\".\n\n>>\n>> #Null model\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m1 = lmer (Optode1 ~ 1 +\n>> (1|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m1)\n>>\n>> ##Nback model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m2 = lmer (Optode1 ~ NbackType +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m2)\n>> ##Nback model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m3 = lmer (Optode1 ~ NbackType +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m3)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m4 = lmer (Optode1 ~ NbackType + gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m4)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m5 = lmer (Optode1 ~ NbackType + gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m5)\n>>\n>> ##Nback gender model Random intercept\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m6 = lmer (Optode1 ~ NbackType * gender +\n>> (1|participant:NbackType),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m6)\n>>\n>> ##Nback gender interaction model Random slope\n>> #Optode1\n>> library(lme4)\n>> library(lmerTest)\n>> Optode1.m7 = lmer (Optode1 ~ NbackType * gender +\n>> (NbackType|participant),\n>> na.action = na.exclude,\n>> data=oxyHbConditionCellbyCell,\n>> REML=FALSE)\n>> summary(Optode1.m7)\n>>\n>>\n>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>>\n>> Result of the ANOVA\n>>\n>>>\n>>> anova(Optode1.m1,Optode1.m2,Optode1.m3,Optode1.m4,Optode1.m5,Optode1.m6,Optode1.m7)\n>> Data: oxyHbConditionCellbyCell\n>> Models:\n>> object: Optode1 ~ 1 + (1 | participant)\n>> ..1: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> ..3: Optode1 ~ NbackType + gender + (1 | participant:NbackType)\n>> ..5: Optode1 ~ NbackType * gender + (1 | participant:NbackType)\n>> ..2: Optode1 ~ NbackType + (NbackType | participant)\n>> ..4: Optode1 ~ NbackType + gender + (NbackType | participant)\n>> ..6: Optode1 ~ NbackType * gender + (NbackType | participant)\n>> Df AIC BIC logLik deviance Chisq Chi Df Pr(>Chisq)\n>> object 3 34885 34910 -17439.6 34879\n>> ..1 6 16010 16059 -7999.0 15998 18881.1967 3 < 2e-16 ***\n>> ..3 7 16012 16069 -7999.0 15998 0.0471 1 0.82819\n>> ..5 10 16011 16093 -7995.6 15991 6.8243 3 0.07771 .\n>> ..2 15 16013 16136 -7991.6 15983 8.0654 5 0.15267\n>> ..4 16 16015 16146 -7991.4 15983 0.4057 1 0.52416\n>> ..6 19 16014 16170 -7988.1 15976 6.4941 3 0.08990 .\n>> ---\n>> Signif. codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\n\nYou might want to make your null model\n\n ~ 1 + (1 | participant/NbackType)\n\nand your subsequent (non-random-slope) models should probably use the\nsame random effect term. This makes participants *crossed* with NbackType (there\nis a random effect of participant, potentially a fixed effect of NbackType, and\na random effect of the interaction between NbackType and participant).\n\n  Your anova above suggests that the *combination* of NbackType and variation\nof NbackType within participant is significant.\n\nWhile it's not impossible for the overall anova result to be\nsignificant while the individual\nlevels aren't, in this case I think the mismatch comes from the\nmismatch in the random\neffects term between the full and null models.\n\n>>\n>> As the ANOVA results indicated the significant model states at the below.\n>>\n>> Linear mixed model fit by maximum likelihood t-tests use Satterthwaite\n>> approximations to degrees of freedom [lmerMod]\n>> Formula: Optode1 ~ NbackType + (1 | participant:NbackType)\n>> Data: oxyHbConditionCellbyCell\n>>\n>> AIC BIC logLik deviance df.resid\n>> 16010.1 16059.2 -7999.0 15998.1 26369\n>>\n>> Scaled residuals:\n>> Min 1Q Median 3Q Max\n>> -4.7604 -0.4671 -0.0612 0.4037 7.3160\n>>\n>> Random effects:\n>> Groups Name Variance Std.Dev.\n>> participant:NbackType (Intercept) 0.1653 0.4065\n>>  Residual 0.1036 0.3219\n>> Number of obs: 26375, groups: participant:NbackType, 172\n>>\n>> Fixed effects:\n>> Estimate Std. Error df t value Pr(>|t|)\n>> (Intercept) -0.05137 0.06212 172.02000 -0.827 0.409\n>> NbackTypeoneback 0.01459 0.08785 172.02000 0.166 0.868\n>> NbackTypetwoback 0.01540 0.08785 172.02000 0.175 0.861\n>> NbackTypethreeback -0.05264 0.08785 172.02000 -0.599 0.550\n>>\n>> But, none of them is significant even my Intercept. How should I\n>> interpret this result?\n>>\n>> Your answer is extremely important for me.\n>>\n>> Thank you in advance.\n>>\n>> Ilgım Hepdarcan\n>> Experimental Psychology, MD",
       "body_snippet": "Sorry for the inconsistency,\n\nI would say repeated measures are nested within participants. Each of the participants completed 4 NbackTypes for 3 times which is my independent variable (random effect)",
       "thread_id": "thread-cfc66e5a3fda",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025502.html"
     },
     {
       "id": "msg-50f425b314ff",
@@ -459,7 +484,8 @@
       "body_snippet": "Hi,\n\nThis question is regarding choice of R formula for my mixed-effects model.\nMy response variable is a 3-level discrete variable. The independent\nvariables comprise of both continuous and categoric",
       "thread_id": "thread-50f425b314ff",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025503.html"
     },
     {
       "id": "msg-86d8b4c2ae3d",
@@ -477,7 +503,8 @@
       "body_snippet": "Are your three levels ordered or unordered?\n  If they are ordered, you can use clmm from the ordinal package.\n  If they're unordered, you can use the MCMCglmm package.\n\n  It is also possible (with con",
       "thread_id": "thread-50f425b314ff",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025504.html"
     },
     {
       "id": "msg-6f226c6db8b6",
@@ -493,7 +520,8 @@
       "body_snippet": "Hi,\n\nI'm new to the listserv.\n\nA shortened version of my dataset is below. I am developing a model to\nforecast monthly ridership at Bikeshare stations. I want to predict 'Cnts'\nas a function of 'Popul",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025505.html"
     },
     {
       "id": "msg-b42b028a8122",
@@ -511,7 +539,8 @@
       "body_snippet": "Your approach seems about right.\n\n- What precisely does \"unsuccessful\" mean?  warnings, errors,\nridiculous answers?\n- Is this your whole data set or a subset?\n- centering and scaling predictors is alw",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025506.html"
     },
     {
       "id": "msg-df7f917993c8",
@@ -530,7 +559,8 @@
       "body_snippet": "Thanks for the quick response.\n\nThis is a subset. Full dataset is 12,266 observations across 530 groups (or\nBikeshare stations).\n\nfor\nmodel_spatial.gau <- update(model_spatial, correlation = corGaus(f",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025507.html"
     },
     {
       "id": "msg-fb7d015c3066",
@@ -550,7 +580,8 @@
       "body_snippet": "Dear Michael,\n\nThe correlation structures in nlme assume correlation among the\nresiduals **within** the most detail level of the random effects.\nResiduals of observations originating from different le",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 3,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025508.html"
     },
     {
       "id": "msg-d3c41dc12f3f",
@@ -571,7 +602,8 @@
       "body_snippet": "Dear list,\n\nYou may consider also the citations below and HSAR package:\nhttps://cran.r-project.org/web/packages/HSAR/vignettes/hsar.html\n\nDear Michael,\n\nDo you have comparable code for extracting the ",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 4,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025509.html"
     },
     {
       "id": "msg-73cf56e9fef0",
@@ -593,7 +625,8 @@
       "body_snippet": "The spaMM package is also worth a try.\n\n  A hack suggested a while ago by Dormann et al. is to make a single\ngroup that includes all observations, but (1) it's pretty inefficient\nand (2) I don't think",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 5,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025510.html"
     },
     {
       "id": "msg-5c5bf4536e95",
@@ -616,7 +649,8 @@
       "body_snippet": "Thanks for the responses everyone.\n\nDavid and Ben - I am in the midst of trying the hack right now. I created a\nsingle 'group' with all observations. Then I constructed the correlation\ndistance matrix",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 6,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025511.html"
     },
     {
       "id": "msg-99b0aa77a354",
@@ -628,11 +662,12 @@
       "subject_clean": "GLMM - R squared",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all. I am working with a GLMM in the lme4 package using 4 fixed\nfactors and 1 random factor (plot). An unexpected result comes up when I\ncalculate the model's conditional and marginal R-squared using the\nr.squaredGLMM funtion in the MuMIn package. Both values are the same. Does\nthis mean the random term does not add any explanatory power to the model\n(and could thus be dropped)? I provide a working code below. Thanks in\nadvance for your help.\nMarcos\n\nid <- \"0Bzd8I1jr8z_iRm1aRWhqdHJHcmc\" # google file ID\ncomuni <- read.table(sprintf(\"https://docs.google.com/uc?id=%s&\nexport=download\", id), head=T, sep=\"\")\ncomuni1<-comuni[-c(3,6,7,8),] #these data points I don't need\nlibrary(lme4)\nMM1A <- glmer(riquplanta ~width+lot+exph200+db500+(1|plot), data = comuni1,\nfamily=poisson, control=glmerControl(optimizer=\"bobyqa\",\noptCtrl=list(maxfun=2e5)))\nsummary(MM1A)\nlibrary(MuMIn)\nr.squaredGLMM(MM1A) #what's going on here?\n\n\n----\nBi?l. Marcos Monasterolo\nBecario doctoral - C?tedra de Bot?nica General, Facultad de Agronom?a, UBA\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all. I am working with a GLMM in the lme4 package using 4 fixed\nfactors and 1 random factor (plot). An unexpected result comes up when I\ncalculate the model's conditional and marginal R-squared using the\nr.squaredGLMM funtion in the MuMIn package. Both values are the same. Does\nthis mean the random term does not add any explanatory power to the model\n(and could thus be dropped)? I provide a working code below. Thanks in\nadvance for your help.\nMarcos\n\nid <- \"0Bzd8I1jr8z_iRm1aRWhqdHJHcmc\" # google file ID\ncomuni <- read.table(sprintf(\"https://docs.google.com/uc?id=%s&\nexport=download\", id), head=T, sep=\"\")\ncomuni1<-comuni[-c(3,6,7,8),] #these data points I don't need\nlibrary(lme4)\nMM1A <- glmer(riquplanta ~width+lot+exph200+db500+(1|plot), data = comuni1,\nfamily=poisson, control=glmerControl(optimizer=\"bobyqa\",\noptCtrl=list(maxfun=2e5)))\nsummary(MM1A)\nlibrary(MuMIn)\nr.squaredGLMM(MM1A) #what's going on here?\n\n\n----\nBiól. Marcos Monasterolo\nBecario doctoral - Cátedra de Botánica General, Facultad de Agronomía, UBA\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all. I am working with a GLMM in the lme4 package using 4 fixed\nfactors and 1 random factor (plot). An unexpected result comes up when I\ncalculate the model's conditional and marginal R-squared u",
       "thread_id": "thread-99b0aa77a354",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025512.html"
     },
     {
       "id": "msg-3827d6e4925a",
@@ -646,11 +681,12 @@
       "references": [
         "<CAJ-MGDRd4M49uoLh0NnNBsV4DeBzwM7ONidW-fEFC_8e7gicnQ@mail.gmail.com>"
       ],
-      "body_plain": "You have the same number of random effects grouping levels (plots, 16)\nas total observations (16).  The way that the conditional and marginal\nR-squareds differ is by adding an observation-level random effect to\nthe model; since you already have an observation-level random effect\nin your model, adding another observation-level random effect doesn't\nmake a difference.\n\nWhile we're at it, I would be *very* careful fitting a model with 4-6\nparameters (depending on whether you count the intercept and/or the\nrandom effects variance) to a data set with 16 points; a general rule\nof thumb (Harrell, *Regression Modeling Strategies*) is that you need\n*at least* 10-20 data points per parameter ...\n\nPossibly of interest:\n\n\nlibrary(dplyr)\nss <- arm::rescale ## avoid Error: Unsupported type CLOSXP for column \"width\"\ncomuni1sc <- comuni1 %>%\n  mutate_each(funs(ss),-c(riquplanta,plot,lot))\nMM1B <- update(MM1A,data=comuni1sc)\nlibrary(ggplot2)\ndotwhisker::dwplot(MM1B)+geom_vline(xintercept=0,lty=2)\n\n\n\nOn Wed, Mar 22, 2017 at 5:44 PM, Marcos Monasterolo\n<mmonasterolo at agro.uba.ar> wrote:\n> Dear all. I am working with a GLMM in the lme4 package using 4 fixed\n> factors and 1 random factor (plot). An unexpected result comes up when I\n> calculate the model's conditional and marginal R-squared using the\n> r.squaredGLMM funtion in the MuMIn package. Both values are the same. Does\n> this mean the random term does not add any explanatory power to the model\n> (and could thus be dropped)? I provide a working code below. Thanks in\n> advance for your help.\n> Marcos\n>\n> id <- \"0Bzd8I1jr8z_iRm1aRWhqdHJHcmc\" # google file ID\n> comuni <- read.table(sprintf(\"https://docs.google.com/uc?id=%s&\n> export=download\", id), head=T, sep=\"\")\n> comuni1<-comuni[-c(3,6,7,8),] #these data points I don't need\n> library(lme4)\n> MM1A <- glmer(riquplanta ~width+lot+exph200+db500+(1|plot), data = comuni1,\n> family=poisson, control=glmerControl(optimizer=\"bobyqa\",\n> optCtrl=list(maxfun=2e5)))\n> summary(MM1A)\n> library(MuMIn)\n> r.squaredGLMM(MM1A) #what's going on here?\n>\n>\n> ----\n> Bi?l. Marcos Monasterolo\n> Becario doctoral - C?tedra de Bot?nica General, Facultad de Agronom?a, UBA\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "You have the same number of random effects grouping levels (plots, 16)\nas total observations (16).  The way that the conditional and marginal\nR-squareds differ is by adding an observation-level random effect to\nthe model; since you already have an observation-level random effect\nin your model, adding another observation-level random effect doesn't\nmake a difference.\n\nWhile we're at it, I would be *very* careful fitting a model with 4-6\nparameters (depending on whether you count the intercept and/or the\nrandom effects variance) to a data set with 16 points; a general rule\nof thumb (Harrell, *Regression Modeling Strategies*) is that you need\n*at least* 10-20 data points per parameter ...\n\nPossibly of interest:\n\n\nlibrary(dplyr)\nss <- arm::rescale ## avoid Error: Unsupported type CLOSXP for column \"width\"\ncomuni1sc <- comuni1 %>%\n  mutate_each(funs(ss),-c(riquplanta,plot,lot))\nMM1B <- update(MM1A,data=comuni1sc)\nlibrary(ggplot2)\ndotwhisker::dwplot(MM1B)+geom_vline(xintercept=0,lty=2)\n\n\n\nOn Wed, Mar 22, 2017 at 5:44 PM, Marcos Monasterolo\n<mmonasterolo at agro.uba.ar> wrote:\n> Dear all. I am working with a GLMM in the lme4 package using 4 fixed\n> factors and 1 random factor (plot). An unexpected result comes up when I\n> calculate the model's conditional and marginal R-squared using the\n> r.squaredGLMM funtion in the MuMIn package. Both values are the same. Does\n> this mean the random term does not add any explanatory power to the model\n> (and could thus be dropped)? I provide a working code below. Thanks in\n> advance for your help.\n> Marcos\n>\n> id <- \"0Bzd8I1jr8z_iRm1aRWhqdHJHcmc\" # google file ID\n> comuni <- read.table(sprintf(\"https://docs.google.com/uc?id=%s&\n> export=download\", id), head=T, sep=\"\")\n> comuni1<-comuni[-c(3,6,7,8),] #these data points I don't need\n> library(lme4)\n> MM1A <- glmer(riquplanta ~width+lot+exph200+db500+(1|plot), data = comuni1,\n> family=poisson, control=glmerControl(optimizer=\"bobyqa\",\n> optCtrl=list(maxfun=2e5)))\n> summary(MM1A)\n> library(MuMIn)\n> r.squaredGLMM(MM1A) #what's going on here?\n>\n>\n> ----\n> Biól. Marcos Monasterolo\n> Becario doctoral - Cátedra de Botánica General, Facultad de Agronomía, UBA\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "You have the same number of random effects grouping levels (plots, 16)\nas total observations (16).  The way that the conditional and marginal\nR-squareds differ is by adding an observation-level random",
       "thread_id": "thread-99b0aa77a354",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025513.html"
     },
     {
       "id": "msg-6c0cd3315dbf",
@@ -674,7 +710,8 @@
       "body_snippet": "Last comment:  for a large data set, INLA or something that handles\nthe pairwise interactions in a smart way (e.g. SAR/CAR models from\ngeography) are probably going to be necessary.  In contrast,\nappr",
       "thread_id": "thread-6f226c6db8b6",
       "thread_depth": 7,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025514.html"
     },
     {
       "id": "msg-8d6ea6835c89",
@@ -690,7 +727,8 @@
       "body_snippet": "Hi all, I am writing to receive some help on the following issue:\n\nI want to estimate different slopes and intercepts for the three groups.\nFor example: group A is subjects whose father's were blue-co",
       "thread_id": "thread-8d6ea6835c89",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025515.html"
     },
     {
       "id": "msg-c3f939a6b527",
@@ -708,7 +746,8 @@
       "body_snippet": "Dear Victoria,\n\nIt does gives the difference in intercept and slope due to the occupation\nof the father.\n\nBest regards,\n\nThierry\n\nOp 23-mrt.-2017 18:14 schreef \"Victoria Stimple\" <victoriastimple at g",
       "thread_id": "thread-8d6ea6835c89",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025516.html"
     },
     {
       "id": "msg-45bb7698b399",
@@ -726,7 +765,8 @@
       "body_snippet": "Victoria,\n\nThe sort of model you're fitting is often called a growth curve model. The first half of following book is an excellent source on these sorts of models. It gives great descriptions of how t",
       "thread_id": "thread-8d6ea6835c89",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025517.html"
     },
     {
       "id": "msg-00aeaabc8ac9",
@@ -754,7 +794,8 @@
       "body_snippet": "Hello.\nNow, i'm writting thesis with the topic Small Area Estimation using\nBayesian Approach.\nModels that i use in estimation are Linear Mixed Model (LMM) and\nGeneralized Linear Mixed Model (GLMM) bec",
       "thread_id": "thread-00aeaabc8ac9",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025518.html"
     },
     {
       "id": "msg-17e1096d6af2",
@@ -783,7 +824,8 @@
       "body_snippet": "Hi,\n\nI think p(sigma^2) = 1/sigma^2 is the limit of the inverse-chisquare \ndistribution as nu goes to zero.  This is the default in MCMCglmm.\n\nCheers,\n\nJarrod\n\n\nOn 26/03/2017 12:00, Euis Aqmaliyah wro",
       "thread_id": "thread-00aeaabc8ac9",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025519.html"
     },
     {
       "id": "msg-7fc74fbc4051",
@@ -799,7 +841,8 @@
       "body_snippet": "Hello,\n\nThis is a bit of a follow-up to a question last week on selecting among\nGLMM models. Is there a recommended strategy for comparing non-nested,\nrandom slope models? I have seen a similar questi",
       "thread_id": "thread-7fc74fbc4051",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025520.html"
     },
     {
       "id": "msg-cf683d2cc1ab",
@@ -817,7 +860,8 @@
       "body_snippet": "Hi Craig,\n\nin short, significance does not tell you anything about model fit. You may\nfind models to have the best fit without any particular predictor being\nsignificant for this model. Similarily ave",
       "thread_id": "thread-7fc74fbc4051",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025521.html"
     },
     {
       "id": "msg-e972bca0d9b4",
@@ -833,7 +877,8 @@
       "body_snippet": "Hi All\n\n \n\nI have attempted to estimate the heritability of several binary traits, and\ntest for genetic correlations both between two binary traits, as well as\nbetween a binary and a Gaussian trait, u",
       "thread_id": "thread-e972bca0d9b4",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025522.html"
     },
     {
       "id": "msg-653377c8ff38",
@@ -856,7 +901,8 @@
       "body_snippet": "Hi,\n\nI stil try fit linear mixed model. I use Potencial Scale Reduction (PSR) to\ncheck convergence. But, it still dosn't convergence. Is there any function\nthat can i use to determine length of chains",
       "thread_id": "thread-653377c8ff38",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025523.html"
     },
     {
       "id": "msg-28c36d105d14",
@@ -875,7 +921,8 @@
       "body_snippet": "You might try a Vuong test. It's a likelihood ratio test that allows for\nnonnested models.\n\nOn Mar 26, 2017 8:30 PM, \"Paul Buerkner\" <paul.buerkner at gmail.com> wrote:\n\nHi Craig,\n\nin short, significa",
       "thread_id": "thread-7fc74fbc4051",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025524.html"
     },
     {
       "id": "msg-93b66b634a82",
@@ -899,7 +946,8 @@
       "body_snippet": "We would probably need more information to help you.\n  Some quick thoughts:\n\n- MCMCglmm usually burns in very quickly.   I would guess that either\n(1) your problem/data are really pathological; (2) yo",
       "thread_id": "thread-653377c8ff38",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025525.html"
     },
     {
       "id": "msg-5bdcd603f7d6",
@@ -919,7 +967,8 @@
       "body_snippet": "Thanks. Unfortunately, it doesn't look like the Vuong test has been\nimplemented for mixed models yet, at least not in R.....\n\nOn Mon, Mar 27, 2017 at 4:36 AM, Poe, John <jdpo223 at g.uky.edu> wrote:\n\n",
       "thread_id": "thread-7fc74fbc4051",
       "thread_depth": 3,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025526.html"
     },
     {
       "id": "msg-1186818835f9",
@@ -940,7 +989,8 @@
       "body_snippet": "On 3/27/17 10:16 AM, Craig DeMars wrote:\n> Thanks. Unfortunately, it doesn't look like the Vuong test has been\n> implemented for mixed models yet, at least not in R.....\n> \n\nCraig, you might want to f",
       "thread_id": "thread-7fc74fbc4051",
       "thread_depth": 4,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025527.html"
     },
     {
       "id": "msg-a7a6ae28fcf9",
@@ -966,7 +1016,8 @@
       "body_snippet": "[please keep r-sig-mixed in Cc:]\n\n  To repeat what I said below, the general brute-force strategy would be\n\nN=2 (or 10 or something)\nrun MCMCglmm with some reasonably optimistic default settings such ",
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025528.html"
     },
     {
       "id": "msg-c705e36428ee",
@@ -993,7 +1044,8 @@
       "body_snippet": "Hi Euis,\n\nIn an earlier post you said you were fitting zero-inflated models \n(zipoisson)? Is it possible you\n\na) forgot to fix the non-identifiable residual variance for the \nzero-inflation process at",
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025529.html"
     },
     {
       "id": "msg-0df2f51cdbbf",
@@ -1011,7 +1063,8 @@
       "body_snippet": "Hi Jacob,\n\n1/ I usually go for the posterior mode for variances in which the \nposteriors are strongly skewed.\n\n2/ Compared to family=\"ordinal\", the DIC in threshold models is a level \ncloser to what m",
       "thread_id": "thread-e972bca0d9b4",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025530.html"
     },
     {
       "id": "msg-6eee96e50c96",
@@ -1030,7 +1083,8 @@
       "body_snippet": "Hi Jacob, hi Jarrod,\n\nA bit ago, I wrote a script for a friend to view the priors for multi-response models when one response is binary (hence with fixed residual variance). I decided to share it on G",
       "thread_id": "thread-e972bca0d9b4",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025531.html"
     },
     {
       "id": "msg-1d7074385928",
@@ -1050,7 +1104,8 @@
       "body_snippet": "Hi Jarrod and Pierre\n\nThank you both very much for your responses.\n\nPierre, that script is really useful - thanks for making it available.\n\nJarrod, your answers have been a great help. In regards to 3",
       "thread_id": "thread-e972bca0d9b4",
       "thread_depth": 3,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025532.html"
     },
     {
       "id": "msg-09d935bfe808",
@@ -1071,7 +1126,8 @@
       "body_snippet": "Hi Jacob,\n\nUsing rcov=~corg(trait):units constrains the residual variances to one \nbut estimates the residual correlation. However, you shouldn't use fix \nin the prior.\n\nCheers,\n\nJarrod\n\n\nOn 28/03/201",
       "thread_id": "thread-e972bca0d9b4",
       "thread_depth": 4,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025533.html"
     },
     {
       "id": "msg-0d8dc871fdf4",
@@ -1087,7 +1143,8 @@
       "body_snippet": "Dear sir/madam,\n\nI would like to be unsubscribed from this mailing list. \n\nThank you in advance,\n\nMarjolein Hartgerink\n________________________________________\nVan: R-sig-mixed-models [r-sig-mixed-mod",
       "thread_id": "thread-0d8dc871fdf4",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025534.html"
     },
     {
       "id": "msg-e2cec94a384a",
@@ -1116,7 +1173,8 @@
       "body_snippet": "Hi Ben,\n\nThank you for your advise.\nI try to re-set specification prior that i use.\n\nPada tanggal 28 Mar 2017 00.40, \"Ben Bolker\" <bbolker at gmail.com> menulis:\n\n\n [please keep r-sig-mixed in Cc:]\n\n ",
       "thread_id": "thread-e2cec94a384a",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025535.html"
     },
     {
       "id": "msg-423b156cefd1",
@@ -1144,7 +1202,8 @@
       "body_snippet": "Hi Jarrod,\n\nZero-Inflated that i meant is not Zero-Inflated Poisson. It is follow a\nsemicontinuous distribution with a mixture\nof zeros and continuously distributed positive values.\nBut, i have tried ",
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 2,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025536.html"
     },
     {
       "id": "msg-537aa9b29834",
@@ -1174,6 +1233,7 @@
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 3,
       "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025537.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20170328/5372949d/attachment-0001.pl"
       ]
@@ -1206,7 +1266,8 @@
       "body_snippet": "Dear Jarrod,\n\nSo, because my zero-inflated data is a mixture of zeros and continuosly\ndiatributed positive values, i use two models, there are linear mixed model\n(LMM) for positive values and generali",
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 4,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025538.html"
     },
     {
       "id": "msg-dc54a670c383",
@@ -1238,6 +1299,7 @@
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 5,
       "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025539.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20170328/98beeb70/attachment-0001.pl"
       ]
@@ -1272,7 +1334,8 @@
       "body_snippet": "Okay.\nThank you Jarrod for your help.\n\nRegards\n\nPada tanggal 28 Mar 2017 19.39, \"Jarrod Hadfield\" <j.hadfield at ed.ac.uk>\nmenulis:\n\n> Hi,\n>\n> Yes - for the binary model you should fix the residual va",
       "thread_id": "thread-a7a6ae28fcf9",
       "thread_depth": 6,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025540.html"
     },
     {
       "id": "msg-ec05f9df2a08",
@@ -1284,11 +1347,12 @@
       "subject_clean": "How to vary residual variance with covariate and per factor in mcmcGLMM",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\n\nI am grateful to the active community on this mailing list! Reading the posts already helped me solving many pRoblems.\n\n\nI am quite new to mcmcGLMM and haven't managed to find out how to specify that the residual variance varies with explanatory factors AND a continuous covariate. I hope someone could advice me on the case below. My apologies for the long explanation.\n\n\nI investigate how a herbivore treatment throughout the growing season (\"treatment\") affects individual plant size at the end of the season (log size2). The treatment was applied at 4 sites, and data were collected from ca 10 plants in each of ca 12 permanent subplots per site, in each of 3 years. The plant is an annual, so plants are only measured in 1 single year.\n\nBecause not all plants survived , the total number of datapoints is 843.\n\n\n\nOther explanatory factors I included in my model are  \"year\" (3 levels), the continuous covariate plant size at the start of the season (\"log size1\"), the continuous covariate \"baresoil\" (as the fraction of soil not covered by vegetation in the subplot), and their interactions.\n\nI also include the random factors \"subplot\" nested within \"site\" (although in mcmcGLMM it is not really nested, as I read in other posts).\n\n(Note: I included \"year\" as a fixed effect and not as a random effect because plant growth and the treatment effect varied dramatically from year to year, and this is what I want to capture in my analysis.)\n\n\nI am interested in the effect on mean plant size AND in the variance, because I will use these two parameters to model a probability density function of logsize2 given logsize1 for each of all treatment*year combinations (2 treatments * 3 years = 6 combinations).\n\n\nI noticed that variance varies per treatment*year combination, and in some of these combinations it also decreases with an increase in the covariate logsize1. Therefore, I would like to specify the residual variance per treatment*year combination as a function of logsize1.\n\n\nSo far, I have specified the variance as a constant for each of the treamnet*year combinations:\n\nrcov= ~idh(treatment*year):units,\n\nand adjusted the prior accordingly:\n\nR = list(V = diag(6), n = 0.002).\n\n\nThe complete model looks like this:\npriorY1q1 = list(R = list(V = diag(6), n = 0.002),\n                 G = list(G1 = list(V = 1, n = 0.002), G2 = list(V = 1, n = 0.002)))\nmodelY0bq1 <- MCMCglmm(logsize2 ~  logsize1 + treatment + baresoil + year +\n                       treatment:logsize1 +  baresoil:logsize1+\n                       year:treatment + year:logsize1 + year:baresoil +\n                       year:treatment:logsize1 + year:baresoil:logsize1 ,\n                     random = ~ site + subplot, family = \"gaussian\",\n                     rcov= ~idh(treatment*year):units,\n                     data =pd_grow, prior = priorY1q1, burnin = 5000, nitt = 805000, thin=200)\n\n\nI would be very glad to get comments on\n\n1. if this is correctly specified so far (the results seem to make sense)\n\n2. how to specify that the variance ALSO varies with logsize1, but possibly in a different way for each treatment*year combination?\n\n3. If there is  a risk to over-specify the variance this way?\n\n\nMany thanks,\n\n\nKind regards,\n\nSuzanne Lommen\n\nPostDoc<http://www.unifr.ch/ecology/groupmueller/group/post-doctoral-associates/suzanne-lommen> in the Plant Population Biology group of Prof. Dr. Heinz M?ller-Sch?rer\n\nCo-management of the EU-COST Action 'SMARTER<http://www.ragweed.eu/>': Sustainable management of Ambrosia artemisiifolia in Europe\nCoordination of the SMARTER Task Force Population Dynamics <http://ragweed.eu/task-force-population-dynamics/>\n\nDepartment of Biology/Ecology & Evolution\nUniversity of Fribourg/P?rolles\nChemin du Mus?e 10\nCH-1700 Fribourg, SWITZERLAND\nTel: + (41) (0) 26-300 88 48 direct\nTel: + (41) (0) 26-300 88 50 secr.\nFax: + (41) (0) 26-300 9741\n\n\n\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear all,\n\n\nI am grateful to the active community on this mailing list! Reading the posts already helped me solving many pRoblems.\n\n\nI am quite new to mcmcGLMM and haven't managed to find out how to specify that the residual variance varies with explanatory factors AND a continuous covariate. I hope someone could advice me on the case below. My apologies for the long explanation.\n\n\nI investigate how a herbivore treatment throughout the growing season (\"treatment\") affects individual plant size at the end of the season (log size2). The treatment was applied at 4 sites, and data were collected from ca 10 plants in each of ca 12 permanent subplots per site, in each of 3 years. The plant is an annual, so plants are only measured in 1 single year.\n\nBecause not all plants survived , the total number of datapoints is 843.\n\n\n\nOther explanatory factors I included in my model are  \"year\" (3 levels), the continuous covariate plant size at the start of the season (\"log size1\"), the continuous covariate \"baresoil\" (as the fraction of soil not covered by vegetation in the subplot), and their interactions.\n\nI also include the random factors \"subplot\" nested within \"site\" (although in mcmcGLMM it is not really nested, as I read in other posts).\n\n(Note: I included \"year\" as a fixed effect and not as a random effect because plant growth and the treatment effect varied dramatically from year to year, and this is what I want to capture in my analysis.)\n\n\nI am interested in the effect on mean plant size AND in the variance, because I will use these two parameters to model a probability density function of logsize2 given logsize1 for each of all treatment*year combinations (2 treatments * 3 years = 6 combinations).\n\n\nI noticed that variance varies per treatment*year combination, and in some of these combinations it also decreases with an increase in the covariate logsize1. Therefore, I would like to specify the residual variance per treatment*year combination as a function of logsize1.\n\n\nSo far, I have specified the variance as a constant for each of the treamnet*year combinations:\n\nrcov= ~idh(treatment*year):units,\n\nand adjusted the prior accordingly:\n\nR = list(V = diag(6), n = 0.002).\n\n\nThe complete model looks like this:\npriorY1q1 = list(R = list(V = diag(6), n = 0.002),\n                 G = list(G1 = list(V = 1, n = 0.002), G2 = list(V = 1, n = 0.002)))\nmodelY0bq1 <- MCMCglmm(logsize2 ~  logsize1 + treatment + baresoil + year +\n                       treatment:logsize1 +  baresoil:logsize1+\n                       year:treatment + year:logsize1 + year:baresoil +\n                       year:treatment:logsize1 + year:baresoil:logsize1 ,\n                     random = ~ site + subplot, family = \"gaussian\",\n                     rcov= ~idh(treatment*year):units,\n                     data =pd_grow, prior = priorY1q1, burnin = 5000, nitt = 805000, thin=200)\n\n\nI would be very glad to get comments on\n\n1. if this is correctly specified so far (the results seem to make sense)\n\n2. how to specify that the variance ALSO varies with logsize1, but possibly in a different way for each treatment*year combination?\n\n3. If there is  a risk to over-specify the variance this way?\n\n\nMany thanks,\n\n\nKind regards,\n\nSuzanne Lommen\n\nPostDoc<http://www.unifr.ch/ecology/groupmueller/group/post-doctoral-associates/suzanne-lommen> in the Plant Population Biology group of Prof. Dr. Heinz Müller-Schärer\n\nCo-management of the EU-COST Action 'SMARTER<http://www.ragweed.eu/>': Sustainable management of Ambrosia artemisiifolia in Europe\nCoordination of the SMARTER Task Force Population Dynamics <http://ragweed.eu/task-force-population-dynamics/>\n\nDepartment of Biology/Ecology & Evolution\nUniversity of Fribourg/Pérolles\nChemin du Musée 10\nCH-1700 Fribourg, SWITZERLAND\nTel: + (41) (0) 26-300 88 48 direct\nTel: + (41) (0) 26-300 88 50 secr.\nFax: + (41) (0) 26-300 9741\n\n\n\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear all,\n\n\nI am grateful to the active community on this mailing list! Reading the posts already helped me solving many pRoblems.\n\n\nI am quite new to mcmcGLMM and haven't managed to find out how to s",
       "thread_id": "thread-ec05f9df2a08",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025541.html"
     },
     {
       "id": "msg-02b5430e4215",
@@ -1307,6 +1371,7 @@
       "thread_id": "thread-ec05f9df2a08",
       "thread_depth": 1,
       "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025542.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20170328/53cb110d/attachment-0001.pl"
       ]
@@ -1325,7 +1390,8 @@
       "body_snippet": "Dear list,\n\nI am trying to fit a two level hierarchical model using the lme/lmer\nfunction.\nI have two levels in my data: 3 time points (codded: week 0, week 4, week\n8) nested within subjects (ID). I w",
       "thread_id": "thread-3859b6b579ba",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025543.html"
     },
     {
       "id": "msg-8d1de195ffc0",
@@ -1343,7 +1409,8 @@
       "body_snippet": "Dear Asher,\n\nYou start from a model with this equation $y = \\beta_0 + \\beta_1 week\n+ b_{i0} + b_{i1} week$\nThe fit of the baseline of each patient is $baseline_i = \\beta_0 +\nb_{i0}$ but you want $base",
       "thread_id": "thread-3859b6b579ba",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025544.html"
     },
     {
       "id": "msg-f4eea2943d65",
@@ -1364,6 +1431,7 @@
       "thread_id": "thread-f4eea2943d65",
       "thread_depth": 0,
       "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025545.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20170330/a8ae77e3/attachment.pl"
       ]
@@ -1382,7 +1450,8 @@
       "body_snippet": "Dear all,\n\nI'd be really grateful if someone could advise on the following issue I've come across.\n\nI have proportion data (non-integer, bounded between 0 and 1) as my response variable, in a model th",
       "thread_id": "thread-e7f3d85a4294",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025546.html"
     },
     {
       "id": "msg-89417823a4cd",
@@ -1400,7 +1469,8 @@
       "body_snippet": "Dear Adriana,\n\nUse binomial only when the raw proportion stem from n Bernouilli\ntrials. E.g. 25% of 20 trails (or 5/20). In your case that could be\nthe abundances of all species at each site. Use that",
       "thread_id": "thread-e7f3d85a4294",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025547.html"
     },
     {
       "id": "msg-3b6c87ec0be8",
@@ -1421,7 +1491,8 @@
       "body_snippet": "Many thanks!\nSuzanne\n\nFrom: Jarrod Hadfield [mailto:j.hadfield at ed.ac.uk]\nSent: 30 March 2017 07:44\nTo: LOMMEN Suzanne; r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] How to vary residu",
       "thread_id": "thread-f4eea2943d65",
       "thread_depth": 1,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025548.html"
     },
     {
       "id": "msg-47d17631ca5c",
@@ -1437,7 +1508,8 @@
       "body_snippet": "Dear Professor Bolker,\nI am looking into life history data of sea lions at the moment and would like to test what influences the length of the inter-birth interval. My response variable shows a clear ",
       "thread_id": "thread-47d17631ca5c",
       "thread_depth": 0,
-      "month": "2017-03"
+      "month": "2017-03",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2017q1/025549.html"
     }
   ],
   "threads": [

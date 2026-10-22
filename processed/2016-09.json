@@ -23,7 +23,8 @@
       "body_snippet": "Steven J. Pierce [pierces1 at msu.edu] wrote:\n\n> I'd probably use Mplus (www.statmodel.com) for that, [...]\n[snip]\n> Fortunately, the lavaan package in R replicates some of what Mplus can do. \n\nEvery ",
       "thread_id": "thread-5d24d445922e",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025048.html"
     },
     {
       "id": "msg-c520a24ddb4e",
@@ -46,7 +47,8 @@
       "body_snippet": "True, we don't know how much missing data there is in this particular case,\nand of course analyzing multiple imputed datasets will take more\ncomputational time than analyzing a single dataset (either ",
       "thread_id": "thread-5d24d445922e",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025049.html"
     },
     {
       "id": "msg-e0a8ea10e7f5",
@@ -62,11 +64,12 @@
         "<CAJuCY5ycQVzXzZa8R8OZgHvNFbUQd-tZd_2FyxEjWaaimK=SOQ@mail.gmail.com>",
         "<000501d202bb$edb5f2f0$c921d8d0$@msu.edu>"
       ],
-      "body_plain": "Thanks Steven for pointing that out.  If I read Thierry correctly, he\nsuggested that after selecting the model using the subset with no NA\nvalues, then to refit the final model on the original dataset with NAs\n(Thierry, kindly correct if I got you wrong).\n\nSo, I actually ran two parallel R sessions, one with the NAs and one\nwithout and the results were the same. However, this is probably the case\nhere since I have only one cell with an NA value, so this wouldn't affect\nthe results anyway.\n\nI also found out that the dropterm command in the MASS package worked well\nwith my data, so I used it in selecting my stepwise models.\n\nThanks again Steven and thanks to you too Thierry!\n\nBest wishes,\n\nShadiya\n\n\nOn 30 August 2016 at 15:42, Steven J. Pierce <pierces1 at msu.edu> wrote:\n\n> I completely agree that analyzing a stable dataset is essential, but I'd\n> argue that selecting a subset containing only cases with no missing data is\n> actually changing the nature of the population to which your inferences can\n> be generalized. In effect it tacks \"and who have no missing data\" onto the\n> definition of the target population. That is unlikely to be the population\n> you really want to study. It may also dramatically reduce your sample size,\n> thereby reducing power and precision of the estimates.\n>\n> To preserve inference to the original intended population, solve the\n> missing data problem with either some form of imputation or by using a\n> full-information maximum likelihood estimation method that doesn?t throw\n> out cases with missing data.\n>\n>\n> Steven J. Pierce, Ph.D.\n> Associate Director\n> Center for Statistical Training & Consulting (CSTAT)\n> Michigan State University\n>\n> -----Original Message-----\n> From: Thierry Onkelinx [mailto:thierry.onkelinx at inbo.be]\n> Sent: Tuesday, August 30, 2016 3:30 AM\n> To: Shadiya Al Hashmi <saah500 at york.ac.uk>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Anova II table, df, drop1 and very complex\n> regression models!\n>\n> Dear Shadiya,\n>\n> You need to do the model selection on a stable dataset. Therefore you\n> should create a subset which doesn't contain missing values in the\n> covariates. Use this subset for model selection. Then you can refit the\n> final model on the total dataset.\n>\n> Best regards,\n>\n> ir. Thierry Onkelinx\n> Instituut voor natuur- en bosonderzoek / Research Institute for Nature and\n> Forest\n> team Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\n> Kliniekstraat 25\n> 1070 Anderlecht\n> Belgium\n>\n> To call in the statistician after the experiment is done may be no more\n> than asking him to perform a post-mortem examination: he may be able to say\n> what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not\n> ensure that a reasonable answer can be extracted from a given body of data.\n> ~ John Tukey\n>\n> 2016-08-30 7:23 GMT+02:00 Shadiya Al Hashmi <saah500 at york.ac.uk>:\n>\n> > Good morning,\n> >\n> >\n> > I have complex data of 7 variables (6 treatment + 1 control [?age? in the\n> > model below]) plus 18 interactions in a dataset of 2448 observations\n> which\n> > have some missing values (NAs).  The maximal model which I have\n> simplified\n> > as per y hypothesis is as follows.\n> >\n> >\n> >\n> > modelAAW<-glmer(match~Listgp + vowel.quality + stimulus.presentation +\n> > context +length + age + freq.+ Listgp:context+ Listgp:length+\n> Listgp:freq.+\n> > Listgp:stimulus.presentation+ Listgp:age+ context:length+ context:freq.+\n> > context:stimulus.presentation+ context:age+ length:freq.+\n> > length:stimulus.presentation+ length:age+ freq.:stimulus.presentation+\n> > freq.:age+ stimulus.presentation:age+  Listgp:stimulus.presentation +\n> > Listgp:vowel.quality + stimulus.presentation:vowel.quality +\n> > (Listgp|stimulus) + (stimulus.presentation+vowel.quality|listener) ,\n> data\n> > =\n> > SBAAW, family = \"binomial\", control=glmerControl(optCtrl=\n> > list(maxfun=2e5)),\n> > nAGQ =1)\n> >\n> >\n> >\n> > I ran a binomial logistic regression analysis on the data and did the\n> > stepwise regression manually since the drop1(modelAAW, test = \"Chisq\")\n> > command yielded no results in a span of more than 16 hours. The resulting\n> > regression models are nested in the maximal model (modelAAW).\n> >\n> >\n> >\n> > Then, I reached the model selection step where I have to interpret the\n> > anova table below which has degrees of freedom of zero for some models.\n> >\n> >\n> >\n> >          Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)\n> >\n> > AAWXI    49 2454.5 2738.8 -1178.2   2356.5\n> >\n> > AAWXII   49 2456.4 2740.8 -1179.2   2358.4 0.0000      0     1.0000\n> >\n> > AAWXIII  49 2456.4 2740.8 -1179.2   2358.4 0.0000      0     1.0000\n> >\n> > AAWIX    51 2457.6 2753.5 -1177.8   2355.6 2.8749      2     0.2375\n> >\n> > AAWX     51 2457.6 2753.5 -1177.8   2355.6 0.0000      0     1.0000\n> >\n> > AAWVI    52 2458.6 2760.4 -1177.3   2354.6 0.9410      1     0.3320\n> >\n> > AAWVII   52 2458.6 2760.4 -1177.3   2354.6 0.0075      0     <2e-16 ***\n> >\n> > AAWVIII  52 2458.6 2760.3 -1177.3   2354.6 0.0094      0     <2e-16 ***\n> >\n> > AAWV     54 2458.4 2771.7 -1175.2   2350.4 4.2412      2     0.1200\n> >\n> > AAWIII   56 2461.9 2786.9 -1175.0   2349.9 0.4275      2     0.8076\n> >\n> > AAWIV    56 2461.9 2786.9 -1175.0   2349.9 0.0000      0     1.0000\n> >\n> > AAWII    57 2463.9 2794.7 -1175.0   2349.9 0.0215      1     0.8835\n> >\n> > AAWI     60 2467.9 2816.1 -1174.0   2347.9 1.9763      3     0.5773\n> >\n> > modelAAW 66 2474.4 2857.3 -1171.2   2342.4 5.5778      6     0.4721\n> >\n> > Signif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n> >\n> >\n> >\n> >\n> >\n> > So many people that I have consulted tell me that I shouldn?t trust a\n> model\n> > of df=zero and advise that I should re-run the models using the drop1\n> > command or simplify the maximal model but in my case I don?t know if I\n> will\n> > ever get results especially that it took more than 16 hours straight with\n> > no luck and I simplified the maximal model to the best I could.\n> >\n> >\n> >\n> > When I checked R documentation, I read that ?when given a sequence of\n> > objects, anova tests the models against one another in the order\n> specified?\n> > based on the AIC value from the smallest to the largest.  However, there\n> > is  a warning that ?the comparison between two or more models will only\n> be\n> > valid if they are fitted to the same dataset. This may be a problem if\n> > there are missing values and R's default of na.action = na.omit is used?,\n> > so I?m assuming this is the case with my models.\n> >\n> >\n> >\n> > Now, should I select model AAWVIII since it has the least p-value (and\n> the\n> > least BIC value compared to AAWVII)?\n> >\n> >\n> >\n> > The formulas of the two models in addition to AAWXI model are as follows.\n> > The first two models are similar to each other except that in AAWVIII the\n> > variable stimulus.presentation is deleted and in model AAWXI the variable\n> > Listgp is deleted.\n> >\n> >\n> > AAWVI<-glmer(match~Listgp + vowel.quality + stimulus.presentation +\n> context\n> > + age + freq.+ Listgp:freq.+ Listgp:stimulus.presentation+\n> context:length+\n> > context:freq.+ context:stimulus.presentation+\n> length:stimulus.presentation+\n> > length:age+ freq.:stimulus.presentation+ freq.:age+\n> > stimulus.presentation:age+ + Listgp:stimulus.presentation +\n> > Listgp:vowel.quality + stimulus.presentation:vowel.quality +\n> > (Listgp|stimulus) + (stimulus.presentation+vowel.quality|listener) ,\n> data\n> > =\n> > SBAAW, family = \"binomial\", control=glmerControl(optCtrl=\n> > list(maxfun=2e5)),\n> > nAGQ =1)\n> >\n> >\n> >\n> > AAWVIII<-glmer(match~Listgp + vowel.quality + context + age +\n> Listgp:freq.+\n> > Listgp:stimulus.presentation+ context:length+ context:freq.+\n> > context:stimulus.presentation+length:stimulus.presentation+ length:age+\n> > freq.:stimulus.presentation+ freq.:age+ stimulus.presentation:age+ +\n> > Listgp:stimulus.presentation + Listgp:vowel.quality +\n> > stimulus.presentation:vowel.quality + (Listgp|stimulus) +\n> > (stimulus.presentation+vowel.quality|listener) , data = SBAAW, family =\n> > \"binomial\", control=glmerControl(optCtrl=list(maxfun=2e5)), nAGQ =1)\n> >\n> >\n> >\n> > AAWXI<-glmer(match~vowel.quality + context + age + Listgp:freq.+\n> > Listgp:stimulus.presentation+ context:length+ context:freq.+\n> > context:stimulus.presentation+length:stimulus.presentation+\n> > freq.:stimulus.presentation+ freq.:age+ stimulus.presentation:age+ +\n> > Listgp:stimulus.presentation + Listgp:vowel.quality +\n> > stimulus.presentation:vowel.quality + (Listgp|stimulus) +\n> > (stimulus.presentation+vowel.quality|listener) , data = SBAAW, family =\n> > \"binomial\", control=glmerControl(optCtrl=list(maxfun=2e5)), nAGQ =1)\n> >\n> >\n> >\n> > I would appreciate your help with this.\n> >\n> >\n> >\n> > --\n> > Shadiya\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>         [[alternative HTML version deleted]]\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Thanks Steven for pointing that out.  If I read Thierry correctly, he\nsuggested that after selecting the model using the subset with no NA\nvalues, then to refit the final model on the original dataset with NAs\n(Thierry, kindly correct if I got you wrong).\n\nSo, I actually ran two parallel R sessions, one with the NAs and one\nwithout and the results were the same. However, this is probably the case\nhere since I have only one cell with an NA value, so this wouldn't affect\nthe results anyway.\n\nI also found out that the dropterm command in the MASS package worked well\nwith my data, so I used it in selecting my stepwise models.\n\nThanks again Steven and thanks to you too Thierry!\n\nBest wishes,\n\nShadiya\n\n\nOn 30 August 2016 at 15:42, Steven J. Pierce <pierces1 at msu.edu> wrote:\n\n> I completely agree that analyzing a stable dataset is essential, but I'd\n> argue that selecting a subset containing only cases with no missing data is\n> actually changing the nature of the population to which your inferences can\n> be generalized. In effect it tacks \"and who have no missing data\" onto the\n> definition of the target population. That is unlikely to be the population\n> you really want to study. It may also dramatically reduce your sample size,\n> thereby reducing power and precision of the estimates.\n>\n> To preserve inference to the original intended population, solve the\n> missing data problem with either some form of imputation or by using a\n> full-information maximum likelihood estimation method that doesn’t throw\n> out cases with missing data.\n>\n>\n> Steven J. Pierce, Ph.D.\n> Associate Director\n> Center for Statistical Training & Consulting (CSTAT)\n> Michigan State University\n>\n> -----Original Message-----\n> From: Thierry Onkelinx [mailto:thierry.onkelinx at inbo.be]\n> Sent: Tuesday, August 30, 2016 3:30 AM\n> To: Shadiya Al Hashmi <saah500 at york.ac.uk>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Anova II table, df, drop1 and very complex\n> regression models!\n>\n> Dear Shadiya,\n>\n> You need to do the model selection on a stable dataset. Therefore you\n> should create a subset which doesn't contain missing values in the\n> covariates. Use this subset for model selection. Then you can refit the\n> final model on the total dataset.\n>\n> Best regards,\n>\n> ir. Thierry Onkelinx\n> Instituut voor natuur- en bosonderzoek / Research Institute for Nature and\n> Forest\n> team Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\n> Kliniekstraat 25\n> 1070 Anderlecht\n> Belgium\n>\n> To call in the statistician after the experiment is done may be no more\n> than asking him to perform a post-mortem examination: he may be able to say\n> what the experiment died of. ~ Sir Ronald Aylmer Fisher\n> The plural of anecdote is not data. ~ Roger Brinner\n> The combination of some data and an aching desire for an answer does not\n> ensure that a reasonable answer can be extracted from a given body of data.\n> ~ John Tukey\n>\n> 2016-08-30 7:23 GMT+02:00 Shadiya Al Hashmi <saah500 at york.ac.uk>:\n>\n> > Good morning,\n> >\n> >\n> > I have complex data of 7 variables (6 treatment + 1 control [“age” in the\n> > model below]) plus 18 interactions in a dataset of 2448 observations\n> which\n> > have some missing values (NAs).  The maximal model which I have\n> simplified\n> > as per y hypothesis is as follows.\n> >\n> >\n> >\n> > modelAAW<-glmer(match~Listgp + vowel.quality + stimulus.presentation +\n> > context +length + age + freq.+ Listgp:context+ Listgp:length+\n> Listgp:freq.+\n> > Listgp:stimulus.presentation+ Listgp:age+ context:length+ context:freq.+\n> > context:stimulus.presentation+ context:age+ length:freq.+\n> > length:stimulus.presentation+ length:age+ freq.:stimulus.presentation+\n> > freq.:age+ stimulus.presentation:age+  Listgp:stimulus.presentation +\n> > Listgp:vowel.quality + stimulus.presentation:vowel.quality +\n> > (Listgp|stimulus) + (stimulus.presentation+vowel.quality|listener) ,\n> data\n> > =\n> > SBAAW, family = \"binomial\", control=glmerControl(optCtrl=\n> > list(maxfun=2e5)),\n> > nAGQ =1)\n> >\n> >\n> >\n> > I ran a binomial logistic regression analysis on the data and did the\n> > stepwise regression manually since the drop1(modelAAW, test = \"Chisq\")\n> > command yielded no results in a span of more than 16 hours. The resulting\n> > regression models are nested in the maximal model (modelAAW).\n> >\n> >\n> >\n> > Then, I reached the model selection step where I have to interpret the\n> > anova table below which has degrees of freedom of zero for some models.\n> >\n> >\n> >\n> >          Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(>Chisq)\n> >\n> > AAWXI    49 2454.5 2738.8 -1178.2   2356.5\n> >\n> > AAWXII   49 2456.4 2740.8 -1179.2   2358.4 0.0000      0     1.0000\n> >\n> > AAWXIII  49 2456.4 2740.8 -1179.2   2358.4 0.0000      0     1.0000\n> >\n> > AAWIX    51 2457.6 2753.5 -1177.8   2355.6 2.8749      2     0.2375\n> >\n> > AAWX     51 2457.6 2753.5 -1177.8   2355.6 0.0000      0     1.0000\n> >\n> > AAWVI    52 2458.6 2760.4 -1177.3   2354.6 0.9410      1     0.3320\n> >\n> > AAWVII   52 2458.6 2760.4 -1177.3   2354.6 0.0075      0     <2e-16 ***\n> >\n> > AAWVIII  52 2458.6 2760.3 -1177.3   2354.6 0.0094      0     <2e-16 ***\n> >\n> > AAWV     54 2458.4 2771.7 -1175.2   2350.4 4.2412      2     0.1200\n> >\n> > AAWIII   56 2461.9 2786.9 -1175.0   2349.9 0.4275      2     0.8076\n> >\n> > AAWIV    56 2461.9 2786.9 -1175.0   2349.9 0.0000      0     1.0000\n> >\n> > AAWII    57 2463.9 2794.7 -1175.0   2349.9 0.0215      1     0.8835\n> >\n> > AAWI     60 2467.9 2816.1 -1174.0   2347.9 1.9763      3     0.5773\n> >\n> > modelAAW 66 2474.4 2857.3 -1171.2   2342.4 5.5778      6     0.4721\n> >\n> > Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n> >\n> >\n> >\n> >\n> >\n> > So many people that I have consulted tell me that I shouldn’t trust a\n> model\n> > of df=zero and advise that I should re-run the models using the drop1\n> > command or simplify the maximal model but in my case I don’t know if I\n> will\n> > ever get results especially that it took more than 16 hours straight with\n> > no luck and I simplified the maximal model to the best I could.\n> >\n> >\n> >\n> > When I checked R documentation, I read that “when given a sequence of\n> > objects, anova tests the models against one another in the order\n> specified”\n> > based on the AIC value from the smallest to the largest.  However, there\n> > is  a warning that “the comparison between two or more models will only\n> be\n> > valid if they are fitted to the same dataset. This may be a problem if\n> > there are missing values and R's default of na.action = na.omit is used”,\n> > so I’m assuming this is the case with my models.\n> >\n> >\n> >\n> > Now, should I select model AAWVIII since it has the least p-value (and\n> the\n> > least BIC value compared to AAWVII)?\n> >\n> >\n> >\n> > The formulas of the two models in addition to AAWXI model are as follows.\n> > The first two models are similar to each other except that in AAWVIII the\n> > variable stimulus.presentation is deleted and in model AAWXI the variable\n> > Listgp is deleted.\n> >\n> >\n> > AAWVI<-glmer(match~Listgp + vowel.quality + stimulus.presentation +\n> context\n> > + age + freq.+ Listgp:freq.+ Listgp:stimulus.presentation+\n> context:length+\n> > context:freq.+ context:stimulus.presentation+\n> length:stimulus.presentation+\n> > length:age+ freq.:stimulus.presentation+ freq.:age+\n> > stimulus.presentation:age+ + Listgp:stimulus.presentation +\n> > Listgp:vowel.quality + stimulus.presentation:vowel.quality +\n> > (Listgp|stimulus) + (stimulus.presentation+vowel.quality|listener) ,\n> data\n> > =\n> > SBAAW, family = \"binomial\", control=glmerControl(optCtrl=\n> > list(maxfun=2e5)),\n> > nAGQ =1)\n> >\n> >\n> >\n> > AAWVIII<-glmer(match~Listgp + vowel.quality + context + age +\n> Listgp:freq.+\n> > Listgp:stimulus.presentation+ context:length+ context:freq.+\n> > context:stimulus.presentation+length:stimulus.presentation+ length:age+\n> > freq.:stimulus.presentation+ freq.:age+ stimulus.presentation:age+ +\n> > Listgp:stimulus.presentation + Listgp:vowel.quality +\n> > stimulus.presentation:vowel.quality + (Listgp|stimulus) +\n> > (stimulus.presentation+vowel.quality|listener) , data = SBAAW, family =\n> > \"binomial\", control=glmerControl(optCtrl=list(maxfun=2e5)), nAGQ =1)\n> >\n> >\n> >\n> > AAWXI<-glmer(match~vowel.quality + context + age + Listgp:freq.+\n> > Listgp:stimulus.presentation+ context:length+ context:freq.+\n> > context:stimulus.presentation+length:stimulus.presentation+\n> > freq.:stimulus.presentation+ freq.:age+ stimulus.presentation:age+ +\n> > Listgp:stimulus.presentation + Listgp:vowel.quality +\n> > stimulus.presentation:vowel.quality + (Listgp|stimulus) +\n> > (stimulus.presentation+vowel.quality|listener) , data = SBAAW, family =\n> > \"binomial\", control=glmerControl(optCtrl=list(maxfun=2e5)), nAGQ =1)\n> >\n> >\n> >\n> > I would appreciate your help with this.\n> >\n> >\n> >\n> > --\n> > Shadiya\n> >\n> >         [[alternative HTML version deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>         [[alternative HTML version deleted]]\n>\n>\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Thanks Steven for pointing that out.  If I read Thierry correctly, he\nsuggested that after selecting the model using the subset with no NA\nvalues, then to refit the final model on the original dataset",
       "thread_id": "thread-e0a8ea10e7f5",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025050.html"
     },
     {
       "id": "msg-30dc13ca5e35",
@@ -78,11 +81,12 @@
       "subject_clean": "a question of conducting contrast in lme4 (not pairwise contrast)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI am trying to do some contrasts using a mixed model, but don?t know how to use it in lme4. I've done the multiple contrast, but I believe the power of this method is lower than ideal. I think contrast in lme4 would be a better option. I searched the question on stackoverflow and found one post. However, the question asked wasn't our situation. \n\nIn our case, there are five treatments. Let?s call them AA, BB, CC, DD, and EE.\n\nI have the following hypotheses:\n\nthe response to AA will be higher than the average of BB, CC and DD.\nthe response to AA will be higher than EE\nthe average response to BB, CC and DD will be higher than EE.\n\nThe model is being run in lme4 as a mixed model:\n\nresponse (binomial, 0 or 1) ~ treatment (the 5 levels above) + (1|tape) + (1|round) + (1|location).\nDo anybody know how to code this?\nPlease kindly find the data in the attachment.\n\nWith thanks and best wishes,\n\nHao\n\n--\n\n??(GU HAO),\n????, ???????????????????????,????????100????????519?? ???530005.\n\nResearch Associate, Behavioral and Community Ecology, Conservation Biology, Office 519, College of Forestry, Guangxi University,No. 100 Daxue Road, Nanning, Guangxi 530005, People?s Republic of China \n\nE-mail: longy213 at 163.com or guhao at xtbg.org.cn ; Cell phone: (+86) 18288055414; Lab Web: www.animal-ecology-guangxi.com; My Page:https://cn.linkedin.com/pub/hao-gu/80/95/9a3",
-      "body_snippet": "Hello,\n\nI am trying to do some contrasts using a mixed model, but don?t know how to use it in lme4. I've done the multiple contrast, but I believe the power of this method is lower than ideal. I think",
+      "body_plain": "Hello,\n\nI am trying to do some contrasts using a mixed model, but don’t know how to use it in lme4. I've done the multiple contrast, but I believe the power of this method is lower than ideal. I think contrast in lme4 would be a better option. I searched the question on stackoverflow and found one post. However, the question asked wasn't our situation. \n\nIn our case, there are five treatments. Let’s call them AA, BB, CC, DD, and EE.\n\nI have the following hypotheses:\n\nthe response to AA will be higher than the average of BB, CC and DD.\nthe response to AA will be higher than EE\nthe average response to BB, CC and DD will be higher than EE.\n\nThe model is being run in lme4 as a mixed model:\n\nresponse (binomial, 0 or 1) ~ treatment (the 5 levels above) + (1|tape) + (1|round) + (1|location).\nDo anybody know how to code this?\nPlease kindly find the data in the attachment.\n\nWith thanks and best wishes,\n\nHao\n\n--\n\n谷昊(GU HAO),\n科研助?, ???????????????????????,????市大??100??西大学林??519室。 邮编：530005.\n\nResearch Associate, Behavioral and Community Ecology, Conservation Biology, Office 519, College of Forestry, Guangxi University,No. 100 Daxue Road, Nanning, Guangxi 530005, People’s Republic of China \n\nE-mail: longy213 at 163.com or guhao at xtbg.org.cn ; Cell phone: (+86) 18288055414; Lab Web: www.animal-ecology-guangxi.com; My Page:https://cn.linkedin.com/pub/hao-gu/80/95/9a3",
+      "body_snippet": "Hello,\n\nI am trying to do some contrasts using a mixed model, but don’t know how to use it in lme4. I've done the multiple contrast, but I believe the power of this method is lower than ideal. I think",
       "thread_id": "thread-30dc13ca5e35",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025051.html"
     },
     {
       "id": "msg-91733bd12ce0",
@@ -96,11 +100,12 @@
       "references": [
         "<56e07c0d.12d.156ec1f63d9.Coremail.longy213@163.com>"
       ],
-      "body_plain": "On 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n> \n> I am trying to do some contrasts using a mixed model, but don?t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the power of this method is lower than ideal. I think contrast in\n> lme4 would be a better option. I searched the question on\n> stackoverflow and found one post. However, the question asked wasn't\n> our situation.\n> \n> In our case, there are five treatments. Let?s call them AA, BB, CC,\n> DD, and EE.\n> \n> I have the following hypotheses:\n> \n> the response to AA will be higher than the average of BB, CC and DD. \n> the response to AA will be higher than EE the average response to BB,\n> CC and DD will be higher than EE.\n\nSome notes on linear contrasts:\n\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n\nThe three contrasts you've set up are collinear: let's code them as\n\n   c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n   c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n   c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n\nthen you can see that c1 + c3 is equal to c2.  Therefore, you can't use\nthese three contrasts as part of a full set of 5 contrasts that span the\nspace of possibilities.\n\n  Before I saw that you said you've already tried multcomp I wrote the\nfollowing down; it might be useful to someone else.\n  Adapted from the examples in ?multcomp::glht\n\n\n z <- gl(5,10,labels=LETTERS[1:5])\ny <- rnorm(50)\nlibrary(multcomp)\n\nK <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n           \"A - E\" =   c( 1,    0,    0,    0, -1),\n           \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n\nm <- lm(y~z)\nmc <- glht(m,\n           linfct = mcp(z = K),\n           alternative = \"less\")\nsummary(mc)\n\nIf you want to live dangerously I think\n\nsummary(mc,test=univariate())\n\nwill give you the unadjusted p-values ...\n\n\n\n> \n> The model is being run in lme4 as a mixed model:\n> \n> response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> this? Please kindly find the data in the attachment.\n> \n> With thanks and best wishes,\n> \n> Hao\n>",
-      "body_snippet": "On 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n> \n> I am trying to do some contrasts using a mixed model, but don?t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the pow",
+      "body_plain": "On 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n> \n> I am trying to do some contrasts using a mixed model, but don’t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the power of this method is lower than ideal. I think contrast in\n> lme4 would be a better option. I searched the question on\n> stackoverflow and found one post. However, the question asked wasn't\n> our situation.\n> \n> In our case, there are five treatments. Let’s call them AA, BB, CC,\n> DD, and EE.\n> \n> I have the following hypotheses:\n> \n> the response to AA will be higher than the average of BB, CC and DD. \n> the response to AA will be higher than EE the average response to BB,\n> CC and DD will be higher than EE.\n\nSome notes on linear contrasts:\n\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n\nThe three contrasts you've set up are collinear: let's code them as\n\n   c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n   c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n   c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n\nthen you can see that c1 + c3 is equal to c2.  Therefore, you can't use\nthese three contrasts as part of a full set of 5 contrasts that span the\nspace of possibilities.\n\n  Before I saw that you said you've already tried multcomp I wrote the\nfollowing down; it might be useful to someone else.\n  Adapted from the examples in ?multcomp::glht\n\n\n z <- gl(5,10,labels=LETTERS[1:5])\ny <- rnorm(50)\nlibrary(multcomp)\n\nK <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n           \"A - E\" =   c( 1,    0,    0,    0, -1),\n           \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n\nm <- lm(y~z)\nmc <- glht(m,\n           linfct = mcp(z = K),\n           alternative = \"less\")\nsummary(mc)\n\nIf you want to live dangerously I think\n\nsummary(mc,test=univariate())\n\nwill give you the unadjusted p-values ...\n\n\n\n> \n> The model is being run in lme4 as a mixed model:\n> \n> response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> this? Please kindly find the data in the attachment.\n> \n> With thanks and best wishes,\n> \n> Hao\n>",
+      "body_snippet": "On 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n> \n> I am trying to do some contrasts using a mixed model, but don’t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the pow",
       "thread_id": "thread-30dc13ca5e35",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025052.html"
     },
     {
       "id": "msg-ee5f5df2176a",
@@ -115,11 +120,12 @@
         "<56e07c0d.12d.156ec1f63d9.Coremail.longy213@163.com>",
         "<49625e27-509d-dfde-2d80-6f78926ab3de@gmail.com>"
       ],
-      "body_plain": "Hi Dr. Bolker,\n\n\nI am also working on a project with contrast codes.\n\n\nIn my project I would like to investigate all the pairwise comparisons between a categorical variable with four levels.  In the second handout (http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf)  you mention discussing all pairwise comparisons later.  Would you be willing to share the link for the handout with the pairwise comparisons?\n\n\nThank you!\n\nEmily\n\nSTAT 4/6C03: notes, week 2, part 2 - McMaster University<http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf>\nms.mcmaster.ca\nstat 4/6c03: notes, week 2, part 2 2 sensible not always completely compatible, ways, across add-on packages ?The bar (|) is used as a grouping variable in various ...\n\n\nEmily A. Price, PhD\n\nEducational Research and Evaluation\nPatton College of Education\nOhio University\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Ben Bolker <bbolker at gmail.com>\nSent: Friday, September 2, 2016 1:47:50 PM\nTo: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] a question of conducting contrast in lme4 (not pairwise contrast)\n\n\n\nOn 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n>\n> I am trying to do some contrasts using a mixed model, but don?t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the power of this method is lower than ideal. I think contrast in\n> lme4 would be a better option. I searched the question on\n> stackoverflow and found one post. However, the question asked wasn't\n> our situation.\n>\n> In our case, there are five treatments. Let?s call them AA, BB, CC,\n> DD, and EE.\n>\n> I have the following hypotheses:\n>\n> the response to AA will be higher than the average of BB, CC and DD.\n> the response to AA will be higher than EE the average response to BB,\n> CC and DD will be higher than EE.\n\nSome notes on linear contrasts:\n\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n\nThe three contrasts you've set up are collinear: let's code them as\n\n   c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n   c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n   c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n\nthen you can see that c1 + c3 is equal to c2.  Therefore, you can't use\nthese three contrasts as part of a full set of 5 contrasts that span the\nspace of possibilities.\n\n  Before I saw that you said you've already tried multcomp I wrote the\nfollowing down; it might be useful to someone else.\n  Adapted from the examples in ?multcomp::glht\n\n\n z <- gl(5,10,labels=LETTERS[1:5])\ny <- rnorm(50)\nlibrary(multcomp)\n\nK <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n           \"A - E\" =   c( 1,    0,    0,    0, -1),\n           \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n\nm <- lm(y~z)\nmc <- glht(m,\n           linfct = mcp(z = K),\n           alternative = \"less\")\nsummary(mc)\n\nIf you want to live dangerously I think\n\nsummary(mc,test=univariate())\n\nwill give you the unadjusted p-values ...\n\n\n\n>\n> The model is being run in lme4 as a mixed model:\n>\n> response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> this? Please kindly find the data in the attachment.\n>\n> With thanks and best wishes,\n>\n> Hao\n>\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Hi Dr. Bolker,\n\n\nI am also working on a project with contrast codes.\n\n\nIn my project I would like to investigate all the pairwise comparisons between a categorical variable with four levels.  In the second handout (http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf)  you mention discussing all pairwise comparisons later.  Would you be willing to share the link for the handout with the pairwise comparisons?\n\n\nThank you!\n\nEmily\n\nSTAT 4/6C03: notes, week 2, part 2 - McMaster University<http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf>\nms.mcmaster.ca\nstat 4/6c03: notes, week 2, part 2 2 sensible not always completely compatible, ways, across add-on packages •The bar (|) is used as a grouping variable in various ...\n\n\nEmily A. Price, PhD\n\nEducational Research and Evaluation\nPatton College of Education\nOhio University\n________________________________\nFrom: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on behalf of Ben Bolker <bbolker at gmail.com>\nSent: Friday, September 2, 2016 1:47:50 PM\nTo: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] a question of conducting contrast in lme4 (not pairwise contrast)\n\n\n\nOn 16-09-02 02:18 PM, Gu Hao wrote:\n> Hello,\n>\n> I am trying to do some contrasts using a mixed model, but don’t know\n> how to use it in lme4. I've done the multiple contrast, but I believe\n> the power of this method is lower than ideal. I think contrast in\n> lme4 would be a better option. I searched the question on\n> stackoverflow and found one post. However, the question asked wasn't\n> our situation.\n>\n> In our case, there are five treatments. Let’s call them AA, BB, CC,\n> DD, and EE.\n>\n> I have the following hypotheses:\n>\n> the response to AA will be higher than the average of BB, CC and DD.\n> the response to AA will be higher than EE the average response to BB,\n> CC and DD will be higher than EE.\n\nSome notes on linear contrasts:\n\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\nhttp://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n\nThe three contrasts you've set up are collinear: let's code them as\n\n   c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n   c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n   c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n\nthen you can see that c1 + c3 is equal to c2.  Therefore, you can't use\nthese three contrasts as part of a full set of 5 contrasts that span the\nspace of possibilities.\n\n  Before I saw that you said you've already tried multcomp I wrote the\nfollowing down; it might be useful to someone else.\n  Adapted from the examples in ?multcomp::glht\n\n\n z <- gl(5,10,labels=LETTERS[1:5])\ny <- rnorm(50)\nlibrary(multcomp)\n\nK <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n           \"A - E\" =   c( 1,    0,    0,    0, -1),\n           \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n\nm <- lm(y~z)\nmc <- glht(m,\n           linfct = mcp(z = K),\n           alternative = \"less\")\nsummary(mc)\n\nIf you want to live dangerously I think\n\nsummary(mc,test=univariate())\n\nwill give you the unadjusted p-values ...\n\n\n\n>\n> The model is being run in lme4 as a mixed model:\n>\n> response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> this? Please kindly find the data in the attachment.\n>\n> With thanks and best wishes,\n>\n> Hao\n>\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Hi Dr. Bolker,\n\n\nI am also working on a project with contrast codes.\n\n\nIn my project I would like to investigate all the pairwise comparisons between a categorical variable with four levels.  In the s",
       "thread_id": "thread-30dc13ca5e35",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025053.html"
     },
     {
       "id": "msg-307483203439",
@@ -135,11 +141,12 @@
         "<49625e27-509d-dfde-2d80-6f78926ab3de@gmail.com>",
         "<BY1PR01MB12753DD5DAB2E7AA987EEA0FBAE50@BY1PR01MB1275.prod.exchangelabs.com>"
       ],
-      "body_plain": "I may never have gotten around to covering that stuff in the class, but the\nrecipe is pretty simple: just google \"multcomp glht tukey\".  The\nstats.stackexchange postings that you'll find deal with slightly more\ncomplicated situations: if you just want to do pairwise tests on a\nfixed-effect categorical predictor at the population level you can just\nfollow the recipes in the multcomp documentation.\n\nCrossValidated:\n\nhttp://stats.stackexchange.com/questions/145765/post-hoc-testing-in-multcompglht-for-mixed-effects-models-lme4-with-interact\n\nhttp://stats.stackexchange.com/questions/5250/multiple-comparisons-on-a-mixed-effects-model\n\n\n\nOn Fri, Sep 2, 2016 at 3:15 PM, Price, Emily <ep311508 at ohio.edu> wrote:\n\n> Hi Dr. Bolker,\n>\n>\n> I am also working on a project with contrast codes.\n>\n>\n> In my project I would like to investigate all the pairwise comparisons\n> between a categorical variable with four levels.  In the second handout (\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf)  you\n> mention discussing all pairwise comparisons later.  Would you be willing to\n> share the link for the handout with the pairwise comparisons?\n>\n>\n> Thank you!\n>\n> Emily\n> STAT 4/6C03: notes, week 2, part 2 - McMaster University\n> <http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf>\n> ms.mcmaster.ca\n> stat 4/6c03: notes, week 2, part 2 2 sensible not always completely\n> compatible, ways, across add-on packages ?The bar (|) is used as a grouping\n> variable in various ...\n>\n> Emily A. Price, PhD\n> Educational Research and Evaluation\n> Patton College of Education\n> Ohio University\n> ------------------------------\n> *From:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on\n> behalf of Ben Bolker <bbolker at gmail.com>\n> *Sent:* Friday, September 2, 2016 1:47:50 PM\n> *To:* r-sig-mixed-models at r-project.org\n> *Subject:* Re: [R-sig-ME] a question of conducting contrast in lme4 (not\n> pairwise contrast)\n>\n>\n>\n> On 16-09-02 02:18 PM, Gu Hao wrote:\n> > Hello,\n> >\n> > I am trying to do some contrasts using a mixed model, but don?t know\n> > how to use it in lme4. I've done the multiple contrast, but I believe\n> > the power of this method is lower than ideal. I think contrast in\n> > lme4 would be a better option. I searched the question on\n> > stackoverflow and found one post. However, the question asked wasn't\n> > our situation.\n> >\n> > In our case, there are five treatments. Let?s call them AA, BB, CC,\n> > DD, and EE.\n> >\n> > I have the following hypotheses:\n> >\n> > the response to AA will be higher than the average of BB, CC and DD.\n> > the response to AA will be higher than EE the average response to BB,\n> > CC and DD will be higher than EE.\n>\n> Some notes on linear contrasts:\n>\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n>\n> The three contrasts you've set up are collinear: let's code them as\n>\n>    c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n>    c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n>    c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n>\n> then you can see that c1 + c3 is equal to c2.  Therefore, you can't use\n> these three contrasts as part of a full set of 5 contrasts that span the\n> space of possibilities.\n>\n>   Before I saw that you said you've already tried multcomp I wrote the\n> following down; it might be useful to someone else.\n>   Adapted from the examples in ?multcomp::glht\n>\n>\n>  z <- gl(5,10,labels=LETTERS[1:5])\n> y <- rnorm(50)\n> library(multcomp)\n>\n> K <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n>            \"A - E\" =   c( 1,    0,    0,    0, -1),\n>            \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n>\n> m <- lm(y~z)\n> mc <- glht(m,\n>            linfct = mcp(z = K),\n>            alternative = \"less\")\n> summary(mc)\n>\n> If you want to live dangerously I think\n>\n> summary(mc,test=univariate())\n>\n> will give you the unadjusted p-values ...\n>\n>\n>\n> >\n> > The model is being run in lme4 as a mixed model:\n> >\n> > response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> > (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> > this? Please kindly find the data in the attachment.\n> >\n> > With thanks and best wishes,\n> >\n> > Hao\n> >\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "I may never have gotten around to covering that stuff in the class, but the\nrecipe is pretty simple: just google \"multcomp glht tukey\".  The\nstats.stackexchange postings that you'll find deal with slightly more\ncomplicated situations: if you just want to do pairwise tests on a\nfixed-effect categorical predictor at the population level you can just\nfollow the recipes in the multcomp documentation.\n\nCrossValidated:\n\nhttp://stats.stackexchange.com/questions/145765/post-hoc-testing-in-multcompglht-for-mixed-effects-models-lme4-with-interact\n\nhttp://stats.stackexchange.com/questions/5250/multiple-comparisons-on-a-mixed-effects-model\n\n\n\nOn Fri, Sep 2, 2016 at 3:15 PM, Price, Emily <ep311508 at ohio.edu> wrote:\n\n> Hi Dr. Bolker,\n>\n>\n> I am also working on a project with contrast codes.\n>\n>\n> In my project I would like to investigate all the pairwise comparisons\n> between a categorical variable with four levels.  In the second handout (\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf)  you\n> mention discussing all pairwise comparisons later.  Would you be willing to\n> share the link for the handout with the pairwise comparisons?\n>\n>\n> Thank you!\n>\n> Emily\n> STAT 4/6C03: notes, week 2, part 2 - McMaster University\n> <http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf>\n> ms.mcmaster.ca\n> stat 4/6c03: notes, week 2, part 2 2 sensible not always completely\n> compatible, ways, across add-on packages •The bar (|) is used as a grouping\n> variable in various ...\n>\n> Emily A. Price, PhD\n> Educational Research and Evaluation\n> Patton College of Education\n> Ohio University\n> ------------------------------\n> *From:* R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> on\n> behalf of Ben Bolker <bbolker at gmail.com>\n> *Sent:* Friday, September 2, 2016 1:47:50 PM\n> *To:* r-sig-mixed-models at r-project.org\n> *Subject:* Re: [R-sig-ME] a question of conducting contrast in lme4 (not\n> pairwise contrast)\n>\n>\n>\n> On 16-09-02 02:18 PM, Gu Hao wrote:\n> > Hello,\n> >\n> > I am trying to do some contrasts using a mixed model, but don’t know\n> > how to use it in lme4. I've done the multiple contrast, but I believe\n> > the power of this method is lower than ideal. I think contrast in\n> > lme4 would be a better option. I searched the question on\n> > stackoverflow and found one post. However, the question asked wasn't\n> > our situation.\n> >\n> > In our case, there are five treatments. Let’s call them AA, BB, CC,\n> > DD, and EE.\n> >\n> > I have the following hypotheses:\n> >\n> > the response to AA will be higher than the average of BB, CC and DD.\n> > the response to AA will be higher than EE the average response to BB,\n> > CC and DD will be higher than EE.\n>\n> Some notes on linear contrasts:\n>\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.Rnw\n> http://ms.mcmaster.ca/~bolker/classes/s4c03/notes/week2B.pdf\n>\n> The three contrasts you've set up are collinear: let's code them as\n>\n>    c1 = c(1, -1/3, -1/3, -1/3,  0)  ## AA vs (BB,CC,DD)\n>    c2 = c(1,      0,      0,      0, -1) ## AA vs EE\n>    c3 = c(0,  1/3,   1/3,  1/3, -1) ## (BB,CC,DD) vs EE\n>\n> then you can see that c1 + c3 is equal to c2.  Therefore, you can't use\n> these three contrasts as part of a full set of 5 contrasts that span the\n> space of possibilities.\n>\n>   Before I saw that you said you've already tried multcomp I wrote the\n> following down; it might be useful to someone else.\n>   Adapted from the examples in ?multcomp::glht\n>\n>\n>  z <- gl(5,10,labels=LETTERS[1:5])\n> y <- rnorm(50)\n> library(multcomp)\n>\n> K <- rbind(\"A - BCD\" = c( 1, -1/3, -1/3, -1/3,  0),\n>            \"A - E\" =   c( 1,    0,    0,    0, -1),\n>            \"BCD-E\" =   c( 0,  1/3,  1/3,  1/3, -1))\n>\n> m <- lm(y~z)\n> mc <- glht(m,\n>            linfct = mcp(z = K),\n>            alternative = \"less\")\n> summary(mc)\n>\n> If you want to live dangerously I think\n>\n> summary(mc,test=univariate())\n>\n> will give you the unadjusted p-values ...\n>\n>\n>\n> >\n> > The model is being run in lme4 as a mixed model:\n> >\n> > response (binomial, 0 or 1) ~ treatment (the 5 levels above) +\n> > (1|tape) + (1|round) + (1|location). Do anybody know how to code\n> > this? Please kindly find the data in the attachment.\n> >\n> > With thanks and best wishes,\n> >\n> > Hao\n> >\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "I may never have gotten around to covering that stuff in the class, but the\nrecipe is pretty simple: just google \"multcomp glht tukey\".  The\nstats.stackexchange postings that you'll find deal with sli",
       "thread_id": "thread-30dc13ca5e35",
       "thread_depth": 3,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025054.html"
     },
     {
       "id": "msg-ed8b75ad37c2",
@@ -151,11 +158,12 @@
       "subject_clean": "Does the “non-independent\" data structure defined in mixed models follow the “independency” defined by probability theory?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nI am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n\n>From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n\nMy questions are:\n\nWhat?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n\nThanks\n\nRegards,\nChun\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Dear all,\n\nI am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n\n>From the statistical point of view, independency is defined as the probabilitie",
+      "body_plain": "Dear all,\n\nI am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n\n>From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a “6” each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n\nMy questions are:\n\nWhat’s the definition of the “non-independent data” that is often referred in mixed modeling? Is it the same concept as “independency” defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n\nThanks\n\nRegards,\nChun\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\n\nI am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n\n>From the statistical point of view, independency is defined as the probabilitie",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025055.html"
     },
     {
       "id": "msg-30dd98e34b7f",
@@ -169,11 +177,12 @@
       "references": [
         "<90a4790272c04249a8dcbc2e9cada269@scomp5296.wurnet.nl>"
       ],
-      "body_plain": "On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>\n> My questions are:\n>\n> What?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n\n   (You say \"questions\" here, but there really seems to be only one\nquestion here.)\n\n  Yes, mixed modeling defines grouping variables based on\nexperimental/observational design.  That is, grouping variables are\nidentifiers that are believed *a priori* to be associated with\nnon-independence of observations with the same identifier values.\n\n  Ben Bolker",
-      "body_snippet": "On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>\n> ",
+      "body_plain": "On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a “6” each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>\n> My questions are:\n>\n> What’s the definition of the “non-independent data” that is often referred in mixed modeling? Is it the same concept as “independency” defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n\n   (You say \"questions\" here, but there really seems to be only one\nquestion here.)\n\n  Yes, mixed modeling defines grouping variables based on\nexperimental/observational design.  That is, grouping variables are\nidentifiers that are believed *a priori* to be associated with\nnon-independence of observations with the same identifier values.\n\n  Ben Bolker",
+      "body_snippet": "On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n>\n> ",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025056.html"
     },
     {
       "id": "msg-50a6ad61cb1e",
@@ -188,11 +197,12 @@
         "<90a4790272c04249a8dcbc2e9cada269@scomp5296.wurnet.nl>",
         "<CABghstRaQ4iVxdCf0aPHSK9C4y_sQUKm-snEvJQS83xFYaLAbQ@mail.gmail.com>"
       ],
-      "body_plain": "I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\nThanks in advanced\nJoaqu?n\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com> escribi?:\n> \n>> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n>> Dear all,\n>> \n>> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>> \n>>> From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>> \n>> My questions are:\n>> \n>> What?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n> \n>   (You say \"questions\" here, but there really seems to be only one\n> question here.)\n> \n>  Yes, mixed modeling defines grouping variables based on\n> experimental/observational design.  That is, grouping variables are\n> identifiers that are believed *a priori* to be associated with\n> non-independence of observations with the same identifier values.\n> \n>  Ben Bolker\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
-      "body_snippet": "I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\nThanks in advanced\nJoaqu?n\n\nEnviado desde mi iPad\n\n> El 5 set. 20",
+      "body_plain": "I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\nThanks in advanced\nJoaquín\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com> escribió:\n> \n>> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n>> Dear all,\n>> \n>> I am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n>> \n>>> From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a “6” each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>> \n>> My questions are:\n>> \n>> What’s the definition of the “non-independent data” that is often referred in mixed modeling? Is it the same concept as “independency” defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n> \n>   (You say \"questions\" here, but there really seems to be only one\n> question here.)\n> \n>  Yes, mixed modeling defines grouping variables based on\n> experimental/observational design.  That is, grouping variables are\n> identifiers that are believed *a priori* to be associated with\n> non-independence of observations with the same identifier values.\n> \n>  Ben Bolker\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\nThanks in advanced\nJoaquín\n\nEnviado desde mi iPad\n\n> El 5 set. 20",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025057.html"
     },
     {
       "id": "msg-7411f7eca2b7",
@@ -208,11 +218,12 @@
         "<CABghstRaQ4iVxdCf0aPHSK9C4y_sQUKm-snEvJQS83xFYaLAbQ@mail.gmail.com>",
         "<1A5E8735-83C1-4AAF-9B96-EE9143F4D307@gmail.com>"
       ],
-      "body_plain": "They are assumed to be independent across levels but you can deal with the\nassumption by specifying the dependence as part of the model. You can add\nin fixed effects or additional random effects for starters.\n\nIn practice having correlation across groups seems to distort the\ndistribution of the random effect causing some groups to be clustered. In\nextreme cases the random effect can become multimodal. This doesn't seem to\nmatter much for linear models but it can badly damage generalized linear\nmodels depending on how you approximate random effects.\n\nOn Sep 5, 2016 3:54 PM, <joaquin.aldabe at gmail.com> wrote:\n\n> I have a related doubt. Do levels of a grouping variable have to be\n> independent? Eg. Sites from where i take non independient samples?\n> Thanks in advanced\n> Joaqu?n\n>\n> Enviado desde mi iPad\n>\n> > El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com>\n> escribi?:\n> >\n> >> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> >> Dear all,\n> >>\n> >> I am bit puzzled by definition of the ?nested data? or ?non-independent\n> data? structure in the mixed model.\n> >>\n> >>> From the statistical point of view, independency is defined as the\n> probabilities of selecting two observations are not influencing each other.\n> In this case, if I design an experiment where I on purposely select two\n> observations from the same group (or strata), then later on we can say\n> these two observations are dependent. However, if I am doing a sampling\n> with replacement and by coincidence I selected one observations twice (e.g.\n> throw a dice twice and by coincidence we get both a ?6? each time). The\n> probability of selecting these two observations are indeed not influencing\n> each other and they are independent.\n> >>\n> >> My questions are:\n> >>\n> >> What?s the definition of the ?non-independent data? that is often\n> referred in mixed modeling? Is it the same concept as ?independency?\n> defined by probability theory, which is relevant by how the observations\n> are selected, rather than how the observations look alike in the final\n> sample\n> >\n> >   (You say \"questions\" here, but there really seems to be only one\n> > question here.)\n> >\n> >  Yes, mixed modeling defines grouping variables based on\n> > experimental/observational design.  That is, grouping variables are\n> > identifiers that are believed *a priori* to be associated with\n> > non-independence of observations with the same identifier values.\n> >\n> >  Ben Bolker\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "They are assumed to be independent across levels but you can deal with the\nassumption by specifying the dependence as part of the model. You can add\nin fixed effects or additional random effects for starters.\n\nIn practice having correlation across groups seems to distort the\ndistribution of the random effect causing some groups to be clustered. In\nextreme cases the random effect can become multimodal. This doesn't seem to\nmatter much for linear models but it can badly damage generalized linear\nmodels depending on how you approximate random effects.\n\nOn Sep 5, 2016 3:54 PM, <joaquin.aldabe at gmail.com> wrote:\n\n> I have a related doubt. Do levels of a grouping variable have to be\n> independent? Eg. Sites from where i take non independient samples?\n> Thanks in advanced\n> Joaquín\n>\n> Enviado desde mi iPad\n>\n> > El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com>\n> escribió:\n> >\n> >> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> >> Dear all,\n> >>\n> >> I am bit puzzled by definition of the “nested data” or “non-independent\n> data” structure in the mixed model.\n> >>\n> >>> From the statistical point of view, independency is defined as the\n> probabilities of selecting two observations are not influencing each other.\n> In this case, if I design an experiment where I on purposely select two\n> observations from the same group (or strata), then later on we can say\n> these two observations are dependent. However, if I am doing a sampling\n> with replacement and by coincidence I selected one observations twice (e.g.\n> throw a dice twice and by coincidence we get both a “6” each time). The\n> probability of selecting these two observations are indeed not influencing\n> each other and they are independent.\n> >>\n> >> My questions are:\n> >>\n> >> What’s the definition of the “non-independent data” that is often\n> referred in mixed modeling? Is it the same concept as “independency”\n> defined by probability theory, which is relevant by how the observations\n> are selected, rather than how the observations look alike in the final\n> sample\n> >\n> >   (You say \"questions\" here, but there really seems to be only one\n> > question here.)\n> >\n> >  Yes, mixed modeling defines grouping variables based on\n> > experimental/observational design.  That is, grouping variables are\n> > identifiers that are believed *a priori* to be associated with\n> > non-independence of observations with the same identifier values.\n> >\n> >  Ben Bolker\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "They are assumed to be independent across levels but you can deal with the\nassumption by specifying the dependence as part of the model. You can add\nin fixed effects or additional random effects for s",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 3,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025058.html"
     },
     {
       "id": "msg-313d394801ea",
@@ -229,11 +240,12 @@
         "<1A5E8735-83C1-4AAF-9B96-EE9143F4D307@gmail.com>",
         "<CAFW8ByqR9WrjeDv6RuxiV2jWNP=PK4GZ3kzve3=mzePFu2zCXg@mail.gmail.com>"
       ],
-      "body_plain": "Thankyou very much\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 5:09 p.m., Poe, John <jdpo223 at g.uky.edu> escribi?:\n> \n> They are assumed to be independent across levels but you can deal with the assumption by specifying the dependence as part of the model. You can add in fixed effects or additional random effects for starters.\n> \n> In practice having correlation across groups seems to distort the distribution of the random effect causing some groups to be clustered. In extreme cases the random effect can become multimodal. This doesn't seem to matter much for linear models but it can badly damage generalized linear models depending on how you approximate random effects.\n> \n> \n>> On Sep 5, 2016 3:54 PM, <joaquin.aldabe at gmail.com> wrote:\n>> I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\n>> Thanks in advanced\n>> Joaqu?n\n>> \n>> Enviado desde mi iPad\n>> \n>> > El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com> escribi?:\n>> >\n>> >> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n>> >> Dear all,\n>> >>\n>> >> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>> >>\n>> >>> From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>> >>\n>> >> My questions are:\n>> >>\n>> >> What?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n>> >\n>> >   (You say \"questions\" here, but there really seems to be only one\n>> > question here.)\n>> >\n>> >  Yes, mixed modeling defines grouping variables based on\n>> > experimental/observational design.  That is, grouping variables are\n>> > identifiers that are believed *a priori* to be associated with\n>> > non-independence of observations with the same identifier values.\n>> >\n>> >  Ben Bolker\n>> >\n>> > _______________________________________________\n>> > R-sig-mixed-models at r-project.org mailing list\n>> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
-      "body_snippet": "Thankyou very much\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 5:09 p.m., Poe, John <jdpo223 at g.uky.edu> escribi?:\n> \n> They are assumed to be independent across levels but you can deal with the",
+      "body_plain": "Thankyou very much\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 5:09 p.m., Poe, John <jdpo223 at g.uky.edu> escribió:\n> \n> They are assumed to be independent across levels but you can deal with the assumption by specifying the dependence as part of the model. You can add in fixed effects or additional random effects for starters.\n> \n> In practice having correlation across groups seems to distort the distribution of the random effect causing some groups to be clustered. In extreme cases the random effect can become multimodal. This doesn't seem to matter much for linear models but it can badly damage generalized linear models depending on how you approximate random effects.\n> \n> \n>> On Sep 5, 2016 3:54 PM, <joaquin.aldabe at gmail.com> wrote:\n>> I have a related doubt. Do levels of a grouping variable have to be independent? Eg. Sites from where i take non independient samples?\n>> Thanks in advanced\n>> Joaquín\n>> \n>> Enviado desde mi iPad\n>> \n>> > El 5 set. 2016, a las 3:51 p.m., Ben Bolker <bbolker at gmail.com> escribió:\n>> >\n>> >> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n>> >> Dear all,\n>> >>\n>> >> I am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n>> >>\n>> >>> From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a “6” each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>> >>\n>> >> My questions are:\n>> >>\n>> >> What’s the definition of the “non-independent data” that is often referred in mixed modeling? Is it the same concept as “independency” defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n>> >\n>> >   (You say \"questions\" here, but there really seems to be only one\n>> > question here.)\n>> >\n>> >  Yes, mixed modeling defines grouping variables based on\n>> > experimental/observational design.  That is, grouping variables are\n>> > identifiers that are believed *a priori* to be associated with\n>> > non-independence of observations with the same identifier values.\n>> >\n>> >  Ben Bolker\n>> >\n>> > _______________________________________________\n>> > R-sig-mixed-models at r-project.org mailing list\n>> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>> \n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Thankyou very much\n\nEnviado desde mi iPad\n\n> El 5 set. 2016, a las 5:09 p.m., Poe, John <jdpo223 at g.uky.edu> escribió:\n> \n> They are assumed to be independent across levels but you can deal with the",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 4,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025059.html"
     },
     {
       "id": "msg-7d4e29cd161b",
@@ -254,7 +266,8 @@
       "body_snippet": "> In practice having correlation across groups seems to distort the\n> distribution of the random effect causing some groups to be clustered. In\n> extreme cases the random effect can become multimodal.",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 4,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025060.html"
     },
     {
       "id": "msg-2b8d062d61d3",
@@ -272,11 +285,12 @@
         "<CAFW8ByqR9WrjeDv6RuxiV2jWNP=PK4GZ3kzve3=mzePFu2zCXg@mail.gmail.com>",
         "<4737E17E7C8C3C4A8B5C1CE5346371D48A64A90A@EXCH06S.adqimr.ad.lan>"
       ],
-      "body_plain": "Thankyou very much David!\n\n2016-09-05 21:10 GMT-03:00 David Duffy <David.Duffy at qimrberghofer.edu.au>:\n\n> > In practice having correlation across groups seems to distort the\n> > distribution of the random effect causing some groups to be clustered. In\n> > extreme cases the random effect can become multimodal.\n>\n> Further to this, there are nonparametric maximum likelihood (and Bayesian)\n> mixed models that might be useful for this kind of situation -  the\n> distribution of the random effects is modelled as a finite mixture (of eg\n> normals) to be estimated. The npmlreg package implements Murray Aitkin's\n> approach.\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n*Joaqu?n Aldabe*\n\n*Grupo Biodiversidad, Ambiente y Sociedad*\nCentro Universitario de la Regi?n Este, Universidad de la Rep?blica\nRuta 15 (y Ruta 9), Km 28.500, Departamento de Rocha\n\n*Departamento de Conservaci?n*\nAves Uruguay\nBirdLife International\nCanelones 1164, Montevideo\n\nhttps://sites.google.com/site/joaquin.aldabe\n<https://sites.google.com/site/perfilprofesionaljoaquinaldabe>\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Thankyou very much David!\n\n2016-09-05 21:10 GMT-03:00 David Duffy <David.Duffy at qimrberghofer.edu.au>:\n\n> > In practice having correlation across groups seems to distort the\n> > distribution of the random effect causing some groups to be clustered. In\n> > extreme cases the random effect can become multimodal.\n>\n> Further to this, there are nonparametric maximum likelihood (and Bayesian)\n> mixed models that might be useful for this kind of situation -  the\n> distribution of the random effects is modelled as a finite mixture (of eg\n> normals) to be estimated. The npmlreg package implements Murray Aitkin's\n> approach.\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n*Joaquín Aldabe*\n\n*Grupo Biodiversidad, Ambiente y Sociedad*\nCentro Universitario de la Región Este, Universidad de la República\nRuta 15 (y Ruta 9), Km 28.500, Departamento de Rocha\n\n*Departamento de Conservación*\nAves Uruguay\nBirdLife International\nCanelones 1164, Montevideo\n\nhttps://sites.google.com/site/joaquin.aldabe\n<https://sites.google.com/site/perfilprofesionaljoaquinaldabe>\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Thankyou very much David!\n\n2016-09-05 21:10 GMT-03:00 David Duffy <David.Duffy at qimrberghofer.edu.au>:\n\n> > In practice having correlation across groups seems to distort the\n> > distribution of the ",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 5,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025061.html"
     },
     {
       "id": "msg-0b753a7f3350",
@@ -288,11 +302,12 @@
       "subject_clean": "Does the “non-independent\" data structure defined in mixed models follow the “independency” defined by probability theory?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Thank you Ben for the answer. Now I am wondering:\n\n1) If I happened to have a grouping variable that is not by design, for instance my randomly selected observations turned out to show some site related characteristics, is it sound to apply a mixed model including site as random intercept? In practice, it is pretty common to use site as a fixed effect in the regression analysis (i.e. to detect the main effect after adjusting site effect), even site is not a factor in the experimental/observational design.\n\n2) If site can be used as a random intercept, what is the exact criteria for non-independence (i.e. nested structure ) in the context of applying a mixed model? Not the same as what you defined below?\n\n3) In case site can not be used as random intercept, but can be used as a fixed factor: I assume that if a categorical variable can be modeled as a fixed effect, it can also be modeled as random effect (both are trying to estimate an  effect, but using different ways). Additionally, there is no limitation about on what condition we can  use a variable as fixed factor during regression (you can apply any variable as an fixed effect if you hypothesie the effect, no non-independence requirements). Why do we need non-independence condition for the random factors?\n\nThanks\n\nRegards,\nChun\n\n-----Original Message-----\nFrom: Ben Bolker [mailto:bbolker at gmail.com] \nSent: maandag, september 05, 2016 20:51\nTo: Chen, Chun\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Does the ?non-independent\" data structure defined in mixed models follow the ?independency? defined by probability theory?\n\nOn Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>\n> My questions are:\n>\n> What?s the definition of the ?non-independent data? that is often \n> referred in mixed modeling? Is it the same concept as ?independency? \n> defined by probability theory, which is relevant by how the \n> observations are selected, rather than how the observations look alike \n> in the final sample\n\n   (You say \"questions\" here, but there really seems to be only one question here.)\n\n  Yes, mixed modeling defines grouping variables based on experimental/observational design.  That is, grouping variables are identifiers that are believed *a priori* to be associated with non-independence of observations with the same identifier values.\n\n  Ben Bolker",
+      "body_plain": "Thank you Ben for the answer. Now I am wondering:\n\n1) If I happened to have a grouping variable that is not by design, for instance my randomly selected observations turned out to show some site related characteristics, is it sound to apply a mixed model including site as random intercept? In practice, it is pretty common to use site as a fixed effect in the regression analysis (i.e. to detect the main effect after adjusting site effect), even site is not a factor in the experimental/observational design.\n\n2) If site can be used as a random intercept, what is the exact criteria for non-independence (i.e. nested structure ) in the context of applying a mixed model? Not the same as what you defined below?\n\n3) In case site can not be used as random intercept, but can be used as a fixed factor: I assume that if a categorical variable can be modeled as a fixed effect, it can also be modeled as random effect (both are trying to estimate an  effect, but using different ways). Additionally, there is no limitation about on what condition we can  use a variable as fixed factor during regression (you can apply any variable as an fixed effect if you hypothesie the effect, no non-independence requirements). Why do we need non-independence condition for the random factors?\n\nThanks\n\nRegards,\nChun\n\n-----Original Message-----\nFrom: Ben Bolker [mailto:bbolker at gmail.com] \nSent: maandag, september 05, 2016 20:51\nTo: Chen, Chun\nCc: r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] Does the “non-independent\" data structure defined in mixed models follow the “independency” defined by probability theory?\n\nOn Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> Dear all,\n>\n> I am bit puzzled by definition of the “nested data” or “non-independent data” structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a “6” each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\n>\n> My questions are:\n>\n> What’s the definition of the “non-independent data” that is often \n> referred in mixed modeling? Is it the same concept as “independency” \n> defined by probability theory, which is relevant by how the \n> observations are selected, rather than how the observations look alike \n> in the final sample\n\n   (You say \"questions\" here, but there really seems to be only one question here.)\n\n  Yes, mixed modeling defines grouping variables based on experimental/observational design.  That is, grouping variables are identifiers that are believed *a priori* to be associated with non-independence of observations with the same identifier values.\n\n  Ben Bolker",
       "body_snippet": "Thank you Ben for the answer. Now I am wondering:\n\n1) If I happened to have a grouping variable that is not by design, for instance my randomly selected observations turned out to show some site relat",
       "thread_id": "thread-0b753a7f3350",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025062.html"
     },
     {
       "id": "msg-8e8ae58a189a",
@@ -306,11 +321,12 @@
       "references": [
         "<90a4790272c04249a8dcbc2e9cada269@scomp5296.wurnet.nl>"
       ],
-      "body_plain": "Dear all,\n\nI am a bit surprized by the previous follow-up to this question:\n\nLe 05/09/2016 ? 10:08, Chen, Chun a ?crit :\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\nthe assumptions are those of the model being fitted. Thus is a mixed \nmodel one typically assumes that the _residual errors_ for each \nobservation are independent.\nThe \"observations\" are not independent, but the model does not assume \nthat the \"observations\" are independent in any elevant stochastic sense, \nonly that the residuals are.\n\nI don't see independence in probability as being defined as \"not \ninfluencing each other\". In practice independence also means \"not \naffected by a common factor\". A formal definition of independence of \nseveral events  is that the joint probability of these events is the \nproduct of probabilities of each event : see e.g. Feller 1950, p.125. In \nthe above example of sampling with replacement, a single draw of a \nresidual error affects two response values, so according to the formal \ndefinition, the two residuals are not independent. So sampling with \nreplacement violates the assumptions of independence of residuals.\n\nF.R.\n>\n> My questions are:\n>\n> What?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n>\n> Thanks\n>\n> Regards,\n> Chun\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
-      "body_snippet": "Dear all,\n\nI am a bit surprized by the previous follow-up to this question:\n\nLe 05/09/2016 ? 10:08, Chen, Chun a ?crit :\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-ind",
+      "body_plain": "Dear all,\n\nI am a bit surprized by the previous follow-up to this question:\n\nLe 05/09/2016 à 10:08, Chen, Chun a écrit :\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-independent data? structure in the mixed model.\n>\n> >From the statistical point of view, independency is defined as the probabilities of selecting two observations are not influencing each other. In this case, if I design an experiment where I on purposely select two observations from the same group (or strata), then later on we can say these two observations are dependent. However, if I am doing a sampling with replacement and by coincidence I selected one observations twice (e.g. throw a dice twice and by coincidence we get both a ?6? each time). The probability of selecting these two observations are indeed not influencing each other and they are independent.\nthe assumptions are those of the model being fitted. Thus is a mixed \nmodel one typically assumes that the _residual errors_ for each \nobservation are independent.\nThe \"observations\" are not independent, but the model does not assume \nthat the \"observations\" are independent in any elevant stochastic sense, \nonly that the residuals are.\n\nI don't see independence in probability as being defined as \"not \ninfluencing each other\". In practice independence also means \"not \naffected by a common factor\". A formal definition of independence of \nseveral events  is that the joint probability of these events is the \nproduct of probabilities of each event : see e.g. Feller 1950, p.125. In \nthe above example of sampling with replacement, a single draw of a \nresidual error affects two response values, so according to the formal \ndefinition, the two residuals are not independent. So sampling with \nreplacement violates the assumptions of independence of residuals.\n\nF.R.\n>\n> My questions are:\n>\n> What?s the definition of the ?non-independent data? that is often referred in mixed modeling? Is it the same concept as ?independency? defined by probability theory, which is relevant by how the observations are selected, rather than how the observations look alike in the final sample\n>\n> Thanks\n>\n> Regards,\n> Chun\n>\n> \t[[alternative HTML version deleted]]\n>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "Dear all,\n\nI am a bit surprized by the previous follow-up to this question:\n\nLe 05/09/2016 à 10:08, Chen, Chun a écrit :\n> Dear all,\n>\n> I am bit puzzled by definition of the ?nested data? or ?non-ind",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025063.html"
     },
     {
       "id": "msg-b0d3c0bfde79",
@@ -326,7 +342,8 @@
       "body_snippet": "Has anyone tried https://github.com/bambinos/bambi for Bayesian analysis of\nmixed-effects models?  It looks quite interesting.\n\n\t[[alternative HTML version deleted]]",
       "thread_id": "thread-b0d3c0bfde79",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025064.html"
     },
     {
       "id": "msg-510b25668e5b",
@@ -344,7 +361,8 @@
       "body_snippet": "I haven't tried Bambi just yet, but the PyMC3 package upon which it is\nbuilt has been really quite nice in my experience. The only reason why\nI wasn't using PyMC3 more extensively is that it was a pai",
       "thread_id": "thread-b0d3c0bfde79",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025065.html"
     },
     {
       "id": "msg-fba81b6a9bd8",
@@ -363,7 +381,8 @@
       "body_snippet": "Tal and I would love to hear thoughts and reactions from anyone and\neveryone!\n\nJake\n\nOn Fri, Sep 9, 2016 at 10:22 AM, Phillip Alday <Phillip.Alday at unisa.edu.au>\nwrote:\n\n> I haven't tried Bambi just",
       "thread_id": "thread-b0d3c0bfde79",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025066.html"
     },
     {
       "id": "msg-862aa61e9e51",
@@ -379,7 +398,8 @@
       "body_snippet": "Dear all,\n\nI'm currently trying to write the missing data imputation code through\nGaussian mixture model. My current reference as provided in the attachment\nor you can reach at this url:\nhttp://www.sc",
       "thread_id": "thread-862aa61e9e51",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025067.html"
     },
     {
       "id": "msg-182345087cfa",
@@ -393,11 +413,12 @@
       "references": [
         "<86b795a5dfa241da9956ac2996e5ccdd@scomp5296.wurnet.nl>"
       ],
-      "body_plain": "On point 1, depending on the number of sites yes you can use a random\neffect instead of a fixed effect to account for omitted variables like the\nsite selection mechanism.\n\n\nIf you are doing this to control for site effects that are essentially\ncontamination and of no theoretical interest, then using fixed effects for\nsite is the easiest approach for a linear model. In most generalized linear\nmodels you can?t effectively difference the fixed effects out of the data\nin the same way and including them in the model will result in incidental\nparameters bias with as few as ten dummy variables.\n\n\nIf you are interested in understanding how the site related latent variable\nmight work, then you should use a mixed effects model and be sure to\ninclude group averages for your lower level variables so that you can\ninterpret the within group and between group effects separately.  You may\nalso need to model random coefficients because decomposing the variables\ndoesn?t always completely orthogonalize the within group versions of the\nvariables and the random effect.\n\n\nWith any random effect you are assuming that it is uncorrelated with fixed\ncomponents in the model which means you are modeling the relationship\nbetween the random effect and all of your independent variables regardless\nof what you do. You can either take the fixed effects/group indicator\nvariables approach or the mixed effects modeling approach but in both cases\ndoing it properly means you have accounted for lack of independence across\nvariables and within sites.\n\nOn Tue, Sep 6, 2016 at 3:41 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n\n> Thank you Ben for the answer. Now I am wondering:\n>\n> 1) If I happened to have a grouping variable that is not by design, for\n> instance my randomly selected observations turned out to show some site\n> related characteristics, is it sound to apply a mixed model including site\n> as random intercept? In practice, it is pretty common to use site as a\n> fixed effect in the regression analysis (i.e. to detect the main effect\n> after adjusting site effect), even site is not a factor in the\n> experimental/observational design.\n>\n> 2) If site can be used as a random intercept, what is the exact criteria\n> for non-independence (i.e. nested structure ) in the context of applying a\n> mixed model? Not the same as what you defined below?\n>\n> 3) In case site can not be used as random intercept, but can be used as a\n> fixed factor: I assume that if a categorical variable can be modeled as a\n> fixed effect, it can also be modeled as random effect (both are trying to\n> estimate an  effect, but using different ways). Additionally, there is no\n> limitation about on what condition we can  use a variable as fixed factor\n> during regression (you can apply any variable as an fixed effect if you\n> hypothesie the effect, no non-independence requirements). Why do we need\n> non-independence condition for the random factors?\n>\n> Thanks\n>\n> Regards,\n> Chun\n>\n> -----Original Message-----\n> From: Ben Bolker [mailto:bbolker at gmail.com]\n> Sent: maandag, september 05, 2016 20:51\n> To: Chen, Chun\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Does the ?non-independent\" data structure defined\n> in mixed models follow the ?independency? defined by probability theory?\n>\n> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> > Dear all,\n> >\n> > I am bit puzzled by definition of the ?nested data? or ?non-independent\n> data? structure in the mixed model.\n> >\n> > >From the statistical point of view, independency is defined as the\n> probabilities of selecting two observations are not influencing each other.\n> In this case, if I design an experiment where I on purposely select two\n> observations from the same group (or strata), then later on we can say\n> these two observations are dependent. However, if I am doing a sampling\n> with replacement and by coincidence I selected one observations twice (e.g.\n> throw a dice twice and by coincidence we get both a ?6? each time). The\n> probability of selecting these two observations are indeed not influencing\n> each other and they are independent.\n> >\n> > My questions are:\n> >\n> > What?s the definition of the ?non-independent data? that is often\n> > referred in mixed modeling? Is it the same concept as ?independency?\n> > defined by probability theory, which is relevant by how the\n> > observations are selected, rather than how the observations look alike\n> > in the final sample\n>\n>    (You say \"questions\" here, but there really seems to be only one\n> question here.)\n>\n>   Yes, mixed modeling defines grouping variables based on\n> experimental/observational design.  That is, grouping variables are\n> identifiers that are believed *a priori* to be associated with\n> non-independence of observations with the same identifier values.\n>\n>   Ben Bolker\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n\n\n\n\nThanks,\nJohn\n\n\nJohn Poe\nDoctoral Candidate\nDepartment of Political Science\nResearch Methodologist\nUK Center for Public Health Services & Systems Research\nUniversity of Kentucky\n111 Washington Avenue, Room 203a\nLexington, KY 40536\nwww.johndavidpoe.com\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "On point 1, depending on the number of sites yes you can use a random\neffect instead of a fixed effect to account for omitted variables like the\nsite selection mechanism.\n\n\nIf you are doing this to control for site effects that are essentially\ncontamination and of no theoretical interest, then using fixed effects for\nsite is the easiest approach for a linear model. In most generalized linear\nmodels you can’t effectively difference the fixed effects out of the data\nin the same way and including them in the model will result in incidental\nparameters bias with as few as ten dummy variables.\n\n\nIf you are interested in understanding how the site related latent variable\nmight work, then you should use a mixed effects model and be sure to\ninclude group averages for your lower level variables so that you can\ninterpret the within group and between group effects separately.  You may\nalso need to model random coefficients because decomposing the variables\ndoesn’t always completely orthogonalize the within group versions of the\nvariables and the random effect.\n\n\nWith any random effect you are assuming that it is uncorrelated with fixed\ncomponents in the model which means you are modeling the relationship\nbetween the random effect and all of your independent variables regardless\nof what you do. You can either take the fixed effects/group indicator\nvariables approach or the mixed effects modeling approach but in both cases\ndoing it properly means you have accounted for lack of independence across\nvariables and within sites.\n\nOn Tue, Sep 6, 2016 at 3:41 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n\n> Thank you Ben for the answer. Now I am wondering:\n>\n> 1) If I happened to have a grouping variable that is not by design, for\n> instance my randomly selected observations turned out to show some site\n> related characteristics, is it sound to apply a mixed model including site\n> as random intercept? In practice, it is pretty common to use site as a\n> fixed effect in the regression analysis (i.e. to detect the main effect\n> after adjusting site effect), even site is not a factor in the\n> experimental/observational design.\n>\n> 2) If site can be used as a random intercept, what is the exact criteria\n> for non-independence (i.e. nested structure ) in the context of applying a\n> mixed model? Not the same as what you defined below?\n>\n> 3) In case site can not be used as random intercept, but can be used as a\n> fixed factor: I assume that if a categorical variable can be modeled as a\n> fixed effect, it can also be modeled as random effect (both are trying to\n> estimate an  effect, but using different ways). Additionally, there is no\n> limitation about on what condition we can  use a variable as fixed factor\n> during regression (you can apply any variable as an fixed effect if you\n> hypothesie the effect, no non-independence requirements). Why do we need\n> non-independence condition for the random factors?\n>\n> Thanks\n>\n> Regards,\n> Chun\n>\n> -----Original Message-----\n> From: Ben Bolker [mailto:bbolker at gmail.com]\n> Sent: maandag, september 05, 2016 20:51\n> To: Chen, Chun\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Does the “non-independent\" data structure defined\n> in mixed models follow the “independency” defined by probability theory?\n>\n> On Mon, Sep 5, 2016 at 4:08 AM, Chen, Chun <chun.chen at wur.nl> wrote:\n> > Dear all,\n> >\n> > I am bit puzzled by definition of the “nested data” or “non-independent\n> data” structure in the mixed model.\n> >\n> > >From the statistical point of view, independency is defined as the\n> probabilities of selecting two observations are not influencing each other.\n> In this case, if I design an experiment where I on purposely select two\n> observations from the same group (or strata), then later on we can say\n> these two observations are dependent. However, if I am doing a sampling\n> with replacement and by coincidence I selected one observations twice (e.g.\n> throw a dice twice and by coincidence we get both a “6” each time). The\n> probability of selecting these two observations are indeed not influencing\n> each other and they are independent.\n> >\n> > My questions are:\n> >\n> > What’s the definition of the “non-independent data” that is often\n> > referred in mixed modeling? Is it the same concept as “independency”\n> > defined by probability theory, which is relevant by how the\n> > observations are selected, rather than how the observations look alike\n> > in the final sample\n>\n>    (You say \"questions\" here, but there really seems to be only one\n> question here.)\n>\n>   Yes, mixed modeling defines grouping variables based on\n> experimental/observational design.  That is, grouping variables are\n> identifiers that are believed *a priori* to be associated with\n> non-independence of observations with the same identifier values.\n>\n>   Ben Bolker\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \n\n\n\n\nThanks,\nJohn\n\n\nJohn Poe\nDoctoral Candidate\nDepartment of Political Science\nResearch Methodologist\nUK Center for Public Health Services & Systems Research\nUniversity of Kentucky\n111 Washington Avenue, Room 203a\nLexington, KY 40536\nwww.johndavidpoe.com\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "On point 1, depending on the number of sites yes you can use a random\neffect instead of a fixed effect to account for omitted variables like the\nsite selection mechanism.\n\n\nIf you are doing this to co",
       "thread_id": "thread-0b753a7f3350",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025068.html"
     },
     {
       "id": "msg-ecdc8fe0a5f5",
@@ -413,7 +434,8 @@
       "body_snippet": "Hi mixed modelers,\n\nI could really use some help with the MCMCglmm predict function. It works\nfor me on MCMCglmm output that I generated recently, but fails on MCMCglmm\noutput that I generated in Nove",
       "thread_id": "thread-ecdc8fe0a5f5",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025069.html"
     },
     {
       "id": "msg-66e2428305da",
@@ -429,7 +451,8 @@
       "body_snippet": "Hello,\n\nI have trouble with the term \"repeated measurements\" since I started to\nuse statistics. During my time as a scientist I never saw an experiment\nwhere time-repeated measurements are NOT involve",
       "thread_id": "thread-66e2428305da",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025074.html"
     },
     {
       "id": "msg-c77e02073277",
@@ -447,7 +470,8 @@
       "body_snippet": "Hi,\n\nI had to change how the predict function works in order to accommodate multivariate responses coming from different distributions. If you use:\n\nmodel$Residual$family<-rep(\"gaussian\", nrow(model$X",
       "thread_id": "thread-ecdc8fe0a5f5",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025070.html"
     },
     {
       "id": "msg-e1907a60fbb0",
@@ -459,11 +483,12 @@
       "subject_clean": "error: 'Calloc' could not allocate memory",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear colleagues\n\nI am handling a (relatively large) data set on ring recoveries and I want\nto fit a random effects model to the data using the package lme. When I run\nthe RANDOM INTERCEPT ONLY model it runs nicely, but when I try to include\nalso RANDOM SLOPE then I get an error message:\n\nError in logLik.lmeStructInt(lmeSt, lmePars) :\n  'Calloc' could not allocate memory (2036500788 of 8 bytes)\n\n\nMy memory is right now:\n> memory.size()\n[1] 375.64\n> memory.limit()\n[1] 3e+11\n\n\nI have tried to run it only with R running in the computer (plus the basic\nstuff that may use RAM) but still can't get the results. Any ideas how to\ndeal with this issue?\n\nTHANK YOU VERY MUCH!\n\nDi\n\n\n\n-- \n*Diego Pav?n Jord?n*\n\n*Finnish Museum of Natural History*\n*PO BOX 17 *\n\n*Helsinki. Finland*\n\n\n\n*0445061210https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html\n<https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html>http://www.linkedin.com/profile/view?id=170617924&trk=nav_responsive_tab_profile\n<http://www.linkedin.com/profile/view?id=170617924&trk=nav_responsive_tab_profile>https://helsinki.academia.edu/DiegoPavon\n<https://helsinki.academia.edu/DiegoPavon>*\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear colleagues\n\nI am handling a (relatively large) data set on ring recoveries and I want\nto fit a random effects model to the data using the package lme. When I run\nthe RANDOM INTERCEPT ONLY model it runs nicely, but when I try to include\nalso RANDOM SLOPE then I get an error message:\n\nError in logLik.lmeStructInt(lmeSt, lmePars) :\n  'Calloc' could not allocate memory (2036500788 of 8 bytes)\n\n\nMy memory is right now:\n> memory.size()\n[1] 375.64\n> memory.limit()\n[1] 3e+11\n\n\nI have tried to run it only with R running in the computer (plus the basic\nstuff that may use RAM) but still can't get the results. Any ideas how to\ndeal with this issue?\n\nTHANK YOU VERY MUCH!\n\nDi\n\n\n\n-- \n*Diego Pavón Jordán*\n\n*Finnish Museum of Natural History*\n*PO BOX 17 *\n\n*Helsinki. Finland*\n\n\n\n*0445061210https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html\n<https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html>http://www.linkedin.com/profile/view?id=170617924&trk=nav_responsive_tab_profile\n<http://www.linkedin.com/profile/view?id=170617924&trk=nav_responsive_tab_profile>https://helsinki.academia.edu/DiegoPavon\n<https://helsinki.academia.edu/DiegoPavon>*\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear colleagues\n\nI am handling a (relatively large) data set on ring recoveries and I want\nto fit a random effects model to the data using the package lme. When I run\nthe RANDOM INTERCEPT ONLY model i",
       "thread_id": "thread-e1907a60fbb0",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025071.html"
     },
     {
       "id": "msg-530fe9247654",
@@ -477,11 +502,12 @@
       "references": [
         "<CAD93_FojnheoWtwvBsvgiATb8vPZZYMxbJ3QiOPha=fqmbTcsw@mail.gmail.com>"
       ],
-      "body_plain": "Dear Diego,\n\nPlease don't post in HTML.\n\nCan you provide more information on the model and the data? What is the\nformula of the model (fixed and random). Type of the variables. In case of\nfactors: the number of levels. How many observations/groups do you have?\n\nBest regards,\n\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature and\nForest\nteam Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\nKliniekstraat 25\n1070 Anderlecht\nBelgium\n\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n\n2016-09-13 8:18 GMT+02:00 Diego Pavon <diego.pavonjordan at gmail.com>:\n\n> Dear colleagues\n>\n> I am handling a (relatively large) data set on ring recoveries and I want\n> to fit a random effects model to the data using the package lme. When I run\n> the RANDOM INTERCEPT ONLY model it runs nicely, but when I try to include\n> also RANDOM SLOPE then I get an error message:\n>\n> Error in logLik.lmeStructInt(lmeSt, lmePars) :\n>   'Calloc' could not allocate memory (2036500788 of 8 bytes)\n>\n>\n> My memory is right now:\n> > memory.size()\n> [1] 375.64\n> > memory.limit()\n> [1] 3e+11\n>\n>\n> I have tried to run it only with R running in the computer (plus the basic\n> stuff that may use RAM) but still can't get the results. Any ideas how to\n> deal with this issue?\n>\n> THANK YOU VERY MUCH!\n>\n> Di\n>\n>\n>\n> --\n> *Diego Pav?n Jord?n*\n>\n> *Finnish Museum of Natural History*\n> *PO BOX 17 *\n>\n> *Helsinki. Finland*\n>\n>\n>\n> *0445061210https://tuhat.halvi.helsinki.fi/portal/en/\n> persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html\n> <https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-\n> pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html>\n> http://www.linkedin.com/profile/view?id=170617924&trk=\n> nav_responsive_tab_profile\n> <http://www.linkedin.com/profile/view?id=170617924&trk=\n> nav_responsive_tab_profile>https://helsinki.academia.edu/DiegoPavon\n> <https://helsinki.academia.edu/DiegoPavon>*\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
+      "body_plain": "Dear Diego,\n\nPlease don't post in HTML.\n\nCan you provide more information on the model and the data? What is the\nformula of the model (fixed and random). Type of the variables. In case of\nfactors: the number of levels. How many observations/groups do you have?\n\nBest regards,\n\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek / Research Institute for Nature and\nForest\nteam Biometrie & Kwaliteitszorg / team Biometrics & Quality Assurance\nKliniekstraat 25\n1070 Anderlecht\nBelgium\n\nTo call in the statistician after the experiment is done may be no more\nthan asking him to perform a post-mortem examination: he may be able to say\nwhat the experiment died of. ~ Sir Ronald Aylmer Fisher\nThe plural of anecdote is not data. ~ Roger Brinner\nThe combination of some data and an aching desire for an answer does not\nensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n\n2016-09-13 8:18 GMT+02:00 Diego Pavon <diego.pavonjordan at gmail.com>:\n\n> Dear colleagues\n>\n> I am handling a (relatively large) data set on ring recoveries and I want\n> to fit a random effects model to the data using the package lme. When I run\n> the RANDOM INTERCEPT ONLY model it runs nicely, but when I try to include\n> also RANDOM SLOPE then I get an error message:\n>\n> Error in logLik.lmeStructInt(lmeSt, lmePars) :\n>   'Calloc' could not allocate memory (2036500788 of 8 bytes)\n>\n>\n> My memory is right now:\n> > memory.size()\n> [1] 375.64\n> > memory.limit()\n> [1] 3e+11\n>\n>\n> I have tried to run it only with R running in the computer (plus the basic\n> stuff that may use RAM) but still can't get the results. Any ideas how to\n> deal with this issue?\n>\n> THANK YOU VERY MUCH!\n>\n> Di\n>\n>\n>\n> --\n> *Diego Pavón Jordán*\n>\n> *Finnish Museum of Natural History*\n> *PO BOX 17 *\n>\n> *Helsinki. Finland*\n>\n>\n>\n> *0445061210https://tuhat.halvi.helsinki.fi/portal/en/\n> persons/diego-pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html\n> <https://tuhat.halvi.helsinki.fi/portal/en/persons/diego-\n> pavon-jordan%288d5db37c-eddd-4fca-92cd-9c9956a42b4a%29.html>\n> http://www.linkedin.com/profile/view?id=170617924&trk=\n> nav_responsive_tab_profile\n> <http://www.linkedin.com/profile/view?id=170617924&trk=\n> nav_responsive_tab_profile>https://helsinki.academia.edu/DiegoPavon\n> <https://helsinki.academia.edu/DiegoPavon>*\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\t[[alternative HTML version deleted]]",
       "body_snippet": "Dear Diego,\n\nPlease don't post in HTML.\n\nCan you provide more information on the model and the data? What is the\nformula of the model (fixed and random). Type of the variables. In case of\nfactors: the",
       "thread_id": "thread-e1907a60fbb0",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025072.html"
     },
     {
       "id": "msg-5aaa049c7d04",
@@ -501,7 +527,8 @@
       "body_snippet": "Dear Diego,\n\nPlease keep the mailing list in cc.\n\nYou can turn off HTML posting in the settings of your mail editor.\n\nThe problem with your model is that the random slope with a factor requires\na vari",
       "thread_id": "thread-5aaa049c7d04",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025073.html"
     },
     {
       "id": "msg-4631345ecddd",
@@ -520,7 +547,8 @@
       "body_snippet": "Thank you Fran?ois, it is much clear for me now.\n\n-----Original Message-----\nFrom: Fran?ois Rousset [mailto:francois.rousset at umontpellier.fr] \nSent: woensdag, september 07, 2016 14:28\nTo: Chen, Chu",
       "thread_id": "thread-ed8b75ad37c2",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025075.html"
     },
     {
       "id": "msg-d652a817366a",
@@ -538,7 +566,8 @@
       "body_snippet": "Quentin,\n \nA general comment.\n \nAccounting for repeated measures taken from the same observational unit\nis needed only when three or more measurements\nhave been obtained. When there are only two measu",
       "thread_id": "thread-66e2428305da",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025076.html"
     },
     {
       "id": "msg-090568214805",
@@ -557,7 +586,8 @@
       "body_snippet": "Dear Quentin,\n\nSince your response variable contains counts, you can't use ANOVA which\nassumes residuals with a Gaussian distribution.\n\nYear is conceptually a random effect. But with only two levels y",
       "thread_id": "thread-66e2428305da",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025077.html"
     },
     {
       "id": "msg-65123ce6ebfe",
@@ -573,7 +603,8 @@
       "body_snippet": "We would like to announce the following statistics course:\n\nCourse: Data exploration, regression, GLM & GAM with introduction to R\n\nWhere:  Lisbon, Portugal\n\nWhen:   13-17 February 2017\n\nCourse websit",
       "thread_id": "thread-65123ce6ebfe",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025078.html"
     },
     {
       "id": "msg-1a8f45e2fb6e",
@@ -591,7 +622,8 @@
       "body_snippet": "?Good dayCan someone guide me how I can extract means and SD from lm models? I am interested in reporting means associated with my fixed effects.\nMoses \n\t[[alternative HTML version deleted]]",
       "thread_id": "thread-1a8f45e2fb6e",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025079.html"
     },
     {
       "id": "msg-52caeb69c373",
@@ -611,7 +643,8 @@
       "body_snippet": "Hello,\nthank you very much for your answers,\n\n@ Thierry,\n\nIn the Model\nglmer(response ~ E1 * E2 + E3 + (1|R1), data, family = poisson)\n\ncan I say \"I analyze E3 as a main effect\"?.\n\nLet's assume the fo",
       "thread_id": "thread-66e2428305da",
       "thread_depth": 3,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025080.html"
     },
     {
       "id": "msg-486498b4bd3c",
@@ -628,6 +661,7 @@
       "thread_id": "thread-486498b4bd3c",
       "thread_depth": 0,
       "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025081.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20160914/572ee786/attachment.pl"
       ]
@@ -648,7 +682,8 @@
       "body_snippet": "Our paper below does exactly this\n\nhttps://www.jstatsoft.org/article/view/v020i02\n\nOn 9/14/16, 12:14 PM, \"MACDOUGALL Margaret\" <Margaret.MacDougall at ed.ac.uk>\nwrote:\n\n>Hello\n>\n>\n>\n>I am not a season",
       "thread_id": "thread-486498b4bd3c",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025082.html"
     },
     {
       "id": "msg-7dae5a35c12a",
@@ -669,7 +704,8 @@
       "body_snippet": "Dear Quentin,\n\nI suggested to use E1 * E2 + E3 + (1|R1) because that allows the same model\nfit as E1 * E2 + (1|E3) + (1|R1). If interaction between E3 and E1 or E2\nmake sense then you should add them.",
       "thread_id": "thread-66e2428305da",
       "thread_depth": 4,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025083.html"
     },
     {
       "id": "msg-e93de49d0428",
@@ -688,7 +724,8 @@
       "body_snippet": "Thank you for this valued suggestion, Harold. I look forward to reading this paper and getting back to you directly with any comments.\n\nBest wishes\n\nMargaret\n\n\n\n-- \nThe University of Edinburgh is a ch",
       "thread_id": "thread-486498b4bd3c",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025084.html"
     },
     {
       "id": "msg-b194b8991011",
@@ -704,7 +741,8 @@
       "body_snippet": "I've seen linear mixed-effects models described as \"repeated-measures\nregression analyses\" and I'm wondering whether there exists something like\na \"repeated-measures\" version of the Pearson correlatio",
       "thread_id": "thread-b194b8991011",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025085.html"
     },
     {
       "id": "msg-dd569d3668b7",
@@ -722,7 +760,8 @@
       "body_snippet": "The answer is \"sort of\". If you've already looked at measures like\nintra-class correlation, then you might start to see some of the\nproblems. A parallel issue on the difficulties with R^2 and the trou",
       "thread_id": "thread-b194b8991011",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025086.html"
     },
     {
       "id": "msg-8eadd28e8b68",
@@ -738,7 +777,8 @@
       "body_snippet": "I know mcmcsamp is no longer released as part of lme4, but I was\nlooking the code to see if I could understand what it used to do.\nMostly, I was hoping to figure out what sort of MCMC sampler it was\nu",
       "thread_id": "thread-8eadd28e8b68",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025087.html"
     },
     {
       "id": "msg-b8dbe5ebee29",
@@ -754,7 +794,8 @@
       "body_snippet": "Dear all:\n\nI am working with a multilevel Zero-inflated mixture model for longitudinal data. Concretely, I am predicting fire frequency and excess of zeros over 445 spatial units across 35 years. I am",
       "thread_id": "thread-b8dbe5ebee29",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025088.html"
     },
     {
       "id": "msg-3ef2f39d5b76",
@@ -773,7 +814,8 @@
       "body_snippet": "This is very late, but I'm posting it for completeness.\n\nThanks to Aravind for the question and to Ben for the tip.  Here's how you\nwould use lme4/lsmeans:\n\n   require(lme4)\n\n  cov2sed <- function(x){",
       "thread_id": "thread-3ef2f39d5b76",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025089.html"
     },
     {
       "id": "msg-0d96b0155521",
@@ -789,7 +831,8 @@
       "body_snippet": "Hello,\n\nI have a question emerging from a case of quasi-complete separation (as I understand it): I am working on a random-intercept GLMM, where one of my predictors has eight levels, one of which see",
       "thread_id": "thread-0d96b0155521",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025090.html"
     },
     {
       "id": "msg-7ce9a27c292c",
@@ -807,7 +850,8 @@
       "body_snippet": "On 16-09-23 01:03 AM, Tibor Kiss wrote:\n> Hello,\n> \n> I have a question emerging from a case of quasi-complete separation\n> (as I understand it): I am working on a random-intercept GLMM, where\n> one o",
       "thread_id": "thread-0d96b0155521",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025091.html"
     },
     {
       "id": "msg-8d9bd4685595",
@@ -823,7 +867,8 @@
       "body_snippet": "I'm getting lots of warnings:\n\nIn conLin$Xy * varWeights(object) :\nlonger object length is not a multiple of shorter object length\n\nwhen using varIdent for weights in nlme. I see that the problem has ",
       "thread_id": "thread-8d9bd4685595",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025092.html"
     },
     {
       "id": "msg-5393099e348f",
@@ -839,7 +884,8 @@
       "body_snippet": "Hello,\n\nThis is probably the wrong forum for such a question, but at the moment i\ndon't know who to ask instead.\n\nWhen analysing data with glmm, at one point it comes to the question of\nmodel selectio",
       "thread_id": "thread-5393099e348f",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025093.html"
     },
     {
       "id": "msg-930aa24499b8",
@@ -855,7 +901,8 @@
       "body_snippet": "Hi Ben\n\nI hope you are well. I have some issues regarding the structure of a GLMM\nin R using the glmer.nb().\n\nI have posted this question on Cross Validated at this link:\nhttp://stats.stackexchange.co",
       "thread_id": "thread-930aa24499b8",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025094.html"
     },
     {
       "id": "msg-23840e873bfd",
@@ -873,7 +920,8 @@
       "body_snippet": "Hi Dominique,\n\nIt looks like you specified the offset in model1 in the wrong way and that is causing the error.\nTry\nmodel1 <- glmer.nb(FishCounts ~ DaysSinceRelease * SizeRanking *\nSeededDensity + (1|",
       "thread_id": "thread-930aa24499b8",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025095.html"
     },
     {
       "id": "msg-adde5bfb58c2",
@@ -889,7 +937,8 @@
       "body_snippet": "Hi r-sig-ME-ers,\n\nI'm running a glmmADMB model with a single random effect, zero inflation,\nand a negative binomial distribution (session info below).  The model seems\nto run fine on its own (i.e. no ",
       "thread_id": "thread-adde5bfb58c2",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025096.html"
     },
     {
       "id": "msg-a0aae9c35fba",
@@ -907,7 +956,8 @@
       "body_snippet": "The ADMB web site migrated in the recent past, apparently breaking\nthis link.  I have an e-mail in to the site maintainer to ask if there's\na way to restore this link ...\n\n  cheers\n    Ben Bolker\n\nOn ",
       "thread_id": "thread-adde5bfb58c2",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025097.html"
     },
     {
       "id": "msg-0c8c8adaf8f5",
@@ -925,7 +975,8 @@
       "body_snippet": "The maintainer has let me know the new URL is\nhttp://buildbot.admb-project.org/glmmadmb/ . I'll update the\ndocumentation/web page\n\n    -------- Forwarded Message --------\n    Subject: [R-sig-ME] Error",
       "thread_id": "thread-0c8c8adaf8f5",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025098.html"
     },
     {
       "id": "msg-7ba79535407c",
@@ -941,7 +992,8 @@
       "body_snippet": "Hello,\n\nI'm trying to establish 95% CIs for both the variance for a random\nintercept and for the slopes of each fixed effect in lmer models. The\nrandom intercept represents about 30 individual animals",
       "thread_id": "thread-7ba79535407c",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025099.html"
     },
     {
       "id": "msg-c92d23af1db5",
@@ -957,7 +1009,8 @@
       "body_snippet": "I've checked the archives for similar posts to my question below and found similar questions but never a satisfying answer.  Links to these previous questions are here https://stat.ethz.ch/pipermail/r",
       "thread_id": "thread-c92d23af1db5",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025100.html"
     },
     {
       "id": "msg-854b38d6a332",
@@ -975,7 +1028,8 @@
       "body_snippet": "If it's only two groups and sample size isn't an issue then why not just\nestimate a model for males and one for females then predict their random\neffects distributions and compare them?\n\nOn Fri, Sep 3",
       "thread_id": "thread-c92d23af1db5",
       "thread_depth": 1,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025101.html"
     },
     {
       "id": "msg-403763cad071",
@@ -994,7 +1048,8 @@
       "body_snippet": "John, Thank you for the response.  That is certainly a fall-back option in this particular case.  I guess I?m trying to think about this more broadly as to whether/how this type of model could be impl",
       "thread_id": "thread-c92d23af1db5",
       "thread_depth": 2,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025103.html"
     },
     {
       "id": "msg-637644c50d1b",
@@ -1014,7 +1069,8 @@
       "body_snippet": "Using a bayesian framework instead of a standard likelihood based\nestimation of random effects should make it much easier to calculate\ndifferent random effects by sex. Alternatively, you could *probab",
       "thread_id": "thread-c92d23af1db5",
       "thread_depth": 3,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025102.html"
     },
     {
       "id": "msg-ea0d2a1e60ca",
@@ -1030,7 +1086,8 @@
       "body_snippet": "Suppose that there are two experimental factors A and B, each of which has two levels, leading to 2 x 2 = 4 combinations: A1B1, 2A2B1, A1B2, and A2B2. Typically this would be analyzed with a two-way w",
       "thread_id": "thread-ea0d2a1e60ca",
       "thread_depth": 0,
-      "month": "2016-09"
+      "month": "2016-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2016q3/025104.html"
     }
   ],
   "threads": [
