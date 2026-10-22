@@ -24,7 +24,8 @@
       "body_snippet": "Hey, everyone.  Thanks so much for your input.  I apologize for not\nattaching an example data file before.  I'm attaching an example csv file,\nused with the following R script:\n\nveg=read.csv(\"Litter.c",
       "thread_id": "thread-b3d11f75df41",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003750.html"
     },
     {
       "id": "msg-4489460edeeb",
@@ -41,6 +42,7 @@
       "thread_id": "thread-4489460edeeb",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003751.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100503/0e6aa592/attachment.pl"
       ]
@@ -59,7 +61,8 @@
       "body_snippet": "Hi folks,\n\nI'm wondering if there's a way to specify an lme model in a way that\nlets it take into account quantifiable measurement error in a\npredictor variable. The context is that I am interested in",
       "thread_id": "thread-cb96974b1a46",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003752.html"
     },
     {
       "id": "msg-2165794ac691",
@@ -77,7 +80,8 @@
       "body_snippet": "On Tue, 4 May 2010, Mike Lawrence wrote:\n\n> Hi folks,\n>\n> I'm wondering if there's a way to specify an lme model in a way that\n> lets it take into account quantifiable measurement error in a\n> predict",
       "thread_id": "thread-cb96974b1a46",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003753.html"
     },
     {
       "id": "msg-025eecad9fcc",
@@ -89,11 +93,12 @@
       "subject_clean": "F test for two mixed-effects models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear list,\n\nI am stuck with an F test in a mixed-effects model. Some time ago Dr. \nBates explained that if we had factors for fixed-effects, the model \nalways spaned an intercept, even if we excluded it in the model formula. \nNow, I fit two models:\n\nmodel1 = lme(response ~ factor1 + factor2 + x, random= ~1|plot, data=mydata)\n\nmodel2 = lme(response ~ 0  + factor1 + factor2 + x, random= ~1|plot, \ndata=mydata)\n\nresponse and x are continuous, factor1, factor2 and plot are factors.\nAnd I would like to test the hypothesis, that all model coefficients \nexcept the intercept are zero. For model2, instead of the intercept, I \nuse the reference level (the same as the estimate of the intercept in \nmodel1, of course). For the test, I use the function wald.test in the \npackage aod. To my surprise, the F value in the test is not the same for \nmodel1 and model2.\nI certainly miss something important, but I can?t figure out what it is. \nOf course, the fixed-effects estimates of the factors are different \n(except for the reference level) and the var-cov-matrices differ as \nwell. But, I thought, that the two models were equivalent and that I was \ntesting the same hypothesis.\n\nAny help would be greatly appreciated.\n\nChristina",
+      "body_plain": "Dear list,\n\nI am stuck with an F test in a mixed-effects model. Some time ago Dr. \nBates explained that if we had factors for fixed-effects, the model \nalways spaned an intercept, even if we excluded it in the model formula. \nNow, I fit two models:\n\nmodel1 = lme(response ~ factor1 + factor2 + x, random= ~1|plot, data=mydata)\n\nmodel2 = lme(response ~ 0  + factor1 + factor2 + x, random= ~1|plot, \ndata=mydata)\n\nresponse and x are continuous, factor1, factor2 and plot are factors.\nAnd I would like to test the hypothesis, that all model coefficients \nexcept the intercept are zero. For model2, instead of the intercept, I \nuse the reference level (the same as the estimate of the intercept in \nmodel1, of course). For the test, I use the function wald.test in the \npackage aod. To my surprise, the F value in the test is not the same for \nmodel1 and model2.\nI certainly miss something important, but I can’t figure out what it is. \nOf course, the fixed-effects estimates of the factors are different \n(except for the reference level) and the var-cov-matrices differ as \nwell. But, I thought, that the two models were equivalent and that I was \ntesting the same hypothesis.\n\nAny help would be greatly appreciated.\n\nChristina",
       "body_snippet": "Dear list,\n\nI am stuck with an F test in a mixed-effects model. Some time ago Dr. \nBates explained that if we had factors for fixed-effects, the model \nalways spaned an intercept, even if we excluded ",
       "thread_id": "thread-025eecad9fcc",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003754.html"
     },
     {
       "id": "msg-81280248a763",
@@ -110,6 +115,7 @@
       "thread_id": "thread-81280248a763",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003755.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100506/c9cff368/attachment.pl"
       ]
@@ -126,11 +132,12 @@
       "references": [
         "<6B810AFB14C606439FD57E5985E0379104759411@useagan1500p.GLOBAL.ECOLAB.CORP>"
       ],
-      "body_plain": "Hi Paul,\n\nI think that in your \"fixed=\" statement you are declaring linear\nrelationships between your parameters (Peak and Rate) and the variables\nVents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  depends on\nthe no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if you are lucky\nit will converge). \n\nAfter you have obtained that model you can start building more complicated\nrelationships (specially introducing Vents, to check for differences between\nusing 1 Vent or 2 Vents). I am not sure about the time relationship in that\nmass transfer.\n\nRegards,\n\nJesus\n\n\nJes?s Mar?a Fr?as Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health\nDublin Institute of Technology\nt +353 1 402 4459\nf +353 1 4024495\nw http://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Prew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear model in R,\nand am hoping someone can spot the error I've made.  The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), then allowed\nto vent for 15 minutes.  Pressure readings were taken every minute.  The\nresearch question is the significance of the Vent factor (1 vs. 2),  with\nSamples as the random factor and Pressure decaying exponentially.  Readings\nat time zero were removed, as they were 2 psi.  Any direction you can\nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)),\n+ fixed = Peak + Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample,\n+ data = Press.dat,\n+ start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate * Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:9}}",
+      "body_plain": "Hi Paul,\n\nI think that in your \"fixed=\" statement you are declaring linear\nrelationships between your parameters (Peak and Rate) and the variables\nVents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  depends on\nthe no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if you are lucky\nit will converge). \n\nAfter you have obtained that model you can start building more complicated\nrelationships (specially introducing Vents, to check for differences between\nusing 1 Vent or 2 Vents). I am not sure about the time relationship in that\nmass transfer.\n\nRegards,\n\nJesus\n\n\nJesús María Frías Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health\nDublin Institute of Technology\nt +353 1 402 4459\nf +353 1 4024495\nw http://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of Prew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear model in R,\nand am hoping someone can spot the error I've made.  The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), then allowed\nto vent for 15 minutes.  Pressure readings were taken every minute.  The\nresearch question is the significance of the Vent factor (1 vs. 2),  with\nSamples as the random factor and Pressure decaying exponentially.  Readings\nat time zero were removed, as they were 2 psi.  Any direction you can\nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)),\n+ fixed = Peak + Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample,\n+ data = Press.dat,\n+ start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate * Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:9}}",
       "body_snippet": "Hi Paul,\n\nI think that in your \"fixed=\" statement you are declaring linear\nrelationships between your parameters (Peak and Rate) and the variables\nVents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n",
       "thread_id": "thread-81280248a763",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003756.html"
     },
     {
       "id": "msg-260ddf27b211",
@@ -148,7 +155,8 @@
       "body_snippet": "On Thu, May 6, 2010 at 10:34 AM, Julia Liu <liujulia7 at gmail.com> wrote:\n> Dear Prof. Bates,\n>\n> I have been using lmer() for sometime in windows version of R. Recently, I\n> decided to install R on ",
       "thread_id": "thread-260ddf27b211",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003757.html"
     },
     {
       "id": "msg-7f39ab6c74af",
@@ -163,11 +171,12 @@
         "<6B810AFB14C606439FD57E5985E0379104759411@useagan1500p.GLOBAL.ECOLAB.CORP>",
         "<005e01caed1e$04596650$0d0c32f0$@Frias@dit.ie>"
       ],
-      "body_plain": "Dear Jesus,\n\nThank you for your reply.  Your suggested changes did work, but the model failed to converge as you ventured might happen.  In reading through various sources and  help lists, could be that the model is over-parameterized, and random effects for the repeated measures are over-kill.\n\nAlso, your reply was helpful in identifying the complex interpretation of my model terms.  I am interested in modeling the Rate as a function of # Vents.   Probably not the Asymptote/Peak vs. # Vents, after thinking about it more.  The other 'flexibility' in the parameters --- the Time interaction --- was me not understanding the concepts of nonlinear mixed models.   Thank you for your insight.\n\nRegards,\nPaul\n\n\nPaul Prew  |  Statistician\n651-795-5942?? |?? fax 651-204-7504 \nEcolab Research Center  | Mail Stop ESC-F4412-A \n655 Lone Oak Drive  |  Eagan, MN 55121-1560 \n\n \n\n-----Original Message-----\nFrom: Jesus Frias [mailto:Jesus.Frias at dit.ie] \nSent: Thursday, May 06, 2010 8:14 AM\nTo: Prew, Paul\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nHi Paul,\n\nI think that in your \"fixed=\" statement you are declaring \nlinear relationships between your parameters (Peak and Rate) \nand the variables Vents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  \ndepends on the no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if \nyou are lucky it will converge). \n\nAfter you have obtained that model you can start building more \ncomplicated relationships (specially introducing Vents, to \ncheck for differences between using 1 Vent or 2 Vents). I am \nnot sure about the time relationship in that mass transfer.\n\nRegards,\n\nJesus\n\n\nJes?s Mar?a Fr?as Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health Dublin \nInstitute of Technology t +353 1 402 4459 f +353 1 4024495 w \nhttp://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \nPrew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear \nmodel in R, and am hoping someone can spot the error I've made. \n The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), \nthen allowed to vent for 15 minutes.  Pressure readings were \ntaken every minute.  The research question is the significance \nof the Vent factor (1 vs. 2),  with Samples as the random \nfactor and Pressure decaying exponentially.  Readings at time \nzero were removed, as they were 2 psi.  Any direction you can \nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed = Peak + \n+ Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample, data = \n+ Press.dat, start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate \n* Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:22}}",
+      "body_plain": "Dear Jesus,\n\nThank you for your reply.  Your suggested changes did work, but the model failed to converge as you ventured might happen.  In reading through various sources and  help lists, could be that the model is over-parameterized, and random effects for the repeated measures are over-kill.\n\nAlso, your reply was helpful in identifying the complex interpretation of my model terms.  I am interested in modeling the Rate as a function of # Vents.   Probably not the Asymptote/Peak vs. # Vents, after thinking about it more.  The other 'flexibility' in the parameters --- the Time interaction --- was me not understanding the concepts of nonlinear mixed models.   Thank you for your insight.\n\nRegards,\nPaul\n\n\nPaul Prew  |  Statistician\n651-795-5942   |   fax 651-204-7504 \nEcolab Research Center  | Mail Stop ESC-F4412-A \n655 Lone Oak Drive  |  Eagan, MN 55121-1560 \n\n \n\n-----Original Message-----\nFrom: Jesus Frias [mailto:Jesus.Frias at dit.ie] \nSent: Thursday, May 06, 2010 8:14 AM\nTo: Prew, Paul\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nHi Paul,\n\nI think that in your \"fixed=\" statement you are declaring \nlinear relationships between your parameters (Peak and Rate) \nand the variables Vents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  \ndepends on the no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if \nyou are lucky it will converge). \n\nAfter you have obtained that model you can start building more \ncomplicated relationships (specially introducing Vents, to \ncheck for differences between using 1 Vent or 2 Vents). I am \nnot sure about the time relationship in that mass transfer.\n\nRegards,\n\nJesus\n\n\nJesús María Frías Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health Dublin \nInstitute of Technology t +353 1 402 4459 f +353 1 4024495 w \nhttp://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \nPrew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear \nmodel in R, and am hoping someone can spot the error I've made. \n The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), \nthen allowed to vent for 15 minutes.  Pressure readings were \ntaken every minute.  The research question is the significance \nof the Vent factor (1 vs. 2),  with Samples as the random \nfactor and Pressure decaying exponentially.  Readings at time \nzero were removed, as they were 2 psi.  Any direction you can \nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed = Peak + \n+ Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample, data = \n+ Press.dat, start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate \n* Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:22}}",
       "body_snippet": "Dear Jesus,\n\nThank you for your reply.  Your suggested changes did work, but the model failed to converge as you ventured might happen.  In reading through various sources and  help lists, could be th",
       "thread_id": "thread-81280248a763",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003758.html"
     },
     {
       "id": "msg-25eb24446709",
@@ -184,6 +193,7 @@
       "thread_id": "thread-25eb24446709",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003759.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100507/4f9d3920/attachment.pl"
       ]
@@ -202,11 +212,12 @@
         "<005e01caed1e$04596650$0d0c32f0$%Frias@dit.ie>",
         "<6B810AFB14C606439FD57E5985E03791050E1C51@useagan1500p.GLOBAL.ECOLAB.CORP>"
       ],
-      "body_plain": "Hi Paul,\n\nIf the model failed to converge without the Vents effect you may want to\ntry:\n\nPress.fit1 <-nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed =\nlist(Peak~1, Rate ~ Vents), random = Peak + Rate ~ 1 | Sample, data =\nPress.dat, start = c(2,1.3,2.6))\n\nThe 1.3 is the difference in rate between the first level of your factor\nVents and the second (analytical contrasts). Use a better estimation of that\nvalue instead of the 1.3 (double the rate for using 2 vents, if 1 Vent is\nthe first level in your Vents variable).\n\nRegards,\n\nJesus\n\n\n-----Original Message-----\nFrom: Prew, Paul [mailto:Paul.Prew at ecolab.com] \nSent: Thursday, May 06, 2010 9:55 PM\nTo: Jesus Frias\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nDear Jesus,\n\nThank you for your reply.  Your suggested changes did work, but the model\nfailed to converge as you ventured might happen.  In reading through various\nsources and  help lists, could be that the model is over-parameterized, and\nrandom effects for the repeated measures are over-kill.\n\nAlso, your reply was helpful in identifying the complex interpretation of my\nmodel terms.  I am interested in modeling the Rate as a function of # Vents.\nProbably not the Asymptote/Peak vs. # Vents, after thinking about it more.\nThe other 'flexibility' in the parameters --- the Time interaction --- was\nme not understanding the concepts of nonlinear mixed models.   Thank you for\nyour insight.\n\nRegards,\nPaul\n\n\nPaul Prew  |  Statistician\n651-795-5942?? |?? fax 651-204-7504 \nEcolab Research Center  | Mail Stop ESC-F4412-A \n655 Lone Oak Drive  |  Eagan, MN 55121-1560 \n\n \n\n-----Original Message-----\nFrom: Jesus Frias [mailto:Jesus.Frias at dit.ie] \nSent: Thursday, May 06, 2010 8:14 AM\nTo: Prew, Paul\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nHi Paul,\n\nI think that in your \"fixed=\" statement you are declaring \nlinear relationships between your parameters (Peak and Rate) \nand the variables Vents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  \ndepends on the no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if \nyou are lucky it will converge). \n\nAfter you have obtained that model you can start building more \ncomplicated relationships (specially introducing Vents, to \ncheck for differences between using 1 Vent or 2 Vents). I am \nnot sure about the time relationship in that mass transfer.\n\nRegards,\n\nJesus\n\n\nJes?s Mar?a Fr?as Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health Dublin \nInstitute of Technology t +353 1 402 4459 f +353 1 4024495 w \nhttp://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \nPrew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear \nmodel in R, and am hoping someone can spot the error I've made. \n The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), \nthen allowed to vent for 15 minutes.  Pressure readings were \ntaken every minute.  The research question is the significance \nof the Vent factor (1 vs. 2),  with Samples as the random \nfactor and Pressure decaying exponentially.  Readings at time \nzero were removed, as they were 2 psi.  Any direction you can \nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed = Peak + \n+ Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample, data = \n+ Press.dat, start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate \n* Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:26}}",
+      "body_plain": "Hi Paul,\n\nIf the model failed to converge without the Vents effect you may want to\ntry:\n\nPress.fit1 <-nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed =\nlist(Peak~1, Rate ~ Vents), random = Peak + Rate ~ 1 | Sample, data =\nPress.dat, start = c(2,1.3,2.6))\n\nThe 1.3 is the difference in rate between the first level of your factor\nVents and the second (analytical contrasts). Use a better estimation of that\nvalue instead of the 1.3 (double the rate for using 2 vents, if 1 Vent is\nthe first level in your Vents variable).\n\nRegards,\n\nJesus\n\n\n-----Original Message-----\nFrom: Prew, Paul [mailto:Paul.Prew at ecolab.com] \nSent: Thursday, May 06, 2010 9:55 PM\nTo: Jesus Frias\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nDear Jesus,\n\nThank you for your reply.  Your suggested changes did work, but the model\nfailed to converge as you ventured might happen.  In reading through various\nsources and  help lists, could be that the model is over-parameterized, and\nrandom effects for the repeated measures are over-kill.\n\nAlso, your reply was helpful in identifying the complex interpretation of my\nmodel terms.  I am interested in modeling the Rate as a function of # Vents.\nProbably not the Asymptote/Peak vs. # Vents, after thinking about it more.\nThe other 'flexibility' in the parameters --- the Time interaction --- was\nme not understanding the concepts of nonlinear mixed models.   Thank you for\nyour insight.\n\nRegards,\nPaul\n\n\nPaul Prew  |  Statistician\n651-795-5942   |   fax 651-204-7504 \nEcolab Research Center  | Mail Stop ESC-F4412-A \n655 Lone Oak Drive  |  Eagan, MN 55121-1560 \n\n \n\n-----Original Message-----\nFrom: Jesus Frias [mailto:Jesus.Frias at dit.ie] \nSent: Thursday, May 06, 2010 8:14 AM\nTo: Prew, Paul\nCc: r-sig-mixed-models at r-project.org\nSubject: RE: [R-sig-ME] starting values in nlme\n\nHi Paul,\n\nI think that in your \"fixed=\" statement you are declaring \nlinear relationships between your parameters (Peak and Rate) \nand the variables Vents and Time.\n \nfixed = Peak + Rate ~ Vents * Time\n\nyou are saying that the Peak pressure and the rate of decrease  \ndepends on the no of Vents and changes linearly with time. \n\nIf I understand well what you are doing you probably want \n\nfixed= Peak + Rate ~ 1\n\nThat will work with the starting values that you have (and if \nyou are lucky it will converge). \n\nAfter you have obtained that model you can start building more \ncomplicated relationships (specially introducing Vents, to \ncheck for differences between using 1 Vent or 2 Vents). I am \nnot sure about the time relationship in that mass transfer.\n\nRegards,\n\nJesus\n\n\nJesús María Frías Celayeta\nHead of Department of Food Science\nSchool of Food Science and Environmental Health Dublin \nInstitute of Technology t +353 1 402 4459 f +353 1 4024495 w \nhttp://fseh.dit.ie/o4/StaffListing/JesusFrias.html\n\n\n\n\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-project.org\n[mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf Of \nPrew, Paul\nSent: Thursday, May 06, 2010 7:13 AM\nTo: r-sig-mixed-models at r-project.org\nSubject: [R-sig-ME] starting values in nlme\n\nHello,  I am making my first attempt to work with a non-linear \nmodel in R, and am hoping someone can spot the error I've made. \n The scenario is to\nmodel the rate of gas escaping from a container with 1 vs. 2 vents.   10\ncontainer samples were pumped up to 2 psi (relative pressure), \nthen allowed to vent for 15 minutes.  Pressure readings were \ntaken every minute.  The research question is the significance \nof the Vent factor (1 vs. 2),  with Samples as the random \nfactor and Pressure decaying exponentially.  Readings at time \nzero were removed, as they were 2 psi.  Any direction you can \nprovide is appreciated, regards, Paul\n \n> str(Press.dat)\n'data.frame':   125 obs. of  4 variables:\n $ Time     : num  1 2 3 4 5 6 7 8 9 10 ...\n $ Pressure : num  1.8 1.6 1.5 1.4 1.3 1.2 1.1 1 0.9 0.8 ...\n $ Vents    : num  1 1 1 1 1 1 1 1 1 1 ...\n $ Sample   : num  1 1 1 1 1 1 1 1 1 1 ...\n \n\n \n> Press.fit1 <-\n+ nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed = Peak + \n+ Rate ~ Vents * Time, random = Peak + Rate ~ 1 | Sample, data = \n+ Press.dat, start = c(Peak=2, Rate=1.3))\nError in nlme.formula(model = Pressure ~ Peak * (1 - exp(-Rate \n* Time)),  : \n  starting values for the fixed component are not the correct length\n \n\nCONFIDENTIALITY NOTICE: \\ This e-mail communication an.....{{dropped:26}}",
       "body_snippet": "Hi Paul,\n\nIf the model failed to converge without the Vents effect you may want to\ntry:\n\nPress.fit1 <-nlme(model = Pressure ~ Peak * (1 - exp(-Rate*Time)), fixed =\nlist(Peak~1, Rate ~ Vents), random =",
       "thread_id": "thread-81280248a763",
       "thread_depth": 3,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003760.html"
     },
     {
       "id": "msg-2fa32b34dff8",
@@ -222,7 +233,8 @@
       "body_snippet": "Dear All,\n\nI am conducting an anova with multiple error terms:\n\nmodel<-aov(time~treat+Error(site/treat))\n\nand would like to be able to do post hoc tests (eg Tukeys) but the aov\nfunction only allows Tu",
       "thread_id": "thread-2fa32b34dff8",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003761.html"
     },
     {
       "id": "msg-51d6b92db9bf",
@@ -239,6 +251,7 @@
       "thread_id": "thread-51d6b92db9bf",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003762.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100508/6c0da0b9/attachment.pl"
       ]
@@ -259,7 +272,8 @@
       "body_snippet": "Claire M. Sheridan wrote:\n>   \n> I am new to the use of R and to GLMM's. I am not sure how to interpret my\n> results. I first modeled my most complex model with all of my hypothesized\n> fixed effects(",
       "thread_id": "thread-51d6b92db9bf",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003763.html"
     },
     {
       "id": "msg-dcfee2aa9e53",
@@ -276,6 +290,7 @@
       "thread_id": "thread-dcfee2aa9e53",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003764.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100510/846f2e71/attachment.pl"
       ]
@@ -295,6 +310,7 @@
       "thread_id": "thread-b634840db1e7",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003765.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100511/92f6e1a4/attachment.pl"
       ]
@@ -315,7 +331,8 @@
       "body_snippet": "On 5/11/2010 11:11 AM, Etn wrote:\n> Hi All,\n> \n> I would really appreciate any advice on extracting Odds Ratios for random\n> effects from my multilevel model. I want to find the OR for the random\n> ef",
       "thread_id": "thread-b634840db1e7",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003766.html"
     },
     {
       "id": "msg-e52b1acb1850",
@@ -332,6 +349,7 @@
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003767.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100511/b5c640f1/attachment.pl"
       ]
@@ -352,7 +370,8 @@
       "body_snippet": "On Tue, 11 May 2010, David Zajanc wrote:\n\n> Hi,\n>\n> I am looking into ways to fit a negative binomial mixed effects model to\n> our data, but have not found any obvious methods in searching through\n> t",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003768.html"
     },
     {
       "id": "msg-f3f669a41802",
@@ -370,7 +389,8 @@
       "body_snippet": "David Zajanc wrote:\n> Hi,\n> \n>  \n> \n> I am looking into ways to fit a negative binomial mixed effects model to\n> our data, but have not found any obvious methods in searching through\n> the archives of",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003769.html"
     },
     {
       "id": "msg-bf6d1cfd0788",
@@ -389,7 +409,8 @@
       "body_snippet": "Jim Lindsey's repeated package has function gnlmm which will fit neg-bin\nmixed effects models with one level of nesting. See:\n\nhttp://www.commanster.eu/rcode.html\n\nJim's packages are non-CRAN. There a",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003770.html"
     },
     {
       "id": "msg-d1dca4cc62e7",
@@ -408,7 +429,8 @@
       "body_snippet": "David Duffy wrote:\n> On Tue, 11 May 2010, David Zajanc wrote:\n> \n>> Hi,\n>>\n>> I am looking into ways to fit a negative binomial mixed effects model to\n>> our data, but have not found any obvious metho",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003771.html"
     },
     {
       "id": "msg-f2a4abdcd997",
@@ -428,7 +450,8 @@
       "body_snippet": "On Wed, 12 May 2010, Ben Bolker wrote:\n\n> David Duffy wrote:\n>> On Tue, 11 May 2010, David Zajanc wrote:\n>> If you have only a \"single level\" of random effects eg simple clusters,\n>> then gamm() [mgcv",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 3,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003772.html"
     },
     {
       "id": "msg-1a100ac1e5ea",
@@ -444,7 +467,8 @@
       "body_snippet": "hello,\n\ni searched for a reference how to do post hocs for lmms or glmms but \nwithout success!\n\ni have a model with 2 nominal explanatory variables (2 levels and 4 \nlevels) and 2 nested random variabl",
       "thread_id": "thread-1a100ac1e5ea",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003773.html"
     },
     {
       "id": "msg-3bc1f1155cf4",
@@ -462,7 +486,8 @@
       "body_snippet": "One approach I've been playing with lately is using bootstrapping &\nLME to generate distributions of predicted values for each cell in the\ndesign (using the full model on each iteration of the loop). ",
       "thread_id": "thread-1a100ac1e5ea",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003774.html"
     },
     {
       "id": "msg-c9defd0ddc1e",
@@ -479,6 +504,7 @@
       "thread_id": "thread-c9defd0ddc1e",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003775.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100512/f5a46e99/attachment.pl"
       ]
@@ -499,7 +525,8 @@
       "body_snippet": "My preference would be to use MCMCglmm, which will fit an over-dispersed \nPoisson GLMM (ie, an extra observation-level random-effect is included \nto capture the over-dispersion).\n\nIf you specifically ",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003776.html"
     },
     {
       "id": "msg-d3770235b7ae",
@@ -515,7 +542,8 @@
       "body_snippet": "Thanks for the input to all who have replied.  Will mull these options\nover with my colleagues before proceeding.\n\nDavid\n\n-----Original Message-----\nFrom: Ben Bolker [mailto:bolker at ufl.edu] \nSent: ",
       "thread_id": "thread-e52b1acb1850",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003777.html"
     },
     {
       "id": "msg-ffbff8b8515e",
@@ -527,11 +555,12 @@
       "subject_clean": "Proportional odds model w/ random effects",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi,\n\nI've been looking at some data in which observers rated\npairs of images as being of siblings or not.  There\nwere 32 observers and 30 pairs of images, half of\nwhich were of siblings.  Treating the ratings as ordinal responses,\nI'm interested in fitting the data with a proportional odds model.\nI would like to treat both Observer and Image pair as random effects.\nI followed the recent discussion on the list on\nproportional odds models with mixed-effects.\nThe clmm function from the ordinal package in the\ncurrent version only accepts 1 random effect, as far\nas I can tell.  I have played with MCMCglmm a bit\nbut don't feel comfortable with my understanding (yet)\nabout how best to choose priors.  I put (hacked) together\na wrapper (see below) for glmer (or glm if there are no random effect\nterms) that builds a model matrix for the fixed effects\npart of the model which is combined with the random\neffect terms before handing it over to glmer (or glm\nif no random effects).  It has a lot of imperfections\nbut it seems to give results for the cutpoints,\npredictors and standard errors that are systematically\nclose to those from polr from MASS (when there are no fixed\neffects in the model) or clmm with one random effect and\nreasonably otherwise.  I say  systematically close,\nbecause they always  differ in the 2nd decimal place or so.\nThis may turn out to be an unimportant difference but I worry\nbecause in the past, I've found glm and direct optimization\napproaches to be more similar when things are set up right.\nThe deviances are quite different (usually by about a factor\nof 2), but there may be more benign reasons for that (inclusion\nof constants, etc.).\nI would like to know if this is a reasonable approach or not,\nI have played with convergence criteria and number of iterations\nand have not found these to explain the differences.\nI pasted in my code below for anyone interested and would be happy to\nlearn of its deficiencies (a few of which I'm already aware).\n\nThank you.\n\nKen\n\npolmer <- function(formula, data, lnk = \"logit\",\n\tcor = FALSE, ...){\n# Get fixed and random terms\n\tlTerms <- labels(terms(formula))\n\trTerms <- sapply(lTerms, function(x){\n\t\trT <- grep(\"|\", x, fixed = TRUE)\n\t\tlength(rT) > 0\n\t\t})\n\tranTerms <- lTerms[rTerms]\n\tfixTerms <- lTerms[!rTerms]\n\tranNames <- as.vector(sapply(ranTerms, function(x)\n\t\tstrsplit(x, \"\\\\| \")[[1]][2]\n\t\t))\n\tNoRanEff <- !(length(ranTerms) > 0)\n\n# Make fixed-effect model matrix\n\tResp <- ordered(data[[as.character(formula[[2]])]])\n\tCuts <- seq(0, length(levels(Resp)) - 2)\n\tcumRat <- as.vector(sapply(Cuts,\n\t\tfunction(x) Resp <= x))\n\tfRat <- gl(length(Cuts), nrow(data),\n\t\tnrow(data) * length(Cuts))\n\tX <- model.matrix(~ fRat - 1)\n\tlabs <- sapply(Cuts, function(x)\n\t\tpaste(x, \"|\", x+1, sep = \"\")\n\t\t)\n\tcolnames(X) <- labs\n\tfxForm <- if(!NoRanEff){\n\t\ttmp <- formula\n\t\ttmp[[2]] <- NULL\n\t\twhile( any(xx <- sapply(tmp[[2]],\n\t\t\tinherits, what = \"(\" ))){\n\t\t\t\tRE <- which(xx)\n\t\t\t\tfor(ix in RE) tmp[[2]][[ix]] <- NULL\n\t\t\t\ttmp[[2]] <- tmp[[2]][[2]]\n\t\t}\n\t\ttmp } else formula\n\n\tfX <- -model.matrix(fxForm, data)[, -1]\n\tfX <- kronecker(matrix(rep(1, length(Cuts)), nc = 1),\n\t\t fX)\n\tX <- cbind(X, fX)\n\tcolnames(X)[-seq(length(Cuts))] <- fixTerms\n\tp.df <- data.frame(cumRat = cumRat, X = X)\n\tnames(p.df) <- c(\"cumRat\", colnames(X))\n\n# Make random-effect model vectors\n\tfrm <- if(!NoRanEff){\n\t\ttmp <- sapply(seq_len(length(ranNames)),\n\t\t\tfunction(x)\n\t\t\t\trep(data[[ranNames[x]]], 10))\n\n\t\tfor(ix in seq_len(ncol(tmp)))\n\t\t\tassign(ranNames[ix], tmp[, ix])\n\t\trxForm <- paste(paste(\"(\", ranTerms, \")\",\n\t\t\tsep = \"\", collapse = \" + \"), \" - 1\")\n\tas.formula(paste(\"cumRat ~ .  + \", rxForm))\n\t} else as.formula(\"cumRat ~ . - 1\")\n\n\tres <- if (NoRanEff)\n\t  glm(frm, data = p.df,\n\t  \tfamily =  binomial(lnk), ...) else\n\t  glmer(frm, data = p.df,\n\t  \tfamily =  binomial(lnk), ...)\n\tif (inherits(res, \"mer\")) print(res, cor = cor) else\n\t\tprint(res)\n\tinvisible(res)\n}\n\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Hi,\n\nI've been looking at some data in which observers rated\npairs of images as being of siblings or not.  There\nwere 32 observers and 30 pairs of images, half of\nwhich were of siblings.  Treating the ratings as ordinal responses,\nI'm interested in fitting the data with a proportional odds model.\nI would like to treat both Observer and Image pair as random effects.\nI followed the recent discussion on the list on\nproportional odds models with mixed-effects.\nThe clmm function from the ordinal package in the\ncurrent version only accepts 1 random effect, as far\nas I can tell.  I have played with MCMCglmm a bit\nbut don't feel comfortable with my understanding (yet)\nabout how best to choose priors.  I put (hacked) together\na wrapper (see below) for glmer (or glm if there are no random effect\nterms) that builds a model matrix for the fixed effects\npart of the model which is combined with the random\neffect terms before handing it over to glmer (or glm\nif no random effects).  It has a lot of imperfections\nbut it seems to give results for the cutpoints,\npredictors and standard errors that are systematically\nclose to those from polr from MASS (when there are no fixed\neffects in the model) or clmm with one random effect and\nreasonably otherwise.  I say  systematically close,\nbecause they always  differ in the 2nd decimal place or so.\nThis may turn out to be an unimportant difference but I worry\nbecause in the past, I've found glm and direct optimization\napproaches to be more similar when things are set up right.\nThe deviances are quite different (usually by about a factor\nof 2), but there may be more benign reasons for that (inclusion\nof constants, etc.).\nI would like to know if this is a reasonable approach or not,\nI have played with convergence criteria and number of iterations\nand have not found these to explain the differences.\nI pasted in my code below for anyone interested and would be happy to\nlearn of its deficiencies (a few of which I'm already aware).\n\nThank you.\n\nKen\n\npolmer <- function(formula, data, lnk = \"logit\",\n\tcor = FALSE, ...){\n# Get fixed and random terms\n\tlTerms <- labels(terms(formula))\n\trTerms <- sapply(lTerms, function(x){\n\t\trT <- grep(\"|\", x, fixed = TRUE)\n\t\tlength(rT) > 0\n\t\t})\n\tranTerms <- lTerms[rTerms]\n\tfixTerms <- lTerms[!rTerms]\n\tranNames <- as.vector(sapply(ranTerms, function(x)\n\t\tstrsplit(x, \"\\\\| \")[[1]][2]\n\t\t))\n\tNoRanEff <- !(length(ranTerms) > 0)\n\n# Make fixed-effect model matrix\n\tResp <- ordered(data[[as.character(formula[[2]])]])\n\tCuts <- seq(0, length(levels(Resp)) - 2)\n\tcumRat <- as.vector(sapply(Cuts,\n\t\tfunction(x) Resp <= x))\n\tfRat <- gl(length(Cuts), nrow(data),\n\t\tnrow(data) * length(Cuts))\n\tX <- model.matrix(~ fRat - 1)\n\tlabs <- sapply(Cuts, function(x)\n\t\tpaste(x, \"|\", x+1, sep = \"\")\n\t\t)\n\tcolnames(X) <- labs\n\tfxForm <- if(!NoRanEff){\n\t\ttmp <- formula\n\t\ttmp[[2]] <- NULL\n\t\twhile( any(xx <- sapply(tmp[[2]],\n\t\t\tinherits, what = \"(\" ))){\n\t\t\t\tRE <- which(xx)\n\t\t\t\tfor(ix in RE) tmp[[2]][[ix]] <- NULL\n\t\t\t\ttmp[[2]] <- tmp[[2]][[2]]\n\t\t}\n\t\ttmp } else formula\n\n\tfX <- -model.matrix(fxForm, data)[, -1]\n\tfX <- kronecker(matrix(rep(1, length(Cuts)), nc = 1),\n\t\t fX)\n\tX <- cbind(X, fX)\n\tcolnames(X)[-seq(length(Cuts))] <- fixTerms\n\tp.df <- data.frame(cumRat = cumRat, X = X)\n\tnames(p.df) <- c(\"cumRat\", colnames(X))\n\n# Make random-effect model vectors\n\tfrm <- if(!NoRanEff){\n\t\ttmp <- sapply(seq_len(length(ranNames)),\n\t\t\tfunction(x)\n\t\t\t\trep(data[[ranNames[x]]], 10))\n\n\t\tfor(ix in seq_len(ncol(tmp)))\n\t\t\tassign(ranNames[ix], tmp[, ix])\n\t\trxForm <- paste(paste(\"(\", ranTerms, \")\",\n\t\t\tsep = \"\", collapse = \" + \"), \" - 1\")\n\tas.formula(paste(\"cumRat ~ .  + \", rxForm))\n\t} else as.formula(\"cumRat ~ . - 1\")\n\n\tres <- if (NoRanEff)\n\t  glm(frm, data = p.df,\n\t  \tfamily =  binomial(lnk), ...) else\n\t  glmer(frm, data = p.df,\n\t  \tfamily =  binomial(lnk), ...)\n\tif (inherits(res, \"mer\")) print(res, cor = cor) else\n\t\tprint(res)\n\tinvisible(res)\n}\n\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Hi,\n\nI've been looking at some data in which observers rated\npairs of images as being of siblings or not.  There\nwere 32 observers and 30 pairs of images, half of\nwhich were of siblings.  Treating the",
       "thread_id": "thread-ffbff8b8515e",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003778.html"
     },
     {
       "id": "msg-3f9b838e7012",
@@ -547,7 +576,8 @@
       "body_snippet": "Hi\nI can extract the AIC value of a model like this\n\nAIC(logLik(fm0)\n\nHow can I extract the BIC value if I need!\n\nCheers\nTahira \nBiometris \nWageningen University",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003779.html"
     },
     {
       "id": "msg-915388d33f31",
@@ -565,7 +595,8 @@
       "body_snippet": "Greetings,\n\nAssuming you're using lmer, here's an example which does what you need:\n\n> (fm1    <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy))\nLinear mixed model fit by REML\nFormula: Reaction ~",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003780.html"
     },
     {
       "id": "msg-c43078b172a2",
@@ -584,7 +615,8 @@
       "body_snippet": "On Mon, May 17, 2010 at 5:54 AM, Andy Fugard (Work)\n<andy.fugard at sbg.ac.at> wrote:\n> Greetings,\n>\n> Assuming you're using lmer, here's an example which does what you need:\n>\n>> (fm1 ? ?<- lmer(Reac",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003781.html"
     },
     {
       "id": "msg-2ad605f11f51",
@@ -604,7 +636,8 @@
       "body_snippet": "BIC seems like something that would logically go into stats in the\ncore of R, as AIC is already, and then various packages could define\nmethods for it.\n\nOn Mon, May 17, 2010 at 9:29 AM, Douglas Bates ",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 3,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003782.html"
     },
     {
       "id": "msg-9048deae0362",
@@ -616,11 +649,12 @@
       "subject_clean": "strategy for interpreting significant interactions",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Good afternoon,\n\nI think of myself as knowing enough about mixed models ?to be \ndangerous?, but certainly not an expert. In a recent manuscript I used \nmixed models, and a reviewer?s comment has me confused; I hope that \nsomeone on this list may be able to point me in the right direction. My \nunderstanding is that it is not proper to interpret main effects that \nare present in a significant interaction, but rather that elements of \nthe interaction should be held constant so the others can be examined in \na sensible manner:\n\n\nmy text:\nAs expected, many significant interactions are present in the data. The \nfive-way interaction was not significant, nor were any of the four-way \ninteractions. All five factors (tc, d, ds, p, s) are involved in at \nleast one three-way interaction: tc interacts with d and ds, p, and s; s \nand d also interact with ds. In these [linear mixed] models it is not \npossible to interpret main effects or lower-order interactions when \nhigher-order interactions are present, so no attempt will be made to do \nso here. Instead, additional models with certain factors held constant \nwere constructed to characterize the interactions and allow \ninterpretation of the effects.\n\nreviewer?s comment:\nThe authors argue that \"interpretation of main effects is not possible \nin the presence of significant interactions\". This statement is only \none-third true. Indeed, main effects must not be interpreted in the \npresence of disordinal interactions. However, in the case of \nsemi-disordinal interactions one main effect can be interpreted and in \nthe case of ordinal interactions even both main effects can be \ninterpreted. Thus, for every interaction the authors have to qualify the \ntype of interaction in order to decide whether or not the main effects \ncan be interpreted.\n\n\nIs my text/the strategy I followed correct? If so, do you have any \nsuggestions for references to use in the response to reviewers on this \npoint? I have had a surprising (to me!) amount of difficulty finding \nreferences detailing what should be done in the face of significant \ninteractions.\n\nThanks for your help!\nJo Etzel",
-      "body_snippet": "Good afternoon,\n\nI think of myself as knowing enough about mixed models ?to be \ndangerous?, but certainly not an expert. In a recent manuscript I used \nmixed models, and a reviewer?s comment has me co",
+      "body_plain": "Good afternoon,\n\nI think of myself as knowing enough about mixed models “to be \ndangerous”, but certainly not an expert. In a recent manuscript I used \nmixed models, and a reviewer’s comment has me confused; I hope that \nsomeone on this list may be able to point me in the right direction. My \nunderstanding is that it is not proper to interpret main effects that \nare present in a significant interaction, but rather that elements of \nthe interaction should be held constant so the others can be examined in \na sensible manner:\n\n\nmy text:\nAs expected, many significant interactions are present in the data. The \nfive-way interaction was not significant, nor were any of the four-way \ninteractions. All five factors (tc, d, ds, p, s) are involved in at \nleast one three-way interaction: tc interacts with d and ds, p, and s; s \nand d also interact with ds. In these [linear mixed] models it is not \npossible to interpret main effects or lower-order interactions when \nhigher-order interactions are present, so no attempt will be made to do \nso here. Instead, additional models with certain factors held constant \nwere constructed to characterize the interactions and allow \ninterpretation of the effects.\n\nreviewer’s comment:\nThe authors argue that \"interpretation of main effects is not possible \nin the presence of significant interactions\". This statement is only \none-third true. Indeed, main effects must not be interpreted in the \npresence of disordinal interactions. However, in the case of \nsemi-disordinal interactions one main effect can be interpreted and in \nthe case of ordinal interactions even both main effects can be \ninterpreted. Thus, for every interaction the authors have to qualify the \ntype of interaction in order to decide whether or not the main effects \ncan be interpreted.\n\n\nIs my text/the strategy I followed correct? If so, do you have any \nsuggestions for references to use in the response to reviewers on this \npoint? I have had a surprising (to me!) amount of difficulty finding \nreferences detailing what should be done in the face of significant \ninteractions.\n\nThanks for your help!\nJo Etzel",
+      "body_snippet": "Good afternoon,\n\nI think of myself as knowing enough about mixed models “to be \ndangerous”, but certainly not an expert. In a recent manuscript I used \nmixed models, and a reviewer’s comment has me co",
       "thread_id": "thread-9048deae0362",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003783.html"
     },
     {
       "id": "msg-f6d3bb4d7ea0",
@@ -634,11 +668,12 @@
       "references": [
         "<4BF149B0.4070708@med.umcg.nl>"
       ],
-      "body_plain": "I think that the reviewer's comment saying that you need to \"qualify the\ntype of interaction in order to decide whether or not the main effects\ncan be interpreted\" means that you need to establish that you have interval or ratio data because \nan apparent interaction could be an artifact of ordinal scale measurement. \n\nHave a look at this link:\nhttp://www.markwebtest.netfirms.com/Appendix/WebAppOrdinalInteraction/WebAppOrdinalInteractions.htm\n\nJulien Beguin \n________________________________________\nDe : r-sig-mixed-models-bounces at r-project.org [r-sig-mixed-models-bounces at r-project.org] de la part de J.A. Etzel [J.A.Etzel at med.umcg.nl]\nDate d'envoi : 17 mai 2010 09:50\n? : r-sig-mixed-models at r-project.org\nObjet : [R-sig-ME] strategy for interpreting significant interactions\n\nGood afternoon,\n\nI think of myself as knowing enough about mixed models ?to be\ndangerous?, but certainly not an expert. In a recent manuscript I used\nmixed models, and a reviewer?s comment has me confused; I hope that\nsomeone on this list may be able to point me in the right direction. My\nunderstanding is that it is not proper to interpret main effects that\nare present in a significant interaction, but rather that elements of\nthe interaction should be held constant so the others can be examined in\na sensible manner:\n\n\nmy text:\nAs expected, many significant interactions are present in the data. The\nfive-way interaction was not significant, nor were any of the four-way\ninteractions. All five factors (tc, d, ds, p, s) are involved in at\nleast one three-way interaction: tc interacts with d and ds, p, and s; s\nand d also interact with ds. In these [linear mixed] models it is not\npossible to interpret main effects or lower-order interactions when\nhigher-order interactions are present, so no attempt will be made to do\nso here. Instead, additional models with certain factors held constant\nwere constructed to characterize the interactions and allow\ninterpretation of the effects.\n\nreviewer?s comment:\nThe authors argue that \"interpretation of main effects is not possible\nin the presence of significant interactions\". This statement is only\none-third true. Indeed, main effects must not be interpreted in the\npresence of disordinal interactions. However, in the case of\nsemi-disordinal interactions one main effect can be interpreted and in\nthe case of ordinal interactions even both main effects can be\ninterpreted. Thus, for every interaction the authors have to qualify the\ntype of interaction in order to decide whether or not the main effects\ncan be interpreted.\n\n\nIs my text/the strategy I followed correct? If so, do you have any\nsuggestions for references to use in the response to reviewers on this\npoint? I have had a surprising (to me!) amount of difficulty finding\nreferences detailing what should be done in the face of significant\ninteractions.\n\nThanks for your help!\nJo Etzel\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "I think that the reviewer's comment saying that you need to \"qualify the\ntype of interaction in order to decide whether or not the main effects\ncan be interpreted\" means that you need to establish that you have interval or ratio data because \nan apparent interaction could be an artifact of ordinal scale measurement. \n\nHave a look at this link:\nhttp://www.markwebtest.netfirms.com/Appendix/WebAppOrdinalInteraction/WebAppOrdinalInteractions.htm\n\nJulien Beguin \n________________________________________\nDe : r-sig-mixed-models-bounces at r-project.org [r-sig-mixed-models-bounces at r-project.org] de la part de J.A. Etzel [J.A.Etzel at med.umcg.nl]\nDate d'envoi : 17 mai 2010 09:50\nÀ : r-sig-mixed-models at r-project.org\nObjet : [R-sig-ME] strategy for interpreting significant interactions\n\nGood afternoon,\n\nI think of myself as knowing enough about mixed models “to be\ndangerous”, but certainly not an expert. In a recent manuscript I used\nmixed models, and a reviewer’s comment has me confused; I hope that\nsomeone on this list may be able to point me in the right direction. My\nunderstanding is that it is not proper to interpret main effects that\nare present in a significant interaction, but rather that elements of\nthe interaction should be held constant so the others can be examined in\na sensible manner:\n\n\nmy text:\nAs expected, many significant interactions are present in the data. The\nfive-way interaction was not significant, nor were any of the four-way\ninteractions. All five factors (tc, d, ds, p, s) are involved in at\nleast one three-way interaction: tc interacts with d and ds, p, and s; s\nand d also interact with ds. In these [linear mixed] models it is not\npossible to interpret main effects or lower-order interactions when\nhigher-order interactions are present, so no attempt will be made to do\nso here. Instead, additional models with certain factors held constant\nwere constructed to characterize the interactions and allow\ninterpretation of the effects.\n\nreviewer’s comment:\nThe authors argue that \"interpretation of main effects is not possible\nin the presence of significant interactions\". This statement is only\none-third true. Indeed, main effects must not be interpreted in the\npresence of disordinal interactions. However, in the case of\nsemi-disordinal interactions one main effect can be interpreted and in\nthe case of ordinal interactions even both main effects can be\ninterpreted. Thus, for every interaction the authors have to qualify the\ntype of interaction in order to decide whether or not the main effects\ncan be interpreted.\n\n\nIs my text/the strategy I followed correct? If so, do you have any\nsuggestions for references to use in the response to reviewers on this\npoint? I have had a surprising (to me!) amount of difficulty finding\nreferences detailing what should be done in the face of significant\ninteractions.\n\nThanks for your help!\nJo Etzel\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "I think that the reviewer's comment saying that you need to \"qualify the\ntype of interaction in order to decide whether or not the main effects\ncan be interpreted\" means that you need to establish tha",
       "thread_id": "thread-9048deae0362",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003784.html"
     },
     {
       "id": "msg-3eef95131933",
@@ -653,11 +688,12 @@
         "<4BF149B0.4070708@med.umcg.nl>",
         "<B56D7C27B4408243B93FBC46ABECB5A0011A85A9D290@EXCH-MBX-F.ulaval.ca>"
       ],
-      "body_plain": "I received another reply, which I copy here since it wasn't sent to the \nlist:\n-----\nI also just know enough to be dangerous, but here's a first \napproximation of the ultimate truth.\n\nI think he is just arguing (rightly or wrongly) that some kinds of main \neffects in the presence of an interaction can indeed be safely \ninterpreted. One example comes to mind: if the interaction only \nmoderates the strength of a main effect and does not flip over its \ndirection. If the variables are setup in some sensible way then the main \neffects will give a kind of average.\n\nA more general approach would be somehow to make sense of the meaning of \nthe interactions. Can they be given a theoretical interpretation, \nperhaps with the help of some graphing? This is where the theory comes \nin handy: to limit the space of statistical models you have to explain!\n\nAndy Fugard\n-----\n\n\nThanks for the replies!\n\nIn this case, the data is on a ratio scale and floor/ceiling effects \naren't a problem. This should have been obvious from the paper, but \nmaybe wasn't. Thanks for the link; I wasn't familiar with this artifact.\n\nPerhaps I should add plots of the interactions, demonstrating that they \ndo cross (\"disordinal interactions\"). The approach I followed in the \npaper was to construct sensible (given the data) sub-analyses to \ndescribe the interactions, such as looking at the effect of p within \neach combination of d and tc (since p did not interact with ds or s).\n\nthanks again,\nJo Etzel\n\n\n\n\nJulien Beguin wrote:\n> I think that the reviewer's comment saying that you need to \"qualify the\n> type of interaction in order to decide whether or not the main effects\n> can be interpreted\" means that you need to establish that you have interval or ratio data because \n> an apparent interaction could be an artifact of ordinal scale measurement. \n>\n> Have a look at this link:\n> http://www.markwebtest.netfirms.com/Appendix/WebAppOrdinalInteraction/WebAppOrdinalInteractions.htm\n>\n> Julien Beguin \n> ________________________________________\n> De : r-sig-mixed-models-bounces at r-project.org [r-sig-mixed-models-bounces at r-project.org] de la part de J.A. Etzel [J.A.Etzel at med.umcg.nl]\n> Date d'envoi : 17 mai 2010 09:50\n> ? : r-sig-mixed-models at r-project.org\n> Objet : [R-sig-ME] strategy for interpreting significant interactions\n>\n> Good afternoon,\n>\n> I think of myself as knowing enough about mixed models ?to be\n> dangerous?, but certainly not an expert. In a recent manuscript I used\n> mixed models, and a reviewer?s comment has me confused; I hope that\n> someone on this list may be able to point me in the right direction. My\n> understanding is that it is not proper to interpret main effects that\n> are present in a significant interaction, but rather that elements of\n> the interaction should be held constant so the others can be examined in\n> a sensible manner:\n>\n>\n> my text:\n> As expected, many significant interactions are present in the data. The\n> five-way interaction was not significant, nor were any of the four-way\n> interactions. All five factors (tc, d, ds, p, s) are involved in at\n> least one three-way interaction: tc interacts with d and ds, p, and s; s\n> and d also interact with ds. In these [linear mixed] models it is not\n> possible to interpret main effects or lower-order interactions when\n> higher-order interactions are present, so no attempt will be made to do\n> so here. Instead, additional models with certain factors held constant\n> were constructed to characterize the interactions and allow\n> interpretation of the effects.\n>\n> reviewer?s comment:\n> The authors argue that \"interpretation of main effects is not possible\n> in the presence of significant interactions\". This statement is only\n> one-third true. Indeed, main effects must not be interpreted in the\n> presence of disordinal interactions. However, in the case of\n> semi-disordinal interactions one main effect can be interpreted and in\n> the case of ordinal interactions even both main effects can be\n> interpreted. Thus, for every interaction the authors have to qualify the\n> type of interaction in order to decide whether or not the main effects\n> can be interpreted.\n>\n>\n> Is my text/the strategy I followed correct? If so, do you have any\n> suggestions for references to use in the response to reviewers on this\n> point? I have had a surprising (to me!) amount of difficulty finding\n> references detailing what should be done in the face of significant\n> interactions.\n>\n> Thanks for your help!\n> Jo Etzel\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "I received another reply, which I copy here since it wasn't sent to the \nlist:\n-----\nI also just know enough to be dangerous, but here's a first \napproximation of the ultimate truth.\n\nI think he is just arguing (rightly or wrongly) that some kinds of main \neffects in the presence of an interaction can indeed be safely \ninterpreted. One example comes to mind: if the interaction only \nmoderates the strength of a main effect and does not flip over its \ndirection. If the variables are setup in some sensible way then the main \neffects will give a kind of average.\n\nA more general approach would be somehow to make sense of the meaning of \nthe interactions. Can they be given a theoretical interpretation, \nperhaps with the help of some graphing? This is where the theory comes \nin handy: to limit the space of statistical models you have to explain!\n\nAndy Fugard\n-----\n\n\nThanks for the replies!\n\nIn this case, the data is on a ratio scale and floor/ceiling effects \naren't a problem. This should have been obvious from the paper, but \nmaybe wasn't. Thanks for the link; I wasn't familiar with this artifact.\n\nPerhaps I should add plots of the interactions, demonstrating that they \ndo cross (\"disordinal interactions\"). The approach I followed in the \npaper was to construct sensible (given the data) sub-analyses to \ndescribe the interactions, such as looking at the effect of p within \neach combination of d and tc (since p did not interact with ds or s).\n\nthanks again,\nJo Etzel\n\n\n\n\nJulien Beguin wrote:\n> I think that the reviewer's comment saying that you need to \"qualify the\n> type of interaction in order to decide whether or not the main effects\n> can be interpreted\" means that you need to establish that you have interval or ratio data because \n> an apparent interaction could be an artifact of ordinal scale measurement. \n>\n> Have a look at this link:\n> http://www.markwebtest.netfirms.com/Appendix/WebAppOrdinalInteraction/WebAppOrdinalInteractions.htm\n>\n> Julien Beguin \n> ________________________________________\n> De : r-sig-mixed-models-bounces at r-project.org [r-sig-mixed-models-bounces at r-project.org] de la part de J.A. Etzel [J.A.Etzel at med.umcg.nl]\n> Date d'envoi : 17 mai 2010 09:50\n> À : r-sig-mixed-models at r-project.org\n> Objet : [R-sig-ME] strategy for interpreting significant interactions\n>\n> Good afternoon,\n>\n> I think of myself as knowing enough about mixed models “to be\n> dangerous”, but certainly not an expert. In a recent manuscript I used\n> mixed models, and a reviewer’s comment has me confused; I hope that\n> someone on this list may be able to point me in the right direction. My\n> understanding is that it is not proper to interpret main effects that\n> are present in a significant interaction, but rather that elements of\n> the interaction should be held constant so the others can be examined in\n> a sensible manner:\n>\n>\n> my text:\n> As expected, many significant interactions are present in the data. The\n> five-way interaction was not significant, nor were any of the four-way\n> interactions. All five factors (tc, d, ds, p, s) are involved in at\n> least one three-way interaction: tc interacts with d and ds, p, and s; s\n> and d also interact with ds. In these [linear mixed] models it is not\n> possible to interpret main effects or lower-order interactions when\n> higher-order interactions are present, so no attempt will be made to do\n> so here. Instead, additional models with certain factors held constant\n> were constructed to characterize the interactions and allow\n> interpretation of the effects.\n>\n> reviewer’s comment:\n> The authors argue that \"interpretation of main effects is not possible\n> in the presence of significant interactions\". This statement is only\n> one-third true. Indeed, main effects must not be interpreted in the\n> presence of disordinal interactions. However, in the case of\n> semi-disordinal interactions one main effect can be interpreted and in\n> the case of ordinal interactions even both main effects can be\n> interpreted. Thus, for every interaction the authors have to qualify the\n> type of interaction in order to decide whether or not the main effects\n> can be interpreted.\n>\n>\n> Is my text/the strategy I followed correct? If so, do you have any\n> suggestions for references to use in the response to reviewers on this\n> point? I have had a surprising (to me!) amount of difficulty finding\n> references detailing what should be done in the face of significant\n> interactions.\n>\n> Thanks for your help!\n> Jo Etzel\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "I received another reply, which I copy here since it wasn't sent to the \nlist:\n-----\nI also just know enough to be dangerous, but here's a first \napproximation of the ultimate truth.\n\nI think he is ju",
       "thread_id": "thread-9048deae0362",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003790.html"
     },
     {
       "id": "msg-9ce310a78922",
@@ -675,7 +711,8 @@
       "body_snippet": "Dear Jo,\n\nIn case that at most one variable in an interaction is continuous, you\ncan give *some* interpretation on the main effects and lower order\ninteractions. But you have to be very carefull on th",
       "thread_id": "thread-9048deae0362",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003785.html"
     },
     {
       "id": "msg-93f9304cf05b",
@@ -691,7 +728,8 @@
       "body_snippet": "Hi,\n\nI'm trying to fit a LMER to Gamma distributed data using the identity \nlink function, but keep running into the problem that a negative mean is \nestimated:\n\n > lmer(y~x+(1|s), data, family=Gamma(",
       "thread_id": "thread-93f9304cf05b",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003786.html"
     },
     {
       "id": "msg-28a835b34fd3",
@@ -712,7 +750,8 @@
       "body_snippet": ">>>>> \"GaGr\" == Gabor Grothendieck <ggrothendieck at gmail.com>\n>>>>>     on Mon, 17 May 2010 09:45:00 -0400 writes:\n\n    GaGr> BIC seems like something that would logically go into stats in the\n    G",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 4,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003787.html"
     },
     {
       "id": "msg-6d8ee394b09e",
@@ -734,7 +773,8 @@
       "body_snippet": ">>>>> \"MM\" == Martin Maechler <maechler at stat.math.ethz.ch>\n>>>>>     on Tue, 18 May 2010 12:37:21 +0200 writes:\n\n>>>>> \"GaGr\" == Gabor Grothendieck <ggrothendieck at gmail.com>\n>>>>>     on Mon, 17",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 5,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003788.html"
     },
     {
       "id": "msg-49980b28b56d",
@@ -755,7 +795,8 @@
       "body_snippet": "Another possibility would be for AIC methods to define AIC(,.., k =\n\"BIC\") or AIC(..., method = \"BIC\").\n\nThis would not require any change to stats but to encourage\nstandardization it would be best if",
       "thread_id": "thread-3f9b838e7012",
       "thread_depth": 4,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003789.html"
     },
     {
       "id": "msg-71a26c2d59ff",
@@ -771,7 +812,8 @@
       "body_snippet": "hello,\n\ni have several LMMs and GLMMs with 2 nominal fixed factors, f1: A,B,C,D \nand f2: 1,2. now i need inference on the differences of level 1 vs. 2 of \nf2 within each level of f1, or vice versa dif",
       "thread_id": "thread-71a26c2d59ff",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003791.html"
     },
     {
       "id": "msg-046e19d81f0e",
@@ -789,7 +831,8 @@
       "body_snippet": "p.s.:\n...\"different parameterizations\" may be the wrong term, as the \nparameters actually stay the same and i only change the intercept-level.\n\nKay Cecil Cichini schrieb:\n> hello,\n> \n> i have several ",
       "thread_id": "thread-71a26c2d59ff",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003792.html"
     },
     {
       "id": "msg-fffd087a4f35",
@@ -808,7 +851,8 @@
       "body_snippet": "Hi Kay,\n\nThe general way to do what you want is to pre-define comparisons of\ninterest. For example, if you thought A would be higher than B C and D, then\nyou would attach a contrast to your data.frame",
       "thread_id": "thread-71a26c2d59ff",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003793.html"
     },
     {
       "id": "msg-d84bf57f96b0",
@@ -827,7 +871,8 @@
       "body_snippet": "hello adam,\n\nthanks for your explanations.\n\nsay i had a full model with f1+f2+f1*f2+random and was interested only \nin the differences of level 1 vs. 2 of f2 within each level of f1, that \nis f2.1 vs.",
       "thread_id": "thread-71a26c2d59ff",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003794.html"
     },
     {
       "id": "msg-6015a2c35a62",
@@ -844,6 +889,7 @@
       "thread_id": "thread-6015a2c35a62",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003795.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100519/4b1c3abf/attachment.pl"
       ]
@@ -862,7 +908,8 @@
       "body_snippet": "Dear all,\n\nWhy is the estimated variance of a random effect different from the\nvariance of the predicted random effects in a lmer with logit link and\nbinomially distributed errors?\n\n> mod <- lmer(y~(1",
       "thread_id": "thread-c961cdec6df2",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003796.html"
     },
     {
       "id": "msg-3629ca803019",
@@ -879,6 +926,7 @@
       "thread_id": "thread-3629ca803019",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003797.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100520/3559f2c9/attachment.pl"
       ]
@@ -893,11 +941,12 @@
       "subject_clean": "sigmoid residual distribution for a random effect",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi everybody!\n\nUsing a linear mixed-effects model (library nlme), I have found a\nsigmo?d pattern in the distribution of residuals for my random factor,\nand I wonder whether some of you know potential causes of this\nphenomenon.  \n\nThe model is as follow: \nmodel<-lme(MeanBand~Body_Condition+Brood_Size,random=~1|Nid)\n\nwhere * MeanBand is a measure of the width of the sub-terminal black\nband on the tail feathers of young kestrels\n      * Body_Condition is a continuous measure of the amount of\nresources nestlings received during their development\n      * Brood_Size is a factor (with 2 levels) indicating whether the\nbrood where a nestling was raised was reduced or increased by one\nnestling at hatching\n      * Nid is the nest where a nestling was raised. Because there are 2\nor more nestlings in one nest, Nest enters in the model as a random\nfactor.\n\nUsing qqnorm(model,~ranef(.,level=1)), I find that residuals do not\nfollow a line but describe a sigmo?d, revealing that the distribution of\nthe residuals for my random factor is not normal.\n\nMy question is therefore: do you know potential causes for such\ndistribution of residuals for a random effect?\n\nHere is the output of the model:\n\n \nLinear mixed-effects model fit by REML\n Data: NULL \n       AIC      BIC    logLik\n  322.0317 332.9037 -156.0159\n\nRandom effects:\n Formula: ~1 | Nid\n        (Intercept) Residual\nStdDev:    1.523250 2.059382\n\nFixed effects: MeanBand ~ condition + Brood \n                Value Std.Error DF   t-value p-value\n(Intercept) 19.050443 0.6243577 48 30.512066  0.0000\ncondition    0.093862 0.0263644 48  3.560170  0.0008\nBroodRed     1.730359 0.8764315 17  1.974323  0.0648\n Correlation: \n          (Intr) condtn\ncondition  0.080       \nBroodRed  -0.717 -0.109\n\nStandardized Within-Group Residuals:\n        Min          Q1         Med          Q3         Max \n-1.81195733 -0.68685432 -0.02572958  0.65085007  1.77797726 \n\nNumber of Observations: 68\nNumber of Groups: 19 \n\nFurthermore, I wonder whether the high correlation shown in the\n\"Correlation\" argument is indicative of any particular problem.\n\nThanking you in advance for your answers!\n\nBest regards,\n\nRomain",
-      "body_snippet": "Hi everybody!\n\nUsing a linear mixed-effects model (library nlme), I have found a\nsigmo?d pattern in the distribution of residuals for my random factor,\nand I wonder whether some of you know potential ",
+      "body_plain": "Hi everybody!\n\nUsing a linear mixed-effects model (library nlme), I have found a\nsigmoïd pattern in the distribution of residuals for my random factor,\nand I wonder whether some of you know potential causes of this\nphenomenon.  \n\nThe model is as follow: \nmodel<-lme(MeanBand~Body_Condition+Brood_Size,random=~1|Nid)\n\nwhere * MeanBand is a measure of the width of the sub-terminal black\nband on the tail feathers of young kestrels\n      * Body_Condition is a continuous measure of the amount of\nresources nestlings received during their development\n      * Brood_Size is a factor (with 2 levels) indicating whether the\nbrood where a nestling was raised was reduced or increased by one\nnestling at hatching\n      * Nid is the nest where a nestling was raised. Because there are 2\nor more nestlings in one nest, Nest enters in the model as a random\nfactor.\n\nUsing qqnorm(model,~ranef(.,level=1)), I find that residuals do not\nfollow a line but describe a sigmoïd, revealing that the distribution of\nthe residuals for my random factor is not normal.\n\nMy question is therefore: do you know potential causes for such\ndistribution of residuals for a random effect?\n\nHere is the output of the model:\n\n \nLinear mixed-effects model fit by REML\n Data: NULL \n       AIC      BIC    logLik\n  322.0317 332.9037 -156.0159\n\nRandom effects:\n Formula: ~1 | Nid\n        (Intercept) Residual\nStdDev:    1.523250 2.059382\n\nFixed effects: MeanBand ~ condition + Brood \n                Value Std.Error DF   t-value p-value\n(Intercept) 19.050443 0.6243577 48 30.512066  0.0000\ncondition    0.093862 0.0263644 48  3.560170  0.0008\nBroodRed     1.730359 0.8764315 17  1.974323  0.0648\n Correlation: \n          (Intr) condtn\ncondition  0.080       \nBroodRed  -0.717 -0.109\n\nStandardized Within-Group Residuals:\n        Min          Q1         Med          Q3         Max \n-1.81195733 -0.68685432 -0.02572958  0.65085007  1.77797726 \n\nNumber of Observations: 68\nNumber of Groups: 19 \n\nFurthermore, I wonder whether the high correlation shown in the\n\"Correlation\" argument is indicative of any particular problem.\n\nThanking you in advance for your answers!\n\nBest regards,\n\nRomain",
+      "body_snippet": "Hi everybody!\n\nUsing a linear mixed-effects model (library nlme), I have found a\nsigmoïd pattern in the distribution of residuals for my random factor,\nand I wonder whether some of you know potential ",
       "thread_id": "thread-3fc9b2f14ae7",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003798.html"
     },
     {
       "id": "msg-45ea41c92400",
@@ -913,7 +962,8 @@
       "body_snippet": "Dear Mixed Models Experts,\n\nI am trying to find the p_value for the overall interaction of\ncondition*difficulty, but the lme() seems to output everything but\nthis. Can offer some suggestions on how to",
       "thread_id": "thread-45ea41c92400",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003799.html"
     },
     {
       "id": "msg-d2e3874520ea",
@@ -931,7 +981,8 @@
       "body_snippet": "If I understand your question, the command\n \tanova(study.lme)\nshould give you what you are looking for.\n\nTed Wright\n\nOn Thu, 20 May 2010, Dave Deriso wrote:\n\n> Dear Mixed Models Experts,\n>\n> I am tryi",
       "thread_id": "thread-45ea41c92400",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003800.html"
     },
     {
       "id": "msg-598af93f73a4",
@@ -952,7 +1003,8 @@
       "body_snippet": "Hi Daniel,\n\nThank you so much for taking the time to explain this.\n\nI guess I am having trouble believing the results.\n\ncondition x diff p=.001\ncondition p=.001\ndiff p=.001\n\nWhen I run the ANOVA, I ge",
       "thread_id": "thread-598af93f73a4",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003801.html"
     },
     {
       "id": "msg-8428c2a45083",
@@ -971,7 +1023,8 @@
       "body_snippet": "Hi Ted,\n\nThank you for offering this suggestion! However, simply running an\nanova on the lme is difficult to interpret. Daniel has suggested doing\nthis only when comparing models. Can you explain how ",
       "thread_id": "thread-45ea41c92400",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003802.html"
     },
     {
       "id": "msg-0f2fd4b39533",
@@ -988,6 +1041,7 @@
       "thread_id": "thread-0f2fd4b39533",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003803.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100523/eb3b2a59/attachment.pl"
       ]
@@ -1008,7 +1062,8 @@
       "body_snippet": "Nai-Wei Chen wrote:\n> Dear all R users,\n> \n> I  have problems when I use glmmPQL to analyze binary data with\n> random effects. When I use \"summary(glmmPQL())$residuals\", I just see\n> the five summary ",
       "thread_id": "thread-0f2fd4b39533",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003804.html"
     },
     {
       "id": "msg-fd06d3d41546",
@@ -1024,7 +1079,8 @@
       "body_snippet": "Hey,\nI've been able to work around the lack of a binary for mac snow leopard's (and lme4's) latest updates.  On a  Mac Pro, I was able to download the source package and install.  On my Mac Book, I ca",
       "thread_id": "thread-fd06d3d41546",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003805.html"
     },
     {
       "id": "msg-d115858e0bb4",
@@ -1042,7 +1098,8 @@
       "body_snippet": "Hi Sean,\n\nOn your Macbook do you have xcode installed? The error \"sh: make: \ncommand not found\" indicates that this is not the case.\n\nThe best place to get the latest xcode is http://connect.apple.com",
       "thread_id": "thread-fd06d3d41546",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003806.html"
     },
     {
       "id": "msg-a4afee5db264",
@@ -1059,6 +1116,7 @@
       "thread_id": "thread-a4afee5db264",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003807.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100524/09a13d50/attachment.pl"
       ]
@@ -1079,7 +1137,8 @@
       "body_snippet": "On Mon, May 24, 2010 at 6:24 PM, Robin Jeffries <rjeffries at ucla.edu> wrote:\n> I read somewhere (help list, documentation) that the random effects in lme4\n> uses sparse matrix \"technology\".\n\nYes.  T",
       "thread_id": "thread-35ead6155ae5",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003808.html"
     },
     {
       "id": "msg-564ca0437dc2",
@@ -1098,6 +1157,7 @@
       "thread_id": "thread-564ca0437dc2",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003809.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100525/a55062c3/attachment.pl"
       ]
@@ -1120,6 +1180,7 @@
       "thread_id": "thread-564ca0437dc2",
       "thread_depth": 1,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003810.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100524/d57564f6/attachment.pl"
       ]
@@ -1142,6 +1203,7 @@
       "thread_id": "thread-564ca0437dc2",
       "thread_depth": 1,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003811.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100524/460e2ccd/attachment.pl"
       ]
@@ -1162,7 +1224,8 @@
       "body_snippet": "On Mon, May 24, 2010 at 7:46 PM, Robin Jeffries <rjeffries at ucla.edu> wrote:\n> I am running a mixed effects model with two random effects that have ~500\n> and ~1400 factor levels respectively.\n\n> Fo",
       "thread_id": "thread-a4afee5db264",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003812.html"
     },
     {
       "id": "msg-65aacdfd6be1",
@@ -1181,7 +1244,8 @@
       "body_snippet": "On Mon, 24 May 2010, Douglas Bates wrote:\n\n> If you use the verbose option to lmer and to glmer on similar problems you\n> will see that lmer if optimizing over fewer parameters than is glmer.\n\nJust on",
       "thread_id": "thread-a4afee5db264",
       "thread_depth": 2,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003813.html"
     },
     {
       "id": "msg-2f5d346e1423",
@@ -1197,7 +1261,8 @@
       "body_snippet": "Hello All,\n\nI just stumbled across this article and I figured this may be of interest to some of you:\n\nAustin, P. C. (2010). Estimating Multilevel Logistic Regression Models When the Number of Cluster",
       "thread_id": "thread-2f5d346e1423",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003814.html"
     },
     {
       "id": "msg-7595b97edb67",
@@ -1214,6 +1279,7 @@
       "thread_id": "thread-7595b97edb67",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003815.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100525/71fe2510/attachment.pl"
       ]
@@ -1232,7 +1298,8 @@
       "body_snippet": "I am currently playing with a logistic regression (family=binomial),\ntwo random effects (state and hospital within state), and a handful of\nfixed effects.\n\nI'm implementing the two random effects as 1",
       "thread_id": "thread-6046ab0a1964",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003816.html"
     },
     {
       "id": "msg-16ff21e089d5",
@@ -1249,6 +1316,7 @@
       "thread_id": "thread-16ff21e089d5",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003817.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100525/0a2b7a1e/attachment.pl"
       ]
@@ -1265,11 +1333,12 @@
       "references": [
         "<AANLkTikyepW9Aq7Tyw6ZZ43RgH4pEa40J5Av2UYyKsY8@mail.gmail.com>"
       ],
-      "body_plain": "Dear Manuel,\n\nThe fixed effect of sp IS estimated. You don't get a p-value because it has no df. You have no df because you used the factor in both the fixed effects as in the random effects. So remove sp from the random effect.\n\nFurthermore, random effect with only a few levels is not a very good idea. You get unreliable estimates of the variance. Have a look at the plot below. It plots the confidence interval for the ratio of the sample variance and the population variance. Note that the interval is very wide with a small number of levels. 6 levels is a minimum minimorum. Ideally you should aim for 30 levels or more.\n\nn <- 2:100\nplot(n, qchisq(0.975, n - 1) / (n - 1), type = \"l\", ylim = c(0, 5.5))\nlines(n, qchisq(0.025, n - 1) / (n - 1))\nabline(h = 1, lty = 2, col = \"red\")\nabline(v = c(2, 6, 10, 30), lty = 3, col = \"blue\")\n\nHTH,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n  \n\n> -----Oorspronkelijk bericht-----\n> Van: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Manuel Ramon\n> Verzonden: dinsdag 25 mei 2010 17:31\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] Mixed-effects model with nested factors\n> \n> Hello,\n> I having problems on the definition of a mixed model with \n> nested factors. My data base is as follows:\n>      y:      performance measure\n>      sp:    species factor with two levels\n>      ani:   individual with 6 levels but three of one belong \n> to the fist\n> species\n>              and the other three to the other. That is, sp \n> and ani are NESTED\n>      v1:    treatment with two levels\n> \n> The aim of my work is to study if there are significant \n> differences between both species (sp), and both treatments \n> (v1). I want to consider the ani effect as random effect.  My \n> attemp is the next:\n> \n>      lme( y ~ sp + v1, data=mydata, random=~1|sp/ani )\n> \n> My first question is if the fm1 model is well desing. When I \n> run this analysis, the factor sp is not estimated, but I do \n> not know why?\n> \n> A simulated example could be:\n> \n> ##    Simul data\n>      set.seed(1234)\n> \n>      N <- 24\n>      error <- rnorm(N)   # error term\n>      ani <- rep(1:(N/4),each=4)   # individual effect (random)\n>      b1 <- c(0,2,4,1,2,5)\n>      sp <- rep(1:2, each=N/2)   # species (fixed)\n>      b2 <- c(1,5)\n>      v1 <- rep(1:2,each=2,length=N)   # treatment (fixed)\n>      b3 <- c(2,7)\n> \n>      y <- b1[ani] + b2[sp] + b3[v1] + error\n> \n>      dat <- data.frame(y,ani,sp,v1)\n>           dat$ani <- as.factor(dat$ani)\n>           dat$sp <- as.factor(dat$sp)\n>           dat$v1 <- as.factor(dat$v1)\n> \n>      library(nlme)\n>      fm1 <- lme(y ~ sp + v1, data=dat, random=~1|sp/ani)\n>      summary(fm1)\n> \n> \n> ## Output\n> Linear mixed-effects model fit by REML\n> Data: dat\n>       AIC      BIC   logLik\n>   94.0726 100.3397 -41.0363\n> \n> Random effects:\n>  Formula: ~1 | sp\n>         (Intercept)\n> StdDev:   0.8539529\n> \n>  Formula: ~1 | ani %in% sp\n>         (Intercept) Residual\n> StdDev:    2.226151 1.109317\n> \n> Fixed effects: y ~ sp + v1\n>                 Value         Std.Error     DF   t-value       p-value\n> (Intercept)  5.124082   1.5921603   17    3.218320   0.005\n> sp2           4.220951   2.2287665     0    1.893851     NaN\n> v12            5.160433   0.4528769   17  11.394781   0.000\n>  Correlation:\n>     (Intr) sp2\n> sp2 -0.700\n> v12 -0.142  0.000\n> \n> Standardized Within-Group Residuals:\n>         Min          Q1         Med          Q3         Max\n> -1.39622076 -0.59150658  0.06285846  0.41361144  1.75700646\n> \n> Number of Observations: 24\n> Number of Groups:\n>          sp ani %in% sp\n>           2           6\n> Mensajes de aviso perdidos\n> In pt(q, df, lower.tail, log.p) : Se han producido NaNs\n> \n> Why the sp effect has not DF? It could be due to its presence \n> in the random term.\n> Is my model rigth? I think that I'm missing something.\n> \n> Thanks in advance\n> \n> \n> --\n> --\n> Manuel Ram?n\n> m.ramon.fernandez at gmail.com\n> \n> \t[[alternative HTML version deleted]]\n> \n> \n\nDruk dit bericht a.u.b. niet onnodig af.\nPlease do not print this message unnecessarily.\n\nDit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer \nen binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is\ndoor een geldig ondertekend document. The views expressed in  this message \nand any annex are purely those of the writer and may not be regarded as stating \nan official position of INBO, as long as the message is not confirmed by a duly \nsigned document.",
+      "body_plain": "Dear Manuel,\n\nThe fixed effect of sp IS estimated. You don't get a p-value because it has no df. You have no df because you used the factor in both the fixed effects as in the random effects. So remove sp from the random effect.\n\nFurthermore, random effect with only a few levels is not a very good idea. You get unreliable estimates of the variance. Have a look at the plot below. It plots the confidence interval for the ratio of the sample variance and the population variance. Note that the interval is very wide with a small number of levels. 6 levels is a minimum minimorum. Ideally you should aim for 30 levels or more.\n\nn <- 2:100\nplot(n, qchisq(0.975, n - 1) / (n - 1), type = \"l\", ylim = c(0, 5.5))\nlines(n, qchisq(0.025, n - 1) / (n - 1))\nabline(h = 1, lty = 2, col = \"red\")\nabline(v = c(2, 6, 10, 30), lty = 3, col = \"blue\")\n\nHTH,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n  \n\n> -----Oorspronkelijk bericht-----\n> Van: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Manuel Ramon\n> Verzonden: dinsdag 25 mei 2010 17:31\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] Mixed-effects model with nested factors\n> \n> Hello,\n> I having problems on the definition of a mixed model with \n> nested factors. My data base is as follows:\n>      y:      performance measure\n>      sp:    species factor with two levels\n>      ani:   individual with 6 levels but three of one belong \n> to the fist\n> species\n>              and the other three to the other. That is, sp \n> and ani are NESTED\n>      v1:    treatment with two levels\n> \n> The aim of my work is to study if there are significant \n> differences between both species (sp), and both treatments \n> (v1). I want to consider the ani effect as random effect.  My \n> attemp is the next:\n> \n>      lme( y ~ sp + v1, data=mydata, random=~1|sp/ani )\n> \n> My first question is if the fm1 model is well desing. When I \n> run this analysis, the factor sp is not estimated, but I do \n> not know why?\n> \n> A simulated example could be:\n> \n> ##    Simul data\n>      set.seed(1234)\n> \n>      N <- 24\n>      error <- rnorm(N)   # error term\n>      ani <- rep(1:(N/4),each=4)   # individual effect (random)\n>      b1 <- c(0,2,4,1,2,5)\n>      sp <- rep(1:2, each=N/2)   # species (fixed)\n>      b2 <- c(1,5)\n>      v1 <- rep(1:2,each=2,length=N)   # treatment (fixed)\n>      b3 <- c(2,7)\n> \n>      y <- b1[ani] + b2[sp] + b3[v1] + error\n> \n>      dat <- data.frame(y,ani,sp,v1)\n>           dat$ani <- as.factor(dat$ani)\n>           dat$sp <- as.factor(dat$sp)\n>           dat$v1 <- as.factor(dat$v1)\n> \n>      library(nlme)\n>      fm1 <- lme(y ~ sp + v1, data=dat, random=~1|sp/ani)\n>      summary(fm1)\n> \n> \n> ## Output\n> Linear mixed-effects model fit by REML\n> Data: dat\n>       AIC      BIC   logLik\n>   94.0726 100.3397 -41.0363\n> \n> Random effects:\n>  Formula: ~1 | sp\n>         (Intercept)\n> StdDev:   0.8539529\n> \n>  Formula: ~1 | ani %in% sp\n>         (Intercept) Residual\n> StdDev:    2.226151 1.109317\n> \n> Fixed effects: y ~ sp + v1\n>                 Value         Std.Error     DF   t-value       p-value\n> (Intercept)  5.124082   1.5921603   17    3.218320   0.005\n> sp2           4.220951   2.2287665     0    1.893851     NaN\n> v12            5.160433   0.4528769   17  11.394781   0.000\n>  Correlation:\n>     (Intr) sp2\n> sp2 -0.700\n> v12 -0.142  0.000\n> \n> Standardized Within-Group Residuals:\n>         Min          Q1         Med          Q3         Max\n> -1.39622076 -0.59150658  0.06285846  0.41361144  1.75700646\n> \n> Number of Observations: 24\n> Number of Groups:\n>          sp ani %in% sp\n>           2           6\n> Mensajes de aviso perdidos\n> In pt(q, df, lower.tail, log.p) : Se han producido NaNs\n> \n> Why the sp effect has not DF? It could be due to its presence \n> in the random term.\n> Is my model rigth? I think that I'm missing something.\n> \n> Thanks in advance\n> \n> \n> --\n> --\n> Manuel Ramón\n> m.ramon.fernandez at gmail.com\n> \n> \t[[alternative HTML version deleted]]\n> \n> \n\nDruk dit bericht a.u.b. niet onnodig af.\nPlease do not print this message unnecessarily.\n\nDit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer \nen binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is\ndoor een geldig ondertekend document. The views expressed in  this message \nand any annex are purely those of the writer and may not be regarded as stating \nan official position of INBO, as long as the message is not confirmed by a duly \nsigned document.",
       "body_snippet": "Dear Manuel,\n\nThe fixed effect of sp IS estimated. You don't get a p-value because it has no df. You have no df because you used the factor in both the fixed effects as in the random effects. So remov",
       "thread_id": "thread-7595b97edb67",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003818.html"
     },
     {
       "id": "msg-73545cd245ba",
@@ -1285,7 +1354,8 @@
       "body_snippet": "Dear all,\n\nI have to related questions concerning the weights-option in lmer.\n\n1) Imagine a two level design, like respondents in a number of \ncountries. From each country one has a sample and the per",
       "thread_id": "thread-73545cd245ba",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003819.html"
     },
     {
       "id": "msg-5d3045352d1b",
@@ -1302,6 +1372,7 @@
       "thread_id": "thread-5d3045352d1b",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003820.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100529/662e5b8f/attachment.pl"
       ]
@@ -1322,7 +1393,8 @@
       "body_snippet": "On Sat, May 29, 2010 at 5:23 PM, walmes zeviani\n<walmeszeviani at yahoo.com.br> wrote:\n> Hello,\n>\n> I read the article based on lme4\n>\n> Doran H, Bates D, Bliese P, Dowling M (2007). ?Estimating the M",
       "thread_id": "thread-5d3045352d1b",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003821.html"
     },
     {
       "id": "msg-3260fbf5f525",
@@ -1338,7 +1410,8 @@
       "body_snippet": "Having briefly fallen for the notion that the negative.binomial family\nin MASS could be used in glmer, I want to use these lists for a sanity\ncheck on my final (?) plans.\n\nI want to use glmer for logi",
       "thread_id": "thread-3260fbf5f525",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003822.html"
     },
     {
       "id": "msg-b12cdea3cd96",
@@ -1354,7 +1427,8 @@
       "body_snippet": "Hi all,\n\nI'm not a frequent user of Lme4 and I have the habit to use mlwin for  \nmultilevel analyses. Nevertheless I'm willing to master lme4 further.\n\nIn my research I'm often faced with the situatio",
       "thread_id": "thread-b12cdea3cd96",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003824.html"
     },
     {
       "id": "msg-6ce1e6ad02aa",
@@ -1370,7 +1444,8 @@
       "body_snippet": "Dear list,\n\nI am working with genetic data and puzzling with the following problem. \nAn individual inherits one allele from each of his parents and both \nalleles contribute an unknown quantity to its ",
       "thread_id": "thread-6ce1e6ad02aa",
       "thread_depth": 0,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003823.html"
     },
     {
       "id": "msg-2c8c7d175b84",
@@ -1388,7 +1463,8 @@
       "body_snippet": "On Mon, May 31, 2010 at 8:47 AM, Sven De Maeyer <sven.demaeyer at ua.ac.be> wrote:\n> Hi all,\n>\n> I'm not a frequent user of Lme4 and I have the habit to use mlwin for\n> multilevel analyses. Neverthele",
       "thread_id": "thread-b12cdea3cd96",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003825.html"
     },
     {
       "id": "msg-caa8b1082696",
@@ -1406,7 +1482,8 @@
       "body_snippet": "Not in lmer(). But you can do it with lme() from the nlme package.\n\nThierry\n\n------------------------------------------------------------------------\n----\nir. Thierry Onkelinx\nInstituut voor natuur- e",
       "thread_id": "thread-b12cdea3cd96",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003826.html"
     },
     {
       "id": "msg-842a643ec975",
@@ -1427,6 +1504,7 @@
       "thread_id": "thread-842a643ec975",
       "thread_depth": 0,
       "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003827.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100531/dbd6893a/attachment.pl"
       ]
@@ -1447,7 +1525,8 @@
       "body_snippet": "Mitchell Maltenfort wrote:\n> Having briefly fallen for the notion that the negative.binomial family\n> in MASS could be used in glmer, I want to use these lists for a sanity\n> check on my final (?) pla",
       "thread_id": "thread-3260fbf5f525",
       "thread_depth": 1,
-      "month": "2010-05"
+      "month": "2010-05",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q2/003829.html"
     }
   ],
   "threads": [

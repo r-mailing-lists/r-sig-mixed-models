@@ -17,7 +17,8 @@
       "body_snippet": "I'd appreciate hearing from anyone (off list if you think it more  \nappropriate) who can share their comparative experiences of non- \nlinear mixed effects modelling with both nlme and NONMEM. The latt",
       "thread_id": "thread-7869f200acd0",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000410.html"
     },
     {
       "id": "msg-5c2c3040db5c",
@@ -35,7 +36,8 @@
       "body_snippet": "On 11/1/07, Rob Forsyth <r.j.forsyth at newcastle.ac.uk> wrote:\n> I'd appreciate hearing from anyone (off list if you think it more\n> appropriate) who can share their comparative experiences of non-\n>",
       "thread_id": "thread-7869f200acd0",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000411.html"
     },
     {
       "id": "msg-a390f8863f88",
@@ -51,7 +53,8 @@
       "body_snippet": "Hi All,\n\nThis thread reminds me of an experience using nlme about 10 years ago. I was\nremodeling a previously analyzed (and published) pharmacokinetic data set on\nthe drug remifentanil; NONMEM had bee",
       "thread_id": "thread-7869f200acd0",
       "thread_depth": 2,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000412.html"
     },
     {
       "id": "msg-e74c0c0d8479",
@@ -71,7 +74,8 @@
       "body_snippet": "Thank you very much for the reply (and hopefully I am replying back in the proper way). \nDo you think the delta method would be an acceptable way to estimate approximate confidence intervals for the r",
       "thread_id": "thread-e74c0c0d8479",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000413.html"
     },
     {
       "id": "msg-c3768652cd3e",
@@ -88,6 +92,7 @@
       "thread_id": "thread-c3768652cd3e",
       "thread_depth": 0,
       "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000415.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071107/0bde1e21/attachment.pl"
       ]
@@ -107,6 +112,7 @@
       "thread_id": "thread-c501d25b8911",
       "thread_depth": 0,
       "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000414.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071107/273970f7/attachment.pl"
       ]
@@ -125,7 +131,8 @@
       "body_snippet": "Is there a formal way to prove the need of a mixed model, apart from e.g. comparing the intervals estimated by lmList fit? \nFor example, should I compare (with AIC ML?) a model with seperately (unpool",
       "thread_id": "thread-e99221168d7f",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000416.html"
     },
     {
       "id": "msg-fe2741d20f53",
@@ -143,7 +150,8 @@
       "body_snippet": "Whether or not you need a mixed model, e.g. random versus\nfixed slopes, depends on how you intend to use results.\n\nSuppose you have lines of depression vs lawn roller weight\ncalculated for a number of",
       "thread_id": "thread-e99221168d7f",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000417.html"
     },
     {
       "id": "msg-8ef1b7697e98",
@@ -155,11 +163,12 @@
       "subject_clean": "mixed model testing",
       "in_reply_to": "<77651871-6E0D-4496-BADE-EC8D770402C5@anu.edu.au>",
       "references": [],
-      "body_plain": "Dear John,\n\nForgive me for putting my nose out, I hope that I'm not rude, but I am a bit bewildered by your mail (and by statistical modelling).\n\nI agree that if your model is:\n\nLawndepression~lawn.roller.weight +(1|lawn.id),\n\nWhen, in fact, it *should be* (because you simulated the data or you're God):\n\nLawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n\nthen you might erroneously fail to reject the null hypothesis that the random effect for slope is zero. But in real life one does not know the true model, and there are an infinite number of (functional forms for) random effects that such tests may fail upon. What should one do, why stop at the linear term? Why not saturate the model with random effects? (And still, you don't know whether you have the right model). \n\nIn your example one would perhaps like to think that VERY light lawn movers did not cause any depression at all, and that there is a maximum depression that a lawn mover could cause, so there should at least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf : we centre our lawn mover weights and keep in the middle of this interval where things look linear and fit a linear, Gaussian model.\n\nThen I don't quite get your point from Box' quote since that concerned heterogeneous variances, right? Here the situation is quite the opposite to rejecting the null, using a test for heterogeneous variances that is more sensitive than the ANOVA for departures from homogeneity is akin to sending out a rowing boat on a rough sea where the ocean liner (ANOVA) would safely fare. We failed to reject the null hypothesis of zero slope.\n\nSo what is your suggestion of a sensible modelling strategy? (Without being biased by what you see in your dataset; I used to like inspecting the data fitting lmList if possible, then fitting a rather complex model, and then removing insignificant terms, then checking assumptions. After having read Harrell's book (Regression modelling strategies) I'm a bit uncertain what to do when people ask me to analyze their data, since they don't like to think too much about it. Harrell's suggestion that one could check the literature for a sensible model seems pernicious to me since these old results are based on the very same modelling strategy that he rejects. Should one use the Bayesian framework with flat priors?)\n\n\nBest regards,\n\nFredrik Nilsson\n\n-----Ursprungligt meddelande-----\nFr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] F?r John Maindonald\nSkickat: den 7 november 2007 22:47\nTill: Irene Mantzouni\nKopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\n?mne: Re: [R-sig-ME] mixed model testing\n\nWhether or not you need a mixed model, e.g. random versus\nfixed slopes, depends on how you intend to use results.\n\nSuppose you have lines of depression vs lawn roller weight\ncalculated for a number of lawns. If the data will always be\nused to make predictions for one of those same lawns, a\nfixed slopes model is fine.\n\nIf you want to use the data to make a prediction for another\nlawn from the same \"population\" (the population from which\nthis lawn is a random sample, right?), you need to model\nthe slope as a random effect.\n\nNow for a more subtle point:\n\nIn the prediction for another lawn situation, it is possible that\nthe slope random effect can be zero, and analysts do very\ncommonly make this sort of assumption, maybe without\nrealizing that this is what they are doing.  You can test whether\nthe slope random effect is zero but, especially if you have data\nfrom a few lawns only, failure to reject the null (zero random\neffect) is not a secure basis for inferences that assume that\nthe slope is indeed zero. The \"test for zero random effect, then\ninfer\" is open to Box's pithy objection that\n\"... to make preliminary tests on variances is rather like putting to\nsea in a rowing boat to find out whether conditions are sufficiently\ncalm for an ocean liner to leave port\".\n\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n\n> Is there a formal way to prove the need of a mixed model, apart from  \n> e.g. comparing the intervals estimated by lmList fit?\n> For example, should I compare (with AIC ML?) a model with seperately  \n> (unpooled) estimated fixed slopes (i.e.using an index for each  \n> group) with a model that treats this parameter as a random effect  \n> (both models treat the remaining parameters as random)?\n>\n> Thank you!\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Dear John,\n\nForgive me for putting my nose out, I hope that I'm not rude, but I am a bit bewildered by your mail (and by statistical modelling).\n\nI agree that if your model is:\n\nLawndepression~lawn.roller.weight +(1|lawn.id),\n\nWhen, in fact, it *should be* (because you simulated the data or you're God):\n\nLawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n\nthen you might erroneously fail to reject the null hypothesis that the random effect for slope is zero. But in real life one does not know the true model, and there are an infinite number of (functional forms for) random effects that such tests may fail upon. What should one do, why stop at the linear term? Why not saturate the model with random effects? (And still, you don't know whether you have the right model). \n\nIn your example one would perhaps like to think that VERY light lawn movers did not cause any depression at all, and that there is a maximum depression that a lawn mover could cause, so there should at least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf : we centre our lawn mover weights and keep in the middle of this interval where things look linear and fit a linear, Gaussian model.\n\nThen I don't quite get your point from Box' quote since that concerned heterogeneous variances, right? Here the situation is quite the opposite to rejecting the null, using a test for heterogeneous variances that is more sensitive than the ANOVA for departures from homogeneity is akin to sending out a rowing boat on a rough sea where the ocean liner (ANOVA) would safely fare. We failed to reject the null hypothesis of zero slope.\n\nSo what is your suggestion of a sensible modelling strategy? (Without being biased by what you see in your dataset; I used to like inspecting the data fitting lmList if possible, then fitting a rather complex model, and then removing insignificant terms, then checking assumptions. After having read Harrell's book (Regression modelling strategies) I'm a bit uncertain what to do when people ask me to analyze their data, since they don't like to think too much about it. Harrell's suggestion that one could check the literature for a sensible model seems pernicious to me since these old results are based on the very same modelling strategy that he rejects. Should one use the Bayesian framework with flat priors?)\n\n\nBest regards,\n\nFredrik Nilsson\n\n-----Ursprungligt meddelande-----\nFrån: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] För John Maindonald\nSkickat: den 7 november 2007 22:47\nTill: Irene Mantzouni\nKopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\nÄmne: Re: [R-sig-ME] mixed model testing\n\nWhether or not you need a mixed model, e.g. random versus\nfixed slopes, depends on how you intend to use results.\n\nSuppose you have lines of depression vs lawn roller weight\ncalculated for a number of lawns. If the data will always be\nused to make predictions for one of those same lawns, a\nfixed slopes model is fine.\n\nIf you want to use the data to make a prediction for another\nlawn from the same \"population\" (the population from which\nthis lawn is a random sample, right?), you need to model\nthe slope as a random effect.\n\nNow for a more subtle point:\n\nIn the prediction for another lawn situation, it is possible that\nthe slope random effect can be zero, and analysts do very\ncommonly make this sort of assumption, maybe without\nrealizing that this is what they are doing.  You can test whether\nthe slope random effect is zero but, especially if you have data\nfrom a few lawns only, failure to reject the null (zero random\neffect) is not a secure basis for inferences that assume that\nthe slope is indeed zero. The \"test for zero random effect, then\ninfer\" is open to Box's pithy objection that\n\"... to make preliminary tests on variances is rather like putting to\nsea in a rowing boat to find out whether conditions are sufficiently\ncalm for an ocean liner to leave port\".\n\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n\n> Is there a formal way to prove the need of a mixed model, apart from  \n> e.g. comparing the intervals estimated by lmList fit?\n> For example, should I compare (with AIC ML?) a model with seperately  \n> (unpooled) estimated fixed slopes (i.e.using an index for each  \n> group) with a model that treats this parameter as a random effect  \n> (both models treat the remaining parameters as random)?\n>\n> Thank you!\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Dear John,\n\nForgive me for putting my nose out, I hope that I'm not rude, but I am a bit bewildered by your mail (and by statistical modelling).\n\nI agree that if your model is:\n\nLawndepression~lawn.ro",
       "thread_id": "thread-e99221168d7f",
       "thread_depth": 2,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000418.html"
     },
     {
       "id": "msg-5c8fe400d5b4",
@@ -173,11 +182,12 @@
       "references": [
         "<87A0C64299B27148B40BE0DB83EDE2DBEFE25C@RSMAIL002.REG.SKANE.SE>"
       ],
-      "body_plain": "For simplicity, I limited attention to a rather small class\nof models.  I assumed that the only fixed effect that the\ndata would support is a linear term, and I do not mind\nadding an intercept.  That is realistic, I believe, for data\nof this type.\n\nOne should not limit oneself to a single random effect\nif indeed the data are sampled in a manner (e.g., lawns\nwithin soil types) that makes it natural to expect some\nfurther random effect.  In my example as stated, the data\nhave no such structure. (NB, the random sample comment,\nmeaning simple random sample).\n\nI agree that I have used Box's example outside of the\ncontext in which he used it.  A better example might be\nuse of a reconnaissance that has only a 20% chance\nof detecting such pirates as may be present on the high\nseas, before deciding whether a valuable cargo that will\nventure into those seas should have an escort.\n\nRemoving insignificant terms can help understanding\nand interpretation.  But if one wants to make anything\nof the coefficients, it is necessary to check that the\nremaining coefficients have not changed substantially.\nIf there are more than a few terms to consider, and data\nare not from a designed experiment, and attempt to\ninterpret coefficients is likely to be hazardous. You\nmentioned the Harrell book. Rosenbaum's \"Observational\nStudies\" (2edn, Springer, 2002) merits careful attention.\n\nWhy do you think Harrell's suggestion pernicious?  Models\nthat are in the literature can be a good starting point, and\nthe accompanying discussion an aid to understanding\nthe science. They may turn out to be more or less right\n(as far as one can tell), or to require modification, or the\ndata may demolish them.  But at least one has a starting\npoint, rather than an almost unlimited choice of models.\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 8:00 PM, Nilsson Fredrik X wrote:\n\n> Dear John,\n>\n> Forgive me for putting my nose out, I hope that I'm not rude, but I  \n> am a bit bewildered by your mail (and by statistical modelling).\n>\n> I agree that if your model is:\n>\n> Lawndepression~lawn.roller.weight +(1|lawn.id),\n>\n> When, in fact, it *should be* (because you simulated the data or  \n> you're God):\n>\n> Lawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n>\n> then you might erroneously fail to reject the null hypothesis that  \n> the random effect for slope is zero. But in real life one does not  \n> know the true model, and there are an infinite number of (functional  \n> forms for) random effects that such tests may fail upon. What should  \n> one do, why stop at the linear term? Why not saturate the model with  \n> random effects? (And still, you don't know whether you have the  \n> right model).\n>\n> In your example one would perhaps like to think that VERY light lawn  \n> movers did not cause any depression at all, and that there is a  \n> maximum depression that a lawn mover could cause, so there should at  \n> least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf \n>  : we centre our lawn mover weights and keep in the middle of this  \n> interval where things look linear and fit a linear, Gaussian model.\n>\n> Then I don't quite get your point from Box' quote since that  \n> concerned heterogeneous variances, right? Here the situation is  \n> quite the opposite to rejecting the null, using a test for  \n> heterogeneous variances that is more sensitive than the ANOVA for  \n> departures from homogeneity is akin to sending out a rowing boat on  \n> a rough sea where the ocean liner (ANOVA) would safely fare. We  \n> failed to reject the null hypothesis of zero slope.\n>\n> So what is your suggestion of a sensible modelling strategy?  \n> (Without being biased by what you see in your dataset; I used to  \n> like inspecting the data fitting lmList if possible, then fitting a  \n> rather complex model, and then removing insignificant terms, then  \n> checking assumptions. After having read Harrell's book (Regression  \n> modelling strategies) I'm a bit uncertain what to do when people ask  \n> me to analyze their data, since they don't like to think too much  \n> about it. Harrell's suggestion that one could check the literature  \n> for a sensible model seems pernicious to me since these old results  \n> are based on the very same modelling strategy that he rejects.  \n> Should one use the Bayesian framework with flat priors?)\n>\n>\n> Best regards,\n>\n> Fredrik Nilsson\n>\n> -----Ursprungligt meddelande-----\n> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org \n> ] F?r John Maindonald\n> Skickat: den 7 november 2007 22:47\n> Till: Irene Mantzouni\n> Kopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\n> ?mne: Re: [R-sig-ME] mixed model testing\n>\n> Whether or not you need a mixed model, e.g. random versus\n> fixed slopes, depends on how you intend to use results.\n>\n> Suppose you have lines of depression vs lawn roller weight\n> calculated for a number of lawns. If the data will always be\n> used to make predictions for one of those same lawns, a\n> fixed slopes model is fine.\n>\n> If you want to use the data to make a prediction for another\n> lawn from the same \"population\" (the population from which\n> this lawn is a random sample, right?), you need to model\n> the slope as a random effect.\n>\n> Now for a more subtle point:\n>\n> In the prediction for another lawn situation, it is possible that\n> the slope random effect can be zero, and analysts do very\n> commonly make this sort of assumption, maybe without\n> realizing that this is what they are doing.  You can test whether\n> the slope random effect is zero but, especially if you have data\n> from a few lawns only, failure to reject the null (zero random\n> effect) is not a secure basis for inferences that assume that\n> the slope is indeed zero. The \"test for zero random effect, then\n> infer\" is open to Box's pithy objection that\n> \"... to make preliminary tests on variances is rather like putting to\n> sea in a rowing boat to find out whether conditions are sufficiently\n> calm for an ocean liner to leave port\".\n>\n>\n> John Maindonald             email: john.maindonald at anu.edu.au\n> phone : +61 2 (6125)3473    fax  : +61 2(6125)5549\n> Centre for Mathematics & Its Applications, Room 1194,\n> John Dedman Mathematical Sciences Building (Building 27)\n> Australian National University, Canberra ACT 0200.\n>\n>\n> On 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n>\n>> Is there a formal way to prove the need of a mixed model, apart from\n>> e.g. comparing the intervals estimated by lmList fit?\n>> For example, should I compare (with AIC ML?) a model with seperately\n>> (unpooled) estimated fixed slopes (i.e.using an index for each\n>> group) with a model that treats this parameter as a random effect\n>> (both models treat the remaining parameters as random)?\n>>\n>> Thank you!\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "For simplicity, I limited attention to a rather small class\nof models.  I assumed that the only fixed effect that the\ndata would support is a linear term, and I do not mind\nadding an intercept.  That is realistic, I believe, for data\nof this type.\n\nOne should not limit oneself to a single random effect\nif indeed the data are sampled in a manner (e.g., lawns\nwithin soil types) that makes it natural to expect some\nfurther random effect.  In my example as stated, the data\nhave no such structure. (NB, the random sample comment,\nmeaning simple random sample).\n\nI agree that I have used Box's example outside of the\ncontext in which he used it.  A better example might be\nuse of a reconnaissance that has only a 20% chance\nof detecting such pirates as may be present on the high\nseas, before deciding whether a valuable cargo that will\nventure into those seas should have an escort.\n\nRemoving insignificant terms can help understanding\nand interpretation.  But if one wants to make anything\nof the coefficients, it is necessary to check that the\nremaining coefficients have not changed substantially.\nIf there are more than a few terms to consider, and data\nare not from a designed experiment, and attempt to\ninterpret coefficients is likely to be hazardous. You\nmentioned the Harrell book. Rosenbaum's \"Observational\nStudies\" (2edn, Springer, 2002) merits careful attention.\n\nWhy do you think Harrell's suggestion pernicious?  Models\nthat are in the literature can be a good starting point, and\nthe accompanying discussion an aid to understanding\nthe science. They may turn out to be more or less right\n(as far as one can tell), or to require modification, or the\ndata may demolish them.  But at least one has a starting\npoint, rather than an almost unlimited choice of models.\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 8:00 PM, Nilsson Fredrik X wrote:\n\n> Dear John,\n>\n> Forgive me for putting my nose out, I hope that I'm not rude, but I  \n> am a bit bewildered by your mail (and by statistical modelling).\n>\n> I agree that if your model is:\n>\n> Lawndepression~lawn.roller.weight +(1|lawn.id),\n>\n> When, in fact, it *should be* (because you simulated the data or  \n> you're God):\n>\n> Lawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n>\n> then you might erroneously fail to reject the null hypothesis that  \n> the random effect for slope is zero. But in real life one does not  \n> know the true model, and there are an infinite number of (functional  \n> forms for) random effects that such tests may fail upon. What should  \n> one do, why stop at the linear term? Why not saturate the model with  \n> random effects? (And still, you don't know whether you have the  \n> right model).\n>\n> In your example one would perhaps like to think that VERY light lawn  \n> movers did not cause any depression at all, and that there is a  \n> maximum depression that a lawn mover could cause, so there should at  \n> least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf \n>  : we centre our lawn mover weights and keep in the middle of this  \n> interval where things look linear and fit a linear, Gaussian model.\n>\n> Then I don't quite get your point from Box' quote since that  \n> concerned heterogeneous variances, right? Here the situation is  \n> quite the opposite to rejecting the null, using a test for  \n> heterogeneous variances that is more sensitive than the ANOVA for  \n> departures from homogeneity is akin to sending out a rowing boat on  \n> a rough sea where the ocean liner (ANOVA) would safely fare. We  \n> failed to reject the null hypothesis of zero slope.\n>\n> So what is your suggestion of a sensible modelling strategy?  \n> (Without being biased by what you see in your dataset; I used to  \n> like inspecting the data fitting lmList if possible, then fitting a  \n> rather complex model, and then removing insignificant terms, then  \n> checking assumptions. After having read Harrell's book (Regression  \n> modelling strategies) I'm a bit uncertain what to do when people ask  \n> me to analyze their data, since they don't like to think too much  \n> about it. Harrell's suggestion that one could check the literature  \n> for a sensible model seems pernicious to me since these old results  \n> are based on the very same modelling strategy that he rejects.  \n> Should one use the Bayesian framework with flat priors?)\n>\n>\n> Best regards,\n>\n> Fredrik Nilsson\n>\n> -----Ursprungligt meddelande-----\n> Från: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org \n> ] För John Maindonald\n> Skickat: den 7 november 2007 22:47\n> Till: Irene Mantzouni\n> Kopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\n> Ämne: Re: [R-sig-ME] mixed model testing\n>\n> Whether or not you need a mixed model, e.g. random versus\n> fixed slopes, depends on how you intend to use results.\n>\n> Suppose you have lines of depression vs lawn roller weight\n> calculated for a number of lawns. If the data will always be\n> used to make predictions for one of those same lawns, a\n> fixed slopes model is fine.\n>\n> If you want to use the data to make a prediction for another\n> lawn from the same \"population\" (the population from which\n> this lawn is a random sample, right?), you need to model\n> the slope as a random effect.\n>\n> Now for a more subtle point:\n>\n> In the prediction for another lawn situation, it is possible that\n> the slope random effect can be zero, and analysts do very\n> commonly make this sort of assumption, maybe without\n> realizing that this is what they are doing.  You can test whether\n> the slope random effect is zero but, especially if you have data\n> from a few lawns only, failure to reject the null (zero random\n> effect) is not a secure basis for inferences that assume that\n> the slope is indeed zero. The \"test for zero random effect, then\n> infer\" is open to Box's pithy objection that\n> \"... to make preliminary tests on variances is rather like putting to\n> sea in a rowing boat to find out whether conditions are sufficiently\n> calm for an ocean liner to leave port\".\n>\n>\n> John Maindonald             email: john.maindonald at anu.edu.au\n> phone : +61 2 (6125)3473    fax  : +61 2(6125)5549\n> Centre for Mathematics & Its Applications, Room 1194,\n> John Dedman Mathematical Sciences Building (Building 27)\n> Australian National University, Canberra ACT 0200.\n>\n>\n> On 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n>\n>> Is there a formal way to prove the need of a mixed model, apart from\n>> e.g. comparing the intervals estimated by lmList fit?\n>> For example, should I compare (with AIC ML?) a model with seperately\n>> (unpooled) estimated fixed slopes (i.e.using an index for each\n>> group) with a model that treats this parameter as a random effect\n>> (both models treat the remaining parameters as random)?\n>>\n>> Thank you!\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "For simplicity, I limited attention to a rather small class\nof models.  I assumed that the only fixed effect that the\ndata would support is a linear term, and I do not mind\nadding an intercept.  That ",
       "thread_id": "thread-e99221168d7f",
       "thread_depth": 3,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000419.html"
     },
     {
       "id": "msg-5b6b5c869b97",
@@ -189,11 +199,12 @@
       "subject_clean": "mixed model testing",
       "in_reply_to": "<A68194D0-C07F-4BC0-848E-4798DF1BDD20@anu.edu.au>",
       "references": [],
-      "body_plain": "Dear John,\n\nThank you for your reply. Well then I agree, a random effect should be added if one suspects that it should be there. Neat example with pirates!\n\nPernicious is a too strong word, but dangerous. Since, as I said, many of the results found in the literature are based on screening for covariates of interest, including only those that have a p-value less than 0.30 (say) in a forward selection model. Using simple linear, or at best, (fractional) polynomial bases to represent covariates, and almost always ignoring interactions (difficult to present). I suppose that it would be OK to be inspired by them, but with a good amount of distrust (if Harrell is right, which seems to be the case). This distrust could perhaps be lessened when the literature concerns randomised trials although covariates may find their way into this area to (and still no interactions...).\n\nBest regards,\n\nFredrik\n\n\n-----Ursprungligt meddelande-----\nFr?n: John Maindonald [mailto:John.Maindonald at anu.edu.au] \nSkickat: den 8 november 2007 12:17\nTill: Nilsson Fredrik X\nKopia: r-sig-mixed-models at r-project.org\n?mne: Re: SV: [R-sig-ME] mixed model testing\n\nFor simplicity, I limited attention to a rather small class\nof models.  I assumed that the only fixed effect that the\ndata would support is a linear term, and I do not mind\nadding an intercept.  That is realistic, I believe, for data\nof this type.\n\nOne should not limit oneself to a single random effect\nif indeed the data are sampled in a manner (e.g., lawns\nwithin soil types) that makes it natural to expect some\nfurther random effect.  In my example as stated, the data\nhave no such structure. (NB, the random sample comment,\nmeaning simple random sample).\n\nI agree that I have used Box's example outside of the\ncontext in which he used it.  A better example might be\nuse of a reconnaissance that has only a 20% chance\nof detecting such pirates as may be present on the high\nseas, before deciding whether a valuable cargo that will\nventure into those seas should have an escort.\n\nRemoving insignificant terms can help understanding\nand interpretation.  But if one wants to make anything\nof the coefficients, it is necessary to check that the\nremaining coefficients have not changed substantially.\nIf there are more than a few terms to consider, and data\nare not from a designed experiment, and attempt to\ninterpret coefficients is likely to be hazardous. You\nmentioned the Harrell book. Rosenbaum's \"Observational\nStudies\" (2edn, Springer, 2002) merits careful attention.\n\nWhy do you think Harrell's suggestion pernicious?  Models\nthat are in the literature can be a good starting point, and\nthe accompanying discussion an aid to understanding\nthe science. They may turn out to be more or less right\n(as far as one can tell), or to require modification, or the\ndata may demolish them.  But at least one has a starting\npoint, rather than an almost unlimited choice of models.\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 8:00 PM, Nilsson Fredrik X wrote:\n\n> Dear John,\n>\n> Forgive me for putting my nose out, I hope that I'm not rude, but I  \n> am a bit bewildered by your mail (and by statistical modelling).\n>\n> I agree that if your model is:\n>\n> Lawndepression~lawn.roller.weight +(1|lawn.id),\n>\n> When, in fact, it *should be* (because you simulated the data or  \n> you're God):\n>\n> Lawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n>\n> then you might erroneously fail to reject the null hypothesis that  \n> the random effect for slope is zero. But in real life one does not  \n> know the true model, and there are an infinite number of (functional  \n> forms for) random effects that such tests may fail upon. What should  \n> one do, why stop at the linear term? Why not saturate the model with  \n> random effects? (And still, you don't know whether you have the  \n> right model).\n>\n> In your example one would perhaps like to think that VERY light lawn  \n> movers did not cause any depression at all, and that there is a  \n> maximum depression that a lawn mover could cause, so there should at  \n> least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf \n>  : we centre our lawn mover weights and keep in the middle of this  \n> interval where things look linear and fit a linear, Gaussian model.\n>\n> Then I don't quite get your point from Box' quote since that  \n> concerned heterogeneous variances, right? Here the situation is  \n> quite the opposite to rejecting the null, using a test for  \n> heterogeneous variances that is more sensitive than the ANOVA for  \n> departures from homogeneity is akin to sending out a rowing boat on  \n> a rough sea where the ocean liner (ANOVA) would safely fare. We  \n> failed to reject the null hypothesis of zero slope.\n>\n> So what is your suggestion of a sensible modelling strategy?  \n> (Without being biased by what you see in your dataset; I used to  \n> like inspecting the data fitting lmList if possible, then fitting a  \n> rather complex model, and then removing insignificant terms, then  \n> checking assumptions. After having read Harrell's book (Regression  \n> modelling strategies) I'm a bit uncertain what to do when people ask  \n> me to analyze their data, since they don't like to think too much  \n> about it. Harrell's suggestion that one could check the literature  \n> for a sensible model seems pernicious to me since these old results  \n> are based on the very same modelling strategy that he rejects.  \n> Should one use the Bayesian framework with flat priors?)\n>\n>\n> Best regards,\n>\n> Fredrik Nilsson\n>\n> -----Ursprungligt meddelande-----\n> Fr?n: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org \n> ] F?r John Maindonald\n> Skickat: den 7 november 2007 22:47\n> Till: Irene Mantzouni\n> Kopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\n> ?mne: Re: [R-sig-ME] mixed model testing\n>\n> Whether or not you need a mixed model, e.g. random versus\n> fixed slopes, depends on how you intend to use results.\n>\n> Suppose you have lines of depression vs lawn roller weight\n> calculated for a number of lawns. If the data will always be\n> used to make predictions for one of those same lawns, a\n> fixed slopes model is fine.\n>\n> If you want to use the data to make a prediction for another\n> lawn from the same \"population\" (the population from which\n> this lawn is a random sample, right?), you need to model\n> the slope as a random effect.\n>\n> Now for a more subtle point:\n>\n> In the prediction for another lawn situation, it is possible that\n> the slope random effect can be zero, and analysts do very\n> commonly make this sort of assumption, maybe without\n> realizing that this is what they are doing.  You can test whether\n> the slope random effect is zero but, especially if you have data\n> from a few lawns only, failure to reject the null (zero random\n> effect) is not a secure basis for inferences that assume that\n> the slope is indeed zero. The \"test for zero random effect, then\n> infer\" is open to Box's pithy objection that\n> \"... to make preliminary tests on variances is rather like putting to\n> sea in a rowing boat to find out whether conditions are sufficiently\n> calm for an ocean liner to leave port\".\n>\n>\n> John Maindonald             email: john.maindonald at anu.edu.au\n> phone : +61 2 (6125)3473    fax  : +61 2(6125)5549\n> Centre for Mathematics & Its Applications, Room 1194,\n> John Dedman Mathematical Sciences Building (Building 27)\n> Australian National University, Canberra ACT 0200.\n>\n>\n> On 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n>\n>> Is there a formal way to prove the need of a mixed model, apart from\n>> e.g. comparing the intervals estimated by lmList fit?\n>> For example, should I compare (with AIC ML?) a model with seperately\n>> (unpooled) estimated fixed slopes (i.e.using an index for each\n>> group) with a model that treats this parameter as a random effect\n>> (both models treat the remaining parameters as random)?\n>>\n>> Thank you!\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Dear John,\n\nThank you for your reply. Well then I agree, a random effect should be added if one suspects that it should be there. Neat example with pirates!\n\nPernicious is a too strong word, but dangerous. Since, as I said, many of the results found in the literature are based on screening for covariates of interest, including only those that have a p-value less than 0.30 (say) in a forward selection model. Using simple linear, or at best, (fractional) polynomial bases to represent covariates, and almost always ignoring interactions (difficult to present). I suppose that it would be OK to be inspired by them, but with a good amount of distrust (if Harrell is right, which seems to be the case). This distrust could perhaps be lessened when the literature concerns randomised trials although covariates may find their way into this area to (and still no interactions...).\n\nBest regards,\n\nFredrik\n\n\n-----Ursprungligt meddelande-----\nFrån: John Maindonald [mailto:John.Maindonald at anu.edu.au] \nSkickat: den 8 november 2007 12:17\nTill: Nilsson Fredrik X\nKopia: r-sig-mixed-models at r-project.org\nÄmne: Re: SV: [R-sig-ME] mixed model testing\n\nFor simplicity, I limited attention to a rather small class\nof models.  I assumed that the only fixed effect that the\ndata would support is a linear term, and I do not mind\nadding an intercept.  That is realistic, I believe, for data\nof this type.\n\nOne should not limit oneself to a single random effect\nif indeed the data are sampled in a manner (e.g., lawns\nwithin soil types) that makes it natural to expect some\nfurther random effect.  In my example as stated, the data\nhave no such structure. (NB, the random sample comment,\nmeaning simple random sample).\n\nI agree that I have used Box's example outside of the\ncontext in which he used it.  A better example might be\nuse of a reconnaissance that has only a 20% chance\nof detecting such pirates as may be present on the high\nseas, before deciding whether a valuable cargo that will\nventure into those seas should have an escort.\n\nRemoving insignificant terms can help understanding\nand interpretation.  But if one wants to make anything\nof the coefficients, it is necessary to check that the\nremaining coefficients have not changed substantially.\nIf there are more than a few terms to consider, and data\nare not from a designed experiment, and attempt to\ninterpret coefficients is likely to be hazardous. You\nmentioned the Harrell book. Rosenbaum's \"Observational\nStudies\" (2edn, Springer, 2002) merits careful attention.\n\nWhy do you think Harrell's suggestion pernicious?  Models\nthat are in the literature can be a good starting point, and\nthe accompanying discussion an aid to understanding\nthe science. They may turn out to be more or less right\n(as far as one can tell), or to require modification, or the\ndata may demolish them.  But at least one has a starting\npoint, rather than an almost unlimited choice of models.\n\nJohn Maindonald             email: john.maindonald at anu.edu.au\nphone : +61 2 (6125)3473    fax  : +61 2(6125)5549\nCentre for Mathematics & Its Applications, Room 1194,\nJohn Dedman Mathematical Sciences Building (Building 27)\nAustralian National University, Canberra ACT 0200.\n\n\nOn 8 Nov 2007, at 8:00 PM, Nilsson Fredrik X wrote:\n\n> Dear John,\n>\n> Forgive me for putting my nose out, I hope that I'm not rude, but I  \n> am a bit bewildered by your mail (and by statistical modelling).\n>\n> I agree that if your model is:\n>\n> Lawndepression~lawn.roller.weight +(1|lawn.id),\n>\n> When, in fact, it *should be* (because you simulated the data or  \n> you're God):\n>\n> Lawndepression~lawn.roller.weight +(lawn.roller.weight|lawn.id),\n>\n> then you might erroneously fail to reject the null hypothesis that  \n> the random effect for slope is zero. But in real life one does not  \n> know the true model, and there are an infinite number of (functional  \n> forms for) random effects that such tests may fail upon. What should  \n> one do, why stop at the linear term? Why not saturate the model with  \n> random effects? (And still, you don't know whether you have the  \n> right model).\n>\n> In your example one would perhaps like to think that VERY light lawn  \n> movers did not cause any depression at all, and that there is a  \n> maximum depression that a lawn mover could cause, so there should at  \n> least be an f(lawn.roller.weight), or we do as Venables suggest in http://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf \n>  : we centre our lawn mover weights and keep in the middle of this  \n> interval where things look linear and fit a linear, Gaussian model.\n>\n> Then I don't quite get your point from Box' quote since that  \n> concerned heterogeneous variances, right? Here the situation is  \n> quite the opposite to rejecting the null, using a test for  \n> heterogeneous variances that is more sensitive than the ANOVA for  \n> departures from homogeneity is akin to sending out a rowing boat on  \n> a rough sea where the ocean liner (ANOVA) would safely fare. We  \n> failed to reject the null hypothesis of zero slope.\n>\n> So what is your suggestion of a sensible modelling strategy?  \n> (Without being biased by what you see in your dataset; I used to  \n> like inspecting the data fitting lmList if possible, then fitting a  \n> rather complex model, and then removing insignificant terms, then  \n> checking assumptions. After having read Harrell's book (Regression  \n> modelling strategies) I'm a bit uncertain what to do when people ask  \n> me to analyze their data, since they don't like to think too much  \n> about it. Harrell's suggestion that one could check the literature  \n> for a sensible model seems pernicious to me since these old results  \n> are based on the very same modelling strategy that he rejects.  \n> Should one use the Bayesian framework with flat priors?)\n>\n>\n> Best regards,\n>\n> Fredrik Nilsson\n>\n> -----Ursprungligt meddelande-----\n> Från: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org \n> ] För John Maindonald\n> Skickat: den 7 november 2007 22:47\n> Till: Irene Mantzouni\n> Kopia: r-sig-mixed-models at r-project.org; r-help at stat.math.ethz.ch\n> Ämne: Re: [R-sig-ME] mixed model testing\n>\n> Whether or not you need a mixed model, e.g. random versus\n> fixed slopes, depends on how you intend to use results.\n>\n> Suppose you have lines of depression vs lawn roller weight\n> calculated for a number of lawns. If the data will always be\n> used to make predictions for one of those same lawns, a\n> fixed slopes model is fine.\n>\n> If you want to use the data to make a prediction for another\n> lawn from the same \"population\" (the population from which\n> this lawn is a random sample, right?), you need to model\n> the slope as a random effect.\n>\n> Now for a more subtle point:\n>\n> In the prediction for another lawn situation, it is possible that\n> the slope random effect can be zero, and analysts do very\n> commonly make this sort of assumption, maybe without\n> realizing that this is what they are doing.  You can test whether\n> the slope random effect is zero but, especially if you have data\n> from a few lawns only, failure to reject the null (zero random\n> effect) is not a secure basis for inferences that assume that\n> the slope is indeed zero. The \"test for zero random effect, then\n> infer\" is open to Box's pithy objection that\n> \"... to make preliminary tests on variances is rather like putting to\n> sea in a rowing boat to find out whether conditions are sufficiently\n> calm for an ocean liner to leave port\".\n>\n>\n> John Maindonald             email: john.maindonald at anu.edu.au\n> phone : +61 2 (6125)3473    fax  : +61 2(6125)5549\n> Centre for Mathematics & Its Applications, Room 1194,\n> John Dedman Mathematical Sciences Building (Building 27)\n> Australian National University, Canberra ACT 0200.\n>\n>\n> On 8 Nov 2007, at 1:55 AM, Irene Mantzouni wrote:\n>\n>> Is there a formal way to prove the need of a mixed model, apart from\n>> e.g. comparing the intervals estimated by lmList fit?\n>> For example, should I compare (with AIC ML?) a model with seperately\n>> (unpooled) estimated fixed slopes (i.e.using an index for each\n>> group) with a model that treats this parameter as a random effect\n>> (both models treat the remaining parameters as random)?\n>>\n>> Thank you!\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Dear John,\n\nThank you for your reply. Well then I agree, a random effect should be added if one suspects that it should be there. Neat example with pirates!\n\nPernicious is a too strong word, but dange",
       "thread_id": "thread-e99221168d7f",
       "thread_depth": 4,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000420.html"
     },
     {
       "id": "msg-1381d13565f6",
@@ -210,6 +221,7 @@
       "thread_id": "thread-1381d13565f6",
       "thread_depth": 0,
       "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000421.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071108/0c96d384/attachment.pl"
       ]
@@ -230,7 +242,8 @@
       "body_snippet": "On 11/8/07, Marco Chiarandini <marco at imada.sdu.dk> wrote:\n> Dear Prof. Bates,\n\n> I am trying to use the function lmer from lme4 to\n> analyse the following nested factorial design.\n\n> I have three t",
       "thread_id": "thread-b271e71c37d3",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000422.html"
     },
     {
       "id": "msg-713f3fe5f424",
@@ -246,7 +259,8 @@
       "body_snippet": "I've reported two bugs to this list recently that received no\nresponse:\n  lmList does not work for glms (patch included):\n     https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000374.html\n  lm",
       "thread_id": "thread-713f3fe5f424",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000423.html"
     },
     {
       "id": "msg-f4e2244aef36",
@@ -258,11 +272,12 @@
       "subject_clean": "lmer warning message",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi,\n\nI am getting these two warning message for different data when I'am \nusing a lmer (R version 2.5.1):\n\nFehler in if (any(sd < 0)) return(\"'sd' slot has negative entries\") : \nFehlender Wert, wo TRUE/FALSE n?tig ist\n\nand\n\nCHOLMOD warning: matrix not positive definite\nFehler in objective(.par, ...) : Cholmod error `matrix not positive \ndefinite' at file:../Supernodal/t_cholmod_super_numeric.c, line 614\n\n\nWhats does it mean?\n\n\nThanks for your help!\n\nHeike",
+      "body_plain": "Hi,\n\nI am getting these two warning message for different data when I'am \nusing a lmer (R version 2.5.1):\n\nFehler in if (any(sd < 0)) return(\"'sd' slot has negative entries\") : \nFehlender Wert, wo TRUE/FALSE nötig ist\n\nand\n\nCHOLMOD warning: matrix not positive definite\nFehler in objective(.par, ...) : Cholmod error `matrix not positive \ndefinite' at file:../Supernodal/t_cholmod_super_numeric.c, line 614\n\n\nWhats does it mean?\n\n\nThanks for your help!\n\nHeike",
       "body_snippet": "Hi,\n\nI am getting these two warning message for different data when I'am \nusing a lmer (R version 2.5.1):\n\nFehler in if (any(sd < 0)) return(\"'sd' slot has negative entries\") : \nFehlender Wert, wo TRU",
       "thread_id": "thread-f4e2244aef36",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000424.html"
     },
     {
       "id": "msg-058624a05849",
@@ -278,7 +293,8 @@
       "body_snippet": "Hi all!\n \nIs it possible to use a segmented regression model as the functional form of a linear (or maybe non-linear?) mixed model?\n \nCheers,\nIrene",
       "thread_id": "thread-058624a05849",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000425.html"
     },
     {
       "id": "msg-d704b1c52e93",
@@ -297,7 +313,8 @@
       "body_snippet": "Dear Prof. Bates,\n\n\n>> I am trying to use the function lmer from lme4 to\n>> analyse the following nested factorial design.\n> \n>> I have three treatment factors (neighborhood,\n>> initial, k);\n>> I have",
       "thread_id": "thread-b271e71c37d3",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000426.html"
     },
     {
       "id": "msg-b11e5cae57e9",
@@ -313,7 +330,8 @@
       "body_snippet": "Users of the current version of the lme4 package have reported several\nproblems and, for some time, I have been unresponsive about such reports\nor I have made reference to the development version of t",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000427.html"
     },
     {
       "id": "msg-37df8cdf8dab",
@@ -329,7 +347,8 @@
       "body_snippet": "Hi all,\n\nTwo questions:\n\n1. Is there a way to evaluate models from lmer() with a poisson  \ndistribution? I get the following error message:\n\nlibrary(lme4)\nlmer(tot.fruit~infl.treat+def.treat+(1|initia",
       "thread_id": "thread-37df8cdf8dab",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000428.html"
     },
     {
       "id": "msg-eeea99b6ae5d",
@@ -347,7 +366,8 @@
       "body_snippet": "On Nov 14, 2007 5:58 AM, Gustaf Granath <Gustaf.Granath at ebc.uu.se> wrote:\n> Hi all,\n\n> Two questions:\n\n> 1. Is there a way to evaluate models from lmer() with a poisson\n> distribution? I get the fo",
       "thread_id": "thread-37df8cdf8dab",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000429.html"
     },
     {
       "id": "msg-c3a6b57661b6",
@@ -363,7 +383,8 @@
       "body_snippet": "Is it (or will it become...) possible to fit a mixed non-linear SSmicmen model assuming log-normal error?\nI have tried to use a log transformed micmen model but it does not seem so powerful. \nAny othe",
       "thread_id": "thread-c3a6b57661b6",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000430.html"
     },
     {
       "id": "msg-7dd286bfa934",
@@ -379,7 +400,8 @@
       "body_snippet": "Dear list,\nIf you please help me with the R command for a 4 level random effects \nmodel I would be grateful.  I chose to put the details of my study at \nthe end of the email as some may prefer not to ",
       "thread_id": "thread-7dd286bfa934",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000431.html"
     },
     {
       "id": "msg-20cef586fd5f",
@@ -397,7 +419,8 @@
       "body_snippet": "Hi Everyone,\n\nI was wanting to write my own cor structure for the nlme package to put \ninto a gls. Does anybody have a good place to look for how to do this? I \nthink I remember it being in the handou",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000433.html"
     },
     {
       "id": "msg-42a0eb18b64e",
@@ -413,7 +436,8 @@
       "body_snippet": "If you can't get satisfaction in R you can do this easily\nwith AD Model Builder's Random Effects module.\n\n\n    Cheers,\n\n     Dave\n\n\n-- \nDavid A. Fournier\nP.O. Box 2040,\nSidney, B.C. V8l 3S3\nCanada\nPho",
       "thread_id": "thread-42a0eb18b64e",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000432.html"
     },
     {
       "id": "msg-e015e1e9de89",
@@ -429,7 +453,8 @@
       "body_snippet": "Dear friends, I have two binomial dependent variables. What sort of analysis can I use? Which package?\n\nJason\n \nDr. Iasonas Lamprianou\nDepartment of Education\nThe University of Manchester\nOxford Road,",
       "thread_id": "thread-e015e1e9de89",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000434.html"
     },
     {
       "id": "msg-4322c59fc4f4",
@@ -445,7 +470,8 @@
       "body_snippet": "Dear all,\n\nI wanted to check if I've fitted a model as I think I have, and if not\nask for suggestions for corrections. I've fitted the following model\nwithin a function;\n\nlme.out <- summary(lme(trait ",
       "thread_id": "thread-4322c59fc4f4",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000435.html"
     },
     {
       "id": "msg-fbdb38e41e66",
@@ -461,7 +487,8 @@
       "body_snippet": "Hi all!\n \nI have a mixed model with timeseries of y and x for populations:\nlme(y~x,random=1|Population)\nI am wondering if I can make it hierarchical by adding a random effect for year:\nlme(y~x,random=",
       "thread_id": "thread-fbdb38e41e66",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000436.html"
     },
     {
       "id": "msg-7f45f4b94fca",
@@ -477,7 +504,8 @@
       "body_snippet": "Dear friends, may we use lmer to estimate models where residuals can be correlated (no conditional independence\n          assumption)\n\nthanks\n\n \nDr. Iasonas Lamprianou\nDepartment of Education\nThe Univ",
       "thread_id": "thread-7f45f4b94fca",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000437.html"
     },
     {
       "id": "msg-5335e687cc18",
@@ -495,7 +523,8 @@
       "body_snippet": "Hi Iasonas,\n\nit depends on the correlation structure.  If you can produce the\nstructure using crossed or nested random effects, then, yes.  If you\nare referring to the kinds of correlations that are p",
       "thread_id": "thread-7f45f4b94fca",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000438.html"
     },
     {
       "id": "msg-4efc6de8b7a2",
@@ -512,6 +541,7 @@
       "thread_id": "thread-4efc6de8b7a2",
       "thread_depth": 0,
       "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000439.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071127/12197b1a/attachment.pl"
       ]
@@ -530,7 +560,8 @@
       "body_snippet": "What do you mean by not working? Your lme and lmer code seem to be\nequivalent. \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces ",
       "thread_id": "thread-4efc6de8b7a2",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000440.html"
     },
     {
       "id": "msg-ae9f96030c5b",
@@ -549,7 +580,8 @@
       "body_snippet": "On Nov 27, 2007 8:43 AM, Doran, Harold <HDoran at air.org> wrote:\n> What do you mean by not working? Your lme and lmer code seem to be\n> equivalent.\n\nNot really.  Supplier:Batch is the batch grouping ",
       "thread_id": "thread-4efc6de8b7a2",
       "thread_depth": 2,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000441.html"
     },
     {
       "id": "msg-f2714ee5b8fd",
@@ -565,7 +597,8 @@
       "body_snippet": "All,\n\nI have a very simple set of county data, with one dependent variable (y)\nand three covariates (x),\none observation for each county. I have a lot of these type of problems to\ndo.\n\ny is actually a",
       "thread_id": "thread-f2714ee5b8fd",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000442.html"
     },
     {
       "id": "msg-1e2c145321de",
@@ -583,7 +616,8 @@
       "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> Starting tomorrow you should also be able to install the development\n> version of the package with\n> \n> install.packages(\"lme4\", repos = \"http://r-forge.r-proje",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 1,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000443.html"
     },
     {
       "id": "msg-ac8b1ab59730",
@@ -599,7 +633,8 @@
       "body_snippet": "I would very much appreciate help with the following problem. I have a  \nsimulated dataset comprising a sigmoid Emax function  \n(E0+Emax*Dose^Hill)/(D50^Hill+Dose^Hill)) with added error terms. I am  ",
       "thread_id": "thread-ac8b1ab59730",
       "thread_depth": 0,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000444.html"
     },
     {
       "id": "msg-d6a765c4b202",
@@ -618,7 +653,8 @@
       "body_snippet": ">>>>> \"DM\" == Dieter Menne <dieter.menne at menne-biomed.de>\n>>>>>     on Fri, 30 Nov 2007 14:35:41 +0000 (UTC) writes:\n\n    DM> Douglas Bates <bates at ...> writes:\n    >> Starting tomorrow you shoul",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 2,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000445.html"
     },
     {
       "id": "msg-c331220082b5",
@@ -638,7 +674,8 @@
       "body_snippet": "On Nov 30, 2007 11:26 AM, Martin Maechler <maechler at stat.math.ethz.ch> wrote:\n> >>>>> \"DM\" == Dieter Menne <dieter.menne at menne-biomed.de>\n> >>>>>     on Fri, 30 Nov 2007 14:35:41 +0000 (UTC) wri",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 3,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000446.html"
     },
     {
       "id": "msg-8a472214c887",
@@ -659,7 +696,8 @@
       "body_snippet": "Hello Doug,\n\nWe had troubles with disk space on R-Forge. Among others this caused the \nwebsite to malfunction. It is possible that the windows binary build \nprocess had been affected too.\nHowever, eve",
       "thread_id": "thread-b11e5cae57e9",
       "thread_depth": 4,
-      "month": "2007-11"
+      "month": "2007-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000447.html"
     }
   ],
   "threads": [

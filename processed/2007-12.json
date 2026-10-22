@@ -21,7 +21,8 @@
       "body_snippet": "On Dec 1, 2007 10:08 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas Bates <bates <at> stat.wisc.edu> writes:\n>\n> (lmer)\n>\n> > The default is PQL, to refine the\n> > starting estima",
       "thread_id": "thread-981aeea348c7",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000448.html"
     },
     {
       "id": "msg-c6d770106502",
@@ -37,7 +38,8 @@
       "body_snippet": "Dear lmers,\n\nfrom reading the docs and the first lines of lmer() code, I got the\nunderstanding that the two formulations below should be equivalent. The first\nworks as expected, the second gives an en",
       "thread_id": "thread-c6d770106502",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000449.html"
     },
     {
       "id": "msg-3a76bc332f68",
@@ -55,7 +57,8 @@
       "body_snippet": "Can you tell us the version of the lme4 package that you are using, please?\n\nOn Dec 3, 2007 7:54 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Dear lmers,\n>\n> from reading the docs and t",
       "thread_id": "thread-c6d770106502",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000450.html"
     },
     {
       "id": "msg-bf98f01709ca",
@@ -74,7 +77,8 @@
       "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> \n> Can you tell us the version of the lme4 package that you are using, please?\n\nBad, Dieter. Time to read the posting guide. \n\nThis is my home-build version for",
       "thread_id": "thread-c6d770106502",
       "thread_depth": 2,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000451.html"
     },
     {
       "id": "msg-f2fe9aeb3aee",
@@ -94,7 +98,8 @@
       "body_snippet": "Hmm.  Those calls should be equivalent in that version so I will look\ninto why they aren't.\n\nAt present I am involved in hand-to-hand combat with that code trying\nto determine why the calculation of t",
       "thread_id": "thread-c6d770106502",
       "thread_depth": 3,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000452.html"
     },
     {
       "id": "msg-03c434eb8545",
@@ -106,11 +111,12 @@
       "subject_clean": "lmer (binomial) and mcmcsamp",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Douglas,\n\nI am using the latest CRAN version; details see below.\n\nI tried to run mcmcsamp on a problem of the form \n\nThe model is\n\n lmer(RespB~Treat+Gender+(1|Pat),family=binomial) \n\n\nResults look ok, in reasonable agreement with method=\"PQL\", and in good\nagreement with G?ran's glmmML.\n\nRunning mcmcsamp() gave strange results. See \n\nhttp://www.menne-biomed.de/uni/mcmc20000.pdf\nhttp://www.menne-biomed.de/uni/mcmc2000.pdf\n\nI cannot get rid of the occasional stuck flat segments in between, even if I run\nseveral times. Is this\n\n-- Expected behavior, do your homework\n-- Somewhat fishy; don't trust the results\n-- Ill posed problem\n-- Well known issue with current lmer\n-- ...\n\nDieter\n\n#------------------------------\nGeneralized linear mixed model fit using Laplace \nFormula: form \n   Data: x \n Family: binomial(logit link)\n AIC BIC logLik deviance\n 340 356   -166      332\nRandom effects:\n Groups Name        Variance Std.Dev.\n Pat    (Intercept) 2.15     1.47    \nnumber of obs: 426, groups: Pat, 20\n\nEstimated scale (compare to  1 )  0.859 \n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)    \n(Intercept)   -1.809      0.497   -3.64  0.00027 ***\nTreatFOS      -0.267      0.290   -0.92  0.35775    \nGenderm       -0.775      0.778   -0.99  0.31975    \n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1 \n\nCorrelation of Fixed Effects:\n         (Intr) TrtFOS\nTreatFOS -0.274       \nGenderm  -0.593  0.009\n\n\nPackage: lme4\nVersion: 0.99875-9\nDate: 2007-10-14\nBuilt: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows",
+      "body_plain": "Douglas,\n\nI am using the latest CRAN version; details see below.\n\nI tried to run mcmcsamp on a problem of the form \n\nThe model is\n\n lmer(RespB~Treat+Gender+(1|Pat),family=binomial) \n\n\nResults look ok, in reasonable agreement with method=\"PQL\", and in good\nagreement with Göran's glmmML.\n\nRunning mcmcsamp() gave strange results. See \n\nhttp://www.menne-biomed.de/uni/mcmc20000.pdf\nhttp://www.menne-biomed.de/uni/mcmc2000.pdf\n\nI cannot get rid of the occasional stuck flat segments in between, even if I run\nseveral times. Is this\n\n-- Expected behavior, do your homework\n-- Somewhat fishy; don't trust the results\n-- Ill posed problem\n-- Well known issue with current lmer\n-- ...\n\nDieter\n\n#------------------------------\nGeneralized linear mixed model fit using Laplace \nFormula: form \n   Data: x \n Family: binomial(logit link)\n AIC BIC logLik deviance\n 340 356   -166      332\nRandom effects:\n Groups Name        Variance Std.Dev.\n Pat    (Intercept) 2.15     1.47    \nnumber of obs: 426, groups: Pat, 20\n\nEstimated scale (compare to  1 )  0.859 \n\nFixed effects:\n            Estimate Std. Error z value Pr(>|z|)    \n(Intercept)   -1.809      0.497   -3.64  0.00027 ***\nTreatFOS      -0.267      0.290   -0.92  0.35775    \nGenderm       -0.775      0.778   -0.99  0.31975    \n---\nSignif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1 \n\nCorrelation of Fixed Effects:\n         (Intr) TrtFOS\nTreatFOS -0.274       \nGenderm  -0.593  0.009\n\n\nPackage: lme4\nVersion: 0.99875-9\nDate: 2007-10-14\nBuilt: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows",
       "body_snippet": "Douglas,\n\nI am using the latest CRAN version; details see below.\n\nI tried to run mcmcsamp on a problem of the form \n\nThe model is\n\n lmer(RespB~Treat+Gender+(1|Pat),family=binomial) \n\n\nResults look ok,",
       "thread_id": "thread-03c434eb8545",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000453.html"
     },
     {
       "id": "msg-bc076cda79f3",
@@ -124,11 +130,12 @@
       "references": [
         "<loom.20071204T074500-257@post.gmane.org>"
       ],
-      "body_plain": "On Dec 4, 2007 1:55 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas,\n>\n> I am using the latest CRAN version; details see below.\n>\n> I tried to run mcmcsamp on a problem of the form\n>\n> The model is\n>\n>  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n>\n>\n> Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> agreement with G?ran's glmmML.\n>\n> Running mcmcsamp() gave strange results. See\n>\n> http://www.menne-biomed.de/uni/mcmc20000.pdf\n> http://www.menne-biomed.de/uni/mcmc2000.pdf\n>\n> I cannot get rid of the occasional stuck flat segments in between, even if I run\n> several times. Is this\n>\n> -- Expected behavior, do your homework\n> -- Somewhat fishy; don't trust the results\n> -- Ill posed problem\n> -- Well known issue with current lmer\n> -- ...\n>\n> Dieter\n\nThis is a known issue with the current lmer and you should not trust\nthe results.\n\nThe problem is that I use a Metropolis-Hastings update for the fixed\neffects and the random effects together, conditional on the variance\ncomponents.  In awkward cases the approximate distribution from which\nthe sample is drawn is not a good approximation to the conditional\ndistribution of these parameters and the proposed step keeps getting\nrejected.\n\nI believe the solution is to separate the fixed effects from the\nrandom effects but that is difficult to do in the formulation for the\n0.99875 series.  This was one of the reasons for changing the internal\nrepresentation in the 0.999375 series (the development version) but I\nam still encountering difficulties in some of the code design for that\nseries.  I thought I had the penalized iteratively reweighted least\nsquares algorithm for determining the conditional modes working but\nthen I tried it on a difficult example and found that it isn't working\nas well as I thought it was.\n\nI am working on it.  It is just taking considerably longer than I\nthought it would.\n\n> #------------------------------\n> Generalized linear mixed model fit using Laplace\n> Formula: form\n>    Data: x\n>  Family: binomial(logit link)\n>  AIC BIC logLik deviance\n>  340 356   -166      332\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  Pat    (Intercept) 2.15     1.47\n> number of obs: 426, groups: Pat, 20\n>\n> Estimated scale (compare to  1 )  0.859\n>\n> Fixed effects:\n>             Estimate Std. Error z value Pr(>|z|)\n> (Intercept)   -1.809      0.497   -3.64  0.00027 ***\n> TreatFOS      -0.267      0.290   -0.92  0.35775\n> Genderm       -0.775      0.778   -0.99  0.31975\n> ---\n> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n>\n> Correlation of Fixed Effects:\n>          (Intr) TrtFOS\n> TreatFOS -0.274\n> Genderm  -0.593  0.009\n>\n>\n> Package: lme4\n> Version: 0.99875-9\n> Date: 2007-10-14\n> Built: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "On Dec 4, 2007 1:55 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas,\n>\n> I am using the latest CRAN version; details see below.\n>\n> I tried to run mcmcsamp on a problem of the form\n>\n> The model is\n>\n>  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n>\n>\n> Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> agreement with Göran's glmmML.\n>\n> Running mcmcsamp() gave strange results. See\n>\n> http://www.menne-biomed.de/uni/mcmc20000.pdf\n> http://www.menne-biomed.de/uni/mcmc2000.pdf\n>\n> I cannot get rid of the occasional stuck flat segments in between, even if I run\n> several times. Is this\n>\n> -- Expected behavior, do your homework\n> -- Somewhat fishy; don't trust the results\n> -- Ill posed problem\n> -- Well known issue with current lmer\n> -- ...\n>\n> Dieter\n\nThis is a known issue with the current lmer and you should not trust\nthe results.\n\nThe problem is that I use a Metropolis-Hastings update for the fixed\neffects and the random effects together, conditional on the variance\ncomponents.  In awkward cases the approximate distribution from which\nthe sample is drawn is not a good approximation to the conditional\ndistribution of these parameters and the proposed step keeps getting\nrejected.\n\nI believe the solution is to separate the fixed effects from the\nrandom effects but that is difficult to do in the formulation for the\n0.99875 series.  This was one of the reasons for changing the internal\nrepresentation in the 0.999375 series (the development version) but I\nam still encountering difficulties in some of the code design for that\nseries.  I thought I had the penalized iteratively reweighted least\nsquares algorithm for determining the conditional modes working but\nthen I tried it on a difficult example and found that it isn't working\nas well as I thought it was.\n\nI am working on it.  It is just taking considerably longer than I\nthought it would.\n\n> #------------------------------\n> Generalized linear mixed model fit using Laplace\n> Formula: form\n>    Data: x\n>  Family: binomial(logit link)\n>  AIC BIC logLik deviance\n>  340 356   -166      332\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  Pat    (Intercept) 2.15     1.47\n> number of obs: 426, groups: Pat, 20\n>\n> Estimated scale (compare to  1 )  0.859\n>\n> Fixed effects:\n>             Estimate Std. Error z value Pr(>|z|)\n> (Intercept)   -1.809      0.497   -3.64  0.00027 ***\n> TreatFOS      -0.267      0.290   -0.92  0.35775\n> Genderm       -0.775      0.778   -0.99  0.31975\n> ---\n> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n>\n> Correlation of Fixed Effects:\n>          (Intr) TrtFOS\n> TreatFOS -0.274\n> Genderm  -0.593  0.009\n>\n>\n> Package: lme4\n> Version: 0.99875-9\n> Date: 2007-10-14\n> Built: R 2.6.0; i386-pc-mingw32; 2007-10-15 12:22:16; windows\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "On Dec 4, 2007 1:55 AM, Dieter Menne <dieter.menne at menne-biomed.de> wrote:\n> Douglas,\n>\n> I am using the latest CRAN version; details see below.\n>\n> I tried to run mcmcsamp on a problem of the form",
       "thread_id": "thread-03c434eb8545",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000454.html"
     },
     {
       "id": "msg-caf93c322790",
@@ -147,7 +154,8 @@
       "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> \n> This is a known issue with the current lmer and you should not trust\n> the results.\n\nThanks, Douglas. May I suggest to use\n\nprettyversion = round(-log(1-Vers",
       "thread_id": "thread-03c434eb8545",
       "thread_depth": 2,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000455.html"
     },
     {
       "id": "msg-bc58ccc3b8de",
@@ -163,7 +171,8 @@
       "body_snippet": "A hopefully simple query. I have an nlme model based on the SSlogis()  \nfunction in which I am testing for a fixed effect of GROUP on xmid. I  \ncan see the p value of xmid.GROUP in the summary() but w",
       "thread_id": "thread-bc58ccc3b8de",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000456.html"
     },
     {
       "id": "msg-d7d56f78999f",
@@ -181,7 +190,8 @@
       "body_snippet": "Rob Forsyth <r.j.forsyth at ...> writes:\n\n> \n> A hopefully simple query. I have an nlme model based on the SSlogis()  \n> function in which I am testing for a fixed effect of GROUP on xmid. I  \n> can s",
       "thread_id": "thread-bc58ccc3b8de",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000457.html"
     },
     {
       "id": "msg-9d2d5df115ac",
@@ -197,7 +207,8 @@
       "body_snippet": "Dear R users,\n\nI have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n\nproc glimmix data=navs;\nclass id;\nmodel y(event='1')=x1 x2 x3/solution ",
       "thread_id": "thread-9d2d5df115ac",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000458.html"
     },
     {
       "id": "msg-478ddf181b08",
@@ -215,7 +226,8 @@
       "body_snippet": "kennedy otwombe said the following on 12/6/2007 12:33 PM:\n> Dear R users,\n> \n> I have longitudinal data that is all binary and i have run it in SAS using the following code without a problem:\n> \n> pro",
       "thread_id": "thread-9d2d5df115ac",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000460.html"
     },
     {
       "id": "msg-c28321c1225d",
@@ -233,7 +245,8 @@
       "body_snippet": "On 07/12/2007, at 7:33 AM, kennedy otwombe wrote:\n\n> Dear R users,\n>\n> I have longitudinal data that is all binary and i have run it in SAS  \n> using the following code without a problem:\n>\n> proc gli",
       "thread_id": "thread-9d2d5df115ac",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000459.html"
     },
     {
       "id": "msg-a68f57faff79",
@@ -249,7 +262,8 @@
       "body_snippet": "Hi Sundar/Ken,\nI would like to clarify my inquiry. The data structure i gave was just a sample of my data. I actually have 50 subjects each with three binary observations (hence 150 observations). So ",
       "thread_id": "thread-a68f57faff79",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000461.html"
     },
     {
       "id": "msg-205c9de191ca",
@@ -267,7 +281,8 @@
       "body_snippet": "On 07/12/2007, at 7:58 PM, kennedy otwombe wrote:\n\n> Hi Sundar/Ken,\n> I would like to clarify my inquiry. The data structure i gave was  \n> just a sample of my data. I actually have 50 subjects each w",
       "thread_id": "thread-a68f57faff79",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000462.html"
     },
     {
       "id": "msg-383239e6b158",
@@ -286,7 +301,8 @@
       "body_snippet": "Just a simple yes or no.  Is there any difference between:\n\nqqnorm(resid(lmer.out))\nand\nqqmath(~resid(lmer.out))\n\nThanks,\nKyle\n\n********************************************************\nDr. J. Kyle Rob",
       "thread_id": "thread-a68f57faff79",
       "thread_depth": 2,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000463.html"
     },
     {
       "id": "msg-ebe48bc50136",
@@ -306,7 +322,8 @@
       "body_snippet": "On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> Just a simple yes or no.  Is there any difference between:\n>\n> qqnorm(resid(lmer.out))\n> and\n> qqmath(~resid(lmer.out))\n\nThat's ",
       "thread_id": "thread-a68f57faff79",
       "thread_depth": 3,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000464.html"
     },
     {
       "id": "msg-65beafdb9b22",
@@ -327,7 +344,8 @@
       "body_snippet": "On Dec 7, 2007 12:15 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Dec 7, 2007 11:18 AM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> > Just a simple yes or no.  Is there any difference bet",
       "thread_id": "thread-a68f57faff79",
       "thread_depth": 4,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000465.html"
     },
     {
       "id": "msg-ccbd35cc5843",
@@ -345,7 +363,8 @@
       "body_snippet": "I don't know, possibly it is an error in glmmPQL, but I don't think  \ncompound symmetry is needed, I would expect it is the default.\n\nYou could try lmer, it may be better. My preference for binomials ",
       "thread_id": "thread-ccbd35cc5843",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000466.html"
     },
     {
       "id": "msg-d51800742cc1",
@@ -360,11 +379,12 @@
         "<loom.20071204T074500-257@post.gmane.org>",
         "<40e66e0b0712040856j580d0567ud8daafd163fbd92c@mail.gmail.com>"
       ],
-      "body_plain": "Dieter Menne wrote\n\n> > I tried to run mcmcsamp on a problem of the form\n> >\n> > The model is\n> >\n> >  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n> >\n> >\n> > Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> > agreement with G?ran's glmmML.\n> >\n> > Running mcmcsamp() gave strange results. See\n> >\n> > http://www.menne-biomed.de/uni/mcmc20000.pdf\n> > http://www.menne-biomed.de/uni/mcmc2000.pdf\n\nDouglas Bates <bates at ...> writes:\n\n> This is a known issue with the current lmer and you should not trust\n> the results.\n> \n... removed....\n\nI am in a reviewer-generated deep hole. He (or she) asked for contrasts computed\nvia glmm, which works well by combining glmmPQL and estimable (from gmodels).\nHowever, (s)he mentioned that glmmPQL could not be valid (Agresti?), because\nerrors could be underestimated.\n\nIs there currently any way to compute arbitrary contrasts with lmer/glmer other\nthan the default treatment contrasts in summary()? mcmcsamp cannot be used (see\nabove), parameter _contrast_ of lrm1 seems to be dead (note that it does not\ncomplain about the following, even if you replace sloap by grump, and I have not\nfound an example using it):\n\n  lrm1 = lmer(RespB~Treat*Gender(1|Pat),\n       family=binomial,data=x,contrast=\"sloap\")\n\nand neither gmodels' estimable nor multcomp do accept glmer results.\n\nDieter",
+      "body_plain": "Dieter Menne wrote\n\n> > I tried to run mcmcsamp on a problem of the form\n> >\n> > The model is\n> >\n> >  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n> >\n> >\n> > Results look ok, in reasonable agreement with method=\"PQL\", and in good\n> > agreement with Göran's glmmML.\n> >\n> > Running mcmcsamp() gave strange results. See\n> >\n> > http://www.menne-biomed.de/uni/mcmc20000.pdf\n> > http://www.menne-biomed.de/uni/mcmc2000.pdf\n\nDouglas Bates <bates at ...> writes:\n\n> This is a known issue with the current lmer and you should not trust\n> the results.\n> \n... removed....\n\nI am in a reviewer-generated deep hole. He (or she) asked for contrasts computed\nvia glmm, which works well by combining glmmPQL and estimable (from gmodels).\nHowever, (s)he mentioned that glmmPQL could not be valid (Agresti?), because\nerrors could be underestimated.\n\nIs there currently any way to compute arbitrary contrasts with lmer/glmer other\nthan the default treatment contrasts in summary()? mcmcsamp cannot be used (see\nabove), parameter _contrast_ of lrm1 seems to be dead (note that it does not\ncomplain about the following, even if you replace sloap by grump, and I have not\nfound an example using it):\n\n  lrm1 = lmer(RespB~Treat*Gender(1|Pat),\n       family=binomial,data=x,contrast=\"sloap\")\n\nand neither gmodels' estimable nor multcomp do accept glmer results.\n\nDieter",
       "body_snippet": "Dieter Menne wrote\n\n> > I tried to run mcmcsamp on a problem of the form\n> >\n> > The model is\n> >\n> >  lmer(RespB~Treat+Gender+(1|Pat),family=binomial)\n> >\n> >\n> > Results look ok, in reasonable agree",
       "thread_id": "thread-03c434eb8545",
       "thread_depth": 2,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000467.html"
     },
     {
       "id": "msg-fb09546bb6e6",
@@ -376,11 +396,12 @@
       "subject_clean": "Lmer output for negative binomial data",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear R-list,\nMay I ask for help in interpretating the output of 'lmer' (from the lme4 \npackage) when dealing with negative binomial data ?\n\nI'm using the functions glm.nb (from the MASS package) and lmer (from the \nlme4) to fit respectively fixed-effects and mixed-effects generalized linear \nmodels to data, generated from a negative binomial distribution : count ~ \nNeg.Bin (mu, theta). Here is the code:\n==============================================================================\n#Generate the data frame\nset.seed(2153)\nmydf<-data.frame(subjs=seq(1:nsubjids),\ncounts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n\n#Model\nrequire(MASS); require(lme4)\nsummary(glm.nb(counts~1, data=mydf))\nsummary(lmer(counts~1+(1|subjs), \nfamily=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n==============================================================================\nThe glm.nb output gives : mu=exp(0.5306) and theta=0.513.\nI use the theta estimate from glm.nb as input into lmer, and I obtain, \nmu=exp(0.5306).\n\nThe output from lmer gives the following for the Random effects:\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n subjs    (Intercept) 3.5577e-10 1.8862e-05\n Residual             7.1155e-01 8.4353e-01\nnumber of obs: 30, groups: subjs, 10\n\nI interprete the \"subjs\" component as an individual error term \"e\" (so, that \nmu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\nWhat about the 'Residual' term ?\n\nThanks for your help,\nBest regards,\nFran?ois",
+      "body_plain": "Dear R-list,\nMay I ask for help in interpretating the output of 'lmer' (from the lme4 \npackage) when dealing with negative binomial data ?\n\nI'm using the functions glm.nb (from the MASS package) and lmer (from the \nlme4) to fit respectively fixed-effects and mixed-effects generalized linear \nmodels to data, generated from a negative binomial distribution : count ~ \nNeg.Bin (mu, theta). Here is the code:\n==============================================================================\n#Generate the data frame\nset.seed(2153)\nmydf<-data.frame(subjs=seq(1:nsubjids),\ncounts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n\n#Model\nrequire(MASS); require(lme4)\nsummary(glm.nb(counts~1, data=mydf))\nsummary(lmer(counts~1+(1|subjs), \nfamily=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n==============================================================================\nThe glm.nb output gives : mu=exp(0.5306) and theta=0.513.\nI use the theta estimate from glm.nb as input into lmer, and I obtain, \nmu=exp(0.5306).\n\nThe output from lmer gives the following for the Random effects:\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n subjs    (Intercept) 3.5577e-10 1.8862e-05\n Residual             7.1155e-01 8.4353e-01\nnumber of obs: 30, groups: subjs, 10\n\nI interprete the \"subjs\" component as an individual error term \"e\" (so, that \nmu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\nWhat about the 'Residual' term ?\n\nThanks for your help,\nBest regards,\nFrançois",
       "body_snippet": "Dear R-list,\nMay I ask for help in interpretating the output of 'lmer' (from the lme4 \npackage) when dealing with negative binomial data ?\n\nI'm using the functions glm.nb (from the MASS package) and l",
       "thread_id": "thread-fb09546bb6e6",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000468.html"
     },
     {
       "id": "msg-0d58a3c35f69",
@@ -396,7 +417,8 @@
       "body_snippet": "Dear R-mixed models list,\nAfter running a mixed model with level 4 and 3 crossed with level 2,\nand level 2 nested within level 1:\n\nlmer(y~ 1 + (1|level1/level2)+(1|level3)+(1|level4),data)\n\nI get the ",
       "thread_id": "thread-0d58a3c35f69",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000469.html"
     },
     {
       "id": "msg-e9fbae3a207d",
@@ -410,11 +432,12 @@
       "references": [
         "<066701c83aa9$953df9d0$0d01a8c0@Amazone>"
       ],
-      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  I believe it's basically telling you that there's no\nadditional variation to assign to the within-subject level,\nso it's setting the within-subject sd very very small (2 x 10^{-5}).\nIn a way this is not surprising, since the theta you've estimated\nfrom glm.nb has already accounted for any additional variation\nin the data above the sampling (Poisson) variation.\n\n  The statistical model is (I think!)\n\ny ~ neg binom(mu, theta)\nmu_{ij} ~ exp(0.5306 + eps_i + eps_ij)\n\n  where eps_i (subject effect) ~ Normal(0,3.6e-10)\n        eps_ij (error term) ~ Normal(0,0.715)\n\n  although actually I'm not sure whether the eps_ij\napplies to mu or to y ...\n\n  Ben Bolker\n\n\nSandrine-et-Francois wrote:\n> Dear R-list,\n> May I ask for help in interpretating the output of 'lmer' (from the lme4 \n> package) when dealing with negative binomial data ?\n> \n> I'm using the functions glm.nb (from the MASS package) and lmer (from the \n> lme4) to fit respectively fixed-effects and mixed-effects generalized linear \n> models to data, generated from a negative binomial distribution : count ~ \n> Neg.Bin (mu, theta). Here is the code:\n> ==============================================================================\n> #Generate the data frame\n> set.seed(2153)\n> mydf<-data.frame(subjs=seq(1:nsubjids),\n> counts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n> \n> #Model\n> require(MASS); require(lme4)\n> summary(glm.nb(counts~1, data=mydf))\n> summary(lmer(counts~1+(1|subjs), \n> family=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n> ==============================================================================\n> The glm.nb output gives : mu=exp(0.5306) and theta=0.513.\n> I use the theta estimate from glm.nb as input into lmer, and I obtain, \n> mu=exp(0.5306).\n> \n> The output from lmer gives the following for the Random effects:\n> Random effects:\n>  Groups   Name        Variance   Std.Dev.\n>  subjs    (Intercept) 3.5577e-10 1.8862e-05\n>  Residual             7.1155e-01 8.4353e-01\n> number of obs: 30, groups: subjs, 10\n> \n> I interprete the \"subjs\" component as an individual error term \"e\" (so, that \n> mu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\n> What about the 'Residual' term ?\n> \n> Thanks for your help,\n> Best regards,\n> Fran?ois\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.6 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org\n\niD8DBQFHXS6gc5UpGjwzenMRAtXdAJ9Zvb1YYH9Ohwrx25h9i+dn16eIRgCbBRSe\npS0ZZovk1rrks/UVCK2jLC4=\n=TSEd\n-----END PGP SIGNATURE-----",
+      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  I believe it's basically telling you that there's no\nadditional variation to assign to the within-subject level,\nso it's setting the within-subject sd very very small (2 x 10^{-5}).\nIn a way this is not surprising, since the theta you've estimated\nfrom glm.nb has already accounted for any additional variation\nin the data above the sampling (Poisson) variation.\n\n  The statistical model is (I think!)\n\ny ~ neg binom(mu, theta)\nmu_{ij} ~ exp(0.5306 + eps_i + eps_ij)\n\n  where eps_i (subject effect) ~ Normal(0,3.6e-10)\n        eps_ij (error term) ~ Normal(0,0.715)\n\n  although actually I'm not sure whether the eps_ij\napplies to mu or to y ...\n\n  Ben Bolker\n\n\nSandrine-et-Francois wrote:\n> Dear R-list,\n> May I ask for help in interpretating the output of 'lmer' (from the lme4 \n> package) when dealing with negative binomial data ?\n> \n> I'm using the functions glm.nb (from the MASS package) and lmer (from the \n> lme4) to fit respectively fixed-effects and mixed-effects generalized linear \n> models to data, generated from a negative binomial distribution : count ~ \n> Neg.Bin (mu, theta). Here is the code:\n> ==============================================================================\n> #Generate the data frame\n> set.seed(2153)\n> mydf<-data.frame(subjs=seq(1:nsubjids),\n> counts=rnbinom(nsubjids*ntimes, size=0.5, mu=1.8))\n> \n> #Model\n> require(MASS); require(lme4)\n> summary(glm.nb(counts~1, data=mydf))\n> summary(lmer(counts~1+(1|subjs), \n> family=negative.binomial(theta=fixed.nb0$theta), data=mydf))\n> ==============================================================================\n> The glm.nb output gives : mu=exp(0.5306) and theta=0.513.\n> I use the theta estimate from glm.nb as input into lmer, and I obtain, \n> mu=exp(0.5306).\n> \n> The output from lmer gives the following for the Random effects:\n> Random effects:\n>  Groups   Name        Variance   Std.Dev.\n>  subjs    (Intercept) 3.5577e-10 1.8862e-05\n>  Residual             7.1155e-01 8.4353e-01\n> number of obs: 30, groups: subjs, 10\n> \n> I interprete the \"subjs\" component as an individual error term \"e\" (so, that \n> mu=exp(0.5306)*exp(e)) with e~N(0, 3.5577e-10) ? Is this correct ?\n> What about the 'Residual' term ?\n> \n> Thanks for your help,\n> Best regards,\n> François\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.6 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org\n\niD8DBQFHXS6gc5UpGjwzenMRAtXdAJ9Zvb1YYH9Ohwrx25h9i+dn16eIRgCbBRSe\npS0ZZovk1rrks/UVCK2jLC4=\n=TSEd\n-----END PGP SIGNATURE-----",
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  I believe it's basically telling you that there's no\nadditional variation to assign to the within-subject level,\nso it's setting the within-subject sd ",
       "thread_id": "thread-fb09546bb6e6",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000470.html"
     },
     {
       "id": "msg-4539150d1b46",
@@ -430,7 +453,8 @@
       "body_snippet": "Hi all--\n\nI am attempting to implement a nonlinear mixed-effects model in nlmer() \nthat I have gotten to work (well, at least run) in nlme().  However, \nnlmer() requires the gradient function, and I'v",
       "thread_id": "thread-4539150d1b46",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000471.html"
     },
     {
       "id": "msg-1487eed27dbd",
@@ -446,7 +470,8 @@
       "body_snippet": "looks like the attachment didn't come through, so data can be found:\n\nhttp://www.fuller.edu/sop/faculty/datkins/cp_content/randomChangePoint.Rdata\n\n\n-------- Original Message --------\nSubject: nlmer: ",
       "thread_id": "thread-1487eed27dbd",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000472.html"
     },
     {
       "id": "msg-b5c6b2822eba",
@@ -464,7 +489,8 @@
       "body_snippet": "On 12/12/2007, at 10:26 AM, David Atkins wrote:\n\n>\n> Hi all--\n>\n> I am attempting to implement a nonlinear mixed-effects model in  \n> nlmer() that I have gotten to work (well, at least run) in nlme().",
       "thread_id": "thread-4539150d1b46",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000473.html"
     },
     {
       "id": "msg-66eaecb57486",
@@ -484,7 +510,8 @@
       "body_snippet": "On 13/12/2007, at 2:41 AM, David Atkins wrote:\n\n>\n> Ken--\n>\n> Many thanks for the reply and the pointer to Mary Lindstrom's post.  \n> However, I can't seem to get her function to work with nls().  I  ",
       "thread_id": "thread-66eaecb57486",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000474.html"
     },
     {
       "id": "msg-50d1e7a53345",
@@ -505,7 +532,8 @@
       "body_snippet": "On 13/12/2007, at 3:32 PM, Ken Beath wrote:\n\n>\n> The zero derivatives are due to the interval around the breakpoint not\n> containing any data, I suggest placing the initial changepoint in the\n> centre",
       "thread_id": "thread-66eaecb57486",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000475.html"
     },
     {
       "id": "msg-161823f4e55d",
@@ -526,7 +554,8 @@
       "body_snippet": "A completely (simpler and naive) approach could be to use an algorithm \nwhich works reasonably well in non-mixed GLM (see the package segmented).\n\nThe algorithm works via linear approximations of the ",
       "thread_id": "thread-66eaecb57486",
       "thread_depth": 1,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000476.html"
     },
     {
       "id": "msg-50ecd2f2b2f7",
@@ -542,7 +571,8 @@
       "body_snippet": "Suppose I have something like\n\nl1 <- lmer(y ~ x + f + (1 | s))\n\nwhere f is a factor with levels 1, 2, 3.\n\nl1 itself lists the individual values, f1, f2, f3, not the overall\neffect of f.\n\nanova(l1) giv",
       "thread_id": "thread-50ecd2f2b2f7",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000477.html"
     },
     {
       "id": "msg-9b5169021a24",
@@ -559,6 +589,7 @@
       "thread_id": "thread-9b5169021a24",
       "thread_depth": 0,
       "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000478.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20071218/48f6c98b/attachment.pl"
       ]
@@ -577,7 +608,8 @@
       "body_snippet": "I have been struggling for a long time with a part of the code for\ngeneralized linear mixed models in the new formulation for lmer\nobjects.  This has taken much longer than I ever anticipated it would",
       "thread_id": "thread-d925295490c8",
       "thread_depth": 0,
-      "month": "2007-12"
+      "month": "2007-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000479.html"
     }
   ],
   "threads": [

@@ -20,7 +20,8 @@
       "body_snippet": "Dear Thierry,\n\nThanks for the quick answer. I'm moving this to r-sig-mixed-models\n(but also posting on r-help to notify).\n\nI reserved \"Mixed-effects models in S and S-PLUS\" by Pinheiro and\nBates, New ",
       "thread_id": "thread-73a4ed38163c",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004418.html"
     },
     {
       "id": "msg-963e96c8cd7c",
@@ -40,7 +41,8 @@
       "body_snippet": "Dear Mikkel,\n\nI really liked Zuur et al (2009). It requires less mathematical skills to read than Pinheiro and Bates.\n\n@BOOK{ZuurMixedModels,\n  title = {Mixed Effects Models and Extensions in Ecology ",
       "thread_id": "thread-73a4ed38163c",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004419.html"
     },
     {
       "id": "msg-70dc1cc21650",
@@ -52,11 +54,12 @@
       "subject_clean": "longitudinal study with baseline",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi all,\n\nI asked some questions on how to analyze?longitudinal study with only 2 time \npoints (baseline and a follow-up) previously. I appreciate?many useful comments \nfrom some members, especially Dennis Murphy?who refered the following paper \naddressing specifically this type of study with only 2 time points: \nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC1121605/\n\nBasically, with only 2 time points (baseline and one follow-up), ANCOVA with \nfollow-up as dependent variable and baseline as covariate should be used:\n\nfollow-up?= a + b*baseline + treatment\n\nNow I have a regular longitudinal study with 6 time points, 7 treatments \n(vehicle, A, B, C, D, F, G), measuring a response variable \"y\". The dataset is \nattached. I have some questions, and appreciate any suggestions on how to \nanalyze the dataset.\n\ndat<-read.table(\"dat.txt\",sep='\\t',header=T,row.names=NULL)\nlibrary(MASS)\ndat$trt<-relevel(dat$trt,'vehicle')\n\nxyplot(y~time, groups=trt, data=dat, \nylim=c(3,10),col=c(1:6,8),lwd=2,type=c('g','a'),xlab='Days',ylab=\"response\",\n?key = list(lines=list(col=c(1:6,8),lty=1,lwd=2),\n????????????????? text = list(lab = levels(dat$trt)),\n????????????????? columns = 3, title = \"Treatment\"))\n\nSo as you can see that there is some curvature between glucose level and time, \nso a quadratic fit might be needed. \n\n\ndat$time2<-dat$time*dat$time\n\nA straight fit like below seems reasonable:\n\nfit<-lmer(y~trt*time+trt*time2+(time|id),dat)\n\nChecking on random effects, it appears that variance component for random slope \nis very small, so?a simpler model with?random intercept only may be sufficient:\n\nfit<-lmer(y~trt*time+trt*time2+(1|id),dat)\n\nNow, I want to incorporate baseline?response into the model in order to account \nfor any baseline imbalance. I need to generate a new variable \"baseline\" based \non glucose levels at time=0:\n\ndat<-merge(dat, dat[dat$time==0,c('id','y')], by.x='id',by.y='id',all.x=T)\ncolnames(dat)[c(4,6)]<-c('y','baseline')\n\nso the new fit adding baseline into the mixed model is:\n\nfit<-lmer(y~baseline+trt*time+trt*time2+(1|id),dat)\n\nNow my question is 1). Is the above model a reasonable thing to do? 2) when \nbaseline is included as a covariate, should I remove the data points at baseline \nfrom the dataset? I am kind of unsure if it's reasonable to use the baseline \nboth as a covariate and as part of the dependent variable values.\n\nNext thing I want to do with this dataset is to do multiple comparisons between \neach treatment (A, B, C, D, F, G) vs. vehicle at a given time point, say time=56 \n(the last time points) after adjusting the baseline imbalance. This seems to be \ndone using Dunnet test. When I say \"after adjusting baseline imbalance\", I mean \nthe comparisons?should be?done based on the difference between time=56 and \ntime=0 (baseline). How can we test this? Will glht() in multcomp work for a lmer \nfit? If yes, how can I specify the syntax?\n\nFinally, with the above model, is there anyway to estimate the difference (and \nthe standard error) between time=56 and time=0 (baseline) for each treatment \ngroups?\n\nThank you fall or your attention.\n\nJohn\n\n\n      \n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: dat.txt\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100903/700fb364/attachment.txt>",
-      "body_snippet": "Hi all,\n\nI asked some questions on how to analyze?longitudinal study with only 2 time \npoints (baseline and a follow-up) previously. I appreciate?many useful comments \nfrom some members, especially De",
+      "body_plain": "Hi all,\n\nI asked some questions on how to analyze longitudinal study with only 2 time \npoints (baseline and a follow-up) previously. I appreciate many useful comments \nfrom some members, especially Dennis Murphy who refered the following paper \naddressing specifically this type of study with only 2 time points: \nhttps://www.ncbi.nlm.nih.gov/pmc/articles/PMC1121605/\n\nBasically, with only 2 time points (baseline and one follow-up), ANCOVA with \nfollow-up as dependent variable and baseline as covariate should be used:\n\nfollow-up = a + b*baseline + treatment\n\nNow I have a regular longitudinal study with 6 time points, 7 treatments \n(vehicle, A, B, C, D, F, G), measuring a response variable \"y\". The dataset is \nattached. I have some questions, and appreciate any suggestions on how to \nanalyze the dataset.\n\ndat<-read.table(\"dat.txt\",sep='\\t',header=T,row.names=NULL)\nlibrary(MASS)\ndat$trt<-relevel(dat$trt,'vehicle')\n\nxyplot(y~time, groups=trt, data=dat, \nylim=c(3,10),col=c(1:6,8),lwd=2,type=c('g','a'),xlab='Days',ylab=\"response\",\n key = list(lines=list(col=c(1:6,8),lty=1,lwd=2),\n  ?????????????   text = list(lab = levels(dat$trt)),\n  ?????????????   columns = 3, title = \"Treatment\"))\n\nSo as you can see that there is some curvature between glucose level and time, \nso a quadratic fit might be needed. \n\n\ndat$time2<-dat$time*dat$time\n\nA straight fit like below seems reasonable:\n\nfit<-lmer(y~trt*time+trt*time2+(time|id),dat)\n\nChecking on random effects, it appears that variance component for random slope \nis very small, so a simpler model with random intercept only may be sufficient:\n\nfit<-lmer(y~trt*time+trt*time2+(1|id),dat)\n\nNow, I want to incorporate baseline response into the model in order to account \nfor any baseline imbalance. I need to generate a new variable \"baseline\" based \non glucose levels at time=0:\n\ndat<-merge(dat, dat[dat$time==0,c('id','y')], by.x='id',by.y='id',all.x=T)\ncolnames(dat)[c(4,6)]<-c('y','baseline')\n\nso the new fit adding baseline into the mixed model is:\n\nfit<-lmer(y~baseline+trt*time+trt*time2+(1|id),dat)\n\nNow my question is 1). Is the above model a reasonable thing to do? 2) when \nbaseline is included as a covariate, should I remove the data points at baseline \nfrom the dataset? I am kind of unsure if it's reasonable to use the baseline \nboth as a covariate and as part of the dependent variable values.\n\nNext thing I want to do with this dataset is to do multiple comparisons between \neach treatment (A, B, C, D, F, G) vs. vehicle at a given time point, say time=56 \n(the last time points) after adjusting the baseline imbalance. This seems to be \ndone using Dunnet test. When I say \"after adjusting baseline imbalance\", I mean \nthe comparisons should be done based on the difference between time=56 and \ntime=0 (baseline). How can we test this? Will glht() in multcomp work for a lmer \nfit? If yes, how can I specify the syntax?\n\nFinally, with the above model, is there anyway to estimate the difference (and \nthe standard error) between time=56 and time=0 (baseline) for each treatment \ngroups?\n\nThank you fall or your attention.\n\nJohn\n\n\n      \n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: dat.txt\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100903/700fb364/attachment.txt>",
+      "body_snippet": "Hi all,\n\nI asked some questions on how to analyze longitudinal study with only 2 time \npoints (baseline and a follow-up) previously. I appreciate many useful comments \nfrom some members, especially De",
       "thread_id": "thread-70dc1cc21650",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004420.html"
     },
     {
       "id": "msg-aa7a04ae19b3",
@@ -74,7 +77,8 @@
       "body_snippet": "Hi all, I just realized that actually it is Marc Schwartz who referred the \nbaseline handling paper to me. I am sorry for the error. Both Marc and Dennis \nhave been tremendous help in my previous disc",
       "thread_id": "thread-70dc1cc21650",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004421.html"
     },
     {
       "id": "msg-7c5aaf7ed5a9",
@@ -92,7 +96,8 @@
       "body_snippet": "I tried to find an answer to this problem but either failed to select the\nproper search terms or this topic hasn't been discussed. I apologize if the\nformer. I've also consulted the \"class notes\" for ",
       "thread_id": "thread-7c5aaf7ed5a9",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004422.html"
     },
     {
       "id": "msg-f9603c76dfc0",
@@ -111,7 +116,8 @@
       "body_snippet": "Hi Ned,\n\nCurrently it is not possible to specify covariance matrices with  \narbitrary covariances set to zero. If you can reorder the terms so  \nthat the covariance matrix has a block structure (eg sw",
       "thread_id": "thread-7c5aaf7ed5a9",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004423.html"
     },
     {
       "id": "msg-da7a380be58b",
@@ -127,7 +133,8 @@
       "body_snippet": "Hi folks,\n\nHot on the heels of my release of ez v2.0 last week, I have version\n2.1 nearly ready to go. Amongst minor bug fixes, I'm toying with\nadding a function to automate the process of building up",
       "thread_id": "thread-da7a380be58b",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004424.html"
     },
     {
       "id": "msg-e00667f337b0",
@@ -145,7 +152,8 @@
       "body_snippet": "> - a test of a 2-way interaction compares a model containing the 2-way\n> interaction plus the main effects of all predictors plus the random\n> effect against a model with just the main effects and th",
       "thread_id": "thread-da7a380be58b",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004425.html"
     },
     {
       "id": "msg-22a6e3b135f5",
@@ -157,11 +165,12 @@
       "subject_clean": "scope for LHS of formula in lmList",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi,\n\nI have a data frame\n\n  str(Context)\n'data.frame':\t120 obs. of  4 variables:\n  $ Obs     : Factor w/ 6 levels \"A\",\"B\",\"C\",\"D\",..: 1 1 1 1 1 1 1 1 1 1 ...\n  $ TargCntr: num  0 0.002 0.004 0.006 0.008 0 0.002 0.004 0.006 0.008 ...\n  $ NumYes  : int  0 0 5 18 23 24 22 22 22 24 ...\n  $ NumNo   : int  24 24 19 6 1 0 2 2 2 0 ...\n\nand find that if I run lmList as follows, I get an error message\nin which names from the data frame are not found if enclosed in\na cbind for the LHS of formula (for a binomial family)\n\nlmList(cbind(NumYes, NumNo) ~ TargCntr | Obs,\n\tdata = Context, family = binomial)\nError in cbind(NumYes, NumNo) : object 'NumYes' not found\n...\n\nbut it works fine if I either define a 2 column matrix in my\nworkspace or add one to the data frame.\n\nresp <- with(Context, cbind(NumYes, NumNo))\n\nlmList(resp ~ TargCntr | Obs, Context, binomial)\n\nCall: lmList(formula = resp ~ TargCntr | Obs, data = Context, family =  \nbinomial)\nCoefficients:\n   (Intercept) TargCntr\nA  -0.8574118 369.1977\nB  -0.8048122 425.1355\n  ...\n\nor\n\nContext <- within(Context, Resp <- cbind(NumYes, NumNo))\n\nlmList(Resp ~ TargCntr | Obs, Context, binomial)\n\nCall: lmList(formula = Resp ~ TargCntr | Obs, data = Context, family =  \nbinomial)\nCoefficients:\n   (Intercept) TargCntr\nA  -0.8574118 369.1977\nB  -0.8048122 425.1355\n  ...\n\nSo, there is an easy workaround.  I've mostly been working\nwith binary responses lately, so hadn't noticed this behavior\nearlier.\n\nsessionInfo()\nR version 2.11.1 Patched (2010-08-30 r52847)\nPlatform: i386-apple-darwin9.8.0/i386 (32-bit)\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/C/C/en_US.UTF-8/en_US.UTF-8\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods\n[7] base\n\nother attached packages:\n[1] lme4_0.999375-35   Matrix_0.999375-44 lattice_0.19-11\n\nloaded via a namespace (and not attached):\n[1] grid_2.11.1   MASS_7.3-7    nlme_3.1-96   stats4_2.11.1\n[5] tools_2.11.1\n\nThank you.\n\nbest,\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Hi,\n\nI have a data frame\n\n  str(Context)\n'data.frame':\t120 obs. of  4 variables:\n  $ Obs     : Factor w/ 6 levels \"A\",\"B\",\"C\",\"D\",..: 1 1 1 1 1 1 1 1 1 1 ...\n  $ TargCntr: num  0 0.002 0.004 0.006 0.008 0 0.002 0.004 0.006 0.008 ...\n  $ NumYes  : int  0 0 5 18 23 24 22 22 22 24 ...\n  $ NumNo   : int  24 24 19 6 1 0 2 2 2 0 ...\n\nand find that if I run lmList as follows, I get an error message\nin which names from the data frame are not found if enclosed in\na cbind for the LHS of formula (for a binomial family)\n\nlmList(cbind(NumYes, NumNo) ~ TargCntr | Obs,\n\tdata = Context, family = binomial)\nError in cbind(NumYes, NumNo) : object 'NumYes' not found\n...\n\nbut it works fine if I either define a 2 column matrix in my\nworkspace or add one to the data frame.\n\nresp <- with(Context, cbind(NumYes, NumNo))\n\nlmList(resp ~ TargCntr | Obs, Context, binomial)\n\nCall: lmList(formula = resp ~ TargCntr | Obs, data = Context, family =  \nbinomial)\nCoefficients:\n   (Intercept) TargCntr\nA  -0.8574118 369.1977\nB  -0.8048122 425.1355\n  ...\n\nor\n\nContext <- within(Context, Resp <- cbind(NumYes, NumNo))\n\nlmList(Resp ~ TargCntr | Obs, Context, binomial)\n\nCall: lmList(formula = Resp ~ TargCntr | Obs, data = Context, family =  \nbinomial)\nCoefficients:\n   (Intercept) TargCntr\nA  -0.8574118 369.1977\nB  -0.8048122 425.1355\n  ...\n\nSo, there is an easy workaround.  I've mostly been working\nwith binary responses lately, so hadn't noticed this behavior\nearlier.\n\nsessionInfo()\nR version 2.11.1 Patched (2010-08-30 r52847)\nPlatform: i386-apple-darwin9.8.0/i386 (32-bit)\n\nlocale:\n[1] en_US.UTF-8/en_US.UTF-8/C/C/en_US.UTF-8/en_US.UTF-8\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods\n[7] base\n\nother attached packages:\n[1] lme4_0.999375-35   Matrix_0.999375-44 lattice_0.19-11\n\nloaded via a namespace (and not attached):\n[1] grid_2.11.1   MASS_7.3-7    nlme_3.1-96   stats4_2.11.1\n[5] tools_2.11.1\n\nThank you.\n\nbest,\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Hi,\n\nI have a data frame\n\n  str(Context)\n'data.frame':\t120 obs. of  4 variables:\n  $ Obs     : Factor w/ 6 levels \"A\",\"B\",\"C\",\"D\",..: 1 1 1 1 1 1 1 1 1 1 ...\n  $ TargCntr: num  0 0.002 0.004 0.006 0.0",
       "thread_id": "thread-22a6e3b135f5",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004426.html"
     },
     {
       "id": "msg-c04cf5dcc41c",
@@ -179,7 +188,8 @@
       "body_snippet": "Ken Knoblauch <ken.knoblauch at ...> writes:\n> I have a data frame\n>   str(Context)\n> 'data.frame':\t120 obs. of  4 variables:\n>   $ Obs     : Factor w/ 6 levels \"A\",\"B\",\"C\",\"D\",..: 1 1 1\n>   $ TargCnt",
       "thread_id": "thread-22a6e3b135f5",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004427.html"
     },
     {
       "id": "msg-b9bee990d578",
@@ -198,7 +208,8 @@
       "body_snippet": "Three comments (which you probably already considered anyway, but it\nwas not clear from the post):\n\n(1) In general, I would recommend to implement the sequence\ndrop1()-like, that is start with the ful",
       "thread_id": "thread-da7a380be58b",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004428.html"
     },
     {
       "id": "msg-2aa8209ba0d9",
@@ -218,7 +229,8 @@
       "body_snippet": "Jarrod,\nThank you very much for getting back to me so promptly. I am curious about\nyour suggestion of modelling this within the random component of the model.\nAssuming the same data structure as befor",
       "thread_id": "thread-7c5aaf7ed5a9",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004429.html"
     },
     {
       "id": "msg-abde7f2e449e",
@@ -234,7 +246,8 @@
       "body_snippet": "Dear list members,\n\nCan anyone point me in the right direction for implementing a two\n?compartment exponential model with instantaneous input and\nfirst-order elimination kinetics using the nlme packag",
       "thread_id": "thread-abde7f2e449e",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004430.html"
     },
     {
       "id": "msg-3a06a4726abc",
@@ -252,7 +265,8 @@
       "body_snippet": "Hi Martin,\n\nThe nlmeODE library has a few examples of simulations of a two compartmental\nmodel. See\n\nlibrary(nlmeODE)\nhelp(PKPDmodels)\n\nIt works with nlme and I think that this is what you will need.\n",
       "thread_id": "thread-abde7f2e449e",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004431.html"
     },
     {
       "id": "msg-00e32987ad04",
@@ -268,7 +282,8 @@
       "body_snippet": "Hi all,\n\nI asked this before the holiday, didn't get any response. So would like to \nresend the message, hope to get any fresh attention. Since this is not purely \nlme technical question, so I also cc",
       "thread_id": "thread-00e32987ad04",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004432.html"
     },
     {
       "id": "msg-63461b40b1b3",
@@ -286,7 +301,8 @@
       "body_snippet": "Baseline should appear only as a baseline and should be removed from \nthe set of longitudinal responses.  This is often done with a merge( ) \noperation.\n\nFrank\n\nFrank E Harrell Jr   Professor and Chai",
       "thread_id": "thread-00e32987ad04",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004434.html"
     },
     {
       "id": "msg-849cb9e2dca2",
@@ -302,7 +318,8 @@
       "body_snippet": "Hi,\n\nI'm using MCMCglmm to run some binary and Poisson models and I'd just like to check whether I'm specifying a nested random effect correctly.\n\nI have 773 data points, each one corresponding to a c",
       "thread_id": "thread-849cb9e2dca2",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004433.html"
     },
     {
       "id": "msg-42b9596e1ade",
@@ -320,7 +337,8 @@
       "body_snippet": "Hi Dave,\nI was wondering if you happened to have finished these analyses and whether\nthe greater variance in the priors \"worked\". I coincidentally have a paper\nin review (well, waiting on the AE recom",
       "thread_id": "thread-42b9596e1ade",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004435.html"
     },
     {
       "id": "msg-e09c964ceaed",
@@ -339,7 +357,8 @@
       "body_snippet": "On 9/8/10 3:00 PM, Ned Dochtermann wrote:\n> Hi Dave,\n> I was wondering if you happened to have finished these analyses and whether\n> the greater variance in the priors \"worked\". I coincidentally have ",
       "thread_id": "thread-42b9596e1ade",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004436.html"
     },
     {
       "id": "msg-d82f0aa62c9a",
@@ -357,7 +376,8 @@
       "body_snippet": "Hi Rebecca,\n\nIf every nest has a unique identifier then MCMCglmm should give the  \nsame answer (up to Monte Carlo error) for random ~ pairID + nest and  \nrandom ~ pairID + pairID:nest, so a difference",
       "thread_id": "thread-849cb9e2dca2",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004437.html"
     },
     {
       "id": "msg-bdef6fc7ecdd",
@@ -373,7 +393,8 @@
       "body_snippet": "Dear All,\n\nI'm fitting to some historical grouped binomial data. There are 16 \nbinomial obs arranged in 8 blocks of 2 (trmt and control). I know what \nthe model deviance calculated via the Laplace app",
       "thread_id": "thread-bdef6fc7ecdd",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004438.html"
     },
     {
       "id": "msg-0300a39e2497",
@@ -390,6 +411,7 @@
       "thread_id": "thread-0300a39e2497",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004439.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100910/a4237fd0/attachment.pl"
       ]
@@ -411,6 +433,7 @@
       "thread_id": "thread-bdef6fc7ecdd",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004440.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100910/73d30142/attachment.pl"
       ]
@@ -438,7 +461,8 @@
       "body_snippet": "Thanks for reminding this. So I found lme4a package from Doug's UserR!2010 \npresentation folder: \nhttp://lme4.r-forge.r-project.org/slides/2010-07-20-Gaithersburg/pkg/\n\nHowever, after installation, I ",
       "thread_id": "thread-f62e512a62d3",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004441.html"
     },
     {
       "id": "msg-4cf7695380c9",
@@ -457,6 +481,7 @@
       "thread_id": "thread-4cf7695380c9",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004442.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100910/51eb2d2e/attachment.pl"
       ]
@@ -475,7 +500,8 @@
       "body_snippet": "I am sending this Email to r-sig-mixed-models at r-project.org having previously sent it to r-help and it was suggested that I follow up on this listserver. \nwindows Vista\nR 2.10.1\n\nIs it possible to ",
       "thread_id": "thread-0e72cb87c754",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004443.html"
     },
     {
       "id": "msg-0bb68137a0a9",
@@ -491,7 +517,8 @@
       "body_snippet": "I previously sent this to r-help. It has been suggested to me that I sent this to the r-sig-mixed-models mailing lisst:\n\nWindows Vista\nR 2.10.1\n\nDoes the following use of groupedData and lme produce a",
       "thread_id": "thread-0bb68137a0a9",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004444.html"
     },
     {
       "id": "msg-30fee5013553",
@@ -509,7 +536,8 @@
       "body_snippet": "John--\n\nFocusing on the random-effects output (snipped from your post):\n\nRandom effects:\n  Formula: ~time | Subject\n  Structure: General positive-definite\n             StdDev       Corr\n(Intercept) 6.",
       "thread_id": "thread-0bb68137a0a9",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004446.html"
     },
     {
       "id": "msg-239a60ce1e01",
@@ -527,7 +555,8 @@
       "body_snippet": "On 09/10/2010 05:22 PM, John Sorkin wrote:\n> I am sending this Email to r-sig-mixed-models at r-project.org having previously sent it to r-help and it was suggested that I follow up on this listserver",
       "thread_id": "thread-0e72cb87c754",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004445.html"
     },
     {
       "id": "msg-067839f01cfd",
@@ -546,7 +575,8 @@
       "body_snippet": "Hi Dave,\n\non the topic of correlation between random slopes and intercepts, it's\nnot necessarily bad news.  It may (probably does) indicate that the\ndata are remote from the origin.  Under those circu",
       "thread_id": "thread-0bb68137a0a9",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004447.html"
     },
     {
       "id": "msg-17d1f2e337f9",
@@ -566,7 +596,8 @@
       "body_snippet": "On 9/10/10 4:00 PM, Andrew Robinson wrote:\n> Hi Dave,\n>\n> on the topic of correlation between random slopes and intercepts, it's\n> not necessarily bad news.  It may (probably does) indicate that the\n>",
       "thread_id": "thread-0bb68137a0a9",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004448.html"
     },
     {
       "id": "msg-c83288971fb3",
@@ -586,6 +617,7 @@
       "thread_id": "thread-4cf7695380c9",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004450.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100910/11588652/attachment.pl"
       ]
@@ -611,11 +643,12 @@
         "<190156.65925.qm@web56301.mail.re3.yahoo.com>",
         "<1284140776.2345.28.camel@desktop.localdomain>"
       ],
-      "body_plain": "Thank you for pointing ou R-forge. I tried link from R-forge for lme4a, it \ndoesn't work at the time I tried (Returned \"PAGE NOT FOUND\".\n\nHowever, the link for lme4b worked, and I installed lme4b package which can be \nloaded successfully. lme4b has lmer1() instead of lmer().\n\nHowever, when trying to run lmer1(), it will tell you this?warning message:\n\nWarning message:\nmodel.Matrix() has been moved from package 'Matrix' to the new package\n'MatrixModels' which is now loaded (if installed).\n? Its use from package 'Matrix' is deprecated.\nDo use it from 'MatrixModels' instead. \n\nI think this?may be?why I got error message when I try to load lme4a, which may \nhave not been updated to look for MatrixModels package instead of Matrix \npackage.\n\nThe reason I posted to both R and R-mixed-models mailing list is that it seems \nthat this question?is more suitable?to R-mixed-models, but response there is \npretty slow,......\n\nThanks,\n\nJohn\n\n\n?\n\n\n----- Original Message ----\nFrom: Gavin Simpson <gavin.simpson at ucl.ac.uk>\nTo: array chip <arrayprofile at yahoo.com>\nCc: John Sorkin <jsorkin at grecc.umaryland.edu>; r-help at r-project.org; Bert Gunter \n<gunter.berton at gene.com>\nSent: Fri, September 10, 2010 10:46:16 AM\nSubject: Re: lme4a package loading error\n\nOn Fri, 2010-09-10 at 10:23 -0700, array chip wrote:\n> Thanks for reminding this. So I found lme4a package from Doug's UserR!2010 \n> presentation folder: \n> http://lme4.r-forge.r-project.org/slides/2010-07-20-Gaithersburg/pkg/\n\nWhat is wrong with the one on the packages tab of the lme4 project page:\n\nhttps://r-forge.r-project.org/R/?group_id=60\n\n?\n\nYou might need to make sure you have the latest Matrix as well to run\nlme4a. Update Matrix via update.packages() or install the latest version\nfrom r-forge and see if that helps.\n\nAlso, try not to cross-post to multiple lists. Stick with one, or move\nthe thread onto the new list.\n\nHTH\n\nG\n\n> However, after installation, I got the following error message when trying to \n> load the library:\n> \n> library(Matrix)\n> > library(Rcpp)\n> > library(minqa)\n> > library(lme4a)\n> Error : classes \"modelMatrix\", \"denseModelMatrix\", \"sparseModelMatrix\", \n> \"ddenseModelMatrix\", \"dsparseModelMatrix\", \"predModule\", \"dPredModule\", \n> \"sPredModule\", \"respModule\", \"glmRespMod\", \"nlsRespMod\" are not exported by \n> 'namespace:Matrix'\n> Error: package/namespace load failed for 'lme4a'\n> \n> Here is my sessionInfo()\n> > sessionInfo()\n> R version 2.11.1 (2010-05-31) \n> i386-pc-mingw32 \n> \n> locale:\n> [1] LC_COLLATE=English_United States.1252? LC_CTYPE=English_United States.1252? \n>\n> \n> [3] LC_MONETARY=English_United States.1252 LC_NUMERIC=C? ? ? ? ? ? ? ? ? ? ? ? \n>? \n>\n> \n> [5] LC_TIME=English_United States.1252? ? \n> \n> attached base packages:\n> [1] stats? ? graphics? grDevices utils? ? datasets? methods? base? ? \n> \n> other attached packages:\n> [1] minqa_1.1.9? ? ? ? Rcpp_0.8.6? ? ? ? Matrix_0.999375-43 lattice_0.18-8? ? \n> \n> loaded via a namespace (and not attached):\n> [1] grid_2.11.1? ? nlme_3.1-96? ? splines_2.11.1 stats4_2.11.1? tools_2.11.1? \n> \n> Any suggestions would be appreciated.\n> \n> John\n> \n> \n> \n> \n> \n> ----- Original Message ----\n> From: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> To: array chip <arrayprofile at yahoo.com>\n> Cc: John Sorkin <jsorkin at grecc.umaryland.edu>; r-help at r-project.org; Bert \n>Gunter \n>\n> <gunter.berton at gene.com>\n> Sent: Fri, September 10, 2010 10:00:15 AM\n> Subject: Re: [R] lmer fixed effects, SE, t . . . and p\n> \n> On Fri, 2010-09-10 at 09:51 -0700, array chip wrote:\n> > But as far as I know, profile() seems to be de-activated in the lme4 \npackage.\n> \n> It is beta software. The lme4a version of the lme4 \"package\" might have\n> had profile re-enabled, IIRC. \n> \n> G\n> \n> > ----- Original Message ----\n> > From: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> > To: John Sorkin <jsorkin at grecc.umaryland.edu>\n> > Cc: r-help at r-project.org; Bert Gunter <gunter.berton at gene.com>\n> > Sent: Fri, September 10, 2010 2:05:37 AM\n> > Subject: Re: [R] lmer fixed effects, SE, t . . . and p\n> > \n> > On Thu, 2010-09-09 at 23:40 -0400, John Sorkin wrote:\n> > > Bert,\n> > > I appreciate you comments, and I have read Doug Bates writing about p\n> > > values in mixed effects regression. It is precisely because I read\n> > > Doug's material that I asked \"how are we to interpret the estimates\"\n> > > rather than \"how can we compute a p value\". My question is a simple\n> > > question whose answer is undoubtedly complex, but one that needs an\n> > > answer. Without p values, or confidence intervals, I am not certain\n> > > what to make of the results of my analysis. Does my analysis suggest,\n> > > or does it not suggest that there is a relation between time and y? If\n> > > I can't answer this question after running the analysis, I don't have\n> > > any more information than I did before I ran the analysis, and a fair\n> > > question would be why did I run the analysis? I am asking for help not\n> > > in calculation a p value or a CI, but rather to know what I can and\n> > > can't say about the results of the analysis. If this basic question\n> > > can not be answered, I am at a loss to interpret my results. \n> > > Thank you,\n> > > John\n> > \n> > Doug talks quite a lot about profiling lmer fits using 'profile\n> > deviance' to investigate variability in fixed effects. For example, see\n> > section 1.5 in the draft of chapter 1 of Doug's book on mixed models:\n> > \n> > http://lme4.r-forge.r-project.org/book/\n> > \n> > HTH\n> > \n> > G\n> > \n> > > John David Sorkin M.D., Ph.D.\n> > > Chief, Biostatistics and Informatics\n> > > University of Maryland School of Medicine Division of Gerontology\n> > > Baltimore VA Medical Center\n> > > 10 North Greene Street\n> > > GRECC (BT/18/GR)\n> > > Baltimore, MD 21201-1524\n> > > (Phone) 410-605-7119\n> > > (Fax) 410-605-7913 (Please call phone number above prior to faxing)>>> Bert \n>\n> > >Gunter <gunter.berton at gene.com> 9/9/2010 11:21 PM >>>\n> > > John:\n> > > \n> > > Search on this issue in the list archives. Doug Bates has addressed it\n> > > at length. Basically, he does not calculate CI's or p-values because\n> > > he does not know how to reliably do so.\n> > > \n> > > However, the key remark in your query was:\n> > > \n> > > > (2) lmer does not give p values or confidence intervals for the fixed \n> > >effects. How we are to interpret the estimates given that no p value or CI \n>is \n>\n> \n> > >given for the estimates?\n> > > \n> > > Think about it. A statistical analysis -- ANY statistical analysis --\n> > > treats the data in isolation: it is not informed by physics,\n> > > thermodynamics, biology,? other similar data, prior experience, or,\n> > > indeed, any part of the body of relevant scientific knowledge. Do you\n> > > really think that any such analysis, especially when predicated upon\n> > > often tenuous or even (necessarily) unverifiable assumptions and\n> > > simplifications should be considered authoritative? Classical\n> > > statistical inference is just another piece of the puzzle, and not\n> > > even particularly useful when, as if typically the case, hypotheses\n> > > are formulated AFTER seeing the data (this invalidates the probability\n> > > calculations -- hypotheses must be formulated before seeing the data\n> > > to be meaningfully assessed). Leo Breiman called this statistics'\n> > > \"quiet scandal\" something like 20 years ago, and he was no dummy.\n> > > \n> > > It is comforting, perhaps, but illusory to believe that statistical\n> > > inference can be relied on to give sound, objective scientific\n> > > results. True, without such a framework, science seems rather\n> > > subjective, perhaps closer to religion and arbitrary cultural\n> > > archetypes than we care to admit. But see Thomas Kuhn and Paul\n> > > Feuerabend for why this is neither surprising nor necessarily a bad\n> > > thing.\n> > > \n> > > Cheers,\n> > > Bert Gunter\n> > > \n> > > \n> > > \n> > > \n> > > On Thu, Sep 9, 2010 at 8:00 PM, John Sorkin <jsorkin at grecc.umaryland.edu> \n> > >wrote:\n> > > > windows Vista\n> > > > R 2.10.1\n> > > >\n> > > >\n> > > > (1) How can I get the complete table of for the fixed effects from lmer. \n>As \n>\n> >\n> > >can be seen from the example below, fixef(fit2) only give the estimates and \n\n> >not \n> >\n> > >the SE or t value\n> > > >\n> > > >> fit3<- lmer(y~time + (1|Subject) + \n(time|Subject),data=data.frame(data))\n> > > >> summary(fit3)\n> > > > Linear mixed model fit by REML\n> > > > Formula: y ~ time + (1 | Subject) + (time | Subject)\n> > > >? Data: data.frame(data)\n> > > >? ? AIC? ? BIC logLik deviance REMLdev\n> > > >? -126.2 -116.4? 70.1? -152.5? -140.2\n> > > > Random effects:\n> > > >? Groups? Name? ? ? ? Variance? Std.Dev.? Corr\n> > > >? Subject? (Intercept) 2.9311e+01 5.41396385\n> > > >? Subject? (Intercept) 0.0000e+00 0.00000000\n> > > >? ? ? ? ? time? ? ? ? 0.0000e+00 0.00000000? NaN\n> > > >? Residual? ? ? ? ? ? 8.1591e-07 0.00090328\n> > > > Number of obs: 30, groups: Subject, 10\n> > > >\n> > > > Fixed effects:\n> > > >? ? ? ? ? ? Estimate Std. Error t value\n> > > > (Intercept) 14.998216? 1.712046? ? ? 9\n> > > > time? ? ? ? -0.999779? 0.000202? -4950\n> > > >\n> > > > Correlation of Fixed Effects:\n> > > >? ? (Intr)\n> > > > time -0.001\n> > > >> fixef(fit3)\n> > > > (Intercept)? ? ? ? time\n> > > >? 14.9982158? -0.9997793\n> > > >\n> > > > (2) lmer does not give p values or confidence intervals for the fixed \n> > >effects. How we are to interpret the estimates given that no p value or CI \n>is \n>\n> \n> > >given for the estimates?\n> > > >\n> > > >\n> > > >\n> > > >\n> > > > John David Sorkin M.D., Ph.D.\n> > > > Chief, Biostatistics and Informatics\n> > > > University of Maryland School of Medicine Division of Gerontology\n> > > > Baltimore VA Medical Center\n> > > > 10 North Greene Street\n> > > > GRECC (BT/18/GR)\n> > > > Baltimore, MD 21201-1524\n> > > > (Phone) 410-605-7119\n> > > > (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n> > > >\n> > > > Confidentiality Statement:\n> > > > This email message, including any attachments, is for ...{{dropped:25}}\n> > > \n> > > ______________________________________________\n> > > R-help at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-help\n> > > PLEASE do read the posting guide \n>http://www.R-project.org/posting-guide.html\n> > > and provide commented, minimal, self-contained, reproducible code.\n> > \n> \n> -- \n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n> Dr. Gavin Simpson? ? ? ? ? ? [t] +44 (0)20 7679 0522\n> ECRC, UCL Geography,? ? ? ? ? [f] +44 (0)20 7679 0565\n> Pearson Building,? ? ? ? ? ? [e] gavin.simpsonATNOSPAMucl.ac.uk\n> Gower Street, London? ? ? ? ? [w] http://www.ucl.ac.uk/~ucfagls/\n> UK. WC1E 6BT.? ? ? ? ? ? ? ? [w] http://www.freshwaters.org.uk\n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n> \n> \n>? ? ? \n> \n\n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\nDr. Gavin Simpson? ? ? ? ? ? [t] +44 (0)20 7679 0522\nECRC, UCL Geography,? ? ? ? ? [f] +44 (0)20 7679 0565\nPearson Building,? ? ? ? ? ? [e] gavin.simpsonATNOSPAMucl.ac.uk\nGower Street, London? ? ? ? ? [w] http://www.ucl.ac.uk/~ucfagls/\nUK. WC1E 6BT.? ? ? ? ? ? ? ? [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%",
+      "body_plain": "Thank you for pointing ou R-forge. I tried link from R-forge for lme4a, it \ndoesn't work at the time I tried (Returned \"PAGE NOT FOUND\".\n\nHowever, the link for lme4b worked, and I installed lme4b package which can be \nloaded successfully. lme4b has lmer1() instead of lmer().\n\nHowever, when trying to run lmer1(), it will tell you this warning message:\n\nWarning message:\nmodel.Matrix() has been moved from package 'Matrix' to the new package\n'MatrixModels' which is now loaded (if installed).\n  Its use from package 'Matrix' is deprecated.\nDo use it from 'MatrixModels' instead. \n\nI think this may be why I got error message when I try to load lme4a, which may \nhave not been updated to look for MatrixModels package instead of Matrix \npackage.\n\nThe reason I posted to both R and R-mixed-models mailing list is that it seems \nthat this question is more suitable to R-mixed-models, but response there is \npretty slow,......\n\nThanks,\n\nJohn\n\n\n \n\n\n----- Original Message ----\nFrom: Gavin Simpson <gavin.simpson at ucl.ac.uk>\nTo: array chip <arrayprofile at yahoo.com>\nCc: John Sorkin <jsorkin at grecc.umaryland.edu>; r-help at r-project.org; Bert Gunter \n<gunter.berton at gene.com>\nSent: Fri, September 10, 2010 10:46:16 AM\nSubject: Re: lme4a package loading error\n\nOn Fri, 2010-09-10 at 10:23 -0700, array chip wrote:\n> Thanks for reminding this. So I found lme4a package from Doug's UserR!2010 \n> presentation folder: \n> http://lme4.r-forge.r-project.org/slides/2010-07-20-Gaithersburg/pkg/\n\nWhat is wrong with the one on the packages tab of the lme4 project page:\n\nhttps://r-forge.r-project.org/R/?group_id=60\n\n?\n\nYou might need to make sure you have the latest Matrix as well to run\nlme4a. Update Matrix via update.packages() or install the latest version\nfrom r-forge and see if that helps.\n\nAlso, try not to cross-post to multiple lists. Stick with one, or move\nthe thread onto the new list.\n\nHTH\n\nG\n\n> However, after installation, I got the following error message when trying to \n> load the library:\n> \n> library(Matrix)\n> > library(Rcpp)\n> > library(minqa)\n> > library(lme4a)\n> Error : classes \"modelMatrix\", \"denseModelMatrix\", \"sparseModelMatrix\", \n> \"ddenseModelMatrix\", \"dsparseModelMatrix\", \"predModule\", \"dPredModule\", \n> \"sPredModule\", \"respModule\", \"glmRespMod\", \"nlsRespMod\" are not exported by \n> 'namespace:Matrix'\n> Error: package/namespace load failed for 'lme4a'\n> \n> Here is my sessionInfo()\n> > sessionInfo()\n> R version 2.11.1 (2010-05-31) \n> i386-pc-mingw32 \n> \n> locale:\n> [1] LC_COLLATE=English_United States.1252  LC_CTYPE=English_United States.1252  \n>\n> \n> [3] LC_MONETARY=English_United States.1252 LC_NUMERIC=C    ? ? ? ? ? ? ? ? ? ? \n>? \n>\n> \n> [5] LC_TIME=English_United States.1252    \n> \n> attached base packages:\n> [1] stats    graphics  grDevices utils    datasets  methods  base    \n> \n> other attached packages:\n> [1] minqa_1.1.9        Rcpp_0.8.6        Matrix_0.999375-43 lattice_0.18-8    \n> \n> loaded via a namespace (and not attached):\n> [1] grid_2.11.1    nlme_3.1-96    splines_2.11.1 stats4_2.11.1  tools_2.11.1  \n> \n> Any suggestions would be appreciated.\n> \n> John\n> \n> \n> \n> \n> \n> ----- Original Message ----\n> From: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> To: array chip <arrayprofile at yahoo.com>\n> Cc: John Sorkin <jsorkin at grecc.umaryland.edu>; r-help at r-project.org; Bert \n>Gunter \n>\n> <gunter.berton at gene.com>\n> Sent: Fri, September 10, 2010 10:00:15 AM\n> Subject: Re: [R] lmer fixed effects, SE, t . . . and p\n> \n> On Fri, 2010-09-10 at 09:51 -0700, array chip wrote:\n> > But as far as I know, profile() seems to be de-activated in the lme4 \npackage.\n> \n> It is beta software. The lme4a version of the lme4 \"package\" might have\n> had profile re-enabled, IIRC. \n> \n> G\n> \n> > ----- Original Message ----\n> > From: Gavin Simpson <gavin.simpson at ucl.ac.uk>\n> > To: John Sorkin <jsorkin at grecc.umaryland.edu>\n> > Cc: r-help at r-project.org; Bert Gunter <gunter.berton at gene.com>\n> > Sent: Fri, September 10, 2010 2:05:37 AM\n> > Subject: Re: [R] lmer fixed effects, SE, t . . . and p\n> > \n> > On Thu, 2010-09-09 at 23:40 -0400, John Sorkin wrote:\n> > > Bert,\n> > > I appreciate you comments, and I have read Doug Bates writing about p\n> > > values in mixed effects regression. It is precisely because I read\n> > > Doug's material that I asked \"how are we to interpret the estimates\"\n> > > rather than \"how can we compute a p value\". My question is a simple\n> > > question whose answer is undoubtedly complex, but one that needs an\n> > > answer. Without p values, or confidence intervals, I am not certain\n> > > what to make of the results of my analysis. Does my analysis suggest,\n> > > or does it not suggest that there is a relation between time and y? If\n> > > I can't answer this question after running the analysis, I don't have\n> > > any more information than I did before I ran the analysis, and a fair\n> > > question would be why did I run the analysis? I am asking for help not\n> > > in calculation a p value or a CI, but rather to know what I can and\n> > > can't say about the results of the analysis. If this basic question\n> > > can not be answered, I am at a loss to interpret my results. \n> > > Thank you,\n> > > John\n> > \n> > Doug talks quite a lot about profiling lmer fits using 'profile\n> > deviance' to investigate variability in fixed effects. For example, see\n> > section 1.5 in the draft of chapter 1 of Doug's book on mixed models:\n> > \n> > http://lme4.r-forge.r-project.org/book/\n> > \n> > HTH\n> > \n> > G\n> > \n> > > John David Sorkin M.D., Ph.D.\n> > > Chief, Biostatistics and Informatics\n> > > University of Maryland School of Medicine Division of Gerontology\n> > > Baltimore VA Medical Center\n> > > 10 North Greene Street\n> > > GRECC (BT/18/GR)\n> > > Baltimore, MD 21201-1524\n> > > (Phone) 410-605-7119\n> > > (Fax) 410-605-7913 (Please call phone number above prior to faxing)>>> Bert \n>\n> > >Gunter <gunter.berton at gene.com> 9/9/2010 11:21 PM >>>\n> > > John:\n> > > \n> > > Search on this issue in the list archives. Doug Bates has addressed it\n> > > at length. Basically, he does not calculate CI's or p-values because\n> > > he does not know how to reliably do so.\n> > > \n> > > However, the key remark in your query was:\n> > > \n> > > > (2) lmer does not give p values or confidence intervals for the fixed \n> > >effects. How we are to interpret the estimates given that no p value or CI \n>is \n>\n> \n> > >given for the estimates?\n> > > \n> > > Think about it. A statistical analysis -- ANY statistical analysis --\n> > > treats the data in isolation: it is not informed by physics,\n> > > thermodynamics, biology,  other similar data, prior experience, or,\n> > > indeed, any part of the body of relevant scientific knowledge. Do you\n> > > really think that any such analysis, especially when predicated upon\n> > > often tenuous or even (necessarily) unverifiable assumptions and\n> > > simplifications should be considered authoritative? Classical\n> > > statistical inference is just another piece of the puzzle, and not\n> > > even particularly useful when, as if typically the case, hypotheses\n> > > are formulated AFTER seeing the data (this invalidates the probability\n> > > calculations -- hypotheses must be formulated before seeing the data\n> > > to be meaningfully assessed). Leo Breiman called this statistics'\n> > > \"quiet scandal\" something like 20 years ago, and he was no dummy.\n> > > \n> > > It is comforting, perhaps, but illusory to believe that statistical\n> > > inference can be relied on to give sound, objective scientific\n> > > results. True, without such a framework, science seems rather\n> > > subjective, perhaps closer to religion and arbitrary cultural\n> > > archetypes than we care to admit. But see Thomas Kuhn and Paul\n> > > Feuerabend for why this is neither surprising nor necessarily a bad\n> > > thing.\n> > > \n> > > Cheers,\n> > > Bert Gunter\n> > > \n> > > \n> > > \n> > > \n> > > On Thu, Sep 9, 2010 at 8:00 PM, John Sorkin <jsorkin at grecc.umaryland.edu> \n> > >wrote:\n> > > > windows Vista\n> > > > R 2.10.1\n> > > >\n> > > >\n> > > > (1) How can I get the complete table of for the fixed effects from lmer. \n>As \n>\n> >\n> > >can be seen from the example below, fixef(fit2) only give the estimates and \n\n> >not \n> >\n> > >the SE or t value\n> > > >\n> > > >> fit3<- lmer(y~time + (1|Subject) + \n(time|Subject),data=data.frame(data))\n> > > >> summary(fit3)\n> > > > Linear mixed model fit by REML\n> > > > Formula: y ~ time + (1 | Subject) + (time | Subject)\n> > > >  Data: data.frame(data)\n> > > >    AIC    BIC logLik deviance REMLdev\n> > > >  -126.2 -116.4  70.1  -152.5  -140.2\n> > > > Random effects:\n> > > >  Groups  Name        Variance  Std.Dev.  Corr\n> > > >  Subject  (Intercept) 2.9311e+01 5.41396385\n> > > >  Subject  (Intercept) 0.0000e+00 0.00000000\n> > > >? ? ? ?   time        0.0000e+00 0.00000000  NaN\n> > > >  Residual    ? ? ?   8.1591e-07 0.00090328\n> > > > Number of obs: 30, groups: Subject, 10\n> > > >\n> > > > Fixed effects:\n> > > >? ? ? ? ?   Estimate Std. Error t value\n> > > > (Intercept) 14.998216  1.712046      9\n> > > > time        -0.999779  0.000202  -4950\n> > > >\n> > > > Correlation of Fixed Effects:\n> > > >    (Intr)\n> > > > time -0.001\n> > > >> fixef(fit3)\n> > > > (Intercept)        time\n> > > >  14.9982158  -0.9997793\n> > > >\n> > > > (2) lmer does not give p values or confidence intervals for the fixed \n> > >effects. How we are to interpret the estimates given that no p value or CI \n>is \n>\n> \n> > >given for the estimates?\n> > > >\n> > > >\n> > > >\n> > > >\n> > > > John David Sorkin M.D., Ph.D.\n> > > > Chief, Biostatistics and Informatics\n> > > > University of Maryland School of Medicine Division of Gerontology\n> > > > Baltimore VA Medical Center\n> > > > 10 North Greene Street\n> > > > GRECC (BT/18/GR)\n> > > > Baltimore, MD 21201-1524\n> > > > (Phone) 410-605-7119\n> > > > (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n> > > >\n> > > > Confidentiality Statement:\n> > > > This email message, including any attachments, is for ...{{dropped:25}}\n> > > \n> > > ______________________________________________\n> > > R-help at r-project.org mailing list\n> > > https://stat.ethz.ch/mailman/listinfo/r-help\n> > > PLEASE do read the posting guide \n>http://www.R-project.org/posting-guide.html\n> > > and provide commented, minimal, self-contained, reproducible code.\n> > \n> \n> -- \n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n> Dr. Gavin Simpson    ? ? ?   [t] +44 (0)20 7679 0522\n> ECRC, UCL Geography,    ? ?   [f] +44 (0)20 7679 0565\n> Pearson Building,    ? ? ?   [e] gavin.simpsonATNOSPAMucl.ac.uk\n> Gower Street, London    ? ?   [w] http://www.ucl.ac.uk/~ucfagls/\n> UK. WC1E 6BT.    ? ? ? ? ?   [w] http://www.freshwaters.org.uk\n> %~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\n> \n> \n>? ? ? \n> \n\n-- \n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%\nDr. Gavin Simpson    ? ? ?   [t] +44 (0)20 7679 0522\nECRC, UCL Geography,    ? ?   [f] +44 (0)20 7679 0565\nPearson Building,    ? ? ?   [e] gavin.simpsonATNOSPAMucl.ac.uk\nGower Street, London    ? ?   [w] http://www.ucl.ac.uk/~ucfagls/\nUK. WC1E 6BT.    ? ? ? ? ?   [w] http://www.freshwaters.org.uk\n%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%~%",
       "body_snippet": "Thank you for pointing ou R-forge. I tried link from R-forge for lme4a, it \ndoesn't work at the time I tried (Returned \"PAGE NOT FOUND\".\n\nHowever, the link for lme4b worked, and I installed lme4b pack",
       "thread_id": "thread-74a2b2e79320",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004449.html"
     },
     {
       "id": "msg-675472b1e33b",
@@ -632,6 +665,7 @@
       "thread_id": "thread-675472b1e33b",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004451.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100912/24478d83/attachment.pl"
       ]
@@ -650,7 +684,8 @@
       "body_snippet": "Dear mixed-effect modellers,\n\nI have been using a Poisson GLMM to model neuronal response rates in\nresponse to various auditory stimuli.  The data are collected in\ntrials during which several stimuli ",
       "thread_id": "thread-ebc7d6b9f591",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004452.html"
     },
     {
       "id": "msg-5738a47b921a",
@@ -666,7 +701,8 @@
       "body_snippet": "Windows XP\nR 2.10.0\n\nI am running a random effects model (random intercept) on a data set in which each subject has a negative slope (run script below and see graph). When I analyze the data using lme",
       "thread_id": "thread-5738a47b921a",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004453.html"
     },
     {
       "id": "msg-c56a56e3cdf1",
@@ -680,11 +716,12 @@
       "references": [
         "<4C8FE384020000CB0007470F@medicine.umaryland.edu>"
       ],
-      "body_plain": "Hello,\n\nit appears this is also because you got only three records for each subject. \nIf you increase it to just 10, you get a slope exactly -1.0 (and no false \nconvergence warning):\n\n\nso, first using 3 records per subject, but lmer instead of lme:\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.7   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6985   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22396    0.32787    0.68\ntime         0.99004    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n# now, 10 records per subject\n#######################################\n########################\n# Create data          #\n########################\nnsub <- 40\ndata<-matrix(nrow=10*nsub,ncol=3)\ndimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n\n# Define time\ntime<-rep((1:10)/1,nsub)\ndata[,\"time\"]<-time\n\n# Define subject\nSubject<-rep((1:nsub),10)\ndata[,\"Subject\"]<-sort(Subject)\n\n# Define time value\n# Add a bit of noise to time values so we can use random intercept and \nrandom time\ndata[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n\n# Define y value\ndata[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub) +rnorm(10*nsub,0,0.001)\ndata\n\n\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3190 -3174   1599    -3213   -3198\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 4.9738e+02 22.3020258\n Residual             2.2170e-06  0.0014889\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.526e+00      15\ntime        -1.000e+00  2.592e-05  -38580\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n\nfit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    # \ngives a false convergence warning\n\n> fit12d\nLinear mixed model fit by REML\nFormula: y ~ time + (1 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -2567 -2543   1290    -2579   -2579\nRandom effects:\n Groups   Name        Variance   Std.Dev.   Corr\n Subject  (Intercept) 1.8228e+02 13.5010870\n          time        2.6926e-01  0.5189022 0.009\n Residual             2.4337e-06  0.0015600\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 51.99921    2.13471   24.36\ntime        -0.99997    0.08205  -12.19\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.009\n>\n\n\n\nfit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    # no \nfalse convergence warning, but slope estimate is not exactly -1.00 anymore\n\n> fit12f\nLinear mixed model fit by REML\nFormula: y ~ time + (0 + time | Subject)\n   Data: data.frame(data)\n  AIC  BIC logLik deviance REMLdev\n 2301 2317  -1146     2292    2293\nRandom effects:\n Groups   Name Variance Std.Dev.\n Subject  time  0.69206 0.8319\n Residual      10.02260 3.1658\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  27.8111     0.9359  29.716\ntime         -0.3955     0.1393  -2.838\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.324\n>\n\n\n\nfit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject), \ndata=data.frame(data))    # false convergence warning, but slope exactly -1\n\n> fit12g\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject) + (0 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3189 -3169   1600    -3214   -3199\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.2392e+02 2.2889e+01\n Subject  time        6.0692e-09 7.7905e-05\n Residual             2.1488e-06 1.4659e-03\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.619e+00      14\ntime        -1.000e+00  2.834e-05  -35291\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n#############################################\n\n\n\n\nJust my 2 cents, in case this is of any help.\n\n\n\n\nCheers,\n\nLuca\n\n\n---------------------------\nLuca B?rger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\n\noffice +1 519 824 4120 ext. 52975\nlab     +1 519 824 4120 ext. 53594\nfax:     +1 519 767 1656\n\nemail: lborger at uoguelph.ca\nwww.researcherid.com/rid/C-6003-2008\nhttp://uoguelph.academia.edu/LucaBorger\n--------------------------------------------------------------------\n\n\n\n\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Tuesday, September 14, 2010 9:05 PM\nSubject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due to \nfalse convergence\n\n\n> Windows XP\n> R 2.10.0\n>\n> I am running a random effects model (random intercept) on a data set in \n> which each subject has a negative slope (run script below and see graph). \n> When I analyze the data using lme (see end of the script) I get a positive \n> slope (0.99 estimate for time) when the true slope should be close \n> to -1.0. As has been noted before this is because my data are somewhat \n> pathological (the correlation of the intercept and time is -0.889). I \n> believe the incorrect slope is due to false convergence. Is there some way \n> I can specify starting values to the iterative procedure used in lme so as \n> to avoid the false convergence and obtain the correct slope?\n> Thanks,\n> John\n>\n>\n>\n>\n> library(nlme)\n>\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=3*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:3)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),3)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept and \n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub) +rnorm(3*nsub,0,0.001)\n> data\n>\n> # Plot the data\n> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n> title(\"Each subject has a negative slope\")\n>\n> # Regression of y on x ignoring the fact that the data come from 10 \n> different subjects.\n> fit0 <- lm(y~time,data=data.frame(data))\n> summary(fit0)\n>\n> # Compute subject specific regressions.\n> for (i in 1:nsub){\n> fit0 <-  lm(y~time, \n> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n> abline(fit0) # Add sub. specific regression lines to plot.\n> coefs[i,] <- coef(fit0)\n> }\n>\n>\n> ######################################################################\n> ######################################################################\n> # This is lme give a slope (time) of 0.99. The true slope should be  #\n> # approx. -1.0.                                                      #\n> ######################################################################\n> fit12c<-lme(y ~ time, random= ~ 1      | Subject, data=data.frame(data))\n> summary(fit12c)\n>\n>\n> John David Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> University of Maryland School of Medicine Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for th...{{dropped:6}}\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "Hello,\n\nit appears this is also because you got only three records for each subject. \nIf you increase it to just 10, you get a slope exactly -1.0 (and no false \nconvergence warning):\n\n\nso, first using 3 records per subject, but lmer instead of lme:\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.7   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6985   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22396    0.32787    0.68\ntime         0.99004    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n# now, 10 records per subject\n#######################################\n########################\n# Create data          #\n########################\nnsub <- 40\ndata<-matrix(nrow=10*nsub,ncol=3)\ndimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n\n# Define time\ntime<-rep((1:10)/1,nsub)\ndata[,\"time\"]<-time\n\n# Define subject\nSubject<-rep((1:nsub),10)\ndata[,\"Subject\"]<-sort(Subject)\n\n# Define time value\n# Add a bit of noise to time values so we can use random intercept and \nrandom time\ndata[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n\n# Define y value\ndata[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub) +rnorm(10*nsub,0,0.001)\ndata\n\n\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3190 -3174   1599    -3213   -3198\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 4.9738e+02 22.3020258\n Residual             2.2170e-06  0.0014889\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.526e+00      15\ntime        -1.000e+00  2.592e-05  -38580\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n\nfit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    # \ngives a false convergence warning\n\n> fit12d\nLinear mixed model fit by REML\nFormula: y ~ time + (1 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -2567 -2543   1290    -2579   -2579\nRandom effects:\n Groups   Name        Variance   Std.Dev.   Corr\n Subject  (Intercept) 1.8228e+02 13.5010870\n          time        2.6926e-01  0.5189022 0.009\n Residual             2.4337e-06  0.0015600\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 51.99921    2.13471   24.36\ntime        -0.99997    0.08205  -12.19\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.009\n>\n\n\n\nfit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    # no \nfalse convergence warning, but slope estimate is not exactly -1.00 anymore\n\n> fit12f\nLinear mixed model fit by REML\nFormula: y ~ time + (0 + time | Subject)\n   Data: data.frame(data)\n  AIC  BIC logLik deviance REMLdev\n 2301 2317  -1146     2292    2293\nRandom effects:\n Groups   Name Variance Std.Dev.\n Subject  time  0.69206 0.8319\n Residual      10.02260 3.1658\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  27.8111     0.9359  29.716\ntime         -0.3955     0.1393  -2.838\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.324\n>\n\n\n\nfit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject), \ndata=data.frame(data))    # false convergence warning, but slope exactly -1\n\n> fit12g\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject) + (0 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3189 -3169   1600    -3214   -3199\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.2392e+02 2.2889e+01\n Subject  time        6.0692e-09 7.7905e-05\n Residual             2.1488e-06 1.4659e-03\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.619e+00      14\ntime        -1.000e+00  2.834e-05  -35291\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n#############################################\n\n\n\n\nJust my 2 cents, in case this is of any help.\n\n\n\n\nCheers,\n\nLuca\n\n\n---------------------------\nLuca Börger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\n\noffice +1 519 824 4120 ext. 52975\nlab     +1 519 824 4120 ext. 53594\nfax:     +1 519 767 1656\n\nemail: lborger at uoguelph.ca\nwww.researcherid.com/rid/C-6003-2008\nhttp://uoguelph.academia.edu/LucaBorger\n--------------------------------------------------------------------\n\n\n\n\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Tuesday, September 14, 2010 9:05 PM\nSubject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due to \nfalse convergence\n\n\n> Windows XP\n> R 2.10.0\n>\n> I am running a random effects model (random intercept) on a data set in \n> which each subject has a negative slope (run script below and see graph). \n> When I analyze the data using lme (see end of the script) I get a positive \n> slope (0.99 estimate for time) when the true slope should be close \n> to -1.0. As has been noted before this is because my data are somewhat \n> pathological (the correlation of the intercept and time is -0.889). I \n> believe the incorrect slope is due to false convergence. Is there some way \n> I can specify starting values to the iterative procedure used in lme so as \n> to avoid the false convergence and obtain the correct slope?\n> Thanks,\n> John\n>\n>\n>\n>\n> library(nlme)\n>\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=3*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:3)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),3)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept and \n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub) +rnorm(3*nsub,0,0.001)\n> data\n>\n> # Plot the data\n> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n> title(\"Each subject has a negative slope\")\n>\n> # Regression of y on x ignoring the fact that the data come from 10 \n> different subjects.\n> fit0 <- lm(y~time,data=data.frame(data))\n> summary(fit0)\n>\n> # Compute subject specific regressions.\n> for (i in 1:nsub){\n> fit0 <-  lm(y~time, \n> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n> abline(fit0) # Add sub. specific regression lines to plot.\n> coefs[i,] <- coef(fit0)\n> }\n>\n>\n> ######################################################################\n> ######################################################################\n> # This is lme give a slope (time) of 0.99. The true slope should be  #\n> # approx. -1.0.                                                      #\n> ######################################################################\n> fit12c<-lme(y ~ time, random= ~ 1      | Subject, data=data.frame(data))\n> summary(fit12c)\n>\n>\n> John David Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> University of Maryland School of Medicine Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for th...{{dropped:6}}\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "Hello,\n\nit appears this is also because you got only three records for each subject. \nIf you increase it to just 10, you get a slope exactly -1.0 (and no false \nconvergence warning):\n\n\nso, first using",
       "thread_id": "thread-5738a47b921a",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004454.html"
     },
     {
       "id": "msg-be2603fdd174",
@@ -699,11 +736,12 @@
         "<4C8FE384020000CB0007470F@medicine.umaryland.edu>",
         "<E616C34EEC804A8BB788E38CC278FA6E@lborger>"
       ],
-      "body_plain": "Luca,\nFirst my thanks for your thoughts.\nYou are correct that increasing the number of measurements each subject\nhas from three to ten eliminates the false convergence. While your\nsolution works, it changes the problem and does not answer my original\nquestion. I have only three observations  per subject, and I would like\nto know if it is possible to modify the initial parameters used in the\niterative solution used by lme so that the false convergence does not\noccur. The essence of my problem is, I believe, that the variance of the\nintercepts is much larger than the residual variance leading to bad\ninitial parameter estimates and false convergence. I believe that if I\ncan modify the starting parameters I can get true convergence.\nThank you,\nJohn\n\nJohn Sorkin M.D., Ph.D.\nChief, Biostatistics and Informatics\nBaltimore VA Medical Center GRECC,\nUniversity of Maryland School of Medicine Claude D. Pepper OAIC,\nUniversity of Maryland Clinical Nutrition Research Unit, and\nBaltimore VA Center Stroke of Excellence\n\nUniversity of Maryland School of Medicine\nDivision of Gerontology\nBaltimore VA Medical Center\n10 North Greene Street\nGRECC (BT/18/GR)\nBaltimore, MD 21201-1524\n\n(Phone) 410-605-7119\n(Fax) 410-605-7913 (Please call phone number above prior to faxing)\njsorkin at grecc.umaryland.edu\n\n>>> \"Luca Borger\" <lborger at uoguelph.ca> 9/14/2010 10:44 PM >>>\nHello,\n\nit appears this is also because you got only three records for each\nsubject. \nIf you increase it to just 10, you get a slope exactly -1.0 (and no\nfalse \nconvergence warning):\n\n\nso, first using 3 records per subject, but lmer instead of lme:\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.7   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6985   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22396    0.32787    0.68\ntime         0.99004    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n# now, 10 records per subject\n#######################################\n########################\n# Create data          #\n########################\nnsub <- 40\ndata<-matrix(nrow=10*nsub,ncol=3)\ndimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n\n# Define time\ntime<-rep((1:10)/1,nsub)\ndata[,\"time\"]<-time\n\n# Define subject\nSubject<-rep((1:nsub),10)\ndata[,\"Subject\"]<-sort(Subject)\n\n# Define time value\n# Add a bit of noise to time values so we can use random intercept and\n\nrandom time\ndata[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n\n# Define y value\ndata[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub)\n+rnorm(10*nsub,0,0.001)\ndata\n\n\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3190 -3174   1599    -3213   -3198\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 4.9738e+02 22.3020258\n Residual             2.2170e-06  0.0014889\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.526e+00      15\ntime        -1.000e+00  2.592e-05  -38580\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n\nfit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    #\n\ngives a false convergence warning\n\n> fit12d\nLinear mixed model fit by REML\nFormula: y ~ time + (1 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -2567 -2543   1290    -2579   -2579\nRandom effects:\n Groups   Name        Variance   Std.Dev.   Corr\n Subject  (Intercept) 1.8228e+02 13.5010870\n          time        2.6926e-01  0.5189022 0.009\n Residual             2.4337e-06  0.0015600\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 51.99921    2.13471   24.36\ntime        -0.99997    0.08205  -12.19\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.009\n>\n\n\n\nfit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    #\nno \nfalse convergence warning, but slope estimate is not exactly -1.00\nanymore\n\n> fit12f\nLinear mixed model fit by REML\nFormula: y ~ time + (0 + time | Subject)\n   Data: data.frame(data)\n  AIC  BIC logLik deviance REMLdev\n 2301 2317  -1146     2292    2293\nRandom effects:\n Groups   Name Variance Std.Dev.\n Subject  time  0.69206 0.8319\n Residual      10.02260 3.1658\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  27.8111     0.9359  29.716\ntime         -0.3955     0.1393  -2.838\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.324\n>\n\n\n\nfit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject), \ndata=data.frame(data))    # false convergence warning, but slope\nexactly -1\n\n> fit12g\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject) + (0 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3189 -3169   1600    -3214   -3199\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.2392e+02 2.2889e+01\n Subject  time        6.0692e-09 7.7905e-05\n Residual             2.1488e-06 1.4659e-03\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.619e+00      14\ntime        -1.000e+00  2.834e-05  -35291\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n#############################################\n\n\n\n\nJust my 2 cents, in case this is of any help.\n\n\n\n\nCheers,\n\nLuca\n\n\n---------------------------\nLuca B?rger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\n\noffice +1 519 824 4120 ext. 52975\nlab     +1 519 824 4120 ext. 53594\nfax:     +1 519 767 1656\n\nemail: lborger at uoguelph.ca \nwww.researcherid.com/rid/C-6003-2008 \nhttp://uoguelph.academia.edu/LucaBorger \n--------------------------------------------------------------------\n\n\n\n\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Tuesday, September 14, 2010 9:05 PM\nSubject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due\nto \nfalse convergence\n\n\n> Windows XP\n> R 2.10.0\n>\n> I am running a random effects model (random intercept) on a data set\nin \n> which each subject has a negative slope (run script below and see\ngraph). \n> When I analyze the data using lme (see end of the script) I get a\npositive \n> slope (0.99 estimate for time) when the true slope should be close \n> to -1.0. As has been noted before this is because my data are\nsomewhat \n> pathological (the correlation of the intercept and time is -0.889). I\n\n> believe the incorrect slope is due to false convergence. Is there\nsome way \n> I can specify starting values to the iterative procedure used in lme\nso as \n> to avoid the false convergence and obtain the correct slope?\n> Thanks,\n> John\n>\n>\n>\n>\n> library(nlme)\n>\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=3*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:3)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),3)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept\nand \n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub)\n+rnorm(3*nsub,0,0.001)\n> data\n>\n> # Plot the data\n> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n> title(\"Each subject has a negative slope\")\n>\n> # Regression of y on x ignoring the fact that the data come from 10 \n> different subjects.\n> fit0 <- lm(y~time,data=data.frame(data))\n> summary(fit0)\n>\n> # Compute subject specific regressions.\n> for (i in 1:nsub){\n> fit0 <-  lm(y~time, \n> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n> abline(fit0) # Add sub. specific regression lines to plot.\n> coefs[i,] <- coef(fit0)\n> }\n>\n>\n>\n######################################################################\n>\n######################################################################\n> # This is lme give a slope (time) of 0.99. The true slope should be \n#\n> # approx. -1.0.                                                     \n#\n>\n######################################################################\n> fit12c<-lme(y ~ time, random= ~ 1      | Subject,\ndata=data.frame(data))\n> summary(fit12c)\n>\n>\n> John David Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> University of Maryland School of Medicine Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for\\...{{dropped:16}}",
+      "body_plain": "Luca,\nFirst my thanks for your thoughts.\nYou are correct that increasing the number of measurements each subject\nhas from three to ten eliminates the false convergence. While your\nsolution works, it changes the problem and does not answer my original\nquestion. I have only three observations  per subject, and I would like\nto know if it is possible to modify the initial parameters used in the\niterative solution used by lme so that the false convergence does not\noccur. The essence of my problem is, I believe, that the variance of the\nintercepts is much larger than the residual variance leading to bad\ninitial parameter estimates and false convergence. I believe that if I\ncan modify the starting parameters I can get true convergence.\nThank you,\nJohn\n\nJohn Sorkin M.D., Ph.D.\nChief, Biostatistics and Informatics\nBaltimore VA Medical Center GRECC,\nUniversity of Maryland School of Medicine Claude D. Pepper OAIC,\nUniversity of Maryland Clinical Nutrition Research Unit, and\nBaltimore VA Center Stroke of Excellence\n\nUniversity of Maryland School of Medicine\nDivision of Gerontology\nBaltimore VA Medical Center\n10 North Greene Street\nGRECC (BT/18/GR)\nBaltimore, MD 21201-1524\n\n(Phone) 410-605-7119\n(Fax) 410-605-7913 (Please call phone number above prior to faxing)\njsorkin at grecc.umaryland.edu\n\n>>> \"Luca Borger\" <lborger at uoguelph.ca> 9/14/2010 10:44 PM >>>\nHello,\n\nit appears this is also because you got only three records for each\nsubject. \nIf you increase it to just 10, you get a slope exactly -1.0 (and no\nfalse \nconvergence warning):\n\n\nso, first using 3 records per subject, but lmer instead of lme:\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.7   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6985   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22396    0.32787    0.68\ntime         0.99004    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n# now, 10 records per subject\n#######################################\n########################\n# Create data          #\n########################\nnsub <- 40\ndata<-matrix(nrow=10*nsub,ncol=3)\ndimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n\n# Define time\ntime<-rep((1:10)/1,nsub)\ndata[,\"time\"]<-time\n\n# Define subject\nSubject<-rep((1:nsub),10)\ndata[,\"Subject\"]<-sort(Subject)\n\n# Define time value\n# Add a bit of noise to time values so we can use random intercept and\n\nrandom time\ndata[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n\n# Define y value\ndata[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub)\n+rnorm(10*nsub,0,0.001)\ndata\n\n\n\nfit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n\n> fit12c\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3190 -3174   1599    -3213   -3198\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 4.9738e+02 22.3020258\n Residual             2.2170e-06  0.0014889\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.526e+00      15\ntime        -1.000e+00  2.592e-05  -38580\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n\nfit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    #\n\ngives a false convergence warning\n\n> fit12d\nLinear mixed model fit by REML\nFormula: y ~ time + (1 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -2567 -2543   1290    -2579   -2579\nRandom effects:\n Groups   Name        Variance   Std.Dev.   Corr\n Subject  (Intercept) 1.8228e+02 13.5010870\n          time        2.6926e-01  0.5189022 0.009\n Residual             2.4337e-06  0.0015600\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept) 51.99921    2.13471   24.36\ntime        -0.99997    0.08205  -12.19\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.009\n>\n\n\n\nfit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    #\nno \nfalse convergence warning, but slope estimate is not exactly -1.00\nanymore\n\n> fit12f\nLinear mixed model fit by REML\nFormula: y ~ time + (0 + time | Subject)\n   Data: data.frame(data)\n  AIC  BIC logLik deviance REMLdev\n 2301 2317  -1146     2292    2293\nRandom effects:\n Groups   Name Variance Std.Dev.\n Subject  time  0.69206 0.8319\n Residual      10.02260 3.1658\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  27.8111     0.9359  29.716\ntime         -0.3955     0.1393  -2.838\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.324\n>\n\n\n\nfit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject), \ndata=data.frame(data))    # false convergence warning, but slope\nexactly -1\n\n> fit12g\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject) + (0 + time | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n -3189 -3169   1600    -3214   -3199\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.2392e+02 2.2889e+01\n Subject  time        6.0692e-09 7.7905e-05\n Residual             2.1488e-06 1.4659e-03\nNumber of obs: 400, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept)  5.200e+01  3.619e+00      14\ntime        -1.000e+00  2.834e-05  -35291\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime 0.000\n>\n\n#############################################\n\n\n\n\nJust my 2 cents, in case this is of any help.\n\n\n\n\nCheers,\n\nLuca\n\n\n---------------------------\nLuca Börger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\n\noffice +1 519 824 4120 ext. 52975\nlab     +1 519 824 4120 ext. 53594\nfax:     +1 519 767 1656\n\nemail: lborger at uoguelph.ca \nwww.researcherid.com/rid/C-6003-2008 \nhttp://uoguelph.academia.edu/LucaBorger \n--------------------------------------------------------------------\n\n\n\n\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Tuesday, September 14, 2010 9:05 PM\nSubject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due\nto \nfalse convergence\n\n\n> Windows XP\n> R 2.10.0\n>\n> I am running a random effects model (random intercept) on a data set\nin \n> which each subject has a negative slope (run script below and see\ngraph). \n> When I analyze the data using lme (see end of the script) I get a\npositive \n> slope (0.99 estimate for time) when the true slope should be close \n> to -1.0. As has been noted before this is because my data are\nsomewhat \n> pathological (the correlation of the intercept and time is -0.889). I\n\n> believe the incorrect slope is due to false convergence. Is there\nsome way \n> I can specify starting values to the iterative procedure used in lme\nso as \n> to avoid the false convergence and obtain the correct slope?\n> Thanks,\n> John\n>\n>\n>\n>\n> library(nlme)\n>\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=3*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:3)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),3)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept\nand \n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub)\n+rnorm(3*nsub,0,0.001)\n> data\n>\n> # Plot the data\n> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n> title(\"Each subject has a negative slope\")\n>\n> # Regression of y on x ignoring the fact that the data come from 10 \n> different subjects.\n> fit0 <- lm(y~time,data=data.frame(data))\n> summary(fit0)\n>\n> # Compute subject specific regressions.\n> for (i in 1:nsub){\n> fit0 <-  lm(y~time, \n> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n> abline(fit0) # Add sub. specific regression lines to plot.\n> coefs[i,] <- coef(fit0)\n> }\n>\n>\n>\n######################################################################\n>\n######################################################################\n> # This is lme give a slope (time) of 0.99. The true slope should be \n#\n> # approx. -1.0.                                                     \n#\n>\n######################################################################\n> fit12c<-lme(y ~ time, random= ~ 1      | Subject,\ndata=data.frame(data))\n> summary(fit12c)\n>\n>\n> John David Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> University of Maryland School of Medicine Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for\\...{{dropped:16}}",
       "body_snippet": "Luca,\nFirst my thanks for your thoughts.\nYou are correct that increasing the number of measurements each subject\nhas from three to ten eliminates the false convergence. While your\nsolution works, it c",
       "thread_id": "thread-5738a47b921a",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004455.html"
     },
     {
       "id": "msg-8e888f62132e",
@@ -719,11 +757,12 @@
         "<E616C34EEC804A8BB788E38CC278FA6E@lborger>",
         "<4C906FCF.91DF.00CB.1@grecc.umaryland.edu>"
       ],
-      "body_plain": "Hello,\n\nI forgot the starting values question ;-)\n\n\nHow about (but please check this is actually appropriate):\n\n## no starting values\nfit12b<-lmer(y ~ time + (1| Subject),\ndata=data.frame(data),verbose = TRUE)\n\n  0:     514.30292: 0.942809\n  1:     466.47314:  0.00000\n  2:     466.47314:  0.00000\n\n> summary(fit12b)\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.6   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6983   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22386    0.32786    0.68\ntime         0.99005    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n\n\n#### with starting value\n fit12c<-lmer(y ~ time + (1|Subject), start = (50),\ndata=data.frame(data), verbose = TRUE)\n\n  0:     378.91223:  50.0000\n  1:     369.93186:  53.0381\n  2:     303.05576:  81.8034\n  3:     221.14500:  138.040\n  4:     146.49123:  221.786\n  5:     69.694894:  360.911\n  6:    -5.9883317:  583.179\n  7:    -81.547428:  942.393\n  8:    -156.62461:  1522.07\n  9:    -229.86189:  2445.53\n 10:    -298.29322:  3868.55\n 11:    -359.72808:  6047.84\n 12:    -404.16415:  8866.56\n 13:    -431.83889:  12188.6\n 14:    -443.87889:  14943.8\n 15:    -453.39962:  23592.1\n 16:    -453.41087:  23528.7\n 17:    -453.49005:  22563.6\n 18:    -453.49030:  22592.6\n 19:    -453.49032:       22591.\n 20:    -453.49032:       22591.\n 21:    -453.49032:       22591.\n\n> summary(fit12c)\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n    AIC    BIC logLik deviance REMLdev\n -445.5 -434.3  226.7   -465.3  -453.5\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.4560e+02 23.3581476\n Residual             1.0691e-06  0.0010340\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept) 45.0002761  3.6932472      12\ntime        -1.0000095  0.0001156   -8651\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.001\n>\n\n\nHTH\n\n\nCheers,\n\nLuca\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>; \"Luca Borger\" <lborger at uoguelph.ca>\nSent: Wednesday, September 15, 2010 7:03 AM\nSubject: Re: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due to \nfalse convergence\n\n\n> Luca,\n> First my thanks for your thoughts.\n> You are correct that increasing the number of measurements each subject\n> has from three to ten eliminates the false convergence. While your\n> solution works, it changes the problem and does not answer my original\n> question. I have only three observations  per subject, and I would like\n> to know if it is possible to modify the initial parameters used in the\n> iterative solution used by lme so that the false convergence does not\n> occur. The essence of my problem is, I believe, that the variance of the\n> intercepts is much larger than the residual variance leading to bad\n> initial parameter estimates and false convergence. I believe that if I\n> can modify the starting parameters I can get true convergence.\n> Thank you,\n> John\n>\n> John Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> Baltimore VA Medical Center GRECC,\n> University of Maryland School of Medicine Claude D. Pepper OAIC,\n> University of Maryland Clinical Nutrition Research Unit, and\n> Baltimore VA Center Stroke of Excellence\n>\n> University of Maryland School of Medicine\n> Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n>\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n> jsorkin at grecc.umaryland.edu\n>\n>>>> \"Luca Borger\" <lborger at uoguelph.ca> 9/14/2010 10:44 PM >>>\n> Hello,\n>\n> it appears this is also because you got only three records for each\n> subject.\n> If you increase it to just 10, you get a slope exactly -1.0 (and no\n> false\n> convergence warning):\n>\n>\n> so, first using 3 records per subject, but lmer instead of lme:\n>\n> fit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n>> fit12c\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> 474.5 485.6 -233.2    457.7   466.5\n> Random effects:\n> Groups   Name        Variance Std.Dev.\n> Subject  (Intercept) 0.0000   0.0000\n> Residual             2.6985   1.6427\n> Number of obs: 120, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept)  0.22396    0.32787    0.68\n> time         0.99004    0.01296   76.40\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time -0.889\n>>\n>\n> # now, 10 records per subject\n> #######################################\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=10*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:10)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),10)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept and\n>\n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub)\n> +rnorm(10*nsub,0,0.001)\n> data\n>\n>\n>\n> fit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n>\n>> fit12c\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -3190 -3174   1599    -3213   -3198\n> Random effects:\n> Groups   Name        Variance   Std.Dev.\n> Subject  (Intercept) 4.9738e+02 22.3020258\n> Residual             2.2170e-06  0.0014889\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept)  5.200e+01  3.526e+00      15\n> time        -1.000e+00  2.592e-05  -38580\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.000\n>>\n>\n>\n> fit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    #\n>\n> gives a false convergence warning\n>\n>> fit12d\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 + time | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -2567 -2543   1290    -2579   -2579\n> Random effects:\n> Groups   Name        Variance   Std.Dev.   Corr\n> Subject  (Intercept) 1.8228e+02 13.5010870\n>          time        2.6926e-01  0.5189022 0.009\n> Residual             2.4337e-06  0.0015600\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept) 51.99921    2.13471   24.36\n> time        -0.99997    0.08205  -12.19\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.009\n>>\n>\n>\n>\n> fit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    #\n> no\n> false convergence warning, but slope estimate is not exactly -1.00\n> anymore\n>\n>> fit12f\n> Linear mixed model fit by REML\n> Formula: y ~ time + (0 + time | Subject)\n>   Data: data.frame(data)\n>  AIC  BIC logLik deviance REMLdev\n> 2301 2317  -1146     2292    2293\n> Random effects:\n> Groups   Name Variance Std.Dev.\n> Subject  time  0.69206 0.8319\n> Residual      10.02260 3.1658\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept)  27.8111     0.9359  29.716\n> time         -0.3955     0.1393  -2.838\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time -0.324\n>>\n>\n>\n>\n> fit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject),\n> data=data.frame(data))    # false convergence warning, but slope\n> exactly -1\n>\n>> fit12g\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject) + (0 + time | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -3189 -3169   1600    -3214   -3199\n> Random effects:\n> Groups   Name        Variance   Std.Dev.\n> Subject  (Intercept) 5.2392e+02 2.2889e+01\n> Subject  time        6.0692e-09 7.7905e-05\n> Residual             2.1488e-06 1.4659e-03\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept)  5.200e+01  3.619e+00      14\n> time        -1.000e+00  2.834e-05  -35291\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.000\n>>\n>\n> #############################################\n>\n>\n>\n>\n> Just my 2 cents, in case this is of any help.\n>\n>\n>\n>\n> Cheers,\n>\n> Luca\n>\n>\n> ---------------------------\n> Luca B?rger, PhD\n> Postdoctoral Research Fellow\n> Department of Integrative Biology\n> University of Guelph\n> Guelph, Ontario, Canada N1G 2W1\n>\n> office +1 519 824 4120 ext. 52975\n> lab     +1 519 824 4120 ext. 53594\n> fax:     +1 519 767 1656\n>\n> email: lborger at uoguelph.ca\n> www.researcherid.com/rid/C-6003-2008\n> http://uoguelph.academia.edu/LucaBorger\n> --------------------------------------------------------------------\n>\n>\n>\n>\n>\n> ----- Original Message ----- \n> From: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\n> To: <r-sig-mixed-models at r-project.org>\n> Sent: Tuesday, September 14, 2010 9:05 PM\n> Subject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due\n> to\n> false convergence\n>\n>\n>> Windows XP\n>> R 2.10.0\n>>\n>> I am running a random effects model (random intercept) on a data set\n> in\n>> which each subject has a negative slope (run script below and see\n> graph).\n>> When I analyze the data using lme (see end of the script) I get a\n> positive\n>> slope (0.99 estimate for time) when the true slope should be close\n>> to -1.0. As has been noted before this is because my data are\n> somewhat\n>> pathological (the correlation of the intercept and time is -0.889). I\n>\n>> believe the incorrect slope is due to false convergence. Is there\n> some way\n>> I can specify starting values to the iterative procedure used in lme\n> so as\n>> to avoid the false convergence and obtain the correct slope?\n>> Thanks,\n>> John\n>>\n>>\n>>\n>>\n>> library(nlme)\n>>\n>> ########################\n>> # Create data          #\n>> ########################\n>> nsub <- 40\n>> data<-matrix(nrow=3*nsub,ncol=3)\n>> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>>\n>> # Define time\n>> time<-rep((1:3)/1,nsub)\n>> data[,\"time\"]<-time\n>>\n>> # Define subject\n>> Subject<-rep((1:nsub),3)\n>> data[,\"Subject\"]<-sort(Subject)\n>>\n>> # Define time value\n>> # Add a bit of noise to time values so we can use random intercept\n> and\n>> random time\n>> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>>\n>> # Define y value\n>> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub)\n> +rnorm(3*nsub,0,0.001)\n>> data\n>>\n>> # Plot the data\n>> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n>> title(\"Each subject has a negative slope\")\n>>\n>> # Regression of y on x ignoring the fact that the data come from 10\n>> different subjects.\n>> fit0 <- lm(y~time,data=data.frame(data))\n>> summary(fit0)\n>>\n>> # Compute subject specific regressions.\n>> for (i in 1:nsub){\n>> fit0 <-  lm(y~time,\n>> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n>> abline(fit0) # Add sub. specific regression lines to plot.\n>> coefs[i,] <- coef(fit0)\n>> }\n>>\n>>\n>>\n> ######################################################################\n>>\n> ######################################################################\n>> # This is lme give a slope (time) of 0.99. The true slope should be\n> #\n>> # approx. -1.0.\n> #\n>>\n> ######################################################################\n>> fit12c<-lme(y ~ time, random= ~ 1      | Subject,\n> data=data.frame(data))\n>> summary(fit12c)\n>>\n>>\n>> John David Sorkin M.D., Ph.D.\n>> Chief, Biostatistics and Informatics\n>> University of Maryland School of Medicine Division of Gerontology\n>> Baltimore VA Medical Center\n>> 10 North Greene Street\n>> GRECC (BT/18/GR)\n>> Baltimore, MD 21201-1524\n>> (Phone) 410-605-7119\n>> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>>\n>> Confidentiality Statement:\n>> This email message, including any attachments, is for\n> th...{{dropped:6}}\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for ...{{dropped:7}}",
+      "body_plain": "Hello,\n\nI forgot the starting values question ;-)\n\n\nHow about (but please check this is actually appropriate):\n\n## no starting values\nfit12b<-lmer(y ~ time + (1| Subject),\ndata=data.frame(data),verbose = TRUE)\n\n  0:     514.30292: 0.942809\n  1:     466.47314:  0.00000\n  2:     466.47314:  0.00000\n\n> summary(fit12b)\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n   AIC   BIC logLik deviance REMLdev\n 474.5 485.6 -233.2    457.6   466.5\nRandom effects:\n Groups   Name        Variance Std.Dev.\n Subject  (Intercept) 0.0000   0.0000\n Residual             2.6983   1.6427\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n            Estimate Std. Error t value\n(Intercept)  0.22386    0.32786    0.68\ntime         0.99005    0.01296   76.40\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.889\n>\n\n\n\n#### with starting value\n fit12c<-lmer(y ~ time + (1|Subject), start = (50),\ndata=data.frame(data), verbose = TRUE)\n\n  0:     378.91223:  50.0000\n  1:     369.93186:  53.0381\n  2:     303.05576:  81.8034\n  3:     221.14500:  138.040\n  4:     146.49123:  221.786\n  5:     69.694894:  360.911\n  6:    -5.9883317:  583.179\n  7:    -81.547428:  942.393\n  8:    -156.62461:  1522.07\n  9:    -229.86189:  2445.53\n 10:    -298.29322:  3868.55\n 11:    -359.72808:  6047.84\n 12:    -404.16415:  8866.56\n 13:    -431.83889:  12188.6\n 14:    -443.87889:  14943.8\n 15:    -453.39962:  23592.1\n 16:    -453.41087:  23528.7\n 17:    -453.49005:  22563.6\n 18:    -453.49030:  22592.6\n 19:    -453.49032:       22591.\n 20:    -453.49032:       22591.\n 21:    -453.49032:       22591.\n\n> summary(fit12c)\nLinear mixed model fit by REML\nFormula: y ~ time + (1 | Subject)\n   Data: data.frame(data)\n    AIC    BIC logLik deviance REMLdev\n -445.5 -434.3  226.7   -465.3  -453.5\nRandom effects:\n Groups   Name        Variance   Std.Dev.\n Subject  (Intercept) 5.4560e+02 23.3581476\n Residual             1.0691e-06  0.0010340\nNumber of obs: 120, groups: Subject, 40\n\nFixed effects:\n              Estimate Std. Error t value\n(Intercept) 45.0002761  3.6932472      12\ntime        -1.0000095  0.0001156   -8651\n\nCorrelation of Fixed Effects:\n     (Intr)\ntime -0.001\n>\n\n\nHTH\n\n\nCheers,\n\nLuca\n\n----- Original Message ----- \nFrom: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\nTo: <r-sig-mixed-models at r-project.org>; \"Luca Borger\" <lborger at uoguelph.ca>\nSent: Wednesday, September 15, 2010 7:03 AM\nSubject: Re: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due to \nfalse convergence\n\n\n> Luca,\n> First my thanks for your thoughts.\n> You are correct that increasing the number of measurements each subject\n> has from three to ten eliminates the false convergence. While your\n> solution works, it changes the problem and does not answer my original\n> question. I have only three observations  per subject, and I would like\n> to know if it is possible to modify the initial parameters used in the\n> iterative solution used by lme so that the false convergence does not\n> occur. The essence of my problem is, I believe, that the variance of the\n> intercepts is much larger than the residual variance leading to bad\n> initial parameter estimates and false convergence. I believe that if I\n> can modify the starting parameters I can get true convergence.\n> Thank you,\n> John\n>\n> John Sorkin M.D., Ph.D.\n> Chief, Biostatistics and Informatics\n> Baltimore VA Medical Center GRECC,\n> University of Maryland School of Medicine Claude D. Pepper OAIC,\n> University of Maryland Clinical Nutrition Research Unit, and\n> Baltimore VA Center Stroke of Excellence\n>\n> University of Maryland School of Medicine\n> Division of Gerontology\n> Baltimore VA Medical Center\n> 10 North Greene Street\n> GRECC (BT/18/GR)\n> Baltimore, MD 21201-1524\n>\n> (Phone) 410-605-7119\n> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n> jsorkin at grecc.umaryland.edu\n>\n>>>> \"Luca Borger\" <lborger at uoguelph.ca> 9/14/2010 10:44 PM >>>\n> Hello,\n>\n> it appears this is also because you got only three records for each\n> subject.\n> If you increase it to just 10, you get a slope exactly -1.0 (and no\n> false\n> convergence warning):\n>\n>\n> so, first using 3 records per subject, but lmer instead of lme:\n>\n> fit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n>> fit12c\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> 474.5 485.6 -233.2    457.7   466.5\n> Random effects:\n> Groups   Name        Variance Std.Dev.\n> Subject  (Intercept) 0.0000   0.0000\n> Residual             2.6985   1.6427\n> Number of obs: 120, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept)  0.22396    0.32787    0.68\n> time         0.99004    0.01296   76.40\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time -0.889\n>>\n>\n> # now, 10 records per subject\n> #######################################\n> ########################\n> # Create data          #\n> ########################\n> nsub <- 40\n> data<-matrix(nrow=10*nsub,ncol=3)\n> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>\n> # Define time\n> time<-rep((1:10)/1,nsub)\n> data[,\"time\"]<-time\n>\n> # Define subject\n> Subject<-rep((1:nsub),10)\n> data[,\"Subject\"]<-sort(Subject)\n>\n> # Define time value\n> # Add a bit of noise to time values so we can use random intercept and\n>\n> random time\n> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(10*nsub,0,0.001)\n>\n> # Define y value\n> data[,\"y\"]<-data[,\"Subject\"]+rep((10:1)/1,nsub)\n> +rnorm(10*nsub,0,0.001)\n> data\n>\n>\n>\n> fit12c <-lmer(y ~ time + (1| Subject), data=data.frame(data))\n>\n>> fit12c\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -3190 -3174   1599    -3213   -3198\n> Random effects:\n> Groups   Name        Variance   Std.Dev.\n> Subject  (Intercept) 4.9738e+02 22.3020258\n> Residual             2.2170e-06  0.0014889\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept)  5.200e+01  3.526e+00      15\n> time        -1.000e+00  2.592e-05  -38580\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.000\n>>\n>\n>\n> fit12d <-lmer(y ~ time + (1+time| Subject), data=data.frame(data))    #\n>\n> gives a false convergence warning\n>\n>> fit12d\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 + time | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -2567 -2543   1290    -2579   -2579\n> Random effects:\n> Groups   Name        Variance   Std.Dev.   Corr\n> Subject  (Intercept) 1.8228e+02 13.5010870\n>          time        2.6926e-01  0.5189022 0.009\n> Residual             2.4337e-06  0.0015600\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept) 51.99921    2.13471   24.36\n> time        -0.99997    0.08205  -12.19\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.009\n>>\n>\n>\n>\n> fit12f <-lmer(y ~ time + (0+time| Subject), data=data.frame(data))    #\n> no\n> false convergence warning, but slope estimate is not exactly -1.00\n> anymore\n>\n>> fit12f\n> Linear mixed model fit by REML\n> Formula: y ~ time + (0 + time | Subject)\n>   Data: data.frame(data)\n>  AIC  BIC logLik deviance REMLdev\n> 2301 2317  -1146     2292    2293\n> Random effects:\n> Groups   Name Variance Std.Dev.\n> Subject  time  0.69206 0.8319\n> Residual      10.02260 3.1658\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>            Estimate Std. Error t value\n> (Intercept)  27.8111     0.9359  29.716\n> time         -0.3955     0.1393  -2.838\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time -0.324\n>>\n>\n>\n>\n> fit12g <-lmer(y ~ time + (1| Subject) + (0+time| Subject),\n> data=data.frame(data))    # false convergence warning, but slope\n> exactly -1\n>\n>> fit12g\n> Linear mixed model fit by REML\n> Formula: y ~ time + (1 | Subject) + (0 + time | Subject)\n>   Data: data.frame(data)\n>   AIC   BIC logLik deviance REMLdev\n> -3189 -3169   1600    -3214   -3199\n> Random effects:\n> Groups   Name        Variance   Std.Dev.\n> Subject  (Intercept) 5.2392e+02 2.2889e+01\n> Subject  time        6.0692e-09 7.7905e-05\n> Residual             2.1488e-06 1.4659e-03\n> Number of obs: 400, groups: Subject, 40\n>\n> Fixed effects:\n>              Estimate Std. Error t value\n> (Intercept)  5.200e+01  3.619e+00      14\n> time        -1.000e+00  2.834e-05  -35291\n>\n> Correlation of Fixed Effects:\n>     (Intr)\n> time 0.000\n>>\n>\n> #############################################\n>\n>\n>\n>\n> Just my 2 cents, in case this is of any help.\n>\n>\n>\n>\n> Cheers,\n>\n> Luca\n>\n>\n> ---------------------------\n> Luca Börger, PhD\n> Postdoctoral Research Fellow\n> Department of Integrative Biology\n> University of Guelph\n> Guelph, Ontario, Canada N1G 2W1\n>\n> office +1 519 824 4120 ext. 52975\n> lab     +1 519 824 4120 ext. 53594\n> fax:     +1 519 767 1656\n>\n> email: lborger at uoguelph.ca\n> www.researcherid.com/rid/C-6003-2008\n> http://uoguelph.academia.edu/LucaBorger\n> --------------------------------------------------------------------\n>\n>\n>\n>\n>\n> ----- Original Message ----- \n> From: \"John Sorkin\" <jsorkin at grecc.umaryland.edu>\n> To: <r-sig-mixed-models at r-project.org>\n> Sent: Tuesday, September 14, 2010 9:05 PM\n> Subject: [R-sig-ME] Incorrect slope, 0.99 vs. correct slope -0.99,due\n> to\n> false convergence\n>\n>\n>> Windows XP\n>> R 2.10.0\n>>\n>> I am running a random effects model (random intercept) on a data set\n> in\n>> which each subject has a negative slope (run script below and see\n> graph).\n>> When I analyze the data using lme (see end of the script) I get a\n> positive\n>> slope (0.99 estimate for time) when the true slope should be close\n>> to -1.0. As has been noted before this is because my data are\n> somewhat\n>> pathological (the correlation of the intercept and time is -0.889). I\n>\n>> believe the incorrect slope is due to false convergence. Is there\n> some way\n>> I can specify starting values to the iterative procedure used in lme\n> so as\n>> to avoid the false convergence and obtain the correct slope?\n>> Thanks,\n>> John\n>>\n>>\n>>\n>>\n>> library(nlme)\n>>\n>> ########################\n>> # Create data          #\n>> ########################\n>> nsub <- 40\n>> data<-matrix(nrow=3*nsub,ncol=3)\n>> dimnames(data)<-list(NULL,c(\"Subject\",\"time\",\"y\"))\n>>\n>> # Define time\n>> time<-rep((1:3)/1,nsub)\n>> data[,\"time\"]<-time\n>>\n>> # Define subject\n>> Subject<-rep((1:nsub),3)\n>> data[,\"Subject\"]<-sort(Subject)\n>>\n>> # Define time value\n>> # Add a bit of noise to time values so we can use random intercept\n> and\n>> random time\n>> data[,\"time\"]<-data[,\"Subject\"]+data[,\"time\"]+rnorm(3*nsub,0,0.001)\n>>\n>> # Define y value\n>> data[,\"y\"]<-data[,\"Subject\"]+rep((3:1)/1,nsub)\n> +rnorm(3*nsub,0,0.001)\n>> data\n>>\n>> # Plot the data\n>> plot(data[,\"time\"],data[,\"y\"],xlab=\"Time\",ylab=\"y\")\n>> title(\"Each subject has a negative slope\")\n>>\n>> # Regression of y on x ignoring the fact that the data come from 10\n>> different subjects.\n>> fit0 <- lm(y~time,data=data.frame(data))\n>> summary(fit0)\n>>\n>> # Compute subject specific regressions.\n>> for (i in 1:nsub){\n>> fit0 <-  lm(y~time,\n>> data=data.frame(data[data[,\"Subject\"]==i,c(\"time\",\"y\")]))\n>> abline(fit0) # Add sub. specific regression lines to plot.\n>> coefs[i,] <- coef(fit0)\n>> }\n>>\n>>\n>>\n> ######################################################################\n>>\n> ######################################################################\n>> # This is lme give a slope (time) of 0.99. The true slope should be\n> #\n>> # approx. -1.0.\n> #\n>>\n> ######################################################################\n>> fit12c<-lme(y ~ time, random= ~ 1      | Subject,\n> data=data.frame(data))\n>> summary(fit12c)\n>>\n>>\n>> John David Sorkin M.D., Ph.D.\n>> Chief, Biostatistics and Informatics\n>> University of Maryland School of Medicine Division of Gerontology\n>> Baltimore VA Medical Center\n>> 10 North Greene Street\n>> GRECC (BT/18/GR)\n>> Baltimore, MD 21201-1524\n>> (Phone) 410-605-7119\n>> (Fax) 410-605-7913 (Please call phone number above prior to faxing)\n>>\n>> Confidentiality Statement:\n>> This email message, including any attachments, is for\n> th...{{dropped:6}}\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n> Confidentiality Statement:\n> This email message, including any attachments, is for ...{{dropped:7}}",
       "body_snippet": "Hello,\n\nI forgot the starting values question ;-)\n\n\nHow about (but please check this is actually appropriate):\n\n## no starting values\nfit12b<-lmer(y ~ time + (1| Subject),\ndata=data.frame(data),verbos",
       "thread_id": "thread-5738a47b921a",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004456.html"
     },
     {
       "id": "msg-347d790c4751",
@@ -739,7 +778,8 @@
       "body_snippet": "Dear all,\nI would like to share this reply from Dr Bolker with members of the list:\n\nI wrote: \nI cannot find a confirmation that the logic of the procedure one would use to test the significance of ra",
       "thread_id": "thread-347d790c4751",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004457.html"
     },
     {
       "id": "msg-15329fc7be4f",
@@ -755,7 +795,8 @@
       "body_snippet": "Hi, I have a dataset of animals receiving some eye treatments. There are 8 \ntreatments, each animal's right and left eye was measured with some scores \n(ranging from 0 to 7) 4 times after treatment. S",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004458.html"
     },
     {
       "id": "msg-788ab95af08d",
@@ -773,7 +814,8 @@
       "body_snippet": "Not on my computer. Perhaps you could provide sessionInfo()?\n\n> lmer(score~trt+(1|id/eye), dat)\nLinear mixed model fit by REML\nFormula: score ~ trt + (1 | id/eye)\n   Data: dat\n   AIC   BIC logLik devi",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004459.html"
     },
     {
       "id": "msg-a2c290e7aff8",
@@ -792,6 +834,7 @@
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004460.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100917/f845a89e/attachment.pl"
       ]
@@ -813,7 +856,8 @@
       "body_snippet": "Hi, Reinhold and Daniel,\n\nI just re-installed lme4 package, still got different results than yours.\n\nHere is my sessionInfo():\n\nR version 2.11.1 (2010-05-31) \ni386-pc-mingw32 \n\nlocale:\n[1] LC_COLLATE=",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004461.html"
     },
     {
       "id": "msg-483c29bfa054",
@@ -834,6 +878,7 @@
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 3,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004462.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100917/c6623ba6/attachment.pl"
       ]
@@ -855,7 +900,8 @@
       "body_snippet": "Thank you Peter. Actually 3 people from mixed model mailing list tried my code \nusing lmer(). They got the same results as what I got from lme4(). So they \ncouldn't replicate my lmer() results:\n\nRando",
       "thread_id": "thread-283c15928e84",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004464.html"
     },
     {
       "id": "msg-4a8c45eaba85",
@@ -877,7 +923,8 @@
       "body_snippet": "I get the \"PC\" results on arch linux:\n\n>  lmer(score~trt+(1|id/eye),dat)\nLinear mixed model fit by REML\nFormula: score ~ trt + (1 | id/eye)\n   Data: dat\n   AIC   BIC logLik deviance REMLdev\n 446.7 495",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 5,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004465.html"
     },
     {
       "id": "msg-ca84b7e1ea44",
@@ -898,6 +945,7 @@
       "thread_id": "thread-283c15928e84",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004466.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100917/451782cc/attachment.pl"
       ]
@@ -923,7 +971,8 @@
       "body_snippet": "I can confirm the \"PC\" results on a PC ;-)\n\n> lmer(score~trt+(1|id/eye),dat)\nLinear mixed model fit by REML\nFormula: score ~ trt + (1 | id/eye)\n   Data: dat\n   AIC   BIC logLik deviance REMLdev\n 446.7",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 6,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004467.html"
     },
     {
       "id": "msg-d2e304359cf8",
@@ -940,6 +989,7 @@
       "thread_id": "thread-d2e304359cf8",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004472.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100917/4b0fd91b/attachment.pl"
       ]
@@ -961,6 +1011,7 @@
       "thread_id": "thread-d2e304359cf8",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004473.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100917/25909099/attachment.pl"
       ]
@@ -983,7 +1034,8 @@
       "body_snippet": "On 09/17/2010 10:50 PM, array chip wrote:\n> \n> \n> Thank you Peter. Actually 3 people from mixed model mailing list tried my code \n> using lmer(). They got the same results as what I got from lme4(). S",
       "thread_id": "thread-283c15928e84",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004468.html"
     },
     {
       "id": "msg-c8e3109f14d9",
@@ -1005,7 +1057,8 @@
       "body_snippet": "Fedora Core 13 seems fine:\n\nLinear mixed model fit by REML\nFormula: score ~ trt + (1 | id/eye)\n    Data: dat\n    AIC   BIC logLik deviance REMLdev\n  425.2 474.2 -201.6    412.7   403.2\nRandom effects:",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 5,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004469.html"
     },
     {
       "id": "msg-b5d4ef6951d5",
@@ -1028,7 +1081,8 @@
       "body_snippet": "On 09/18/2010 11:24 AM, Jarrod Hadfield wrote:\n> Fedora Core 13 seems fine:\n> \n> Linear mixed model fit by REML\n> Formula: score ~ trt + (1 | id/eye)\n>     Data: dat\n>     AIC   BIC logLik deviance RE",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 6,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004470.html"
     },
     {
       "id": "msg-a28714471d8f",
@@ -1052,7 +1106,8 @@
       "body_snippet": "Both converge to the same answer on Fedora and Mac (Mac sessionInfo() below)\n\nlmer(score~trt+(1|id/eye),dat, verbose=T, start=list(matrix(10),matrix(10)))\n  0:     429.50725:  10.0000  10.0000\n   1:  ",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 7,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004471.html"
     },
     {
       "id": "msg-ea4bd80a22bd",
@@ -1073,7 +1128,8 @@
       "body_snippet": "So far the results split on platform lines: John's is pc, Daniel's and\nReinhold's are Mac.\n\nI get the Mac result on FreeBSD.\n\n> lmer(score~trt+(1|id/eye),dat)\nLinear mixed model fit by REML \nFormula: ",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 4,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004463.html"
     },
     {
       "id": "msg-217abd911ea2",
@@ -1097,7 +1153,8 @@
       "body_snippet": "> Diddling the start values can change the result, though. Could you all try\n>\n> (a) setting verbose=T\n> (b) try start=list(matrix(10),matrix(10))\n> (c) same thing, but with .81 and .57\n\n\n\n# In case t",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 7,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004474.html"
     },
     {
       "id": "msg-fe9d157fc8c9",
@@ -1113,7 +1170,8 @@
       "body_snippet": "Hi all, I've spent some time evaluating MCMCglmm as a faster\nalternative to WinBUGS and lmer (+/- mcmcsamp) for my modeling, and I\nwonder if anyone (esp. Dr. Hadfield) could comment on using this\npack",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004475.html"
     },
     {
       "id": "msg-a864b394eec0",
@@ -1131,7 +1189,8 @@
       "body_snippet": "On Sun, 19 Sep 2010, Bob Farmer wrote:\n\n>  nitt = 50E3\n>\n> (with extra iterations for insurance), the results are far more\n> variable, and generally not consistent with glmer()'s output.\n\nYou need to ",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004476.html"
     },
     {
       "id": "msg-ea98cf0e7673",
@@ -1156,7 +1215,8 @@
       "body_snippet": "On 09/18/2010 12:09 PM, Jarrod Hadfield wrote:\n> Both converge to the same answer on Fedora and Mac (Mac sessionInfo() below)\n[snip]\n> lmer(score~trt+(1|id/eye),dat, verbose=T, start=list(matrix(.81),",
       "thread_id": "thread-15329fc7be4f",
       "thread_depth": 8,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004477.html"
     },
     {
       "id": "msg-c3e74235c976",
@@ -1175,7 +1235,8 @@
       "body_snippet": "Thanks for the reply.  Unfortunately, I'm not sure that that's the\nwhole story.  Upping the iterations to achieve an effective sample\nsize of 1000 (output pasted below) still leads to some differences",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004478.html"
     },
     {
       "id": "msg-e44c8960a424",
@@ -1195,7 +1256,8 @@
       "body_snippet": "Bob,\n\nDo you mind posting the winbugs code for your model?  I am curious to\nsee how pymc performs.  Additionally, I have a pure c++ MCMC package.\nWhich I would like to try too.\n\nA link to some sample ",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004479.html"
     },
     {
       "id": "msg-dbd87bd396ac",
@@ -1215,7 +1277,8 @@
       "body_snippet": "Dear Bob,\n\nNotice that MCMCglmm always estimates 'units' to take overdispersion\ninto account. So the glmer model and the MCMCglmm model are not the\nsame.\n\nFurthermore, you did not specify the priors. ",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004480.html"
     },
     {
       "id": "msg-e7cc6b9e4a1d",
@@ -1236,7 +1299,8 @@
       "body_snippet": "Dear Bob,\n\nAs Thierry points out the main difference is that MCMCglmm  \nautomatically fits a \"residual\" variance and in this case (in most  \ncases!) the data are over-dispersed. I am sure glmer gives ",
       "thread_id": "thread-fe9d157fc8c9",
       "thread_depth": 4,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004481.html"
     },
     {
       "id": "msg-3336290e7265",
@@ -1257,7 +1321,8 @@
       "body_snippet": "Thank you Peter for your explanation of relationship between aov and lme. It \nmakes perfect sense. \n\n\nWhen you said \"you might have computed the average of all 8\nmeasurements on each animal and comput",
       "thread_id": "thread-283c15928e84",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004482.html"
     },
     {
       "id": "msg-4426d9c30768",
@@ -1280,6 +1345,7 @@
       "thread_id": "thread-283c15928e84",
       "thread_depth": 3,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004483.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100920/c6968a95/attachment.pl"
       ]
@@ -1304,7 +1370,8 @@
       "body_snippet": "On 09/20/2010 08:09 PM, array chip wrote:\n> Thank you Peter for your explanation of relationship between aov and lme. It \n> makes perfect sense. \n> \n> \n> When you said \"you might have computed the ave",
       "thread_id": "thread-283c15928e84",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004484.html"
     },
     {
       "id": "msg-5cce97827a55",
@@ -1327,7 +1394,8 @@
       "body_snippet": "seems I replied to Dr. Hadfield without adding the mailing list!\nSorry about that.  See below.\n-------------------\n\nThank you very much, Drs. Hadfield and Onkelinx, for your comments.\nI've refit the g",
       "thread_id": "thread-5cce97827a55",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004485.html"
     },
     {
       "id": "msg-fbd2f7e43a1d",
@@ -1351,7 +1419,8 @@
       "body_snippet": "Hi Bob,\n\nQuoting Bob Farmer <farmerb at gmail.com>:\n\n> seems I replied to Dr. Hadfield without adding the mailing list!\n> Sorry about that.  See below.\n> -------------------\n>\n> Thank you very much, D",
       "thread_id": "thread-5cce97827a55",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004486.html"
     },
     {
       "id": "msg-e92ca61d5136",
@@ -1376,7 +1445,8 @@
       "body_snippet": "Thanks for the further detail.  I wasn't familiar with these two\nmethods of overdispersion; I think I only understood them in the\nWinBUGS sense, which, I believe, is additive (e.g. overdisp[i] as a\npa",
       "thread_id": "thread-5cce97827a55",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004487.html"
     },
     {
       "id": "msg-f5fbecae1eb2",
@@ -1392,7 +1462,8 @@
       "body_snippet": "Dear List and Ben,\n\nI am having some trouble replicating the method used by Ben for getting predicted values from glmer. \n\nI had heard that as long as the model is selected taking into account the ran",
       "thread_id": "thread-f5fbecae1eb2",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004488.html"
     },
     {
       "id": "msg-87366f5270ea",
@@ -1411,6 +1482,7 @@
       "thread_id": "thread-f5fbecae1eb2",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004489.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100921/595d73ab/attachment.pl"
       ]
@@ -1433,6 +1505,7 @@
       "thread_id": "thread-f5fbecae1eb2",
       "thread_depth": 2,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004490.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100921/f06c8d81/attachment.pl"
       ]
@@ -1461,7 +1534,8 @@
       "body_snippet": "Bob,\n\nJust wanted to post the results from my project.  It is still very\nmuch alpha quality software, but the speed is good.  Your sample model\nruns in 22secs on my workstation.  I ran the model in JA",
       "thread_id": "thread-5cce97827a55",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004491.html"
     },
     {
       "id": "msg-6d50e7e5ae57",
@@ -1488,7 +1562,8 @@
       "body_snippet": "so much for intuition.  consolidating the b's doesn't make any\nmaterial speed difference, but it does simplify the model code a bit.\n\nbtw, this run and the previous post were using 1e6 interations, 1e",
       "thread_id": "thread-5cce97827a55",
       "thread_depth": 4,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004492.html"
     },
     {
       "id": "msg-228a25f4c20b",
@@ -1505,6 +1580,7 @@
       "thread_id": "thread-228a25f4c20b",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004493.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100924/132e6315/attachment.pl"
       ]
@@ -1519,11 +1595,12 @@
       "subject_clean": "Dealing with heteroscedasticity in repeated measure models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear list members,\n\nI am fitting a repeated measure model using lme.\nI have 4 measurements of a rate (variable called ipa) measured each year \n(variable called tempo, which was centered) on 48 counties (all the \ncounties from a province, variable called localidad).\nI am considering county like a random factor.\nMy models are:\n\nmodel1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random \nintercept\n\nmodel2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) # \nrandom intercept and slope\n\nmodel3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa, \ncorrelation=corAR1(form=~ tempo))\n\nI have heteroscedasticity.\nIs my last model dealing with heteroscedasticity?\nThank you very much in advance.\nBest,\n\nManuel\n\n-- \nManuel Sp?nola, Ph.D.\nInstituto Internacional en Conservaci?n y Manejo de Vida Silvestre\nUniversidad Nacional\nApartado 1350-3000\nHeredia\nCOSTA RICA\nmspinola at una.ac.cr\nmspinola10 at gmail.com\nTel?fono: (506) 2277-3598\nFax: (506) 2237-7036",
+      "body_plain": "Dear list members,\n\nI am fitting a repeated measure model using lme.\nI have 4 measurements of a rate (variable called ipa) measured each year \n(variable called tempo, which was centered) on 48 counties (all the \ncounties from a province, variable called localidad).\nI am considering county like a random factor.\nMy models are:\n\nmodel1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random \nintercept\n\nmodel2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) # \nrandom intercept and slope\n\nmodel3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa, \ncorrelation=corAR1(form=~ tempo))\n\nI have heteroscedasticity.\nIs my last model dealing with heteroscedasticity?\nThank you very much in advance.\nBest,\n\nManuel\n\n-- \nManuel Spínola, Ph.D.\nInstituto Internacional en Conservación y Manejo de Vida Silvestre\nUniversidad Nacional\nApartado 1350-3000\nHeredia\nCOSTA RICA\nmspinola at una.ac.cr\nmspinola10 at gmail.com\nTeléfono: (506) 2277-3598\nFax: (506) 2237-7036",
       "body_snippet": "Dear list members,\n\nI am fitting a repeated measure model using lme.\nI have 4 measurements of a rate (variable called ipa) measured each year \n(variable called tempo, which was centered) on 48 countie",
       "thread_id": "thread-1f7f7477f62d",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004494.html"
     },
     {
       "id": "msg-60310064390e",
@@ -1542,6 +1619,7 @@
       "thread_id": "thread-1f7f7477f62d",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004495.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100926/6fa018fe/attachment.pl"
       ]
@@ -1558,11 +1636,12 @@
       "references": [
         "<4C9F2D75.6070601@gmail.com>"
       ],
-      "body_plain": "Hi Manuel,\n\nFirst of all a quick correction to your basic model specifications.\n\nFirst model is correct:\nmodel1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random intercept\n\nSecond model is wrong\nmodel2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\nrandom intercept and slope\n\nshould be\nmodel2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\nrandom intercept and slope\n\nYour 3rd model fits an autoregressive model for temporally correlated\ndata. Whether this deals with heteroscedasticity depends on the type\nof heteroscedasticity .\n\nmodel3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\ncorrelation=corAR1(form=~ tempo))\n\n\n\nandydolman at gmail.com\n\n\n\nOn 26 September 2010 13:24, Manuel Sp?nola <mspinola10 at gmail.com> wrote:\n> ?Dear list members,\n>\n> I am fitting a repeated measure model using lme.\n> I have 4 measurements of a rate (variable called ipa) measured each year\n> (variable called tempo, which was centered) on 48 counties (all the counties\n> from a province, variable called localidad).\n> I am considering county like a random factor.\n> My models are:\n>\n> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n> intercept\n>\n> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) # random\n> intercept and slope\n>\n> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n> correlation=corAR1(form=~ tempo))\n>\n> I have heteroscedasticity.\n> Is my last model dealing with heteroscedasticity?\n> Thank you very much in advance.\n> Best,\n>\n> Manuel\n>\n> --\n> Manuel Sp?nola, Ph.D.\n> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Tel?fono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "Hi Manuel,\n\nFirst of all a quick correction to your basic model specifications.\n\nFirst model is correct:\nmodel1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random intercept\n\nSecond model is wrong\nmodel2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\nrandom intercept and slope\n\nshould be\nmodel2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\nrandom intercept and slope\n\nYour 3rd model fits an autoregressive model for temporally correlated\ndata. Whether this deals with heteroscedasticity depends on the type\nof heteroscedasticity .\n\nmodel3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\ncorrelation=corAR1(form=~ tempo))\n\n\n\nandydolman at gmail.com\n\n\n\nOn 26 September 2010 13:24, Manuel Spínola <mspinola10 at gmail.com> wrote:\n>  Dear list members,\n>\n> I am fitting a repeated measure model using lme.\n> I have 4 measurements of a rate (variable called ipa) measured each year\n> (variable called tempo, which was centered) on 48 counties (all the counties\n> from a province, variable called localidad).\n> I am considering county like a random factor.\n> My models are:\n>\n> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n> intercept\n>\n> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) # random\n> intercept and slope\n>\n> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n> correlation=corAR1(form=~ tempo))\n>\n> I have heteroscedasticity.\n> Is my last model dealing with heteroscedasticity?\n> Thank you very much in advance.\n> Best,\n>\n> Manuel\n>\n> --\n> Manuel Spínola, Ph.D.\n> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Teléfono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "Hi Manuel,\n\nFirst of all a quick correction to your basic model specifications.\n\nFirst model is correct:\nmodel1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random intercept\n\nSecond model i",
       "thread_id": "thread-1f7f7477f62d",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004496.html"
     },
     {
       "id": "msg-756bb25ca2eb",
@@ -1578,11 +1657,12 @@
         "<AANLkTin8zge-rzBRA_A=5PHHYqVgCf1=3uKO_5XeToGq@mail.gmail.com>",
         "<4C9F3AD5.2070009@gmail.com>"
       ],
-      "body_plain": "> I found an increase of variance when increasing time, is that a\n> heteroscedasticity problem?\n\nYes, but it could be due to several things. For example, does your\ndependent variable, ipa, increase with time? For many measurements the\nvariance increases with the mean so if the mean increases with time so\nwill the variance. To deal with this you would need to look at using\neither a transformation, e.g. log, or using a generalized linear model\nwith an appropriate error distributions, e.g. poisson. It could also\nbe that you have divergent time series due to autocorrelation, in\nwhich case your third model might be appropriate.\n\nI'm having to guess because you haven't given enough information about\nthe data you are modeling. Ideally this would include a sample of the\ndata or dummy data that reproduces the problem.\n\n\n> I fitted the model in the way you suggested me but I got an error (lack of\n> convergence). ?Is there any way to get around this problem?\n\nThis is fairly likely because you only have 4 data points per\nlocalidad. You may have more luck using lmer from the lme4 package.\n\n\nAndy.\n\n\n\n>> modelo2 = lme(ipa ~ tempo, random = ~ tempo | localidad, data=ipa) #\n>> intercepto y pendiente diferentes para cada localidad\n> Error en lme.formula(ipa ~ tempo, random = ~tempo | localidad, data = ipa) :\n> ?nlminb problem, convergence error code = 1\n> ?message = iteration limit reached without convergence (9)\n>\n>\n>\n> On 26/09/2010 05:58 a.m., Andrew Dolman wrote:\n>>\n>> Hi Manuel,\n>>\n>> First of all a quick correction to your basic model specifications.\n>>\n>> First model is correct:\n>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>> intercept\n>>\n>> Second model is wrong\n>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>> random intercept and slope\n>>\n>> should be\n>> model2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\n>> random intercept and slope\n>>\n>> Your 3rd model fits an autoregressive model for temporally correlated\n>> data. Whether this deals with heteroscedasticity depends on the type\n>> of heteroscedasticity .\n>>\n>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>> correlation=corAR1(form=~ tempo))\n>>\n>>\n>>\n>> andydolman at gmail.com\n>>\n>>\n>>\n>> On 26 September 2010 13:24, Manuel Sp?nola<mspinola10 at gmail.com> ?wrote:\n>>>\n>>> ?Dear list members,\n>>>\n>>> I am fitting a repeated measure model using lme.\n>>> I have 4 measurements of a rate (variable called ipa) measured each year\n>>> (variable called tempo, which was centered) on 48 counties (all the\n>>> counties\n>>> from a province, variable called localidad).\n>>> I am considering county like a random factor.\n>>> My models are:\n>>>\n>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>> intercept\n>>>\n>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>> random\n>>> intercept and slope\n>>>\n>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>> correlation=corAR1(form=~ tempo))\n>>>\n>>> I have heteroscedasticity.\n>>> Is my last model dealing with heteroscedasticity?\n>>> Thank you very much in advance.\n>>> Best,\n>>>\n>>> Manuel\n>>>\n>>> --\n>>> Manuel Sp?nola, Ph.D.\n>>> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n>>> Universidad Nacional\n>>> Apartado 1350-3000\n>>> Heredia\n>>> COSTA RICA\n>>> mspinola at una.ac.cr\n>>> mspinola10 at gmail.com\n>>> Tel?fono: (506) 2277-3598\n>>> Fax: (506) 2237-7036\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>\n>\n> --\n> Manuel Sp?nola, Ph.D.\n> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Tel?fono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n>",
+      "body_plain": "> I found an increase of variance when increasing time, is that a\n> heteroscedasticity problem?\n\nYes, but it could be due to several things. For example, does your\ndependent variable, ipa, increase with time? For many measurements the\nvariance increases with the mean so if the mean increases with time so\nwill the variance. To deal with this you would need to look at using\neither a transformation, e.g. log, or using a generalized linear model\nwith an appropriate error distributions, e.g. poisson. It could also\nbe that you have divergent time series due to autocorrelation, in\nwhich case your third model might be appropriate.\n\nI'm having to guess because you haven't given enough information about\nthe data you are modeling. Ideally this would include a sample of the\ndata or dummy data that reproduces the problem.\n\n\n> I fitted the model in the way you suggested me but I got an error (lack of\n> convergence).  Is there any way to get around this problem?\n\nThis is fairly likely because you only have 4 data points per\nlocalidad. You may have more luck using lmer from the lme4 package.\n\n\nAndy.\n\n\n\n>> modelo2 = lme(ipa ~ tempo, random = ~ tempo | localidad, data=ipa) #\n>> intercepto y pendiente diferentes para cada localidad\n> Error en lme.formula(ipa ~ tempo, random = ~tempo | localidad, data = ipa) :\n>  nlminb problem, convergence error code = 1\n>  message = iteration limit reached without convergence (9)\n>\n>\n>\n> On 26/09/2010 05:58 a.m., Andrew Dolman wrote:\n>>\n>> Hi Manuel,\n>>\n>> First of all a quick correction to your basic model specifications.\n>>\n>> First model is correct:\n>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>> intercept\n>>\n>> Second model is wrong\n>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>> random intercept and slope\n>>\n>> should be\n>> model2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\n>> random intercept and slope\n>>\n>> Your 3rd model fits an autoregressive model for temporally correlated\n>> data. Whether this deals with heteroscedasticity depends on the type\n>> of heteroscedasticity .\n>>\n>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>> correlation=corAR1(form=~ tempo))\n>>\n>>\n>>\n>> andydolman at gmail.com\n>>\n>>\n>>\n>> On 26 September 2010 13:24, Manuel Spínola<mspinola10 at gmail.com>  wrote:\n>>>\n>>>  Dear list members,\n>>>\n>>> I am fitting a repeated measure model using lme.\n>>> I have 4 measurements of a rate (variable called ipa) measured each year\n>>> (variable called tempo, which was centered) on 48 counties (all the\n>>> counties\n>>> from a province, variable called localidad).\n>>> I am considering county like a random factor.\n>>> My models are:\n>>>\n>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>> intercept\n>>>\n>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>> random\n>>> intercept and slope\n>>>\n>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>> correlation=corAR1(form=~ tempo))\n>>>\n>>> I have heteroscedasticity.\n>>> Is my last model dealing with heteroscedasticity?\n>>> Thank you very much in advance.\n>>> Best,\n>>>\n>>> Manuel\n>>>\n>>> --\n>>> Manuel Spínola, Ph.D.\n>>> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n>>> Universidad Nacional\n>>> Apartado 1350-3000\n>>> Heredia\n>>> COSTA RICA\n>>> mspinola at una.ac.cr\n>>> mspinola10 at gmail.com\n>>> Teléfono: (506) 2277-3598\n>>> Fax: (506) 2237-7036\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>\n>\n> --\n> Manuel Spínola, Ph.D.\n> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Teléfono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n>",
       "body_snippet": "> I found an increase of variance when increasing time, is that a\n> heteroscedasticity problem?\n\nYes, but it could be due to several things. For example, does your\ndependent variable, ipa, increase wi",
       "thread_id": "thread-756bb25ca2eb",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004497.html"
     },
     {
       "id": "msg-68abdc947605",
@@ -1600,11 +1680,12 @@
         "<AANLkTi=BfxZyE6uR3nz7h=5Ai8phRDdR3TXzCZdAwj8L@mail.gmail.com>",
         "<4C9F469B.6090403@gmail.com>"
       ],
-      "body_plain": "Hi Manuel,\n\nYour first problem to overcome is that your response data are not from\na normal (gaussian) distribution. Far from it.\n\nSee this:\n\nipaDat <- read.table(\"ipaloc.txt\", header=T, sep=\"\\t\")\n\nlibrary(lattice)\nhistogram(~ipa|tiempo, data=ipaDat)\n\nUsing an appropriate transformation or error distribution will likely\nsolve the heteroscedasticity too.\n\n\nThe quick and dirty method would be to do a log transformation of your\nresponse variable. You have some zero values so you would have to\neither exclude some data or apply a kludge like adding 1 to all values\n(or perhaps 1/2 the minimum non-zero value).\n\n\nHow is ipa calculated? You say it is an incidence. Did you start with\na raw count?\n\n\nIt's better if you reply to the list rather than entering private\nemail chats with respondents.\n\n\nandydolman at gmail.com\n\n\n\n\n\n\n\n2010/9/26 Manuel Sp?nola <mspinola10 at gmail.com>:\n> ?Thank you very much Andy.\n>\n> I am attaching the data. ?\"tempo\" in my model is \"tiempo\" centered.\n>\n> I am trying to see is ipa shows a declining trend for the 4 years period.\n> ?Ipa refer to incidence of malaria in these counties (localidades).\n> May be I need to see the difference in IPA between year 1 and 4 and model\n> that?\n> IPA usually decrease in time, for several counties.\n> I tried lmer, but I found that lmer do not have the capability to deal with\n> covariance structures and that lme has much more options, for example the\n> function \"intervals\" to get the CI.\n>\n> If I use a poisson, should I get the count and an offset variable (the way\n> that the incidence rate was calculated), right?\n>\n> Best,\n>\n> Manuel\n>\n>\n> On 26/09/2010 06:51 a.m., Andrew Dolman wrote:\n>>>\n>>> I found an increase of variance when increasing time, is that a\n>>> heteroscedasticity problem?\n>>\n>> Yes, but it could be due to several things. For example, does your\n>> dependent variable, ipa, increase with time? For many measurements the\n>> variance increases with the mean so if the mean increases with time so\n>> will the variance. To deal with this you would need to look at using\n>> either a transformation, e.g. log, or using a generalized linear model\n>> with an appropriate error distributions, e.g. poisson. It could also\n>> be that you have divergent time series due to autocorrelation, in\n>> which case your third model might be appropriate.\n>>\n>> I'm having to guess because you haven't given enough information about\n>> the data you are modeling. Ideally this would include a sample of the\n>> data or dummy data that reproduces the problem.\n>>\n>>\n>>> I fitted the model in the way you suggested me but I got an error (lack\n>>> of\n>>> convergence). ?Is there any way to get around this problem?\n>>\n>> This is fairly likely because you only have 4 data points per\n>> localidad. You may have more luck using lmer from the lme4 package.\n>>\n>>\n>> Andy.\n>>\n>>\n>>\n>>>> modelo2 = lme(ipa ~ tempo, random = ~ tempo | localidad, data=ipa) #\n>>>> intercepto y pendiente diferentes para cada localidad\n>>>\n>>> Error en lme.formula(ipa ~ tempo, random = ~tempo | localidad, data =\n>>> ipa) :\n>>> ?nlminb problem, convergence error code = 1\n>>> ?message = iteration limit reached without convergence (9)\n>>>\n>>>\n>>>\n>>> On 26/09/2010 05:58 a.m., Andrew Dolman wrote:\n>>>>\n>>>> Hi Manuel,\n>>>>\n>>>> First of all a quick correction to your basic model specifications.\n>>>>\n>>>> First model is correct:\n>>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>>> intercept\n>>>>\n>>>> Second model is wrong\n>>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>>> random intercept and slope\n>>>>\n>>>> should be\n>>>> model2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\n>>>> random intercept and slope\n>>>>\n>>>> Your 3rd model fits an autoregressive model for temporally correlated\n>>>> data. Whether this deals with heteroscedasticity depends on the type\n>>>> of heteroscedasticity .\n>>>>\n>>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>>> correlation=corAR1(form=~ tempo))\n>>>>\n>>>>\n>>>>\n>>>> andydolman at gmail.com\n>>>>\n>>>>\n>>>>\n>>>> On 26 September 2010 13:24, Manuel Sp?nola<mspinola10 at gmail.com>\n>>>> ?wrote:\n>>>>>\n>>>>> ?Dear list members,\n>>>>>\n>>>>> I am fitting a repeated measure model using lme.\n>>>>> I have 4 measurements of a rate (variable called ipa) measured each\n>>>>> year\n>>>>> (variable called tempo, which was centered) on 48 counties (all the\n>>>>> counties\n>>>>> from a province, variable called localidad).\n>>>>> I am considering county like a random factor.\n>>>>> My models are:\n>>>>>\n>>>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>>>> intercept\n>>>>>\n>>>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>>>> random\n>>>>> intercept and slope\n>>>>>\n>>>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>>>> correlation=corAR1(form=~ tempo))\n>>>>>\n>>>>> I have heteroscedasticity.\n>>>>> Is my last model dealing with heteroscedasticity?\n>>>>> Thank you very much in advance.\n>>>>> Best,\n>>>>>\n>>>>> Manuel\n>>>>>\n>>>>> --\n>>>>> Manuel Sp?nola, Ph.D.\n>>>>> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n>>>>> Universidad Nacional\n>>>>> Apartado 1350-3000\n>>>>> Heredia\n>>>>> COSTA RICA\n>>>>> mspinola at una.ac.cr\n>>>>> mspinola10 at gmail.com\n>>>>> Tel?fono: (506) 2277-3598\n>>>>> Fax: (506) 2237-7036\n>>>>>\n>>>>> _______________________________________________\n>>>>> R-sig-mixed-models at r-project.org mailing list\n>>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>>>\n>>>\n>>> --\n>>> Manuel Sp?nola, Ph.D.\n>>> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n>>> Universidad Nacional\n>>> Apartado 1350-3000\n>>> Heredia\n>>> COSTA RICA\n>>> mspinola at una.ac.cr\n>>> mspinola10 at gmail.com\n>>> Tel?fono: (506) 2277-3598\n>>> Fax: (506) 2237-7036\n>>>\n>>>\n>\n>\n> --\n> Manuel Sp?nola, Ph.D.\n> Instituto Internacional en Conservaci?n y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Tel?fono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n>\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: ipaloc.txt\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100926/380ec7cc/attachment.txt>",
+      "body_plain": "Hi Manuel,\n\nYour first problem to overcome is that your response data are not from\na normal (gaussian) distribution. Far from it.\n\nSee this:\n\nipaDat <- read.table(\"ipaloc.txt\", header=T, sep=\"\\t\")\n\nlibrary(lattice)\nhistogram(~ipa|tiempo, data=ipaDat)\n\nUsing an appropriate transformation or error distribution will likely\nsolve the heteroscedasticity too.\n\n\nThe quick and dirty method would be to do a log transformation of your\nresponse variable. You have some zero values so you would have to\neither exclude some data or apply a kludge like adding 1 to all values\n(or perhaps 1/2 the minimum non-zero value).\n\n\nHow is ipa calculated? You say it is an incidence. Did you start with\na raw count?\n\n\nIt's better if you reply to the list rather than entering private\nemail chats with respondents.\n\n\nandydolman at gmail.com\n\n\n\n\n\n\n\n2010/9/26 Manuel Spínola <mspinola10 at gmail.com>:\n>  Thank you very much Andy.\n>\n> I am attaching the data.  \"tempo\" in my model is \"tiempo\" centered.\n>\n> I am trying to see is ipa shows a declining trend for the 4 years period.\n>  Ipa refer to incidence of malaria in these counties (localidades).\n> May be I need to see the difference in IPA between year 1 and 4 and model\n> that?\n> IPA usually decrease in time, for several counties.\n> I tried lmer, but I found that lmer do not have the capability to deal with\n> covariance structures and that lme has much more options, for example the\n> function \"intervals\" to get the CI.\n>\n> If I use a poisson, should I get the count and an offset variable (the way\n> that the incidence rate was calculated), right?\n>\n> Best,\n>\n> Manuel\n>\n>\n> On 26/09/2010 06:51 a.m., Andrew Dolman wrote:\n>>>\n>>> I found an increase of variance when increasing time, is that a\n>>> heteroscedasticity problem?\n>>\n>> Yes, but it could be due to several things. For example, does your\n>> dependent variable, ipa, increase with time? For many measurements the\n>> variance increases with the mean so if the mean increases with time so\n>> will the variance. To deal with this you would need to look at using\n>> either a transformation, e.g. log, or using a generalized linear model\n>> with an appropriate error distributions, e.g. poisson. It could also\n>> be that you have divergent time series due to autocorrelation, in\n>> which case your third model might be appropriate.\n>>\n>> I'm having to guess because you haven't given enough information about\n>> the data you are modeling. Ideally this would include a sample of the\n>> data or dummy data that reproduces the problem.\n>>\n>>\n>>> I fitted the model in the way you suggested me but I got an error (lack\n>>> of\n>>> convergence).  Is there any way to get around this problem?\n>>\n>> This is fairly likely because you only have 4 data points per\n>> localidad. You may have more luck using lmer from the lme4 package.\n>>\n>>\n>> Andy.\n>>\n>>\n>>\n>>>> modelo2 = lme(ipa ~ tempo, random = ~ tempo | localidad, data=ipa) #\n>>>> intercepto y pendiente diferentes para cada localidad\n>>>\n>>> Error en lme.formula(ipa ~ tempo, random = ~tempo | localidad, data =\n>>> ipa) :\n>>>  nlminb problem, convergence error code = 1\n>>>  message = iteration limit reached without convergence (9)\n>>>\n>>>\n>>>\n>>> On 26/09/2010 05:58 a.m., Andrew Dolman wrote:\n>>>>\n>>>> Hi Manuel,\n>>>>\n>>>> First of all a quick correction to your basic model specifications.\n>>>>\n>>>> First model is correct:\n>>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>>> intercept\n>>>>\n>>>> Second model is wrong\n>>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>>> random intercept and slope\n>>>>\n>>>> should be\n>>>> model2 = lme(ipa ~ tempo, random = ~tempo|localidad, data=ipa) #\n>>>> random intercept and slope\n>>>>\n>>>> Your 3rd model fits an autoregressive model for temporally correlated\n>>>> data. Whether this deals with heteroscedasticity depends on the type\n>>>> of heteroscedasticity .\n>>>>\n>>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>>> correlation=corAR1(form=~ tempo))\n>>>>\n>>>>\n>>>>\n>>>> andydolman at gmail.com\n>>>>\n>>>>\n>>>>\n>>>> On 26 September 2010 13:24, Manuel Spínola<mspinola10 at gmail.com>\n>>>>  wrote:\n>>>>>\n>>>>>  Dear list members,\n>>>>>\n>>>>> I am fitting a repeated measure model using lme.\n>>>>> I have 4 measurements of a rate (variable called ipa) measured each\n>>>>> year\n>>>>> (variable called tempo, which was centered) on 48 counties (all the\n>>>>> counties\n>>>>> from a province, variable called localidad).\n>>>>> I am considering county like a random factor.\n>>>>> My models are:\n>>>>>\n>>>>> model1 = lme(ipa ~ tempo, data=ipa, random = ~1 | localidad) # random\n>>>>> intercept\n>>>>>\n>>>>> model2 = lme(ipa ~ tempo, random = ~1 | tempo/localidad, data=ipa) #\n>>>>> random\n>>>>> intercept and slope\n>>>>>\n>>>>> model3 = lme(ipa ~ tempo, random = ~1 | localidad, data=ipa,\n>>>>> correlation=corAR1(form=~ tempo))\n>>>>>\n>>>>> I have heteroscedasticity.\n>>>>> Is my last model dealing with heteroscedasticity?\n>>>>> Thank you very much in advance.\n>>>>> Best,\n>>>>>\n>>>>> Manuel\n>>>>>\n>>>>> --\n>>>>> Manuel Spínola, Ph.D.\n>>>>> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n>>>>> Universidad Nacional\n>>>>> Apartado 1350-3000\n>>>>> Heredia\n>>>>> COSTA RICA\n>>>>> mspinola at una.ac.cr\n>>>>> mspinola10 at gmail.com\n>>>>> Teléfono: (506) 2277-3598\n>>>>> Fax: (506) 2237-7036\n>>>>>\n>>>>> _______________________________________________\n>>>>> R-sig-mixed-models at r-project.org mailing list\n>>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>>>\n>>>\n>>> --\n>>> Manuel Spínola, Ph.D.\n>>> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n>>> Universidad Nacional\n>>> Apartado 1350-3000\n>>> Heredia\n>>> COSTA RICA\n>>> mspinola at una.ac.cr\n>>> mspinola10 at gmail.com\n>>> Teléfono: (506) 2277-3598\n>>> Fax: (506) 2237-7036\n>>>\n>>>\n>\n>\n> --\n> Manuel Spínola, Ph.D.\n> Instituto Internacional en Conservación y Manejo de Vida Silvestre\n> Universidad Nacional\n> Apartado 1350-3000\n> Heredia\n> COSTA RICA\n> mspinola at una.ac.cr\n> mspinola10 at gmail.com\n> Teléfono: (506) 2277-3598\n> Fax: (506) 2237-7036\n>\n>\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: ipaloc.txt\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100926/380ec7cc/attachment.txt>",
       "body_snippet": "Hi Manuel,\n\nYour first problem to overcome is that your response data are not from\na normal (gaussian) distribution. Far from it.\n\nSee this:\n\nipaDat <- read.table(\"ipaloc.txt\", header=T, sep=\"\\t\")\n\nli",
       "thread_id": "thread-68abdc947605",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004498.html"
     },
     {
       "id": "msg-00d0336d71ee",
@@ -1622,7 +1703,8 @@
       "body_snippet": "Dear all,\n\nIn macro-social science, it's become fairly conventional to analyse repeated cross-sectional survey data using three-level models. Individual survey espondents (level-1) are nested in state",
       "thread_id": "thread-00d0336d71ee",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004499.html"
     },
     {
       "id": "msg-ea1e86a8c5af",
@@ -1641,7 +1723,8 @@
       "body_snippet": "Dear Malcolm,\n\nYour design requires IMHO crossed random effects instead of nested\nrandom effects. Individual is clearly crossed with year. Each individual\ncan be surveyed in more that one year and vic",
       "thread_id": "thread-00d0336d71ee",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004500.html"
     },
     {
       "id": "msg-06567e973055",
@@ -1657,7 +1740,8 @@
       "body_snippet": "Hello everyone,\n\nRecently i tried to predict the discrimination probability of a chemosignal\nby its concentration and an experimental manipulation factor (term:\nconcentration*x + test*b + concentratio",
       "thread_id": "thread-06567e973055",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004501.html"
     },
     {
       "id": "msg-985055d45378",
@@ -1672,11 +1756,12 @@
         "<C8C669BD.24A1%miller@biopsych.tu-dresden.de>",
         "<C8C66EA3.24A6%miller@biopsych.tu-dresden.de>"
       ],
-      "body_plain": "Robert Miller <miller at ...> writes:\n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation factor (term:\n> concentration*x + test*b + concentration*test*c + d) with nested factor\n> \"manipulation\" within \"participants\". For statistical analysis i needed to\n> incorporate a fixed guessing probability into my model (similiar to a 3-PL\n> IRT model) resulting in the following equation:\n> P(correct) = 0.33 + 0.67*(exp(term)/(1 + exp(term)))\n> As i found no way to do so via the glmer()-function of the lme4-package, i\n> tried to use nlmer() but unfortunately even the simplest analysis with just\n> the concentration factor and intercept resulted in cryptic error messages.\n> Syntax:\n> library(lme4)\n> rawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\n> \n> mod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n> binomial, data=rawdata) #works fine but is inappropriate\n> Thank you\n> Robert Miller\n\nMy understanding is that you cannot do this with glmer\nout of the box, as the link functions are built in at the\nlevel of the C code.  You would have to modify that\nand reinstall it.\n\nAn alternative that you might consider, is to use \nthe glmmPQL function from the MASS package and\nthe mafc.logit link from my package psyphy.\n\nI think that your model would be something like this\n(untried):\n\nlibrary(MASS)\nlibrary(psyphy)\n\nglmmPQL(Correct ~ log(Concentrat) * Test, \n    family = binomial(mafc.logit(3)), \n    data = rawdata, random = list(Code = ~ Test))\n\nbut someone can (will hopefully) correct me if I've\ngotten it wrong.\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Robert Miller <miller at ...> writes:\n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation factor (term:\n> concentration*x + test*b + concentration*test*c + d) with nested factor\n> \"manipulation\" within \"participants\". For statistical analysis i needed to\n> incorporate a fixed guessing probability into my model (similiar to a 3-PL\n> IRT model) resulting in the following equation:\n> P(correct) = 0.33 + 0.67*(exp(term)/(1 + exp(term)))\n> As i found no way to do so via the glmer()-function of the lme4-package, i\n> tried to use nlmer() but unfortunately even the simplest analysis with just\n> the concentration factor and intercept resulted in cryptic error messages.\n> Syntax:\n> library(lme4)\n> rawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\n> \n> mod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n> binomial, data=rawdata) #works fine but is inappropriate\n> Thank you\n> Robert Miller\n\nMy understanding is that you cannot do this with glmer\nout of the box, as the link functions are built in at the\nlevel of the C code.  You would have to modify that\nand reinstall it.\n\nAn alternative that you might consider, is to use \nthe glmmPQL function from the MASS package and\nthe mafc.logit link from my package psyphy.\n\nI think that your model would be something like this\n(untried):\n\nlibrary(MASS)\nlibrary(psyphy)\n\nglmmPQL(Correct ~ log(Concentrat) * Test, \n    family = binomial(mafc.logit(3)), \n    data = rawdata, random = list(Code = ~ Test))\n\nbut someone can (will hopefully) correct me if I've\ngotten it wrong.\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Robert Miller <miller at ...> writes:\n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation factor (term:\n> concentratio",
       "thread_id": "thread-06567e973055",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004502.html"
     },
     {
       "id": "msg-cc4489c4ccca",
@@ -1694,7 +1779,8 @@
       "body_snippet": "I found this link doing a search for your error message on Google:\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2007q4/000408.html\n\nFollowing the recipe:\ngrModel <- function(x,y,a,b,c,d) .33 + .6",
       "thread_id": "thread-06567e973055",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004503.html"
     },
     {
       "id": "msg-5e7de7ee4245",
@@ -1706,11 +1792,12 @@
       "subject_clean": "asking about panel data",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello Sir,,my name is Silvi from Indonesia. I want to ask you about R\nsquared of random effect model of panel data with maximum likelihood\nestimation.  I have used the package nlme to find MLE for random\neffects model of panel data. But, I don?t find the R squared. How can\nI get the value of R square of my models? This is my data.\nYti is percentage of poverty\nX1 is gross regional domestic product per capita without the oil and gas\nX2 is gross regional domestic product sector agricultural per labour\nX3 is gross regional domestic product sector industri per labour\nX4 is gross regional domestic product sector service per labour\nt is year, i is cross section.",
+      "body_plain": "Hello Sir,,my name is Silvi from Indonesia. I want to ask you about R\nsquared of random effect model of panel data with maximum likelihood\nestimation.  I have used the package nlme to find MLE for random\neffects model of panel data. But, I don’t find the R squared. How can\nI get the value of R square of my models? This is my data.\nYti is percentage of poverty\nX1 is gross regional domestic product per capita without the oil and gas\nX2 is gross regional domestic product sector agricultural per labour\nX3 is gross regional domestic product sector industri per labour\nX4 is gross regional domestic product sector service per labour\nt is year, i is cross section.",
       "body_snippet": "Hello Sir,,my name is Silvi from Indonesia. I want to ask you about R\nsquared of random effect model of panel data with maximum likelihood\nestimation.  I have used the package nlme to find MLE for ran",
       "thread_id": "thread-5e7de7ee4245",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004504.html"
     },
     {
       "id": "msg-e8e17a5625c0",
@@ -1726,7 +1813,8 @@
       "body_snippet": "Hi again.\nI've been working with a Bernoulli dependent variable and modeling its\nvalues as a mixed model using glmer().  My understanding is that it's\nnot possible to model overdispersion in a Bernoul",
       "thread_id": "thread-e8e17a5625c0",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004505.html"
     },
     {
       "id": "msg-1a6639005199",
@@ -1745,6 +1833,7 @@
       "thread_id": "thread-e8e17a5625c0",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004506.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100928/e5d50982/attachment.pl"
       ]
@@ -1763,7 +1852,8 @@
       "body_snippet": "I need to bootstrap my data in R.  I am trying to run the program boot in R but am not having any luck.  I am assuming there must be a library that I first need to download before it will run?  Any ad",
       "thread_id": "thread-1c6a127005ca",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004507.html"
     },
     {
       "id": "msg-0ec5d8e5e79d",
@@ -1781,7 +1871,8 @@
       "body_snippet": "Hi Mike,\n\ntry\n\nlibrary(boot)\n?boot\n\nHTH,\nStephan\n\n\nAm 28.09.2010 20:23, schrieb Michael Larkin:\n> I need to bootstrap my data in R.  I am trying to run the program boot in R but am not having any luck",
       "thread_id": "thread-1c6a127005ca",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004508.html"
     },
     {
       "id": "msg-1614855cb8c8",
@@ -1800,7 +1891,8 @@
       "body_snippet": "I tried that however when I run the boot program after installing the\nlibrary I keep getting the error message of: \n\nERROR:  'R' is missing\n\nMike\n\n-----Original Message-----\nFrom: Stephan Kolassa [mai",
       "thread_id": "thread-1c6a127005ca",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004509.html"
     },
     {
       "id": "msg-8a720d8bb7c7",
@@ -1817,6 +1909,7 @@
       "thread_id": "thread-8a720d8bb7c7",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004510.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100928/37e97b89/attachment.pl"
       ]
@@ -1839,7 +1932,8 @@
       "body_snippet": "> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-\n> models-bounces at r-project.org] On Behalf Of Michael Larkin\n> Sent: Tuesday, September 28, 2010",
       "thread_id": "thread-1c6a127005ca",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004511.html"
     },
     {
       "id": "msg-f9097042e727",
@@ -1860,6 +1954,7 @@
       "thread_id": "thread-1c6a127005ca",
       "thread_depth": 3,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004512.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/e7e6a536/attachment.pl"
       ]
@@ -1878,7 +1973,8 @@
       "body_snippet": "Silvi,\n\nThere's not going to be a typical r^2 calculated for mixed models just as\npart of the output. Instead you have to use one of the extensions to\nlikelihood models. What I've done, and hopefully ",
       "thread_id": "thread-d2524ae6601d",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004513.html"
     },
     {
       "id": "msg-233a97349ab6",
@@ -1897,6 +1993,7 @@
       "thread_id": "thread-233a97349ab6",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004514.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/72ab3a60/attachment.pl"
       ]
@@ -1916,6 +2013,7 @@
       "thread_id": "thread-18ee14220f90",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004515.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/c0621b33/attachment.pl"
       ]
@@ -1936,7 +2034,8 @@
       "body_snippet": "Hi Folks,\nI have an experiment with about 80 mice. Mice were randomized to\ntreatment and control arms. The experiment consisted of 3 balance beams,\nWide, Medium and Narrow. The mice were each given 3 ",
       "thread_id": "thread-a09b1d770907",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004516.html"
     },
     {
       "id": "msg-a2e2f070f5f1",
@@ -1956,6 +2055,7 @@
       "thread_id": "thread-a09b1d770907",
       "thread_depth": 1,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004517.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/278f27f4/attachment.pl"
       ]
@@ -1970,11 +2070,12 @@
       "subject_clean": "New package GAD (General ANOVA Design)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi, everyone.\n\nGAD package analyses complex ANOVA models with any combination of\northogonal/nested and fixed/random factors, as described by Underwood\n(1997). There are two restrictions: (i) data must be balanced; (ii)\nfixed nested factors are not allowed. Homogeneity of variances is\nchecked using Cochran's C test and \"a posteriori\" comparisons of means\nare done using Student-Newman-Keuls (SNK) procedure.\n\nBest,\n\nMaur?cio G. Camargo",
+      "body_plain": "Hi, everyone.\n\nGAD package analyses complex ANOVA models with any combination of\northogonal/nested and fixed/random factors, as described by Underwood\n(1997). There are two restrictions: (i) data must be balanced; (ii)\nfixed nested factors are not allowed. Homogeneity of variances is\nchecked using Cochran's C test and \"a posteriori\" comparisons of means\nare done using Student-Newman-Keuls (SNK) procedure.\n\nBest,\n\nMaurício G. Camargo",
       "body_snippet": "Hi, everyone.\n\nGAD package analyses complex ANOVA models with any combination of\northogonal/nested and fixed/random factors, as described by Underwood\n(1997). There are two restrictions: (i) data must",
       "thread_id": "thread-196ed1595b33",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004518.html"
     },
     {
       "id": "msg-732372b5c1a6",
@@ -1995,6 +2096,7 @@
       "thread_id": "thread-a09b1d770907",
       "thread_depth": 2,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004519.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/cc84cd7f/attachment.pl"
       ]
@@ -2018,7 +2120,8 @@
       "body_snippet": "No need to average across trials, best to leave trials in so that the\nmodel take into account that variance and possibly improve power. You\nmight even add trial number as a variable in the model if yo",
       "thread_id": "thread-a09b1d770907",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004520.html"
     },
     {
       "id": "msg-351d55d8b62a",
@@ -2040,6 +2143,7 @@
       "thread_id": "thread-a09b1d770907",
       "thread_depth": 3,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004521.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100929/cf21b117/attachment.pl"
       ]
@@ -2059,6 +2163,7 @@
       "thread_id": "thread-0b34073f2aa8",
       "thread_depth": 0,
       "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004522.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100930/ade61361/attachment.pl"
       ]
@@ -2079,7 +2184,8 @@
       "body_snippet": "Hi,\n\nIf the response is Gaussian:\n\nsd(m1$VCV[,\"animal\"]/rowSums(m1$VCV))\n\nwhere m1 is the model. However, I would call it the posterior standard  \ndeviation rather than a standard error.\n\nCheers,\n\nJar",
       "thread_id": "thread-0b34073f2aa8",
       "thread_depth": 1,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004523.html"
     },
     {
       "id": "msg-e3d1ecf97669",
@@ -2095,7 +2201,8 @@
       "body_snippet": "Dear List,\n\nI have arrived at the most likely model using the  AIC value, AIC weights, etc etc as model selection, the model has  5 fixed variables and two random effects.\n\nI am wanting to use this mo",
       "thread_id": "thread-e3d1ecf97669",
       "thread_depth": 0,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004524.html"
     },
     {
       "id": "msg-9e394f170fdc",
@@ -2115,7 +2222,8 @@
       "body_snippet": "On Mon, Sep 27, 2010 at 3:34 AM, ONKELINX, Thierry\n<Thierry.ONKELINX at inbo.be> wrote:\n> Dear Malcolm,\n\n> Your design requires IMHO crossed random effects instead of nested\n> random effects. Individu",
       "thread_id": "thread-00d0336d71ee",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004525.html"
     },
     {
       "id": "msg-cf22805826e5",
@@ -2134,7 +2242,8 @@
       "body_snippet": "Unfortunately an nlmer model is not appropriate for a binary response,\nbecause it doesn't appropriately weight the residuals.\n\nIncorporating a non-zero guessing parameter requires a generalized\nnonlin",
       "thread_id": "thread-06567e973055",
       "thread_depth": 2,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004526.html"
     },
     {
       "id": "msg-3528e134dac7",
@@ -2154,7 +2263,8 @@
       "body_snippet": "On Thu, Sep 30, 2010 at 3:29 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> Unfortunately an nlmer model is not appropriate for a binary response,\n> because it doesn't appropriately weight the re",
       "thread_id": "thread-06567e973055",
       "thread_depth": 3,
-      "month": "2010-09"
+      "month": "2010-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q3/004527.html"
     }
   ],
   "threads": [

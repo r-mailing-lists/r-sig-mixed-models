@@ -17,7 +17,8 @@
       "body_snippet": "Hi bbolker,\n\nFirst thanks for your quick answer!\n\n2) I use the last version of lme4, but an older version of the R-book, so that I didn't know that quasibinomial family was no more supported...\n\n3) I ",
       "thread_id": "thread-5d9c44ff538f",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013671.html"
     },
     {
       "id": "msg-8a438885d474",
@@ -182,7 +183,8 @@
       "body_snippet": "On Thu, 30 Jun 2011, Chun (Jimmie) Ye wrote:\n\n> Hi all,\n>\n> I have a rather peculiar dataset that I'm not sure how to model\n> properly. This is data from an instrument that measures the size of\n> part",
       "thread_id": "thread-51188a90fbb7",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013663.html"
     },
     {
       "id": "msg-bdfabfb2c4e9",
@@ -204,6 +206,7 @@
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013664.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110704/ad9741a5/attachment.pl"
       ]
@@ -227,7 +230,8 @@
       "body_snippet": "Hi Ben and mixed modellers,\n\nMany thanks for your advice - this is very useful.\n\nThe model is complicated, but ive been finding that the more complicated models seam to converge, when the simpler vers",
       "thread_id": "thread-356b0191cdf2",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013665.html"
     },
     {
       "id": "msg-65fb9684054b",
@@ -373,7 +377,8 @@
       "body_snippet": "Back in 2007 (http://tolstoy.newcastle.edu.au/R/e2/help/07/05/17777.html)\nDr. Bates suggested that using a multithreaded BLAS was the only\noption for speeding lmer computations on multicore machines (",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013674.html"
     },
     {
       "id": "msg-1f1a2a6ded2e",
@@ -450,7 +455,8 @@
       "body_snippet": "On Tue, Jul 5, 2011 at 4:52 PM, Mike Lawrence <Mike.Lawrence at dal.ca> wrote:\n> Back in 2007 (http://tolstoy.newcastle.edu.au/R/e2/help/07/05/17777.html)\n> Dr. Bates suggested that using a multithrea",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016575.html"
     },
     {
       "id": "msg-151ca05b24c6",
@@ -468,7 +474,8 @@
       "body_snippet": "Hi, \n\nThere seems to be something amiss with the tree. Do you expect there to\nbe branch lengths? Do you get warning messages outside of MCMCglmm if\nyou use compute.brlen on the phylogeny?\n\nJarrod\n\n\nOn",
       "thread_id": "thread-b6dec136003a",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016576.html"
     },
     {
       "id": "msg-c7dd78f41925",
@@ -483,11 +490,12 @@
         "<CANXb-o7_LNkMi07T5M8cpLWPbQQpxqZRTXRktOFtWmpShgi7Fg@mail.gmail.com>",
         "<1309965097.14537.5.camel@sce-bio-c01600.bio.ed.ac.uk>"
       ],
-      "body_plain": "Hi,\n\nI tried compute.brlen but this works fine and computes branch lengths\nwithout any problem. I've used such trees before (without branch\nlengths, just topology) and they worked. Is it possible that this\n\"duplicated levels\" thing messes with everything?\n\nsz.\n\nOn 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Hi,\n>\n> There seems to be something amiss with the tree. Do you expect there to\n> be branch lengths? Do you get warning messages outside of MCMCglmm if\n> you use compute.brlen on the phylogeny?\n>\n> Jarrod\n>\n>\n> On Wed, 2011-07-06 at 16:45 +0200, Szymek Drobniak wrote:\n>> Dear mixed modellers,\n>>\n>> I'm trying to fit a comparative meta-analysis and everything's fine\n>> but I'm getting several warnings (some of which I don't quite\n>> understand and can't tell if they're causing the problem) and a weird\n>> result with huge animal (ergo phylogeny-related) variance. Below is\n>> the model and the prior, and of course the output with summary. Any\n>> idea if this huge variance might be due to these warnings ?(relating\n>> to the tree I guess) or due to the data (which has has high variance\n>> anyway). Could prior expansion fix these problems?\n>>\n>> Szymek\n>>\n>>\n>> #########(code)\n>>\n>> prior.fil <- list(R=list(V=1,n=0.002),\n>> G=list(G1=list(V=1,n=0.002),G2=list(V=1,n=0.002),G3=list(V=1,n=0.002)))\n>>\n>> meta.fil <- MCMCglmm(Zr~1, random=~ref+repeat+animal, prior=prior.fil,\n>> pedigree=tree, mev=data$mev, data=data, verbose=F,\n>> nitt=3000000, burnin=1000000, thin=800)\n>>\n>>\n>> ###########(summary of the model)\n>>\n>> ?Iterations = 100001:4999501\n>> ?Thinning interval ?= 500\n>> ?Sample size ?= 9800\n>>\n>> ?DIC: 256.8579\n>>\n>> ?G-structure: ?~ref\n>>\n>> ? ? post.mean ?l-95% CI u-95% CI eff.samp\n>> ref ? 0.03544 0.0002057 ? 0.1017 ? ? 9800\n>>\n>> ? ? ? ? ? ? ? ?~repeat.\n>>\n>> ? ? ? ? post.mean ?l-95% CI u-95% CI eff.samp\n>> repeat. ? 0.01121 0.0001536 ?0.04053 ? ? 9800\n>>\n>> ? ? ? ? ? ? ? ?~animal\n>>\n>> ? ? ? ?post.mean ?l-95% CI ?u-95% CI eff.samp\n>> animal 3.765e+15 1.450e+15 4.504e+15 ? ? 9507\n>>\n>> ?R-structure: ?~units\n>>\n>> ? ? ? post.mean l-95% CI u-95% CI eff.samp\n>> units ? ?0.2345 ? 0.1703 ? 0.3107 ? ? 9502\n>>\n>> ?Location effects: Zr ~ 1\n>>\n>> ? ? ? ? ? ? post.mean ?l-95% CI ?u-95% CI eff.samp pMCMC\n>> (Intercept) ? ?-740.7 -453419.4 ?464404.3 ? ? 9800 0.988\n>> >\n>>\n>> ############(warnings)\n>>\n>> Warning messages:\n>> 1: In inverseA(pedigree, nodes = nodes, scale = scale) :\n>> ? no branch lengths: compute.brlen from ape has been used\n>> 2: In `levels<-`(`*tmp*`, value = c(\"JJJ\", \"DDD\", \"III\", \"GGG\", \"\", ?:\n>> ? duplicated levels will not be allowed in factors anymore\n>> 3: In MCMCglmm(Zr ~ 1, random = ~ref + repeat. + animal, prior = prior.fil, ?:\n>> ? some combinations in animal do not exist and 50 missing records have\n>> been generated\n>> 4: In `[<-.data.frame`(`*tmp*`, dim(data)[1] -\n>> (dim(missing.combinations)[1] - ?:\n>> ? provided 50 variables to replace 2 variables\n>> 5: In `[<-.factor`(`*tmp*`, iseq, value = c(\"JJJ\", \"1\", \"JJJ\", \"1\", ?:\n>> ? invalid factor level, NAs generated\n>> 6: In `levels<-`(`*tmp*`, value = c(\"JJJ\", \"DDD\", \"III\", \"GGG\", \"\", ?:\n>> ? duplicated levels will not be allowed in factors anymore\n>>\n>\n>\n>\n> --\n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n>\n>\n\n\n\n-- \nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences,?Jagiellonian University\nul. Gronostajowa 7, 30-387 Krak?w, POLAND\ntel.: +48 12 664 52 19 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
+      "body_plain": "Hi,\n\nI tried compute.brlen but this works fine and computes branch lengths\nwithout any problem. I've used such trees before (without branch\nlengths, just topology) and they worked. Is it possible that this\n\"duplicated levels\" thing messes with everything?\n\nsz.\n\nOn 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Hi,\n>\n> There seems to be something amiss with the tree. Do you expect there to\n> be branch lengths? Do you get warning messages outside of MCMCglmm if\n> you use compute.brlen on the phylogeny?\n>\n> Jarrod\n>\n>\n> On Wed, 2011-07-06 at 16:45 +0200, Szymek Drobniak wrote:\n>> Dear mixed modellers,\n>>\n>> I'm trying to fit a comparative meta-analysis and everything's fine\n>> but I'm getting several warnings (some of which I don't quite\n>> understand and can't tell if they're causing the problem) and a weird\n>> result with huge animal (ergo phylogeny-related) variance. Below is\n>> the model and the prior, and of course the output with summary. Any\n>> idea if this huge variance might be due to these warnings  (relating\n>> to the tree I guess) or due to the data (which has has high variance\n>> anyway). Could prior expansion fix these problems?\n>>\n>> Szymek\n>>\n>>\n>> #########(code)\n>>\n>> prior.fil <- list(R=list(V=1,n=0.002),\n>> G=list(G1=list(V=1,n=0.002),G2=list(V=1,n=0.002),G3=list(V=1,n=0.002)))\n>>\n>> meta.fil <- MCMCglmm(Zr~1, random=~ref+repeat+animal, prior=prior.fil,\n>> pedigree=tree, mev=data$mev, data=data, verbose=F,\n>> nitt=3000000, burnin=1000000, thin=800)\n>>\n>>\n>> ###########(summary of the model)\n>>\n>>  Iterations = 100001:4999501\n>>  Thinning interval  = 500\n>>  Sample size  = 9800\n>>\n>>  DIC: 256.8579\n>>\n>>  G-structure:  ~ref\n>>\n>>     post.mean  l-95% CI u-95% CI eff.samp\n>> ref   0.03544 0.0002057   0.1017     9800\n>>\n>>   ? ? ? ? ?    ~repeat.\n>>\n>>   ?     post.mean  l-95% CI u-95% CI eff.samp\n>> repeat.   0.01121 0.0001536  0.04053     9800\n>>\n>>   ? ? ? ? ?    ~animal\n>>\n>>        post.mean  l-95% CI  u-95% CI eff.samp\n>> animal 3.765e+15 1.450e+15 4.504e+15     9507\n>>\n>>  R-structure:  ~units\n>>\n>>       post.mean l-95% CI u-95% CI eff.samp\n>> units    0.2345   0.1703   0.3107     9502\n>>\n>>  Location effects: Zr ~ 1\n>>\n>>   ? ? ? ?   post.mean  l-95% CI  u-95% CI eff.samp pMCMC\n>> (Intercept)    -740.7 -453419.4  464404.3     9800 0.988\n>> >\n>>\n>> ############(warnings)\n>>\n>> Warning messages:\n>> 1: In inverseA(pedigree, nodes = nodes, scale = scale) :\n>>   no branch lengths: compute.brlen from ape has been used\n>> 2: In `levels<-`(`*tmp*`, value = c(\"JJJ\", \"DDD\", \"III\", \"GGG\", \"\",  :\n>>   duplicated levels will not be allowed in factors anymore\n>> 3: In MCMCglmm(Zr ~ 1, random = ~ref + repeat. + animal, prior = prior.fil,  :\n>>   some combinations in animal do not exist and 50 missing records have\n>> been generated\n>> 4: In `[<-.data.frame`(`*tmp*`, dim(data)[1] -\n>> (dim(missing.combinations)[1] -  :\n>>   provided 50 variables to replace 2 variables\n>> 5: In `[<-.factor`(`*tmp*`, iseq, value = c(\"JJJ\", \"1\", \"JJJ\", \"1\",  :\n>>   invalid factor level, NAs generated\n>> 6: In `levels<-`(`*tmp*`, value = c(\"JJJ\", \"DDD\", \"III\", \"GGG\", \"\",  :\n>>   duplicated levels will not be allowed in factors anymore\n>>\n>\n>\n>\n> --\n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n>\n>\n\n\n\n-- \nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences, Jagiellonian University\nul. Gronostajowa 7, 30-387 Kraków, POLAND\ntel.: +48 12 664 52 19 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
       "body_snippet": "Hi,\n\nI tried compute.brlen but this works fine and computes branch lengths\nwithout any problem. I've used such trees before (without branch\nlengths, just topology) and they worked. Is it possible that",
       "thread_id": "thread-b6dec136003a",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016577.html"
     },
     {
       "id": "msg-a6de7f1137ea",
@@ -507,7 +515,8 @@
       "body_snippet": "Hi, \n\nThere definitely seems to be a problem but its hard to figure out what\nit is. Could you attach the tree (and data)?\n\n\nJarrod\n\n\nOn Wed, 2011-07-06 at 17:27 +0200, Szymek Drobniak wrote:\n> Hi,\n> \n",
       "thread_id": "thread-b6dec136003a",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016578.html"
     },
     {
       "id": "msg-5c4023af8eae",
@@ -526,7 +535,8 @@
       "body_snippet": "Thanks for the detailed reply.\n\nAccording to the comment by Joshua Ulrich (one of the DEoptim\ndevelopers) on this stackoverflow post\n(http://stackoverflow.com/questions/3759878/parallel-optimization-i",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016579.html"
     },
     {
       "id": "msg-420b705cdff3",
@@ -546,7 +556,8 @@
       "body_snippet": "On 07/06/2011 11:40 AM, Mike Lawrence wrote:\n> Thanks for the detailed reply.\n> \n> According to the comment by Joshua Ulrich (one of the DEoptim\n> developers) on this stackoverflow post\n> (http://stac",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016580.html"
     },
     {
       "id": "msg-3a198b1da05a",
@@ -567,7 +578,8 @@
       "body_snippet": "On Wed, Jul 6, 2011 at 12:40 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> On 07/06/2011 11:40 AM, Mike Lawrence wrote:\n>> Thanks for the detailed reply.\n>>\n>> According to the comment by Joshua Ulri",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016581.html"
     },
     {
       "id": "msg-593f44a263ff",
@@ -588,7 +600,8 @@
       "body_snippet": "> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf \n> Of Ben Bolker\n> Sent: Wednesday, July 06, 2011 1:41 PM\n> To: r-sig-mixed-models",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016582.html"
     },
     {
       "id": "msg-41fc8d1d8a13",
@@ -610,7 +623,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/06/2011 01:51 PM, Liaw, Andy wrote:\n>> From: r-sig-mixed-models-bounces at r-project.org \n>> [mailto:r-sig-mixed-models-bounces at r-project.org] O",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 5,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016583.html"
     },
     {
       "id": "msg-6eb1cc4cffd4",
@@ -632,7 +646,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/06/2011 01:51 PM, Douglas Bates wrote:\n> On Wed, Jul 6, 2011 at 12:40 PM, Ben Bolker <bbolker at gmail.com> wrote:\n>> On 07/06/2011 11:40 AM, Mike ",
       "thread_id": "thread-d2842c592b39",
       "thread_depth": 5,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016584.html"
     },
     {
       "id": "msg-2982dcd3ee77",
@@ -650,11 +665,12 @@
         "<1309966222.14726.1.camel@sce-bio-c01600.bio.ed.ac.uk>",
         "<CANXb-o6OHBLrRzurx+MQkONrP6zVimjh8pQEaC-Sedr4fiMHdg@mail.gmail.com>"
       ],
-      "body_plain": "ccing the list\n\nThe phylogeny has internal nodes labeled, and 3 nodes are called \"\".  \nIf internal nodes are labeled, MCMCglmm is expecting them to be  \nuniquely labeled.  I wonder whether this is an oversight in ape - I  \ncan't see why anyone would want this? Anyway...\n\ntree$node.label<-NULL\n\nshould fix the problem.\n\nI would drop the redundant taxa - they just add to the computing time  \nunless nodes=\"TIPS\". nodes=\"ALL\" is preferable.\n\nJarrod\n\n\n\nQuoting Szymek Drobniak <geralttee at gmail.com> on Wed, 6 Jul 2011  \n21:45:05 +0200:\n\n> Hi again,\n>\n> attached you'll find the data file (ref indexes studies, sp is for\n> species, genus for genus - previously we've used genera instead of\n> lower taxa, Zr is the response, mev is measurement error). In the sp\n> column genera are merged with species names - I've noticed that ape\n> removes spaces when writing tree to the file. the tree file is the one\n> with branch lengths generated by compute.brlen() and it's in Newick\n> format. It's a bit redundant (there are taxa not included in the\n> dataset but I assumed it's not a problem as it wouldn't in cas of an\n> animal model).\n>\n> Thanks for your help!\n> Cheers,\n> sz.\n>\n> On 6 July 2011 17:30, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>> Hi,\n>>\n>> There definitely seems to be a problem but its hard to figure out what\n>> it is. Could you attach the tree (and data)?\n>>\n>>\n>> Jarrod\n>>\n>>\n>> On Wed, 2011-07-06 at 17:27 +0200, Szymek Drobniak wrote:\n>>> Hi,\n>>>\n>>> I tried compute.brlen but this works fine and computes branch lengths\n>>> without any problem. I've used such trees before (without branch\n>>> lengths, just topology) and they worked. Is it possible that this\n>>> \"duplicated levels\" thing messes with everything?\n>>>\n>>> sz.\n>>>\n>>> On 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>> > Hi,\n>>> >\n>>> > There seems to be something amiss with the tree. Do you expect there to\n>>> > be branch lengths? Do you get warning messages outside of MCMCglmm if\n>>> > you use compute.brlen on the phylogeny?\n>>> >\n>>> > Jarrod\n>>> >\n>>> >\n>\n>\n> --\n> Szymon Drobniak || Population Ecology Group\n> Institute of Environmental Sciences,?Jagiellonian University\n> ul. Gronostajowa 7, 30-387 Krak?w, POLAND\n> tel.: +48 12 664 52 19 fax: +48 12 664 69 12\n>\n> www.eko.uj.edu.pl/drobniak\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "ccing the list\n\nThe phylogeny has internal nodes labeled, and 3 nodes are called \"\".  \nIf internal nodes are labeled, MCMCglmm is expecting them to be  \nuniquely labeled.  I wonder whether this is an oversight in ape - I  \ncan't see why anyone would want this? Anyway...\n\ntree$node.label<-NULL\n\nshould fix the problem.\n\nI would drop the redundant taxa - they just add to the computing time  \nunless nodes=\"TIPS\". nodes=\"ALL\" is preferable.\n\nJarrod\n\n\n\nQuoting Szymek Drobniak <geralttee at gmail.com> on Wed, 6 Jul 2011  \n21:45:05 +0200:\n\n> Hi again,\n>\n> attached you'll find the data file (ref indexes studies, sp is for\n> species, genus for genus - previously we've used genera instead of\n> lower taxa, Zr is the response, mev is measurement error). In the sp\n> column genera are merged with species names - I've noticed that ape\n> removes spaces when writing tree to the file. the tree file is the one\n> with branch lengths generated by compute.brlen() and it's in Newick\n> format. It's a bit redundant (there are taxa not included in the\n> dataset but I assumed it's not a problem as it wouldn't in cas of an\n> animal model).\n>\n> Thanks for your help!\n> Cheers,\n> sz.\n>\n> On 6 July 2011 17:30, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>> Hi,\n>>\n>> There definitely seems to be a problem but its hard to figure out what\n>> it is. Could you attach the tree (and data)?\n>>\n>>\n>> Jarrod\n>>\n>>\n>> On Wed, 2011-07-06 at 17:27 +0200, Szymek Drobniak wrote:\n>>> Hi,\n>>>\n>>> I tried compute.brlen but this works fine and computes branch lengths\n>>> without any problem. I've used such trees before (without branch\n>>> lengths, just topology) and they worked. Is it possible that this\n>>> \"duplicated levels\" thing messes with everything?\n>>>\n>>> sz.\n>>>\n>>> On 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>> > Hi,\n>>> >\n>>> > There seems to be something amiss with the tree. Do you expect there to\n>>> > be branch lengths? Do you get warning messages outside of MCMCglmm if\n>>> > you use compute.brlen on the phylogeny?\n>>> >\n>>> > Jarrod\n>>> >\n>>> >\n>\n>\n> --\n> Szymon Drobniak || Population Ecology Group\n> Institute of Environmental Sciences, Jagiellonian University\n> ul. Gronostajowa 7, 30-387 Kraków, POLAND\n> tel.: +48 12 664 52 19 fax: +48 12 664 69 12\n>\n> www.eko.uj.edu.pl/drobniak\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "ccing the list\n\nThe phylogeny has internal nodes labeled, and 3 nodes are called \"\".  \nIf internal nodes are labeled, MCMCglmm is expecting them to be  \nuniquely labeled.  I wonder whether this is an ",
       "thread_id": "thread-2982dcd3ee77",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016585.html"
     },
     {
       "id": "msg-248efa3fe5c1",
@@ -672,7 +688,8 @@
       "body_snippet": "Dear list,\n\nPlease see below an announcement about a job opening in the School of Geographical Sciences at the University of Bristol. The post is only just being advertised today, but there is a need ",
       "thread_id": "thread-248efa3fe5c1",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013689.html"
     },
     {
       "id": "msg-3649f392f78b",
@@ -691,11 +708,12 @@
         "<CANXb-o6OHBLrRzurx+MQkONrP6zVimjh8pQEaC-Sedr4fiMHdg@mail.gmail.com>",
         "<20110706235148.51701b3a4ots54p4@www.staffmail.ed.ac.uk>"
       ],
-      "body_plain": "Hi,\n\nit worked - estimates are much more realistic and no nasty warnings...\nThanks for your time!\n\nCheers,\nsz.\n\nOn 7 July 2011 00:51, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> ccing the list\n>\n> The phylogeny has internal nodes labeled, and 3 nodes are called \"\". If\n> internal nodes are labeled, MCMCglmm is expecting them to be uniquely\n> labeled. ?I wonder whether this is an oversight in ape - I can't see why\n> anyone would want this? Anyway...\n>\n> tree$node.label<-NULL\n>\n> should fix the problem.\n>\n> I would drop the redundant taxa - they just add to the computing time unless\n> nodes=\"TIPS\". nodes=\"ALL\" is preferable.\n>\n> Jarrod\n>\n>\n>\n> Quoting Szymek Drobniak <geralttee at gmail.com> on Wed, 6 Jul 2011 21:45:05\n> +0200:\n>\n>> Hi again,\n>>\n>> attached you'll find the data file (ref indexes studies, sp is for\n>> species, genus for genus - previously we've used genera instead of\n>> lower taxa, Zr is the response, mev is measurement error). In the sp\n>> column genera are merged with species names - I've noticed that ape\n>> removes spaces when writing tree to the file. the tree file is the one\n>> with branch lengths generated by compute.brlen() and it's in Newick\n>> format. It's a bit redundant (there are taxa not included in the\n>> dataset but I assumed it's not a problem as it wouldn't in cas of an\n>> animal model).\n>>\n>> Thanks for your help!\n>> Cheers,\n>> sz.\n>>\n>> On 6 July 2011 17:30, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>>\n>>> Hi,\n>>>\n>>> There definitely seems to be a problem but its hard to figure out what\n>>> it is. Could you attach the tree (and data)?\n>>>\n>>>\n>>> Jarrod\n>>>\n>>>\n>>> On Wed, 2011-07-06 at 17:27 +0200, Szymek Drobniak wrote:\n>>>>\n>>>> Hi,\n>>>>\n>>>> I tried compute.brlen but this works fine and computes branch lengths\n>>>> without any problem. I've used such trees before (without branch\n>>>> lengths, just topology) and they worked. Is it possible that this\n>>>> \"duplicated levels\" thing messes with everything?\n>>>>\n>>>> sz.\n>>>>\n>>>> On 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>>> > Hi,\n>>>> >\n>>>> > There seems to be something amiss with the tree. Do you expect there\n>>>> > to\n>>>> > be branch lengths? Do you get warning messages outside of MCMCglmm if\n>>>> > you use compute.brlen on the phylogeny?\n>>>> >\n>>>> > Jarrod\n>>>> >\n>>>> >\n>>\n>>\n>> --\n>> Szymon Drobniak || Population Ecology Group\n>> Institute of Environmental Sciences,?Jagiellonian University\n>> ul. Gronostajowa 7, 30-387 Krak?w, POLAND\n>> tel.: +48 12 664 52 19 fax: +48 12 664 69 12\n>>\n>> www.eko.uj.edu.pl/drobniak\n>>\n>\n>\n>\n> --\n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n>\n>\n>\n\n\n\n-- \nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences,?Jagiellonian University\nul. Gronostajowa 7, 30-387 Krak?w, POLAND\ntel.: +48 12 664 52 19 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
+      "body_plain": "Hi,\n\nit worked - estimates are much more realistic and no nasty warnings...\nThanks for your time!\n\nCheers,\nsz.\n\nOn 7 July 2011 00:51, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> ccing the list\n>\n> The phylogeny has internal nodes labeled, and 3 nodes are called \"\". If\n> internal nodes are labeled, MCMCglmm is expecting them to be uniquely\n> labeled.  I wonder whether this is an oversight in ape - I can't see why\n> anyone would want this? Anyway...\n>\n> tree$node.label<-NULL\n>\n> should fix the problem.\n>\n> I would drop the redundant taxa - they just add to the computing time unless\n> nodes=\"TIPS\". nodes=\"ALL\" is preferable.\n>\n> Jarrod\n>\n>\n>\n> Quoting Szymek Drobniak <geralttee at gmail.com> on Wed, 6 Jul 2011 21:45:05\n> +0200:\n>\n>> Hi again,\n>>\n>> attached you'll find the data file (ref indexes studies, sp is for\n>> species, genus for genus - previously we've used genera instead of\n>> lower taxa, Zr is the response, mev is measurement error). In the sp\n>> column genera are merged with species names - I've noticed that ape\n>> removes spaces when writing tree to the file. the tree file is the one\n>> with branch lengths generated by compute.brlen() and it's in Newick\n>> format. It's a bit redundant (there are taxa not included in the\n>> dataset but I assumed it's not a problem as it wouldn't in cas of an\n>> animal model).\n>>\n>> Thanks for your help!\n>> Cheers,\n>> sz.\n>>\n>> On 6 July 2011 17:30, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>>\n>>> Hi,\n>>>\n>>> There definitely seems to be a problem but its hard to figure out what\n>>> it is. Could you attach the tree (and data)?\n>>>\n>>>\n>>> Jarrod\n>>>\n>>>\n>>> On Wed, 2011-07-06 at 17:27 +0200, Szymek Drobniak wrote:\n>>>>\n>>>> Hi,\n>>>>\n>>>> I tried compute.brlen but this works fine and computes branch lengths\n>>>> without any problem. I've used such trees before (without branch\n>>>> lengths, just topology) and they worked. Is it possible that this\n>>>> \"duplicated levels\" thing messes with everything?\n>>>>\n>>>> sz.\n>>>>\n>>>> On 6 July 2011 17:11, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n>>>> > Hi,\n>>>> >\n>>>> > There seems to be something amiss with the tree. Do you expect there\n>>>> > to\n>>>> > be branch lengths? Do you get warning messages outside of MCMCglmm if\n>>>> > you use compute.brlen on the phylogeny?\n>>>> >\n>>>> > Jarrod\n>>>> >\n>>>> >\n>>\n>>\n>> --\n>> Szymon Drobniak || Population Ecology Group\n>> Institute of Environmental Sciences, Jagiellonian University\n>> ul. Gronostajowa 7, 30-387 Kraków, POLAND\n>> tel.: +48 12 664 52 19 fax: +48 12 664 69 12\n>>\n>> www.eko.uj.edu.pl/drobniak\n>>\n>\n>\n>\n> --\n> The University of Edinburgh is a charitable body, registered in\n> Scotland, with registration number SC005336.\n>\n>\n>\n\n\n\n-- \nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences, Jagiellonian University\nul. Gronostajowa 7, 30-387 Kraków, POLAND\ntel.: +48 12 664 52 19 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
       "body_snippet": "Hi,\n\nit worked - estimates are much more realistic and no nasty warnings...\nThanks for your time!\n\nCheers,\nsz.\n\nOn 7 July 2011 00:51, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> ccing the list\n>",
       "thread_id": "thread-2982dcd3ee77",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016587.html"
     },
     {
       "id": "msg-f0de79638a07",
@@ -712,6 +730,7 @@
       "thread_id": "thread-f0de79638a07",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013691.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110707/e9e1a0e0/attachment.pl"
       ]
@@ -730,7 +749,8 @@
       "body_snippet": "Hi all,\n\nI constructed a mixed-effect model about which I'm primarily interested in\nthe fixed effects and I wanted to make sure that I was interpreting the\noutput appropriately. Based on the MCMCglmm ",
       "thread_id": "thread-92a066d68034",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013692.html"
     },
     {
       "id": "msg-42edebce2dc1",
@@ -753,8 +773,9 @@
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 1,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016590.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/535a5485/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/535a5485/attachment-0004.pl"
       ]
     },
     {
@@ -778,7 +799,8 @@
       "body_snippet": "On Fri, Jul 8, 2011 at 6:20 AM, Mike Gibson <megalops31 at hotmail.com> wrote:\n\n> I already ran a mixed model and got convergence. ?I have 700 data points. ?Now, I am running a new mixed model that ad",
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016591.html"
     },
     {
       "id": "msg-39fc9bef52fb",
@@ -822,8 +844,9 @@
       "thread_id": "thread-bdfabfb2c4e9",
       "thread_depth": 3,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016593.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/ace22a6d/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110708/ace22a6d/attachment-0004.pl"
       ]
     },
     {
@@ -842,7 +865,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/08/2011 12:24 PM, Catarina Miranda wrote:\n> Hello;\n> \n> When I run an anova to compare two lmer models I have in some situations\n> (always when I c",
       "thread_id": "thread-39fc9bef52fb",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016594.html"
     },
     {
       "id": "msg-4693e57dcffc",
@@ -860,7 +884,8 @@
       "body_snippet": "> I already ran a mixed model and got convergence.  I have 700 data points.  Now, I am running a new mixed model that adds the ARMA (corARMA) covariance pattern.  I keep getting an error message telli",
       "thread_id": "thread-4693e57dcffc",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016595.html"
     },
     {
       "id": "msg-c8d53b555a70",
@@ -973,7 +998,8 @@
       "body_snippet": "Hi Ned, \n\nThe estimated Poisson count for each of the four trt/phase combinations\ncan be obtained as: \n\ntrtA and fphaseA  =  traity + at.level(trait, 1):trtA\ntrtA and fphaseB  =  traity + at.level(tra",
       "thread_id": "thread-92a066d68034",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016598.html"
     },
     {
       "id": "msg-1854dcba451d",
@@ -988,11 +1014,12 @@
         "<A61708A2D512974BAD5C77CD88B83C0805FB221D@lauimlex01.lau.dfo-mpo.ca>",
         "<CAO7JsnTPPXpaqQoPc7heMdo6vjj92-iOkWpg-Np_tsciM8Trqg@mail.gmail.com>"
       ],
-      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  Embarrassingly enough, I keep having troubles like this in one\ndirection or the other myself (either\n\n From 2.13.0, using CRAN mirror probability.ca gets me these versions:\n\ntrying URL 'http://probability.ca/cran/src/contrib/lme4_0.999375-39.tar.gz'\ntrying URL\n'http://probability.ca/cran/src/contrib/Matrix_0.999375-50.tar.gz'\n\n  which works.\n\n\n *At the moment* it also works for me with a fresh R-forge install:\n\nlme4_0.999375-40   Matrix_0.9996875-0\n\n  I'm compiling a table on http://glmm.wikidot.com/faq of versions that\nhave been tested, in hopes of helping people and sorting this out once\nand for all ...  (Search for \"cholmod_start\" on the page)\n\nOn 07/11/2011 01:50 PM, Douglas Bates wrote:\n> You must have the versions of both lme4 and Matrix coordinated.  I\n> think that on Windows you install R_2.13.1 then remove lme4 and\n> reinstall it.  I'm not sure because I don't use Windows.  Can someone\n> (Ben, perhaps?)confirm the procedure, please?\n> \n> 2011/7/11 Bruneau, Beno?t <Benoit.Bruneau at dfo-mpo.gc.ca>\n>>\n>> Hi,\n>>\n>> I just installed R 3.13.1 and it seems that in this version's Matrix package is lacking the function 'cholmod_start' necessary for lme4 to work.\n>>\n>>\n>> Here is the message:\n>>\n>> Error in inDL(x, as.logical(local), as.logical(now), ...) :\n>>   function 'cholmod_start' not provided by package 'Matrix'\n>> Error: package/namespace load failed for 'lme4'\n>>\n>>\n>> Everything is freshly installed on windows xp.\n>>\n>> Thanks.\n>>\n>>\n>>\n> _______________________________________________\n> Lme4-authors mailing list\n> Lme4-authors at lists.r-forge.r-project.org\n> https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/lme4-authors\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n\niEYEARECAAYFAk4bTgQACgkQc5UpGjwzenP1ZwCbBhuS0KH7X2phtik4c/fxftvq\nQK0AnRZZdFaXnXnwzrHV60Lc1ZVOnSwx\n=da6W\n-----END PGP SIGNATURE-----",
+      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  Embarrassingly enough, I keep having troubles like this in one\ndirection or the other myself (either\n\n From 2.13.0, using CRAN mirror probability.ca gets me these versions:\n\ntrying URL 'http://probability.ca/cran/src/contrib/lme4_0.999375-39.tar.gz'\ntrying URL\n'http://probability.ca/cran/src/contrib/Matrix_0.999375-50.tar.gz'\n\n  which works.\n\n\n *At the moment* it also works for me with a fresh R-forge install:\n\nlme4_0.999375-40   Matrix_0.9996875-0\n\n  I'm compiling a table on http://glmm.wikidot.com/faq of versions that\nhave been tested, in hopes of helping people and sorting this out once\nand for all ...  (Search for \"cholmod_start\" on the page)\n\nOn 07/11/2011 01:50 PM, Douglas Bates wrote:\n> You must have the versions of both lme4 and Matrix coordinated.  I\n> think that on Windows you install R_2.13.1 then remove lme4 and\n> reinstall it.  I'm not sure because I don't use Windows.  Can someone\n> (Ben, perhaps?)confirm the procedure, please?\n> \n> 2011/7/11 Bruneau, Benoît <Benoit.Bruneau at dfo-mpo.gc.ca>\n>>\n>> Hi,\n>>\n>> I just installed R 3.13.1 and it seems that in this version's Matrix package is lacking the function 'cholmod_start' necessary for lme4 to work.\n>>\n>>\n>> Here is the message:\n>>\n>> Error in inDL(x, as.logical(local), as.logical(now), ...) :\n>>   function 'cholmod_start' not provided by package 'Matrix'\n>> Error: package/namespace load failed for 'lme4'\n>>\n>>\n>> Everything is freshly installed on windows xp.\n>>\n>> Thanks.\n>>\n>>\n>>\n> _______________________________________________\n> Lme4-authors mailing list\n> Lme4-authors at lists.r-forge.r-project.org\n> https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/lme4-authors\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n\niEYEARECAAYFAk4bTgQACgkQc5UpGjwzenP1ZwCbBhuS0KH7X2phtik4c/fxftvq\nQK0AnRZZdFaXnXnwzrHV60Lc1ZVOnSwx\n=da6W\n-----END PGP SIGNATURE-----",
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  Embarrassingly enough, I keep having troubles like this in one\ndirection or the other myself (either\n\n From 2.13.0, using CRAN mirror probability.ca ge",
       "thread_id": "thread-1854dcba451d",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013702.html"
     },
     {
       "id": "msg-535086101dc1",
@@ -1011,7 +1038,8 @@
       "body_snippet": "Hi Jarrod,\n\nThanks for your reply, your description of the fixed effects is essentially how I was treating them, which is reassuring. Regarding transforming the coefficients, I had wanted to plot pred",
       "thread_id": "thread-92a066d68034",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016600.html"
     },
     {
       "id": "msg-f9164409340d",
@@ -1028,6 +1056,7 @@
       "thread_id": "thread-f9164409340d",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013704.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/0b0e4c50/attachment.pl"
       ]
@@ -1047,6 +1076,7 @@
       "thread_id": "thread-acd95b1b72f1",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013705.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110712/1d7b480f/attachment.pl"
       ]
@@ -1164,7 +1194,8 @@
       "body_snippet": "I am experiencing some difficulty using the VarCorr function with a nlme \nobject from a nonlinear mixed effects model analysis. Is VarCorr even \navailable for such an analysis? Any insights would be w",
       "thread_id": "thread-6298254cdf33",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013714.html"
     },
     {
       "id": "msg-7731247c7689",
@@ -1249,7 +1280,8 @@
       "body_snippet": "Hi all,\n\nI have difficulties in building a proper model for my experimental data. The study was done in two areas, A and B. A received a test treatment and B acted as a control, and then the experimen",
       "thread_id": "thread-d0095e5ae41c",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016617.html"
     },
     {
       "id": "msg-82f6725ca548",
@@ -1265,7 +1297,8 @@
       "body_snippet": "Hello fellow R users,\n\nI am having a problem finding the estimates (and therefore fulfilling  \nmy hypothesis testing) for each separate treatment within my mixed  \nmodels using 'lme' (package nlme). I",
       "thread_id": "thread-82f6725ca548",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013720.html"
     },
     {
       "id": "msg-ce876527ab2f",
@@ -1283,7 +1316,8 @@
       "body_snippet": "Hi:\n\nYour terminology is slightly amiss. A (completely) crossed design for\ntwo treatment factors is one in which all levels of one factor occur\nin combination with all levels of the second factor. In ",
       "thread_id": "thread-d0095e5ae41c",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016621.html"
     },
     {
       "id": "msg-02a1c0e542a5",
@@ -1299,7 +1333,8 @@
       "body_snippet": "Dear All,\n\nI just noticed this paper, which may be of interest to some of the readers of this list:\n\nLi, B., Lingsma, H. F., Steyerberg, E. W., & Lesaffre, E. (2011). Logistic random effects regressio",
       "thread_id": "thread-02a1c0e542a5",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013722.html"
     },
     {
       "id": "msg-f2b89adb40c7",
@@ -1316,8 +1351,9 @@
       "thread_id": "thread-f2b89adb40c7",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013723.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110716/1633714b/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110716/1633714b/attachment-0003.pl"
       ]
     },
     {
@@ -1392,7 +1428,8 @@
       "body_snippet": "Hi Karen,\n\nI understand that you can use the intervals function \n\nfor example\n\nintervals(model1, which=\"fixed\")\n\nthis will still provide differences so you would have to relevel your factors, and re r",
       "thread_id": "thread-f2b89adb40c7",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016623.html"
     },
     {
       "id": "msg-48a3138dd14b",
@@ -1446,8 +1483,9 @@
       "thread_id": "thread-21e012651936",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013730.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/e4cf86a8/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110718/e4cf86a8/attachment-0003.pl"
       ]
     },
     {
@@ -1504,7 +1542,8 @@
       "body_snippet": "Hello\nI would like to fit piecewise linear growth curves to a number of\nsubjects (each with a number of observations at different abscissa),\nwhere all the slopes for a common interval (e.g, 2 <= x < 3",
       "thread_id": "thread-0ca8c025c960",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013733.html"
     },
     {
       "id": "msg-94f5afbea18c",
@@ -1520,7 +1559,8 @@
       "body_snippet": "Dear list members,\n\nI am stuck in statistical problems related to overdispersion in GLMM  \nwith a Poisson distribution. I have vainly explored the archives of  \nthe mailing list, books and forums and ",
       "thread_id": "thread-94f5afbea18c",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013734.html"
     },
     {
       "id": "msg-85d1d3ad6a30",
@@ -1537,8 +1577,9 @@
       "thread_id": "thread-85d1d3ad6a30",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013735.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110720/1de38ade/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110720/1de38ade/attachment-0003.pl"
       ]
     },
     {
@@ -1555,7 +1596,8 @@
       "body_snippet": "Dear mixed-models helpers,\n\nsay I have a study where I try to predict people's response to how\nhappy they are on a 1-5 scale. The data frame has the dependent\nvariable \"Response\" (1-5) and a random ef",
       "thread_id": "thread-a463f12fc95c",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013736.html"
     },
     {
       "id": "msg-ca084cdec888",
@@ -1628,7 +1670,8 @@
       "body_snippet": "Hi all, I'm doing MCMCglmm estimation of a mixed model and nested\nsubmodel and would like to compute the bayes factor.  It looks like\nusing (warp) bridge sampling is the current favorite.  I see\n\n1.Ov",
       "thread_id": "thread-2c8b3caef2bd",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013740.html"
     },
     {
       "id": "msg-734c4ef04930",
@@ -1646,7 +1689,8 @@
       "body_snippet": "On Wed, 20 Jul 2011, Sverre Stausland wrote:\n\n> Dear mixed-models helpers,\n>\n> say I have a study where I try to predict people's response to how\n> happy they are on a 1-5 scale. The data frame has th",
       "thread_id": "thread-a463f12fc95c",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016637.html"
     },
     {
       "id": "msg-799710416cdf",
@@ -1666,8 +1710,9 @@
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 2,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016638.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110722/52a97de6/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110722/52a97de6/attachment-0004.pl"
       ]
     },
     {
@@ -1837,7 +1882,8 @@
       "body_snippet": "Hi,\n\nA new version of MCMCglmm (MCMCglmm_2.13) has been submitted to CRAN  \nand should be on-line soon.\n\nNEW FEATURES:\n\na) Covariance structures for the random effects of the form  \nkronecker(V,A) whe",
       "thread_id": "thread-6e7268abd755",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013751.html"
     },
     {
       "id": "msg-7d2144bb4c1d",
@@ -1859,7 +1905,8 @@
       "body_snippet": "Kurt Hornik <Kurt.Hornik at ...> writes:\n\n> Thanks, on CRAN now.\n\nAnd works. Requires full list of fixed effects, as I remember this is new?\n\nDieter",
       "thread_id": "thread-86e2b0b8be82",
       "thread_depth": 5,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016648.html"
     },
     {
       "id": "msg-5a898c2183b2",
@@ -1876,8 +1923,9 @@
       "thread_id": "thread-5a898c2183b2",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013753.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110725/98fb1931/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110725/98fb1931/attachment-0003.pl"
       ]
     },
     {
@@ -1895,8 +1943,9 @@
       "thread_id": "thread-603d9c27f631",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013754.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/2b0ae93d/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/2b0ae93d/attachment-0003.pl"
       ]
     },
     {
@@ -1931,7 +1980,8 @@
       "body_snippet": "Dear all\n\nI emailed the list a few weeks ago regarding a model I was trying to\nspecify using the gamm4 package (ver 0.1-2), but I have not found a\nsolution regarding that specific model. I was wonderi",
       "thread_id": "thread-06c981d3f54e",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013756.html"
     },
     {
       "id": "msg-c65a2b3cdf0b",
@@ -1948,8 +1998,9 @@
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 0,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013757.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/6094a878/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110726/6094a878/attachment-0003.pl"
       ]
     },
     {
@@ -2132,7 +2183,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/27/2011 03:29 AM, Martin Maechler wrote:\n>>>>>> Gabrielle Miller-Messner <gmessner at ucdavis.edu>\n>>>>>>     on Tue, 26 Jul 2011 22:26:38 -0700 wr",
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016662.html"
     },
     {
       "id": "msg-4092e839dab7",
@@ -2151,7 +2203,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/27/2011 09:29 AM, Doran, Harold wrote:\n> Yes. See ?lmer and the start argument. You can provide the function\n> with starting values, which can come",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016663.html"
     },
     {
       "id": "msg-fd1a86bd953c",
@@ -2171,8 +2224,9 @@
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 2,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016665.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/076427e8/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/076427e8/attachment-0004.pl"
       ]
     },
     {
@@ -2194,8 +2248,9 @@
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 3,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016666.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/c3b712ad/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110727/c3b712ad/attachment-0004.pl"
       ]
     },
     {
@@ -2216,7 +2271,8 @@
       "body_snippet": "On Wed, Jul 27, 2011 at 7:34 AM, Ben Bolker <bbolker at gmail.com> wrote:\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 07/27/2011 03:29 AM, Martin Maechler wrote:\n>>>>>>> Gabrielle Miller-",
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016667.html"
     },
     {
       "id": "msg-367882bd4da1",
@@ -2237,7 +2293,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/27/2011 01:50 PM, Brent Pedersen wrote:\n> On Wed, Jul 27, 2011 at 7:34 AM, Ben Bolker <bbolker at gmail.com> wrote:\n> On 07/27/2011 03:29 AM, Marti",
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016668.html"
     },
     {
       "id": "msg-ac57e58c5b6f",
@@ -2255,7 +2312,8 @@
       "body_snippet": "Dear Jarrod,\n\nCan I please just confirm what you meant here by \"covariance structures for the random effects\"? If I understand correctly, this technique might be very useful for quite a lot of things-",
       "thread_id": "thread-ac57e58c5b6f",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016669.html"
     },
     {
       "id": "msg-c00c9a85bdd5",
@@ -2275,7 +2333,8 @@
       "body_snippet": "Thanks to Harold for pointing out the start argument and indicating\nthat the verbose output can be supplied as its value. Thanks also to\nboth Harold and Ben for warning on over-parameterization, thoug",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016670.html"
     },
     {
       "id": "msg-aa5321f12e1a",
@@ -2297,7 +2356,8 @@
       "body_snippet": "On Wed, Jul 27, 2011 at 12:10 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 07/27/2011 01:50 PM, Brent Pedersen wrote:\n>> On Wed, Jul 27, 2011 a",
       "thread_id": "thread-c65a2b3cdf0b",
       "thread_depth": 5,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016671.html"
     },
     {
       "id": "msg-9a1a583e94df",
@@ -2318,7 +2378,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/27/2011 02:39 PM, Mike Lawrence wrote:\n> Thanks to Harold for pointing out the start argument and indicating\n> that the verbose output can be suppl",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016672.html"
     },
     {
       "id": "msg-f17685790601",
@@ -2339,7 +2400,8 @@
       "body_snippet": "Just out of curiosity, why would you need a seven factor interaction\n(assuming V1-V7 are all factors)? For that matter, why would you need\nmore than 2fi's? Is there some scientific reason why that mig",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 4,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016673.html"
     },
     {
       "id": "msg-a0557d90e809",
@@ -2361,7 +2423,8 @@
       "body_snippet": "The data come from a dozen or so published experiments using the\nAttention Network Test (ANT), which is a video-game like test of human\nattention. The data contain about 1000 participants, each observ",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 5,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016674.html"
     },
     {
       "id": "msg-81f2721bed63",
@@ -2380,7 +2443,8 @@
       "body_snippet": "I think I figured out how to resume a terminated fit, but I receive a\nwarning when the second fit completes, so I thought I'd post my work\nhere. To simplify, let's say I have the model:\n\ny ~ (1|rand) ",
       "thread_id": "thread-2e337cb9399a",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016675.html"
     },
     {
       "id": "msg-e61f19e25221",
@@ -2399,8 +2463,9 @@
       "thread_id": "thread-7e80d1254c58",
       "thread_depth": 1,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016676.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/e979cc70/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/e979cc70/attachment-0004.pl"
       ]
     },
     {
@@ -2421,8 +2486,9 @@
       "thread_id": "thread-c5cbbaab95ca",
       "thread_depth": 2,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016677.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/06774591/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/06774591/attachment-0004.pl"
       ]
     },
     {
@@ -2443,8 +2509,9 @@
       "thread_id": "thread-7e80d1254c58",
       "thread_depth": 2,
       "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016678.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/08947e75/attachment.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110728/08947e75/attachment-0004.pl"
       ]
     },
     {
@@ -2464,7 +2531,8 @@
       "body_snippet": "Hi Malcolm,\n\nI don't think it's as fancy as you think/hope. The covariance  \nstructure has to be seperable into a matrix of prameters (V) and a  \nfixed matrix (A), whereas in many spatial/time-series ",
       "thread_id": "thread-ac57e58c5b6f",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016679.html"
     },
     {
       "id": "msg-654ef7a5dd31",
@@ -2483,7 +2551,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 07/27/2011 04:01 AM, Luke Duncan wrote:\n> Dear R-Gurus\n> \n> I am a PhD student from South Africa working on chimpanzee behaviour.\n> I am looking at pa",
       "thread_id": "thread-40cd15d27df5",
       "thread_depth": 1,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016680.html"
     },
     {
       "id": "msg-18f46d9fb680",
@@ -2503,7 +2572,8 @@
       "body_snippet": "On Thu, Jul 28, 2011 at 3:37 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> I would try drop1() [works with version ...-40 of lme4, I believe] for\n> more convenient output.\n\nJust spotted this and can ",
       "thread_id": "thread-40cd15d27df5",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016681.html"
     },
     {
       "id": "msg-b08443feb9f2",
@@ -2519,7 +2589,8 @@
       "body_snippet": "Hello Everyone,\n\nI'm A SAS user who is in the process of learning R. I've read about a dozen R-related books and have been testing my understanding of how to perform various analyses by replicating th",
       "thread_id": "thread-b08443feb9f2",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013786.html"
     },
     {
       "id": "msg-438a14f279bf",
@@ -2539,7 +2610,8 @@
       "body_snippet": "Jarrod,\n\nThis is indeed very interesting, and plenty fancy enough. What I'm particularly intrigued by is the possibility of fitting models with *both* time-series and spatial correlation structures. T",
       "thread_id": "thread-ac57e58c5b6f",
       "thread_depth": 2,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016683.html"
     },
     {
       "id": "msg-cfd6c9bf66f4",
@@ -2560,7 +2632,8 @@
       "body_snippet": "Hi Malcolm,\n\nYou can combine variance structures as you have done, but given some  \nof the parameters of the variance structure (e.g. phi) have to be  \nknown, I think you're better off fitting these m",
       "thread_id": "thread-ac57e58c5b6f",
       "thread_depth": 3,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/016684.html"
     },
     {
       "id": "msg-e597a0ff9c77",
@@ -2576,7 +2649,8 @@
       "body_snippet": "?Dear R users,\n\nI apologies in advance if this is really obvious question.\nMy problem can be best described by the following example. I believe\nfm1 and fm2 are equivalent model and the data frame newO",
       "thread_id": "thread-e597a0ff9c77",
       "thread_depth": 0,
-      "month": "2011-07"
+      "month": "2011-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q3/013789.html"
     },
     {
       "id": "msg-182a8aef787e",

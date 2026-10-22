@@ -17,7 +17,8 @@
       "body_snippet": "Hello,\n\nIn some occasions I get this error message: \"Cannot get confidence\nintervals on var-cov components: Non-positive definite approximate\nvariance-covariance\".\n\nI have tried to figure out this by ",
       "thread_id": "thread-d55963e520e1",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001345.html"
     },
     {
       "id": "msg-66ed29559197",
@@ -35,7 +36,8 @@
       "body_snippet": "Cotter,\n\nCheck the following component\n\n> lmefit1$apVar\n\nIf you see something like this\n\n   [1] \"Non-positive definite approximate variance-covariance\"\n\nit most likely indicates you have an inappropri",
       "thread_id": "thread-d55963e520e1",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001346.html"
     },
     {
       "id": "msg-c634ff3713a7",
@@ -53,7 +55,8 @@
       "body_snippet": "check whether the following solves the problem:\n\nTotal$DietC <- relevel(Total$Diet, \"C\")\n\nlmefit1 <- lme(Weight ~ Diet * Time, Total, random = ~ 1 | Place)\nintervals(lmefit1)\n\nlmefit2 <- lme(Weight ~ ",
       "thread_id": "thread-d55963e520e1",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001347.html"
     },
     {
       "id": "msg-9d0e52d0ef31",
@@ -69,7 +72,8 @@
       "body_snippet": "Hi all, I posted a long question for this the other day, but no one\nhas responded.  Here is a short version those of you who are very busy\nmight have time to read.  Any advice would be greatly appreci",
       "thread_id": "thread-9d0e52d0ef31",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001348.html"
     },
     {
       "id": "msg-7ce7e70250f9",
@@ -85,7 +89,8 @@
       "body_snippet": "Dear Dr. Bates,\nYou replied to a question by Violet(Shu) Xu on how to estimate\ncross-classified (XC) models. In the DIGEST version however, no example\ncode is provided.\nIn general, how do we estimate ",
       "thread_id": "thread-7ce7e70250f9",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001349.html"
     },
     {
       "id": "msg-6e2e6bd937ce",
@@ -103,7 +108,8 @@
       "body_snippet": "On Wed, Sep 3, 2008 at 7:14 AM, Stijn Ruiter <s.ruiter at maw.ru.nl> wrote:\n> Dear Dr. Bates,\n> You replied to a question by Violet(Shu) Xu on how to estimate\n> cross-classified (XC) models. In the DI",
       "thread_id": "thread-7ce7e70250f9",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001350.html"
     },
     {
       "id": "msg-45873e607482",
@@ -122,7 +128,8 @@
       "body_snippet": "Am I right that if the primary schools were nested within the\nsecondary schools, the model would still be fit with the exact same\nformula?\n\nD\n\nOn Wed, Sep 3, 2008 at 1:44 PM, Douglas Bates <bates at s",
       "thread_id": "thread-7ce7e70250f9",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001351.html"
     },
     {
       "id": "msg-2779418257c1",
@@ -142,7 +149,8 @@
       "body_snippet": "On Wed, Sep 3, 2008 at 7:52 AM, Daniel Ezra Johnson\n<danielezrajohnson at gmail.com> wrote:\n> Am I right that if the primary schools were nested within the\n> secondary schools, the model would still b",
       "thread_id": "thread-7ce7e70250f9",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001352.html"
     },
     {
       "id": "msg-b80199ac356a",
@@ -154,11 +162,12 @@
       "subject_clean": "Lmer-model fails to converge",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear Mixed-list\n\nI am trying to fit a mixed linear model with the lmer-function in the \nlme4-packages. After fitting the model, I get this warning:\nWarning message:\nIn mer_finalize(ans) : iteration limit reached without convergence (9)\n\nBy searching the R-archive, I found some sort of solution posted by \nDouglas Bates \n(http://finzi.psych.upenn.edu/R/Rhelp02a/archive/138008.html) which will \nprovide a greater number of iterations. I therefore tried:\n\n(newmodel <- .Call(\"mer_optimize\", mylmermodel, PACKAGE = \"lme4\"))\n\nThe \"FALSE\" argument in Douglas Bates suggestion caused an error \nmessage, but it works fine without, and the model do now converge. \nHowever, I cannot figure out how to get the model from the last part of \nthe iterations. That is, the .Call(\"mer_optimize\"...) only print the \nverbose from the fitting process, but does not give an mer-object that I \ncan evaluate and extract random and fixed effects from. Does anyone know \nif this \"horrible hack\" (Bates' own words) can give a mer-object or can \nI only use it to evaluate how far my initial model was from convergence? \nI am sorry that I cannot provide any example from my own data (the \ndataset is too large to attach), but I assume that any solution should \nbe independent of the model or data.\n\nCheers\n\nIvar\n\nSessionInfo\nsessionInfo()\nR version 2.7.2 (2008-08-25)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=Norwegian (Bokm?l)_Norway.1252;LC_CTYPE=Norwegian \n(Bokm?l)_Norway.1252;LC_MONETARY=Norwegian \n(Bokm?l)_Norway.1252;LC_NUMERIC=C;LC_TIME=Norwegian (Bokm?l)_Norway.1252\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base    \n\nother attached packages:\n[1] mgcv_1.4-1         splancs_2.01-24    sp_0.9-26          \nlme4_0.999375-26   Matrix_0.999375-13 lattice_0.17-13  \n\nloaded via a namespace (and not attached):\n[1] grid_2.7.2\n >",
+      "body_plain": "Dear Mixed-list\n\nI am trying to fit a mixed linear model with the lmer-function in the \nlme4-packages. After fitting the model, I get this warning:\nWarning message:\nIn mer_finalize(ans) : iteration limit reached without convergence (9)\n\nBy searching the R-archive, I found some sort of solution posted by \nDouglas Bates \n(http://finzi.psych.upenn.edu/R/Rhelp02a/archive/138008.html) which will \nprovide a greater number of iterations. I therefore tried:\n\n(newmodel <- .Call(\"mer_optimize\", mylmermodel, PACKAGE = \"lme4\"))\n\nThe \"FALSE\" argument in Douglas Bates suggestion caused an error \nmessage, but it works fine without, and the model do now converge. \nHowever, I cannot figure out how to get the model from the last part of \nthe iterations. That is, the .Call(\"mer_optimize\"...) only print the \nverbose from the fitting process, but does not give an mer-object that I \ncan evaluate and extract random and fixed effects from. Does anyone know \nif this \"horrible hack\" (Bates' own words) can give a mer-object or can \nI only use it to evaluate how far my initial model was from convergence? \nI am sorry that I cannot provide any example from my own data (the \ndataset is too large to attach), but I assume that any solution should \nbe independent of the model or data.\n\nCheers\n\nIvar\n\nSessionInfo\nsessionInfo()\nR version 2.7.2 (2008-08-25)\ni386-pc-mingw32\n\nlocale:\nLC_COLLATE=Norwegian (Bokmål)_Norway.1252;LC_CTYPE=Norwegian \n(Bokmål)_Norway.1252;LC_MONETARY=Norwegian \n(Bokmål)_Norway.1252;LC_NUMERIC=C;LC_TIME=Norwegian (Bokmål)_Norway.1252\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base    \n\nother attached packages:\n[1] mgcv_1.4-1         splancs_2.01-24    sp_0.9-26          \nlme4_0.999375-26   Matrix_0.999375-13 lattice_0.17-13  \n\nloaded via a namespace (and not attached):\n[1] grid_2.7.2\n >",
       "body_snippet": "Dear Mixed-list\n\nI am trying to fit a mixed linear model with the lmer-function in the \nlme4-packages. After fitting the model, I get this warning:\nWarning message:\nIn mer_finalize(ans) : iteration li",
       "thread_id": "thread-b80199ac356a",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001353.html"
     },
     {
       "id": "msg-0ee97088df0d",
@@ -172,11 +181,12 @@
       "references": [
         "<48BFF97E.4010106@bio.ntnu.no>"
       ],
-      "body_plain": "On Thu, Sep 4, 2008 at 10:06 AM, Ivar Herfindal\n<ivar.herfindal at bio.ntnu.no> wrote:\n> Dear Mixed-list\n>\n> I am trying to fit a mixed linear model with the lmer-function in the\n> lme4-packages. After fitting the model, I get this warning:\n> Warning message:\n> In mer_finalize(ans) : iteration limit reached without convergence (9)\n>\n> By searching the R-archive, I found some sort of solution posted by Douglas\n> Bates (http://finzi.psych.upenn.edu/R/Rhelp02a/archive/138008.html) which\n> will provide a greater number of iterations. I therefore tried:\n\n> (newmodel <- .Call(\"mer_optimize\", mylmermodel, PACKAGE = \"lme4\"))\n\n> The \"FALSE\" argument in Douglas Bates suggestion caused an error message,\n> but it works fine without, and the model do now converge. However, I cannot\n> figure out how to get the model from the last part of the iterations. That\n> is, the .Call(\"mer_optimize\"...) only print the verbose from the fitting\n> process, but does not give an mer-object that I can evaluate and extract\n> random and fixed effects from. Does anyone know if this \"horrible hack\"\n> (Bates' own words) can give a mer-object or can I only use it to evaluate\n> how far my initial model was from convergence? I am sorry that I cannot\n> provide any example from my own data (the dataset is too large to attach),\n> but I assume that any solution should be independent of the model or data.\n\nAh, you are working with a very recent version of the lme4 package.  I\nwill commit another version of the lme4 package later this afternoon\nwith the ability to specify\n\nlmer(..., control = list(maxIter = 500))\n\nto increase the number of function evaluations.\n\nHowever, that \"horrible hack\" that I described previously would have\nupdated the value of mylmermodel to the new parameter values so you\nactually have the refitted model.  That is part of the horrible aspect\n- this is not supposed to happen in an R function.  An R function\nshould not change the value of its arguments but this one does.  The\nreason is efficiency - if the arguments were being copied to the\nresult at every iteration most of the time would be spent copying the\nstructure representing the model.  Especially with very large data\nsets like yours, things would slow down to a crawl.  So some of those\nC functions called with .Call, like \"mer_optimize\" here, do things\nthat they shouldn't.\n\n> Cheers\n>\n> Ivar\n>\n> SessionInfo\n> sessionInfo()\n> R version 2.7.2 (2008-08-25)\n> i386-pc-mingw32\n>\n> locale:\n> LC_COLLATE=Norwegian (Bokm?l)_Norway.1252;LC_CTYPE=Norwegian\n> (Bokm?l)_Norway.1252;LC_MONETARY=Norwegian\n> (Bokm?l)_Norway.1252;LC_NUMERIC=C;LC_TIME=Norwegian (Bokm?l)_Norway.1252\n>\n> attached base packages:\n> [1] stats     graphics  grDevices utils     datasets  methods   base\n> other attached packages:\n> [1] mgcv_1.4-1         splancs_2.01-24    sp_0.9-26\n>  lme4_0.999375-26   Matrix_0.999375-13 lattice_0.17-13\n> loaded via a namespace (and not attached):\n> [1] grid_2.7.2\n>>\n>\n>\n>",
+      "body_plain": "On Thu, Sep 4, 2008 at 10:06 AM, Ivar Herfindal\n<ivar.herfindal at bio.ntnu.no> wrote:\n> Dear Mixed-list\n>\n> I am trying to fit a mixed linear model with the lmer-function in the\n> lme4-packages. After fitting the model, I get this warning:\n> Warning message:\n> In mer_finalize(ans) : iteration limit reached without convergence (9)\n>\n> By searching the R-archive, I found some sort of solution posted by Douglas\n> Bates (http://finzi.psych.upenn.edu/R/Rhelp02a/archive/138008.html) which\n> will provide a greater number of iterations. I therefore tried:\n\n> (newmodel <- .Call(\"mer_optimize\", mylmermodel, PACKAGE = \"lme4\"))\n\n> The \"FALSE\" argument in Douglas Bates suggestion caused an error message,\n> but it works fine without, and the model do now converge. However, I cannot\n> figure out how to get the model from the last part of the iterations. That\n> is, the .Call(\"mer_optimize\"...) only print the verbose from the fitting\n> process, but does not give an mer-object that I can evaluate and extract\n> random and fixed effects from. Does anyone know if this \"horrible hack\"\n> (Bates' own words) can give a mer-object or can I only use it to evaluate\n> how far my initial model was from convergence? I am sorry that I cannot\n> provide any example from my own data (the dataset is too large to attach),\n> but I assume that any solution should be independent of the model or data.\n\nAh, you are working with a very recent version of the lme4 package.  I\nwill commit another version of the lme4 package later this afternoon\nwith the ability to specify\n\nlmer(..., control = list(maxIter = 500))\n\nto increase the number of function evaluations.\n\nHowever, that \"horrible hack\" that I described previously would have\nupdated the value of mylmermodel to the new parameter values so you\nactually have the refitted model.  That is part of the horrible aspect\n- this is not supposed to happen in an R function.  An R function\nshould not change the value of its arguments but this one does.  The\nreason is efficiency - if the arguments were being copied to the\nresult at every iteration most of the time would be spent copying the\nstructure representing the model.  Especially with very large data\nsets like yours, things would slow down to a crawl.  So some of those\nC functions called with .Call, like \"mer_optimize\" here, do things\nthat they shouldn't.\n\n> Cheers\n>\n> Ivar\n>\n> SessionInfo\n> sessionInfo()\n> R version 2.7.2 (2008-08-25)\n> i386-pc-mingw32\n>\n> locale:\n> LC_COLLATE=Norwegian (Bokmål)_Norway.1252;LC_CTYPE=Norwegian\n> (Bokmål)_Norway.1252;LC_MONETARY=Norwegian\n> (Bokmål)_Norway.1252;LC_NUMERIC=C;LC_TIME=Norwegian (Bokmål)_Norway.1252\n>\n> attached base packages:\n> [1] stats     graphics  grDevices utils     datasets  methods   base\n> other attached packages:\n> [1] mgcv_1.4-1         splancs_2.01-24    sp_0.9-26\n>  lme4_0.999375-26   Matrix_0.999375-13 lattice_0.17-13\n> loaded via a namespace (and not attached):\n> [1] grid_2.7.2\n>>\n>\n>\n>",
       "body_snippet": "On Thu, Sep 4, 2008 at 10:06 AM, Ivar Herfindal\n<ivar.herfindal at bio.ntnu.no> wrote:\n> Dear Mixed-list\n>\n> I am trying to fit a mixed linear model with the lmer-function in the\n> lme4-packages. Afte",
       "thread_id": "thread-b80199ac356a",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001354.html"
     },
     {
       "id": "msg-8ef4f524a021",
@@ -195,7 +205,8 @@
       "body_snippet": "Friends,\n\nI am running the ECLS dataset with lme (long story on why I couldn't use lmer; mostly political) and am having trouble.  Here's the model:\n\nm.null<-lme(MATH~TIME, random=~TIME|CHILDID, ecls,",
       "thread_id": "thread-b80199ac356a",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001355.html"
     },
     {
       "id": "msg-b6a49118d1a3",
@@ -214,7 +225,8 @@
       "body_snippet": "Hello!\n\nSorry to keep this going, but could you elaborate on the meaning of  \nthat output? I am asking this because I am trying to model my data  \nset, and with the same model, I get that output if I ",
       "thread_id": "thread-d55963e520e1",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001356.html"
     },
     {
       "id": "msg-d883b5a6ba5f",
@@ -232,7 +244,8 @@
       "body_snippet": "On 03/09/2008, at 1:34 PM, D Chaws wrote:\n\n> Hi all, I posted a long question for this the other day, but no one\n> has responded.  Here is a short version those of you who are very busy\n> might have t",
       "thread_id": "thread-9d0e52d0ef31",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001357.html"
     },
     {
       "id": "msg-1686ce81b75f",
@@ -252,7 +265,8 @@
       "body_snippet": "On Thu, Sep 4, 2008 at 3:31 PM, Roberts, Kyle <kyler at mail.smu.edu> wrote:\n> Friends,\n\n> I am running the ECLS dataset with lme (long story on why I couldn't use lmer; mostly political) and am havin",
       "thread_id": "thread-b80199ac356a",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001358.html"
     },
     {
       "id": "msg-d9dd3045edeb",
@@ -268,7 +282,8 @@
       "body_snippet": "Using lmer, I got the same error that Sundar got on August 4. I am using\nlmer_0.999375-24. Also, Doug, the C1_6SC0 is the ECLS weighting variable for\nthe 6th grade sample.\n\nThanks all,\nKyle\n\n> m.null<",
       "thread_id": "thread-b80199ac356a",
       "thread_depth": 4,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001359.html"
     },
     {
       "id": "msg-72aec3442206",
@@ -285,6 +300,7 @@
       "thread_id": "thread-72aec3442206",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001360.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080905/3f9cf9f5/attachment.pl"
       ]
@@ -303,7 +319,8 @@
       "body_snippet": "Hi,\n\nI want to fit a multivariate covariance pattern model by assuming a\nKronecker product structure kronecker(U,V) for the covariance matrix\n(Dimension pq x pq). This can be applied to multivariate l",
       "thread_id": "thread-0bf497d1f12d",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001361.html"
     },
     {
       "id": "msg-6460813ed839",
@@ -319,7 +336,8 @@
       "body_snippet": "For a nice discussion of this topic see p.459 of Gelman & Hill (2007).\n(see http://www.stat.columbia.edu/~gelman/)\n\n\nOn 8/31/08 8:52 AM, \"D Chaws\" <cat.dev.urandom at gmail.com> wrote:\n\n> Thanks so mu",
       "thread_id": "thread-6460813ed839",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001362.html"
     },
     {
       "id": "msg-3320b1c8d5a8",
@@ -337,7 +355,8 @@
       "body_snippet": "Dear Matthew,\n\nFirst of all I'm forwarding this to R-SIG-Mixed, which is a more\nappropriate list for your question.\nUsing a mixed effect with only 5 levels is a borderline situation.\nDouglas Bates rec",
       "thread_id": "thread-3320b1c8d5a8",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001363.html"
     },
     {
       "id": "msg-19e08ebc3c6f",
@@ -356,7 +375,8 @@
       "body_snippet": "Could this error be changed to just a warning, or could we have an option to skip this test?  I'm using lme4 to fit binomial mixed effects models that do have reasonable solutions but are tripped up b",
       "thread_id": "thread-19e08ebc3c6f",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001364.html"
     },
     {
       "id": "msg-8dc1f91b44d0",
@@ -376,7 +396,8 @@
       "body_snippet": "Douglas -\nI am taking up your reply to the question that Austin\nFrank asked on August 29.  I'd like to check that my\nunderstanding of the reply is correct.\n\nLooking at page 59 of Pinheiro & Bates.  \\t",
       "thread_id": "thread-8dc1f91b44d0",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001365.html"
     },
     {
       "id": "msg-a6f2cf78412d",
@@ -392,7 +413,8 @@
       "body_snippet": "Dear R users,\n\nI have a question about model design.\nOne group of 20 subjects run the A experiment, with 17 binary responses by subject.\nAn other group of 20 subjects run the 2 experiments B and C, wi",
       "thread_id": "thread-a6f2cf78412d",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001366.html"
     },
     {
       "id": "msg-a2d41322ff1b",
@@ -413,7 +435,8 @@
       "body_snippet": "On Wed, Sep 10, 2008 at 1:49 AM, John Maindonald\n<john.maindonald at anu.edu.au> wrote:\n> Douglas -\n> I am taking up your reply to the question that Austin\n> Frank asked on August 29.  I'd like to che",
       "thread_id": "thread-8dc1f91b44d0",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001367.html"
     },
     {
       "id": "msg-7a91bd6a30fc",
@@ -431,7 +454,8 @@
       "body_snippet": "I think we would need at least the output from traceback() to see\nwhere the error is occurring.  Better yet would be to have access to\nthe data so we could try out the model fits.  Sometimes these err",
       "thread_id": "thread-a6f2cf78412d",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001368.html"
     },
     {
       "id": "msg-169e150c6919",
@@ -447,7 +471,8 @@
       "body_snippet": "Dear lmers\n\nI am trying to get to grips using the functions mcmcsamp() and\nHPDintervals() to generate HPD confidence intervals for my parameter\nestimates for some simple mixed effects models. In order",
       "thread_id": "thread-169e150c6919",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001369.html"
     },
     {
       "id": "msg-4819653718bd",
@@ -465,7 +490,8 @@
       "body_snippet": "\"ST\" is the ratio of \"sigma-Rail\" to \"sigma\".\n\nTry the code below.  This approach handles simple models correctly,\nbut not more complex ones.  I'm sure I'll be scolded for accessing\nthe slots directly",
       "thread_id": "thread-169e150c6919",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001370.html"
     },
     {
       "id": "msg-0943c4b9dc36",
@@ -484,7 +510,8 @@
       "body_snippet": "> ----------------------------------------\n> From: Douglas Bates <bates at stat.wisc.edu>\n> Sent: Wed Sep 10 15:43:38 CEST 2008\n> To: Robert ESPESSER <Robert.Espesser at lpl-aix.fr>\n> Subject: Re: [R-",
       "thread_id": "thread-a6f2cf78412d",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001371.html"
     },
     {
       "id": "msg-e68acecae110",
@@ -505,7 +532,8 @@
       "body_snippet": "First off, thanks to all who have responded to the series of questions I\nasked!\n\nOn Fri, Aug 29 2008, Ken Beath wrote:\n\n> On 29/08/2008, at 2:47 PM, Austin Frank wrote:\n>\n>> 3) Is it the case that LR ",
       "thread_id": "thread-e68acecae110",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001372.html"
     },
     {
       "id": "msg-dc678c673e88",
@@ -521,7 +549,8 @@
       "body_snippet": "Hi,\n\n \tI'm about to estimate what I expect to be a fairly involved model,\nlike this one:\n\nl <- lmer(y ~ x1*x2*x3 + (x1*x2*x3|grp) )\n\n...the data set has 3,232,255 rows, for about 18000 grps, each of w",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001373.html"
     },
     {
       "id": "msg-e3eef1291dec",
@@ -538,6 +567,7 @@
       "thread_id": "thread-e3eef1291dec",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001374.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080911/4f196a90/attachment.pl"
       ]
@@ -556,7 +586,8 @@
       "body_snippet": "I'm running into an error when using lmer to fit models with no fixed effects terms.\n\nFor example, generating some data with\n\ndf$y <- with(df <- data.frame(i = gl(5, 5), b = rep(rnorm(5), each = 5)), ",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001377.html"
     },
     {
       "id": "msg-f4134bb89251",
@@ -574,7 +605,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nDUYME Florent wrote:\n> Dear R users\n> \n>  \n> \n> I use the following design : 3 complete blocks, in each of them several\n> varieties are randomly planted.",
       "thread_id": "thread-e3eef1291dec",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001375.html"
     },
     {
       "id": "msg-95e496186f28",
@@ -592,7 +624,8 @@
       "body_snippet": "Adam D. I. Kramer wrote:\n> Hi,\n> \n>     I'm about to estimate what I expect to be a fairly involved model,\n> like this one:\n> \n> l <- lmer(y ~ x1*x2*x3 + (x1*x2*x3|grp) )\n> \n> ...the data set has 3,23",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001376.html"
     },
     {
       "id": "msg-1fceabcef9a8",
@@ -611,7 +644,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 10:09 AM, Ben Bolker <bolker at ufl.edu> wrote:\n> Adam D. I. Kramer wrote:\n>> Hi,\n>>\n>>     I'm about to estimate what I expect to be a fairly involved model,\n>> like this one:",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001378.html"
     },
     {
       "id": "msg-bae515edd4d4",
@@ -629,7 +663,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 8:03 AM, Daniel Farewell\n<farewelld at cardiff.ac.uk> wrote:\n> I'm running into an error when using lmer to fit models with no fixed effects terms.\n>\n> For example, generating ",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001379.html"
     },
     {
       "id": "msg-03c4e61a1998",
@@ -649,6 +684,7 @@
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 2,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001380.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080911/b8cbd599/attachment.pl"
       ]
@@ -671,7 +707,8 @@
       "body_snippet": "Peter Dixon wrote:\n> On Sep 11, 2008, at 1:15 PM, Douglas Bates wrote:\n> \n>> I should definitely add a check on p to the validate method.  (In some\n>> ways I'm surprised that it got as far as mer_fina",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001381.html"
     },
     {
       "id": "msg-5db769db80cf",
@@ -691,7 +728,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 4:09 PM, Peter Dixon <peter.dixon at ualberta.ca> wrote:\n\n> I think it would make sense to consider a model in which E[Y] = 0 when\n> the data are (either explicitly or implicit",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001382.html"
     },
     {
       "id": "msg-1b9dc4155f1f",
@@ -710,6 +748,7 @@
       "thread_id": "thread-1b9dc4155f1f",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001389.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080911/fe5e307d/attachment.pl"
       ]
@@ -734,6 +773,7 @@
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 4,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001383.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080911/4e18f5c0/attachment.pl"
       ]
@@ -756,7 +796,8 @@
       "body_snippet": ">>  Roughly speaking: lmer and lmer2 aren't (I think) different any more,\n>> they were different branches of the same software.  They should both\n>> be much faster than lme.  glmer (from lme4) and glm",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001384.html"
     },
     {
       "id": "msg-d21587f3c8ba",
@@ -776,7 +817,8 @@
       "body_snippet": "On Thu, 11 Sep 2008, Douglas Bates wrote:\n\n> On Thu, Sep 11, 2008 at 10:09 AM, Ben Bolker <bolker at ufl.edu> wrote:\n>> Adam D. I. Kramer wrote:\n>>> Hi,\n>>>\n>>>     I'm about to estimate what I expect",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 3,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001385.html"
     },
     {
       "id": "msg-f5fedf064bc2",
@@ -792,7 +834,8 @@
       "body_snippet": "Choosing the identity link in glmer is the same as a linear model. You\ncan test for speed using system.time(), but there may be internal code\nreasons why one would prefer glmer over lmer, that I don't",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 4,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001386.html"
     },
     {
       "id": "msg-45c7794eadb5",
@@ -813,7 +856,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 4:06 PM, Daniel Ezra Johnson\n<danielezrajohnson at gmail.com> wrote:\n>>>  Roughly speaking: lmer and lmer2 aren't (I think) different any more,\n>>> they were different branches",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 4,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001387.html"
     },
     {
       "id": "msg-4fd072e168b4",
@@ -834,7 +878,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 4:12 PM, Adam D. I. Kramer\n<adik-rhelp at ilovebacon.org> wrote:\n>\n> On Thu, 11 Sep 2008, Douglas Bates wrote:\n>\n>> On Thu, Sep 11, 2008 at 10:09 AM, Ben Bolker <bolker at ufl.",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 4,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001388.html"
     },
     {
       "id": "msg-230d205114c0",
@@ -856,7 +901,8 @@
       "body_snippet": ">> so if my response is on a continuous scale, is there any difference between\n>>\n>> lmer(y~fixed+(1|random)) and\n>> glmer(y~fixed+(1|random),family=\"gaussian\") ?\n>>\n>> the output is the same but sinc",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 5,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001390.html"
     },
     {
       "id": "msg-687105127aba",
@@ -879,7 +925,8 @@
       "body_snippet": "On Thu, Sep 11, 2008 at 4:56 PM, Daniel Ezra Johnson\n<danielezrajohnson at gmail.com> wrote:\n>>> so if my response is on a continuous scale, is there any difference between\n>>>\n>>> lmer(y~fixed+(1|ran",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 6,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001391.html"
     },
     {
       "id": "msg-52f476f4ef65",
@@ -901,7 +948,8 @@
       "body_snippet": "On Thu, 11 Sep 2008, Douglas Bates wrote:\n\n>> ...I assume that this means that for iteration 0, those are the estimated\n>> parameters, and there are 36 of them. It appears to be completing an\n>> itera",
       "thread_id": "thread-dc678c673e88",
       "thread_depth": 5,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001392.html"
     },
     {
       "id": "msg-32018a5bcc64",
@@ -923,7 +971,8 @@
       "body_snippet": "On 11 Sep 2008, at 22:06, Peter Dixon wrote:\n\n>\n> On Sep 11, 2008, at 2:15 PM, Andy Fugard wrote:\n>\n>> Peter Dixon wrote:\n>>> On Sep 11, 2008, at 1:15 PM, Douglas Bates wrote:\n>>>> I should definitely",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 5,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001393.html"
     },
     {
       "id": "msg-ff184c975063",
@@ -946,7 +995,8 @@
       "body_snippet": "Not including an intercept term can indeed induce\nspurious correlation in linear regression, this\nissue is reviewed in Richard Kronmal's excellent paper\n\n Spurious Correlation and the Fallacy of the R",
       "thread_id": "thread-ba05d69b73ec",
       "thread_depth": 6,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001394.html"
     },
     {
       "id": "msg-963b4a171a94",
@@ -962,7 +1012,8 @@
       "body_snippet": "Dear mixed-up R world,\n\nI am fitting a lmm model in \"nlme\" package in R version 2.6.0 to my population growth data with the following structure:\n\nResponse:       population growth between two sequenti",
       "thread_id": "thread-963b4a171a94",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001395.html"
     },
     {
       "id": "msg-b93dcaa70e5d",
@@ -977,11 +1028,12 @@
         "<mailman.26072.1221164130.4655.r-sig-mixed-models@r-project.org>",
         "<27E3AEC2-E3A0-40BA-A3CE-C9BBECBBFF1D@gmail.com>"
       ],
-      "body_plain": "I wonder do you get something analogous if you just stick in a Gaussian \ndistributed x, just as a way to get p > 0 for fit0.\n\n   > df$y <- with(df <- data.frame(i = gl(10, 10), b = rep(25 +\n   >   rnorm(10), each = 10)), b + rnorm(100))\n   > df$x = rnorm(100,0,5)\n   >\n   > fit1 <- lmer(y ~ 1 + x + (1 | i), df, REML=F)\n   > fit0 <- lmer(y ~ 0 + x + (1 | i), df, REML=F)\n\nSo the intercept in fit1 != 0 (by design):\n\n   > fixef(fit1)[1]\n   (Intercept)\n            25\n\nAnd indeed on average the random effect estimates in fit0 are about 25 \nbigger than they were in fit1:\n\n   > summary(ranef(fit0)$i - ranef(fit1)$i)\n     (Intercept)\n    Min.   :24.4\n    1st Qu.:24.5\n    Median :24.6\n    Mean   :24.6\n    3rd Qu.:24.6\n    Max.   :24.8\n\nThe residuals have the same variance in both fit0 and fit1, but the \nvariance of i is much larger as you'd expect:\n\n   > summary(fit1)\n   ...\n   Random effects:\n    Groups   Name        Variance Std.Dev.\n    i        (Intercept) 0.379    0.616\n    Residual             0.790    0.889\n   ...\n\n   > summary(fit0)\n   ...\n   Random effects:\n    Groups   Name        Variance Std.Dev.\n    i        (Intercept) 605.18   24.600\n    Residual               0.79    0.889\n   ...\n\nBut fit1 seems better by AIC, BIC, and the LLR-test:\n\n   > anova(fit0,fit1)\n   ...\n        Df  AIC  BIC logLik Chisq Chi Df Pr(>Chisq)\n   fit0  3  356  363   -175\n   fit1  4  286  296   -139  71.9      1     <2e-16 ***\n\nSo the variance of all the random effects, not only the residuals, \naffects the fit(?).  Dunno if this is an artefact of the x ~ N(0,5).\n\nTrying again with the intercept at 0, then (most of the time!) there's \nno difference between the models:\n\n   > df$y <- with(df <- data.frame(i = gl(10, 10), b = rep(0 + rnorm(10),\n   >   each = 10)), b + rnorm(100))\n   > df$x = rnorm(100,0,5)\n   >\n   > fit1 <- lmer(y ~ 1 + x + (1 | i), df, REML=F)\n   > fit0 <- lmer(y ~ 0 + x + (1 | i), df, REML=F)\n   >\n   > anova(fit0,fit1)\n   Data: df\n   Models:\n   ...\n        Df  AIC  BIC logLik Chisq Chi Df Pr(>Chisq)\n   fit0  3  299  306   -146\n   fit1  4  300  311   -146  0.25      1       0.62\n\nAndy\n\n\nJeff Powell wrote:\n> \n> On Sep 11, 2008, at 10:15 PM, r-sig-mixed-models-request at r-project.org \n> <mailto:r-sig-mixed-models-request at r-project.org> wrote:\n> ------------------------------\n> ------------------------------\n> \n>> Message: 7\n>> Date: Thu, 11 Sep 2008 21:15:21 +0100\n>> From: Andy Fugard <a.fugard at ed.ac.uk <mailto:a.fugard at ed.ac.uk>>\n>> Subject: Re: [R-sig-ME] models with no fixed effects\n>> To: Peter Dixon <peter.dixon at ualberta.ca <mailto:peter.dixon at ualberta.ca>>\n>> Cc: r-sig-mixed-models at r-project.org \n>> <mailto:r-sig-mixed-models at r-project.org>\n>> Message-ID: <48C97C59.6050103 at ed.ac.uk <mailto:48C97C59.6050103 at ed.ac.uk>>\n>> Content-Type: text/plain; charset=ISO-8859-1; format=flowed\n>>\n>> Peter Dixon wrote:\n>>> On Sep 11, 2008, at 1:15 PM, Douglas Bates wrote:\n>>>\n>>>> I should definitely add a check on p to the validate method.  (In some\n>>>> ways I'm surprised that it got as far as mer_finalize before kicking\n>>>> an error).  I suppose that p = 0 could be allowed and I could add some\n>>>> conditional code in the appropriate places but does it really make\n>>>> sense to have p = 0?  The random effects are defined to have mean\n>>>> zero.  If you have p = 0 that means that E[Y] = 0.  I would have\n>>>> difficulty imagining when I would want to make that restriction.\n>>>>\n>>>> Let me make this offer - if someone could suggest circumstances in\n>>>> which such a model would make sense, I will add the appropriate\n>>>> conditional code to allow for p = 0. For the time being I will just\n>>>> add a requirement of  p >  0 to the validate method.\n>>>\n>>> I think it would make sense to consider a model in which E[Y] = 0 when  \n>>> the data are (either explicitly or implicitly) difference scores. (In  \n>>> fact, I tried to fit such a model with lmer a few months ago and ran  \n>>> into exactly this problem.)\n>>\n>> Wouldn't you still need the intercept?  The fixed effect tells you \n>> whether on average the difference differs from zero.  The random effect \n>> estimates tell you by how much each individual's difference differs from \n>> the mean difference.\n> \n> If you are looking for correlations between difference scores, the model \n> needs to be constrained to pass through the intercept. Otherwise the fit \n> is dependent on the direction in which the differences are calculated \n> (positive/negative scores). I ran into this error earlier this week \n> while trying a mixed model to evaluate some phylogenetically-independent \n> contrasts.\n> \n> Jeff\n> \n> \n> \n> __________________________________\n> \n> Jeff R. Powell, Ph.D.\n> Postdoctoral Fellow\n> Freie Universit?t Berlin\n> Intitut f?r Biologie - ?kologie der Pflanzen\n> Altensteinstra?e 6\n> 14195 Berlin\n> Germany\n> \n> Ph: ++49 (0)30 838-53145\n> Fx: ++49 (0)30 838-55434\n> skype: jeff-powell\n> jeffpowell2 at gmail.com <mailto:jeffpowell2 at gmail.com>\n> \n> http://jeffpowell2.googlepages.com/\n> __________________________________\n> \n\n\n-- \nAndy Fugard, Postgraduate Research Student\nPsychology (Room S6), The University of Edinburgh,\n   7 George Square, Edinburgh EH8 9JZ, UK\n+44 (0)78 123 87190   http://figuraleffect.googlepages.com/\n\nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "I wonder do you get something analogous if you just stick in a Gaussian \ndistributed x, just as a way to get p > 0 for fit0.\n\n   > df$y <- with(df <- data.frame(i = gl(10, 10), b = rep(25 +\n   >   rnorm(10), each = 10)), b + rnorm(100))\n   > df$x = rnorm(100,0,5)\n   >\n   > fit1 <- lmer(y ~ 1 + x + (1 | i), df, REML=F)\n   > fit0 <- lmer(y ~ 0 + x + (1 | i), df, REML=F)\n\nSo the intercept in fit1 != 0 (by design):\n\n   > fixef(fit1)[1]\n   (Intercept)\n            25\n\nAnd indeed on average the random effect estimates in fit0 are about 25 \nbigger than they were in fit1:\n\n   > summary(ranef(fit0)$i - ranef(fit1)$i)\n     (Intercept)\n    Min.   :24.4\n    1st Qu.:24.5\n    Median :24.6\n    Mean   :24.6\n    3rd Qu.:24.6\n    Max.   :24.8\n\nThe residuals have the same variance in both fit0 and fit1, but the \nvariance of i is much larger as you'd expect:\n\n   > summary(fit1)\n   ...\n   Random effects:\n    Groups   Name        Variance Std.Dev.\n    i        (Intercept) 0.379    0.616\n    Residual             0.790    0.889\n   ...\n\n   > summary(fit0)\n   ...\n   Random effects:\n    Groups   Name        Variance Std.Dev.\n    i        (Intercept) 605.18   24.600\n    Residual               0.79    0.889\n   ...\n\nBut fit1 seems better by AIC, BIC, and the LLR-test:\n\n   > anova(fit0,fit1)\n   ...\n        Df  AIC  BIC logLik Chisq Chi Df Pr(>Chisq)\n   fit0  3  356  363   -175\n   fit1  4  286  296   -139  71.9      1     <2e-16 ***\n\nSo the variance of all the random effects, not only the residuals, \naffects the fit(?).  Dunno if this is an artefact of the x ~ N(0,5).\n\nTrying again with the intercept at 0, then (most of the time!) there's \nno difference between the models:\n\n   > df$y <- with(df <- data.frame(i = gl(10, 10), b = rep(0 + rnorm(10),\n   >   each = 10)), b + rnorm(100))\n   > df$x = rnorm(100,0,5)\n   >\n   > fit1 <- lmer(y ~ 1 + x + (1 | i), df, REML=F)\n   > fit0 <- lmer(y ~ 0 + x + (1 | i), df, REML=F)\n   >\n   > anova(fit0,fit1)\n   Data: df\n   Models:\n   ...\n        Df  AIC  BIC logLik Chisq Chi Df Pr(>Chisq)\n   fit0  3  299  306   -146\n   fit1  4  300  311   -146  0.25      1       0.62\n\nAndy\n\n\nJeff Powell wrote:\n> \n> On Sep 11, 2008, at 10:15 PM, r-sig-mixed-models-request at r-project.org \n> <mailto:r-sig-mixed-models-request at r-project.org> wrote:\n> ------------------------------\n> ------------------------------\n> \n>> Message: 7\n>> Date: Thu, 11 Sep 2008 21:15:21 +0100\n>> From: Andy Fugard <a.fugard at ed.ac.uk <mailto:a.fugard at ed.ac.uk>>\n>> Subject: Re: [R-sig-ME] models with no fixed effects\n>> To: Peter Dixon <peter.dixon at ualberta.ca <mailto:peter.dixon at ualberta.ca>>\n>> Cc: r-sig-mixed-models at r-project.org \n>> <mailto:r-sig-mixed-models at r-project.org>\n>> Message-ID: <48C97C59.6050103 at ed.ac.uk <mailto:48C97C59.6050103 at ed.ac.uk>>\n>> Content-Type: text/plain; charset=ISO-8859-1; format=flowed\n>>\n>> Peter Dixon wrote:\n>>> On Sep 11, 2008, at 1:15 PM, Douglas Bates wrote:\n>>>\n>>>> I should definitely add a check on p to the validate method.  (In some\n>>>> ways I'm surprised that it got as far as mer_finalize before kicking\n>>>> an error).  I suppose that p = 0 could be allowed and I could add some\n>>>> conditional code in the appropriate places but does it really make\n>>>> sense to have p = 0?  The random effects are defined to have mean\n>>>> zero.  If you have p = 0 that means that E[Y] = 0.  I would have\n>>>> difficulty imagining when I would want to make that restriction.\n>>>>\n>>>> Let me make this offer - if someone could suggest circumstances in\n>>>> which such a model would make sense, I will add the appropriate\n>>>> conditional code to allow for p = 0. For the time being I will just\n>>>> add a requirement of  p >  0 to the validate method.\n>>>\n>>> I think it would make sense to consider a model in which E[Y] = 0 when  \n>>> the data are (either explicitly or implicitly) difference scores. (In  \n>>> fact, I tried to fit such a model with lmer a few months ago and ran  \n>>> into exactly this problem.)\n>>\n>> Wouldn't you still need the intercept?  The fixed effect tells you \n>> whether on average the difference differs from zero.  The random effect \n>> estimates tell you by how much each individual's difference differs from \n>> the mean difference.\n> \n> If you are looking for correlations between difference scores, the model \n> needs to be constrained to pass through the intercept. Otherwise the fit \n> is dependent on the direction in which the differences are calculated \n> (positive/negative scores). I ran into this error earlier this week \n> while trying a mixed model to evaluate some phylogenetically-independent \n> contrasts.\n> \n> Jeff\n> \n> \n> \n> __________________________________\n> \n> Jeff R. Powell, Ph.D.\n> Postdoctoral Fellow\n> Freie Universität Berlin\n> Intitut für Biologie - Ökologie der Pflanzen\n> Altensteinstraße 6\n> 14195 Berlin\n> Germany\n> \n> Ph: ++49 (0)30 838-53145\n> Fx: ++49 (0)30 838-55434\n> skype: jeff-powell\n> jeffpowell2 at gmail.com <mailto:jeffpowell2 at gmail.com>\n> \n> http://jeffpowell2.googlepages.com/\n> __________________________________\n> \n\n\n-- \nAndy Fugard, Postgraduate Research Student\nPsychology (Room S6), The University of Edinburgh,\n   7 George Square, Edinburgh EH8 9JZ, UK\n+44 (0)78 123 87190   http://figuraleffect.googlepages.com/\n\nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "I wonder do you get something analogous if you just stick in a Gaussian \ndistributed x, just as a way to get p > 0 for fit0.\n\n   > df$y <- with(df <- data.frame(i = gl(10, 10), b = rep(25 +\n   >   rno",
       "thread_id": "thread-1b9dc4155f1f",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001396.html"
     },
     {
       "id": "msg-c8dd689591e4",
@@ -997,7 +1049,8 @@
       "body_snippet": "I've read with interest the various arguments for and against models with no fixed effects! My\nmotivation for fitting such models was actually rather mundane, and hopefully uncontroversial: I\nwant to ",
       "thread_id": "thread-c8dd689591e4",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001397.html"
     },
     {
       "id": "msg-71d9e876b491",
@@ -1013,7 +1066,8 @@
       "body_snippet": "Hello,\n\n \tI'm interested in making predictions from an lmer result:\n\n> class(p1.lmer.additive)\n[1] \"mer\"\nattr(,\"package\")\n[1] \"lme4\"\n\n...naturally, I tried predict(p1.lmer.additive,newdata), but was t",
       "thread_id": "thread-71d9e876b491",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001398.html"
     },
     {
       "id": "msg-eaef76ecd4e6",
@@ -1030,6 +1084,7 @@
       "thread_id": "thread-eaef76ecd4e6",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001399.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080916/6323578c/attachment.pl"
       ]
@@ -1050,7 +1105,8 @@
       "body_snippet": "On 16/09/2008, at 3:44 PM, David.Ramsey at dse.vic.gov.au wrote:\n\n> Hi All,  I have recently upgraded my version of lme4 and redid an old\n> analysis.  The data are counts and are overdispersed and an ",
       "thread_id": "thread-eaef76ecd4e6",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001400.html"
     },
     {
       "id": "msg-a665413684d2",
@@ -1067,6 +1123,7 @@
       "thread_id": "thread-a665413684d2",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001401.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080916/d89f06a3/attachment.pl"
       ]
@@ -1087,7 +1144,8 @@
       "body_snippet": "abline() does not return anything, it justs adds lines to the existing \nplot; this is why you obtain NULL from the by() statement. One option to \navoid printing is to use invisible(), e.g.,\n\ninvisible",
       "thread_id": "thread-a665413684d2",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001402.html"
     },
     {
       "id": "msg-c9b7fa4c7bba",
@@ -1106,7 +1164,8 @@
       "body_snippet": "On Tue, 16 Sep 2008 15:27:36 +0200,\nDimitris Rizopoulos <d.rizopoulos at erasmusmc.nl> wrote:\n\n> abline() does not return anything, it justs adds lines to the existing\n> plot; this is why you obtain N",
       "thread_id": "thread-a665413684d2",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001403.html"
     },
     {
       "id": "msg-ddee60f8ba4d",
@@ -1124,7 +1183,8 @@
       "body_snippet": "On Tue, Sep 16, 2008 at 12:44 AM,  <David.Ramsey at dse.vic.gov.au> wrote:\n> Hi All,  I have recently upgraded my version of lme4 and redid an old\n> analysis.  The data are counts and are overdisperse",
       "thread_id": "thread-eaef76ecd4e6",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001404.html"
     },
     {
       "id": "msg-78adee46a9cd",
@@ -1141,6 +1201,7 @@
       "thread_id": "thread-eaef76ecd4e6",
       "thread_depth": 2,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001405.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080917/8b0791dc/attachment.pl"
       ]
@@ -1159,7 +1220,8 @@
       "body_snippet": "I am running an lmer model using a poisson distribution and log link.  However, when I ask REML=TRUE I do not get a REML estimate only the ML estimate.\n\nFor example:\nmix3<-lmer(RoundedOverlap~Sex+Marg",
       "thread_id": "thread-1754762296a1",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001406.html"
     },
     {
       "id": "msg-bcf9d57b2ae6",
@@ -1177,7 +1239,8 @@
       "body_snippet": "On Wed, Sep 17, 2008 at 7:11 AM, Renwick, A. R. <a.renwick at abdn.ac.uk> wrote:\n> I am running an lmer model using a poisson distribution and log link.  However, when I ask REML=TRUE I do not get a R",
       "thread_id": "thread-1754762296a1",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001407.html"
     },
     {
       "id": "msg-346176cf6053",
@@ -1193,7 +1256,8 @@
       "body_snippet": "Hi,\nThis may be well known, but it was mucking me up.\n\n> fm1 <- lmer(Reaction ~ Days + (1|Subject) + (0+Days|Subject), sleepstudy)\n> ttt<-mcmcsamp(fm1,n=1000)\n> fm1 <- lmer(Reaction ~ Days + (1+Days|S",
       "thread_id": "thread-346176cf6053",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001408.html"
     },
     {
       "id": "msg-cde0978dc566",
@@ -1211,7 +1275,8 @@
       "body_snippet": "On Wed, Sep 17, 2008 at 11:05 AM, Nicholas Lewin-Koh\n<lewin-koh.nicholas at gene.com> wrote:\n\n> Hi,\n> This may be well known, but it was mucking me up.\n\n>> fm1 <- lmer(Reaction ~ Days + (1|Subject) + ",
       "thread_id": "thread-346176cf6053",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001409.html"
     },
     {
       "id": "msg-7715df49582a",
@@ -1230,7 +1295,8 @@
       "body_snippet": "Duhh, that should have occurred to me, if I'd just looked at the model\nouput. Thanks\n\nNicholas\n\n-----Original Message-----\nFrom: dmbates at gmail.com [mailto:dmbates at gmail.com] On Behalf Of Douglas",
       "thread_id": "thread-346176cf6053",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001410.html"
     },
     {
       "id": "msg-c6e8eb3fbcde",
@@ -1246,7 +1312,8 @@
       "body_snippet": "Dear colleagues,\n\n  \tI have an interest in what I would call \"heirarchical multivariate\nmodeling.\" In a sense, I'm interested in extending the mixed model procedure\nto an \"unpredicted\" multivariate ca",
       "thread_id": "thread-c6e8eb3fbcde",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001411.html"
     },
     {
       "id": "msg-96709f1ad267",
@@ -1269,7 +1336,8 @@
       "body_snippet": "First of all I'm forwarding this mail to the R-SIG-mixed-models, which\nis more appropriate to your question.\n\nRemember that family = bionomial uses by default the logit link. Hence\nall parameters will",
       "thread_id": "thread-96709f1ad267",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001412.html"
     },
     {
       "id": "msg-146b7177d4d0",
@@ -1285,7 +1353,8 @@
       "body_snippet": "Dear All\nSorry but I have another question!\nI am running a GLMM with poisson distribution and log link and I was wondering:\n1) how to get the scale parameter and if there is a reason why the new versi",
       "thread_id": "thread-146b7177d4d0",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001413.html"
     },
     {
       "id": "msg-fc24fcaf9ce8",
@@ -1302,6 +1371,7 @@
       "thread_id": "thread-fc24fcaf9ce8",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001414.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080919/a1a65ab4/attachment.pl"
       ]
@@ -1322,7 +1392,8 @@
       "body_snippet": "Dear All,\n\nStill trying to use the weights function with the ECLS (Early Child Longitudinal Study) with lmer. I think that I have identified the problem, but I am not sure. If a person has a \"0\" for a",
       "thread_id": "thread-fc24fcaf9ce8",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001415.html"
     },
     {
       "id": "msg-f8cfa679b239",
@@ -1340,7 +1411,8 @@
       "body_snippet": "On Fri, Sep 19, 2008 at 10:25 AM, Rense Nieuwenhuis\n<contact at rensenieuwenhuis.nl> wrote:\n> Dear all,\n>\n> while working on a project regarding a new approach at evaluating\n> measures on influential ",
       "thread_id": "thread-fc24fcaf9ce8",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001416.html"
     },
     {
       "id": "msg-271248c5460a",
@@ -1362,7 +1434,8 @@
       "body_snippet": "On 11/09/2008, at 5:01 AM, Austin Frank wrote:\n\n> First off, thanks to all who have responded to the series of  \n> questions I\n> asked!\n>\n> On Fri, Aug 29 2008, Ken Beath wrote:\n>\n>> On 29/08/2008, at",
       "thread_id": "thread-e68acecae110",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001417.html"
     },
     {
       "id": "msg-f7afd06515a2",
@@ -1380,7 +1453,8 @@
       "body_snippet": "On 19/09/2008, at 8:41 AM, Adam D. I. Kramer wrote:\n\n> Dear colleagues,\n>\n> \tI have an interest in what I would call \"heirarchical multivariate\n> modeling.\" In a sense, I'm interested in extending the",
       "thread_id": "thread-c6e8eb3fbcde",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001418.html"
     },
     {
       "id": "msg-6562c849d505",
@@ -1399,7 +1473,8 @@
       "body_snippet": "On Tue, 23 Sep 2008, Ken Beath wrote:\n\n> On 19/09/2008, at 8:41 AM, Adam D. I. Kramer wrote:\n>\n>> Dear colleagues,\n>>\n>> \tMy actual interest is in 1. estimating an aggregate PCA based on the\n>> factor",
       "thread_id": "thread-c6e8eb3fbcde",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001419.html"
     },
     {
       "id": "msg-2d321356f177",
@@ -1416,6 +1491,7 @@
       "thread_id": "thread-2d321356f177",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001420.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080924/1aa05be0/attachment.pl"
       ]
@@ -1434,7 +1510,8 @@
       "body_snippet": "Hi,\nThe suggested (though horrible) hack to provide a greater number of\niterations (see digest-list: /Thu Jul 10 18:49:15 CEST 2008/)\n\n.Call(\"mer_optimize\", <failed_lmer_fit>, FALSE, PACKAGE = \"lme4\")",
       "thread_id": "thread-327b47e31171",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001421.html"
     },
     {
       "id": "msg-f24066854d1f",
@@ -1452,7 +1529,8 @@
       "body_snippet": "On Thu, Sep 25, 2008 at 3:36 AM, Stijn Ruiter <s.ruiter at maw.ru.nl> wrote:\n> Hi,\n> The suggested (though horrible) hack to provide a greater number of\n> iterations (see digest-list: /Thu Jul 10 18:4",
       "thread_id": "thread-327b47e31171",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001422.html"
     },
     {
       "id": "msg-ac6350033b8d",
@@ -1468,7 +1546,8 @@
       "body_snippet": "These are of the better-user-interface variety; features that are common to all \nthe other model functions that I know of, but seem to be missing in lmer.  One \ncould argue that \"shortfalls\" would be ",
       "thread_id": "thread-ac6350033b8d",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001423.html"
     },
     {
       "id": "msg-053af31f9f8a",
@@ -1485,6 +1564,7 @@
       "thread_id": "thread-053af31f9f8a",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001424.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080926/ba56a39e/attachment.pl"
       ]
@@ -1503,7 +1583,8 @@
       "body_snippet": "Hi all,\n\nI'm trying to fit a marginal (longitudinal) model with an exponential serial correlation function to the Orange tree data set. However, R crashes frequently when using the gnls() function. Wi",
       "thread_id": "thread-f54e42401b83",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001425.html"
     },
     {
       "id": "msg-090356004780",
@@ -1522,7 +1603,8 @@
       "body_snippet": "On Tue, 2008-09-23 at 09:53 +1000, Ken Beath wrote:\n> On 19/09/2008, at 8:41 AM, Adam D. I. Kramer wrote:\n> \n> > Dear colleagues,\n> >\n> > \tI have an interest in what I would call \"heirarchical multiva",
       "thread_id": "thread-c6e8eb3fbcde",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001426.html"
     },
     {
       "id": "msg-af676960b28e",
@@ -1538,7 +1620,8 @@
       "body_snippet": "Dear lmer group,\n\nI have been fitting a very simple mixed logistic regression with lmer\nThe outcome is educational impairment (edu.cat: 0,1) in students and the \npredictors are age and a base-line men",
       "thread_id": "thread-af676960b28e",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001427.html"
     },
     {
       "id": "msg-075f679e9fe2",
@@ -1556,7 +1639,8 @@
       "body_snippet": "On Thu, Sep 25, 2008 at 12:51 PM, Terry Therneau <therneau at mayo.edu> wrote:\n> These are of the better-user-interface variety; features that are common to all\n> the other model functions that I know",
       "thread_id": "thread-ac6350033b8d",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001428.html"
     },
     {
       "id": "msg-86767615aab1",
@@ -1574,7 +1658,8 @@
       "body_snippet": ">>>>> \"VW\" == Viechtbauer Wolfgang (STAT) <Wolfgang.Viechtbauer at STAT.unimaas.nl>\n>>>>>     on Fri, 26 Sep 2008 18:00:19 +0200 writes:\n\n    VW> Hi all, I'm trying to fit a marginal (longitudinal)\n  ",
       "thread_id": "thread-f54e42401b83",
       "thread_depth": 1,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001429.html"
     },
     {
       "id": "msg-e9ef2911d339",
@@ -1590,7 +1675,8 @@
       "body_snippet": "I spent a bit of time this weekend running simulations\nof quasi-likelihood estimation in glmer. The results\nare posted at\n\nhttp://www.zoo.ufl.edu/bolker/glmm/quasitest.pdf\nhttp://www.zoo.ufl.edu/bolke",
       "thread_id": "thread-e9ef2911d339",
       "thread_depth": 0,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001430.html"
     },
     {
       "id": "msg-b2e485cce6cc",
@@ -1609,7 +1695,8 @@
       "body_snippet": "When I run this under valgrind with gctorture(TRUE) I see memory\nmisuse in mat_mult (matrix.c, line 82):\n% R-2.8.0-dev --debugger=valgrind --debugger-args=--db-attach=yes\n... copyright blah blah ...\n>",
       "thread_id": "thread-f54e42401b83",
       "thread_depth": 2,
-      "month": "2008-09"
+      "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001431.html"
     },
     {
       "id": "msg-920df143c359",
@@ -1626,6 +1713,7 @@
       "thread_id": "thread-920df143c359",
       "thread_depth": 0,
       "month": "2008-09",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001432.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080930/cb90f44a/attachment.pl"
       ]

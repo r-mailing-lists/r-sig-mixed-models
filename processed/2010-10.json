@@ -18,11 +18,12 @@
         "<AANLkTimc2hR1Br247tCAGeNnvWXcSb_hjBK7s90nmzW5@mail.gmail.com>",
         "<AANLkTi=kXkb-kah9KRhA31=tBcwaNiMWMkVpDTYG4=mp@mail.gmail.com>"
       ],
-      "body_plain": "Douglas Bates <bates at ...> writes:\n\n> \n> On Thu, Sep 30, 2010 at 3:29 PM, Douglas Bates <bates at ...> \nwrote:\n> > Unfortunately an nlmer model is not appropriate for a binary \nresponse,\n> > because it doesn't appropriately weight the residuals.\n> >\n> > Incorporating a non-zero guessing parameter requires a \ngeneralized\n> > nonlinear mixed model if you need to estimate the guessing \nparameter.\n> > The long term plan is to allow such a model. ?This is the \nreason that\n> > Martin and I worked on factoring out the internal code \ndealing with\n> > different kinds of models for the expected response. ?\nNonlinear \nmodels\n> > affect these in one way and generalized linear models \nin another \nso\n> > you need to chain these effects.\n> >\n> > For the particular case that Robert is considering, in \nwhich the\n> > guessing parameter is fixed at 0.33 I think it may be \npossible to use\n> > the mafc.logit link from the psyphy package with lme4a, the\n> > development version of lme4. ?I am currently installing the \nnecessary\n> > packages to see if I can make it work. ?My thanks to Robert \nfor making\n> > the data available so we can test it.\n> \n> It wasn't as easy as I had hoped it would be.  I'm getting \nan error\n> when evaluating the linkfun (and, presumably, will get \nsuch an error\n> for all the other functions in the family).  It probably has \nto do\n> with the environment in which the function is evaluated \nin that it\n> can't see the value of 'm'.\n> \n> I'm not sure if I will be able to fix it in a reasonable \namount of\n> time (I should be grading assignments from one of \nmy classes right\n> now).\n\nFirst, let me say thanks for putting some time into this issue,\n though I can hear you; it's time that you don't have.\n\nIf either you are Martin can suggest some way that I could modify\nthe mafc functions in psyphy to make m visible, I would be\nhappy to change them, provided they still work with glm, or I would\njust define special ones for mixed effects models, but that wouldn't\nbe as efficient.  For example, I would think that defining functions with\nfixed m for 2, 3, and 4 (and possibly 8) would cover about 99% of \nthe cases in my field, but I can't speak for others.  In fact, would the \nfollowing work for the case m = 3 in your modified code,\n\nmafc.logit3 <- function () \n{\n\n    linkfun <- function(mu) {\n        mu <- pmax(mu, 1/3 + .Machine$double.eps)\n        qlogis((3 * mu - 1)/2)\n    }\n    linkinv <- function(eta) {\n        1/3 + (2/3) * .Call(\"logit_linkinv\", eta, PACKAGE = \"stats\")\n    }\n    mu.eta <- function(eta) (2/3) * .Call(\"logit_mu_eta\", \n        eta, PACKAGE = \"stats\")\n    valideta <- function(eta) TRUE\n    link <- paste(\"mafc.logit()\", sep = \"\")\n    structure(list(linkfun = linkfun, linkinv = linkinv, mu.eta = mu.eta, \n        valideta = valideta, name = link), class = \"link-glm\")\n}\n\n\n\nFinally, there is also the ecc2 data set in the psyphy package, if you \nneed another data set for testing.  It is from a 4-alternative experiment\nin which an obtserver had to choose between 1 of 4 positions at which a \nlow contrast letter appeared and then identify it as 1 of 4 possible letters. \nIt gives the aggrergated proportion correct, not the individual binary \nresponses, but I could dig them out (I still have all that data), if binary \nresponses were preferred.\n\nGood luck.\n\nbest,\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Douglas Bates <bates at ...> writes:\n\n> \n> On Thu, Sep 30, 2010 at 3:29 PM, Douglas Bates <bates at ...> \nwrote:\n> > Unfortunately an nlmer model is not appropriate for a binary \nresponse,\n> > because it doesn't appropriately weight the residuals.\n> >\n> > Incorporating a non-zero guessing parameter requires a \ngeneralized\n> > nonlinear mixed model if you need to estimate the guessing \nparameter.\n> > The long term plan is to allow such a model.  This is the \nreason that\n> > Martin and I worked on factoring out the internal code \ndealing with\n> > different kinds of models for the expected response.  \nNonlinear \nmodels\n> > affect these in one way and generalized linear models \nin another \nso\n> > you need to chain these effects.\n> >\n> > For the particular case that Robert is considering, in \nwhich the\n> > guessing parameter is fixed at 0.33 I think it may be \npossible to use\n> > the mafc.logit link from the psyphy package with lme4a, the\n> > development version of lme4.  I am currently installing the \nnecessary\n> > packages to see if I can make it work.  My thanks to Robert \nfor making\n> > the data available so we can test it.\n> \n> It wasn't as easy as I had hoped it would be.  I'm getting \nan error\n> when evaluating the linkfun (and, presumably, will get \nsuch an error\n> for all the other functions in the family).  It probably has \nto do\n> with the environment in which the function is evaluated \nin that it\n> can't see the value of 'm'.\n> \n> I'm not sure if I will be able to fix it in a reasonable \namount of\n> time (I should be grading assignments from one of \nmy classes right\n> now).\n\nFirst, let me say thanks for putting some time into this issue,\n though I can hear you; it's time that you don't have.\n\nIf either you are Martin can suggest some way that I could modify\nthe mafc functions in psyphy to make m visible, I would be\nhappy to change them, provided they still work with glm, or I would\njust define special ones for mixed effects models, but that wouldn't\nbe as efficient.  For example, I would think that defining functions with\nfixed m for 2, 3, and 4 (and possibly 8) would cover about 99% of \nthe cases in my field, but I can't speak for others.  In fact, would the \nfollowing work for the case m = 3 in your modified code,\n\nmafc.logit3 <- function () \n{\n\n    linkfun <- function(mu) {\n        mu <- pmax(mu, 1/3 + .Machine$double.eps)\n        qlogis((3 * mu - 1)/2)\n    }\n    linkinv <- function(eta) {\n        1/3 + (2/3) * .Call(\"logit_linkinv\", eta, PACKAGE = \"stats\")\n    }\n    mu.eta <- function(eta) (2/3) * .Call(\"logit_mu_eta\", \n        eta, PACKAGE = \"stats\")\n    valideta <- function(eta) TRUE\n    link <- paste(\"mafc.logit()\", sep = \"\")\n    structure(list(linkfun = linkfun, linkinv = linkinv, mu.eta = mu.eta, \n        valideta = valideta, name = link), class = \"link-glm\")\n}\n\n\n\nFinally, there is also the ecc2 data set in the psyphy package, if you \nneed another data set for testing.  It is from a 4-alternative experiment\nin which an obtserver had to choose between 1 of 4 positions at which a \nlow contrast letter appeared and then identify it as 1 of 4 possible letters. \nIt gives the aggrergated proportion correct, not the individual binary \nresponses, but I could dig them out (I still have all that data), if binary \nresponses were preferred.\n\nGood luck.\n\nbest,\n\nKen\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Douglas Bates <bates at ...> writes:\n\n> \n> On Thu, Sep 30, 2010 at 3:29 PM, Douglas Bates <bates at ...> \nwrote:\n> > Unfortunately an nlmer model is not appropriate for a binary \nresponse,\n> > because",
       "thread_id": "thread-915b668f4ef5",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004528.html"
     },
     {
       "id": "msg-9a2ed9d1c9e0",
@@ -44,7 +45,8 @@
       "body_snippet": "Ken Knoblauch <ken.knoblauch at ...> writes:\n\n\n> Finally, there is also the ecc2 data set in the psyphy package, if you \n> need another data set for testing.  It is from a 4-alternative experiment\n> i",
       "thread_id": "thread-915b668f4ef5",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004529.html"
     },
     {
       "id": "msg-2ea5ff7355af",
@@ -65,7 +67,8 @@
       "body_snippet": "Many thanks to both of you. However, I realise now that my description of the data was misleading. When I said \"each observed about 15 or 16 times over about a 30-year period\", I was referring to *sta",
       "thread_id": "thread-2ea5ff7355af",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004530.html"
     },
     {
       "id": "msg-3747946ba22f",
@@ -80,11 +83,12 @@
         "<C8C669BD.24A1%miller@biopsych.tu-dresden.de>",
         "<C8C66EA3.24A6%miller@biopsych.tu-dresden.de>"
       ],
-      "body_plain": "Robert Miller <miller at ...> writes:\n\n> \n> Hello everyone,\n> \n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation factor (term:\n> concentration*x + test*b + concentration*test*c + d) with nested factor\n> \"manipulation\" within \"participants\". For statistical analysis i needed to\n> incorporate a fixed guessing probability into my model (similiar to a 3-PL\n> IRT model) resulting in the following equation:\n> \n> P(correct) = 0.33 + 0.67*(exp(term)/(1 + exp(term)))\n> \n> As i found no way to do so via the glmer()-function of the lme4-package, i\n> tried to use nlmer() but unfortunately even the simplest analysis with just\n> the concentration factor and intercept resulted in cryptic error messages.\n> \n> Syntax:\n> library(lme4)\n> rawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\n> \n> mod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n> binomial, data=rawdata) #works fine but is inappropriate\n\nHere is a temporary solution that Doug Bates encouraged me to share\nwith you to get you going, and until we come up with a more elegant/safer\nmethod.  It requires the lme4a package as suggested and a modified link\nfrom the psyphy package that I'll include below.  In essence, we solve\nthe problem of the visibility of m by making it global, which is not the\nmost elegant or safest of solutions, but it seems to work for now.\n\nlibrary(lme4a)\n\nmafc.logit <- function (.m = 2) \n{\n    .m <<- as.integer(.m)  # .m goes global\n    if (.m < 2) \n        stop(\".m must be an integer > 1\")\n    linkfun <- function(mu) {\n        mu <- pmax(mu, 1/.m + .Machine$double.eps)\n        qlogis((.m * mu - 1)/(.m - 1))\n    }\n    linkinv <- function(eta) {\n        1/.m + (.m - 1)/.m * .Call(\"logit_linkinv\", eta, PACKAGE = \"stats\")\n    }\n    mu.eta <- function(eta) ((.m - 1)/.m) * .Call(\"logit_mu_eta\", \n        eta, PACKAGE = \"stats\")\n    valideta <- function(eta) TRUE\n    link <- paste(\"mafc.logit(\", .m, \")\", sep = \"\")\n    structure(list(linkfun = linkfun, linkinv = linkinv, mu.eta = mu.eta, \n        valideta = valideta, name = link), class = \"link-glm\")\n}\n\nrawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\nmod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n     binomial(mafc.logit(3)), data=rawdata)\nsummary(mod1)\nGeneralized linear mixed model fit by maximum likelihood ['summary.mer']\n Family: binomial \nFormula: Correct ~ log(Concentrat) * Test + (Test | Code) \n   Data: rawdata \n      AIC       BIC    logLik  deviance \n 277.0939  301.4584 -131.5469  263.0939 \n\nRandom effects:\n Groups Name        Variance Std.Dev. Corr \n Code   (Intercept) 112.6    10.61         \n        Test        103.0    10.15    0.994\nNumber of obs: 240, groups: Code, 10\n\nFixed effects:\n                     Estimate Std. Error z value\n(Intercept)           -26.942     10.715  -2.514\nlog(Concentrat)         5.041      1.876   2.687\nTest                   -1.918      6.931  -0.277\nlog(Concentrat):Test    2.136      1.304   1.638\n\nCorrelation of Fixed Effects:\n            (Intr) lg(Cn) Test  \nlg(Cncntrt) -0.934              \nTest        -0.136  0.269       \nlg(Cncnt):T -0.087  0.097 -0.739\n\nrange(fitted(mod1))\n[1] 0.3333333 1.0000000\n\nHTH\n\nKen\n\n> Right now I'm quite desperate and would appreciate any help.\n> Thank you\n> Robert Miller\n> \n> \n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Robert Miller <miller at ...> writes:\n\n> \n> Hello everyone,\n> \n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation factor (term:\n> concentration*x + test*b + concentration*test*c + d) with nested factor\n> \"manipulation\" within \"participants\". For statistical analysis i needed to\n> incorporate a fixed guessing probability into my model (similiar to a 3-PL\n> IRT model) resulting in the following equation:\n> \n> P(correct) = 0.33 + 0.67*(exp(term)/(1 + exp(term)))\n> \n> As i found no way to do so via the glmer()-function of the lme4-package, i\n> tried to use nlmer() but unfortunately even the simplest analysis with just\n> the concentration factor and intercept resulted in cryptic error messages.\n> \n> Syntax:\n> library(lme4)\n> rawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\n> \n> mod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n> binomial, data=rawdata) #works fine but is inappropriate\n\nHere is a temporary solution that Doug Bates encouraged me to share\nwith you to get you going, and until we come up with a more elegant/safer\nmethod.  It requires the lme4a package as suggested and a modified link\nfrom the psyphy package that I'll include below.  In essence, we solve\nthe problem of the visibility of m by making it global, which is not the\nmost elegant or safest of solutions, but it seems to work for now.\n\nlibrary(lme4a)\n\nmafc.logit <- function (.m = 2) \n{\n    .m <<- as.integer(.m)  # .m goes global\n    if (.m < 2) \n        stop(\".m must be an integer > 1\")\n    linkfun <- function(mu) {\n        mu <- pmax(mu, 1/.m + .Machine$double.eps)\n        qlogis((.m * mu - 1)/(.m - 1))\n    }\n    linkinv <- function(eta) {\n        1/.m + (.m - 1)/.m * .Call(\"logit_linkinv\", eta, PACKAGE = \"stats\")\n    }\n    mu.eta <- function(eta) ((.m - 1)/.m) * .Call(\"logit_mu_eta\", \n        eta, PACKAGE = \"stats\")\n    valideta <- function(eta) TRUE\n    link <- paste(\"mafc.logit(\", .m, \")\", sep = \"\")\n    structure(list(linkfun = linkfun, linkinv = linkinv, mu.eta = mu.eta, \n        valideta = valideta, name = link), class = \"link-glm\")\n}\n\nrawdata <- read.csv2(\"http://dl.dropbox.com/u/7147679/AND_data.csv\")\nmod1 <- glmer(Correct ~ log(Concentrat) * Test + (Test|Code), family =\n     binomial(mafc.logit(3)), data=rawdata)\nsummary(mod1)\nGeneralized linear mixed model fit by maximum likelihood ['summary.mer']\n Family: binomial \nFormula: Correct ~ log(Concentrat) * Test + (Test | Code) \n   Data: rawdata \n      AIC       BIC    logLik  deviance \n 277.0939  301.4584 -131.5469  263.0939 \n\nRandom effects:\n Groups Name        Variance Std.Dev. Corr \n Code   (Intercept) 112.6    10.61         \n        Test        103.0    10.15    0.994\nNumber of obs: 240, groups: Code, 10\n\nFixed effects:\n                     Estimate Std. Error z value\n(Intercept)           -26.942     10.715  -2.514\nlog(Concentrat)         5.041      1.876   2.687\nTest                   -1.918      6.931  -0.277\nlog(Concentrat):Test    2.136      1.304   1.638\n\nCorrelation of Fixed Effects:\n            (Intr) lg(Cn) Test  \nlg(Cncntrt) -0.934              \nTest        -0.136  0.269       \nlg(Cncnt):T -0.087  0.097 -0.739\n\nrange(fitted(mod1))\n[1] 0.3333333 1.0000000\n\nHTH\n\nKen\n\n> Right now I'm quite desperate and would appreciate any help.\n> Thank you\n> Robert Miller\n> \n> \n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Robert Miller <miller at ...> writes:\n\n> \n> Hello everyone,\n> \n> Recently i tried to predict the discrimination probability of a chemosignal\n> by its concentration and an experimental manipulation fac",
       "thread_id": "thread-3747946ba22f",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004531.html"
     },
     {
       "id": "msg-c7319a8526eb",
@@ -101,6 +105,7 @@
       "thread_id": "thread-c7319a8526eb",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004532.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101001/b24b20fa/attachment.pl"
       ]
@@ -121,7 +126,8 @@
       "body_snippet": "On Fri, Oct 1, 2010 at 2:33 PM, Corey Godfrey\n<Corey.Godfrey at cadmusgroup.com> wrote:\n> Hello,\n\n> I would like to plot confidence intervals around the fitted values of a mixed effects model. Is this",
       "thread_id": "thread-c7319a8526eb",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004533.html"
     },
     {
       "id": "msg-3a35950e2f05",
@@ -140,7 +146,8 @@
       "body_snippet": "Yes, that seems to be the tricky part. I am able to extract what I need for the fixed effects from the variance-covariance matrix. However, the resulting confidence intervals are much wider than I bel",
       "thread_id": "thread-c7319a8526eb",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004534.html"
     },
     {
       "id": "msg-f1088a9daf86",
@@ -160,7 +167,8 @@
       "body_snippet": "I thought I'd try to contribute a couple points:\n\n1) Overlap of 95% CIs doesn't necessarily mean that two points can't\nbe considered as draw from populations of different means. On the\nother hand, exa",
       "thread_id": "thread-c7319a8526eb",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004535.html"
     },
     {
       "id": "msg-f9c90445df74",
@@ -176,7 +184,8 @@
       "body_snippet": "Hi everyone, I am trying to use lmer() using only C; Does anyone have test\nfunctions available that do not require R? My main routine needs to be C, but I\nam having a hard time understanding the data ",
       "thread_id": "thread-f9c90445df74",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004536.html"
     },
     {
       "id": "msg-d435ce6dbf7a",
@@ -194,7 +203,8 @@
       "body_snippet": "On Sun, Oct 3, 2010 at 2:05 AM, Koala <skorsky12 at gmail.com> wrote:\n> Hi everyone, I am trying to use lmer() using only C; Does anyone have test\n> functions available that do not require R? My main ",
       "thread_id": "thread-f9c90445df74",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004537.html"
     },
     {
       "id": "msg-86b2ec50abaa",
@@ -214,7 +224,8 @@
       "body_snippet": "On Sun, Oct 3, 2010 at 10:03 AM, murat k. <skorsky12 at gmail.com> wrote:\n> Hi, the caller side must be C based for my needs; Thanks for the lme4a\n> suggestion.\n\n> I also saw an nlme package, which wa",
       "thread_id": "thread-86b2ec50abaa",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004538.html"
     },
     {
       "id": "msg-fa11564dbed4",
@@ -231,6 +242,7 @@
       "thread_id": "thread-fa11564dbed4",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004540.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101004/0a0ef4d7/attachment.pl"
       ]
@@ -245,11 +257,12 @@
       "subject_clean": "Zero-inflated Poisson distribution",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello!\n\nI am analyzing eye-movement data with LMM and find it difficult to get my head around the regression counts. They are heavily zero-inflated, which, as far as I know, renders a simple Poisson GLMM improbable. Would the following (simplified) command do the zero-inflation justice?\n\nm1 <- lmer(RBRC~COND+CPCU+COND:CPCU+DIR+COND:DIR+(1|SUBJECT)+(1|ITEM), cr, quasipoisson)\nm2 <- lmer(RBRC~COND+CPCU+COND:CPCU+DIR+COND:DIR+(1|SUBJECT)+(1|ITEM), cr, poisson)\n\nThe outcome is dramatically different from a poisson LMM, with three effects hinging on the choice of distribution. I'm afraid m1 might be overestimating, since the numerical difference is miniscule. I uploaded histograms at http://amor.cms.hu-berlin.de/~metznerp/ghist_trc.pdf and http://amor.cms.hu-berlin.de/~metznerp/ghist_rbrc.pdf.\n\nBest,\nPaul\n\n---\nPaul Metzner\n\nHumboldt-Universit?t zu Berlin\nPhilosophische Fakult?t II\nInstitut f?r deutsche Sprache und Linguistik\n\nPost: Unter den Linden 6 | 10099 Berlin | Deutschland\nBesuch: Dorotheenstra?e 24 | 10117 Berlin | Deutschland\n\n+49-(0)30-2093-9726\npaul.metzner at rz.hu-berlin.de\nhttp://amor.rz.hu-berlin.de/~metznerp/",
+      "body_plain": "Hello!\n\nI am analyzing eye-movement data with LMM and find it difficult to get my head around the regression counts. They are heavily zero-inflated, which, as far as I know, renders a simple Poisson GLMM improbable. Would the following (simplified) command do the zero-inflation justice?\n\nm1 <- lmer(RBRC~COND+CPCU+COND:CPCU+DIR+COND:DIR+(1|SUBJECT)+(1|ITEM), cr, quasipoisson)\nm2 <- lmer(RBRC~COND+CPCU+COND:CPCU+DIR+COND:DIR+(1|SUBJECT)+(1|ITEM), cr, poisson)\n\nThe outcome is dramatically different from a poisson LMM, with three effects hinging on the choice of distribution. I'm afraid m1 might be overestimating, since the numerical difference is miniscule. I uploaded histograms at http://amor.cms.hu-berlin.de/~metznerp/ghist_trc.pdf and http://amor.cms.hu-berlin.de/~metznerp/ghist_rbrc.pdf.\n\nBest,\nPaul\n\n---\nPaul Metzner\n\nHumboldt-Universität zu Berlin\nPhilosophische Fakultät II\nInstitut für deutsche Sprache und Linguistik\n\nPost: Unter den Linden 6 | 10099 Berlin | Deutschland\nBesuch: Dorotheenstraße 24 | 10117 Berlin | Deutschland\n\n+49-(0)30-2093-9726\npaul.metzner at rz.hu-berlin.de\nhttp://amor.rz.hu-berlin.de/~metznerp/",
       "body_snippet": "Hello!\n\nI am analyzing eye-movement data with LMM and find it difficult to get my head around the regression counts. They are heavily zero-inflated, which, as far as I know, renders a simple Poisson G",
       "thread_id": "thread-6ef10899eb1a",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004539.html"
     },
     {
       "id": "msg-2b88804d36a9",
@@ -265,7 +278,8 @@
       "body_snippet": "I am trying to pinpoint the entry point into C++ functions for lme4a. This\nfunction in external.cpp\n\nRCPP_FUNCTION_6(NumericVector, merDeviance, S4 xp, NumericVector theta,\n\t\tNumericVector beta, Numer",
       "thread_id": "thread-2b88804d36a9",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004541.html"
     },
     {
       "id": "msg-6a18f3e8b762",
@@ -283,7 +297,8 @@
       "body_snippet": "On Mon, Oct 4, 2010 at 11:50 AM, Koala <skorsky12 at gmail.com> wrote:\n> I am trying to pinpoint the entry point into C++ functions for lme4a. This\n> function in external.cpp\n\n> RCPP_FUNCTION_6(Numeri",
       "thread_id": "thread-2b88804d36a9",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004542.html"
     },
     {
       "id": "msg-bfd71e4fb82f",
@@ -301,7 +316,8 @@
       "body_snippet": "On Mon, Oct 4, 2010 at 3:07 AM, Felix Lamp <lamp at ese.eur.nl> wrote:\n> Dear all,\n\n> is there a simple way in R to add parameter restrictions to linear mixed effects models. Specifically I would like",
       "thread_id": "thread-fa11564dbed4",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004543.html"
     },
     {
       "id": "msg-ce40fe651068",
@@ -317,7 +333,8 @@
       "body_snippet": "Dear R users,\nI am working with a binary data set of categorical variables with repeated\nmeasurements on 100 individuals over 24 trials with follwing variables\n\nsuccess =0 or 1\nage = j, s, y or a\nra =",
       "thread_id": "thread-ce40fe651068",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004544.html"
     },
     {
       "id": "msg-5751d90bde0a",
@@ -372,7 +389,8 @@
       "body_snippet": "On Tue, Oct 5, 2010 at 1:06 AM, Lydia Belton <lbelton at zoology.up.ac.za> wrote:\n> Dear R users,\n> I am working with a binary data set of categorical variables with repeated\n> measurements on 100 ind",
       "thread_id": "thread-ce40fe651068",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004550.html"
     },
     {
       "id": "msg-c3e5de3231a8",
@@ -388,7 +406,8 @@
       "body_snippet": "Dear R users,\n\nThanks for the suggestions on how to work around this. One thing is, I\nhave got the impression from reading Agretsi that structural zeros need \nto be 'treated differently' to sampling z",
       "thread_id": "thread-c3e5de3231a8",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004551.html"
     },
     {
       "id": "msg-6e9199d42542",
@@ -407,7 +426,8 @@
       "body_snippet": "> I don't know of an easy way of doing that but, as you are the second\n> person in as many weeks to pose such a question, it is obviously a\n> situation that we should accommodate.\n\nWell, it's not easy",
       "thread_id": "thread-ce40fe651068",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004552.html"
     },
     {
       "id": "msg-1c2ff778dc37",
@@ -427,7 +447,8 @@
       "body_snippet": "On Wed, Oct 6, 2010 at 8:27 AM, Hadley Wickham <hadley at rice.edu> wrote:\n>> I don't know of an easy way of doing that but, as you are the second\n>> person in as many weeks to pose such a question, i",
       "thread_id": "thread-ce40fe651068",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004553.html"
     },
     {
       "id": "msg-703623a57578",
@@ -445,7 +466,8 @@
       "body_snippet": "Hello,\n\nI cannot find a good (published) citation for the statement that significance tests from mixed models (e.g., the t-statistics produced by lmer) are approximate and should be interpreted as suc",
       "thread_id": "thread-703623a57578",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004554.html"
     },
     {
       "id": "msg-3625a68ded25",
@@ -462,6 +484,7 @@
       "thread_id": "thread-3625a68ded25",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004555.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101006/069a8fd7/attachment.pl"
       ]
@@ -482,7 +505,8 @@
       "body_snippet": "Hello,\n\nI am working with some data and attempting to calculate repeatabilities for\nindividuals using ZIP models in MCMCglmm and was hoping for a bit of\nclarification. \n\nI had previously calculated re",
       "thread_id": "thread-1a29b32019f0",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004556.html"
     },
     {
       "id": "msg-ee93fd9d7516",
@@ -498,7 +522,8 @@
       "body_snippet": "Hi Chris,\n\nYou're not going to be able to do that test using lmer. To conduct the test\nyou want you'll need to know the likelihood estimates for two models, one\nwith the random factor and another with",
       "thread_id": "thread-ee93fd9d7516",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004557.html"
     },
     {
       "id": "msg-1cd7721ee8b8",
@@ -517,6 +542,7 @@
       "thread_id": "thread-ee93fd9d7516",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004558.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101006/2efdfa1b/attachment.pl"
       ]
@@ -531,11 +557,12 @@
       "subject_clean": "citation for significance testing in mixed models",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear Elizabeth,\n\nI believe this article:\n\nBaayen, R., D. Davidson, and D. Bates. 2008. Mixed-effects modeling\nwith crossed random effects for subjects and items. Journal of Memory\nand Language 59:390-412.\n\n...was been mentioned in an answer to a similar question on the mixed-list.\n\n\nBest regards,\n\n\nHenrik\n\n\n\n\nHello,\n\nI cannot find a good (published) citation for the statement that significance tests from mixed models (e.g., the t-statistics produced by lmer) are approximate and should be interpreted as such.  It would make me particularly happy if I could attribute the statement to D. Bates.\n\nI often need to explain the idea to colleagues (ecologists) and reviewers of articles in ecological journals.  It would be nice to be able to argue from authority, as well as from first principles.\n\nHumble apologies if I am missing something obvious....\n\nThanks!\n\nElizabeth\n\n-- \nHenrik P?rn\nCentre for Conservation Biology\nDepartment of Biology\nNorwegian University of Science and Technology\nNo-7491 Trondheim\nNORWAY\n\nOffice: +47 735 96084\nMobile: +47 909 89 255\nFax: +47 735 96100",
+      "body_plain": "Dear Elizabeth,\n\nI believe this article:\n\nBaayen, R., D. Davidson, and D. Bates. 2008. Mixed-effects modeling\nwith crossed random effects for subjects and items. Journal of Memory\nand Language 59:390-412.\n\n...was been mentioned in an answer to a similar question on the mixed-list.\n\n\nBest regards,\n\n\nHenrik\n\n\n\n\nHello,\n\nI cannot find a good (published) citation for the statement that significance tests from mixed models (e.g., the t-statistics produced by lmer) are approximate and should be interpreted as such.  It would make me particularly happy if I could attribute the statement to D. Bates.\n\nI often need to explain the idea to colleagues (ecologists) and reviewers of articles in ecological journals.  It would be nice to be able to argue from authority, as well as from first principles.\n\nHumble apologies if I am missing something obvious....\n\nThanks!\n\nElizabeth\n\n-- \nHenrik Pärn\nCentre for Conservation Biology\nDepartment of Biology\nNorwegian University of Science and Technology\nNo-7491 Trondheim\nNORWAY\n\nOffice: +47 735 96084\nMobile: +47 909 89 255\nFax: +47 735 96100",
       "body_snippet": "Dear Elizabeth,\n\nI believe this article:\n\nBaayen, R., D. Davidson, and D. Bates. 2008. Mixed-effects modeling\nwith crossed random effects for subjects and items. Journal of Memory\nand Language 59:390-",
       "thread_id": "thread-3027591ef434",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004559.html"
     },
     {
       "id": "msg-3ff41a146c42",
@@ -554,7 +581,8 @@
       "body_snippet": "I believe the RLRsim package provides a better solution.\n\nRegards,   Rob Kushler\n\n\nOn 10/6/2010 7:01 PM, Christopher Desjardins wrote:\n> Thanks.\n> Chris\n>\n> On Wed, Oct 6, 2010 at 5:05 PM, Ned Dochter",
       "thread_id": "thread-ee93fd9d7516",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004560.html"
     },
     {
       "id": "msg-382729c147db",
@@ -572,7 +600,8 @@
       "body_snippet": "Hi Rob,\nThanks, I didn't know about that package and a simulation approach certainly\nseems preferable. \n\nHowever, and I easily could be wrong about this, it is worth noting that the\nexample used for e",
       "thread_id": "thread-382729c147db",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004561.html"
     },
     {
       "id": "msg-cc8d0fc50fee",
@@ -589,6 +618,7 @@
       "thread_id": "thread-cc8d0fc50fee",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004562.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101008/b3a6e3ba/attachment.pl"
       ]
@@ -607,7 +637,8 @@
       "body_snippet": "Hi, I have an ophthalmology dataset, that has as response variable \"y\", patient \nID (pid), visit (0,1,2) and eye examined (\"L' and \"R\").\n\nBasically, each patient has 3 visit, during each visit, both e",
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004563.html"
     },
     {
       "id": "msg-ac37acd4154d",
@@ -625,7 +656,8 @@
       "body_snippet": "John,\n\nThis is definitely a design in which visit and eye are crossed. To think of \neye as nested within visit you would have to believe that it was a different \npair of eyes that was being examined o",
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004564.html"
     },
     {
       "id": "msg-b0f51f4994c5",
@@ -643,7 +675,8 @@
       "body_snippet": "Hi John,\n\n> dat <- read.table (\"dat.txt\", sep='\\t', row.names=1, header=T)\n> sapply(dat, class)\n      pid     visit       eye         y \n\"integer\" \"integer\"  \"factor\" \"integer\" \n\nPart of the issue is ",
       "thread_id": "thread-b0f51f4994c5",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004565.html"
     },
     {
       "id": "msg-195baed8d509",
@@ -663,6 +696,7 @@
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 2,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004567.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101008/219e2927/attachment.pl"
       ]
@@ -685,6 +719,7 @@
       "thread_id": "thread-b0f51f4994c5",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004566.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101008/cb9a2fdf/attachment.pl"
       ]
@@ -703,7 +738,8 @@
       "body_snippet": "Dear colleague,\n\nI tried to install the \"repeated\" package (authored by Jim Lindsey?) so I can \nuse glmm() for my analysis, but I failed because the package is not on CRAN or \ncan be found elsewhere. ",
       "thread_id": "thread-760284d3622d",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004568.html"
     },
     {
       "id": "msg-ebcca06fc619",
@@ -721,7 +757,8 @@
       "body_snippet": "Jim Lindsey's packages are here and were never on CRAN:\n\nhttp://www.commanster.eu/rcode.html\n\nBut I am surprise that you need it for glmm().\n\nJon\n\nOn 10/09/10 07:47, Jie Li wrote:\n> Dear colleague,\n> ",
       "thread_id": "thread-760284d3622d",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004569.html"
     },
     {
       "id": "msg-3363fffd742a",
@@ -740,6 +777,7 @@
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004570.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101009/f2e51fb9/attachment.pl"
       ]
@@ -756,11 +794,12 @@
       "references": [
         "<345390.91705.qm@web51306.mail.re2.yahoo.com>"
       ],
-      "body_plain": "See http://www.commanster.eu/rcode.html\n\nThere are many other options, including the lme4 package (on CRAN).\n\nCheers,\n\nRenaud\n\nLe 09/10/2010 16:47, Jie Li a ?crit :\n> Dear colleague,\n>\n> I tried to install the \"repeated\" package (authored by Jim Lindsey?) so I can\n> use glmm() for my analysis, but I failed because the package is not on CRAN or\n> can be found elsewhere. I want to incorporate a random element in my generalized\n> linear Poisson model. Could you point me towards the way forward? Thank you very\n> much indeed.\n>\n> Jie\n>\n> Jie Li\n> Department of Statistics\n> Iowa State University\n> 1229 Snedecor Hall\n> (515) 294-5790\n>\n>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-- \nRenaud Lancelot\nEDEN Project, coordinator\nhttp://www.eden-fp6project.net/\n\nUMR CIRAD-INRA \"Contr?le des maladies animales exotiques et ?mergentes\"\nJoint research unit \"Control of emerging and exotic animal diseases\"\n\nCIRAD, Campus International de Baillarguet TA A-DIR / B\nF34398 Montpellier\nhttp://umr-cmaee.cirad.fr/\n\nTel.  +33 4 67 59 37 17  -  Fax  +33 4 67 59 37 95\nSecr. +33 4 67 59 37 37  - Cell. +33 6 77 52 08 69",
-      "body_snippet": "See http://www.commanster.eu/rcode.html\n\nThere are many other options, including the lme4 package (on CRAN).\n\nCheers,\n\nRenaud\n\nLe 09/10/2010 16:47, Jie Li a ?crit :\n> Dear colleague,\n>\n> I tried to in",
+      "body_plain": "See http://www.commanster.eu/rcode.html\n\nThere are many other options, including the lme4 package (on CRAN).\n\nCheers,\n\nRenaud\n\nLe 09/10/2010 16:47, Jie Li a écrit :\n> Dear colleague,\n>\n> I tried to install the \"repeated\" package (authored by Jim Lindsey?) so I can\n> use glmm() for my analysis, but I failed because the package is not on CRAN or\n> can be found elsewhere. I want to incorporate a random element in my generalized\n> linear Poisson model. Could you point me towards the way forward? Thank you very\n> much indeed.\n>\n> Jie\n>\n> Jie Li\n> Department of Statistics\n> Iowa State University\n> 1229 Snedecor Hall\n> (515) 294-5790\n>\n>\n>\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-- \nRenaud Lancelot\nEDEN Project, coordinator\nhttp://www.eden-fp6project.net/\n\nUMR CIRAD-INRA \"Contrôle des maladies animales exotiques et émergentes\"\nJoint research unit \"Control of emerging and exotic animal diseases\"\n\nCIRAD, Campus International de Baillarguet TA A-DIR / B\nF34398 Montpellier\nhttp://umr-cmaee.cirad.fr/\n\nTel.  +33 4 67 59 37 17  -  Fax  +33 4 67 59 37 95\nSecr. +33 4 67 59 37 37  - Cell. +33 6 77 52 08 69",
+      "body_snippet": "See http://www.commanster.eu/rcode.html\n\nThere are many other options, including the lme4 package (on CRAN).\n\nCheers,\n\nRenaud\n\nLe 09/10/2010 16:47, Jie Li a écrit :\n> Dear colleague,\n>\n> I tried to in",
       "thread_id": "thread-760284d3622d",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004571.html"
     },
     {
       "id": "msg-1414eda865ce",
@@ -779,6 +818,7 @@
       "thread_id": "thread-760284d3622d",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004572.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101010/cf4c7768/attachment.pl"
       ]
@@ -798,6 +838,7 @@
       "thread_id": "thread-8baf9ebe4807",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004573.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101011/3d36c917/attachment.pl"
       ]
@@ -818,7 +859,8 @@
       "body_snippet": "Can you tell us how many levels there are of region, site, zone and\nyear?  If the data are collected in only a few years it is difficult\nto estimate a variance component and the ML and REML  criteria ",
       "thread_id": "thread-8baf9ebe4807",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004574.html"
     },
     {
       "id": "msg-82a7bbb83cbf",
@@ -837,6 +879,7 @@
       "thread_id": "thread-8baf9ebe4807",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004575.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101011/454b74d8/attachment.pl"
       ]
@@ -858,7 +901,8 @@
       "body_snippet": "Hi all, thanks for the quick replies! I have attached the data, if it helps for you to look at it directly. The end product that I would like to achieve is an estimate of the variance associated with ",
       "thread_id": "thread-8baf9ebe4807",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004576.html"
     },
     {
       "id": "msg-036c55dad16e",
@@ -874,7 +918,8 @@
       "body_snippet": "Hi all,\n\nWhile I'm still struggling with properly specifying priors in general, I've\nrun into a specific problem I can't quite muddle through. I'm trying to\nestimate the covariances among several beha",
       "thread_id": "thread-036c55dad16e",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004577.html"
     },
     {
       "id": "msg-94e98fba288e",
@@ -894,6 +939,7 @@
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 2,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004578.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101011/e56b14e1/attachment.pl"
       ]
@@ -917,6 +963,7 @@
       "thread_id": "thread-b4d7c542e62e",
       "thread_depth": 3,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004579.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101012/42f888c0/attachment.pl"
       ]
@@ -939,7 +986,8 @@
       "body_snippet": "Dear Scott,\n\nThanks for sharing your data. That makes things a lot easier.\n\nIMHO you have several problems with your model. First you have only 4\nyears. Estimating a variance based on only 4 levels wi",
       "thread_id": "thread-8baf9ebe4807",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004580.html"
     },
     {
       "id": "msg-d07660bbff39",
@@ -957,7 +1005,8 @@
       "body_snippet": "Hi Ned,\n\nI think you haven't specified the model that you want to fit.\n\n1) you have \"random=~us(trait):units, rcov=~us(trait):units\" which is  \nfitting the same terms for the random effects and the re",
       "thread_id": "thread-036c55dad16e",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004581.html"
     },
     {
       "id": "msg-b341fd67549d",
@@ -974,6 +1023,7 @@
       "thread_id": "thread-b341fd67549d",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004582.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101012/f269e603/attachment.pl"
       ]
@@ -993,6 +1043,7 @@
       "thread_id": "thread-e129fb2ece81",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004583.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101012/232432b5/attachment.pl"
       ]
@@ -1014,6 +1065,7 @@
       "thread_id": "thread-e129fb2ece81",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004584.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101012/ff5b2ba5/attachment.pl"
       ]
@@ -1035,7 +1087,8 @@
       "body_snippet": "On Tue, Oct 12, 2010 at 3:08 PM, Christopher Desjardins\n<desja004 at umn.edu> wrote:\n> Hi Beth,\n>\n> On Tue, Oct 12, 2010 at 2:03 PM, Beth Holbrook <bvholbi at yahoo.com> wrote:\n>\n>> I am new to both R",
       "thread_id": "thread-e129fb2ece81",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004585.html"
     },
     {
       "id": "msg-08c5e64da443",
@@ -1055,7 +1108,8 @@
       "body_snippet": "On 10/12/10 4:03 PM, Douglas Bates wrote:\n> On Tue, Oct 12, 2010 at 3:08 PM, Christopher Desjardins\n> <desja004 at umn.edu>  wrote:\n>> Hi Beth,\n>>\n>> On Tue, Oct 12, 2010 at 2:03 PM, Beth Holbrook<bvh",
       "thread_id": "thread-e129fb2ece81",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004586.html"
     },
     {
       "id": "msg-63f829eef454",
@@ -1074,6 +1128,7 @@
       "thread_id": "thread-e129fb2ece81",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004587.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101013/5fd6081f/attachment.pl"
       ]
@@ -1094,7 +1149,8 @@
       "body_snippet": "Dear Ardo,\n\nI think the Wald test will lead you to draw incorrect conclusions for  \nbounded posteriors that are highly skewed. I think a priori that if  \nthe trait is variable then the probability tha",
       "thread_id": "thread-b341fd67549d",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004588.html"
     },
     {
       "id": "msg-3bb90c772789",
@@ -1113,7 +1169,8 @@
       "body_snippet": "Jarrod,\nThanks a lot for the comments.\nRegarding 1 and 2 below, sorry about that--those were actually typos from\ntrying to simplify the code and make it more generic. Both aspects of the\ncode were act",
       "thread_id": "thread-036c55dad16e",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004589.html"
     },
     {
       "id": "msg-f030f51f1876",
@@ -1133,7 +1190,8 @@
       "body_snippet": "Hi Ned,\n\nThe zero-truncated poisson (\"ztpoisson\") is implemented and as far as  \nI know works fine. In terms of model syntax it will be the same as a  \nnormal poisson model. The zero's would have to b",
       "thread_id": "thread-036c55dad16e",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004590.html"
     },
     {
       "id": "msg-e5a5616fb66e",
@@ -1145,11 +1203,12 @@
       "subject_clean": "deriv example for nlmer",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello modelers,\nI am working on a growth rate analysis in lme4, where my goal is to test\nfor differences in growth rates between two populations of birds while\nincorporating random effects for nests (to deal with the lack of\nindependence between siblings) and for each nestling (to deal with repeated\nmeasures of individuals). \n\nI?d like to build a model that is parameterized slightly differently than\nthe SSlogis self-starting model, where K = 1/scal (this is simply due to\nconvention in the bird world). I can tweak the SSlogis code (given in the\nhelp file for selfStart) and the model runs, but cannot test for\ndifferences between populations. Since determining reasonable starting\nvalues is not a problem, and I?d like to be able to easily adjust the\nformula to incorporate additional covariates, I would like to avoid using a\nself-starting function.\n\nIt is my understanding that nlmer requires a function, but not necessarily\na self-starting one. However, I can?t find an example of any code that does\nthis. \n\nI can build a very simple function that allows for differences between\npopulations (referred to as site, which is a 0 1 dummy variable) in both\nthe inflection point (xmid) and the growth rate (K). I?m trying to start\nwith the simplest reasonable model, so I didn?t allow for differences in\nthe asymptote. This function works in nls:\n\nlogisKsite = function(Age, site, Asym, xmid, K, Kdiff, middiff){\n\tAsym/(1 + exp((xmid+middiff*site - Age)*(K+Kdiff*site)))\n\t}\n\nstartsite = c(Asym = 9, xmid = 3, K = .5, Kdiff=0, middiff=0)\nnls_logisKsite = nls(weight ~ logisKsite(Age, site, Asym, xmid, K, Kdiff,\nmiddiff), growth, start = startsite)\n\nThe nlmer model I am trying to run is (for simplicity, this model includes\nonly a random effect of nest, only on the K parameter):\nnlmer_logisKsite = nlmer(weight ~ logisKsite(Age, site, Asym, xmid, K,\nKdiff, middiff) ~ (K | Nest_ID), growth, start = startsite, verbose = TRUE)\n\nRunning this model in nlmer produces the error: gradient attribute of\nevaluated model must be a numeric matrix\nDr. Bates? posted lectures note that the model must provide derivatives,\nvia the deriv function. I haven?t been successful getting this to work,\neven in the model without site effects.\n\nIf there is an example of how to run nlmer without a self-start function,\ncould someone please point me to it? Advise on how to implement the deriv\nfunction would also be very helpful. \n\nThank you very much,\n\nHelen\n\nHelen Sofaer, PhD Candidate in Ecology, Colorado State University",
+      "body_plain": "Hello modelers,\nI am working on a growth rate analysis in lme4, where my goal is to test\nfor differences in growth rates between two populations of birds while\nincorporating random effects for nests (to deal with the lack of\nindependence between siblings) and for each nestling (to deal with repeated\nmeasures of individuals). \n\nI’d like to build a model that is parameterized slightly differently than\nthe SSlogis self-starting model, where K = 1/scal (this is simply due to\nconvention in the bird world). I can tweak the SSlogis code (given in the\nhelp file for selfStart) and the model runs, but cannot test for\ndifferences between populations. Since determining reasonable starting\nvalues is not a problem, and I’d like to be able to easily adjust the\nformula to incorporate additional covariates, I would like to avoid using a\nself-starting function.\n\nIt is my understanding that nlmer requires a function, but not necessarily\na self-starting one. However, I can’t find an example of any code that does\nthis. \n\nI can build a very simple function that allows for differences between\npopulations (referred to as site, which is a 0 1 dummy variable) in both\nthe inflection point (xmid) and the growth rate (K). I’m trying to start\nwith the simplest reasonable model, so I didn’t allow for differences in\nthe asymptote. This function works in nls:\n\nlogisKsite = function(Age, site, Asym, xmid, K, Kdiff, middiff){\n\tAsym/(1 + exp((xmid+middiff*site - Age)*(K+Kdiff*site)))\n\t}\n\nstartsite = c(Asym = 9, xmid = 3, K = .5, Kdiff=0, middiff=0)\nnls_logisKsite = nls(weight ~ logisKsite(Age, site, Asym, xmid, K, Kdiff,\nmiddiff), growth, start = startsite)\n\nThe nlmer model I am trying to run is (for simplicity, this model includes\nonly a random effect of nest, only on the K parameter):\nnlmer_logisKsite = nlmer(weight ~ logisKsite(Age, site, Asym, xmid, K,\nKdiff, middiff) ~ (K | Nest_ID), growth, start = startsite, verbose = TRUE)\n\nRunning this model in nlmer produces the error: gradient attribute of\nevaluated model must be a numeric matrix\nDr. Bates’ posted lectures note that the model must provide derivatives,\nvia the deriv function. I haven’t been successful getting this to work,\neven in the model without site effects.\n\nIf there is an example of how to run nlmer without a self-start function,\ncould someone please point me to it? Advise on how to implement the deriv\nfunction would also be very helpful. \n\nThank you very much,\n\nHelen\n\nHelen Sofaer, PhD Candidate in Ecology, Colorado State University",
       "body_snippet": "Hello modelers,\nI am working on a growth rate analysis in lme4, where my goal is to test\nfor differences in growth rates between two populations of birds while\nincorporating random effects for nests (",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004591.html"
     },
     {
       "id": "msg-4058e071ac63",
@@ -1165,7 +1224,8 @@
       "body_snippet": "Hello,\n\nI am unable to get profile zeta plots with the profile function. I am aware of the discussion of this issue earlier \n(http://markmail.org/message/gkfiwcj4ar4vk64e#query:Error%20in%20UseMethod%",
       "thread_id": "thread-4058e071ac63",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004593.html"
     },
     {
       "id": "msg-af2add64742b",
@@ -1183,7 +1243,8 @@
       "body_snippet": "Dear Helen,\n\nWon't it be easier to stick with Sslogis to run the model and then\nconvert scal to K for your report?\n\nHTH,\n\nThierry\n\n---------------------------------------------------------------------",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004592.html"
     },
     {
       "id": "msg-fa4d0543b088",
@@ -1201,7 +1262,8 @@
       "body_snippet": "On Tue, Oct 19, 2010 at 2:12 AM, Friedericksen Hope\n<friedericksen.hope at gmail.com> wrote:\n> Hello,\n\n> I am unable to get profile zeta plots with the profile function. I am aware\n> of the discussion",
       "thread_id": "thread-4058e071ac63",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004594.html"
     },
     {
       "id": "msg-88abee652fae",
@@ -1220,7 +1282,8 @@
       "body_snippet": "Hi Thierry,\nMy main goal is to test for a difference between populations, which I\ncan't do with SSlogis.\nCheck out the code for my function to see the model I'm trying to run.\n\nThanks,\nHelen\n\n\nOn Tue,",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004595.html"
     },
     {
       "id": "msg-45c90592e704",
@@ -1237,6 +1300,7 @@
       "thread_id": "thread-45c90592e704",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004596.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101019/646b0e11/attachment.pl"
       ]
@@ -1257,7 +1321,8 @@
       "body_snippet": "Notice that you have different versions of the lme4 package on Ubuntu\nand on the Mac.  For some reason the lme4 package is failing a test on\nMac OS X only and we haven't been able to diagnose why the ",
       "thread_id": "thread-45c90592e704",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004597.html"
     },
     {
       "id": "msg-ca342285d2ad",
@@ -1275,7 +1340,8 @@
       "body_snippet": "Dear Chris,\n\nI've had problems similar to this before, and it's often due to having nlme loaded along with lme4. I use a Mac. I see from your sessionInfo() that you had nlme loaded on Mac, but not Ubu",
       "thread_id": "thread-ca342285d2ad",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004598.html"
     },
     {
       "id": "msg-8df2f49fd64a",
@@ -1295,6 +1361,7 @@
       "thread_id": "thread-ca342285d2ad",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004599.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101019/c6b889f4/attachment.pl"
       ]
@@ -1317,7 +1384,8 @@
       "body_snippet": "How about:\n\ngrModel <- function(Age, site, Asym, xmid, K, Kdiff, middiff) {\n  Asym/(1 + exp((xmid+middiff*site - Age)*(K+Kdiff*site)))\n}\n\ngrModg <- deriv(body(grModel),\n                namevec = c(\"As",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004600.html"
     },
     {
       "id": "msg-0f96cdd63398",
@@ -1338,7 +1406,8 @@
       "body_snippet": "Thanks!!\n\nWith your deriv code I got the error: Function '`{`' is not in the\nderivatives table\nGoogling the error led me to a suggestion that I add [[2]] to the deriv\nfunction like this:\n\nlogisSiteDer",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 4,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004601.html"
     },
     {
       "id": "msg-a8cf7e427741",
@@ -1357,7 +1426,8 @@
       "body_snippet": "> At present only the lme4a package provides profiling of the deviance\n> function.  I would direct you to the R-forge repository except that\n> the Windows and Mac OS X builds on that repository are no",
       "thread_id": "thread-4058e071ac63",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004602.html"
     },
     {
       "id": "msg-287879509d1e",
@@ -1379,7 +1449,8 @@
       "body_snippet": "Oops - I should have checked the code before posting! Note that the\nissue is with what is returned by body(logisKsite) ... you wouldn't need\nthe [[2]] if the function logisKsite didn't have brackets.\n",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 5,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004603.html"
     },
     {
       "id": "msg-b53db9a445ce",
@@ -1402,7 +1473,8 @@
       "body_snippet": "Thanks--that does make it clear.\nThanks again for your help with the deriv function, \nHelen\n\nOn Tue, 19 Oct 2010 14:49:24 -0400, Manuel Morales\n<Manuel.A.Morales at williams.edu> wrote:\n> Oops - I sho",
       "thread_id": "thread-e5a5616fb66e",
       "thread_depth": 6,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004604.html"
     },
     {
       "id": "msg-6c0e2c5f1b7a",
@@ -1996,6 +2068,7 @@
       "thread_id": "thread-a052e97a387b",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004628.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101021/9ebee975/attachment.pl"
       ]
@@ -2014,7 +2087,8 @@
       "body_snippet": "Hi,\n\nI'm looking for a R package for fitting a generalized linear mixed model\n    g(E[y])=X?+Zu\nwhere g is a link function, ? is a p vector of fixed effects, u is a\nvector of random effects, X is desi",
       "thread_id": "thread-85d62d919df6",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004629.html"
     },
     {
       "id": "msg-392fd1543a28",
@@ -2032,7 +2106,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n   See the documentation for lme (nlme package), specifically ?lme and\n?corClasses .\nBeyond that, see Pinheiro and Bates 2000 (Springer).\n\nOn 10-10-22 05",
       "thread_id": "thread-85d62d919df6",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004630.html"
     },
     {
       "id": "msg-b8e3f4986c64",
@@ -2049,6 +2124,7 @@
       "thread_id": "thread-b8e3f4986c64",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004631.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101022/e43f95a8/attachment.pl"
       ]
@@ -2063,11 +2139,12 @@
       "subject_clean": "resolution as random effect",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear list,\nI've a question about a spatial regression model I'm working with. Here\nis my problem and question:\n\nI'm modeling the local densities of a species (y) as a second order\npolynom of the geographical position (lon,lat), time (year), and a\ncertain number of other variables:\n\nmod1 <- lm( y ~ ... + poly(lon,lat, degree=2)*as.factor(year))\n\nThen, I know that the sampling has a certain spatial resolution, that I\ncan represent with a regular grid. Thus, I was thinking that\nobservations within the same cell of the grid (gr.id) cannot be\nconsidered completely independent, and that this could be represented\nwith a random effect like:\n\nmod2 <- lme( y ~ ... + poly(lon,lat, degree=2)*as.factor(year),\nrandom=list(gr.id=~1))\n\nAn additional level of complexity within my formulation, is given by the\ntemporal resolution. Thus, I would like to group the spatial dependency\nof observations from the same cell within certain time intervals\n(time.gr). Here my problem comes. I'm a bit confused on how to formulate\nexactly the random effect expressed above into time.gr groups. I have\nalternative slightly different formulations in mind, but I miss their\ndifference in practice.\n\nThanks in advance for any help or advice.\n\nValerio\n\n\n-- \nValerio Bartolino, PhD\n\nInstitute of Marine Research - Swedish Board of Fisheries\nPO Box 4, 45321 Lysekil, Sweden\n\nDepartment of Earth Sciences - Gothenburg University\nPO Box 460, 40530 G?teborg, Sweden\n\ne-mail: valerio.bartolino at gvc.gu.se\n        valerio.bartolino at gmail.com\n\n><(((*> ----- ><(((*> ----- ><(((*> ----- ><(((*>",
+      "body_plain": "Dear list,\nI've a question about a spatial regression model I'm working with. Here\nis my problem and question:\n\nI'm modeling the local densities of a species (y) as a second order\npolynom of the geographical position (lon,lat), time (year), and a\ncertain number of other variables:\n\nmod1 <- lm( y ~ ... + poly(lon,lat, degree=2)*as.factor(year))\n\nThen, I know that the sampling has a certain spatial resolution, that I\ncan represent with a regular grid. Thus, I was thinking that\nobservations within the same cell of the grid (gr.id) cannot be\nconsidered completely independent, and that this could be represented\nwith a random effect like:\n\nmod2 <- lme( y ~ ... + poly(lon,lat, degree=2)*as.factor(year),\nrandom=list(gr.id=~1))\n\nAn additional level of complexity within my formulation, is given by the\ntemporal resolution. Thus, I would like to group the spatial dependency\nof observations from the same cell within certain time intervals\n(time.gr). Here my problem comes. I'm a bit confused on how to formulate\nexactly the random effect expressed above into time.gr groups. I have\nalternative slightly different formulations in mind, but I miss their\ndifference in practice.\n\nThanks in advance for any help or advice.\n\nValerio\n\n\n-- \nValerio Bartolino, PhD\n\nInstitute of Marine Research - Swedish Board of Fisheries\nPO Box 4, 45321 Lysekil, Sweden\n\nDepartment of Earth Sciences - Gothenburg University\nPO Box 460, 40530 Göteborg, Sweden\n\ne-mail: valerio.bartolino at gvc.gu.se\n        valerio.bartolino at gmail.com\n\n><(((*> ----- ><(((*> ----- ><(((*> ----- ><(((*>",
       "body_snippet": "Dear list,\nI've a question about a spatial regression model I'm working with. Here\nis my problem and question:\n\nI'm modeling the local densities of a species (y) as a second order\npolynom of the geogr",
       "thread_id": "thread-1e4e3fa78c4b",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004632.html"
     },
     {
       "id": "msg-6e631f767a0c",
@@ -2085,7 +2162,8 @@
       "body_snippet": "On 10-10-22 09:02 AM, Carina Salt wrote:\n> Hi everyone\n>\n> I'm trying to analyse a dataset (in nlme) where - within group -\n> measurements are taken at two different times.  Each measurement occasion\n",
       "thread_id": "thread-b8e3f4986c64",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004633.html"
     },
     {
       "id": "msg-066c37f4df80",
@@ -2102,6 +2180,7 @@
       "thread_id": "thread-066c37f4df80",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004634.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101022/76777ba8/attachment.pl"
       ]
@@ -2125,6 +2204,7 @@
       "thread_id": "thread-721e6b3d1725",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004635.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101022/02254442/attachment.pl"
       ]
@@ -2149,7 +2229,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n   Hmmm.\n   Hard-coding your correlation matrix into glmmPQL by way of corSymm\nshould\nbe possible, but I think it could be quite tricky -- you would have",
       "thread_id": "thread-e5b73e1282eb",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004636.html"
     },
     {
       "id": "msg-28bb69075731",
@@ -2165,7 +2246,8 @@
       "body_snippet": "Hi Dear,\n\nI'd highly appreciate if someone can help me to convert these SAS\ncodes into R. Thanks\n\n\n\n?/*-------------------------------------------------------*/\n?/*---Data Set 11.5, Uniformity Trial ?",
       "thread_id": "thread-28bb69075731",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004637.html"
     },
     {
       "id": "msg-8096cf01c5f3",
@@ -2181,7 +2263,8 @@
       "body_snippet": "Hi folks,\n\nI have developmental data collected across several grades (1-6). I\nwould like to be able to assess whether there are any linear or\nnon-linear trends across grade. Does it make sense to run ",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004638.html"
     },
     {
       "id": "msg-7bae3c0f4af1",
@@ -2199,7 +2282,8 @@
       "body_snippet": "Hi Mike,\n\nYou would be better off trying out something like polynomials or  \nsplines, For example:\n\n  fit1 = lmer(\n      formula = response ~ (1|individual)+poly(grade_as_numeric,n),\n      , data = my",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004639.html"
     },
     {
       "id": "msg-823e2a37ce82",
@@ -2213,11 +2297,12 @@
       "references": [
         "<AANLkTik+J6GDvOx8mfZBotYbok7=BGwCWxVFe0PgDHEm@mail.gmail.com>"
       ],
-      "body_plain": "Mike Lawrence <Mike.Lawrence at ...> writes:\n> I have developmental data collected across several grades (1-6). I\n> would like to be able to assess whether there are any linear or\n> non-linear trends across grade. Does it make sense to run a first lmer\n> treating grade as continuous, obtain the residuals, then run a second\n> lmer treating grade as a factor? That is:\n> \n> fit1 = lmer(\n>     formula = response ~ (1|individual)+grade_as_numeric\n>     , data = my_data\n>     , family = gaussian\n> )\n> my_data$resid = residuals(fit1)\n> fit2 = lmer(\n>     formula = resid ~ (1|individual)+grade_as_factor\n>     , data = my_data\n>     , family = gaussian\n> )\n> \n> If this is sensible, how might I apply it to a second binomial\n> response variable given that the residuals from a binomial model are\n> not 0/1?\n> \n> Mike\n> Mike Lawrence\n> Graduate Student\n> Department of Psychology\n> Dalhousie University\n> \n\nOr just make grade and ordered factor and see whether there\nare significant higher order terms.\n\nIf the response variable is binomial, why not use glmer with a\nbinomial family?\n\nKen \n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "Mike Lawrence <Mike.Lawrence at ...> writes:\n> I have developmental data collected across several grades (1-6). I\n> would like to be able to assess whether there are any linear or\n> non-linear trends across grade. Does it make sense to run a first lmer\n> treating grade as continuous, obtain the residuals, then run a second\n> lmer treating grade as a factor? That is:\n> \n> fit1 = lmer(\n>     formula = response ~ (1|individual)+grade_as_numeric\n>     , data = my_data\n>     , family = gaussian\n> )\n> my_data$resid = residuals(fit1)\n> fit2 = lmer(\n>     formula = resid ~ (1|individual)+grade_as_factor\n>     , data = my_data\n>     , family = gaussian\n> )\n> \n> If this is sensible, how might I apply it to a second binomial\n> response variable given that the residuals from a binomial model are\n> not 0/1?\n> \n> Mike\n> Mike Lawrence\n> Graduate Student\n> Department of Psychology\n> Dalhousie University\n> \n\nOr just make grade and ordered factor and see whether there\nare significant higher order terms.\n\nIf the response variable is binomial, why not use glmer with a\nbinomial family?\n\nKen \n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "Mike Lawrence <Mike.Lawrence at ...> writes:\n> I have developmental data collected across several grades (1-6). I\n> would like to be able to assess whether there are any linear or\n> non-linear trends ",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004640.html"
     },
     {
       "id": "msg-f9480f06ce0b",
@@ -2236,7 +2321,8 @@
       "body_snippet": "Ah, this looks promising! So how does this sound:\n\nI typically assess the evidence for a relationship between the\npredictor and response variables by comparing the AIC values for a\nmodel including the",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004641.html"
     },
     {
       "id": "msg-2f70e3c42107",
@@ -2256,7 +2342,8 @@
       "body_snippet": "Hi Mike,\n\nSounds as though you are debating about model comparison techniques.\nI would suggest using multimodel inference if you do not have any one\nmodel that is strongly supported by AIC values.  Bu",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004643.html"
     },
     {
       "id": "msg-9a7333aba448",
@@ -2274,7 +2361,8 @@
       "body_snippet": "Honestly, I don't think that this is a reasonable request.  That was\nmy initial reaction, but I wondered if I might just be being grumpy.\nThe long intervening silence implies that others think the sam",
       "thread_id": "thread-28bb69075731",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004642.html"
     },
     {
       "id": "msg-04e20438c9df",
@@ -2291,6 +2379,7 @@
       "thread_id": "thread-04e20438c9df",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004644.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101024/76bc88fc/attachment.pl"
       ]
@@ -2313,7 +2402,8 @@
       "body_snippet": "Hi Mike,\n\nCouple of things.\n\npoly() is used like this\n\na <- rnorm(100)\nb <- rnorm(100)\n\nm2 <- lm(a~poly(b,2))\nsummary(m2)\n\nTo compare a model with a linear predictor and a quadratic polynomial\nyou can",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004645.html"
     },
     {
       "id": "msg-012d84862ba6",
@@ -2334,7 +2424,8 @@
       "body_snippet": "Thanks Andrew. Jarrod mentioned using splines as well, and I do think\nthey sound promising since I indeed do not have strong a priori\nreasons to expect polynomial shaped trends.\n\nI'm uncertain, howeve",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 4,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004646.html"
     },
     {
       "id": "msg-068491785deb",
@@ -2352,7 +2443,8 @@
       "body_snippet": "On Sun, Oct 24, 2010 at 6:46 PM, Jeremy Koster <helixed2 at yahoo.com> wrote:\n> Hi folks,\n>\n> This has likely been asked before, so please feel free to link any relevant posts . . .\n>\n> I am looking a",
       "thread_id": "thread-04e20438c9df",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004647.html"
     },
     {
       "id": "msg-92422ca5baec",
@@ -2369,6 +2461,7 @@
       "thread_id": "thread-92422ca5baec",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004648.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101025/e4e14609/attachment.pl"
       ]
@@ -2393,7 +2486,8 @@
       "body_snippet": "Hi Mike,\n\nI don't see why you would want to fit such a complicated trend to your\ndata. If you need anything more than a cubic then just treat grade as\na factor. I would start by fitting a model with n",
       "thread_id": "thread-8096cf01c5f3",
       "thread_depth": 5,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004649.html"
     },
     {
       "id": "msg-83b243cd75b8",
@@ -2409,7 +2503,8 @@
       "body_snippet": "Thanks to Martin Maechler and Simon Urbanek who installed changes to\nbypass the problematic test on Mac OS X, the binary package of lme4 is\nnow available on CRAN.",
       "thread_id": "thread-83b243cd75b8",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004650.html"
     },
     {
       "id": "msg-7b50c93399c4",
@@ -2428,6 +2523,7 @@
       "thread_id": "thread-83b243cd75b8",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004651.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101026/07dda685/attachment.pl"
       ]
@@ -2447,6 +2543,7 @@
       "thread_id": "thread-04e20438c9df",
       "thread_depth": 2,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004652.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101027/6c20da84/attachment.pl"
       ]
@@ -2465,7 +2562,8 @@
       "body_snippet": "To whom it may concern,\n\nI am having some issues with model convergence with linear mixed modeling. \nI am using mixed modeling with count data (GPS locations) for 30 individuals\nand landscape characte",
       "thread_id": "thread-392a04a39c22",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004653.html"
     },
     {
       "id": "msg-73c353bbd4b4",
@@ -2483,7 +2581,8 @@
       "body_snippet": "On 10-10-27 02:20 PM, David Stainbrook wrote:\n> To whom it may concern,\n> \n\n> Also, can you please keep this email confidential.\n\n  Hmmm.  How confidential did you want it?  This is an open mailing li",
       "thread_id": "thread-392a04a39c22",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004654.html"
     },
     {
       "id": "msg-610bf88a39d6",
@@ -2501,7 +2600,8 @@
       "body_snippet": "Jeremy--\n\nJust to chime in here, I think the devil is almost always in the details \nof the specific data and model.  Thus, \"Stata can 'do' AGQ for multiple \nrandom-effects\" really does not mean too mu",
       "thread_id": "thread-04e20438c9df",
       "thread_depth": 3,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004655.html"
     },
     {
       "id": "msg-1134b8680062",
@@ -2520,7 +2620,8 @@
       "body_snippet": "Le mercredi 27 octobre 2010 ? 12:39 -0700, David Atkins a ?crit :\n> Jeremy--\n> \n> Just to chime in here, I think the devil is almost always in the details \n> of the specific data and model.  Thus, \"St",
       "thread_id": "thread-04e20438c9df",
       "thread_depth": 4,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004658.html"
     },
     {
       "id": "msg-c3d62fa5e911",
@@ -2537,6 +2638,7 @@
       "thread_id": "thread-c3d62fa5e911",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004656.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101029/a016a1c1/attachment.pl"
       ]
@@ -2558,6 +2660,7 @@
       "thread_id": "thread-c3d62fa5e911",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004657.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101029/78985c9c/attachment.pl"
       ]
@@ -2579,7 +2682,8 @@
       "body_snippet": "Hi Steve,\n\nIn addition to the comments of Chris, I would like to add the a high\nnumber of zero's does not imply a zero-inflated distribution. Have a\nlook at the example below.\n\nHTH,\n\nThierry\n\n\n> set.s",
       "thread_id": "thread-c3d62fa5e911",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004659.html"
     },
     {
       "id": "msg-4e72a7f65295",
@@ -2597,7 +2701,8 @@
       "body_snippet": "Hello, dear R-community.\n\nThis is a question about TukeyHSD between factor combinations of a Three-Way\nANOVA, which is - since it is a multi measure ANOVA - not a simple ANOVA but\na Generalised Linear",
       "thread_id": "thread-4e72a7f65295",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004660.html"
     },
     {
       "id": "msg-372f7db8734f",
@@ -2613,7 +2718,8 @@
       "body_snippet": "Hi folks,\n\nIn some areas of psychology, we encounter binomial response data that,\nwhen aggregated to proportions and plotted against a continuous\npredictor variable, forms a sigmoid-like function. It ",
       "thread_id": "thread-372f7db8734f",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004661.html"
     },
     {
       "id": "msg-12db7767bab8",
@@ -2632,6 +2738,7 @@
       "thread_id": "thread-372f7db8734f",
       "thread_depth": 1,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004662.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101029/3d06666f/attachment.pl"
       ]
@@ -2655,6 +2762,7 @@
       "thread_id": "thread-c3d62fa5e911",
       "thread_depth": 3,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004663.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101029/94c2fac3/attachment.pl"
       ]
@@ -2676,7 +2784,8 @@
       "body_snippet": "> > In some areas of psychology, we encounter binomial response data that,\n> > when aggregated to proportions and plotted against a continuous\n> > predictor variable, forms a sigmoid-like function.\n> ",
       "thread_id": "thread-237a1620a519",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004664.html"
     },
     {
       "id": "msg-1751683f7a0f",
@@ -2696,7 +2805,8 @@
       "body_snippet": "On Fri, Oct 29, 2010 at 3:29 PM, Doran, Harold <HDoran at air.org> wrote:\n> ? First, I don't know how one uses OLS\n> ?to fit a probit model.\n\nI've seen it done. Folks usually collapse responses to\nmea",
       "thread_id": "thread-237a1620a519",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004665.html"
     },
     {
       "id": "msg-fbea20162f5d",
@@ -2715,7 +2825,8 @@
       "body_snippet": "On Fri, Oct 29, 2010 at 1:41 PM, Peter Dixon <peter.dixon at ualberta.ca> wrote:\n> I would think that the means of the group*cue effects are your bias parameters and the interactions with SOA are the ",
       "thread_id": "thread-372f7db8734f",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004666.html"
     },
     {
       "id": "msg-3f1435b896c2",
@@ -2736,7 +2847,8 @@
       "body_snippet": "The info below is helpful, more comments below.\n\n> -----Original Message-----\n> From: mike.lwrnc at gmail.com [mailto:mike.lwrnc at gmail.com] On Behalf Of Mike\n> Lawrence\n> Sent: Friday, October 29, ",
       "thread_id": "thread-237a1620a519",
       "thread_depth": 2,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004667.html"
     },
     {
       "id": "msg-c14fe63fda0e",
@@ -2753,6 +2865,7 @@
       "thread_id": "thread-c14fe63fda0e",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004672.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101030/f94e5b78/attachment.pl"
       ]
@@ -2772,6 +2885,7 @@
       "thread_id": "thread-a7fcbd3a3270",
       "thread_depth": 0,
       "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004671.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101030/95653d2f/attachment.pl"
       ]
@@ -2790,7 +2904,8 @@
       "body_snippet": "Hello, everybody.\n\nI've fallen into a crowd of IRT users.  I remembered seeing the IRT\nwith lmer paper.\n\n## Doran, Harold, Douglas Bates, Paul Bliese,\n## Maritza Dowling, 2007. ?Estimating the\n## Mult",
       "thread_id": "thread-7a7ef3930008",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004668.html"
     },
     {
       "id": "msg-19118706fcb1",
@@ -2808,7 +2923,8 @@
       "body_snippet": "IRT people can be odd. Yes, your interpretation of the differences between the ltm package and lme4 are correct. lmer estimates the standard deviation of the population distribution, but ltm fixes it ",
       "thread_id": "thread-7a7ef3930008",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004669.html"
     },
     {
       "id": "msg-54ca1d8398cb",
@@ -2824,7 +2940,8 @@
       "body_snippet": "Hi,\n\nI would like to know, in lmer, how to compute...:\n\n1-Overdispersion of the model (estimated scale parameter)\n2-% of variation explained by a model\n\n\n1- For overdispersion, I found (on this mailin",
       "thread_id": "thread-54ca1d8398cb",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004670.html"
     },
     {
       "id": "msg-31a64506b80e",
@@ -2842,7 +2959,8 @@
       "body_snippet": "Dear Evelien,\n\nIn answer to your questions:\n\n1) Is it conceptually a good idea? I am new with MCMCglmm but I\ncouldn't find any posts on similar problems and wondered whether this\nshould be a warning s",
       "thread_id": "thread-c14fe63fda0e",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004673.html"
     },
     {
       "id": "msg-8d8360bf2cac",
@@ -2860,7 +2978,8 @@
       "body_snippet": "On 10-10-30 01:07 PM, Jie Li wrote:\n> Dear colleagues,\n> \n> Happy Halloween.\n> \n> When I try fitting glmm under lme4 using the following code:\n> \n> x=as.factor(rep(c(\"1\",\"2\",\"3\", \"4\", \"5\", \"6\"),each=2",
       "thread_id": "thread-a7fcbd3a3270",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004674.html"
     },
     {
       "id": "msg-d83bfbce66e9",
@@ -2878,7 +2997,8 @@
       "body_snippet": "On Sun, Oct 31, 2010 at 2:35 AM, Carabiniero <jason at troutnut.com> wrote:\n>\n> I haven't been able to fully make sense of the conflicting online information\n> about whether and how to specify nesting",
       "thread_id": "thread-d83bfbce66e9",
       "thread_depth": 0,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004675.html"
     },
     {
       "id": "msg-b1a63347799b",
@@ -2896,7 +3016,8 @@
       "body_snippet": "PS it looks like the coefficients are quite stable under increasing\nnumbers of quadrature points ...\n\n\nx=factor(rep(1:6,each=2))\ny=c(14, 18, 10, 47, 13, 24, 10, 12,  1,  0,  6,  6)\nadjust=c(5.505332,5",
       "thread_id": "thread-a7fcbd3a3270",
       "thread_depth": 1,
-      "month": "2010-10"
+      "month": "2010-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004676.html"
     }
   ],
   "threads": [

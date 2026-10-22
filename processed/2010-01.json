@@ -17,7 +17,8 @@
       "body_snippet": "Dear list member,\nI would like to thank you for your past help with the questions I had;\nit was well appreciated.\n\nI now have a question regarding main effects in a model with interactions.\n\nWe have a",
       "thread_id": "thread-60551ff566cb",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003174.html"
     },
     {
       "id": "msg-0387233211e5",
@@ -33,7 +34,8 @@
       "body_snippet": "I recall that Jarrod recommended that I fix the variance in the\nR-structure when I set priors for ZIP models. However, I don't recall\nwhy. Was the reason that it expedites MCMC convergence?\nThanks,\nCh",
       "thread_id": "thread-0387233211e5",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003175.html"
     },
     {
       "id": "msg-5fa216ba2fa4",
@@ -51,7 +53,8 @@
       "body_snippet": "Hi Chris,\n\nThe zero-inflation part of the model is like modelling a binary  \nvariable. Between observation heterogeneity in the probability of  \nsuccess cannot be observed (even if it exists) and so t",
       "thread_id": "thread-0387233211e5",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003176.html"
     },
     {
       "id": "msg-d5bb6bcaf411",
@@ -69,7 +72,8 @@
       "body_snippet": "Hi Chris,\nIf you mean the covariance between the poission parameter and zero\ninflation, its because the \nmodel is not identified. In general though fixing a variance should\nexpedite MCMC convergence\na",
       "thread_id": "thread-d5bb6bcaf411",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003177.html"
     },
     {
       "id": "msg-f3da410bf767",
@@ -81,11 +85,12 @@
       "subject_clean": "package for zero-inflated poisson models with temporal correlation?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nAfter looking through the archives I'm pretty certain I'm on the right\nlist but please let me know if this question is best posted elsewhere:\n\nDoes anyone know of an R package that is able to perform zero-inflated\nPoisson/negative binomial models that incorporate temporal correlation?\n\nMy data consist of weekly counts (12) of various bird behaviors taken at\n29 points, along with various explanatory variables related to local\nreproductive activity and environmental conditions.\n\nSo far, I have been able to\n1) model the counts of bird behaviors as a function of the explanatory\nvariables while incorporating the temporal correlation associated with my\ndata collection methods using the ?geepack? library (thus ignoring\nzero-inflation)\n2) model the zero-inflated counts of bird behaviors as a function of the\nexplanatory variables using the ?pscl? library (thus ignoring temporal\ncorrelation)\n....but have not been able to find a function that incorporates both\nconditions.\n\nI?d rather not take the average of the counts across all 12 weeks as I am\ninterested in how specific bird behaviors change according to both local\nreproductive activities and the progression of the breeding season.\n\nThanks in advance for your help,\n\nTrina\n\n-- \nTrina Schneider Bayard\nPhD Candidate\n\nDepartment of Ecology and Evolutionary Biology\nUniversity of Connecticut\n75 North Eagleville Road, U3043\nStorrs, CT  06269\n\noffice:860.486.3005",
+      "body_plain": "Dear all,\n\nAfter looking through the archives I'm pretty certain I'm on the right\nlist but please let me know if this question is best posted elsewhere:\n\nDoes anyone know of an R package that is able to perform zero-inflated\nPoisson/negative binomial models that incorporate temporal correlation?\n\nMy data consist of weekly counts (12) of various bird behaviors taken at\n29 points, along with various explanatory variables related to local\nreproductive activity and environmental conditions.\n\nSo far, I have been able to\n1) model the counts of bird behaviors as a function of the explanatory\nvariables while incorporating the temporal correlation associated with my\ndata collection methods using the “geepack” library (thus ignoring\nzero-inflation)\n2) model the zero-inflated counts of bird behaviors as a function of the\nexplanatory variables using the “pscl” library (thus ignoring temporal\ncorrelation)\n....but have not been able to find a function that incorporates both\nconditions.\n\nI’d rather not take the average of the counts across all 12 weeks as I am\ninterested in how specific bird behaviors change according to both local\nreproductive activities and the progression of the breeding season.\n\nThanks in advance for your help,\n\nTrina\n\n-- \nTrina Schneider Bayard\nPhD Candidate\n\nDepartment of Ecology and Evolutionary Biology\nUniversity of Connecticut\n75 North Eagleville Road, U3043\nStorrs, CT  06269\n\noffice:860.486.3005",
       "body_snippet": "Dear all,\n\nAfter looking through the archives I'm pretty certain I'm on the right\nlist but please let me know if this question is best posted elsewhere:\n\nDoes anyone know of an R package that is able ",
       "thread_id": "thread-f3da410bf767",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003178.html"
     },
     {
       "id": "msg-ca39ecdb270a",
@@ -99,11 +104,12 @@
       "references": [
         "<9629282c41e7ba4b08d880cfa7a71939.squirrel@huskymailweb.uconn.edu>"
       ],
-      "body_plain": "Hi Trina--\n\nIn short: no, I'm not aware of a package that can do zero-inflated \n(mixed/GEE) models with autocorrelated errors.\n\nHowever, the MCMCglmm package can fit mixed-effects zero-inflated \nmodels, and a random-effect for time implies some autocorrelation. \nThus, one option would be to use MCMCglmm and explore whether there \nappears to be residual autocorrelation, and compare this to your results \nusing GEE and zeroinfl() in pscl.\n\nFinally, Zuur et al. show BUGS code for mixed-effects Poisson with \nautocorrelated error in their book, Mixed Effects Models and Extensions \nin Ecology with R.\n\nFor what it's worth.\n\ncheers, Dave\n\n-- \nDave Atkins, PhD\nResearch Associate Professor\nDepartment of Psychiatry and Behavioral Science\nUniversity of Washington\ndatkins at u.washington.edu\n\nCenter for the Study of Health and Risk Behaviors (CSHRB)\t\t\n1100 NE 45th Street, Suite 300 \t\nSeattle, WA  98105 \t\n206-616-3879 \t\nhttp://depts.washington.edu/cshrb/\n(Mon-Wed)\t\n\nCenter for Healthcare Improvement, for Addictions, Mental Illness,\n   Medically Vulnerable Populations (CHAMMP)\n325 9th Avenue, 2HH-15\nBox 359911\nSeattle, WA 98104?\n206-897-4210\nhttp://www.chammp.org\n(Thurs)\n\n\nDear all,\n\nAfter looking through the archives I'm pretty certain I'm on the right\nlist but please let me know if this question is best posted elsewhere:\n\nDoes anyone know of an R package that is able to perform zero-inflated\nPoisson/negative binomial models that incorporate temporal correlation?\n\nMy data consist of weekly counts (12) of various bird behaviors taken at\n29 points, along with various explanatory variables related to local\nreproductive activity and environmental conditions.\n\nSo far, I have been able to\n1) model the counts of bird behaviors as a function of the explanatory\nvariables while incorporating the temporal correlation associated with my\ndata collection methods using the ?geepack? library (thus ignoring\nzero-inflation)\n2) model the zero-inflated counts of bird behaviors as a function of the\nexplanatory variables using the ?pscl? library (thus ignoring temporal\ncorrelation)\n....but have not been able to find a function that incorporates both\nconditions.\n\nI?d rather not take the average of the counts across all 12 weeks as I am\ninterested in how specific bird behaviors change according to both local\nreproductive activities and the progression of the breeding season.\n\nThanks in advance for your help,\n\nTrina\n\n-- \nTrina Schneider Bayard\nPhD Candidate\n\nDepartment of Ecology and Evolutionary Biology\nUniversity of Connecticut\n75 North Eagleville Road, U3043\nStorrs, CT  06269\n\noffice:860.486.3005",
+      "body_plain": "Hi Trina--\n\nIn short: no, I'm not aware of a package that can do zero-inflated \n(mixed/GEE) models with autocorrelated errors.\n\nHowever, the MCMCglmm package can fit mixed-effects zero-inflated \nmodels, and a random-effect for time implies some autocorrelation. \nThus, one option would be to use MCMCglmm and explore whether there \nappears to be residual autocorrelation, and compare this to your results \nusing GEE and zeroinfl() in pscl.\n\nFinally, Zuur et al. show BUGS code for mixed-effects Poisson with \nautocorrelated error in their book, Mixed Effects Models and Extensions \nin Ecology with R.\n\nFor what it's worth.\n\ncheers, Dave\n\n-- \nDave Atkins, PhD\nResearch Associate Professor\nDepartment of Psychiatry and Behavioral Science\nUniversity of Washington\ndatkins at u.washington.edu\n\nCenter for the Study of Health and Risk Behaviors (CSHRB)\t\t\n1100 NE 45th Street, Suite 300 \t\nSeattle, WA  98105 \t\n206-616-3879 \t\nhttp://depts.washington.edu/cshrb/\n(Mon-Wed)\t\n\nCenter for Healthcare Improvement, for Addictions, Mental Illness,\n   Medically Vulnerable Populations (CHAMMP)\n325 9th Avenue, 2HH-15\nBox 359911\nSeattle, WA 98104?\n206-897-4210\nhttp://www.chammp.org\n(Thurs)\n\n\nDear all,\n\nAfter looking through the archives I'm pretty certain I'm on the right\nlist but please let me know if this question is best posted elsewhere:\n\nDoes anyone know of an R package that is able to perform zero-inflated\nPoisson/negative binomial models that incorporate temporal correlation?\n\nMy data consist of weekly counts (12) of various bird behaviors taken at\n29 points, along with various explanatory variables related to local\nreproductive activity and environmental conditions.\n\nSo far, I have been able to\n1) model the counts of bird behaviors as a function of the explanatory\nvariables while incorporating the temporal correlation associated with my\ndata collection methods using the “geepack” library (thus ignoring\nzero-inflation)\n2) model the zero-inflated counts of bird behaviors as a function of the\nexplanatory variables using the “pscl” library (thus ignoring temporal\ncorrelation)\n....but have not been able to find a function that incorporates both\nconditions.\n\nI’d rather not take the average of the counts across all 12 weeks as I am\ninterested in how specific bird behaviors change according to both local\nreproductive activities and the progression of the breeding season.\n\nThanks in advance for your help,\n\nTrina\n\n-- \nTrina Schneider Bayard\nPhD Candidate\n\nDepartment of Ecology and Evolutionary Biology\nUniversity of Connecticut\n75 North Eagleville Road, U3043\nStorrs, CT  06269\n\noffice:860.486.3005",
       "body_snippet": "Hi Trina--\n\nIn short: no, I'm not aware of a package that can do zero-inflated \n(mixed/GEE) models with autocorrelated errors.\n\nHowever, the MCMCglmm package can fit mixed-effects zero-inflated \nmodel",
       "thread_id": "thread-f3da410bf767",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003179.html"
     },
     {
       "id": "msg-61b624853063",
@@ -119,7 +125,8 @@
       "body_snippet": "Hi,\nI am trying to estimate a model in MCMCglmm where my outcome variable is\nnumber of suspensions, a count variable. Presently, I am trying to\npredict the number of suspensions with the following MCM",
       "thread_id": "thread-61b624853063",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003180.html"
     },
     {
       "id": "msg-6bd16b6dc8b6",
@@ -136,6 +143,7 @@
       "thread_id": "thread-6bd16b6dc8b6",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003181.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/f1479346/attachment.pl"
       ]
@@ -154,7 +162,8 @@
       "body_snippet": "----- Forwarded message from j.hadfield at ed.ac.uk -----\n     Date: Tue, 12 Jan 2010 18:12:21 +0000\n     From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\nReply-To: Jarrod Hadfield <j.hadfield at ed.ac.",
       "thread_id": "thread-45957470c773",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003182.html"
     },
     {
       "id": "msg-1ec73124352b",
@@ -170,7 +179,8 @@
       "body_snippet": "----- Forwarded message from j.hadfield at ed.ac.uk -----\n     Date: Tue, 12 Jan 2010 18:38:06 +0000\n     From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\nReply-To: Jarrod Hadfield <j.hadfield at ed.ac.",
       "thread_id": "thread-1ec73124352b",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003183.html"
     },
     {
       "id": "msg-ef2363229c6c",
@@ -187,6 +197,7 @@
       "thread_id": "thread-ef2363229c6c",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003184.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100112/945f91cf/attachment.pl"
       ]
@@ -206,6 +217,7 @@
       "thread_id": "thread-4df4b1371e00",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003185.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100113/8646e949/attachment.pl"
       ]
@@ -226,7 +238,8 @@
       "body_snippet": "Dear Cahn,\n\nI tend to use the geepack package instead of the gee package. Just\nchange the name of the package and it works like a charm.\n\nlibrary(geepack)\ndata(Rail,package=\"nlme\")\ngeese(travel~1, id=",
       "thread_id": "thread-4df4b1371e00",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003186.html"
     },
     {
       "id": "msg-1e33d44d8d59",
@@ -242,7 +255,8 @@
       "body_snippet": "Hi List,\n\nI'm trying to learn more about mixed models in detail. Does anyone know of\nany examples where code is provided showing simple examples of doing\nthis from scratch. For example, setting up a l",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003187.html"
     },
     {
       "id": "msg-3f48d22d06cd",
@@ -260,7 +274,8 @@
       "body_snippet": "Juliet Hannah wrote:\n> Hi List,\n> \n> I'm trying to learn more about mixed models in detail. Does anyone know of\n> any examples where code is provided showing simple examples of doing\n> this from scrat",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003188.html"
     },
     {
       "id": "msg-50150f59c244",
@@ -279,6 +294,7 @@
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003189.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/1238940a/attachment.pl"
       ]
@@ -300,6 +316,7 @@
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003190.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100114/aba65554/attachment.pl"
       ]
@@ -321,7 +338,8 @@
       "body_snippet": "Thanks for the suggestions. By no means is this for an application. It\nis just for my education. I thought I should be able to find some\nsimple examples, like the one posted in this thread. Perhaps I ",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 2,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003191.html"
     },
     {
       "id": "msg-5c8465e7b66c",
@@ -339,7 +357,8 @@
       "body_snippet": "Chapter 6 of Simon Wood's book, Generalized Additive Models, has short\nR code that maximizes the log likelihood of a mixed model using optim.\n\nOn Thu, Jan 14, 2010 at 2:48 PM, Juliet Hannah <juliet.ha",
       "thread_id": "thread-1e33d44d8d59",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003192.html"
     },
     {
       "id": "msg-020019818846",
@@ -351,11 +370,12 @@
       "subject_clean": "paired and repeated measurements",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all\n\nI have the following problem:\n\nI measured co2 on 6 paired sites (one grubbed and one non-grubbed\nfence per site -> grubbing = treatment). These measurements I repeated\n15 times over 2 years (see attached table). So, now my problem is how  \nto analyze these\ndata. I tried the following model:\n\nmod1_CO2<-lme(co2~treatment+time,random=~1|site,data=CO2_t1_t15)\n\nI think with the random effect I included the paired sample design of\nmy study, but obviously the model does not check for the \"repeated\nmeasurements\" structure of my data. Or in other words, the model\nassumpt that different sampling dates are independent of each other,\nbut they aren't (since I measured the CO2 15 times on exactly the same\nspot).\n\nSo, that's why my question is how can I combine the paired (or nested)\ndesign with the repeated measurements in one model???\n\nThank you for any help\n\nSven\n\n\n--\nSven Wirthner\nEidg. Forschungsanstalt f?r Wald, Schnee und Landschaft WSL\nTier?kologie\nZ?rcherstrasse 111\nCH-8903 Birmensdorf\n\nTel. +41 44 7392 371\nFax  +41 44 7392 215\nsven.wirthner at wsl.ch\nhttp://www.wsl.ch\n\n-----------------------------------------------------------------------------------\nThis message was sent using IMP (http://horde.org/imp/) at WSL  \n(http://www.wsl.ch).",
+      "body_plain": "Dear all\n\nI have the following problem:\n\nI measured co2 on 6 paired sites (one grubbed and one non-grubbed\nfence per site -> grubbing = treatment). These measurements I repeated\n15 times over 2 years (see attached table). So, now my problem is how  \nto analyze these\ndata. I tried the following model:\n\nmod1_CO2<-lme(co2~treatment+time,random=~1|site,data=CO2_t1_t15)\n\nI think with the random effect I included the paired sample design of\nmy study, but obviously the model does not check for the \"repeated\nmeasurements\" structure of my data. Or in other words, the model\nassumpt that different sampling dates are independent of each other,\nbut they aren't (since I measured the CO2 15 times on exactly the same\nspot).\n\nSo, that's why my question is how can I combine the paired (or nested)\ndesign with the repeated measurements in one model???\n\nThank you for any help\n\nSven\n\n\n--\nSven Wirthner\nEidg. Forschungsanstalt für Wald, Schnee und Landschaft WSL\nTierökologie\nZürcherstrasse 111\nCH-8903 Birmensdorf\n\nTel. +41 44 7392 371\nFax  +41 44 7392 215\nsven.wirthner at wsl.ch\nhttp://www.wsl.ch\n\n-----------------------------------------------------------------------------------\nThis message was sent using IMP (http://horde.org/imp/) at WSL  \n(http://www.wsl.ch).",
       "body_snippet": "Dear all\n\nI have the following problem:\n\nI measured co2 on 6 paired sites (one grubbed and one non-grubbed\nfence per site -> grubbing = treatment). These measurements I repeated\n15 times over 2 years ",
       "thread_id": "thread-020019818846",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003193.html"
     },
     {
       "id": "msg-924bf56cf674",
@@ -371,7 +391,8 @@
       "body_snippet": "Good afternoon,\n\nI know how to speed up GAMM when specifying a spatial correlation structure by splitting up the dataset to compute the spatial correlation coefficients of corSpher.\nsuch (if dataG is ",
       "thread_id": "thread-924bf56cf674",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003194.html"
     },
     {
       "id": "msg-192d84613c0a",
@@ -389,7 +410,8 @@
       "body_snippet": "On 17/01/2010 11:00, r-sig-mixed-models-request at r-project.org wrote:\n> Send R-sig-mixed-models mailing list submissions to\n> \tr-sig-mixed-models at r-project.org\n>\n> To subscribe or unsubscribe via",
       "thread_id": "thread-192d84613c0a",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003195.html"
     },
     {
       "id": "msg-6a894bf0c58e",
@@ -406,6 +428,7 @@
       "thread_id": "thread-6a894bf0c58e",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003197.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100117/3a60fa5c/attachment.pl"
       ]
@@ -422,11 +445,12 @@
       "references": [
         "<20100115114428.11644sy3sol48f8k@webmail.wsl.ch>"
       ],
-      "body_plain": "Dear Sven,\n\nIf you expect serial autocorrelation along time, then you could add a correlation structure like e.g. corAR1() or corExp(). You can find more details in Pinheiro & Bates (2000) or Zuur et al. (2009)\n\nlme(co2~treatment+time, random=~1|site, correlation = corAR1(form = ~time), data=CO2_t1_t15)\n\n@BOOK{\n  title = {Mixed-Effects Models in {S} and {S-Plus}},\n  publisher = {Springer},\n  year = {2000},\n  author = {Pinheiro, Jose C. and Bates, Douglas M.},\n  note = {{ISBN 0-387-98957-0}},\n  abstract = {A comprehensive guide to the use of the `nlme' package for linear\n\tand nonlinear mixed-effects models.},\n  publisherurl = {http://www.springeronline.com/sgw/cda/frontpage/0,11855,4-10129-22-2102822-0,00.html?changeHeader=true}\n}\n\n@BOOK{\n  title = {Mixed Effects Models and Extensions in Ecology with R},\n  publisher = {Springer New York},\n  year = {2009},\n  author = {Zuur, Alain F. and Ieno, Elena N. and Walker, Neil J. and Saveliev,\n\tAnatoly A. and Smith, Graham M.},\n  doi = {10.1007/978-0-387-87458-6}\n}\n\nHTH,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n\n-----Oorspronkelijk bericht-----\nVan: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Sven Wirthner\nVerzonden: vrijdag 15 januari 2010 11:44\nAan: r-sig-mixed-models at r-project.org\nOnderwerp: [R-sig-ME] paired and repeated measurements\n\nDear all\n\nI have the following problem:\n\nI measured co2 on 6 paired sites (one grubbed and one non-grubbed fence per site -> grubbing = treatment). These measurements I repeated\n15 times over 2 years (see attached table). So, now my problem is how to analyze these data. I tried the following model:\n\nmod1_CO2<-lme(co2~treatment+time,random=~1|site,data=CO2_t1_t15)\n\nI think with the random effect I included the paired sample design of my study, but obviously the model does not check for the \"repeated measurements\" structure of my data. Or in other words, the model assumpt that different sampling dates are independent of each other, but they aren't (since I measured the CO2 15 times on exactly the same spot).\n\nSo, that's why my question is how can I combine the paired (or nested) design with the repeated measurements in one model???\n\nThank you for any help\n\nSven\n\n\n--\nSven Wirthner\nEidg. Forschungsanstalt f?r Wald, Schnee und Landschaft WSL Tier?kologie Z?rcherstrasse 111\nCH-8903 Birmensdorf\n\nTel. +41 44 7392 371\nFax  +41 44 7392 215\nsven.wirthner at wsl.ch\nhttp://www.wsl.ch\n\n-----------------------------------------------------------------------------------\nThis message was sent using IMP (http://horde.org/imp/) at WSL (http://www.wsl.ch).\n\nDruk dit bericht a.u.b. niet onnodig af.\nPlease do not print this message unnecessarily.\n\nDit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer \nen binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is\ndoor een geldig ondertekend document. The views expressed in  this message \nand any annex are purely those of the writer and may not be regarded as stating \nan official position of INBO, as long as the message is not confirmed by a duly \nsigned document.",
+      "body_plain": "Dear Sven,\n\nIf you expect serial autocorrelation along time, then you could add a correlation structure like e.g. corAR1() or corExp(). You can find more details in Pinheiro & Bates (2000) or Zuur et al. (2009)\n\nlme(co2~treatment+time, random=~1|site, correlation = corAR1(form = ~time), data=CO2_t1_t15)\n\n@BOOK{\n  title = {Mixed-Effects Models in {S} and {S-Plus}},\n  publisher = {Springer},\n  year = {2000},\n  author = {Pinheiro, Jose C. and Bates, Douglas M.},\n  note = {{ISBN 0-387-98957-0}},\n  abstract = {A comprehensive guide to the use of the `nlme' package for linear\n\tand nonlinear mixed-effects models.},\n  publisherurl = {http://www.springeronline.com/sgw/cda/frontpage/0,11855,4-10129-22-2102822-0,00.html?changeHeader=true}\n}\n\n@BOOK{\n  title = {Mixed Effects Models and Extensions in Ecology with R},\n  publisher = {Springer New York},\n  year = {2009},\n  author = {Zuur, Alain F. and Ieno, Elena N. and Walker, Neil J. and Saveliev,\n\tAnatoly A. and Smith, Graham M.},\n  doi = {10.1007/978-0-387-87458-6}\n}\n\nHTH,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n\n-----Oorspronkelijk bericht-----\nVan: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Sven Wirthner\nVerzonden: vrijdag 15 januari 2010 11:44\nAan: r-sig-mixed-models at r-project.org\nOnderwerp: [R-sig-ME] paired and repeated measurements\n\nDear all\n\nI have the following problem:\n\nI measured co2 on 6 paired sites (one grubbed and one non-grubbed fence per site -> grubbing = treatment). These measurements I repeated\n15 times over 2 years (see attached table). So, now my problem is how to analyze these data. I tried the following model:\n\nmod1_CO2<-lme(co2~treatment+time,random=~1|site,data=CO2_t1_t15)\n\nI think with the random effect I included the paired sample design of my study, but obviously the model does not check for the \"repeated measurements\" structure of my data. Or in other words, the model assumpt that different sampling dates are independent of each other, but they aren't (since I measured the CO2 15 times on exactly the same spot).\n\nSo, that's why my question is how can I combine the paired (or nested) design with the repeated measurements in one model???\n\nThank you for any help\n\nSven\n\n\n--\nSven Wirthner\nEidg. Forschungsanstalt für Wald, Schnee und Landschaft WSL Tierökologie Zürcherstrasse 111\nCH-8903 Birmensdorf\n\nTel. +41 44 7392 371\nFax  +41 44 7392 215\nsven.wirthner at wsl.ch\nhttp://www.wsl.ch\n\n-----------------------------------------------------------------------------------\nThis message was sent using IMP (http://horde.org/imp/) at WSL (http://www.wsl.ch).\n\nDruk dit bericht a.u.b. niet onnodig af.\nPlease do not print this message unnecessarily.\n\nDit bericht en eventuele bijlagen geven enkel de visie van de schrijver weer \nen binden het INBO onder geen enkel beding, zolang dit bericht niet bevestigd is\ndoor een geldig ondertekend document. The views expressed in  this message \nand any annex are purely those of the writer and may not be regarded as stating \nan official position of INBO, as long as the message is not confirmed by a duly \nsigned document.",
       "body_snippet": "Dear Sven,\n\nIf you expect serial autocorrelation along time, then you could add a correlation structure like e.g. corAR1() or corExp(). You can find more details in Pinheiro & Bates (2000) or Zuur et ",
       "thread_id": "thread-020019818846",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003196.html"
     },
     {
       "id": "msg-4c1f9cb6cd08",
@@ -444,7 +468,8 @@
       "body_snippet": "These slides from Douglas Bates could be helpful:\n\nhttp://lme4.r-forge.r-project.org/slides/2009-07-21-Seewiesen/\n\n2010/1/17 Gina Garland <gmgarland at ucdavis.edu>:\n> Hello,\n>\n> ? I'm a Masters stude",
       "thread_id": "thread-6a894bf0c58e",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003198.html"
     },
     {
       "id": "msg-414394ca4817",
@@ -461,6 +486,7 @@
       "thread_id": "thread-414394ca4817",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003199.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100119/250ca31f/attachment.pl"
       ]
@@ -479,7 +505,8 @@
       "body_snippet": "Hello all,\n\nI am struggling for a while with a problem of model specification,\nI don't know if it is possible, but I would like to fit a nested model\nwhere subjects are autocorrelated with respect to ",
       "thread_id": "thread-644867316478",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003200.html"
     },
     {
       "id": "msg-16d45bde91c8",
@@ -496,6 +523,7 @@
       "thread_id": "thread-16d45bde91c8",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003201.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100120/bd7186c5/attachment.pl"
       ]
@@ -516,7 +544,8 @@
       "body_snippet": "Dear Sebastiaan,\n\nWhat you're proposing to do is entirely reasonable. In essence, as you say, you're using covariates to explain the variation across groups (or alternatively the clustering within gro",
       "thread_id": "thread-7737037d35d2",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003202.html"
     },
     {
       "id": "msg-fcd25f012292",
@@ -533,6 +562,7 @@
       "thread_id": "thread-fcd25f012292",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003203.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100121/6b832017/attachment.pl"
       ]
@@ -553,7 +583,8 @@
       "body_snippet": "It takes time to learn how to do these analyses. I think a good place to\nstart is working through the examples of an Intro graduate-level methods course.\n\nI used Statistical Research methods in the li",
       "thread_id": "thread-6a894bf0c58e",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003204.html"
     },
     {
       "id": "msg-cfdbf10cbcd7",
@@ -569,7 +600,8 @@
       "body_snippet": "Dear Juliet, and list,\nPerhaps some annotated examples of mine are helpful:\nwww.hugoquene.nl/mixedeffects\nBest wishes, Hugo\n\n> I'm trying to learn more about mixed models in detail. Does anyone know o",
       "thread_id": "thread-cfdbf10cbcd7",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003205.html"
     },
     {
       "id": "msg-3cdb11218702",
@@ -585,7 +617,8 @@
       "body_snippet": "Dear all,\n\nhere is my problem, a very  simple one indeed. I am new to mixed models \nand before go on with the analysis I wish to be sure I am rigth in  \nmodel formulation.\n\nMy data set consists of  ob",
       "thread_id": "thread-3cdb11218702",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003206.html"
     },
     {
       "id": "msg-a74e640144d1",
@@ -603,7 +636,8 @@
       "body_snippet": "Dear Giacomo,\n\nYou want a different random intercept for Season or Tide per site. Use\n(Season|Site) instead of (1|Season:Site)\n\nIn your case I would not use site as a random site since you have only 3",
       "thread_id": "thread-3cdb11218702",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003207.html"
     },
     {
       "id": "msg-3bac17c7505b",
@@ -621,7 +655,8 @@
       "body_snippet": "Dear Giacomo,\n\nI would prefer to include whichever random effects that could be relevant in the initial\nmodel. Instead of checking afterwards by adding more terms and possibly even carry out a\nsignifi",
       "thread_id": "thread-3cdb11218702",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003208.html"
     },
     {
       "id": "msg-46071beeaf4d",
@@ -637,7 +672,8 @@
       "body_snippet": "The data set Soybean.csv is the modified Soybean data set in the R nlme library. I wish to test the effect of the fixed effect Svariety which is a factor with three levels allen, fowler and glenn. In ",
       "thread_id": "thread-46071beeaf4d",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003209.html"
     },
     {
       "id": "msg-e13fd0927d1f",
@@ -653,7 +689,8 @@
       "body_snippet": "----- Forwarded Message ----\nFrom: Juliet Ndukum <jpntsang at yahoo.com>\nTo: R-SIG-Mixed-Models at R-project.org\nSent: Fri, January 22, 2010 4:05:58 PM\nSubject: Meaning of parameters in nlme output\n\n\n",
       "thread_id": "thread-e13fd0927d1f",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003210.html"
     },
     {
       "id": "msg-3c550fdcc14d",
@@ -669,7 +706,8 @@
       "body_snippet": "The data set Soybean.csv is the modified Soybean data set in the R nlme library. I wish to test the effect of the fixed effect Svariety which is a factor with three levels allen, fowler and glenn. In ",
       "thread_id": "thread-3c550fdcc14d",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003211.html"
     },
     {
       "id": "msg-3b68a3a653a9",
@@ -685,7 +723,8 @@
       "body_snippet": "I have posted a message on R-help (http://tinyurl.com/ybdgref) about\nan experiment with categorical data along the time.\n\nI do not explain very well my plot (nor my split).\n\nI work with nematode and I",
       "thread_id": "thread-3b68a3a653a9",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003212.html"
     },
     {
       "id": "msg-feeb90b837b0",
@@ -697,11 +736,12 @@
       "subject_clean": "estimates of between sex correlations",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nI would like to fit a model to estimate between sex genetic correlations \nfor 3 traits (3 same traits expressed both in males and females) using \nMCMCglmm. My problem is I don't understand how I can manage to fix the \ncovariances between male and female traits to 0 for residual variance \nand permanent environment. Could anyone help me with this?\n\nMany thanks in advance\n\nAll the best\n\nCeline\n\n-- \n\nCeline Teplitsky\nD?partement Ecologie et Gestion de la Biodiversit? UMR 7204\nUnit? Conservation des Esp?ces, Restauration et Suivi des Populations\nCase Postale 51\n55 rue Buffon 75005 Paris\n\nWebpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\nFax : (33-1)-4079-3835\nPhone: (33-1)-4079-3443",
+      "body_plain": "Dear all,\n\nI would like to fit a model to estimate between sex genetic correlations \nfor 3 traits (3 same traits expressed both in males and females) using \nMCMCglmm. My problem is I don't understand how I can manage to fix the \ncovariances between male and female traits to 0 for residual variance \nand permanent environment. Could anyone help me with this?\n\nMany thanks in advance\n\nAll the best\n\nCeline\n\n-- \n\nCeline Teplitsky\nDépartement Ecologie et Gestion de la Biodiversité UMR 7204\nUnité Conservation des Espèces, Restauration et Suivi des Populations\nCase Postale 51\n55 rue Buffon 75005 Paris\n\nWebpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\nFax : (33-1)-4079-3835\nPhone: (33-1)-4079-3443",
       "body_snippet": "Dear all,\n\nI would like to fit a model to estimate between sex genetic correlations \nfor 3 traits (3 same traits expressed both in males and females) using \nMCMCglmm. My problem is I don't understand ",
       "thread_id": "thread-feeb90b837b0",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003213.html"
     },
     {
       "id": "msg-77a79499ebbe",
@@ -717,7 +757,8 @@
       "body_snippet": "Hi everyone,\n\nI had posted a question on the R Help forum previously about my syntax\nof what I was trying to do with this dataset...  But now I'd like to\nget an opinion if I'm thinking about it correc",
       "thread_id": "thread-77a79499ebbe",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003214.html"
     },
     {
       "id": "msg-5842ef51ce2c",
@@ -735,7 +776,8 @@
       "body_snippet": "Whoops, I should say also that we're trying to test and see if\n'Division' (representing student age) has a significant effect, (or\ncan be used to roughly predict) student score.\n\n\nOn Mon, Jan 25, 2010",
       "thread_id": "thread-77a79499ebbe",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003215.html"
     },
     {
       "id": "msg-b5515e3c5356",
@@ -753,7 +795,8 @@
       "body_snippet": "I think ....\n\nOn 01/25/2010 02:29 PM, Doug Adams wrote:\n> Hi everyone,\n>\n> I had posted a question on the R Help forum previously about my syntax\n> of what I was trying to do with this dataset...  But",
       "thread_id": "thread-77a79499ebbe",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003216.html"
     },
     {
       "id": "msg-b7a03fccc770",
@@ -773,7 +816,8 @@
       "body_snippet": "> you want ...\n>\n> lmer(score ~ division + (1|district/school), data=Age6m)\n>\n> and not\n>\n> lmer(score ~ division + (1|school|district), data=Age6m)\n>\n>\n> You want school nested within district correc",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003217.html"
     },
     {
       "id": "msg-f1158cda683f",
@@ -789,7 +833,8 @@
       "body_snippet": "Hi Gina,\n\nThis website has been so helpful to me in my masters project (which\nI'm still doing too, hah)...\n\nhttp://statmethods.net/\n\nIt's helped me import & organize my data, get descriptives and perf",
       "thread_id": "thread-f1158cda683f",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003221.html"
     },
     {
       "id": "msg-c429765c204c",
@@ -810,7 +855,8 @@
       "body_snippet": "On Mon, Jan 25, 2010 at 9:41 PM, Doug Adams <dougadams53 at gmail.com> wrote:\n>> you want ...\n>>\n>> lmer(score ~ division + (1|district/school), data=Age6m)\n>>\n>> and not\n>>\n>> lmer(score ~ division +",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003218.html"
     },
     {
       "id": "msg-6b13471351c6",
@@ -832,7 +878,8 @@
       "body_snippet": "Douglas Bates wrote:\n> On Mon, Jan 25, 2010 at 9:41 PM, Doug Adams <dougadams53 at gmail.com> wrote:\n>   \n>>> you want ...\n>>>\n>>> lmer(score ~ division + (1|district/school), data=Age6m)\n>>>\n>>> and ",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 2,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003219.html"
     },
     {
       "id": "msg-5f99f659673c",
@@ -855,7 +902,8 @@
       "body_snippet": "I appreciate that, both of you (& that's ok for the mistake Christopher)   :)\n\nSo fixed factors as simply listed by themselves (no 1| notation) and\nrandom effects are listed with appropriate nesting..",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 3,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003220.html"
     },
     {
       "id": "msg-0ea6bbcf503b",
@@ -872,6 +920,7 @@
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003222.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100126/ce82c87a/attachment.pl"
       ]
@@ -898,7 +947,8 @@
       "body_snippet": "On Tue, Jan 26, 2010 at 10:10 PM, Doug Adams <fog0 at gmx.com> wrote:\n> I appreciate that, both of you (& that's ok for the mistake Christopher) ? :)\n\n> So fixed factors as simply listed by themselves",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 4,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003223.html"
     },
     {
       "id": "msg-5c0d519c72cb",
@@ -923,7 +973,8 @@
       "body_snippet": "Hi, and thanks again.  That makes sense with the 3 levels of division:\n\n(Intercept) divisionJunior divisionSenior\n     80.306526      -3.252372      -2.694055\n\n...so that the Junior and Senior levels ",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 5,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003224.html"
     },
     {
       "id": "msg-65b387b00cfc",
@@ -942,6 +993,7 @@
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 1,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003225.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/f658dde9/attachment.pl"
       ]
@@ -964,6 +1016,7 @@
       "thread_id": "thread-0ea6bbcf503b",
       "thread_depth": 2,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003229.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100127/96b300bc/attachment.pl"
       ]
@@ -982,7 +1035,8 @@
       "body_snippet": "Hi Austen,\n\napart from the residual error I could imagine that there are two additional layers of\nvariation in the experimental setup you've:\n\n(1|seal) - variation between seals\n\n(1|seal:season) - sea",
       "thread_id": "thread-82e945f80e0a",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003226.html"
     },
     {
       "id": "msg-a790f59724b6",
@@ -999,6 +1053,7 @@
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 0,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003227.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100128/8e07b841/attachment.pl"
       ]
@@ -1019,7 +1074,8 @@
       "body_snippet": "Dear Thierry,\n\nI THINK the fixed effect slope should be what you're after if you want  \nto predict the change in log numbers, but simply exponentiating the  \nprediction will not give you a true measur",
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003228.html"
     },
     {
       "id": "msg-eabec41ab524",
@@ -1045,7 +1101,8 @@
       "body_snippet": "I'm writing a book about lme4 and lmer.  When it gets to the point\nwhere others can read it without too much frowning and scratching of\nheads, I will make chapter drafts available.\n\nFor the time being",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 6,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003230.html"
     },
     {
       "id": "msg-2b9a0c142ece",
@@ -1072,7 +1129,8 @@
       "body_snippet": "That's great!  Thanks!\n\n\n\nOn Thu, Jan 28, 2010 at 8:35 AM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> I'm writing a book about lme4 and lmer. ?When it gets to the point\n> where others can read it",
       "thread_id": "thread-b7a03fccc770",
       "thread_depth": 7,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003231.html"
     },
     {
       "id": "msg-552d2252a308",
@@ -1086,11 +1144,12 @@
       "references": [
         "<4B5DA4AB.3010001@mnhn.fr>"
       ],
-      "body_plain": "Hi Celine,\n\nUnfortunately I don't think the model you want to fit can be fitted in  \nMCMCglmm. Currently only (conditional) diagonal and (conditional)  \nblock residual covariance matrices are implemented, and what you want  \nis block diagonal. ASReml is probably you best way forward at the  \nmoment. If you are prepared to assume that the residual covariances  \nfor the 3 traits are equivalent in the two sexes then you can use  \nrcov=~us(trait):sex:units.\n\n  With respect to the permanent environment effects you can fit a  \nblock diagonal using\n\nus(at.level(sex,1):trait):id+us(at.level(sex,2):trait):id\n\nwhere id are the individual identifiers.\n\nI may allow this type of syntax in the residual structure in the near future.\n\nCheers,\n\nJarrod\n\n\nQuoting Celine Teplitsky <teplitsky at mnhn.fr>:\n\n> Dear all,\n>\n> I would like to fit a model to estimate between sex genetic\n> correlations for 3 traits (3 same traits expressed both in males and\n> females) using MCMCglmm. My problem is I don't understand how I can\n> manage to fix the covariances between male and female traits to 0 for\n> residual variance and permanent environment. Could anyone help me with\n> this?\n>\n> Many thanks in advance\n>\n> All the best\n>\n> Celine\n>\n> -- \n>\n> Celine Teplitsky\n> D?partement Ecologie et Gestion de la Biodiversit? UMR 7204\n> Unit? Conservation des Esp?ces, Restauration et Suivi des Populations\n> Case Postale 51\n> 55 rue Buffon 75005 Paris\n>\n> Webpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\n> Fax : (33-1)-4079-3835\n> Phone: (33-1)-4079-3443\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "Hi Celine,\n\nUnfortunately I don't think the model you want to fit can be fitted in  \nMCMCglmm. Currently only (conditional) diagonal and (conditional)  \nblock residual covariance matrices are implemented, and what you want  \nis block diagonal. ASReml is probably you best way forward at the  \nmoment. If you are prepared to assume that the residual covariances  \nfor the 3 traits are equivalent in the two sexes then you can use  \nrcov=~us(trait):sex:units.\n\n  With respect to the permanent environment effects you can fit a  \nblock diagonal using\n\nus(at.level(sex,1):trait):id+us(at.level(sex,2):trait):id\n\nwhere id are the individual identifiers.\n\nI may allow this type of syntax in the residual structure in the near future.\n\nCheers,\n\nJarrod\n\n\nQuoting Celine Teplitsky <teplitsky at mnhn.fr>:\n\n> Dear all,\n>\n> I would like to fit a model to estimate between sex genetic\n> correlations for 3 traits (3 same traits expressed both in males and\n> females) using MCMCglmm. My problem is I don't understand how I can\n> manage to fix the covariances between male and female traits to 0 for\n> residual variance and permanent environment. Could anyone help me with\n> this?\n>\n> Many thanks in advance\n>\n> All the best\n>\n> Celine\n>\n> -- \n>\n> Celine Teplitsky\n> Département Ecologie et Gestion de la Biodiversité UMR 7204\n> Unité Conservation des Espèces, Restauration et Suivi des Populations\n> Case Postale 51\n> 55 rue Buffon 75005 Paris\n>\n> Webpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\n> Fax : (33-1)-4079-3835\n> Phone: (33-1)-4079-3443\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi Celine,\n\nUnfortunately I don't think the model you want to fit can be fitted in  \nMCMCglmm. Currently only (conditional) diagonal and (conditional)  \nblock residual covariance matrices are implemen",
       "thread_id": "thread-feeb90b837b0",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003232.html"
     },
     {
       "id": "msg-d831921fb450",
@@ -1108,7 +1167,8 @@
       "body_snippet": "On Thu, 28 Jan 2010, ONKELINX, Thierry wrote:\n\n> We are modelling the total numbers of hibernating bats in a fortress. We\n> have data of the number of bats per room spanning ten years. The main\n> prob",
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 1,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003233.html"
     },
     {
       "id": "msg-cb18121f6982",
@@ -1127,7 +1187,8 @@
       "body_snippet": "On Thu, Jan 28, 2010 at 6:57 AM, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Dear Thierry,\n>\n> I THINK the fixed effect slope should be what you're after if you want to\n> predict the change in l",
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 2,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003234.html"
     },
     {
       "id": "msg-b6abc70b4aa8",
@@ -1145,7 +1206,8 @@
       "body_snippet": "Hi Thierry,\nThe other responses you've gotten all address your question. I was\nwondering\nif you had considered coverage estimators? These are used to address\nproblems\nof census undercount, which seems",
       "thread_id": "thread-b6abc70b4aa8",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003235.html"
     },
     {
       "id": "msg-fabc351c213f",
@@ -1161,7 +1223,8 @@
       "body_snippet": "Dear R user,\n \nI'm running an analysis on the trend of rates of acute myocardial infarction in 20 regions.\nI want to specify both the national and the region-specific trends with a polynomial function",
       "thread_id": "thread-fabc351c213f",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003236.html"
     },
     {
       "id": "msg-30732bc21c01",
@@ -1181,7 +1244,8 @@
       "body_snippet": "Dear Doug,\n\nPerhaps I misunderstand Rubin's missing data theory, and/or perhaps  \nits not relevant to Thierry's problem.\n\nI was under the impression that if the probability of missingness  \ndepends on",
       "thread_id": "thread-a790f59724b6",
       "thread_depth": 3,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003237.html"
     },
     {
       "id": "msg-76d1554d2840",
@@ -1197,7 +1261,8 @@
       "body_snippet": "Dear Jarrod,\n\nYou asked about ASReml's na.include=Y option.\n\nNo, this does not do any fancy imputation or augmentation like MCMCglmm\ndoes either.\n\nAs you can read on p113 of the user guide (p139 of th",
       "thread_id": "thread-76d1554d2840",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003238.html"
     },
     {
       "id": "msg-20081a13f1e4",
@@ -1209,11 +1274,12 @@
       "subject_clean": "raters",
       "in_reply_to": "<mailman.422.1264713966.18074.r-sig-mixed-models@r-project.org>",
       "references": [],
-      "body_plain": "Good morning colleagues,\nI have a dataset where 100 raters (teachers who mark student responses to examination questions) participated to a number of examinations. Not everybofy participated to each examination. For example, one rater may have participated to only 2 examinations, and another rater may have participated to 12 examinations. The examinations do not happen at regular intervals i.e. sometimes a month may pass between two examinations, sometimes the distance between two examinations may be nine months. So, we have a situation where diffrent people participated to a different number of examinations and the distance between the examinations is not constant. Every time a rater participates to one examination, he is awarded some statistical indications of his/her rating profile: accuracy, consistency, restriction of range (he only uses part of the rating scale) etc. \nI need to investigate (a) if the are raters who follow specific patterns e.g. the more the exminations they participate, the more consistent they become, or the more accurate they become. (b)I want to check if there is statistically significant variability between the raters' statistics. In every case, I want to use the time that elaplses between exams as a covariate. \n\nHow can I do the above two points using lme?  \n\n\nDr. Iasonas Lamprianou\n\n\nAssistant Professor (Educational Research and Evaluation)\nDepartment of Education Sciences\nEuropean University-Cyprus\nP.O. Box 22006\n1516 Nicosia\nCyprus \nTel.: +357-22-713178\nFax: +357-22-590539\n\n\nHonorary Research Fellow\nDepartment of Education\nThe University of Manchester\nOxford Road, Manchester M13 9PL, UK\nTel. 0044  161 275 3485\niasonas.lamprianou at manchester.ac.uk\n\n\n--- On Thu, 28/1/10, r-sig-mixed-models-request at r-project.org <r-sig-mixed-models-request at r-project.org> wrote:\n\n> From: r-sig-mixed-models-request at r-project.org <r-sig-mixed-models-request at r-project.org>\n> Subject: R-sig-mixed-models Digest, Vol 37, Issue 20\n> To: r-sig-mixed-models at r-project.org\n> Date: Thursday, 28 January, 2010, 21:26\n> Send R-sig-mixed-models mailing list\n> submissions to\n> ??? r-sig-mixed-models at r-project.org\n> \n> To subscribe or unsubscribe via the World Wide Web, visit\n> ??? https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help'\n> to\n> ??? r-sig-mixed-models-request at r-project.org\n> \n> You can reach the person managing the list at\n> ??? r-sig-mixed-models-owner at r-project.org\n> \n> When replying, please edit your Subject line so it is more\n> specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n> \n> \n> Today's Topics:\n> \n> ???1. Re: Trend in total number of animals\n> (Jarrod Hadfield)\n> ???2. Re: Time series LME with nested fixed\n> effects (Austen Thomas)\n> ???3. Re: Science Fair data (Douglas Bates)\n> ???4. Re: Science Fair data (Doug Adams)\n> ???5. Re: estimates of between sex\n> correlations (Jarrod Hadfield)\n> ???6. Re: Trend in total number of animals\n> (David Duffy)\n> \n> \n> ----------------------------------------------------------------------\n> \n> Message: 1\n> Date: Thu, 28 Jan 2010 12:57:04 +0000\n> From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\n> To: \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Trend in total number of animals\n> Message-ID: <20100128125704.hn6nx4hrks4osw48 at www.staffmail.ed.ac.uk>\n> Content-Type: text/plain;???\n> charset=ISO-8859-1;??? DelSp=\"Yes\";\n> ??? format=\"flowed\"\n> \n> Dear Thierry,\n> \n> I THINK the fixed effect slope should be what you're after\n> if you want? \n> to predict the change in log numbers, but simply\n> exponentiating the? \n> prediction will not give you a true measure of the\n> arithmetic increase.\n> \n> The arithmetic prediction for years 1:10 (for example) when\n> the slope? \n> variance for the year|room term is zero would be:\n> \n> exp(b_year*1:10+0.5*(v1+v2))\n> \n> where b_year is your slope estimate, and v1 is the year\n> intercept? \n> variance and v2 is the room intercept variance.\n> \n> When slope variance exists this becomes more difficult,\n> because it? \n> implies the variance v2 changes as a function of year. In\n> this case:\n> \n> v2=diag(Z%*%V2%*%t(Z))\n> \n> where\n> \n> Z<-cbind(rep(1,10), 1:10)\n> \n> and V2 is the covariance matrix of the room\n> intercept-slopes.\n> \n> Or if you like\n> \n> v2 = V2[1,1]+(1:10)*V2[1,2]*2+(1:10^2)*V2[2,2]\n> \n> Another difficulty is the possibility that your missing\n> data are not? \n> \"completely missing at random\". By default lmer just seems\n> to omit? \n> missing data rather than dealing with it properly, but\n> perhaps there? \n> is an argument that can be passed to na.omit which\n> suppresses this? If? \n> so, then the less strict assumption of \"missing at random\"\n> can be? \n> made. In this latter case the missing data only have to be\n> random? \n> conditional on the observed data - for example, if there\n> were no bats? \n> in room A in year 1 which made the field workers less\n> inclined to? \n> visit room A in year 2 based on their knowledge of the 1'st\n> year's? \n> count.\n> \n> Cheers,\n> \n> Jarrod\n> \n> Quoting \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>:\n> \n> > Dear all,\n> >\n> > We are modelling the total numbers of hibarnating bats\n> in a fortress. We\n> > have data of the number of bats per room spanning ten\n> years. The main\n> > problem is that not all rooms were visited each year.\n> The fieldworkers\n> > did not known or find all rooms and some rooms were\n> not allways\n> > accessible.\n> >\n> > Some of the rooms were not counted in the early years\n> and they contain a\n> > rather high number of bats in the more recent years.\n> So a glm on the\n> > total observed number would be very biased. Therefore\n> we would use a\n> > mixed model on the numbers of bats per room. The model\n> looks like:\n> > glmer(Number ~ Year + (1|Year) + (Year|Room), family =\n> poisson). Year is\n> > the long-term trend. (1|Year) allows for year-to-year\n> variability (due\n> > to weatherconditions) and (Year|Room) allows for a\n> random intercept and\n> > slope per room.\n> >\n> > Our main question about this model is the\n> interpretation of the\n> > long-term trend (fixed effect of Year). Given the\n> model specification it\n> > is the trend in an 'average' room from the population\n> of rooms. Can we\n> > assume that this trend equals the trend in the total\n> number of bats in\n> > the fortress. That would be the trend in to total\n> observed numbers if we\n> > could have investigated every room in every year.\n> > Or is it better to use the model to simulate the total\n> number of bats\n> > and then model this simulated totals using a simple\n> glm? Repeating the\n> > simulations a large number of times would yield an\n> average and\n> > confidence intervals for the trend.\n> >\n> > Best regards,\n> >\n> > Thierry\n> >\n> >\n> ------------------------------------------------------------------------\n> > ----\n> > ir. Thierry Onkelinx\n> > Instituut voor natuur- en bosonderzoek\n> > team Biometrie & Kwaliteitszorg\n> > Gaverstraat 4\n> > 9500 Geraardsbergen\n> > Belgium\n> >\n> > Research Institute for Nature and Forest\n> > team Biometrics & Quality Assurance\n> > Gaverstraat 4\n> > 9500 Geraardsbergen\n> > Belgium\n> >\n> > tel. + 32 54/436 185\n> > Thierry.Onkelinx at inbo.be\n> > www.inbo.be\n> >\n> > To call in the statistician after the experiment is\n> done may be no more\n> > than asking him to perform a post-mortem examination:\n> he may be able to\n> > say what the experiment died of.\n> > ~ Sir Ronald Aylmer Fisher\n> >\n> > The plural of anecdote is not data.\n> > ~ Roger Brinner\n> >\n> > The combination of some data and an aching desire for\n> an answer does not\n> > ensure that a reasonable answer can be extracted from\n> a given body of\n> > data.\n> > ~ John Tukey\n> >\n> >\n> >\n> >\n> > Druk dit bericht a.u.b. niet onnodig af.\n> > Please do not print this message unnecessarily.\n> >\n> > Dit bericht en eventuele bijlagen geven enkel de visie\n> van de schrijver weer\n> > en binden het INBO onder geen enkel beding, zolang dit\n> bericht niet???\n> > bevestigd is\n> > door een geldig ondertekend document. The views\n> expressed in? this message\n> > and any annex are purely those of the writer and may\n> not be regarded? \n> >? as stating\n> > an official position of INBO, as long as the message\n> is not???\n> > confirmed by a duly\n> > signed document.\n> >\n> > ??? [[alternative HTML version\n> deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body,\n> registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ------------------------------\n> \n> Message: 2\n> Date: Wed, 27 Jan 2010 17:27:37 -0800\n> From: Austen Thomas <austen.thomas at gmail.com>\n> To: Andrew Dolman <andydolman at gmail.com>\n> Cc: R-SIG-Mixed-Models at r-project.org\n> Subject: Re: [R-sig-ME] Time series LME with nested fixed\n> effects\n> Message-ID:\n> ??? <9d4eee51001271727i4edcc565l1a5d7999ade2fc2b at mail.gmail.com>\n> Content-Type: text/plain\n> \n> Hi Andrew,\n> \n> Thank you so much for taking the time to look this over for\n> us.? Your\n> assistance has been exceedingly helpful.\n> \n> -Austen\n> \n> On Wed, Jan 27, 2010 at 1:23 PM, Andrew Dolman <andydolman at gmail.com>\n> wrote:\n> \n> > Hello Austin,\n> >\n> > I stand to be corrected but as no-one else has offered\n> anything yet I'll\n> > make a suggestion or two.\n> >\n> >\n> > 1.\n> > I don't think you want your random effects nested; you\n> want them crossed.\n> > This you can only do with lmer, not nlme.\n> >\n> > So something like:\n> >\n> > lmer(MDB~Season*Period+(1|Seal)\n> +(1|Season)+(1|Period), data=d,\n> > REML=F)->fit10\n> >\n> > This is because the seasons and periods have meaning\n> independently. i.e.\n> > saying \"spawn\" means the same thing for each seal, and\n> each period. Or in\n> > other words, you might expect \"spawn\" data points to\n> share similarities with\n> > each other that they do not share with non-spawn,\n> regardless of which time\n> > period or seal.\n> >\n> > 2. But!\n> >\n> > You only have 2 categories for season. This is not\n> enough to treat it as\n> > random. 4 periods is not really enough either. 5 seals\n> is possibly just\n> > enough. So I would just have seal as the only random\n> effect. Just treat\n> > season and period as fixed.\n> >\n> > lmer(MDB~Season*Period+(1|Seal), data=d,\n> REML=F)->fit10\n> >\n> >\n> >\n> > andydolman at gmail.com\n> >\n> >\n> > 2010/1/27 Austen Thomas <austen.thomas at gmail.com>\n> >\n> >>? We are using transmitting time/depth\n> recorders to measure the diving\n> >> behavior of 5 harbor seals in Puget Sound.?\n> For each seal, we have two\n> >> seasons, while herring are spawning and after they\n> spawn.? Nested in each\n> >> season, we have four times of day (labeled\n> period).? We are interested in\n> >> whether there is an effect of ?season? (spawn\n> / non-spawn), ?period?\n> >> (morning, day, evening, night) on the ?Modal\n> Depth Bin? of harbor seals,\n> >> or\n> >> an interaction between these two factors.\n> >>\n> >> Below is the code that we think is correct.?\n> Does anyone think the model\n> >> is\n> >> specified incorrectly, and if so what do they\n> recommend (and why)?\n> >> Thanks very much for your time.\n> >>\n> >> -Austen Thomas\n> >>\n> >> Biology Department\n> >> Western Washington University\n> >> Biology Building BI 315\n> >> Mail Stop 9160\n> >> Bellingham, WA 98225-9160\n> >>\n> >>\n> >>\n> >> For lme4 package\n> >> summary(d)\n> >> lmer(MDB~Season*Period+(1|Seal/Season/Period),\n> data=d, REML=F)->fit10\n> >> summary(fit10)\n> >> lmer(MDB~Season+Period+(1|Seal/Season/Period),\n> data=d, REML=F)->fit11\n> >> lmer(MDB~Season+(1|Seal/Season/Period), data=d,\n> REML=F)->fit12\n> >> lmer(MDB~1+(1|Seal/Season/Period), data=d,\n> REML=F)->fit13\n> >> anova(fit10, fit11, fit12, fit13)\n> >>\n> >> for the nlme package\n> >> lme(MDB~Season*Period,\n> random=~1|Seal/Season/Period, method=\"ML\",\n> >> data=d)->fit20\n> >> summary(fit20)\n> >> lme(MDB~Season+Period,\n> random=~1|Seal/Season/Period, method=\"ML\",\n> >> data=d)->fit21\n> >> lme(MDB~Season, random=~1|Seal/Season/Period,\n> method=\"ML\", data=d)->fit22\n> >> lme(MDB~1, random=~1|Seal/Season/Period,\n> method=\"ML\", data=d)->fit23\n> >> anova(fit20, fit21, fit22, fit23)\n> >>\n> >>? ? ? ? [[alternative HTML\n> version deleted]]\n> >>\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org\n> mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >>\n> >\n> \n> \n> -- \n> Biology Department\n> Western Washington University\n> Biology Building BI 315\n> Mail Stop 9160\n> Bellingham, WA 98225-9160\n> \n> ??? [[alternative HTML version deleted]]\n> \n> \n> \n> ------------------------------\n> \n> Message: 3\n> Date: Thu, 28 Jan 2010 09:35:02 -0600\n> From: Douglas Bates <bates at stat.wisc.edu>\n> To: Doug Adams <fog0 at gmx.com>\n> Cc: R sig-mixed-models <r-sig-mixed-models at r-project.org>\n> Subject: Re: [R-sig-ME] Science Fair data\n> Message-ID:\n> ??? <40e66e0b1001280735r5c90ad8arf2c73a101aadc8b2 at mail.gmail.com>\n> Content-Type: text/plain; charset=ISO-8859-1\n> \n> I'm writing a book about lme4 and lmer.? When it gets\n> to the point\n> where others can read it without too much frowning and\n> scratching of\n> heads, I will make chapter drafts available.\n> \n> For the time being you may find the slides from a short\n> course given\n> last summer informative.? They are at\n> http://lme4.R-forge.R-project.org/slides/2009-07-21-Seewiesen/\n> \n> On Wed, Jan 27, 2010 at 2:53 PM, Doug Adams <fog0 at gmx.com>\n> wrote:\n> > Hi, and thanks again. ?That makes sense with the 3\n> levels of division:\n> >\n> > (Intercept) divisionJunior divisionSenior\n> > ? ? 80.306526 ? ? ?-3.252372 ? ? ?-2.694055\n> >\n> > ...so that the Junior and Senior levels are both\n> slightly lower than\n> > the Elementary level.\n> >\n> > I'd love to really understand the summary of lmer and\n> what ranef,\n> > fixef, coef and fitted are extracting - so that\n> probably means I don't\n> > understand the basics and nomenclature of HLMing as I\n> thought I might\n> > have. ?I took a 1-week class on HLM, and I have the\n> book you (Douglas\n> > Bates) wrote... ?Maybe I just need to study up on\n> things a little\n> > better!\n> >\n> > Anyway, I appreciate your help very much ? : )\n> >\n> > Doug\n> >\n> >\n> >\n> > On Wed, Jan 27, 2010 at 8:07 AM, Douglas Bates <bates at stat.wisc.edu>\n> wrote:\n> >> On Tue, Jan 26, 2010 at 10:10 PM, Doug Adams\n> <fog0 at gmx.com>\n> wrote:\n> >>> I appreciate that, both of you (& that's\n> ok for the mistake Christopher) ? :)\n> >>\n> >>> So fixed factors as simply listed by\n> themselves (no 1| notation) and\n> >>> random effects are listed with appropriate\n> nesting... ?I do want to\n> >>> consider schools as random effects; that will\n> give me the information\n> >>> I'd like to have about the variability (and\n> reliability too?) of the\n> >>> schools as they fit into the big picture.\n> >>\n> >>> When I use fixef & ranef to extract\n> estimates for division and schools\n> >>> (& maybe districts eventually too now), am\n> I right in thinking that\n> >>> the 3 numbers given for each level of division\n> (fixef) are the\n> >>> intercepts for each level -- as if there were\n> individual OLS\n> >>> regressions performed for each?\n> >>\n> >> Not quite. ?They should be labeled \"(Intercept)\"\n> and something like\n> >> division2 and division 3. ?(By the way, it helps\n> if you quote the\n> >> output when you want to discussion what particular\n> values mean.) ?The\n> >> (Intercept) coefficient represents the prediction\n> at the first level\n> >> of the division factor. ?The next two coefficients\n> are the change from\n> >> the first to the second level and from the first\n> to the third level.\n> >>\n> >>> And are the random effects for the\n> >>> schools (ranef) are the slopes associated with\n> those regression lines?\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> \n> \n> \n> ------------------------------\n> \n> Message: 4\n> Date: Thu, 28 Jan 2010 09:48:06 -0700\n> From: Doug Adams <fog0 at gmx.com>\n> To: Douglas Bates <bates at stat.wisc.edu>,???\n> R sig-mixed-models\n> ??? <r-sig-mixed-models at r-project.org>\n> Subject: Re: [R-sig-ME] Science Fair data\n> Message-ID:\n> ??? <74cfd9161001280848u7192230ey1cc450405cf3c579 at mail.gmail.com>\n> Content-Type: text/plain; charset=ISO-8859-1\n> \n> That's great!? Thanks!\n> \n> \n> \n> On Thu, Jan 28, 2010 at 8:35 AM, Douglas Bates <bates at stat.wisc.edu>\n> wrote:\n> > I'm writing a book about lme4 and lmer. ?When it gets\n> to the point\n> > where others can read it without too much frowning and\n> scratching of\n> > heads, I will make chapter drafts available.\n> >\n> > For the time being you may find the slides from a\n> short course given\n> > last summer informative. ?They are at\n> > http://lme4.R-forge.R-project.org/slides/2009-07-21-Seewiesen/\n> >\n> > On Wed, Jan 27, 2010 at 2:53 PM, Doug Adams <fog0 at gmx.com>\n> wrote:\n> >> Hi, and thanks again. ?That makes sense with the 3\n> levels of division:\n> >>\n> >> (Intercept) divisionJunior divisionSenior\n> >> ? ? 80.306526 ? ? ?-3.252372 ? ? ?-2.694055\n> >>\n> >> ...so that the Junior and Senior levels are both\n> slightly lower than\n> >> the Elementary level.\n> >>\n> >> I'd love to really understand the summary of lmer\n> and what ranef,\n> >> fixef, coef and fitted are extracting - so that\n> probably means I don't\n> >> understand the basics and nomenclature of HLMing\n> as I thought I might\n> >> have. ?I took a 1-week class on HLM, and I have\n> the book you (Douglas\n> >> Bates) wrote... ?Maybe I just need to study up on\n> things a little\n> >> better!\n> >>\n> >> Anyway, I appreciate your help very much ? : )\n> >>\n> >> Doug\n> \n> \n> \n> ------------------------------\n> \n> Message: 5\n> Date: Thu, 28 Jan 2010 17:23:44 +0000\n> From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] estimates of between sex\n> correlations\n> Message-ID: <20100128172344.1nykjdyvwg0sg4wg at www.staffmail.ed.ac.uk>\n> Content-Type: text/plain;???\n> charset=ISO-8859-1;??? DelSp=\"Yes\";\n> ??? format=\"flowed\"\n> \n> Hi Celine,\n> \n> Unfortunately I don't think the model you want to fit can\n> be fitted in? \n> MCMCglmm. Currently only (conditional) diagonal and\n> (conditional)? \n> block residual covariance matrices are implemented, and\n> what you want? \n> is block diagonal. ASReml is probably you best way forward\n> at the? \n> moment. If you are prepared to assume that the residual\n> covariances? \n> for the 3 traits are equivalent in the two sexes then you\n> can use? \n> rcov=~us(trait):sex:units.\n> \n> ? With respect to the permanent environment effects\n> you can fit a? \n> block diagonal using\n> \n> us(at.level(sex,1):trait):id+us(at.level(sex,2):trait):id\n> \n> where id are the individual identifiers.\n> \n> I may allow this type of syntax in the residual structure\n> in the near future.\n> \n> Cheers,\n> \n> Jarrod\n> \n> \n> Quoting Celine Teplitsky <teplitsky at mnhn.fr>:\n> \n> > Dear all,\n> >\n> > I would like to fit a model to estimate between sex\n> genetic\n> > correlations for 3 traits (3 same traits expressed\n> both in males and\n> > females) using MCMCglmm. My problem is I don't\n> understand how I can\n> > manage to fix the covariances between male and female\n> traits to 0 for\n> > residual variance and permanent environment. Could\n> anyone help me with\n> > this?\n> >\n> > Many thanks in advance\n> >\n> > All the best\n> >\n> > Celine\n> >\n> > -- \n> >\n> > Celine Teplitsky\n> > D?partement Ecologie et Gestion de la Biodiversit? UMR\n> 7204\n> > Unit? Conservation des Esp?ces, Restauration et Suivi\n> des Populations\n> > Case Postale 51\n> > 55 rue Buffon 75005 Paris\n> >\n> > Webpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\n> > Fax : (33-1)-4079-3835\n> > Phone: (33-1)-4079-3443\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body,\n> registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ------------------------------\n> \n> Message: 6\n> Date: Fri, 29 Jan 2010 07:25:27 +1000 (EST)\n> From: David Duffy <David.Duffy at qimr.edu.au>\n> To: \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Trend in total number of animals\n> Message-ID: <Pine.LNX.4.64.1001290717440.16167 at orpheus.qimr.edu.au>\n> Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed\n> \n> On Thu, 28 Jan 2010, ONKELINX, Thierry wrote:\n> \n> > We are modelling the total numbers of hibernating bats\n> in a fortress. We\n> > have data of the number of bats per room spanning ten\n> years. The main\n> > problem is that not all rooms were visited each year.\n> The fieldworkers\n> > did not known or find all rooms and some rooms were\n> not allways\n> > accessible.\n> >\n> > Some of the rooms were not counted in the early years\n> and they contain a\n> > rather high number of bats in the more recent years.\n> \n> I would try (fixed-effects) log-linear models for\n> incomplete tables as \n> well, to deal with the sampling (I have written an R\n> package \"gllm\", that \n> may be suitable).? Then you could compare the\n> estimates of total counts to \n> the GLMM results.? If you are going to simulate, you\n> might might as well \n> go to BUGS.\n> \n> Cheers, David.\n> \n> -- \n> | David Duffy (MBBS PhD)? ? ? ? ?\n> ? ? ? ? ? ? ? ?\n> ? ? ? ? ? ?\n> ???,-_|\\\n> | email: davidD at qimr.edu.au?\n> ph: INT+61+7+3362-0217 fax: -0101? /?\n> ???*\n> | Epidemiology Unit, Queensland Institute of Medical\n> Research???\\_,-._/\n> | 300 Herston Rd, Brisbane, Queensland 4029,\n> Australia? GPG 4D0B994A v\n> \n> \n> \n> ------------------------------\n> \n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> End of R-sig-mixed-models Digest, Vol 37, Issue 20\n> **************************************************\n>",
+      "body_plain": "Good morning colleagues,\nI have a dataset where 100 raters (teachers who mark student responses to examination questions) participated to a number of examinations. Not everybofy participated to each examination. For example, one rater may have participated to only 2 examinations, and another rater may have participated to 12 examinations. The examinations do not happen at regular intervals i.e. sometimes a month may pass between two examinations, sometimes the distance between two examinations may be nine months. So, we have a situation where diffrent people participated to a different number of examinations and the distance between the examinations is not constant. Every time a rater participates to one examination, he is awarded some statistical indications of his/her rating profile: accuracy, consistency, restriction of range (he only uses part of the rating scale) etc. \nI need to investigate (a) if the are raters who follow specific patterns e.g. the more the exminations they participate, the more consistent they become, or the more accurate they become. (b)I want to check if there is statistically significant variability between the raters' statistics. In every case, I want to use the time that elaplses between exams as a covariate. \n\nHow can I do the above two points using lme?  \n\n\nDr. Iasonas Lamprianou\n\n\nAssistant Professor (Educational Research and Evaluation)\nDepartment of Education Sciences\nEuropean University-Cyprus\nP.O. Box 22006\n1516 Nicosia\nCyprus \nTel.: +357-22-713178\nFax: +357-22-590539\n\n\nHonorary Research Fellow\nDepartment of Education\nThe University of Manchester\nOxford Road, Manchester M13 9PL, UK\nTel. 0044  161 275 3485\niasonas.lamprianou at manchester.ac.uk\n\n\n--- On Thu, 28/1/10, r-sig-mixed-models-request at r-project.org <r-sig-mixed-models-request at r-project.org> wrote:\n\n> From: r-sig-mixed-models-request at r-project.org <r-sig-mixed-models-request at r-project.org>\n> Subject: R-sig-mixed-models Digest, Vol 37, Issue 20\n> To: r-sig-mixed-models at r-project.org\n> Date: Thursday, 28 January, 2010, 21:26\n> Send R-sig-mixed-models mailing list\n> submissions to\n>     r-sig-mixed-models at r-project.org\n> \n> To subscribe or unsubscribe via the World Wide Web, visit\n>     https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> or, via email, send a message with subject or body 'help'\n> to\n>     r-sig-mixed-models-request at r-project.org\n> \n> You can reach the person managing the list at\n>     r-sig-mixed-models-owner at r-project.org\n> \n> When replying, please edit your Subject line so it is more\n> specific\n> than \"Re: Contents of R-sig-mixed-models digest...\"\n> \n> \n> Today's Topics:\n> \n>    1. Re: Trend in total number of animals\n> (Jarrod Hadfield)\n>    2. Re: Time series LME with nested fixed\n> effects (Austen Thomas)\n>    3. Re: Science Fair data (Douglas Bates)\n>    4. Re: Science Fair data (Doug Adams)\n>    5. Re: estimates of between sex\n> correlations (Jarrod Hadfield)\n>    6. Re: Trend in total number of animals\n> (David Duffy)\n> \n> \n> ----------------------------------------------------------------------\n> \n> Message: 1\n> Date: Thu, 28 Jan 2010 12:57:04 +0000\n> From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\n> To: \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Trend in total number of animals\n> Message-ID: <20100128125704.hn6nx4hrks4osw48 at www.staffmail.ed.ac.uk>\n> Content-Type: text/plain;   \n> charset=ISO-8859-1;    DelSp=\"Yes\";\n>     format=\"flowed\"\n> \n> Dear Thierry,\n> \n> I THINK the fixed effect slope should be what you're after\n> if you want  \n> to predict the change in log numbers, but simply\n> exponentiating the  \n> prediction will not give you a true measure of the\n> arithmetic increase.\n> \n> The arithmetic prediction for years 1:10 (for example) when\n> the slope  \n> variance for the year|room term is zero would be:\n> \n> exp(b_year*1:10+0.5*(v1+v2))\n> \n> where b_year is your slope estimate, and v1 is the year\n> intercept  \n> variance and v2 is the room intercept variance.\n> \n> When slope variance exists this becomes more difficult,\n> because it  \n> implies the variance v2 changes as a function of year. In\n> this case:\n> \n> v2=diag(Z%*%V2%*%t(Z))\n> \n> where\n> \n> Z<-cbind(rep(1,10), 1:10)\n> \n> and V2 is the covariance matrix of the room\n> intercept-slopes.\n> \n> Or if you like\n> \n> v2 = V2[1,1]+(1:10)*V2[1,2]*2+(1:10^2)*V2[2,2]\n> \n> Another difficulty is the possibility that your missing\n> data are not  \n> \"completely missing at random\". By default lmer just seems\n> to omit  \n> missing data rather than dealing with it properly, but\n> perhaps there  \n> is an argument that can be passed to na.omit which\n> suppresses this? If  \n> so, then the less strict assumption of \"missing at random\"\n> can be  \n> made. In this latter case the missing data only have to be\n> random  \n> conditional on the observed data - for example, if there\n> were no bats  \n> in room A in year 1 which made the field workers less\n> inclined to  \n> visit room A in year 2 based on their knowledge of the 1'st\n> year's  \n> count.\n> \n> Cheers,\n> \n> Jarrod\n> \n> Quoting \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>:\n> \n> > Dear all,\n> >\n> > We are modelling the total numbers of hibarnating bats\n> in a fortress. We\n> > have data of the number of bats per room spanning ten\n> years. The main\n> > problem is that not all rooms were visited each year.\n> The fieldworkers\n> > did not known or find all rooms and some rooms were\n> not allways\n> > accessible.\n> >\n> > Some of the rooms were not counted in the early years\n> and they contain a\n> > rather high number of bats in the more recent years.\n> So a glm on the\n> > total observed number would be very biased. Therefore\n> we would use a\n> > mixed model on the numbers of bats per room. The model\n> looks like:\n> > glmer(Number ~ Year + (1|Year) + (Year|Room), family =\n> poisson). Year is\n> > the long-term trend. (1|Year) allows for year-to-year\n> variability (due\n> > to weatherconditions) and (Year|Room) allows for a\n> random intercept and\n> > slope per room.\n> >\n> > Our main question about this model is the\n> interpretation of the\n> > long-term trend (fixed effect of Year). Given the\n> model specification it\n> > is the trend in an 'average' room from the population\n> of rooms. Can we\n> > assume that this trend equals the trend in the total\n> number of bats in\n> > the fortress. That would be the trend in to total\n> observed numbers if we\n> > could have investigated every room in every year.\n> > Or is it better to use the model to simulate the total\n> number of bats\n> > and then model this simulated totals using a simple\n> glm? Repeating the\n> > simulations a large number of times would yield an\n> average and\n> > confidence intervals for the trend.\n> >\n> > Best regards,\n> >\n> > Thierry\n> >\n> >\n> ------------------------------------------------------------------------\n> > ----\n> > ir. Thierry Onkelinx\n> > Instituut voor natuur- en bosonderzoek\n> > team Biometrie & Kwaliteitszorg\n> > Gaverstraat 4\n> > 9500 Geraardsbergen\n> > Belgium\n> >\n> > Research Institute for Nature and Forest\n> > team Biometrics & Quality Assurance\n> > Gaverstraat 4\n> > 9500 Geraardsbergen\n> > Belgium\n> >\n> > tel. + 32 54/436 185\n> > Thierry.Onkelinx at inbo.be\n> > www.inbo.be\n> >\n> > To call in the statistician after the experiment is\n> done may be no more\n> > than asking him to perform a post-mortem examination:\n> he may be able to\n> > say what the experiment died of.\n> > ~ Sir Ronald Aylmer Fisher\n> >\n> > The plural of anecdote is not data.\n> > ~ Roger Brinner\n> >\n> > The combination of some data and an aching desire for\n> an answer does not\n> > ensure that a reasonable answer can be extracted from\n> a given body of\n> > data.\n> > ~ John Tukey\n> >\n> >\n> >\n> >\n> > Druk dit bericht a.u.b. niet onnodig af.\n> > Please do not print this message unnecessarily.\n> >\n> > Dit bericht en eventuele bijlagen geven enkel de visie\n> van de schrijver weer\n> > en binden het INBO onder geen enkel beding, zolang dit\n> bericht niet   \n> > bevestigd is\n> > door een geldig ondertekend document. The views\n> expressed in  this message\n> > and any annex are purely those of the writer and may\n> not be regarded  \n> >  as stating\n> > an official position of INBO, as long as the message\n> is not   \n> > confirmed by a duly\n> > signed document.\n> >\n> >     [[alternative HTML version\n> deleted]]\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> >\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body,\n> registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ------------------------------\n> \n> Message: 2\n> Date: Wed, 27 Jan 2010 17:27:37 -0800\n> From: Austen Thomas <austen.thomas at gmail.com>\n> To: Andrew Dolman <andydolman at gmail.com>\n> Cc: R-SIG-Mixed-Models at r-project.org\n> Subject: Re: [R-sig-ME] Time series LME with nested fixed\n> effects\n> Message-ID:\n>     <9d4eee51001271727i4edcc565l1a5d7999ade2fc2b at mail.gmail.com>\n> Content-Type: text/plain\n> \n> Hi Andrew,\n> \n> Thank you so much for taking the time to look this over for\n> us.  Your\n> assistance has been exceedingly helpful.\n> \n> -Austen\n> \n> On Wed, Jan 27, 2010 at 1:23 PM, Andrew Dolman <andydolman at gmail.com>\n> wrote:\n> \n> > Hello Austin,\n> >\n> > I stand to be corrected but as no-one else has offered\n> anything yet I'll\n> > make a suggestion or two.\n> >\n> >\n> > 1.\n> > I don't think you want your random effects nested; you\n> want them crossed.\n> > This you can only do with lmer, not nlme.\n> >\n> > So something like:\n> >\n> > lmer(MDB~Season*Period+(1|Seal)\n> +(1|Season)+(1|Period), data=d,\n> > REML=F)->fit10\n> >\n> > This is because the seasons and periods have meaning\n> independently. i.e.\n> > saying \"spawn\" means the same thing for each seal, and\n> each period. Or in\n> > other words, you might expect \"spawn\" data points to\n> share similarities with\n> > each other that they do not share with non-spawn,\n> regardless of which time\n> > period or seal.\n> >\n> > 2. But!\n> >\n> > You only have 2 categories for season. This is not\n> enough to treat it as\n> > random. 4 periods is not really enough either. 5 seals\n> is possibly just\n> > enough. So I would just have seal as the only random\n> effect. Just treat\n> > season and period as fixed.\n> >\n> > lmer(MDB~Season*Period+(1|Seal), data=d,\n> REML=F)->fit10\n> >\n> >\n> >\n> > andydolman at gmail.com\n> >\n> >\n> > 2010/1/27 Austen Thomas <austen.thomas at gmail.com>\n> >\n> >>  We are using transmitting time/depth\n> recorders to measure the diving\n> >> behavior of 5 harbor seals in Puget Sound. \n> For each seal, we have two\n> >> seasons, while herring are spawning and after they\n> spawn.  Nested in each\n> >> season, we have four times of day (labeled\n> period).  We are interested in\n> >> whether there is an effect of “season” (spawn\n> / non-spawn), “period”\n> >> (morning, day, evening, night) on the “Modal\n> Depth Bin” of harbor seals,\n> >> or\n> >> an interaction between these two factors.\n> >>\n> >> Below is the code that we think is correct. \n> Does anyone think the model\n> >> is\n> >> specified incorrectly, and if so what do they\n> recommend (and why)?\n> >> Thanks very much for your time.\n> >>\n> >> -Austen Thomas\n> >>\n> >> Biology Department\n> >> Western Washington University\n> >> Biology Building BI 315\n> >> Mail Stop 9160\n> >> Bellingham, WA 98225-9160\n> >>\n> >>\n> >>\n> >> For lme4 package\n> >> summary(d)\n> >> lmer(MDB~Season*Period+(1|Seal/Season/Period),\n> data=d, REML=F)->fit10\n> >> summary(fit10)\n> >> lmer(MDB~Season+Period+(1|Seal/Season/Period),\n> data=d, REML=F)->fit11\n> >> lmer(MDB~Season+(1|Seal/Season/Period), data=d,\n> REML=F)->fit12\n> >> lmer(MDB~1+(1|Seal/Season/Period), data=d,\n> REML=F)->fit13\n> >> anova(fit10, fit11, fit12, fit13)\n> >>\n> >> for the nlme package\n> >> lme(MDB~Season*Period,\n> random=~1|Seal/Season/Period, method=\"ML\",\n> >> data=d)->fit20\n> >> summary(fit20)\n> >> lme(MDB~Season+Period,\n> random=~1|Seal/Season/Period, method=\"ML\",\n> >> data=d)->fit21\n> >> lme(MDB~Season, random=~1|Seal/Season/Period,\n> method=\"ML\", data=d)->fit22\n> >> lme(MDB~1, random=~1|Seal/Season/Period,\n> method=\"ML\", data=d)->fit23\n> >> anova(fit20, fit21, fit22, fit23)\n> >>\n> >>        [[alternative HTML\n> version deleted]]\n> >>\n> >>\n> >> _______________________________________________\n> >> R-sig-mixed-models at r-project.org\n> mailing list\n> >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >>\n> >>\n> >\n> \n> \n> -- \n> Biology Department\n> Western Washington University\n> Biology Building BI 315\n> Mail Stop 9160\n> Bellingham, WA 98225-9160\n> \n>     [[alternative HTML version deleted]]\n> \n> \n> \n> ------------------------------\n> \n> Message: 3\n> Date: Thu, 28 Jan 2010 09:35:02 -0600\n> From: Douglas Bates <bates at stat.wisc.edu>\n> To: Doug Adams <fog0 at gmx.com>\n> Cc: R sig-mixed-models <r-sig-mixed-models at r-project.org>\n> Subject: Re: [R-sig-ME] Science Fair data\n> Message-ID:\n>     <40e66e0b1001280735r5c90ad8arf2c73a101aadc8b2 at mail.gmail.com>\n> Content-Type: text/plain; charset=ISO-8859-1\n> \n> I'm writing a book about lme4 and lmer.  When it gets\n> to the point\n> where others can read it without too much frowning and\n> scratching of\n> heads, I will make chapter drafts available.\n> \n> For the time being you may find the slides from a short\n> course given\n> last summer informative.  They are at\n> http://lme4.R-forge.R-project.org/slides/2009-07-21-Seewiesen/\n> \n> On Wed, Jan 27, 2010 at 2:53 PM, Doug Adams <fog0 at gmx.com>\n> wrote:\n> > Hi, and thanks again. ?That makes sense with the 3\n> levels of division:\n> >\n> > (Intercept) divisionJunior divisionSenior\n> > ? ? 80.306526 ? ? ?-3.252372 ? ? ?-2.694055\n> >\n> > ...so that the Junior and Senior levels are both\n> slightly lower than\n> > the Elementary level.\n> >\n> > I'd love to really understand the summary of lmer and\n> what ranef,\n> > fixef, coef and fitted are extracting - so that\n> probably means I don't\n> > understand the basics and nomenclature of HLMing as I\n> thought I might\n> > have. ?I took a 1-week class on HLM, and I have the\n> book you (Douglas\n> > Bates) wrote... ?Maybe I just need to study up on\n> things a little\n> > better!\n> >\n> > Anyway, I appreciate your help very much ? : )\n> >\n> > Doug\n> >\n> >\n> >\n> > On Wed, Jan 27, 2010 at 8:07 AM, Douglas Bates <bates at stat.wisc.edu>\n> wrote:\n> >> On Tue, Jan 26, 2010 at 10:10 PM, Doug Adams\n> <fog0 at gmx.com>\n> wrote:\n> >>> I appreciate that, both of you (& that's\n> ok for the mistake Christopher) ? :)\n> >>\n> >>> So fixed factors as simply listed by\n> themselves (no 1| notation) and\n> >>> random effects are listed with appropriate\n> nesting... ?I do want to\n> >>> consider schools as random effects; that will\n> give me the information\n> >>> I'd like to have about the variability (and\n> reliability too?) of the\n> >>> schools as they fit into the big picture.\n> >>\n> >>> When I use fixef & ranef to extract\n> estimates for division and schools\n> >>> (& maybe districts eventually too now), am\n> I right in thinking that\n> >>> the 3 numbers given for each level of division\n> (fixef) are the\n> >>> intercepts for each level -- as if there were\n> individual OLS\n> >>> regressions performed for each?\n> >>\n> >> Not quite. ?They should be labeled \"(Intercept)\"\n> and something like\n> >> division2 and division 3. ?(By the way, it helps\n> if you quote the\n> >> output when you want to discussion what particular\n> values mean.) ?The\n> >> (Intercept) coefficient represents the prediction\n> at the first level\n> >> of the division factor. ?The next two coefficients\n> are the change from\n> >> the first to the second level and from the first\n> to the third level.\n> >>\n> >>> And are the random effects for the\n> >>> schools (ranef) are the slopes associated with\n> those regression lines?\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> >\n> \n> \n> \n> ------------------------------\n> \n> Message: 4\n> Date: Thu, 28 Jan 2010 09:48:06 -0700\n> From: Doug Adams <fog0 at gmx.com>\n> To: Douglas Bates <bates at stat.wisc.edu>,   \n> R sig-mixed-models\n>     <r-sig-mixed-models at r-project.org>\n> Subject: Re: [R-sig-ME] Science Fair data\n> Message-ID:\n>     <74cfd9161001280848u7192230ey1cc450405cf3c579 at mail.gmail.com>\n> Content-Type: text/plain; charset=ISO-8859-1\n> \n> That's great!  Thanks!\n> \n> \n> \n> On Thu, Jan 28, 2010 at 8:35 AM, Douglas Bates <bates at stat.wisc.edu>\n> wrote:\n> > I'm writing a book about lme4 and lmer. ?When it gets\n> to the point\n> > where others can read it without too much frowning and\n> scratching of\n> > heads, I will make chapter drafts available.\n> >\n> > For the time being you may find the slides from a\n> short course given\n> > last summer informative. ?They are at\n> > http://lme4.R-forge.R-project.org/slides/2009-07-21-Seewiesen/\n> >\n> > On Wed, Jan 27, 2010 at 2:53 PM, Doug Adams <fog0 at gmx.com>\n> wrote:\n> >> Hi, and thanks again. ?That makes sense with the 3\n> levels of division:\n> >>\n> >> (Intercept) divisionJunior divisionSenior\n> >> ? ? 80.306526 ? ? ?-3.252372 ? ? ?-2.694055\n> >>\n> >> ...so that the Junior and Senior levels are both\n> slightly lower than\n> >> the Elementary level.\n> >>\n> >> I'd love to really understand the summary of lmer\n> and what ranef,\n> >> fixef, coef and fitted are extracting - so that\n> probably means I don't\n> >> understand the basics and nomenclature of HLMing\n> as I thought I might\n> >> have. ?I took a 1-week class on HLM, and I have\n> the book you (Douglas\n> >> Bates) wrote... ?Maybe I just need to study up on\n> things a little\n> >> better!\n> >>\n> >> Anyway, I appreciate your help very much ? : )\n> >>\n> >> Doug\n> \n> \n> \n> ------------------------------\n> \n> Message: 5\n> Date: Thu, 28 Jan 2010 17:23:44 +0000\n> From: Jarrod Hadfield <j.hadfield at ed.ac.uk>\n> To: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] estimates of between sex\n> correlations\n> Message-ID: <20100128172344.1nykjdyvwg0sg4wg at www.staffmail.ed.ac.uk>\n> Content-Type: text/plain;   \n> charset=ISO-8859-1;    DelSp=\"Yes\";\n>     format=\"flowed\"\n> \n> Hi Celine,\n> \n> Unfortunately I don't think the model you want to fit can\n> be fitted in  \n> MCMCglmm. Currently only (conditional) diagonal and\n> (conditional)  \n> block residual covariance matrices are implemented, and\n> what you want  \n> is block diagonal. ASReml is probably you best way forward\n> at the  \n> moment. If you are prepared to assume that the residual\n> covariances  \n> for the 3 traits are equivalent in the two sexes then you\n> can use  \n> rcov=~us(trait):sex:units.\n> \n>   With respect to the permanent environment effects\n> you can fit a  \n> block diagonal using\n> \n> us(at.level(sex,1):trait):id+us(at.level(sex,2):trait):id\n> \n> where id are the individual identifiers.\n> \n> I may allow this type of syntax in the residual structure\n> in the near future.\n> \n> Cheers,\n> \n> Jarrod\n> \n> \n> Quoting Celine Teplitsky <teplitsky at mnhn.fr>:\n> \n> > Dear all,\n> >\n> > I would like to fit a model to estimate between sex\n> genetic\n> > correlations for 3 traits (3 same traits expressed\n> both in males and\n> > females) using MCMCglmm. My problem is I don't\n> understand how I can\n> > manage to fix the covariances between male and female\n> traits to 0 for\n> > residual variance and permanent environment. Could\n> anyone help me with\n> > this?\n> >\n> > Many thanks in advance\n> >\n> > All the best\n> >\n> > Celine\n> >\n> > -- \n> >\n> > Celine Teplitsky\n> > D?partement Ecologie et Gestion de la Biodiversit? UMR\n> 7204\n> > Unit? Conservation des Esp?ces, Restauration et Suivi\n> des Populations\n> > Case Postale 51\n> > 55 rue Buffon 75005 Paris\n> >\n> > Webpage :http://www2.mnhn.fr/cersp/spip.php?rubrique96\n> > Fax : (33-1)-4079-3835\n> > Phone: (33-1)-4079-3443\n> >\n> > _______________________________________________\n> > R-sig-mixed-models at r-project.org\n> mailing list\n> > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> \n> -- \n> The University of Edinburgh is a charitable body,\n> registered in\n> Scotland, with registration number SC005336.\n> \n> \n> \n> ------------------------------\n> \n> Message: 6\n> Date: Fri, 29 Jan 2010 07:25:27 +1000 (EST)\n> From: David Duffy <David.Duffy at qimr.edu.au>\n> To: \"ONKELINX, Thierry\" <Thierry.ONKELINX at inbo.be>\n> Cc: r-sig-mixed-models at r-project.org\n> Subject: Re: [R-sig-ME] Trend in total number of animals\n> Message-ID: <Pine.LNX.4.64.1001290717440.16167 at orpheus.qimr.edu.au>\n> Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed\n> \n> On Thu, 28 Jan 2010, ONKELINX, Thierry wrote:\n> \n> > We are modelling the total numbers of hibernating bats\n> in a fortress. We\n> > have data of the number of bats per room spanning ten\n> years. The main\n> > problem is that not all rooms were visited each year.\n> The fieldworkers\n> > did not known or find all rooms and some rooms were\n> not allways\n> > accessible.\n> >\n> > Some of the rooms were not counted in the early years\n> and they contain a\n> > rather high number of bats in the more recent years.\n> \n> I would try (fixed-effects) log-linear models for\n> incomplete tables as \n> well, to deal with the sampling (I have written an R\n> package \"gllm\", that \n> may be suitable).  Then you could compare the\n> estimates of total counts to \n> the GLMM results.  If you are going to simulate, you\n> might might as well \n> go to BUGS.\n> \n> Cheers, David.\n> \n> -- \n> | David Duffy (MBBS PhD)    ? ? ?\n> ? ? ? ? ? ? ? ?\n> ? ? ? ? ? ?\n>    ,-_|\\\n> | email: davidD at qimr.edu.au \n> ph: INT+61+7+3362-0217 fax: -0101  / \n>    *\n> | Epidemiology Unit, Queensland Institute of Medical\n> Research   \\_,-._/\n> | 300 Herston Rd, Brisbane, Queensland 4029,\n> Australia  GPG 4D0B994A v\n> \n> \n> \n> ------------------------------\n> \n> _______________________________________________\n> R-sig-mixed-models mailing list\n> R-sig-mixed-models at r-project.org\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n> \n> End of R-sig-mixed-models Digest, Vol 37, Issue 20\n> **************************************************\n>",
       "body_snippet": "Good morning colleagues,\nI have a dataset where 100 raters (teachers who mark student responses to examination questions) participated to a number of examinations. Not everybofy participated to each e",
       "thread_id": "thread-20081a13f1e4",
       "thread_depth": 0,
-      "month": "2010-01"
+      "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003239.html"
     },
     {
       "id": "msg-0591429e057a",
@@ -1232,6 +1298,7 @@
       "thread_id": "thread-82e945f80e0a",
       "thread_depth": 1,
       "month": "2010-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q1/003240.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20100129/3cf3a450/attachment.pl"
       ]

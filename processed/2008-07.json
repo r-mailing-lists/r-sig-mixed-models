@@ -18,6 +18,7 @@
       "thread_id": "thread-38789f1e020b",
       "thread_depth": 0,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001119.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080702/d140f056/attachment.pl"
       ]
@@ -36,7 +37,8 @@
       "body_snippet": "Dear Pablo\n\nYou may be trying to make things too complicated. Are you interested purely in random intercept components or random slopes with respect to particular covariates as well? Providing you are",
       "thread_id": "thread-32772a8de998",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001120.html"
     },
     {
       "id": "msg-b46ff1e31149",
@@ -54,7 +56,8 @@
       "body_snippet": "Just a quick comment that REML is not allowed as an estimation\ncriterion for generalized linear mixed models.  The only option, and\nhence the default, is maximum likelihood estimation of the parameter",
       "thread_id": "thread-32772a8de998",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001121.html"
     },
     {
       "id": "msg-3ad33b3f3cb7",
@@ -70,7 +73,8 @@
       "body_snippet": "Dear R-user,\n\nI am trying to use the R \"lmer\" function in lme4 package to fit a non linear\nmixed effects model. The model I wand to fit is at an individual level with 4\nparameters. For all parameters ",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001136.html"
     },
     {
       "id": "msg-80ea1d42db08",
@@ -84,11 +88,12 @@
       "references": [
         "<454634.50066.qm@web26004.mail.ukl.yahoo.com>"
       ],
-      "body_plain": "Hello,\n\nfurthermore, given your goal, it might be informative to compare a model \nwith only random intercepts - (X|region/route) - to models with one or more \nof your fixed effects added in (do the fixefs account for some of the \nvariance of the ranefs, and at the right level? etc.).\n\nHope this makes sense.\n\n\nCheers,\n\nLuca\n\n---------------------------\nLuca B?rger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\nphone: +1 519 824 4120 ext. 52975\nfax:     +1 519 767 1656\n\n\n----- Original Message ----- \nFrom: \"logodall\" <logodall at yahoo.fr>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Wednesday, July 02, 2008 11:46 AM\nSubject: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\n>I was hoping to obtain some guidance for the specification of a mixed\n> model in the following analysis that I have been trying to do with\n> glmmPQL. My problem is that I am unsure on how to specify multiple random \n> effects associated with different\n> covariates at different spatial scales.\n> * Response variable: a integer variable Y that are counts of birds in a\n> route over time (12 years, one count per year, there might be temporal\n> autocorrelation, hence my interest in using the library nlme)\n> * Explanatory variables : three continuous variables measured over\n> time: X is measured at the route level and W and Z are measured at the\n> regional level (there are many  >10 routes in each of the 24 regions)\n> * The goal: to determine the extent to which Y (at the route level) is\n> determined by X,W and Z, knowing that each  covariate was estimated at\n> different spatial scales (route, region), and that  each of these\n> scales are organized in a nested manner (routes within regions)\n>\n> I have been trying to fit the model with lmer:\n> lmer(Y~X+W+Z + (X|region/route)+(W|region)+(Z|region), method=\"REML\", \n> data=ac, family=poisson)\n> and it seems to be doing the right things, though I am not 100% sure\n> that I am correctly specifying that each explanatory variable is\n> measured at different spatial resolution. Any words of wisdom would be\n> appreciated.\n>\n> However, when passing to glmmPQL (because I need to test for temporal\n> autocorrelation), I am encountering problems to fit the very same model\n> (asumming that it is correct). I have tried:\n> glmmPQL(Y~X+W+Z, random= list(~X|region/route, ~W|region,~Z|region) and I \n> obtain an error message\n> Error in logLik.reStruct(object, conLin) :\n>  NAs in foreign function call (arg 2)\n> In addition: Warning messages:\n> 1: In ncols * isLast :\n>  longer object length is not a multiple of shorter object length\n> 2: In ncols * c(rep(1, Q), 0, 0) :\n>  longer object length is not a multiple of shorter object length\n> I have also tried :\n> glmmPQL(Y~X+W+Z, random= (X|region/route +W|region+Z|region) and though\n> it gives an answer, I am far from certain to know what it does.\n>\n> Before posting this message, I have read most of the threads of this\n> list, searched for help in general forums of R, and looked at the main\n> textbooks (Pinheiro & Bates and others) without much success.\n>\n> To rephrase the question: how to specify the structure of random\n> effects to specify multiple random effects associated with different\n> covariates at different spatial scales?\n> Many thanks for any help/suggestions\n> Sincerely,\n> Pablo Inchausti\n>\n>\n>\n> \n> _____________________________________________________________________________\n>\n> o.fr\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "Hello,\n\nfurthermore, given your goal, it might be informative to compare a model \nwith only random intercepts - (X|region/route) - to models with one or more \nof your fixed effects added in (do the fixefs account for some of the \nvariance of the ranefs, and at the right level? etc.).\n\nHope this makes sense.\n\n\nCheers,\n\nLuca\n\n---------------------------\nLuca Börger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\nphone: +1 519 824 4120 ext. 52975\nfax:     +1 519 767 1656\n\n\n----- Original Message ----- \nFrom: \"logodall\" <logodall at yahoo.fr>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Wednesday, July 02, 2008 11:46 AM\nSubject: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\n>I was hoping to obtain some guidance for the specification of a mixed\n> model in the following analysis that I have been trying to do with\n> glmmPQL. My problem is that I am unsure on how to specify multiple random \n> effects associated with different\n> covariates at different spatial scales.\n> * Response variable: a integer variable Y that are counts of birds in a\n> route over time (12 years, one count per year, there might be temporal\n> autocorrelation, hence my interest in using the library nlme)\n> * Explanatory variables : three continuous variables measured over\n> time: X is measured at the route level and W and Z are measured at the\n> regional level (there are many  >10 routes in each of the 24 regions)\n> * The goal: to determine the extent to which Y (at the route level) is\n> determined by X,W and Z, knowing that each  covariate was estimated at\n> different spatial scales (route, region), and that  each of these\n> scales are organized in a nested manner (routes within regions)\n>\n> I have been trying to fit the model with lmer:\n> lmer(Y~X+W+Z + (X|region/route)+(W|region)+(Z|region), method=\"REML\", \n> data=ac, family=poisson)\n> and it seems to be doing the right things, though I am not 100% sure\n> that I am correctly specifying that each explanatory variable is\n> measured at different spatial resolution. Any words of wisdom would be\n> appreciated.\n>\n> However, when passing to glmmPQL (because I need to test for temporal\n> autocorrelation), I am encountering problems to fit the very same model\n> (asumming that it is correct). I have tried:\n> glmmPQL(Y~X+W+Z, random= list(~X|region/route, ~W|region,~Z|region) and I \n> obtain an error message\n> Error in logLik.reStruct(object, conLin) :\n>  NAs in foreign function call (arg 2)\n> In addition: Warning messages:\n> 1: In ncols * isLast :\n>  longer object length is not a multiple of shorter object length\n> 2: In ncols * c(rep(1, Q), 0, 0) :\n>  longer object length is not a multiple of shorter object length\n> I have also tried :\n> glmmPQL(Y~X+W+Z, random= (X|region/route +W|region+Z|region) and though\n> it gives an answer, I am far from certain to know what it does.\n>\n> Before posting this message, I have read most of the threads of this\n> list, searched for help in general forums of R, and looked at the main\n> textbooks (Pinheiro & Bates and others) without much success.\n>\n> To rephrase the question: how to specify the structure of random\n> effects to specify multiple random effects associated with different\n> covariates at different spatial scales?\n> Many thanks for any help/suggestions\n> Sincerely,\n> Pablo Inchausti\n>\n>\n>\n> \n> _____________________________________________________________________________\n>\n> o.fr\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "Hello,\n\nfurthermore, given your goal, it might be informative to compare a model \nwith only random intercepts - (X|region/route) - to models with one or more \nof your fixed effects added in (do the fi",
       "thread_id": "thread-38789f1e020b",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001122.html"
     },
     {
       "id": "msg-a03aa21a7e93",
@@ -103,11 +108,12 @@
         "<454634.50066.qm@web26004.mail.ukl.yahoo.com>",
         "<4186EE94FDA2482392C5EDC9F5FC3C23@ZooAnnex2Luca>"
       ],
-      "body_plain": "sorry, I meant to write (1|region/route)\n\n\nCheers,\n\nLuca\n----- Original Message ----- \nFrom: \"Luca Borger\" <lborger at uoguelph.ca>\nTo: \"logodall\" <logodall at yahoo.fr>; <r-sig-mixed-models at r-project.org>\nSent: Thursday, July 03, 2008 9:32 AM\nSubject: Re: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\nHello,\n\nfurthermore, given your goal, it might be informative to compare a model\nwith only random intercepts - (X|region/route) - to models with one or more\nof your fixed effects added in (do the fixefs account for some of the\nvariance of the ranefs, and at the right level? etc.).\n\nHope this makes sense.\n\n\nCheers,\n\nLuca\n\n---------------------------\nLuca B?rger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\nphone: +1 519 824 4120 ext. 52975\nfax:     +1 519 767 1656\n\n\n----- Original Message ----- \nFrom: \"logodall\" <logodall at yahoo.fr>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Wednesday, July 02, 2008 11:46 AM\nSubject: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\n>I was hoping to obtain some guidance for the specification of a mixed\n> model in the following analysis that I have been trying to do with\n> glmmPQL. My problem is that I am unsure on how to specify multiple random \n> effects associated with different\n> covariates at different spatial scales.\n> * Response variable: a integer variable Y that are counts of birds in a\n> route over time (12 years, one count per year, there might be temporal\n> autocorrelation, hence my interest in using the library nlme)\n> * Explanatory variables : three continuous variables measured over\n> time: X is measured at the route level and W and Z are measured at the\n> regional level (there are many  >10 routes in each of the 24 regions)\n> * The goal: to determine the extent to which Y (at the route level) is\n> determined by X,W and Z, knowing that each  covariate was estimated at\n> different spatial scales (route, region), and that  each of these\n> scales are organized in a nested manner (routes within regions)\n>\n> I have been trying to fit the model with lmer:\n> lmer(Y~X+W+Z + (X|region/route)+(W|region)+(Z|region), method=\"REML\", \n> data=ac, family=poisson)\n> and it seems to be doing the right things, though I am not 100% sure\n> that I am correctly specifying that each explanatory variable is\n> measured at different spatial resolution. Any words of wisdom would be\n> appreciated.\n>\n> However, when passing to glmmPQL (because I need to test for temporal\n> autocorrelation), I am encountering problems to fit the very same model\n> (asumming that it is correct). I have tried:\n> glmmPQL(Y~X+W+Z, random= list(~X|region/route, ~W|region,~Z|region) and I \n> obtain an error message\n> Error in logLik.reStruct(object, conLin) :\n>  NAs in foreign function call (arg 2)\n> In addition: Warning messages:\n> 1: In ncols * isLast :\n>  longer object length is not a multiple of shorter object length\n> 2: In ncols * c(rep(1, Q), 0, 0) :\n>  longer object length is not a multiple of shorter object length\n> I have also tried :\n> glmmPQL(Y~X+W+Z, random= (X|region/route +W|region+Z|region) and though\n> it gives an answer, I am far from certain to know what it does.\n>\n> Before posting this message, I have read most of the threads of this\n> list, searched for help in general forums of R, and looked at the main\n> textbooks (Pinheiro & Bates and others) without much success.\n>\n> To rephrase the question: how to specify the structure of random\n> effects to specify multiple random effects associated with different\n> covariates at different spatial scales?\n> Many thanks for any help/suggestions\n> Sincerely,\n> Pablo Inchausti\n>\n>\n>\n>\n> _____________________________________________________________________________\n>\n> o.fr\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "sorry, I meant to write (1|region/route)\n\n\nCheers,\n\nLuca\n----- Original Message ----- \nFrom: \"Luca Borger\" <lborger at uoguelph.ca>\nTo: \"logodall\" <logodall at yahoo.fr>; <r-sig-mixed-models at r-project.org>\nSent: Thursday, July 03, 2008 9:32 AM\nSubject: Re: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\nHello,\n\nfurthermore, given your goal, it might be informative to compare a model\nwith only random intercepts - (X|region/route) - to models with one or more\nof your fixed effects added in (do the fixefs account for some of the\nvariance of the ranefs, and at the right level? etc.).\n\nHope this makes sense.\n\n\nCheers,\n\nLuca\n\n---------------------------\nLuca Börger, PhD\nPostdoctoral Research Fellow\nDepartment of Integrative Biology\nUniversity of Guelph\nGuelph, Ontario, Canada N1G 2W1\nphone: +1 519 824 4120 ext. 52975\nfax:     +1 519 767 1656\n\n\n----- Original Message ----- \nFrom: \"logodall\" <logodall at yahoo.fr>\nTo: <r-sig-mixed-models at r-project.org>\nSent: Wednesday, July 02, 2008 11:46 AM\nSubject: [R-sig-ME] multiple random effects in lmer and glmmPQL\n\n\n>I was hoping to obtain some guidance for the specification of a mixed\n> model in the following analysis that I have been trying to do with\n> glmmPQL. My problem is that I am unsure on how to specify multiple random \n> effects associated with different\n> covariates at different spatial scales.\n> * Response variable: a integer variable Y that are counts of birds in a\n> route over time (12 years, one count per year, there might be temporal\n> autocorrelation, hence my interest in using the library nlme)\n> * Explanatory variables : three continuous variables measured over\n> time: X is measured at the route level and W and Z are measured at the\n> regional level (there are many  >10 routes in each of the 24 regions)\n> * The goal: to determine the extent to which Y (at the route level) is\n> determined by X,W and Z, knowing that each  covariate was estimated at\n> different spatial scales (route, region), and that  each of these\n> scales are organized in a nested manner (routes within regions)\n>\n> I have been trying to fit the model with lmer:\n> lmer(Y~X+W+Z + (X|region/route)+(W|region)+(Z|region), method=\"REML\", \n> data=ac, family=poisson)\n> and it seems to be doing the right things, though I am not 100% sure\n> that I am correctly specifying that each explanatory variable is\n> measured at different spatial resolution. Any words of wisdom would be\n> appreciated.\n>\n> However, when passing to glmmPQL (because I need to test for temporal\n> autocorrelation), I am encountering problems to fit the very same model\n> (asumming that it is correct). I have tried:\n> glmmPQL(Y~X+W+Z, random= list(~X|region/route, ~W|region,~Z|region) and I \n> obtain an error message\n> Error in logLik.reStruct(object, conLin) :\n>  NAs in foreign function call (arg 2)\n> In addition: Warning messages:\n> 1: In ncols * isLast :\n>  longer object length is not a multiple of shorter object length\n> 2: In ncols * c(rep(1, Q), 0, 0) :\n>  longer object length is not a multiple of shorter object length\n> I have also tried :\n> glmmPQL(Y~X+W+Z, random= (X|region/route +W|region+Z|region) and though\n> it gives an answer, I am far from certain to know what it does.\n>\n> Before posting this message, I have read most of the threads of this\n> list, searched for help in general forums of R, and looked at the main\n> textbooks (Pinheiro & Bates and others) without much success.\n>\n> To rephrase the question: how to specify the structure of random\n> effects to specify multiple random effects associated with different\n> covariates at different spatial scales?\n> Many thanks for any help/suggestions\n> Sincerely,\n> Pablo Inchausti\n>\n>\n>\n>\n> _____________________________________________________________________________\n>\n> o.fr\n> [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "sorry, I meant to write (1|region/route)\n\n\nCheers,\n\nLuca\n----- Original Message ----- \nFrom: \"Luca Borger\" <lborger at uoguelph.ca>\nTo: \"logodall\" <logodall at yahoo.fr>; <r-sig-mixed-models at r-proj",
       "thread_id": "thread-38789f1e020b",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001123.html"
     },
     {
       "id": "msg-e96c0abbaf37",
@@ -123,7 +129,8 @@
       "body_snippet": "Folks; I have a quick question about model comparison. Is it ok to use\nBIC/AIC/-2log to compare models with different fixed and random effects\nand even different var-(co)var structure? How can I accom",
       "thread_id": "thread-e96c0abbaf37",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001124.html"
     },
     {
       "id": "msg-c14b761dfbdc",
@@ -139,7 +146,8 @@
       "body_snippet": "Dear Luis\n\nIt is not necessarily straightforward but there is alot of information out there that can help you. Take a look at http://wiki.r-project.org/rwiki/doku.php?id=guides:lmer-tests and also loo",
       "thread_id": "thread-c14b761dfbdc",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001125.html"
     },
     {
       "id": "msg-6fca336e1365",
@@ -157,7 +165,8 @@
       "body_snippet": "Thanks Mike... and I thought it would have a single answer... I glanced\nover the link you provided; it will take me some time to digest it. My\ncurrent problem is comparing a model with variable A as r",
       "thread_id": "thread-6fca336e1365",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001126.html"
     },
     {
       "id": "msg-1cd4d4f02e58",
@@ -173,7 +182,8 @@
       "body_snippet": "Hi Luis\n\nI'm not really qualified to comment on this, but I don't think that deciding whether to make an effect fixed or random is a statistical model selection issue. Given that there are issues tryi",
       "thread_id": "thread-1cd4d4f02e58",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001127.html"
     },
     {
       "id": "msg-eb8856b53797",
@@ -192,7 +202,8 @@
       "body_snippet": "Hi Luis\n\nI largely agree with Mike's answer and have the following additional\ncomments: The decision of whether a variable is taken as fixed or\nrandom often rests on subject specific matter. An import",
       "thread_id": "thread-6fca336e1365",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001128.html"
     },
     {
       "id": "msg-97ebd0bf154e",
@@ -208,7 +219,8 @@
       "body_snippet": "Hi folks,\nWhat happened to hatTrace?\nHank\n\n > sessionInfo()\nR version 2.7.1 (2008-06-23)\ni386-apple-darwin8.10.1\n\nlocale:\nC\n\nattached base packages:\n[1] stats     graphics  grDevices utils     dataset",
       "thread_id": "thread-97ebd0bf154e",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001129.html"
     },
     {
       "id": "msg-d52499cba384",
@@ -228,7 +240,8 @@
       "body_snippet": "I have made this sort of comment before, but I think it\nimportant enough to have another go, in a bit more detail.\n\nThe extent of generalization\n~~~~~~~~~~~~~~~~~~~~~~\nSurely the key issue is: \"To wha",
       "thread_id": "thread-6fca336e1365",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001130.html"
     },
     {
       "id": "msg-923149ecf355",
@@ -246,7 +259,8 @@
       "body_snippet": ">>>>> \"HS\" == Hank Stevens <HStevens at muohio.edu>\n>>>>>     on Fri, 4 Jul 2008 16:32:32 -0400 writes:\n\n    HS> Hi folks,\n    HS> What happened to hatTrace?\n\nWell, Doug Bates is currently enjoying a ",
       "thread_id": "thread-97ebd0bf154e",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001131.html"
     },
     {
       "id": "msg-820ad97ab95b",
@@ -262,7 +276,8 @@
       "body_snippet": "Hi folks,\n\nAre there general situations in which we might expect very different  \nanswers from F tests vs. mcmcpvalue with orthogonal contrasts (Helmert)?\n\nI helping someone with a normal linear model",
       "thread_id": "thread-820ad97ab95b",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001132.html"
     },
     {
       "id": "msg-aca41cee9798",
@@ -280,7 +295,8 @@
       "body_snippet": "I haven't used 'mcmcpvalue', but I would naively expect that MCMC \nshould in most cases give better answers in violations of the standard \nassumptions.  This is NOT necessarily the case, however, beca",
       "thread_id": "thread-820ad97ab95b",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001133.html"
     },
     {
       "id": "msg-7af9409eea3a",
@@ -296,7 +312,8 @@
       "body_snippet": "Dear lmer users,\n\nI have been reading the mailing list for a while and came across many good \nadvice/suggestions/ideas from all the correspondence. I was wondering if I \ncould ask your opinion about a",
       "thread_id": "thread-7af9409eea3a",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001134.html"
     },
     {
       "id": "msg-247d0bfc4279",
@@ -308,11 +325,12 @@
       "subject_clean": "(no subject)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi all,\n\nIn the newest version of lme4 the function hatTrace seems to be hidden away so\nthat R doesn't recognize it anymore.\n\nDoes someone know another method that gets to the trace of the hat matrix so\nthat I can calculate its DF?\n\ncheers in advance\n\nDavid\n\n--\nDavid James Paez\nPhD candidate\nUniversit? Laval\nD?pt. de biologie, Pavillon Vachon\n1045, Avenue de la M?decine\nQu?bec, Qc. G1V 0A6\nT?l. (418) 656 2681",
+      "body_plain": "Hi all,\n\nIn the newest version of lme4 the function hatTrace seems to be hidden away so\nthat R doesn't recognize it anymore.\n\nDoes someone know another method that gets to the trace of the hat matrix so\nthat I can calculate its DF?\n\ncheers in advance\n\nDavid\n\n--\nDavid James Paez\nPhD candidate\nUniversité Laval\nDépt. de biologie, Pavillon Vachon\n1045, Avenue de la Médecine\nQuébec, Qc. G1V 0A6\nTél. (418) 656 2681",
       "body_snippet": "Hi all,\n\nIn the newest version of lme4 the function hatTrace seems to be hidden away so\nthat R doesn't recognize it anymore.\n\nDoes someone know another method that gets to the trace of the hat matrix ",
       "thread_id": "thread-247d0bfc4279",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001135.html"
     },
     {
       "id": "msg-5dc9d054be59",
@@ -328,7 +346,8 @@
       "body_snippet": "Hank Stevens wrote:\nd> HI Ben and Spencer,\n| Thank you very much for your help.\n|\n| 1. The QQ plots look normal, but highlight the lack of balance (from one\n| to dozens of reps per treatment combo).\n|",
       "thread_id": "thread-5dc9d054be59",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001137.html"
     },
     {
       "id": "msg-00e066891438",
@@ -347,6 +366,7 @@
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 1,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001138.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080708/9e75e5da/attachment.pl"
       ]
@@ -365,7 +385,8 @@
       "body_snippet": "There is no way to know what is going on given your description below.\nYou say you're fitting a non-linear model, but your notation is of a\nlinear model. I see you square a covariate, but this doesn't",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001139.html"
     },
     {
       "id": "msg-fa696a68a61a",
@@ -384,7 +405,8 @@
       "body_snippet": "Please see below:\n\n> 1) What version of lmer are you running? The new version post 23/6/08 copes\n> with difficult likelihoods better.\n\nI used the most up-to-date version.\n\n> 2) Have you changed anythi",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001140.html"
     },
     {
       "id": "msg-608276a24e7e",
@@ -405,6 +427,7 @@
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 3,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001141.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080708/fc5a9bde/attachment.pl"
       ]
@@ -428,7 +451,8 @@
       "body_snippet": "Thank for your suggestions but why u want to center x variables around zero in\nthat way? I just don't understand what is the advantage by doing that.\n\nYufeng\n\nQuoting Gillian Raab <gillian.raab at goo",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 4,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001142.html"
     },
     {
       "id": "msg-d08a639ba882",
@@ -451,6 +475,7 @@
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 5,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001143.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080708/6a8b97b9/attachment.pl"
       ]
@@ -469,7 +494,8 @@
       "body_snippet": "Hi folks,\nIt seems that with lme4_0.999375-21, and -20, lmer objects (mer class)  \nrequire a new mcmcpvalue function, because of the values created. This  \n(I think) works properly, because it convert",
       "thread_id": "thread-dd23c97eaf88",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001144.html"
     },
     {
       "id": "msg-779d1f4bddb2",
@@ -492,7 +518,8 @@
       "body_snippet": "I'll add 2 cents worth here:  I have long advocated subtracting off a nice\nround number near the middle of the range of x values, rather than using the\nmean of the x values in the current data set.  T",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 6,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001145.html"
     },
     {
       "id": "msg-3e6bae67f54b",
@@ -517,6 +544,7 @@
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 7,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001146.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080708/1ad5ff86/attachment.pl"
       ]
@@ -537,7 +565,8 @@
       "body_snippet": "On 08/07/2008, at 3:16 AM, Ben Bolker wrote:\n\n>\n> Hank Stevens wrote:\n> d> HI Ben and Spencer,\n> | Thank you very much for your help.\n> |\n> | 1. The QQ plots look normal, but highlight the lack of bal",
       "thread_id": "thread-5dc9d054be59",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001147.html"
     },
     {
       "id": "msg-53ab0fbb1bfa",
@@ -553,7 +582,8 @@
       "body_snippet": "I am attempting to install lme4 0.999375-20 on a SUSE 9.1 machine. I have \nalready installed Matrix 0.999375-10. However, the lme4 install fails. Do you \nhave any suggestions on what might be wrong? M",
       "thread_id": "thread-53ab0fbb1bfa",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001148.html"
     },
     {
       "id": "msg-af6162bc9a7f",
@@ -571,7 +601,8 @@
       "body_snippet": "I'm not sure exactly what is happening on the Suse system but there\nshould be an additional -I clause in the call to gcc.  When I compile\non a Red Hat system the transcript includes\n\ngcc -I/unsup/R-2.",
       "thread_id": "thread-53ab0fbb1bfa",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001149.html"
     },
     {
       "id": "msg-691a6074c08f",
@@ -583,11 +614,12 @@
       "subject_clean": "Rasch models in Greek",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear friends and experts,\nI have been watching this space for many years - more than a decade. I have benefitted a lot. This time, I need your advice on something important to me - and probably to other people. \nI have been flirting with the idea of publishing an introductory text about Rasch models in the Greek language. The Rasch model may just be a differnt formulation of a mixed effects model. Thats whay I am writing this message here.\nNo?Greek language Rasch book?is available at the moment. The audience, of course, is small. Instead of focusing on the Educational aspect, I would like to cover examples from all sorts of disciplines (in order to increase the audience and in order to show the flexibility and the usefulness of the model). I'll also offer a windows-based Rasch software for free to accompany the book. The software is very user-friendly, but not as fast and not as rich as Facets, Winsteps, RUMM etc. Still, it is great for beginners because it is only menu-based. The target group will be researchers as well as pre- and post-graduate students of Education, Psychology, Sociology, Medicine, Nursing etc. It will be the first book of its kind. \nHowever, I am NOT one of the great names in the world of Rasch models (or mixed-effects models). Therefore, I would like this book to be peer-reviewed. In other words, I would politely ask the members of this list to kindly introduce me to Greek-speaking persons/academics who are experienced with Rasch (if any of them attend this list). I would like to negotiate with them to act as reviewers. \nPlease forward this message to Greek-speaking Rasch-people you know. \nAlso, any of you out there who do not speak Greek but would like to contribute in any other way are welcome.\nThank you for your time\nD\n\n\n      __________________________________________________________\nNot happy with your email address?.\nGet the one you really want - millions of new email addresses available now at Yahoo! http://uk.docs.yahoo.com/ymail/new.html",
+      "body_plain": "Dear friends and experts,\nI have been watching this space for many years - more than a decade. I have benefitted a lot. This time, I need your advice on something important to me - and probably to other people. \nI have been flirting with the idea of publishing an introductory text about Rasch models in the Greek language. The Rasch model may just be a differnt formulation of a mixed effects model. Thats whay I am writing this message here.\nNo Greek language Rasch book is available at the moment. The audience, of course, is small. Instead of focusing on the Educational aspect, I would like to cover examples from all sorts of disciplines (in order to increase the audience and in order to show the flexibility and the usefulness of the model). I'll also offer a windows-based Rasch software for free to accompany the book. The software is very user-friendly, but not as fast and not as rich as Facets, Winsteps, RUMM etc. Still, it is great for beginners because it is only menu-based. The target group will be researchers as well as pre- and post-graduate students of Education, Psychology, Sociology, Medicine, Nursing etc. It will be the first book of its kind. \nHowever, I am NOT one of the great names in the world of Rasch models (or mixed-effects models). Therefore, I would like this book to be peer-reviewed. In other words, I would politely ask the members of this list to kindly introduce me to Greek-speaking persons/academics who are experienced with Rasch (if any of them attend this list). I would like to negotiate with them to act as reviewers. \nPlease forward this message to Greek-speaking Rasch-people you know. \nAlso, any of you out there who do not speak Greek but would like to contribute in any other way are welcome.\nThank you for your time\nD\n\n\n      __________________________________________________________\nNot happy with your email address?.\nGet the one you really want - millions of new email addresses available now at Yahoo! http://uk.docs.yahoo.com/ymail/new.html",
       "body_snippet": "Dear friends and experts,\nI have been watching this space for many years - more than a decade. I have benefitted a lot. This time, I need your advice on something important to me - and probably to oth",
       "thread_id": "thread-691a6074c08f",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001150.html"
     },
     {
       "id": "msg-7c9e6c381b7b",
@@ -604,6 +636,7 @@
       "thread_id": "thread-7c9e6c381b7b",
       "thread_depth": 0,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001151.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080710/6117fc06/attachment.pl"
       ]
@@ -624,7 +657,8 @@
       "body_snippet": "On 07/10/08 07:51, Michael Kubovy wrote:\n> Dear Friends,\n> \n> I have become confused as to which set-up of lme4, arm, gmodels, etc  \n> will produce CIs on the fixed effects by simulation.\n\nIn the late",
       "thread_id": "thread-7c9e6c381b7b",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001152.html"
     },
     {
       "id": "msg-919a29c640b3",
@@ -640,7 +674,8 @@
       "body_snippet": "Out of curiousity, why not just use the asymptotic standards errors of\nthe fixed effects to get Cis rather than via simulation? \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-p",
       "thread_id": "thread-7c9e6c381b7b",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001153.html"
     },
     {
       "id": "msg-f4a792e637fa",
@@ -660,6 +695,7 @@
       "thread_id": "thread-7c9e6c381b7b",
       "thread_depth": 3,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001154.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080710/295066ca/attachment.pl"
       ]
@@ -681,7 +717,8 @@
       "body_snippet": "On previous post I had tried to install with R CMD INSTALL and failed.\nThis morning I installed using install.packages and everything worked\nfine for some reason. Thanks for your time.\n\n> sessionInfo(",
       "thread_id": "thread-53ab0fbb1bfa",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001156.html"
     },
     {
       "id": "msg-93316bd501f0",
@@ -697,7 +734,8 @@
       "body_snippet": "There have been questions about the new release of lme4 and how it\nrelates to other packages such as languageR, arm and gmodels.\n\nThe version numbers that Martin and I use for the Matrix and lme4\npack",
       "thread_id": "thread-93316bd501f0",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001155.html"
     },
     {
       "id": "msg-54c7126babf0",
@@ -717,7 +755,8 @@
       "body_snippet": "Hi folks,\nRepost/summary of previous correspondence.  Thanks to Ben Bolker,  \nSpencer Graves and Ken Beath for questions and comments.\n\nI have doubts about the MCMC results with the most recent versio",
       "thread_id": "thread-7c9e6c381b7b",
       "thread_depth": 4,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001157.html"
     },
     {
       "id": "msg-29265370cf7a",
@@ -738,7 +777,8 @@
       "body_snippet": "On Tue, Jul 8, 2008 at 8:53 AM, Gillian Raab\n<gillian.raab at googlemail.com> wrote:\n> 2008/7/8 <yufeng at nsm.umass.edu>:\n>\n>> Please see below:\n>>\n>> > 1) What version of lmer are you running? The n",
       "thread_id": "thread-3ad33b3f3cb7",
       "thread_depth": 4,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001158.html"
     },
     {
       "id": "msg-a431fc594bd5",
@@ -760,7 +800,8 @@
       "body_snippet": "Hi folks,\nHere are code and files for the analysis.\n-------------- next part --------------\n\n\nHi folks,\nRepost/summary of previous correspondence.  Thanks to Ben Bolker,\nSpencer Graves and Ken Beath f",
       "thread_id": "thread-a431fc594bd5",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001159.html"
     },
     {
       "id": "msg-75edd2dbb63a",
@@ -776,11 +817,12 @@
         "<40e66e0b0807091116g696c6929ie5308534448883fb@mail.gmail.com>",
         "<000301c8e354$982775a0$d729f889@pc04365>"
       ],
-      "body_plain": "On Fri, Jul 11, 2008 at 7:49 AM, Jan Rummel\n<rummelj at staff.uni-marburg.de> wrote:\n> Dear Mr. Bates,\n> Thank you for your quick reply. I tried to use your lme4 package. But I\n> think the problem still remains the same. If I use the comand \"binomial\" for\n> specifying the scale of my dependent variable the program would allow binary\n> data only.\n> Is there any posibility to allow binomial data such as described below\n> (number of hits either 0,1,2,or3)?\n\nYou can specify a binomial response by providing a matrix with columns\nof # of successes and # of failures on the left hand side of the model\nformula.  See\n\n?binomial\n\nor\n\nlibrary(lme4)\nexample(cbpp)\n\n> Thank you very much and sorry again for the inconvenience.\n> jan\n>\n>\n> -----Urspr?ngliche Nachricht-----\n> Von: dmbates at gmail.com [mailto:dmbates at gmail.com] Im Auftrag von Douglas\n> Bates\n> Gesendet: Mittwoch, 9. Juli 2008 20:16\n> An: rummelj at staff.uni-marburg.de\n> Betreff: Re: Binomial dependent variable in a mixed-model design\n>\n> What you are describing is called a generalized linear mixed model.\n> The lme4 package for R has facilities for fitting such models.  See the\n> function glmer.\n>\n>\n> On Fri, Jul 4, 2008 at 4:11 AM, Jan Rummel <rummelj at staff.uni-marburg.de>\n> wrote:\n>> Dear Mr Bates,\n>> I am a Phd-Student at the University of Marburg (Germany). And I have\n>> a question concerning your lme-package for R.\n>>\n>> I have conducted an experiment with one between-subject factor \"group\"\n>> (group1 vs. group2) and one within-subject factor \"stage\" (high vs. low).\n>> My dependent variable is binomial. It's the number of hits witch can\n>> be either 0, 1, 2, or 3.\n>>\n>> To analyse my data I tried your lme-implementation in R.\n>> Unfortunately, lme only allows binary data under the command\n>> \"binomial\" for the distribution of the DV. So, I got the error message\n>> that only 0 and 1 are possible values of the DV.\n>>\n>> Is there any posbility to analyse my data in lme? And if so, how do I\n>> have to modify my the R syntax for that? I am interested in the\n>> between-subject main effects, the within-subject main effects, and the\n> interaction as well.\n>>\n>> Sorry for any inconvenience.\n>> Thank you very much and best wishes.\n>> Jan\n>>\n>> --\n>> Jan Rummel\n>> Department of Psychology\n>> University of Marburg\n>> Gutenbergstr. 18\n>> 35032 Marburg\n>> Germany\n>>\n>> Phone: +49(0)6421/2823646\n>> Email: jan.rummel at staff.uni-marburg.de\n>>\n>>\n>\n>",
+      "body_plain": "On Fri, Jul 11, 2008 at 7:49 AM, Jan Rummel\n<rummelj at staff.uni-marburg.de> wrote:\n> Dear Mr. Bates,\n> Thank you for your quick reply. I tried to use your lme4 package. But I\n> think the problem still remains the same. If I use the comand \"binomial\" for\n> specifying the scale of my dependent variable the program would allow binary\n> data only.\n> Is there any posibility to allow binomial data such as described below\n> (number of hits either 0,1,2,or3)?\n\nYou can specify a binomial response by providing a matrix with columns\nof # of successes and # of failures on the left hand side of the model\nformula.  See\n\n?binomial\n\nor\n\nlibrary(lme4)\nexample(cbpp)\n\n> Thank you very much and sorry again for the inconvenience.\n> jan\n>\n>\n> -----Ursprüngliche Nachricht-----\n> Von: dmbates at gmail.com [mailto:dmbates at gmail.com] Im Auftrag von Douglas\n> Bates\n> Gesendet: Mittwoch, 9. Juli 2008 20:16\n> An: rummelj at staff.uni-marburg.de\n> Betreff: Re: Binomial dependent variable in a mixed-model design\n>\n> What you are describing is called a generalized linear mixed model.\n> The lme4 package for R has facilities for fitting such models.  See the\n> function glmer.\n>\n>\n> On Fri, Jul 4, 2008 at 4:11 AM, Jan Rummel <rummelj at staff.uni-marburg.de>\n> wrote:\n>> Dear Mr Bates,\n>> I am a Phd-Student at the University of Marburg (Germany). And I have\n>> a question concerning your lme-package for R.\n>>\n>> I have conducted an experiment with one between-subject factor \"group\"\n>> (group1 vs. group2) and one within-subject factor \"stage\" (high vs. low).\n>> My dependent variable is binomial. It's the number of hits witch can\n>> be either 0, 1, 2, or 3.\n>>\n>> To analyse my data I tried your lme-implementation in R.\n>> Unfortunately, lme only allows binary data under the command\n>> \"binomial\" for the distribution of the DV. So, I got the error message\n>> that only 0 and 1 are possible values of the DV.\n>>\n>> Is there any posbility to analyse my data in lme? And if so, how do I\n>> have to modify my the R syntax for that? I am interested in the\n>> between-subject main effects, the within-subject main effects, and the\n> interaction as well.\n>>\n>> Sorry for any inconvenience.\n>> Thank you very much and best wishes.\n>> Jan\n>>\n>> --\n>> Jan Rummel\n>> Department of Psychology\n>> University of Marburg\n>> Gutenbergstr. 18\n>> 35032 Marburg\n>> Germany\n>>\n>> Phone: +49(0)6421/2823646\n>> Email: jan.rummel at staff.uni-marburg.de\n>>\n>>\n>\n>",
       "body_snippet": "On Fri, Jul 11, 2008 at 7:49 AM, Jan Rummel\n<rummelj at staff.uni-marburg.de> wrote:\n> Dear Mr. Bates,\n> Thank you for your quick reply. I tried to use your lme4 package. But I\n> think the problem sti",
       "thread_id": "thread-75edd2dbb63a",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001160.html"
     },
     {
       "id": "msg-6980321fe00f",
@@ -796,7 +838,8 @@
       "body_snippet": "Hi folks,\nRepost/summary of previous correspondence.  Thanks to Ben Bolker,  \nSpencer Graves and Ken Beath for questions and comments.\n\nAre there general situations in which we might expect very diffe",
       "thread_id": "thread-6980321fe00f",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001161.html"
     },
     {
       "id": "msg-3136cb4c7b83",
@@ -814,7 +857,8 @@
       "body_snippet": "On Fri, Jul 11, 2008 at 9:06 AM, Remund, Todd <Todd.Remund at atk.com> wrote:\n> I have been using lmer() to fit a mixed model to some experimental design\n> data.  I have an unstructured covariance str",
       "thread_id": "thread-3136cb4c7b83",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001162.html"
     },
     {
       "id": "msg-3d712e8ffc2b",
@@ -830,7 +874,8 @@
       "body_snippet": "On Mon, Jul 7, 2008 at 8:35 AM, David Paez <david.paez.1 at ulaval.ca> wrote:\n> Hi all,\n\n> In the newest version of lme4 the function hatTrace seems to be hidden away so\n> that R doesn't recognize it ",
       "thread_id": "thread-3d712e8ffc2b",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001163.html"
     },
     {
       "id": "msg-651e0e544f27",
@@ -850,6 +895,7 @@
       "thread_id": "thread-3136cb4c7b83",
       "thread_depth": 1,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001164.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080711/e40891a4/attachment.pl"
       ]
@@ -869,6 +915,7 @@
       "thread_id": "thread-55de56ab6ecd",
       "thread_depth": 0,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001165.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080714/cafbc906/attachment.pl"
       ]
@@ -887,7 +934,8 @@
       "body_snippet": "Dear lmer expeRts,\n\nI wondered if anybody could help me reconcile these two test results ?\n\nI have been fitting models of the form:\n\nBASIC MODEL\nfl.basic <- lmer(y.fl~(I(TIME-200) + I((TIME-200)^2))*S",
       "thread_id": "thread-d4f3e1b3b765",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001166.html"
     },
     {
       "id": "msg-51ea9fd71da9",
@@ -905,7 +953,8 @@
       "body_snippet": "On Tue, 2008-07-15 at 13:43 +0800, Julie Marsh wrote:\n\n> \n> \n> Given that I am using 2 different tests for two different hypotheses I  \n> still would have expected these p-values to be more similar. \n",
       "thread_id": "thread-d4f3e1b3b765",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001167.html"
     },
     {
       "id": "msg-3e6480e1497a",
@@ -924,7 +973,8 @@
       "body_snippet": "2008/7/15 Simon Blomberg <s.blomberg1 at uq.edu.au>:\n> On Tue, 2008-07-15 at 13:43 +0800, Julie Marsh wrote:\n>\n>>\n>>\n>> Given that I am using 2 different tests for two different hypotheses I\n>> still ",
       "thread_id": "thread-d4f3e1b3b765",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001168.html"
     },
     {
       "id": "msg-b1859df740c5",
@@ -944,7 +994,8 @@
       "body_snippet": "On Tue, Jul 15, 2008 at 3:33 AM, Rune Haubo <rhbc at imm.dtu.dk> wrote:\n> 2008/7/15 Simon Blomberg <s.blomberg1 at uq.edu.au>:\n>> On Tue, 2008-07-15 at 13:43 +0800, Julie Marsh wrote:\n>>\n>>>\n>>>\n>>> G",
       "thread_id": "thread-d4f3e1b3b765",
       "thread_depth": 3,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001169.html"
     },
     {
       "id": "msg-6d01bd34ed4d",
@@ -960,7 +1011,8 @@
       "body_snippet": "I'm using function gls in nlme to run some extended linear model with  \ngeneralized least squares many many times in a loop with the same  \ndesign matrix X and same residual covariance structure but d",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001170.html"
     },
     {
       "id": "msg-a410f7351d99",
@@ -978,7 +1030,8 @@
       "body_snippet": "Hi Gang, \n\nHave you tried the predict() function?\nYou should be able to hand off new data\nto your saved fitted model object.  \nSee \n?predict.gls\nfor an example.\n\nHTH\n\nSteve McKinney\n\n-----Original Mes",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001171.html"
     },
     {
       "id": "msg-083bfad38baf",
@@ -998,6 +1051,7 @@
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 2,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001172.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080716/22160a2b/attachment.pl"
       ]
@@ -1020,7 +1074,8 @@
       "body_snippet": "Hi Gang,\n\nSorry, I should have said \"update()\" instead\nof \"predict()\".\n\nHowever, a timing test on a small example shows no\nconsiderable gain to updating an existing object\ncompared to refitting a new ",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 3,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001173.html"
     },
     {
       "id": "msg-9c0475678ca4",
@@ -1041,7 +1096,8 @@
       "body_snippet": "No, update() doesn't make much difference in my case either. I've  \nbeen reluctant to dive into the source code, but I may have to do so  \nif no better choices turn up.\n\nThanks again,\nGang\n\n\nOn Jul 16",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 4,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001174.html"
     },
     {
       "id": "msg-caac0cd31e25",
@@ -1060,7 +1116,8 @@
       "body_snippet": "2008/7/16 Dimitris Rizopoulos <Dimitris.Rizopoulos at med.kuleuven.be>:\n> well, for computing the p-value you need to use pchisq() and dchisq() (check\n> ?dchisq for more info). For model fits with a l",
       "thread_id": "thread-caac0cd31e25",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001175.html"
     },
     {
       "id": "msg-a154b8349a04",
@@ -1080,7 +1137,8 @@
       "body_snippet": "On Thu, Jul 17, 2008 at 2:50 AM, Rune Haubo <rhbc at imm.dtu.dk> wrote:\n> 2008/7/16 Dimitris Rizopoulos <Dimitris.Rizopoulos at med.kuleuven.be>:\n>> well, for computing the p-value you need to use pch",
       "thread_id": "thread-caac0cd31e25",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001176.html"
     },
     {
       "id": "msg-0408ddbfd449",
@@ -1102,7 +1160,8 @@
       "body_snippet": "In general update applied to a fitted model object modifies the\noriginal call then evaluates the modified call.  Hence there will be\nno gain in speed.  The refit function in the lme4 package replaces ",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 5,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001177.html"
     },
     {
       "id": "msg-c3a58c141797",
@@ -1125,7 +1184,8 @@
       "body_snippet": "Dr. Bates,\n\nThanks a lot for the clarification!\n\nIs there any plan to have a gls method implemented in lme4 so that I  \ncould take advantage of the refit function?\n\nAlso does lmer in lme4 allow for sp",
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 6,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001178.html"
     },
     {
       "id": "msg-f3fb5e018675",
@@ -1150,6 +1210,7 @@
       "thread_id": "thread-6d01bd34ed4d",
       "thread_depth": 7,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001179.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080717/bb0dd5bf/attachment.pl"
       ]
@@ -1169,11 +1230,12 @@
         "<4949c7e60807170050u1b1e9d68p5fe7b4d569364b2e@mail.gmail.com>",
         "<40e66e0b0807170429kb626492qa2215811e719e0d@mail.gmail.com>"
       ],
-      "body_plain": "This particular case with a random intercept model can be handled by\nglmmML, by bootstrapping the p-value.\n\nBest, G?ran\n\nOn Thu, Jul 17, 2008 at 1:29 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Thu, Jul 17, 2008 at 2:50 AM, Rune Haubo <rhbc at imm.dtu.dk> wrote:\n>> 2008/7/16 Dimitris Rizopoulos <Dimitris.Rizopoulos at med.kuleuven.be>:\n>>> well, for computing the p-value you need to use pchisq() and dchisq() (check\n>>> ?dchisq for more info). For model fits with a logLik method you can directly\n>>> use the following simple function:\n>>>\n>>> lrt <- function (obj1, obj2) {\n>>>    L0 <- logLik(obj1)\n>>>    L1 <- logLik(obj2)\n>>>    L01 <- as.vector(- 2 * (L0 - L1))\n>>>    df <- attr(L1, \"df\") - attr(L0, \"df\")\n>>>    list(L01 = L01, df = df,\n>>>        \"p-value\" = pchisq(L01, df, lower.tail = FALSE))\n>>> }\n>>>\n>>> library(lme4)\n>>> gm0 <- glm(cbind(incidence, size - incidence) ~ period,\n>>>              family = binomial, data = cbpp)\n>>> gm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),\n>>>              family = binomial, data = cbpp)\n>>>\n>>> lrt(gm0, gm1)\n>>\n>> Yes, that seems quite natural, but then try to compare with the deviance:\n>>\n>> logLik(gm0)\n>> logLik(gm1)\n>>\n>> (d0 <- deviance(gm0))\n>> (d1 <- deviance(gm1))\n>> (LR <- d0 - d1)\n>> pchisq(LR, 1, lower = FALSE)\n>>\n>> Obviously the deviance in glm is *not* twice the negative\n>> log-likelihood as it is in glmer. The question remains which of these\n>> two quantities is appropriate for comparison. I am not sure exactly\n>> how the deviance and/or log-likelihood are calculated in glmer, but my\n>> feeling is that one should trust the deviance rather than the\n>> log-likelihoods for these purposes. This is supported by the following\n>> comparison: Ad an arbitrary random effect with a close-to-zero\n>> variance and note the deviance:\n>>\n>> tmp <- rep(1:4, each = nrow(cbpp)/4)\n>> gm2 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | tmp),\n>>             family = binomial, data = cbpp)\n>> (d2 <- deviance(gm2))\n>>\n>> This deviance is very close to that obtained from the glm model.\n>>\n>> I have included the mixed-models mailing list in the hope that someone\n>> could explain how the deviance is computed in glmer and why deviances,\n>> but not likelihoods are comparable to glm-fits.\n>\n> In that example I think the problem may be that I have not yet written\n> the code to adjust the deviance of the glmer fit for the null\n> deviance.\n>\n>>> However, there are some issues regarding this likelihood ratio test.\n>>>\n>>> 1) The null hypothesis is on the boundary of the parameter space, i.e., you\n>>> test whether the variance for the random effect is zero. For this case the\n>>> assumed chi-squared distribution for the LRT may *not* be totally\n>>> appropriate and may produce conservative p-values. There is some theory\n>>> regarding this issue, which has shown that the reference distribution for\n>>> the LRT in this case is a mixture of a chi-squared(df = 0) and\n>>> chi-squared(df = 1). Another option is to use simulation-based approach\n>>> where you can approximate the reference distribution of the LRT under the\n>>> null using simulation. You may check below for an illustration of this\n>>> procedure (not-tested):\n>>>\n>>> X <- model.matrix(gm0)\n>>> coefs <- coef(gm0)\n>>> pr <- plogis(c(X %*% coefs))\n>>> n <- length(pr)\n>>> new.dat <- cbpp\n>>> Tobs <- lrt(gm0, gm1)$L01\n>>> B <- 200\n>>> out.T <- numeric(B)\n>>> for (b in 1:B) {\n>>>    y <- rbinom(n, cbpp$size, pr)\n>>>    new.dat$incidence <- y\n>>>    fit0 <- glm(formula(gm0), family = binomial, data = new.dat)\n>>>    fit1 <- glmer(formula(gm1), family = binomial, data = new.dat)\n>>>    out.T[b] <- lrt(fit0, fit1)$L01\n>>> }\n>>> # estimate p-value\n>>> (sum(out.T >= Tobs) + 1) / (B + 1)\n>>>\n>>>\n>>> 2) For the glmer fit you have to note that you work with an approximation to\n>>> the log-likelihood (obtained using numerical integration) and not the actual\n>>> log-likelihood.\n>>>\n>>> I hope it helps.\n>>>\n>>> Best,\n>>> Dimitris\n>>>\n>>> ----\n>>> Dimitris Rizopoulos\n>>> Biostatistical Centre\n>>> School of Public Health\n>>> Catholic University of Leuven\n>>>\n>>> Address: Kapucijnenvoer 35, Leuven, Belgium\n>>> Tel: +32/(0)16/336899\n>>> Fax: +32/(0)16/337015\n>>> Web: http://med.kuleuven.be/biostat/\n>>>     http://www.student.kuleuven.be/~m0390867/dimitris.htm\n>>>\n>>>\n>>> Quoting COREY SPARKS <corey.sparks at UTSA.EDU>:\n>>>\n>>>> Dear list,\n>>>> I am fitting a logistic multi-level regression model and need to  test the\n>>>> difference between the ordinary logistic regression from a  glm() fit and\n>>>> the mixed effects fit from glmer(), basically I want  to do a likelihood\n>>>> ratio test between the two fits.\n>>>>\n>>>>\n>>>> The data are like this:\n>>>> My outcome is a (1,0) for health status, I have several (1,0) dummy\n>>>>  variables RURAL, SMOKE, DRINK, EMPLOYED, highereduc, INDIG, male,\n>>>>  divorced, SINGLE, chronic, vigor_d and moderat_d and AGE is  continuous (20\n>>>> to 100).\n>>>> My higher level is called munid and has 581 levels.\n>>>> The data have 45243 observations.\n>>>>\n>>>> Here are my program statements:\n>>>>\n>>>> #GLM fit\n>>>>\n>>>> ph.fit.2<-glm(poorhealth~RURAL+SMOKE+DRINK+EMPLOYED+highereduc+INDIG+AGE+male+divorced+SINGLE+chronic+vigor_d+moderat_d,family=binomial(),\n>>>>  data=mx.merge)\n>>>> #GLMER fit\n>>>>\n>>>> ph.fit.3<-glmer(poorhealth~RURAL+SMOKE+DRINK+EMPLOYED+INSURANCE+highereduc+INDIG+AGE+male+divorced+SINGLE+chronic+vigor_d+moderat_d+(1|munid),family=binomial(),\n>>>>  data=mx.merge)\n>>>>\n>>>> I cannot find a method in R that will do the LR test between a glm  and a\n>>>> glmer fit, so I try to do it using the liklihoods from both  models\n>>>>\n>>>> #form the likelihood ratio test between the glm and glmer fits\n>>>> x2<--2*(logLik(ph.fit.2)-logLik(ph.fit.3))\n>>>>\n>>>>>    ML\n>>>>\n>>>> 79.60454\n>>>> attr(,\"nobs\")\n>>>>    n\n>>>> 45243\n>>>> attr(,\"nall\")\n>>>>    n\n>>>> 45243\n>>>> attr(,\"df\")\n>>>> [1] 14\n>>>> attr(,\"REML\")\n>>>> [1] FALSE\n>>>> attr(,\"class\")\n>>>> [1] \"logLik\"\n>>>>\n>>>> #Get the associated p-value\n>>>> dchisq(x2,14)\n>>>>         ML\n>>>>>\n>>>>> 5.94849e-15\n>>>>\n>>>> Which looks like an improvement in model fit to me.  Am I seeing  this\n>>>> correctly or are the two models even able to be compared? they  are both\n>>>> estimated via maximum likelihood, so they should be, I think.\n>>>> Any help would be appreciated.\n>>>>\n>>>> Corey\n>>>>\n>>>> Corey S. Sparks, Ph.D.\n>>>>\n>>>> Assistant Professor\n>>>> Department of Demography and Organization Studies\n>>>> University of Texas San Antonio\n>>>> One UTSA Circle\n>>>> San Antonio, TX 78249\n>>>> email:corey.sparks at utsa.edu\n>>>> web: https://rowdyspace.utsa.edu/users/ozd504/www/index.htm\n>>>>\n>>>>\n>>>>        [[alternative HTML version deleted]]\n>>>>\n>>>> ______________________________________________\n>>>> R-help at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-help\n>>>> PLEASE do read the posting guide\n>>>> http://www.R-project.org/posting-guide.html\n>>>> and provide commented, minimal, self-contained, reproducible code.\n>>>>\n>>>>\n>>>\n>>>\n>>>\n>>> Disclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm\n>>>\n>>> ______________________________________________\n>>> R-help at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-help\n>>> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n>>> and provide commented, minimal, self-contained, reproducible code.\n>>>\n>>\n>>\n>>\n>> --\n>> Rune Haubo Bojesen Christensen\n>>\n>> Master Student, M.Sc. Eng.\n>> Phone: (+45) 30 26 45 54\n>> Mail: rhbc at imm.dtu.dk, rune.haubo at gmail.com\n>>\n>> DTU Informatics, Section for Statistics\n>> Technical University of Denmark, Build.321, DK-2800 Kgs. Lyngby, Denmark\n>>\n>> ______________________________________________\n>> R-help at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-help\n>> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n>> and provide commented, minimal, self-contained, reproducible code.\n>>\n>\n> ______________________________________________\n> R-help at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-help\n> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n> and provide commented, minimal, self-contained, reproducible code.\n>\n\n\n\n-- \nG?ran Brostr?m",
-      "body_snippet": "This particular case with a random intercept model can be handled by\nglmmML, by bootstrapping the p-value.\n\nBest, G?ran\n\nOn Thu, Jul 17, 2008 at 1:29 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n",
+      "body_plain": "This particular case with a random intercept model can be handled by\nglmmML, by bootstrapping the p-value.\n\nBest, Göran\n\nOn Thu, Jul 17, 2008 at 1:29 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Thu, Jul 17, 2008 at 2:50 AM, Rune Haubo <rhbc at imm.dtu.dk> wrote:\n>> 2008/7/16 Dimitris Rizopoulos <Dimitris.Rizopoulos at med.kuleuven.be>:\n>>> well, for computing the p-value you need to use pchisq() and dchisq() (check\n>>> ?dchisq for more info). For model fits with a logLik method you can directly\n>>> use the following simple function:\n>>>\n>>> lrt <- function (obj1, obj2) {\n>>>    L0 <- logLik(obj1)\n>>>    L1 <- logLik(obj2)\n>>>    L01 <- as.vector(- 2 * (L0 - L1))\n>>>    df <- attr(L1, \"df\") - attr(L0, \"df\")\n>>>    list(L01 = L01, df = df,\n>>>        \"p-value\" = pchisq(L01, df, lower.tail = FALSE))\n>>> }\n>>>\n>>> library(lme4)\n>>> gm0 <- glm(cbind(incidence, size - incidence) ~ period,\n>>>              family = binomial, data = cbpp)\n>>> gm1 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | herd),\n>>>              family = binomial, data = cbpp)\n>>>\n>>> lrt(gm0, gm1)\n>>\n>> Yes, that seems quite natural, but then try to compare with the deviance:\n>>\n>> logLik(gm0)\n>> logLik(gm1)\n>>\n>> (d0 <- deviance(gm0))\n>> (d1 <- deviance(gm1))\n>> (LR <- d0 - d1)\n>> pchisq(LR, 1, lower = FALSE)\n>>\n>> Obviously the deviance in glm is *not* twice the negative\n>> log-likelihood as it is in glmer. The question remains which of these\n>> two quantities is appropriate for comparison. I am not sure exactly\n>> how the deviance and/or log-likelihood are calculated in glmer, but my\n>> feeling is that one should trust the deviance rather than the\n>> log-likelihoods for these purposes. This is supported by the following\n>> comparison: Ad an arbitrary random effect with a close-to-zero\n>> variance and note the deviance:\n>>\n>> tmp <- rep(1:4, each = nrow(cbpp)/4)\n>> gm2 <- glmer(cbind(incidence, size - incidence) ~ period + (1 | tmp),\n>>             family = binomial, data = cbpp)\n>> (d2 <- deviance(gm2))\n>>\n>> This deviance is very close to that obtained from the glm model.\n>>\n>> I have included the mixed-models mailing list in the hope that someone\n>> could explain how the deviance is computed in glmer and why deviances,\n>> but not likelihoods are comparable to glm-fits.\n>\n> In that example I think the problem may be that I have not yet written\n> the code to adjust the deviance of the glmer fit for the null\n> deviance.\n>\n>>> However, there are some issues regarding this likelihood ratio test.\n>>>\n>>> 1) The null hypothesis is on the boundary of the parameter space, i.e., you\n>>> test whether the variance for the random effect is zero. For this case the\n>>> assumed chi-squared distribution for the LRT may *not* be totally\n>>> appropriate and may produce conservative p-values. There is some theory\n>>> regarding this issue, which has shown that the reference distribution for\n>>> the LRT in this case is a mixture of a chi-squared(df = 0) and\n>>> chi-squared(df = 1). Another option is to use simulation-based approach\n>>> where you can approximate the reference distribution of the LRT under the\n>>> null using simulation. You may check below for an illustration of this\n>>> procedure (not-tested):\n>>>\n>>> X <- model.matrix(gm0)\n>>> coefs <- coef(gm0)\n>>> pr <- plogis(c(X %*% coefs))\n>>> n <- length(pr)\n>>> new.dat <- cbpp\n>>> Tobs <- lrt(gm0, gm1)$L01\n>>> B <- 200\n>>> out.T <- numeric(B)\n>>> for (b in 1:B) {\n>>>    y <- rbinom(n, cbpp$size, pr)\n>>>    new.dat$incidence <- y\n>>>    fit0 <- glm(formula(gm0), family = binomial, data = new.dat)\n>>>    fit1 <- glmer(formula(gm1), family = binomial, data = new.dat)\n>>>    out.T[b] <- lrt(fit0, fit1)$L01\n>>> }\n>>> # estimate p-value\n>>> (sum(out.T >= Tobs) + 1) / (B + 1)\n>>>\n>>>\n>>> 2) For the glmer fit you have to note that you work with an approximation to\n>>> the log-likelihood (obtained using numerical integration) and not the actual\n>>> log-likelihood.\n>>>\n>>> I hope it helps.\n>>>\n>>> Best,\n>>> Dimitris\n>>>\n>>> ----\n>>> Dimitris Rizopoulos\n>>> Biostatistical Centre\n>>> School of Public Health\n>>> Catholic University of Leuven\n>>>\n>>> Address: Kapucijnenvoer 35, Leuven, Belgium\n>>> Tel: +32/(0)16/336899\n>>> Fax: +32/(0)16/337015\n>>> Web: http://med.kuleuven.be/biostat/\n>>>     http://www.student.kuleuven.be/~m0390867/dimitris.htm\n>>>\n>>>\n>>> Quoting COREY SPARKS <corey.sparks at UTSA.EDU>:\n>>>\n>>>> Dear list,\n>>>> I am fitting a logistic multi-level regression model and need to  test the\n>>>> difference between the ordinary logistic regression from a  glm() fit and\n>>>> the mixed effects fit from glmer(), basically I want  to do a likelihood\n>>>> ratio test between the two fits.\n>>>>\n>>>>\n>>>> The data are like this:\n>>>> My outcome is a (1,0) for health status, I have several (1,0) dummy\n>>>>  variables RURAL, SMOKE, DRINK, EMPLOYED, highereduc, INDIG, male,\n>>>>  divorced, SINGLE, chronic, vigor_d and moderat_d and AGE is  continuous (20\n>>>> to 100).\n>>>> My higher level is called munid and has 581 levels.\n>>>> The data have 45243 observations.\n>>>>\n>>>> Here are my program statements:\n>>>>\n>>>> #GLM fit\n>>>>\n>>>> ph.fit.2<-glm(poorhealth~RURAL+SMOKE+DRINK+EMPLOYED+highereduc+INDIG+AGE+male+divorced+SINGLE+chronic+vigor_d+moderat_d,family=binomial(),\n>>>>  data=mx.merge)\n>>>> #GLMER fit\n>>>>\n>>>> ph.fit.3<-glmer(poorhealth~RURAL+SMOKE+DRINK+EMPLOYED+INSURANCE+highereduc+INDIG+AGE+male+divorced+SINGLE+chronic+vigor_d+moderat_d+(1|munid),family=binomial(),\n>>>>  data=mx.merge)\n>>>>\n>>>> I cannot find a method in R that will do the LR test between a glm  and a\n>>>> glmer fit, so I try to do it using the liklihoods from both  models\n>>>>\n>>>> #form the likelihood ratio test between the glm and glmer fits\n>>>> x2<--2*(logLik(ph.fit.2)-logLik(ph.fit.3))\n>>>>\n>>>>>    ML\n>>>>\n>>>> 79.60454\n>>>> attr(,\"nobs\")\n>>>>    n\n>>>> 45243\n>>>> attr(,\"nall\")\n>>>>    n\n>>>> 45243\n>>>> attr(,\"df\")\n>>>> [1] 14\n>>>> attr(,\"REML\")\n>>>> [1] FALSE\n>>>> attr(,\"class\")\n>>>> [1] \"logLik\"\n>>>>\n>>>> #Get the associated p-value\n>>>> dchisq(x2,14)\n>>>>         ML\n>>>>>\n>>>>> 5.94849e-15\n>>>>\n>>>> Which looks like an improvement in model fit to me.  Am I seeing  this\n>>>> correctly or are the two models even able to be compared? they  are both\n>>>> estimated via maximum likelihood, so they should be, I think.\n>>>> Any help would be appreciated.\n>>>>\n>>>> Corey\n>>>>\n>>>> Corey S. Sparks, Ph.D.\n>>>>\n>>>> Assistant Professor\n>>>> Department of Demography and Organization Studies\n>>>> University of Texas San Antonio\n>>>> One UTSA Circle\n>>>> San Antonio, TX 78249\n>>>> email:corey.sparks at utsa.edu\n>>>> web: https://rowdyspace.utsa.edu/users/ozd504/www/index.htm\n>>>>\n>>>>\n>>>>        [[alternative HTML version deleted]]\n>>>>\n>>>> ______________________________________________\n>>>> R-help at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-help\n>>>> PLEASE do read the posting guide\n>>>> http://www.R-project.org/posting-guide.html\n>>>> and provide commented, minimal, self-contained, reproducible code.\n>>>>\n>>>>\n>>>\n>>>\n>>>\n>>> Disclaimer: http://www.kuleuven.be/cwis/email_disclaimer.htm\n>>>\n>>> ______________________________________________\n>>> R-help at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-help\n>>> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n>>> and provide commented, minimal, self-contained, reproducible code.\n>>>\n>>\n>>\n>>\n>> --\n>> Rune Haubo Bojesen Christensen\n>>\n>> Master Student, M.Sc. Eng.\n>> Phone: (+45) 30 26 45 54\n>> Mail: rhbc at imm.dtu.dk, rune.haubo at gmail.com\n>>\n>> DTU Informatics, Section for Statistics\n>> Technical University of Denmark, Build.321, DK-2800 Kgs. Lyngby, Denmark\n>>\n>> ______________________________________________\n>> R-help at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-help\n>> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n>> and provide commented, minimal, self-contained, reproducible code.\n>>\n>\n> ______________________________________________\n> R-help at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-help\n> PLEASE do read the posting guide http://www.R-project.org/posting-guide.html\n> and provide commented, minimal, self-contained, reproducible code.\n>\n\n\n\n-- \nGöran Broström",
+      "body_snippet": "This particular case with a random intercept model can be handled by\nglmmML, by bootstrapping the p-value.\n\nBest, Göran\n\nOn Thu, Jul 17, 2008 at 1:29 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n",
       "thread_id": "thread-caac0cd31e25",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001180.html"
     },
     {
       "id": "msg-183049261bab",
@@ -1189,7 +1251,8 @@
       "body_snippet": "I have trouble figuring out what is attribute \"varFixFact\" in  \ncomponent \"fixDF\" of a lme object. Using the data Rail in nlme as an  \nexample,\n\n > library(nlme)\n > flme <- lme(travel ~ 1, data=Rail, ",
       "thread_id": "thread-183049261bab",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001181.html"
     },
     {
       "id": "msg-3c699c1c8b2c",
@@ -1205,7 +1268,8 @@
       "body_snippet": "Dear all,\n\nI have sucessfully run Logistic regression by using generalized linear\nmixed-effects model (lmer) fitted by the Laplace approximation (lme4\npackage).\n\nIs there any limits that I should awar",
       "thread_id": "thread-3c699c1c8b2c",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001183.html"
     },
     {
       "id": "msg-ca63170ea0ef",
@@ -1221,7 +1285,8 @@
       "body_snippet": "Dear all,\n\nI have sucessfully run Logistic regression by using generalized linear\nmixed-effects model (lmer) fitted by the Laplace approximation (lme4\npackage).\n\nIs there any limits that I should awar",
       "thread_id": "thread-ca63170ea0ef",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001182.html"
     },
     {
       "id": "msg-cb1553d038d6",
@@ -1237,7 +1302,8 @@
       "body_snippet": "Do you mean limitations of the laplace approximation or limits of a glmm\nfit by lmer? If it is the former, one possible argument is that lmer\nuses a second-order taylor series expansion. One might cla",
       "thread_id": "thread-3c699c1c8b2c",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001184.html"
     },
     {
       "id": "msg-a0aea5832153",
@@ -1255,7 +1321,8 @@
       "body_snippet": "Not sure what you mean limits, but if you want a very intro description see \n<http://www.sussex.ac.uk/Users/danw/pdf/multibjmspproofs.pdf>.\n\nDan\n\nps. That website works now and will for a few weeks. I",
       "thread_id": "thread-ca63170ea0ef",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001185.html"
     },
     {
       "id": "msg-c75fb4e98247",
@@ -1274,7 +1341,8 @@
       "body_snippet": "On Wed, Jul 23, 2008 at 7:46 AM, Doran, Harold <HDoran at air.org> wrote:\n> Do you mean limitations of the laplace approximation or limits of a glmm\n> fit by lmer? If it is the former, one possible ar",
       "thread_id": "thread-3c699c1c8b2c",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001186.html"
     },
     {
       "id": "msg-b4bdc7fab6ea",
@@ -1292,7 +1360,8 @@
       "body_snippet": "On 23/07/2008, at 8:14 PM, R.S. Cotter wrote:\n\n> Dear all,\n>\n> I have sucessfully run Logistic regression by using generalized linear\n> mixed-effects model (lmer) fitted by the Laplace approximation (",
       "thread_id": "thread-ca63170ea0ef",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001187.html"
     },
     {
       "id": "msg-f2d5f615b897",
@@ -1308,7 +1377,8 @@
       "body_snippet": "Hi folks,\nI have colleagues who comfortably state that \"missing data\" are ok in\n\"mixed models\" - because \"the program (PROC MIXED) handles missing data\n-- I have a hard time imagining what it does.\n\nT",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001188.html"
     },
     {
       "id": "msg-f4f9f6ab7ee1",
@@ -1326,7 +1396,8 @@
       "body_snippet": "On Fri, Jul 25, 2008 at 4:28 PM, M Henry H Stevens <HStevens at muohio.edu> wrote:\n> Hi folks,\n> I have colleagues who comfortably state that \"missing data\" are ok in\n> \"mixed models\" - because \"the p",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001189.html"
     },
     {
       "id": "msg-9bb7977b7eb5",
@@ -1344,7 +1415,8 @@
       "body_snippet": "On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n\n> Hi folks,\n> I have colleagues who comfortably state that \"missing data\" are ok in\n> \"mixed models\" - because \"the program (PROC MIXED) handles mi",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001190.html"
     },
     {
       "id": "msg-0cee7b2c370d",
@@ -1363,7 +1435,8 @@
       "body_snippet": "Thanks Ken. I have been assuming that they meant missing covariates (a\nsubject provided most of the predictors, but not all). So I take it that\nSAS does no imputation on its own-that the user would ne",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001191.html"
     },
     {
       "id": "msg-e02b4a29b176",
@@ -1383,7 +1456,8 @@
       "body_snippet": "On 28/07/2008, at 9:04 PM, M Henry H Stevens wrote:\n\n> Thanks Ken. I have been assuming that they meant missing covariates (a\n> subject provided most of the predictors, but not all). So I take it  \n> ",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 3,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001192.html"
     },
     {
       "id": "msg-4952a6d953c5",
@@ -1399,7 +1473,8 @@
       "body_snippet": "Ken,\n\nDoes M-Plus actually impute values for the missing cells in the model\nmatrix for the fixed effects? Is this a default behavior of m-plus, or\ndoes one need to be cognizant of this and implement a",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 4,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001193.html"
     },
     {
       "id": "msg-5f1d0e6de288",
@@ -1417,7 +1492,8 @@
       "body_snippet": "On 28/07/2008, at 11:05 PM, Doran, Harold wrote:\n\n> Ken,\n>\n> Does M-Plus actually impute values for the missing cells in the model\n> matrix for the fixed effects? Is this a default behavior of m-plus,",
       "thread_id": "thread-f2d5f615b897",
       "thread_depth": 5,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001194.html"
     },
     {
       "id": "msg-54195a52a8e1",
@@ -1434,6 +1510,7 @@
       "thread_id": "thread-54195a52a8e1",
       "thread_depth": 0,
       "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001195.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20080729/f53508fe/attachment.pl"
       ]
@@ -1452,7 +1529,8 @@
       "body_snippet": "Is there an mixed effects R package that can be used to model ordinal\ndata?",
       "thread_id": "thread-16837df62537",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001196.html"
     },
     {
       "id": "msg-8b03fc7598ad",
@@ -1470,7 +1548,8 @@
       "body_snippet": "On Tue, Jul 29, 2008 at 1:23 PM, Byju Govindan <byjung at gmail.com> wrote:\n> Dear R users,\n\n>  Is gmmlAMDB the only option available to do mixed effect modelling for zero\n> inflated count data in R. ",
       "thread_id": "thread-54195a52a8e1",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001197.html"
     },
     {
       "id": "msg-03e9f7f9ff03",
@@ -1486,7 +1565,8 @@
       "body_snippet": "I sent the message, to be found below, to Doug Bates just now.\nSince he is flat out preparing a number of workshops, he suggested\nthat I post to this SIG to see if I could get some enlightenment.\n\nErg",
       "thread_id": "thread-03e9f7f9ff03",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001198.html"
     },
     {
       "id": "msg-c2c16ad55aa4",
@@ -1502,7 +1582,8 @@
       "body_snippet": "Byju,\n\nIf you look at Jim Lindsay's gnlm package at:\nhttp://popgen.unimaas.nl/~jlindsey/rcode.html\nyou will find possibilities there.\n\nThe piece of code I used was something like:\n\npmod <- fmr( help1,",
       "thread_id": "thread-c2c16ad55aa4",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001199.html"
     },
     {
       "id": "msg-8a44ce87a54e",
@@ -1518,7 +1599,8 @@
       "body_snippet": "Can you post str(Rolf's_data)? If I understand correctly, y is a\ntemporally ordered vector of the measurements on each student, correct?\nI further assume that tstnum is a factor that associates each e",
       "thread_id": "thread-03e9f7f9ff03",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001200.html"
     },
     {
       "id": "msg-c16409f0b7b8",
@@ -1530,11 +1612,12 @@
       "subject_clean": "Stats question",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear friends, \nI am not sure that this is the right place?to ask,? but please feel?free to suggest an alternative discussion group.\nMy question is that I?want to do a comparative study in order to compare the rate of incidence in two populations. I know that a pilot study was conducted a few weeks ago and found?8/140 (around 6%) incidence in population A. Population B was not sampled. Assuming this is (about) the right proportion in the Population A what?is the sample size I need?for population A and B in the main study, in order to have power of 80% to idenitfy significant?differences? I would expect the incidence in population B to be around 10% compared to the 6% of the Population A.\nAny suggestions?\nJason\nDr. Iasonas Lamprianou\nDepartment of Education\nThe University of Manchester\nOxford Road, Manchester M13 9PL, UK\nTel. 0044 161 275 3485\niasonas.lamprianou at manchester.ac.uk\n\n\n\n----- Original Message ----\nFrom: \"r-sig-mixed-models-request at r-project.org\" <r-sig-mixed-models-request at r-project.org>\nTo: r-sig-mixed-models at r-project.org\nSent: Tuesday, 29 July, 2008 1:00:01 PM\nSubject: R-sig-mixed-models Digest, Vol 19, Issue 23\n\nSend R-sig-mixed-models mailing list submissions to\n??? r-sig-mixed-models at r-project.org\n\nTo subscribe or unsubscribe via the World Wide Web, visit\n??? https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\nor, via email, send a message with subject or body 'help' to\n??? r-sig-mixed-models-request at r-project.org\n\nYou can reach the person managing the list at\n??? r-sig-mixed-models-owner at r-project.org\n\nWhen replying, please edit your Subject line so it is more specific\nthan \"Re: Contents of R-sig-mixed-models digest...\"\n\n\nToday's Topics:\n\n? 1. Re: missing data in lme, lmer, PROC MIXED (M Henry H Stevens)\n? 2. Re: missing data in lme, lmer, PROC MIXED (Ken Beath)\n? 3. Re: missing data in lme, lmer, PROC MIXED (Doran, Harold)\n\n\n----------------------------------------------------------------------\n\nMessage: 1\nDate: Mon, 28 Jul 2008 07:04:19 -0400\nFrom: M Henry H Stevens <HStevens at muohio.edu>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: Ken Beath <kjbeath at kagi.com>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n??? Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <1217243059.5947.33.camel at stevenmh-desktop>\nContent-Type: text/plain; charset=UTF-8\n\nThanks Ken. I have been assuming that they meant missing covariates (a\nsubject provided most of the predictors, but not all). So I take it that\nSAS does no imputation on its own-that the user would need to do that\n(if they wanted?). lme does not do anything like that.\n\nHank\n\nOn Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n> \n> > Hi folks,\n> > I have colleagues who comfortably state that \"missing data\" are ok in\n> > \"mixed models\" - because \"the program (PROC MIXED) handles missing\n> > data\n> > -- I have a hard time imagining what it does.\n> >\n> > To those of you who use both R and SAS, I was wondering if you might\n> > share insight into what these do.\n> >\n> > As far as I know, for lme:\n> > 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n> > missing\n> > data.\n> >\n> \n> This depends. If the missing data is the dependent and it is missing\n> at random then as mixed models are fitted using maximum likelihood it\n> will produce results that are optimal. Roughly (there are some really\n> technical definitions for missing data and I haven't checked them) if\n> we don't know the outcome and the reason it is missing isn't due to\n> its value or the other data then we can simply leave it out of the\n> likelihood equation it as it has no useful information. A problem is\n> when data being missing provides this sort of information and is very\n> difficult to model. An example is if observations above a certain\n> value are more likely to be missing.\n> \n> An alternative method of dealing with repeated data is to produce a\n> summary for each subject or cluster, for example by averaging the last\n> three visits. This doesn't correctly handle missing data although the\n> loss in efficiency is usually small and it can work well, provided\n> only a small proportion is missing.\n> \n> What R and SAS don't deal with directly is missing data in the\n> covariates. This takes a bit more work, for example using multiple\n> imputation. Here the complete case method where an observation with\n> any missing data is removed will result in a loss of efficiency\n> compared to what can be achieved.\n> \n> Ken\n-- \n?\nDr. Hank Stevens, Associate Professor\n338 Pearson Hall\nBotany Department\nMiami University\nOxford, OH 45056\n\nOffice: (513) 529-4206\nLab: (513) 529-4262\nFAX: (513) 529-4243\nhttp://www.cas.muohio.edu/~stevenmh/\nhttp://www.cas.muohio.edu/ecology\nhttp://www.muohio.edu/botany/\n\n\"If the stars should appear one night in a thousand years, how would men\nbelieve and adore.\" -Ralph Waldo Emerson, writer and philosopher\n(1803-1882)\n\n\n\n------------------------------\n\nMessage: 2\nDate: Mon, 28 Jul 2008 22:21:55 +1000\nFrom: Ken Beath <kjbeath at kagi.com>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: MHH Stevens <HStevens at muohio.edu>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n??? Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <68CB3A51-FA7C-4758-AE35-2DC68C077E8B at kagi.com>\nContent-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes\n\nOn 28/07/2008, at 9:04 PM, M Henry H Stevens wrote:\n\n> Thanks Ken. I have been assuming that they meant missing covariates (a\n> subject provided most of the predictors, but not all). So I take it? \n> that\n> SAS does no imputation on its own-that the user would need to do that\n> (if they wanted?). lme does not do anything like that.\n>\n\nYes, neither SAS or R or most programs handle missing covariates? \nautomatically. The only program I know is MPlus which is a general? \nlatent variable modelling program. I turned off the missing data? \nhandling as for one model it resulted in an 11 dimensional integration.\n\nKen\n\n> Hank\n>\n> On Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n>> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n>>\n>>> Hi folks,\n>>> I have colleagues who comfortably state that \"missing data\" are ok? \n>>> in\n>>> \"mixed models\" - because \"the program (PROC MIXED) handles missing\n>>> data\n>>> -- I have a hard time imagining what it does.\n>>>\n>>> To those of you who use both R and SAS, I was wondering if you might\n>>> share insight into what these do.\n>>>\n>>> As far as I know, for lme:\n>>> 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n>>> missing\n>>> data.\n>>>\n>>\n>> This depends. If the missing data is the dependent and it is missing\n>> at random then as mixed models are fitted using maximum likelihood it\n>> will produce results that are optimal. Roughly (there are some really\n>> technical definitions for missing data and I haven't checked them) if\n>> we don't know the outcome and the reason it is missing isn't due to\n>> its value or the other data then we can simply leave it out of the\n>> likelihood equation it as it has no useful information. A problem is\n>> when data being missing provides this sort of information and is very\n>> difficult to model. An example is if observations above a certain\n>> value are more likely to be missing.\n>>\n>> An alternative method of dealing with repeated data is to produce a\n>> summary for each subject or cluster, for example by averaging the? \n>> last\n>> three visits. This doesn't correctly handle missing data although the\n>> loss in efficiency is usually small and it can work well, provided\n>> only a small proportion is missing.\n>>\n>> What R and SAS don't deal with directly is missing data in the\n>> covariates. This takes a bit more work, for example using multiple\n>> imputation. Here the complete case method where an observation with\n>> any missing data is removed will result in a loss of efficiency\n>> compared to what can be achieved.\n>>\n>> Ken\n> -- \n>\n> Dr. Hank Stevens, Associate Professor\n> 338 Pearson Hall\n> Botany Department\n> Miami University\n> Oxford, OH 45056\n>\n> Office: (513) 529-4206\n> Lab: (513) 529-4262\n> FAX: (513) 529-4243\n> http://www.cas.muohio.edu/~stevenmh/\n> http://www.cas.muohio.edu/ecology\n> http://www.muohio.edu/botany/\n>\n> \"If the stars should appear one night in a thousand years, how would? \n> men\n> believe and adore.\" -Ralph Waldo Emerson, writer and philosopher\n> (1803-1882)\n>\n>\n>\n>\n>\n\n\n\n------------------------------\n\nMessage: 3\nDate: Mon, 28 Jul 2008 09:05:32 -0400\nFrom: \"Doran, Harold\" <HDoran at air.org>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: \"Ken Beath\" <kjbeath at kagi.com>, \"MHH Stevens\"\n??? <HStevens at muohio.edu>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n??? Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <ED7B522EE00C9A4FA515AA71724D61EEB86738 at DC1EXCL01.air.org>\nContent-Type: text/plain;??? charset=\"us-ascii\"\n\nKen,\n\nDoes M-Plus actually impute values for the missing cells in the model\nmatrix for the fixed effects? Is this a default behavior of m-plus, or\ndoes one need to be cognizant of this and implement a particular\nimputation strategy?\n\nIn general, this kind of question comes up all the time on the\nmultilevel listserv. There are constant suggestions that many of the\nmultilevel software packages automagically \"handle\" missing data because\nthey use \"maximum likelihood\". \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf \n> Of Ken Beath\n> Sent: Monday, July 28, 2008 8:22 AM\n> To: MHH Stevens\n> Cc: R Mixed Models; Stevens,Martin Henry H. Dr.\n> Subject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\n> \n> On 28/07/2008, at 9:04 PM, M Henry H Stevens wrote:\n> \n> > Thanks Ken. I have been assuming that they meant missing \n> covariates (a \n> > subject provided most of the predictors, but not all). So I take it \n> > that SAS does no imputation on its own-that the user would \n> need to do \n> > that (if they wanted?). lme does not do anything like that.\n> >\n> \n> Yes, neither SAS or R or most programs handle missing covariates? \n> automatically. The only program I know is MPlus which is a general? \n> latent variable modelling program. I turned off the missing data? \n> handling as for one model it resulted in an 11 dimensional \n> integration.\n> \n> Ken\n> \n> > Hank\n> >\n> > On Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n> >> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n> >>\n> >>> Hi folks,\n> >>> I have colleagues who comfortably state that \"missing \n> data\" are ok? \n> >>> in\n> >>> \"mixed models\" - because \"the program (PROC MIXED) handles missing\n> >>> data\n> >>> -- I have a hard time imagining what it does.\n> >>>\n> >>> To those of you who use both R and SAS, I was wondering \n> if you might\n> >>> share insight into what these do.\n> >>>\n> >>> As far as I know, for lme:\n> >>> 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n> >>> missing\n> >>> data.\n> >>>\n> >>\n> >> This depends. If the missing data is the dependent and it \n> is missing\n> >> at random then as mixed models are fitted using maximum \n> likelihood it\n> >> will produce results that are optimal. Roughly (there are \n> some really\n> >> technical definitions for missing data and I haven't \n> checked them) if\n> >> we don't know the outcome and the reason it is missing isn't due to\n> >> its value or the other data then we can simply leave it out of the\n> >> likelihood equation it as it has no useful information. A \n> problem is\n> >> when data being missing provides this sort of information \n> and is very\n> >> difficult to model. An example is if observations above a certain\n> >> value are more likely to be missing.\n> >>\n> >> An alternative method of dealing with repeated data is to produce a\n> >> summary for each subject or cluster, for example by averaging the? \n> >> last\n> >> three visits. This doesn't correctly handle missing data \n> although the\n> >> loss in efficiency is usually small and it can work well, provided\n> >> only a small proportion is missing.\n> >>\n> >> What R and SAS don't deal with directly is missing data in the\n> >> covariates. This takes a bit more work, for example using multiple\n> >> imputation. Here the complete case method where an observation with\n> >> any missing data is removed will result in a loss of efficiency\n> >> compared to what can be achieved.\n> >>\n> >> Ken\n> > -- \n> >\n> > Dr. Hank Stevens, Associate Professor\n> > 338 Pearson Hall\n> > Botany Department\n> > Miami University\n> > Oxford, OH 45056\n> >\n> > Office: (513) 529-4206\n> > Lab: (513) 529-4262\n> > FAX: (513) 529-4243\n> > http://www.cas.muohio.edu/~stevenmh/\n> > http://www.cas.muohio.edu/ecology\n> > http://www.muohio.edu/botany/\n> >\n> > \"If the stars should appear one night in a thousand years, \n> how would? \n> > men\n> > believe and adore.\" -Ralph Waldo Emerson, writer and philosopher\n> > (1803-1882)\n> >\n> >\n> >\n> >\n> >\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n\n\n------------------------------\n\n_______________________________________________\nR-sig-mixed-models mailing list\nR-sig-mixed-models at r-project.org\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\nEnd of R-sig-mixed-models Digest, Vol 19, Issue 23\n**************************************************\n\n\n\n      __________________________________________________________\nNot happy with your email address?.\nGet the one you really want - millions of new email addresses available now at Yahoo! http://uk.docs.yahoo.com/ymail/new.html",
-      "body_snippet": "Dear friends, \nI am not sure that this is the right place?to ask,? but please feel?free to suggest an alternative discussion group.\nMy question is that I?want to do a comparative study in order to com",
+      "body_plain": "Dear friends, \nI am not sure that this is the right place to ask,  but please feel free to suggest an alternative discussion group.\nMy question is that I want to do a comparative study in order to compare the rate of incidence in two populations. I know that a pilot study was conducted a few weeks ago and found 8/140 (around 6%) incidence in population A. Population B was not sampled. Assuming this is (about) the right proportion in the Population A what is the sample size I need for population A and B in the main study, in order to have power of 80% to idenitfy significant differences? I would expect the incidence in population B to be around 10% compared to the 6% of the Population A.\nAny suggestions?\nJason\nDr. Iasonas Lamprianou\nDepartment of Education\nThe University of Manchester\nOxford Road, Manchester M13 9PL, UK\nTel. 0044 161 275 3485\niasonas.lamprianou at manchester.ac.uk\n\n\n\n----- Original Message ----\nFrom: \"r-sig-mixed-models-request at r-project.org\" <r-sig-mixed-models-request at r-project.org>\nTo: r-sig-mixed-models at r-project.org\nSent: Tuesday, 29 July, 2008 1:00:01 PM\nSubject: R-sig-mixed-models Digest, Vol 19, Issue 23\n\nSend R-sig-mixed-models mailing list submissions to\n    r-sig-mixed-models at r-project.org\n\nTo subscribe or unsubscribe via the World Wide Web, visit\n    https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\nor, via email, send a message with subject or body 'help' to\n    r-sig-mixed-models-request at r-project.org\n\nYou can reach the person managing the list at\n    r-sig-mixed-models-owner at r-project.org\n\nWhen replying, please edit your Subject line so it is more specific\nthan \"Re: Contents of R-sig-mixed-models digest...\"\n\n\nToday's Topics:\n\n  1. Re: missing data in lme, lmer, PROC MIXED (M Henry H Stevens)\n  2. Re: missing data in lme, lmer, PROC MIXED (Ken Beath)\n  3. Re: missing data in lme, lmer, PROC MIXED (Doran, Harold)\n\n\n----------------------------------------------------------------------\n\nMessage: 1\nDate: Mon, 28 Jul 2008 07:04:19 -0400\nFrom: M Henry H Stevens <HStevens at muohio.edu>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: Ken Beath <kjbeath at kagi.com>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n    Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <1217243059.5947.33.camel at stevenmh-desktop>\nContent-Type: text/plain; charset=UTF-8\n\nThanks Ken. I have been assuming that they meant missing covariates (a\nsubject provided most of the predictors, but not all). So I take it that\nSAS does no imputation on its own-that the user would need to do that\n(if they wanted?). lme does not do anything like that.\n\nHank\n\nOn Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n> \n> > Hi folks,\n> > I have colleagues who comfortably state that \"missing data\" are ok in\n> > \"mixed models\" - because \"the program (PROC MIXED) handles missing\n> > data\n> > -- I have a hard time imagining what it does.\n> >\n> > To those of you who use both R and SAS, I was wondering if you might\n> > share insight into what these do.\n> >\n> > As far as I know, for lme:\n> > 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n> > missing\n> > data.\n> >\n> \n> This depends. If the missing data is the dependent and it is missing\n> at random then as mixed models are fitted using maximum likelihood it\n> will produce results that are optimal. Roughly (there are some really\n> technical definitions for missing data and I haven't checked them) if\n> we don't know the outcome and the reason it is missing isn't due to\n> its value or the other data then we can simply leave it out of the\n> likelihood equation it as it has no useful information. A problem is\n> when data being missing provides this sort of information and is very\n> difficult to model. An example is if observations above a certain\n> value are more likely to be missing.\n> \n> An alternative method of dealing with repeated data is to produce a\n> summary for each subject or cluster, for example by averaging the last\n> three visits. This doesn't correctly handle missing data although the\n> loss in efficiency is usually small and it can work well, provided\n> only a small proportion is missing.\n> \n> What R and SAS don't deal with directly is missing data in the\n> covariates. This takes a bit more work, for example using multiple\n> imputation. Here the complete case method where an observation with\n> any missing data is removed will result in a loss of efficiency\n> compared to what can be achieved.\n> \n> Ken\n-- \n?\nDr. Hank Stevens, Associate Professor\n338 Pearson Hall\nBotany Department\nMiami University\nOxford, OH 45056\n\nOffice: (513) 529-4206\nLab: (513) 529-4262\nFAX: (513) 529-4243\nhttp://www.cas.muohio.edu/~stevenmh/\nhttp://www.cas.muohio.edu/ecology\nhttp://www.muohio.edu/botany/\n\n\"If the stars should appear one night in a thousand years, how would men\nbelieve and adore.\" -Ralph Waldo Emerson, writer and philosopher\n(1803-1882)\n\n\n\n------------------------------\n\nMessage: 2\nDate: Mon, 28 Jul 2008 22:21:55 +1000\nFrom: Ken Beath <kjbeath at kagi.com>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: MHH Stevens <HStevens at muohio.edu>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n    Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <68CB3A51-FA7C-4758-AE35-2DC68C077E8B at kagi.com>\nContent-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes\n\nOn 28/07/2008, at 9:04 PM, M Henry H Stevens wrote:\n\n> Thanks Ken. I have been assuming that they meant missing covariates (a\n> subject provided most of the predictors, but not all). So I take it  \n> that\n> SAS does no imputation on its own-that the user would need to do that\n> (if they wanted?). lme does not do anything like that.\n>\n\nYes, neither SAS or R or most programs handle missing covariates  \nautomatically. The only program I know is MPlus which is a general  \nlatent variable modelling program. I turned off the missing data  \nhandling as for one model it resulted in an 11 dimensional integration.\n\nKen\n\n> Hank\n>\n> On Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n>> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n>>\n>>> Hi folks,\n>>> I have colleagues who comfortably state that \"missing data\" are ok  \n>>> in\n>>> \"mixed models\" - because \"the program (PROC MIXED) handles missing\n>>> data\n>>> -- I have a hard time imagining what it does.\n>>>\n>>> To those of you who use both R and SAS, I was wondering if you might\n>>> share insight into what these do.\n>>>\n>>> As far as I know, for lme:\n>>> 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n>>> missing\n>>> data.\n>>>\n>>\n>> This depends. If the missing data is the dependent and it is missing\n>> at random then as mixed models are fitted using maximum likelihood it\n>> will produce results that are optimal. Roughly (there are some really\n>> technical definitions for missing data and I haven't checked them) if\n>> we don't know the outcome and the reason it is missing isn't due to\n>> its value or the other data then we can simply leave it out of the\n>> likelihood equation it as it has no useful information. A problem is\n>> when data being missing provides this sort of information and is very\n>> difficult to model. An example is if observations above a certain\n>> value are more likely to be missing.\n>>\n>> An alternative method of dealing with repeated data is to produce a\n>> summary for each subject or cluster, for example by averaging the  \n>> last\n>> three visits. This doesn't correctly handle missing data although the\n>> loss in efficiency is usually small and it can work well, provided\n>> only a small proportion is missing.\n>>\n>> What R and SAS don't deal with directly is missing data in the\n>> covariates. This takes a bit more work, for example using multiple\n>> imputation. Here the complete case method where an observation with\n>> any missing data is removed will result in a loss of efficiency\n>> compared to what can be achieved.\n>>\n>> Ken\n> -- \n>\n> Dr. Hank Stevens, Associate Professor\n> 338 Pearson Hall\n> Botany Department\n> Miami University\n> Oxford, OH 45056\n>\n> Office: (513) 529-4206\n> Lab: (513) 529-4262\n> FAX: (513) 529-4243\n> http://www.cas.muohio.edu/~stevenmh/\n> http://www.cas.muohio.edu/ecology\n> http://www.muohio.edu/botany/\n>\n> \"If the stars should appear one night in a thousand years, how would  \n> men\n> believe and adore.\" -Ralph Waldo Emerson, writer and philosopher\n> (1803-1882)\n>\n>\n>\n>\n>\n\n\n\n------------------------------\n\nMessage: 3\nDate: Mon, 28 Jul 2008 09:05:32 -0400\nFrom: \"Doran, Harold\" <HDoran at air.org>\nSubject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\nTo: \"Ken Beath\" <kjbeath at kagi.com>, \"MHH Stevens\"\n    <HStevens at muohio.edu>\nCc: R Mixed Models <r-sig-mixed-models at r-project.org>, \"Stevens,\n    Martin Henry H. Dr.\" <stevenmh at muohio.edu>\nMessage-ID: <ED7B522EE00C9A4FA515AA71724D61EEB86738 at DC1EXCL01.air.org>\nContent-Type: text/plain;    charset=\"us-ascii\"\n\nKen,\n\nDoes M-Plus actually impute values for the missing cells in the model\nmatrix for the fixed effects? Is this a default behavior of m-plus, or\ndoes one need to be cognizant of this and implement a particular\nimputation strategy?\n\nIn general, this kind of question comes up all the time on the\nmultilevel listserv. There are constant suggestions that many of the\nmultilevel software packages automagically \"handle\" missing data because\nthey use \"maximum likelihood\". \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] On Behalf \n> Of Ken Beath\n> Sent: Monday, July 28, 2008 8:22 AM\n> To: MHH Stevens\n> Cc: R Mixed Models; Stevens,Martin Henry H. Dr.\n> Subject: Re: [R-sig-ME] missing data in lme, lmer, PROC MIXED\n> \n> On 28/07/2008, at 9:04 PM, M Henry H Stevens wrote:\n> \n> > Thanks Ken. I have been assuming that they meant missing \n> covariates (a \n> > subject provided most of the predictors, but not all). So I take it \n> > that SAS does no imputation on its own-that the user would \n> need to do \n> > that (if they wanted?). lme does not do anything like that.\n> >\n> \n> Yes, neither SAS or R or most programs handle missing covariates  \n> automatically. The only program I know is MPlus which is a general  \n> latent variable modelling program. I turned off the missing data  \n> handling as for one model it resulted in an 11 dimensional \n> integration.\n> \n> Ken\n> \n> > Hank\n> >\n> > On Sat, 2008-07-26 at 22:39 -0400, Ken Beath wrote:\n> >> On 26/07/2008, at 7:28 AM, M Henry H Stevens wrote:\n> >>\n> >>> Hi folks,\n> >>> I have colleagues who comfortably state that \"missing \n> data\" are ok  \n> >>> in\n> >>> \"mixed models\" - because \"the program (PROC MIXED) handles missing\n> >>> data\n> >>> -- I have a hard time imagining what it does.\n> >>>\n> >>> To those of you who use both R and SAS, I was wondering \n> if you might\n> >>> share insight into what these do.\n> >>>\n> >>> As far as I know, for lme:\n> >>> 'na.action=\"na.omit\" ' or na.exclude, removes the rows with any\n> >>> missing\n> >>> data.\n> >>>\n> >>\n> >> This depends. If the missing data is the dependent and it \n> is missing\n> >> at random then as mixed models are fitted using maximum \n> likelihood it\n> >> will produce results that are optimal. Roughly (there are \n> some really\n> >> technical definitions for missing data and I haven't \n> checked them) if\n> >> we don't know the outcome and the reason it is missing isn't due to\n> >> its value or the other data then we can simply leave it out of the\n> >> likelihood equation it as it has no useful information. A \n> problem is\n> >> when data being missing provides this sort of information \n> and is very\n> >> difficult to model. An example is if observations above a certain\n> >> value are more likely to be missing.\n> >>\n> >> An alternative method of dealing with repeated data is to produce a\n> >> summary for each subject or cluster, for example by averaging the  \n> >> last\n> >> three visits. This doesn't correctly handle missing data \n> although the\n> >> loss in efficiency is usually small and it can work well, provided\n> >> only a small proportion is missing.\n> >>\n> >> What R and SAS don't deal with directly is missing data in the\n> >> covariates. This takes a bit more work, for example using multiple\n> >> imputation. Here the complete case method where an observation with\n> >> any missing data is removed will result in a loss of efficiency\n> >> compared to what can be achieved.\n> >>\n> >> Ken\n> > -- \n> >\n> > Dr. Hank Stevens, Associate Professor\n> > 338 Pearson Hall\n> > Botany Department\n> > Miami University\n> > Oxford, OH 45056\n> >\n> > Office: (513) 529-4206\n> > Lab: (513) 529-4262\n> > FAX: (513) 529-4243\n> > http://www.cas.muohio.edu/~stevenmh/\n> > http://www.cas.muohio.edu/ecology\n> > http://www.muohio.edu/botany/\n> >\n> > \"If the stars should appear one night in a thousand years, \n> how would  \n> > men\n> > believe and adore.\" -Ralph Waldo Emerson, writer and philosopher\n> > (1803-1882)\n> >\n> >\n> >\n> >\n> >\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n> \n\n\n\n------------------------------\n\n_______________________________________________\nR-sig-mixed-models mailing list\nR-sig-mixed-models at r-project.org\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n\nEnd of R-sig-mixed-models Digest, Vol 19, Issue 23\n**************************************************\n\n\n\n      __________________________________________________________\nNot happy with your email address?.\nGet the one you really want - millions of new email addresses available now at Yahoo! http://uk.docs.yahoo.com/ymail/new.html",
+      "body_snippet": "Dear friends, \nI am not sure that this is the right place to ask,  but please feel free to suggest an alternative discussion group.\nMy question is that I want to do a comparative study in order to com",
       "thread_id": "thread-c16409f0b7b8",
       "thread_depth": 0,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001201.html"
     },
     {
       "id": "msg-5fe0a2d90f7b",
@@ -1552,7 +1635,8 @@
       "body_snippet": "On 31/07/2008, at 2:46 PM, Iasonas Lamprianou wrote:\n\n> Dear friends,\n> I am not sure that this is the right place to ask,  but please feel  \n> free to suggest an alternative discussion group.\n> My qu",
       "thread_id": "thread-c16409f0b7b8",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001202.html"
     },
     {
       "id": "msg-328bb51031c8",
@@ -1570,7 +1654,8 @@
       "body_snippet": "Rick Bilonick <rab at ...> writes:\n\n> \n> Is there an mixed effects R package that can be used to model ordinal\n> data?\n> \n\nHint: take a look at the help page for lmer i.e. type\n\n?lmer\n\nand read about ",
       "thread_id": "thread-16837df62537",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001203.html"
     },
     {
       "id": "msg-9628426b949f",
@@ -1588,7 +1673,8 @@
       "body_snippet": "Byju Govindan <byjung at ...> writes:\n\n> \n> Dear R users,\n> \n>  Is gmmlAMDB the only option available to do mixed effect modelling for zero\n> inflated count data in R. Or does there exist any other op",
       "thread_id": "thread-54195a52a8e1",
       "thread_depth": 1,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001204.html"
     },
     {
       "id": "msg-a1e6c3b34537",
@@ -1604,7 +1690,8 @@
       "body_snippet": "But, just in case it's not obvious, the current link functions for lmer\ndon't support ordinal data. \n\n> -----Original Message-----\n> From: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-",
       "thread_id": "thread-16837df62537",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001205.html"
     },
     {
       "id": "msg-13c7e74e4509",
@@ -1623,7 +1710,8 @@
       "body_snippet": "On Thu, 2008-07-31 at 08:32 +0000, Gregor Gorjanc wrote:\n> Rick Bilonick <rab at ...> writes:\n> \n> > \n> > Is there an mixed effects R package that can be used to model ordinal\n> > data?\n> > \n> \n> Hint",
       "thread_id": "thread-16837df62537",
       "thread_depth": 2,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001206.html"
     },
     {
       "id": "msg-1471afc40659",
@@ -1641,7 +1729,8 @@
       "body_snippet": "On Thu, 2008-07-31 at 08:27 -0400, Doran, Harold wrote:\n> But, just in case it's not obvious, the current link functions for lmer\n> don't support ordinal data. \n> \n> > -----Original Message-----\n> > F",
       "thread_id": "thread-16837df62537",
       "thread_depth": 3,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001207.html"
     },
     {
       "id": "msg-e1a7ad7791a0",
@@ -1660,7 +1749,8 @@
       "body_snippet": "Oh! You are right. I do not know how did I saw \"counts\" in there, which\ncould be fitted via Poisson link.\n\ngg\n________________________________________\nFrom: Doran, Harold [HDoran at air.org]\nSent: Thu",
       "thread_id": "thread-16837df62537",
       "thread_depth": 3,
-      "month": "2008-07"
+      "month": "2008-07",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2008q3/001208.html"
     }
   ],
   "threads": [

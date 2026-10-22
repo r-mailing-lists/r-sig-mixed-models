@@ -212,11 +212,12 @@
       "subject_clean": "Problems in using GEEs",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear list\n\nI?m puzzled with running GEEs with a small dataset. I use R 2.11.1\nMy data (a subset given below- ?muskerbis?) are seasonal abundances of  \ntwo small vertebrate populations on two distinct sites (gui and coc)  \ndiffering by habitat quality (for the animals) and collected over 10  \nyears (1999-2010, except 2 years ? 2004 and 2006) that I want to  \ncorrelate with climatic variables. I suspect a serial correlation, and  \ntried running a GLS with a corAR1 structure within the ?ile? group,  \nbut even with ranking the dependent variable (absmay ? summer animal  \nabundances), i didn?t reached good distribution in residuals and  \nhomoskedasticity. The best I could get was using a GLM neg.bin  \napproach ? but couldn?t include an AR1. I therefore tried GEEs poisson  \nwith rounded square rooted dependent variable and ?ile? as cluster  \nusing yags, geepack, and gee packages. The results are below:\n\n> print(muskerbis)\nenr\tyr\tile\tabsmay\tabssep\tps\n1\t1999\tbgui\t288\t89\t200.8\n2\t2000\tbgui\t157\t1\t133.6\n3\t2001\tbgui\t186\t34\t145.4\n4\t2002\tbgui\t102\t9\t83.4\n5\t2003\tbgui\t27\t7\t134.2\n6\t2005\tbgui\t52\t6\t129.2\n7\t2007\tbgui\t75\t6\t113.8\n8\t2008\tbgui\t272\t19\t254.6\n9\t2009\tbgui\t55\t16\t111.8\n10\t2010\tbgui\t104\t7\t171\n11\t1999\tacoc\t361\t83\t200.8\n12\t2000\tacoc\t173\t117\t133.6\n13\t2001\tacoc\t187\t29\t145.4\n14\t2002\tacoc\t292\t48\t83.4\n15\t2003\tacoc\t382\t34\t134.2\n16\t2005\tacoc\t313\t138\t129.2\n17\t2007\tacoc\t202\t3\t113.8\n18\t2008\tacoc\t312\t14\t254.6\n19\t2009\tacoc\t239\t4\t111.8\n20\t2010\tacoc\t211\t58\t171\n\ncile=as.factor(ile)\t##transform ? ile ? as a factor\n\nUsing GEEPACK:\nguicocgeeglmsumps1=geeglm(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"ar1\", id=cile, family=poisson(link = \"log\"),\nna.action=na.omit, data=muskerbis)\nsummary(guicocgeeglmsumps1)\nCall:\ngeeglm(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     family = poisson(link = \"log\"), data = muskerbis, na.action = na.omit,\n     id = cile, corstr = \"ar1\")\nCoefficients:\n              Estimate   Std.err Wald Pr(>|W|)\n(Intercept)  2.621597  0.000000  Inf   <2e-16 ***\ncilebgui    -1.002342  0.000000  Inf   <2e-16 ***\nps           0.000935  0.000000  Inf   <2e-16 ***\ncilebgui:ps  0.003796  0.000000  Inf   <2e-16 ***\n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\nEstimated Scale Parameters:\n             Estimate Std.err\n(Intercept)    0.457   0.171\nCorrelation: Structure = ar1  Link = identity\nEstimated Correlation Parameters:\n       Estimate Std.err\nalpha    0.235   0.093\nNumber of clusters:   2   Maximum cluster size: 10\n\nUsing YAGS:\nguicocyagssumtps1<-yags(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"ar1\", cor.met=rank(yr), id=cile, family=poisson,\ndata=muskerbis, alphainit=0.)\nguicocyagssumtps1\nYAGS (yet another GEE solver) $Date: 2004/10/22 18:49:23 $\nCall:\nyags(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     id = cile, cor.met = rank(yr), family = poisson, corstruct = \"ar1\",\n     alphainit = 0, data = muskerbis)\nRegression estimates:\n                 est. naive s.e. naive z sand. s.e. sand. z\n(Intercept)  2.60549    0.17431   14.95   1.90e-06 1369761\ncilebgui    -0.97181    0.28518   -3.41   4.45e-06 -218230\nps           0.00104    0.00095    1.10   1.28e-08   81387\ncilebgui:ps  0.00362    0.00146    2.47   2.36e-08  153630\nWorking correlation model: ar1\nalpha est: 0.654\nNULL\nPan QIC(R): -3365.819\nQLS: 38.87\nRotnitzky-Jewell: 0, 0\nyags/R: $Id: yags.R,v 1.5 2004/10/22 18:49:23 stvjc Exp $\n\nUsing GEE\nguicocgeesumps1<-gee(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"AR-M\", Mv=1, id=cile, family=poisson(link = \"log\"),\nna.action=na.omit, data=muskerbis)\nsummary(guicocgeesumps1)\nGEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA\n  gee S-function, version 4.13 modified 98/01/27 (1998)\nModel:\n  Link:                      Logarithm\n  Variance to Mean Relation: Poisson\n  Correlation Structure:     AR-M , M = 1\nCall:\ngee(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     id = cile, data = muskerbis, na.action = na.omit, family =  \npoisson(link = \"log\"),\n     corstr = \"AR-M\", Mv = 1)\nSummary of Residuals:\n    Min     1Q Median     3Q    Max\n-4.562 -1.750 -0.649  2.364  3.422\nCoefficients:\n             Estimate Naive S.E. Naive z Robust S.E. Robust z\n(Intercept)  2.60935    0.17772   14.68    9.27e-07  2816177\ncilebgui    -0.98027    0.28867   -3.40    2.32e-06  -422088\nps           0.00102    0.00100    1.01    6.49e-09   156718\ncilebgui:ps  0.00367    0.00154    2.38    1.31e-08   279242\nEstimated Scale Parameter:  0.572\nNumber of Iterations:  3\nWorking Correlation\n           [,1]     [,2]     [,3]    [,4]    [,5]    [,6]    [,7]      \n[,8]     [,9]    [,10]\n  [1,] 1.000000 0.369769 0.136729 0.05056 0.01869 0.00691 0.00256  \n0.000945 0.000349 0.000129\n\n\nI believe to have a good design of my model, as geepack ?tells? me I  \nhave 2 clusters with each 10 obs. residuals rather well behave, so for  \nhomoskedasticity (not shown). However, I don?t understand why it does  \nnot produce estimation of the se?s estimates and corresponding Wald  \nstatistics;\nI also do not understand the differences in estimating alpha between  \nall packages: 0.235 with geepack, 0.654 with yags, and 0.370 with gee  \n??? also for the scale parameter given in gee (0.572) and yags (0.457)  \n??\nMoreover, although estimates are reliable between packages, it seems  \nthat na?ve z-values from yags and gee perform better than from  \nrobust-z ???\nFinally, could also someone give me some advice on what to use for  \n?fixed? effects selection ? more specifically how to compute a  \n?working Wald test? or a ?na?ve likelihood ratio test? as proposed by  \non page 135 by Ballinger 2004 (Organizational Research Methods 2004 7:  \n127-150 DOI: 10.1177/1094428104263672) ? as I may have such situation  \nhere (ie fewer covariates than obs per group ?)\n\nMany thanks by advance for helping me (I?m at the limit of my  \nknowledge in maths and informatics ?) and happy new year to everyone\nben",
+      "body_plain": "Dear list\n\nI?m puzzled with running GEEs with a small dataset. I use R 2.11.1\nMy data (a subset given below- ?muskerbis?) are seasonal abundances of  \ntwo small vertebrate populations on two distinct sites (gui and coc)  \ndiffering by habitat quality (for the animals) and collected over 10  \nyears (1999-2010, except 2 years ? 2004 and 2006) that I want to  \ncorrelate with climatic variables. I suspect a serial correlation, and  \ntried running a GLS with a corAR1 structure within the ?ile? group,  \nbut even with ranking the dependent variable (absmay ? summer animal  \nabundances), i didn?t reached good distribution in residuals and  \nhomoskedasticity. The best I could get was using a GLM neg.bin  \napproach ? but couldn?t include an AR1. I therefore tried GEEs poisson  \nwith rounded square rooted dependent variable and ?ile? as cluster  \nusing yags, geepack, and gee packages. The results are below:\n\n> print(muskerbis)\nenr\tyr\tile\tabsmay\tabssep\tps\n1\t1999\tbgui\t288\t89\t200.8\n2\t2000\tbgui\t157\t1\t133.6\n3\t2001\tbgui\t186\t34\t145.4\n4\t2002\tbgui\t102\t9\t83.4\n5\t2003\tbgui\t27\t7\t134.2\n6\t2005\tbgui\t52\t6\t129.2\n7\t2007\tbgui\t75\t6\t113.8\n8\t2008\tbgui\t272\t19\t254.6\n9\t2009\tbgui\t55\t16\t111.8\n10\t2010\tbgui\t104\t7\t171\n11\t1999\tacoc\t361\t83\t200.8\n12\t2000\tacoc\t173\t117\t133.6\n13\t2001\tacoc\t187\t29\t145.4\n14\t2002\tacoc\t292\t48\t83.4\n15\t2003\tacoc\t382\t34\t134.2\n16\t2005\tacoc\t313\t138\t129.2\n17\t2007\tacoc\t202\t3\t113.8\n18\t2008\tacoc\t312\t14\t254.6\n19\t2009\tacoc\t239\t4\t111.8\n20\t2010\tacoc\t211\t58\t171\n\ncile=as.factor(ile)\t##transform « ile » as a factor\n\nUsing GEEPACK:\nguicocgeeglmsumps1=geeglm(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"ar1\", id=cile, family=poisson(link = \"log\"),\nna.action=na.omit, data=muskerbis)\nsummary(guicocgeeglmsumps1)\nCall:\ngeeglm(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     family = poisson(link = \"log\"), data = muskerbis, na.action = na.omit,\n     id = cile, corstr = \"ar1\")\nCoefficients:\n              Estimate   Std.err Wald Pr(>|W|)\n(Intercept)  2.621597  0.000000  Inf   <2e-16 ***\ncilebgui    -1.002342  0.000000  Inf   <2e-16 ***\nps           0.000935  0.000000  Inf   <2e-16 ***\ncilebgui:ps  0.003796  0.000000  Inf   <2e-16 ***\n---\nSignif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\nEstimated Scale Parameters:\n             Estimate Std.err\n(Intercept)    0.457   0.171\nCorrelation: Structure = ar1  Link = identity\nEstimated Correlation Parameters:\n       Estimate Std.err\nalpha    0.235   0.093\nNumber of clusters:   2   Maximum cluster size: 10\n\nUsing YAGS:\nguicocyagssumtps1<-yags(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"ar1\", cor.met=rank(yr), id=cile, family=poisson,\ndata=muskerbis, alphainit=0.)\nguicocyagssumtps1\nYAGS (yet another GEE solver) $Date: 2004/10/22 18:49:23 $\nCall:\nyags(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     id = cile, cor.met = rank(yr), family = poisson, corstruct = \"ar1\",\n     alphainit = 0, data = muskerbis)\nRegression estimates:\n                 est. naive s.e. naive z sand. s.e. sand. z\n(Intercept)  2.60549    0.17431   14.95   1.90e-06 1369761\ncilebgui    -0.97181    0.28518   -3.41   4.45e-06 -218230\nps           0.00104    0.00095    1.10   1.28e-08   81387\ncilebgui:ps  0.00362    0.00146    2.47   2.36e-08  153630\nWorking correlation model: ar1\nalpha est: 0.654\nNULL\nPan QIC(R): -3365.819\nQLS: 38.87\nRotnitzky-Jewell: 0, 0\nyags/R: $Id: yags.R,v 1.5 2004/10/22 18:49:23 stvjc Exp $\n\nUsing GEE\nguicocgeesumps1<-gee(as.integer(sqrt(absmay))~cile+ps+cile:ps,  \ncorstr=\"AR-M\", Mv=1, id=cile, family=poisson(link = \"log\"),\nna.action=na.omit, data=muskerbis)\nsummary(guicocgeesumps1)\nGEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA\n  gee S-function, version 4.13 modified 98/01/27 (1998)\nModel:\n  Link:                      Logarithm\n  Variance to Mean Relation: Poisson\n  Correlation Structure:     AR-M , M = 1\nCall:\ngee(formula = as.integer(sqrt(absmay)) ~ cile + ps + cile:ps,\n     id = cile, data = muskerbis, na.action = na.omit, family =  \npoisson(link = \"log\"),\n     corstr = \"AR-M\", Mv = 1)\nSummary of Residuals:\n    Min     1Q Median     3Q    Max\n-4.562 -1.750 -0.649  2.364  3.422\nCoefficients:\n             Estimate Naive S.E. Naive z Robust S.E. Robust z\n(Intercept)  2.60935    0.17772   14.68    9.27e-07  2816177\ncilebgui    -0.98027    0.28867   -3.40    2.32e-06  -422088\nps           0.00102    0.00100    1.01    6.49e-09   156718\ncilebgui:ps  0.00367    0.00154    2.38    1.31e-08   279242\nEstimated Scale Parameter:  0.572\nNumber of Iterations:  3\nWorking Correlation\n           [,1]     [,2]     [,3]    [,4]    [,5]    [,6]    [,7]      \n[,8]     [,9]    [,10]\n  [1,] 1.000000 0.369769 0.136729 0.05056 0.01869 0.00691 0.00256  \n0.000945 0.000349 0.000129\n\n\nI believe to have a good design of my model, as geepack ?tells? me I  \nhave 2 clusters with each 10 obs. residuals rather well behave, so for  \nhomoskedasticity (not shown). However, I don?t understand why it does  \nnot produce estimation of the se?s estimates and corresponding Wald  \nstatistics;\nI also do not understand the differences in estimating alpha between  \nall packages: 0.235 with geepack, 0.654 with yags, and 0.370 with gee  \n??? also for the scale parameter given in gee (0.572) and yags (0.457)  \n??\nMoreover, although estimates are reliable between packages, it seems  \nthat naïve z-values from yags and gee perform better than from  \nrobust-z ???\nFinally, could also someone give me some advice on what to use for  \n?fixed? effects selection ? more specifically how to compute a  \n?working Wald test? or a ?naïve likelihood ratio test? as proposed by  \non page 135 by Ballinger 2004 (Organizational Research Methods 2004 7:  \n127-150 DOI: 10.1177/1094428104263672) ? as I may have such situation  \nhere (ie fewer covariates than obs per group ?)\n\nMany thanks by advance for helping me (I?m at the limit of my  \nknowledge in maths and informatics ?) and happy new year to everyone\nben",
       "body_snippet": "Dear list\n\nI?m puzzled with running GEEs with a small dataset. I use R 2.11.1\nMy data (a subset given below- ?muskerbis?) are seasonal abundances of  \ntwo small vertebrate populations on two distinct ",
       "thread_id": "thread-cfabe031c6ec",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014579.html"
     },
     {
       "id": "msg-278e84db9ca5",
@@ -233,6 +234,7 @@
       "thread_id": "thread-278e84db9ca5",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014580.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120104/6ca31548/attachment-0001.pl"
       ]
@@ -252,6 +254,7 @@
       "thread_id": "thread-6ded2535aa08",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014581.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120104/7cc303fb/attachment-0001.pl"
       ]
@@ -268,11 +271,12 @@
       "references": [
         "<CAPv6FHhxLpr7MtP2rQsO67r38mn=Xi7fWjHTi2Si2SFWM7kosg@mail.gmail.com>"
       ],
-      "body_plain": "Hi Kevin,\n\nIn the pbkrtest package there is function PBmodcomp for calculating p-values using parametric bootstrap and in the implementation of this function I have also observed the same phenomenon. I guess that what happens is simply that some of the bootstrap samples lead to \"singularities\" somewhere in the estimation algorithms. My solution in PBmodcomp has been to use the suppressWarnings() function...\n\nCheers\nS?ren\n \n\n-----Oprindelig meddelelse-----\nFra: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] P? vegne af Kevin Spring\nSendt: 5. januar 2012 00:22\nTil: r-sig-mixed-models at r-project.org\nEmne: [R-sig-ME] bootstrap variance component in a mixed linear model\n\nHi, everyone.  I don't know what is going wrong with my bootstrap.  Could anyone help me find out what is wrong?\n\nI am trying to bootstrap the variance component in a mixed linear model.\n\nMy statistic for the bootstrap is the following:\n\nvarcomp <- function ( formula, data, indices ) {\n>     d <- data[indices,] #sample for boot\n>     fit <- lmer(formula, data=d) #linear model\n>     return (attr (VarCorr(fit), \"sc\")^2) #output random effects \n> residual var }\n\n\nThe formula for the model is: log( y ) ~ ( 1 | a:b ) + a, where '*b*' is a\nrandom effect nested within '*a';* which is a fixed effect.\n\nWhen I run the linear model on its own it works fine, but when I try to run\nthe bootstrap I get warning messages of false convergence.\n\nWarning messages:\n> 1: In mer_finalize(ans) : false convergence (8)\n> 2: In mer_finalize(ans) : false convergence (8)\n> 3: In mer_finalize(ans) : false convergence (8)\n> 4: In mer_finalize(ans) : false convergence (8)\n> 5: In mer_finalize(ans) : false convergence (8)\n> 6: In mer_finalize(ans) : false convergence (8)\n\n\nThe example data I used can be downloaded at:\nhttp://www.mediafire.com/?77xb24rmul90k5d\n\nThe R code I actually did:\n\nlibrary(boot)\nlibrary(lme4)\n#\n#Load data\n#\nfp1 <- read.csv(\"desktop/p1f.csv\")\n#Set as factors\nfp1$Cell.line <- as.factor(fp1$Cell.line)\nfp1$DNA.extract <- as.factor(fp1$DNA.extract)\n#test mixed model\nlm1 <- lmer(formula=log(CNPC)~(1|Cell.line:DNA.extract)+Cell.line,data=fp1)\nattr (VarCorr(lm1), \"sc\")\n#\n##Bootstrap statistic\n#\nvarcomp <- function ( formula, data, indices ) {\n    d <- data[indices,] #sample for boot\n    fit <- lmer(formula, data=d) #linear model\n    return (attr (VarCorr(fit), \"sc\")) #output random effects residual\nstandard deviation\n}\n##Bootstrap with 1000 replicates\nfp1.boot <- boot ( data = fp1, statistic=varcomp, R=1000,\nformula=log(CNPC)~(1|Cell.line:DNA.extract)+Cell.line)\n\n\t[[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Hi Kevin,\n\nIn the pbkrtest package there is function PBmodcomp for calculating p-values using parametric bootstrap and in the implementation of this function I have also observed the same phenomenon. I guess that what happens is simply that some of the bootstrap samples lead to \"singularities\" somewhere in the estimation algorithms. My solution in PBmodcomp has been to use the suppressWarnings() function...\n\nCheers\nSøren\n \n\n-----Oprindelig meddelelse-----\nFra: r-sig-mixed-models-bounces at r-project.org [mailto:r-sig-mixed-models-bounces at r-project.org] På vegne af Kevin Spring\nSendt: 5. januar 2012 00:22\nTil: r-sig-mixed-models at r-project.org\nEmne: [R-sig-ME] bootstrap variance component in a mixed linear model\n\nHi, everyone.  I don't know what is going wrong with my bootstrap.  Could anyone help me find out what is wrong?\n\nI am trying to bootstrap the variance component in a mixed linear model.\n\nMy statistic for the bootstrap is the following:\n\nvarcomp <- function ( formula, data, indices ) {\n>     d <- data[indices,] #sample for boot\n>     fit <- lmer(formula, data=d) #linear model\n>     return (attr (VarCorr(fit), \"sc\")^2) #output random effects \n> residual var }\n\n\nThe formula for the model is: log( y ) ~ ( 1 | a:b ) + a, where '*b*' is a\nrandom effect nested within '*a';* which is a fixed effect.\n\nWhen I run the linear model on its own it works fine, but when I try to run\nthe bootstrap I get warning messages of false convergence.\n\nWarning messages:\n> 1: In mer_finalize(ans) : false convergence (8)\n> 2: In mer_finalize(ans) : false convergence (8)\n> 3: In mer_finalize(ans) : false convergence (8)\n> 4: In mer_finalize(ans) : false convergence (8)\n> 5: In mer_finalize(ans) : false convergence (8)\n> 6: In mer_finalize(ans) : false convergence (8)\n\n\nThe example data I used can be downloaded at:\nhttp://www.mediafire.com/?77xb24rmul90k5d\n\nThe R code I actually did:\n\nlibrary(boot)\nlibrary(lme4)\n#\n#Load data\n#\nfp1 <- read.csv(\"desktop/p1f.csv\")\n#Set as factors\nfp1$Cell.line <- as.factor(fp1$Cell.line)\nfp1$DNA.extract <- as.factor(fp1$DNA.extract)\n#test mixed model\nlm1 <- lmer(formula=log(CNPC)~(1|Cell.line:DNA.extract)+Cell.line,data=fp1)\nattr (VarCorr(lm1), \"sc\")\n#\n##Bootstrap statistic\n#\nvarcomp <- function ( formula, data, indices ) {\n    d <- data[indices,] #sample for boot\n    fit <- lmer(formula, data=d) #linear model\n    return (attr (VarCorr(fit), \"sc\")) #output random effects residual\nstandard deviation\n}\n##Bootstrap with 1000 replicates\nfp1.boot <- boot ( data = fp1, statistic=varcomp, R=1000,\nformula=log(CNPC)~(1|Cell.line:DNA.extract)+Cell.line)\n\n\t[[alternative HTML version deleted]]\n\n_______________________________________________\nR-sig-mixed-models at r-project.org mailing list\nhttps://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Hi Kevin,\n\nIn the pbkrtest package there is function PBmodcomp for calculating p-values using parametric bootstrap and in the implementation of this function I have also observed the same phenomenon. ",
       "thread_id": "thread-6ded2535aa08",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017483.html"
     },
     {
       "id": "msg-4c601a4e64d2",
@@ -307,7 +311,8 @@
       "body_snippet": "Dear R users:\nI have a simple lme model based on the following data:\nsub\ttrial\tangle\tRMSy\n1\t1\t30\t3.745084\n1\t2\t0\t7.520667\n1\t3\t90\t11.17038\n1\t4\t15\t7.581526\n1\t5\t60\t11.17822\n1\t6\t75\t8.440891\n1\t7\t45\t13.19024",
       "thread_id": "thread-ae04d5a43f55",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014583.html"
     },
     {
       "id": "msg-667130346888",
@@ -359,7 +364,8 @@
       "body_snippet": "Hi:\n\nIn addition to Dr. Robinson's comments, I would add the following:\n\n(i) Your model specification indicates that you want random slopes for\ntrial by subject with correlated intercepts. Is that wha",
       "thread_id": "thread-ae04d5a43f55",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017482.html"
     },
     {
       "id": "msg-8507f5bc52f4",
@@ -376,8 +382,9 @@
       "thread_id": "thread-8507f5bc52f4",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017484.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/53f952ee/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/53f952ee/attachment-0002.pl"
       ]
     },
     {
@@ -398,7 +405,8 @@
       "body_snippet": "Antonio P. Ramos <ramos.grad.student at ...> writes:\n\n> \n> Thanks for your replies. To complement my own question: would  MCMCglmm do\n> the job?\n\n  I don't think so, because your models all seem to be",
       "thread_id": "thread-d2089ae13477",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017485.html"
     },
     {
       "id": "msg-0389cf049f31",
@@ -415,6 +423,7 @@
       "thread_id": "thread-0389cf049f31",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014590.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/e9a18c65/attachment-0001.pl"
       ]
@@ -436,8 +445,9 @@
       "thread_id": "thread-8507f5bc52f4",
       "thread_depth": 1,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017487.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/64f5b1cd/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/64f5b1cd/attachment-0002.pl"
       ]
     },
     {
@@ -458,8 +468,9 @@
       "thread_id": "thread-8507f5bc52f4",
       "thread_depth": 2,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017488.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/b741879d/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/b741879d/attachment-0002.pl"
       ]
     },
     {
@@ -476,11 +487,12 @@
         "<CABhs0QZ7x0AGBtqJ-QmoCoV=xZPgRd5kSi3nJY=9aCukuwF6=Q@mail.gmail.com>",
         "<CABhs0QYvR4yQ87GhozjDAc5ZW6eXbWEEU+PH4-1WMU1r4pf3jg@mail.gmail.com>"
       ],
-      "body_plain": "Hi again,\n\nyou're right. usually when terms are missing in our output - it means\nthe're not identifiable from our data (e.g. there's not enough\nreplication or specific combinations of factors are missing) - that's\nwhy your'e getting some interactions tested after removing some other\nterms. As for which terms to include - my conservative way of doing\nthings is to include lower terms always when I want to have higher\nterms. What happens when you remove the triple interactions? Also I\nwouldn;t say that interpretation of continous:categorical interactions\n?should be avoided in cases similar to yours: such interactions\nquantify differences in betas at respective levels of the categorical\nvariable and provide useful valuable insight to how your response\nchanges with the covariate. What however should be avoided (or better\nsaid - applied with caution) is drawing conclusions about categorical\nvariables (i.e. A or B in your model) if the're involved in\nsignificant interactions with continous variables (problem similar to\nheterogenous slopes in classical ANCOVA).\n\nCheers,\nsz.\n\nOn 6 January 2012 20:40, Stefanie Kuchinsky\n<stefanie.kuchinsky at gmail.com> wrote:\n>\n> I just realized a probable explanation.\n>\n> For the time3 term for which it only displayed half of the interaction term, the lower order time3:A and time3:B had been included in the model.\n>\n> However, there was no time4:A in the model (though there was time4:B). When I removed this effect, I now get both parts of the interaction term output [and the F test df are now correct (2, 9294) instead of (1, 9294)]. I assume that this means the higher order terms are redundant with the lower order terms in the model.\n>\n> Is it then appropriate to remove the lower order interactions from the model (even though they appear significant when I run anova() and given their betas)? I believe I should not be theoretically interpreting time3:A when there is a time3:A:B interaction, anyway.\n>\n> So, I would interpret the betas for these terms very generally:\n> time3:A1:B0 -- The effect of the cubic polynomial modulated by A (1 > 0) when B is held constant at 0.\n> time3:A1:B1 -- The effect of the cubic polynomial as modulated by A (1>0) when B is held constant at 1.\n>\n> Thanks again for your input-- I wouldn't have thought of this is you hadn't mentioned looking at the lower order terms.\n>\n>\n>\n> On Fri, Jan 6, 2012 at 1:55 PM, Stefanie Kuchinsky <stefanie.kuchinsky at gmail.com> wrote:\n>>\n>> Thanks so much for your response. I had not included some of the output table to save space in the original email, but the model does include the lower order terms. I've pasted the full table at the bottom of this email. The polynomial terms were indeed created with the poly() function.\n>>\n>> You were exactly right about the continuous vs. factor error in my second dataset. I had a typo in my code and so B had never been converted to a factor. I really appreciate you catching that!\n>>\n>> However, I'm still confused about the interpretation of time4:A1:B1-- specifically why there is no beta for time4:A1:B0 when there is both a beta for time3:A1:B1 and time3:A1:B0?\n>>\n>>\n>> Again, snippet of dataset 1 output:\n>>\n>> time3:A1:B1?? -68.6999? 33.14614 9294? -2.07264? 0.0382\n>> time4:A1:B0?? 132.5765? 23.43786 9294?? 5.65651? 0.0000\n>> time4:A1:B1? -124.2845? 23.43786 9294? -5.30272? 0.0000\n>>\n>> Corrected output for dataset 2:\n>> time3:A1:B1?? 135.0679?? 46.2636 9294?? 2.91953? 0.0035\n>> time4:A1:B0??? 80.8813?? 32.7133 9294?? 2.47243? 0.0134\n>> time4:A1:B1? -108.9340?? 32.7133 9294? -3.32996? 0.0009\n>>\n>>\n>> Full table for dataset 1(minus the correlation tables):\n>>\n>> > summary(m.int4e)\n>> Linear mixed-effects model fit by maximum likelihood\n>> ?Data: Data\n>> ?????? AIC????? BIC??? logLik\n>> ? 109842.6 110837.5 -54782.28\n>>\n>> Random effects:\n>> ?Formula: ~time1 | subjAB\n>> ?Structure: General positive-definite, Log-Cholesky parametrization\n>> ??????????? StdDev??? Corr\n>> (Intercept)? 38.33670 (Intr)\n>> time1???????? 434.94747 0.488\n>> Residual???? 75.40533\n>>\n>> Fixed effects: pupil1000 ~ time1 + time2 + time3 + time4 + time5 + subj + subj:time1 + subj:time2 +????? subj:time3 + subj:time4 + subj:time5 + A:time1 + A:time2 + A:time3 +????? A:time5 + B:time3 + B:time4 + A:B:time3 + A:B:time4\n>> ?????????????????????? Value Std.Error?? DF?? t-value p-value\n>> (Intercept)???????? 976.6327? 19.63384 9294? 49.74231? 0.0000\n>> time1???????????????? 891.8779 226.37671 9294?? 3.93980? 0.0001\n>> time2??????????????? -917.0701? 38.86729 9294 -23.59491? 0.0000\n>> time3??????????????? -131.3754? 40.59556 9294? -3.23620? 0.0012\n>> time4???????????????? 459.9003? 40.59556 9294? 11.32883? 0.0000\n>> time5??????????????? -444.2458? 38.86729 9294 -11.42981? 0.0000\n>> subj2??????????????? 47.7965? 27.76645?? 63?? 1.72137? 0.0901\n>> subj3??????????????? 65.4712? 27.76645?? 63?? 2.35793? 0.0215\n>> subj4?????????????? 130.2721? 27.76645?? 63?? 4.69171? 0.0000\n>> subj5??????????????? 57.2987? 27.76645?? 63?? 2.06359? 0.0432\n>> subj6??????????????? 25.6571? 27.76645?? 63?? 0.92403? 0.3590\n>> subj7??????????????? -7.6969? 27.76645?? 63? -0.27720? 0.7825\n>> subj8??????????????? 81.3031? 27.76645?? 63?? 2.92811? 0.0047\n>> subj9??????????????? 15.1726? 27.76645?? 63?? 0.54644? 0.5867\n>> subj10?????????????? 62.5996? 27.76645?? 63?? 2.25450? 0.0276\n>> subj11????????????? -64.4270? 27.76645?? 63? -2.32032? 0.0236\n>> subj12?????????????? 10.0465? 27.76645?? 63?? 0.36182? 0.7187\n>> subj13?????????????? 43.7500? 27.76645?? 63?? 1.57564? 0.1201\n>> subj14?????????????? 26.4845? 27.76645?? 63?? 0.95383? 0.3438\n>> subj15????????????? -46.7323? 27.76645?? 63? -1.68305? 0.0973\n>> subj16????????????? 137.6261? 27.76645?? 63?? 4.95656? 0.0000\n>> subj17?????????????? 14.9735? 27.76645?? 63?? 0.53926? 0.5916\n>> subj18?????????????? 26.3230? 27.76645?? 63?? 0.94802? 0.3467\n>> subj19?????????????? 55.4912? 27.76645?? 63?? 1.99850? 0.0500\n>> subj20?????????????? 98.4027? 27.76645?? 63?? 3.54394? 0.0007\n>> subj21????????????? 162.8186? 27.76645?? 63?? 5.86386? 0.0000\n>> time1:subj2????????? -848.2627 314.38569 9294? -2.69816? 0.0070\n>> time1:subj3????????? -462.8857 314.38569 9294? -1.47235? 0.1410\n>> time1:subj4????????? -286.9459 314.38569 9294? -0.91272? 0.3614\n>> time1:subj5????????? -350.9655 314.38569 9294? -1.11635? 0.2643\n>> time1:subj6???????? -1079.1256 314.38569 9294? -3.43249? 0.0006\n>> time1:subj7????????? -958.1396 314.38569 9294? -3.04766? 0.0023\n>> time1:subj8?????????? 396.6793 314.38569 9294?? 1.26176? 0.2071\n>> time1:subj9?????????? 870.7418 314.38569 9294?? 2.76966? 0.0056\n>> time1:subj10???????? 2433.2401 314.38569 9294?? 7.73967? 0.0000\n>> time1:subj11????????? 518.0574 314.38569 9294?? 1.64784? 0.0994\n>> time1:subj12???????? -544.9605 314.38569 9294? -1.73341? 0.0831\n>> time1:subj13???????? -142.6669 314.38569 9294? -0.45380? 0.6500\n>> time1:subj14???????? -447.2835 314.38569 9294? -1.42272? 0.1549\n>> time1:subj15?????????? 73.0371 314.38569 9294?? 0.23232? 0.8163\n>> time1:subj16???????? -147.8436 314.38569 9294? -0.47026? 0.6382\n>> time1:subj17???????? -321.5527 314.38569 9294? -1.02280? 0.3064\n>> time1:subj18??????? -1104.0885 314.38569 9294? -3.51189? 0.0004\n>> time1:subj19???????? -500.0802 314.38569 9294? -1.59066? 0.1117\n>> time1:subj20?????????? 73.0061 314.38569 9294?? 0.23222? 0.8164\n>> time1:subj21???????? -977.4932 314.38569 9294? -3.10922? 0.0019\n>> time2:subj2?????????? 103.9564? 53.70288 9294?? 1.93577? 0.0529\n>> time2:subj3?????????? 462.7823? 53.70288 9294?? 8.61746? 0.0000\n>> time2:subj4?????????? 133.1718? 53.70288 9294?? 2.47979? 0.0132\n>> time2:subj5?????????? 435.4522? 53.70288 9294?? 8.10854? 0.0000\n>> time2:subj6?????????? 866.3608? 53.70288 9294? 16.13248? 0.0000\n>> time2:subj7????????? 1040.2131? 53.70288 9294? 19.36978? 0.0000\n>> time2:subj8?????????? -48.0412? 53.70288 9294? -0.89457? 0.3710\n>> time2:subj9?????????? -33.9246? 53.70288 9294? -0.63171? 0.5276\n>> time2:subj10????????? 575.5907? 53.70288 9294? 10.71806? 0.0000\n>> time2:subj11???????? -534.9280? 53.70288 9294? -9.96088? 0.0000\n>> time2:subj12????????? 180.5477? 53.70288 9294?? 3.36197? 0.0008\n>> time2:subj13???????? -919.1235? 53.70288 9294 -17.11498? 0.0000\n>> time2:subj14????????? 585.8640? 53.70288 9294? 10.90936? 0.0000\n>> time2:subj15????????? 405.6596? 53.70288 9294?? 7.55378? 0.0000\n>> time2:subj16??????? -1104.0865? 53.70288 9294 -20.55917? 0.0000\n>> time2:subj17????????? 877.9724? 53.70288 9294? 16.34870? 0.0000\n>> time2:subj18???????? 1828.7923? 53.70288 9294? 34.05389? 0.0000\n>> time2:subj19????????? 820.0829? 53.70288 9294? 15.27074? 0.0000\n>> time2:subj20?????????? 44.1932? 53.70288 9294?? 0.82292? 0.4106\n>> time2:subj21????????? 845.2039? 53.70288 9294? 15.73852? 0.0000\n>> time3:subj2?????????? 658.7997? 53.70288 9294? 12.26749? 0.0000\n>> time3:subj3??????????? 30.3625? 53.70288 9294?? 0.56538? 0.5718\n>> time3:subj4?????????? 595.8939? 53.70288 9294? 11.09612? 0.0000\n>> time3:subj5?????????? 243.5716? 53.70288 9294?? 4.53554? 0.0000\n>> time3:subj6?????????? 350.5870? 53.70288 9294?? 6.52827? 0.0000\n>> time3:subj7??????????? 62.7208? 53.70288 9294?? 1.16792? 0.2429\n>> time3:subj8?????????? 187.1384? 53.70288 9294?? 3.48470? 0.0005\n>> time3:subj9????????? -745.5636? 53.70288 9294 -13.88312? 0.0000\n>> time3:subj10???????? -937.4916? 53.70288 9294 -17.45701? 0.0000\n>> time3:subj11????????? 349.5809? 53.70288 9294?? 6.50954? 0.0000\n>> time3:subj12???????? -419.0377? 53.70288 9294? -7.80289? 0.0000\n>> time3:subj13????????? 812.8245? 53.70288 9294? 15.13558? 0.0000\n>> time3:subj14????????? 179.8396? 53.70288 9294?? 3.34879? 0.0008\n>> time3:subj15???????? -150.8652? 53.70288 9294? -2.80926? 0.0050\n>> time3:subj16???????? 1267.6097? 53.70288 9294? 23.60413? 0.0000\n>> time3:subj17????????? 223.1138? 53.70288 9294?? 4.15460? 0.0000\n>> time3:subj18?????????? 83.5245? 53.70288 9294?? 1.55531? 0.1199\n>> time3:subj19???????? 1295.0211? 53.70288 9294? 24.11455? 0.0000\n>> time3:subj20????????? 599.0144? 53.70288 9294? 11.15423? 0.0000\n>> time3:subj21????????? 142.3725? 53.70288 9294?? 2.65111? 0.0080\n>> time4:subj2????????? -357.4785? 53.70288 9294? -6.65660? 0.0000\n>> time4:subj3????????? -343.2897? 53.70288 9294? -6.39239? 0.0000\n>> time4:subj4????????? -705.7852? 53.70288 9294 -13.14241? 0.0000\n>> time4:subj5????????? -445.1367? 53.70288 9294? -8.28888? 0.0000\n>> time4:subj6????????? -602.6113? 53.70288 9294 -11.22121? 0.0000\n>> time4:subj7????????? -421.4880? 53.70288 9294? -7.84852? 0.0000\n>> time4:subj8??????????? 30.3527? 53.70288 9294?? 0.56520? 0.5720\n>> time4:subj9?????????? 563.3041? 53.70288 9294? 10.48927? 0.0000\n>> time4:subj10???????? -206.4712? 53.70288 9294? -3.84470? 0.0001\n>> time4:subj11????????? 515.5052? 53.70288 9294?? 9.59921? 0.0000\n>> time4:subj12????????? 184.6193? 53.70288 9294?? 3.43779? 0.0006\n>> time4:subj13????????? 293.2901? 53.70288 9294?? 5.46135? 0.0000\n>> time4:subj14???????? -478.9555? 53.70288 9294? -8.91862? 0.0000\n>> time4:subj15???????? -240.5382? 53.70288 9294? -4.47906? 0.0000\n>> time4:subj16???????? -975.5266? 53.70288 9294 -18.16526? 0.0000\n>> time4:subj17???????? -403.4663? 53.70288 9294? -7.51294? 0.0000\n>> time4:subj18???????? -876.2704? 53.70288 9294 -16.31701? 0.0000\n>> time4:subj19??????? -1979.2893? 53.70288 9294 -36.85629? 0.0000\n>> time4:subj20???????? -534.4526? 53.70288 9294? -9.95203? 0.0000\n>> time4:subj21???????? -448.4306? 53.70288 9294? -8.35022? 0.0000\n>> time5:subj2?????????? -10.8598? 53.70288 9294? -0.20222? 0.8397\n>> time5:subj3?????????? 356.3984? 53.70288 9294?? 6.63649? 0.0000\n>> time5:subj4?????????? 321.0171? 53.70288 9294?? 5.97765? 0.0000\n>> time5:subj5?????????? 159.0899? 53.70288 9294?? 2.96241? 0.0031\n>> time5:subj6?????????? 277.8362? 53.70288 9294?? 5.17358? 0.0000\n>> time5:subj7?????????? 392.0390? 53.70288 9294?? 7.30015? 0.0000\n>> time5:subj8??????????? 76.0262? 53.70288 9294?? 1.41568? 0.1569\n>> time5:subj9?????????? 675.6410? 53.70288 9294? 12.58109? 0.0000\n>> time5:subj10????????? 739.3099? 53.70288 9294? 13.76667? 0.0000\n>> time5:subj11???????? -218.8505? 53.70288 9294? -4.07521? 0.0000\n>> time5:subj12????????? 315.8796? 53.70288 9294?? 5.88199? 0.0000\n>> time5:subj13???????? -248.9957? 53.70288 9294? -4.63654? 0.0000\n>> time5:subj14????????? 396.2154? 53.70288 9294?? 7.37792? 0.0000\n>> time5:subj15????????? 231.0236? 53.70288 9294?? 4.30188? 0.0000\n>> time5:subj16????????? 224.9218? 53.70288 9294?? 4.18826? 0.0000\n>> time5:subj17????????? 209.4774? 53.70288 9294?? 3.90067? 0.0001\n>> time5:subj18????????? 505.3070? 53.70288 9294?? 9.40931? 0.0000\n>> time5:subj19????????? 369.0887? 53.70288 9294?? 6.87279? 0.0000\n>> time5:subj20????????? 275.5678? 53.70288 9294?? 5.13134? 0.0000\n>> time5:subj21????????? 480.7268? 53.70288 9294?? 8.95160? 0.0000\n>>\n>>\n>> time1:A1??????????? 353.1338? 85.49229 9294?? 4.13059? 0.0000\n>> time2:A1??????????? -68.5389? 16.57307 9294? -4.13556? 0.0000\n>> time3:A1?????????? -154.4407? 23.43786 9294? -6.58937? 0.0000\n>> time5:A1??????????? 123.8607? 16.57307 9294?? 7.47361? 0.0000\n>> time3:B1??????? 100.1996? 23.43786 9294?? 4.27512? 0.0000\n>> time4:B1??????? 201.6411? 23.43786 9294?? 8.60322? 0.0000\n>> time3:A1:B1?? -68.6999? 33.14614 9294? -2.07264? 0.0382\n>> time4:A1:B0?? 132.5765? 23.43786 9294?? 5.65651? 0.0000\n>> time4:A1:B1? -124.2845? 23.43786 9294? -5.30272? 0.0000\n>>\n>>\n>>\n>>\n>>\n>> On Fri, Jan 6, 2012 at 1:08 PM, Szymek Drobniak <geralttee at gmail.com> wrote:\n>>>\n>>> Hi,\n>>>\n>>> for me it's unclear how you specify your data and your model. in general - it seems that you're using user-made polynomial terms? or have you used the poly() function to form them? I'm asking because you don't have most of the lower-order terms in your output. as for the interaction - it's interpretation is fairly straightforward. E.g. interaction of time4:A1:B1 contains the fourth order coefficient of regression for your relationship in the objects from both A1 and B1 groups. The lack of 0/1 next to B in the second example may be caused by accidental conversion of B into numerical (rather than factor) variable - in such a situation it would be treated as continous variable and just a single regression coefficient would be returned.\n>>>\n>>> cheers,\n>>> sz.\n>>>\n>>> --\n>>> Szymon Drobniak || Population Ecology Group\n>>> Institute of Environmental Sciences,?Jagiellonian University\n>>> ul. Gronostajowa 7, 30-387 Krak?w, POLAND\n>>> tel.: +48 12 664 51 79 fax: +48 12 664 69 12\n>>>\n>>> www.eko.uj.edu.pl/drobniak\n>>\n>>\n>\n\n\n\n--\nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences,?Jagiellonian University\nul. Gronostajowa 7, 30-387 Krak?w, POLAND\ntel.: +48 12 664 51 79 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
+      "body_plain": "Hi again,\n\nyou're right. usually when terms are missing in our output - it means\nthe're not identifiable from our data (e.g. there's not enough\nreplication or specific combinations of factors are missing) - that's\nwhy your'e getting some interactions tested after removing some other\nterms. As for which terms to include - my conservative way of doing\nthings is to include lower terms always when I want to have higher\nterms. What happens when you remove the triple interactions? Also I\nwouldn;t say that interpretation of continous:categorical interactions\n should be avoided in cases similar to yours: such interactions\nquantify differences in betas at respective levels of the categorical\nvariable and provide useful valuable insight to how your response\nchanges with the covariate. What however should be avoided (or better\nsaid - applied with caution) is drawing conclusions about categorical\nvariables (i.e. A or B in your model) if the're involved in\nsignificant interactions with continous variables (problem similar to\nheterogenous slopes in classical ANCOVA).\n\nCheers,\nsz.\n\nOn 6 January 2012 20:40, Stefanie Kuchinsky\n<stefanie.kuchinsky at gmail.com> wrote:\n>\n> I just realized a probable explanation.\n>\n> For the time3 term for which it only displayed half of the interaction term, the lower order time3:A and time3:B had been included in the model.\n>\n> However, there was no time4:A in the model (though there was time4:B). When I removed this effect, I now get both parts of the interaction term output [and the F test df are now correct (2, 9294) instead of (1, 9294)]. I assume that this means the higher order terms are redundant with the lower order terms in the model.\n>\n> Is it then appropriate to remove the lower order interactions from the model (even though they appear significant when I run anova() and given their betas)? I believe I should not be theoretically interpreting time3:A when there is a time3:A:B interaction, anyway.\n>\n> So, I would interpret the betas for these terms very generally:\n> time3:A1:B0 -- The effect of the cubic polynomial modulated by A (1 > 0) when B is held constant at 0.\n> time3:A1:B1 -- The effect of the cubic polynomial as modulated by A (1>0) when B is held constant at 1.\n>\n> Thanks again for your input-- I wouldn't have thought of this is you hadn't mentioned looking at the lower order terms.\n>\n>\n>\n> On Fri, Jan 6, 2012 at 1:55 PM, Stefanie Kuchinsky <stefanie.kuchinsky at gmail.com> wrote:\n>>\n>> Thanks so much for your response. I had not included some of the output table to save space in the original email, but the model does include the lower order terms. I've pasted the full table at the bottom of this email. The polynomial terms were indeed created with the poly() function.\n>>\n>> You were exactly right about the continuous vs. factor error in my second dataset. I had a typo in my code and so B had never been converted to a factor. I really appreciate you catching that!\n>>\n>> However, I'm still confused about the interpretation of time4:A1:B1-- specifically why there is no beta for time4:A1:B0 when there is both a beta for time3:A1:B1 and time3:A1:B0?\n>>\n>>\n>> Again, snippet of dataset 1 output:\n>>\n>> time3:A1:B1   -68.6999  33.14614 9294  -2.07264  0.0382\n>> time4:A1:B0   132.5765  23.43786 9294   5.65651  0.0000\n>> time4:A1:B1  -124.2845  23.43786 9294  -5.30272  0.0000\n>>\n>> Corrected output for dataset 2:\n>> time3:A1:B1   135.0679   46.2636 9294   2.91953  0.0035\n>> time4:A1:B0    80.8813   32.7133 9294   2.47243  0.0134\n>> time4:A1:B1  -108.9340   32.7133 9294  -3.32996  0.0009\n>>\n>>\n>> Full table for dataset 1(minus the correlation tables):\n>>\n>> > summary(m.int4e)\n>> Linear mixed-effects model fit by maximum likelihood\n>>  Data: Data\n>>      ? AIC      BIC    logLik\n>>   109842.6 110837.5 -54782.28\n>>\n>> Random effects:\n>>  Formula: ~time1 | subjAB\n>>  Structure: General positive-definite, Log-Cholesky parametrization\n>>  ????????   StdDev    Corr\n>> (Intercept)  38.33670 (Intr)\n>> time1         434.94747 0.488\n>> Residual     75.40533\n>>\n>> Fixed effects: pupil1000 ~ time1 + time2 + time3 + time4 + time5 + subj + subj:time1 + subj:time2 +      subj:time3 + subj:time4 + subj:time5 + A:time1 + A:time2 + A:time3 +      A:time5 + B:time3 + B:time4 + A:B:time3 + A:B:time4\n>>  ???????????????????   Value Std.Error   DF   t-value p-value\n>> (Intercept)         976.6327  19.63384 9294  49.74231  0.0000\n>> time1   ???????????   891.8779 226.37671 9294   3.93980  0.0001\n>> time2   ??????????   -917.0701  38.86729 9294 -23.59491  0.0000\n>> time3   ??????????   -131.3754  40.59556 9294  -3.23620  0.0012\n>> time4   ???????????   459.9003  40.59556 9294  11.32883  0.0000\n>> time5   ??????????   -444.2458  38.86729 9294 -11.42981  0.0000\n>> subj2   ??????????   47.7965  27.76645   63   1.72137  0.0901\n>> subj3   ??????????   65.4712  27.76645   63   2.35793  0.0215\n>> subj4   ?????????   130.2721  27.76645   63   4.69171  0.0000\n>> subj5   ??????????   57.2987  27.76645   63   2.06359  0.0432\n>> subj6   ??????????   25.6571  27.76645   63   0.92403  0.3590\n>> subj7   ??????????   -7.6969  27.76645   63  -0.27720  0.7825\n>> subj8   ??????????   81.3031  27.76645   63   2.92811  0.0047\n>> subj9   ??????????   15.1726  27.76645   63   0.54644  0.5867\n>> subj10   ?????????   62.5996  27.76645   63   2.25450  0.0276\n>> subj11   ????????   -64.4270  27.76645   63  -2.32032  0.0236\n>> subj12   ?????????   10.0465  27.76645   63   0.36182  0.7187\n>> subj13   ?????????   43.7500  27.76645   63   1.57564  0.1201\n>> subj14   ?????????   26.4845  27.76645   63   0.95383  0.3438\n>> subj15   ????????   -46.7323  27.76645   63  -1.68305  0.0973\n>> subj16   ????????   137.6261  27.76645   63   4.95656  0.0000\n>> subj17   ?????????   14.9735  27.76645   63   0.53926  0.5916\n>> subj18   ?????????   26.3230  27.76645   63   0.94802  0.3467\n>> subj19   ?????????   55.4912  27.76645   63   1.99850  0.0500\n>> subj20   ?????????   98.4027  27.76645   63   3.54394  0.0007\n>> subj21   ????????   162.8186  27.76645   63   5.86386  0.0000\n>> time1:subj2   ????   -848.2627 314.38569 9294  -2.69816  0.0070\n>> time1:subj3   ????   -462.8857 314.38569 9294  -1.47235  0.1410\n>> time1:subj4   ????   -286.9459 314.38569 9294  -0.91272  0.3614\n>> time1:subj5   ????   -350.9655 314.38569 9294  -1.11635  0.2643\n>> time1:subj6         -1079.1256 314.38569 9294  -3.43249  0.0006\n>> time1:subj7   ????   -958.1396 314.38569 9294  -3.04766  0.0023\n>> time1:subj8   ?????   396.6793 314.38569 9294   1.26176  0.2071\n>> time1:subj9   ?????   870.7418 314.38569 9294   2.76966  0.0056\n>> time1:subj10         2433.2401 314.38569 9294   7.73967  0.0000\n>> time1:subj11   ????   518.0574 314.38569 9294   1.64784  0.0994\n>> time1:subj12         -544.9605 314.38569 9294  -1.73341  0.0831\n>> time1:subj13         -142.6669 314.38569 9294  -0.45380  0.6500\n>> time1:subj14         -447.2835 314.38569 9294  -1.42272  0.1549\n>> time1:subj15   ?????   73.0371 314.38569 9294   0.23232  0.8163\n>> time1:subj16         -147.8436 314.38569 9294  -0.47026  0.6382\n>> time1:subj17         -321.5527 314.38569 9294  -1.02280  0.3064\n>> time1:subj18        -1104.0885 314.38569 9294  -3.51189  0.0004\n>> time1:subj19         -500.0802 314.38569 9294  -1.59066  0.1117\n>> time1:subj20   ?????   73.0061 314.38569 9294   0.23222  0.8164\n>> time1:subj21         -977.4932 314.38569 9294  -3.10922  0.0019\n>> time2:subj2   ?????   103.9564  53.70288 9294   1.93577  0.0529\n>> time2:subj3   ?????   462.7823  53.70288 9294   8.61746  0.0000\n>> time2:subj4   ?????   133.1718  53.70288 9294   2.47979  0.0132\n>> time2:subj5   ?????   435.4522  53.70288 9294   8.10854  0.0000\n>> time2:subj6   ?????   866.3608  53.70288 9294  16.13248  0.0000\n>> time2:subj7   ????   1040.2131  53.70288 9294  19.36978  0.0000\n>> time2:subj8   ?????   -48.0412  53.70288 9294  -0.89457  0.3710\n>> time2:subj9   ?????   -33.9246  53.70288 9294  -0.63171  0.5276\n>> time2:subj10   ????   575.5907  53.70288 9294  10.71806  0.0000\n>> time2:subj11         -534.9280  53.70288 9294  -9.96088  0.0000\n>> time2:subj12   ????   180.5477  53.70288 9294   3.36197  0.0008\n>> time2:subj13         -919.1235  53.70288 9294 -17.11498  0.0000\n>> time2:subj14   ????   585.8640  53.70288 9294  10.90936  0.0000\n>> time2:subj15   ????   405.6596  53.70288 9294   7.55378  0.0000\n>> time2:subj16        -1104.0865  53.70288 9294 -20.55917  0.0000\n>> time2:subj17   ????   877.9724  53.70288 9294  16.34870  0.0000\n>> time2:subj18         1828.7923  53.70288 9294  34.05389  0.0000\n>> time2:subj19   ????   820.0829  53.70288 9294  15.27074  0.0000\n>> time2:subj20   ?????   44.1932  53.70288 9294   0.82292  0.4106\n>> time2:subj21   ????   845.2039  53.70288 9294  15.73852  0.0000\n>> time3:subj2   ?????   658.7997  53.70288 9294  12.26749  0.0000\n>> time3:subj3   ??????   30.3625  53.70288 9294   0.56538  0.5718\n>> time3:subj4   ?????   595.8939  53.70288 9294  11.09612  0.0000\n>> time3:subj5   ?????   243.5716  53.70288 9294   4.53554  0.0000\n>> time3:subj6   ?????   350.5870  53.70288 9294   6.52827  0.0000\n>> time3:subj7   ??????   62.7208  53.70288 9294   1.16792  0.2429\n>> time3:subj8   ?????   187.1384  53.70288 9294   3.48470  0.0005\n>> time3:subj9   ????   -745.5636  53.70288 9294 -13.88312  0.0000\n>> time3:subj10         -937.4916  53.70288 9294 -17.45701  0.0000\n>> time3:subj11   ????   349.5809  53.70288 9294   6.50954  0.0000\n>> time3:subj12         -419.0377  53.70288 9294  -7.80289  0.0000\n>> time3:subj13   ????   812.8245  53.70288 9294  15.13558  0.0000\n>> time3:subj14   ????   179.8396  53.70288 9294   3.34879  0.0008\n>> time3:subj15         -150.8652  53.70288 9294  -2.80926  0.0050\n>> time3:subj16         1267.6097  53.70288 9294  23.60413  0.0000\n>> time3:subj17   ????   223.1138  53.70288 9294   4.15460  0.0000\n>> time3:subj18   ?????   83.5245  53.70288 9294   1.55531  0.1199\n>> time3:subj19         1295.0211  53.70288 9294  24.11455  0.0000\n>> time3:subj20   ????   599.0144  53.70288 9294  11.15423  0.0000\n>> time3:subj21   ????   142.3725  53.70288 9294   2.65111  0.0080\n>> time4:subj2   ????   -357.4785  53.70288 9294  -6.65660  0.0000\n>> time4:subj3   ????   -343.2897  53.70288 9294  -6.39239  0.0000\n>> time4:subj4   ????   -705.7852  53.70288 9294 -13.14241  0.0000\n>> time4:subj5   ????   -445.1367  53.70288 9294  -8.28888  0.0000\n>> time4:subj6   ????   -602.6113  53.70288 9294 -11.22121  0.0000\n>> time4:subj7   ????   -421.4880  53.70288 9294  -7.84852  0.0000\n>> time4:subj8   ??????   30.3527  53.70288 9294   0.56520  0.5720\n>> time4:subj9   ?????   563.3041  53.70288 9294  10.48927  0.0000\n>> time4:subj10         -206.4712  53.70288 9294  -3.84470  0.0001\n>> time4:subj11   ????   515.5052  53.70288 9294   9.59921  0.0000\n>> time4:subj12   ????   184.6193  53.70288 9294   3.43779  0.0006\n>> time4:subj13   ????   293.2901  53.70288 9294   5.46135  0.0000\n>> time4:subj14         -478.9555  53.70288 9294  -8.91862  0.0000\n>> time4:subj15         -240.5382  53.70288 9294  -4.47906  0.0000\n>> time4:subj16         -975.5266  53.70288 9294 -18.16526  0.0000\n>> time4:subj17         -403.4663  53.70288 9294  -7.51294  0.0000\n>> time4:subj18         -876.2704  53.70288 9294 -16.31701  0.0000\n>> time4:subj19        -1979.2893  53.70288 9294 -36.85629  0.0000\n>> time4:subj20         -534.4526  53.70288 9294  -9.95203  0.0000\n>> time4:subj21         -448.4306  53.70288 9294  -8.35022  0.0000\n>> time5:subj2   ?????   -10.8598  53.70288 9294  -0.20222  0.8397\n>> time5:subj3   ?????   356.3984  53.70288 9294   6.63649  0.0000\n>> time5:subj4   ?????   321.0171  53.70288 9294   5.97765  0.0000\n>> time5:subj5   ?????   159.0899  53.70288 9294   2.96241  0.0031\n>> time5:subj6   ?????   277.8362  53.70288 9294   5.17358  0.0000\n>> time5:subj7   ?????   392.0390  53.70288 9294   7.30015  0.0000\n>> time5:subj8   ??????   76.0262  53.70288 9294   1.41568  0.1569\n>> time5:subj9   ?????   675.6410  53.70288 9294  12.58109  0.0000\n>> time5:subj10   ????   739.3099  53.70288 9294  13.76667  0.0000\n>> time5:subj11         -218.8505  53.70288 9294  -4.07521  0.0000\n>> time5:subj12   ????   315.8796  53.70288 9294   5.88199  0.0000\n>> time5:subj13         -248.9957  53.70288 9294  -4.63654  0.0000\n>> time5:subj14   ????   396.2154  53.70288 9294   7.37792  0.0000\n>> time5:subj15   ????   231.0236  53.70288 9294   4.30188  0.0000\n>> time5:subj16   ????   224.9218  53.70288 9294   4.18826  0.0000\n>> time5:subj17   ????   209.4774  53.70288 9294   3.90067  0.0001\n>> time5:subj18   ????   505.3070  53.70288 9294   9.40931  0.0000\n>> time5:subj19   ????   369.0887  53.70288 9294   6.87279  0.0000\n>> time5:subj20   ????   275.5678  53.70288 9294   5.13134  0.0000\n>> time5:subj21   ????   480.7268  53.70288 9294   8.95160  0.0000\n>>\n>>\n>> time1:A1   ??????   353.1338  85.49229 9294   4.13059  0.0000\n>> time2:A1   ??????   -68.5389  16.57307 9294  -4.13556  0.0000\n>> time3:A1   ?????   -154.4407  23.43786 9294  -6.58937  0.0000\n>> time5:A1   ??????   123.8607  16.57307 9294   7.47361  0.0000\n>> time3:B1        100.1996  23.43786 9294   4.27512  0.0000\n>> time4:B1        201.6411  23.43786 9294   8.60322  0.0000\n>> time3:A1:B1   -68.6999  33.14614 9294  -2.07264  0.0382\n>> time4:A1:B0   132.5765  23.43786 9294   5.65651  0.0000\n>> time4:A1:B1  -124.2845  23.43786 9294  -5.30272  0.0000\n>>\n>>\n>>\n>>\n>>\n>> On Fri, Jan 6, 2012 at 1:08 PM, Szymek Drobniak <geralttee at gmail.com> wrote:\n>>>\n>>> Hi,\n>>>\n>>> for me it's unclear how you specify your data and your model. in general - it seems that you're using user-made polynomial terms? or have you used the poly() function to form them? I'm asking because you don't have most of the lower-order terms in your output. as for the interaction - it's interpretation is fairly straightforward. E.g. interaction of time4:A1:B1 contains the fourth order coefficient of regression for your relationship in the objects from both A1 and B1 groups. The lack of 0/1 next to B in the second example may be caused by accidental conversion of B into numerical (rather than factor) variable - in such a situation it would be treated as continous variable and just a single regression coefficient would be returned.\n>>>\n>>> cheers,\n>>> sz.\n>>>\n>>> --\n>>> Szymon Drobniak || Population Ecology Group\n>>> Institute of Environmental Sciences, Jagiellonian University\n>>> ul. Gronostajowa 7, 30-387 Kraków, POLAND\n>>> tel.: +48 12 664 51 79 fax: +48 12 664 69 12\n>>>\n>>> www.eko.uj.edu.pl/drobniak\n>>\n>>\n>\n\n\n\n--\nSzymon Drobniak || Population Ecology Group\nInstitute of Environmental Sciences, Jagiellonian University\nul. Gronostajowa 7, 30-387 Kraków, POLAND\ntel.: +48 12 664 51 79 fax: +48 12 664 69 12\n\nwww.eko.uj.edu.pl/drobniak",
       "body_snippet": "Hi again,\n\nyou're right. usually when terms are missing in our output - it means\nthe're not identifiable from our data (e.g. there's not enough\nreplication or specific combinations of factors are miss",
       "thread_id": "thread-8507f5bc52f4",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017489.html"
     },
     {
       "id": "msg-338151469339",
@@ -502,8 +514,9 @@
       "thread_id": "thread-d2089ae13477",
       "thread_depth": 4,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017490.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/c87bae39/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/c87bae39/attachment-0002.pl"
       ]
     },
     {
@@ -523,8 +536,9 @@
       "thread_id": "thread-d2089ae13477",
       "thread_depth": 1,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017491.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/ebfc6712/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120106/ebfc6712/attachment-0002.pl"
       ]
     },
     {
@@ -541,7 +555,8 @@
       "body_snippet": "Hi all,\n\nA couple of weeks ago I posted a question but got no answers. Here goes\na second attempt, now shorter and more general.\n\n\nAre the following two model specifications interchangeable, or is the",
       "thread_id": "thread-0532746b746a",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014596.html"
     },
     {
       "id": "msg-56cbd3bad773",
@@ -559,7 +574,8 @@
       "body_snippet": "Dear Lee,\n\nA large numbers of zero do not imply zero-inflation. E.g.\n> mean(rpois(10000, 0.01) == 0)\n[1] 0.9902\nThis simulation has 99% zero's and is not zero-inflated.\n\nSince you have a timeserie at ",
       "thread_id": "thread-0389cf049f31",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017493.html"
     },
     {
       "id": "msg-ece166f42147",
@@ -575,7 +591,8 @@
       "body_snippet": "Hi All,\n\nI am having problems installing lme4a\n\n> install.packages(\"lme4a\", repos=\"http://R-Forge.R-project.org\")\nInstalling package(s) into ?D:/Program Files/R/R-2.14.1/library?\n(as ?lib? is unspecif",
       "thread_id": "thread-ece166f42147",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014598.html"
     },
     {
       "id": "msg-93178be25185",
@@ -589,11 +606,12 @@
       "references": [
         "<4F094BD7.1080408@slu.se>"
       ],
-      "body_plain": "On Sun, Jan 8, 2012 at 1:55 AM, Jens ?str?m <jens.astrom at slu.se> wrote:\n> Hi all,\n>\n> A couple of weeks ago I posted a question but got no answers. Here goes\n> a second attempt, now shorter and more general.\n>\n>\n> Are the following two model specifications interchangeable, or is there\n> a statistical reason for why it is not OK to express model 1 in the form\n> of model 2?\n>\n> Model 1)\n> y=fixed.intercept+fixed.slope*x+random.intercept+random.slope*x\n>\n> Model 2)\n> y=random.intercept*x+random.slope*x\n> fixed.intercept=mean(random.intercept)\n> fixed.slope=mean(random.slope)\n\nYou would need at least equal group sizes and identical values of the\ncovariate with respect to which you have a random slope to be able to\ncount on this.  Even then I'm not entirely sure it would work.\n\nGenerally the unconditional distribution of the random effects is\ndefined to have a mean of zero.  I don't know how you are defining\nyours (and prefer not to wade through BUGS/JAGS model specifications\nto find out).\n\n> The reasons for my asking is that I have trouble getting convergence\n> with model specification 1, when the random intercepts and random slopes\n> are correlated, but specifying it as model 2 seemed to work. This is me\n> trying to implement some standard mixed models in BUGS/JAGS. Original\n> post with complete working example is here:\n> http://markmail.org/message/vhqeq4j3kldttlt5\n>\n>\n>\n> I'm happy for any comments, with or without BUGS/JAGS code.\n>\n> /Jens Astrom\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
-      "body_snippet": "On Sun, Jan 8, 2012 at 1:55 AM, Jens ?str?m <jens.astrom at slu.se> wrote:\n> Hi all,\n>\n> A couple of weeks ago I posted a question but got no answers. Here goes\n> a second attempt, now shorter and mor",
+      "body_plain": "On Sun, Jan 8, 2012 at 1:55 AM, Jens Åström <jens.astrom at slu.se> wrote:\n> Hi all,\n>\n> A couple of weeks ago I posted a question but got no answers. Here goes\n> a second attempt, now shorter and more general.\n>\n>\n> Are the following two model specifications interchangeable, or is there\n> a statistical reason for why it is not OK to express model 1 in the form\n> of model 2?\n>\n> Model 1)\n> y=fixed.intercept+fixed.slope*x+random.intercept+random.slope*x\n>\n> Model 2)\n> y=random.intercept*x+random.slope*x\n> fixed.intercept=mean(random.intercept)\n> fixed.slope=mean(random.slope)\n\nYou would need at least equal group sizes and identical values of the\ncovariate with respect to which you have a random slope to be able to\ncount on this.  Even then I'm not entirely sure it would work.\n\nGenerally the unconditional distribution of the random effects is\ndefined to have a mean of zero.  I don't know how you are defining\nyours (and prefer not to wade through BUGS/JAGS model specifications\nto find out).\n\n> The reasons for my asking is that I have trouble getting convergence\n> with model specification 1, when the random intercepts and random slopes\n> are correlated, but specifying it as model 2 seemed to work. This is me\n> trying to implement some standard mixed models in BUGS/JAGS. Original\n> post with complete working example is here:\n> http://markmail.org/message/vhqeq4j3kldttlt5\n>\n>\n>\n> I'm happy for any comments, with or without BUGS/JAGS code.\n>\n> /Jens Astrom\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_snippet": "On Sun, Jan 8, 2012 at 1:55 AM, Jens Åström <jens.astrom at slu.se> wrote:\n> Hi all,\n>\n> A couple of weeks ago I posted a question but got no answers. Here goes\n> a second attempt, now shorter and mor",
       "thread_id": "thread-0532746b746a",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017495.html"
     },
     {
       "id": "msg-d0cf4c5dc78d",
@@ -701,7 +719,8 @@
       "body_snippet": "On Wed, Jan 4, 2012 at 5:22 PM, Kevin Spring <kevinjspring at gmail.com> wrote:\n> Hi, everyone. ?I don't know what is going wrong with my bootstrap. ?Could\n> anyone help me find out what is wrong?\n>\n>",
       "thread_id": "thread-6ded2535aa08",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017501.html"
     },
     {
       "id": "msg-48886ffd92da",
@@ -717,7 +736,8 @@
       "body_snippet": "Hi all,\n\nI have a questions about the following situation and was hoping to find\nclarification here.\n\nI have a data frame with the following variables:\n\nid, genotype, group, block, climate, response\n\n",
       "thread_id": "thread-48886ffd92da",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014606.html"
     },
     {
       "id": "msg-998ca5b4ce14",
@@ -733,7 +753,8 @@
       "body_snippet": "Hi,\n\nThanks for the help.  I'm now trying to figure out (1) the function and (2) how to specify it in nlme. \n\ncheers\nMichelle\n\n-----Original Message-----\nFrom: dmbates at gmail.com [mailto:dmbates at ",
       "thread_id": "thread-998ca5b4ce14",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017503.html"
     },
     {
       "id": "msg-9f880ae59cd1",
@@ -809,7 +830,8 @@
       "body_snippet": "Schreiber, Stefan <Stefan.Schreiber at ...> writes:\n\n> \n> \n> Hi all,\n> \n> I have a questions about the following situation and was hoping to find\n> clarification here.\n> \n> I have a data frame with th",
       "thread_id": "thread-48886ffd92da",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017507.html"
     },
     {
       "id": "msg-31aeba25468a",
@@ -829,8 +851,9 @@
       "thread_id": "thread-48886ffd92da",
       "thread_depth": 2,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017508.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120111/d913c6e7/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120111/d913c6e7/attachment-0002.pl"
       ]
     },
     {
@@ -851,7 +874,8 @@
       "body_snippet": "[cc'ing back to r-sig-mixed-models]\n\n\nOn 12-01-11 03:47 PM, Schreiber, Stefan wrote:\n> Thanks Ben!\n> \n> Yes, you are right, n=56. I don't know what happened there ;)\n> \n> As for the ID, yes it is uniq",
       "thread_id": "thread-c99d8d87bb9d",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017509.html"
     },
     {
       "id": "msg-7f2ef263080a",
@@ -867,7 +891,8 @@
       "body_snippet": "Hi all,\n\nI've replied to my message so hopefully the archive will stay tracking this as a single question.\n\nHaving examined the log likelihood formulae I was given for the SAS code, read Chapter 7 of ",
       "thread_id": "thread-7f2ef263080a",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017510.html"
     },
     {
       "id": "msg-9bc2325d42b8",
@@ -884,6 +909,7 @@
       "thread_id": "thread-9bc2325d42b8",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014615.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120111/a56e92ec/attachment-0001.pl"
       ]
@@ -903,6 +929,7 @@
       "thread_id": "thread-8c1eeb5104f7",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014616.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120111/d61e8ec7/attachment-0001.pl"
       ]
@@ -922,6 +949,7 @@
       "thread_id": "thread-bbcc88d25213",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014617.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120112/d2f43dd7/attachment-0001.pl"
       ]
@@ -941,6 +969,7 @@
       "thread_id": "thread-0e97de52db0a",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014618.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120112/79a03cc8/attachment-0001.pl"
       ]
@@ -960,6 +989,7 @@
       "thread_id": "thread-6afe208ad437",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014619.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120112/81293b99/attachment-0001.pl"
       ]
@@ -979,6 +1009,7 @@
       "thread_id": "thread-68048ec27247",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014620.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120112/74754b5d/attachment-0001.pl"
       ]
@@ -1015,7 +1046,8 @@
       "body_snippet": "Dear R Users,\n\nI am running into some trouble when using glmmADMB version 0.7.1 and am \nhoping someone in the R community may have some insight.\n\nI am trying to fit a rather large negative binomial mi",
       "thread_id": "thread-c93e3dbd2893",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014622.html"
     },
     {
       "id": "msg-f56547c1d492",
@@ -1035,7 +1067,8 @@
       "body_snippet": "[I'm taking the liberty of cc'ing this to the r-sig-mixed-models\nmailing list, where it can be archived]\n\nOn 12-01-12 12:52 PM, Helen Ward wrote:\n> Dear Ben,\n> \n> Thank you for your speedy response. I",
       "thread_id": "thread-f56547c1d492",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017519.html"
     },
     {
       "id": "msg-76fd6ffbf7f2",
@@ -1051,7 +1084,8 @@
       "body_snippet": "Hello,\n\nI'm running the following poisson and I keep getting the same error.\nM01 <- glmmadmb(chi_hh ~ age_m + educ +(1 |country_y), data=data,\nfamily=\"poisson\")\n\nIn II[, ii] + REmat$codes[[i]] :\n  lon",
       "thread_id": "thread-76fd6ffbf7f2",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014624.html"
     },
     {
       "id": "msg-af9c8c00ad0a",
@@ -1069,7 +1103,8 @@
       "body_snippet": "On Wed, Jan 11, 2012 at 4:35 PM, Gosse, Michelle\n<Michelle.Gosse at foodstandards.gov.au> wrote:\n> Hi all,\n>\n> I've replied to my message so hopefully the archive will stay tracking this as a single q",
       "thread_id": "thread-7f2ef263080a",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017521.html"
     },
     {
       "id": "msg-48a966078533",
@@ -1087,7 +1122,8 @@
       "body_snippet": "On Wed, Jan 11, 2012 at 9:13 PM, Gosse, Michelle\n<Michelle.Gosse at foodstandards.gov.au> wrote:\n> Hi again,\n>\n> More reading later, and I have the following model with the log likelihood function spe",
       "thread_id": "thread-bbcc88d25213",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017522.html"
     },
     {
       "id": "msg-8e7f06689897",
@@ -1105,7 +1141,8 @@
       "body_snippet": "When you run glmmadmb in R, R writes ADMB's files and runs the glmmadmb \nprogram\nvia system(). There is an option to keep these files and then to run \nglmmadmb from outside\nR. You can then read the re",
       "thread_id": "thread-c93e3dbd2893",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017523.html"
     },
     {
       "id": "msg-233c39cac1da",
@@ -1124,7 +1161,8 @@
       "body_snippet": "Hi all,\n\nI have the following mixed model for my data (Thanks Ben!):\n\nlmer.fit<- response ~ group*climate + (1|block) + (1|genotype) + (1|id)\n\nHere's the summary:\n\nLinear mixed model fit by REML \nForm",
       "thread_id": "thread-c99d8d87bb9d",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017524.html"
     },
     {
       "id": "msg-47992db26312",
@@ -1140,7 +1178,8 @@
       "body_snippet": "Hi Doug,\n\nThanks for replying and thanks also to Steve for his comments.\n\nI agree with your comments below, and am following this point up with the people who made the request to use this method. In c",
       "thread_id": "thread-47992db26312",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017525.html"
     },
     {
       "id": "msg-f58be2f25250",
@@ -1158,7 +1197,8 @@
       "body_snippet": "On 12/01/2012, at 10:03 PM, marta rufino wrote:\n\n> Hi,\n> \n> This topic has been discussed in several posts in this list before, but I\n> could not completely understand if there was a clear answer. Als",
       "thread_id": "thread-6afe208ad437",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017526.html"
     },
     {
       "id": "msg-1bf2887d5d16",
@@ -1176,7 +1216,8 @@
       "body_snippet": "Hi Chris,\n\nIf it's getting upto 2GB that's about the limit on your machine unless U\nmanually change it (see ?memory-limit for more info)\n\nHave u tried removing all unnecessary objects from the workspa",
       "thread_id": "thread-c93e3dbd2893",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017527.html"
     },
     {
       "id": "msg-fd0a4fbdc144",
@@ -1195,7 +1236,8 @@
       "body_snippet": "After saying I would cc: the list on this reply, I didn't.\n\n\n---------- Forwarded message ----------\nFrom: Douglas Bates <bates at stat.wisc.edu>\nDate: Fri, Jan 13, 2012 at 9:51 AM\nSubject: Re: lme4 a",
       "thread_id": "thread-fd0a4fbdc144",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014632.html"
     },
     {
       "id": "msg-e20f1830d39a",
@@ -1215,7 +1257,8 @@
       "body_snippet": "On Fri, Jan 13, 2012 at 9:58 AM, Bouwmeester, W.\n<W.Bouwmeester at umcutrecht.nl> wrote:\n> Dear professor Bates,\n>\n> I'am using the lmer function indeed. Can I use 'cvg' from the output attr(model, \"d",
       "thread_id": "thread-e20f1830d39a",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014633.html"
     },
     {
       "id": "msg-6f4f65b22488",
@@ -1231,7 +1274,8 @@
       "body_snippet": "Hi Marta,\n\nMy understanding of this is that the SE*2 gives 95% confidence  \nintervals on predictions. You can add a bonferroni type adjustment by  \nvarying the *2 (which is really 1.96)\n\nThe SE2 gives",
       "thread_id": "thread-6f4f65b22488",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017530.html"
     },
     {
       "id": "msg-16c3b344bd9a",
@@ -1250,7 +1294,8 @@
       "body_snippet": "dave fournier <davef at ...> writes:\n\n> \n> When you run glmmadmb in R, R writes ADMB's files and runs the glmmadmb \n> program\n> via system(). There is an option to keep these files and then to run \n> ",
       "thread_id": "thread-c93e3dbd2893",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017531.html"
     },
     {
       "id": "msg-8fb7a28afb21",
@@ -1268,7 +1313,8 @@
       "body_snippet": "Giulia Dotti Sani <giulia.dottisani at ...> writes:\n\n> I'm running the following poisson and I keep getting the same error.\n> M01 <- glmmadmb(chi_hh ~ age_m + educ +(1 |country_y), data=data,\n> family",
       "thread_id": "thread-76fd6ffbf7f2",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017532.html"
     },
     {
       "id": "msg-ea270ac33353",
@@ -1288,7 +1334,8 @@
       "body_snippet": "[cc'ing back to r-sig-mixed-models]\n\n  A few things:\n\n* the basic problem is that you have NA values in your data: these get\nremoved automatically in one place in the code and not in the other,\nhence ",
       "thread_id": "thread-ea270ac33353",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017533.html"
     },
     {
       "id": "msg-4fffa80fe5fa",
@@ -1329,7 +1376,8 @@
       "body_snippet": "[cc'd back to r-sig-mixed-models again: I strongly prefer to have\nthese conversations on the record so they can be archived and so that\nothers can benefit from them]\n\nOn 12-01-13 05:13 PM, Giulia Dott",
       "thread_id": "thread-98e42d0031fd",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017535.html"
     },
     {
       "id": "msg-5a0cd46018de",
@@ -1347,7 +1395,8 @@
       "body_snippet": "Margaret Metz <mrmetz at ...> writes:\n\n[snip]\n \n> I am using glmer() and a logit link for the survival model,\n> including fixed factors of 3 topographic models (\"topo1\", \"topo2\",\n> and \"topo3\" for sim",
       "thread_id": "thread-4fffa80fe5fa",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017536.html"
     },
     {
       "id": "msg-53f18fa984cb",
@@ -1366,7 +1415,8 @@
       "body_snippet": "On Fri, Jan 13, 2012 at 6:49 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> Margaret Metz <mrmetz at ...> writes:\n>\n> [snip]\n>\n>> I am using glmer() and a logit link for the survival model,\n>> includi",
       "thread_id": "thread-4fffa80fe5fa",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017537.html"
     },
     {
       "id": "msg-0855cbb1bd2c",
@@ -1385,7 +1435,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> Isa Blasco <isa.blasco.costa at ...> writes:\n> \n> > \n> > Hi,\n> > I am using glmmADMB to fit a negative binomial model to my data. My\n> > explanatory variable ",
       "thread_id": "thread-0e97de52db0a",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017538.html"
     },
     {
       "id": "msg-42c46be1a826",
@@ -1401,7 +1452,8 @@
       "body_snippet": "I will try to make this concise.\n\nBackground: I am testing the effects of land use and forested riparian\nbuffers on stream invertebrates and in-stream variables. There are 4\nwatershed types (defined b",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014643.html"
     },
     {
       "id": "msg-78d230c54a76",
@@ -1416,11 +1468,12 @@
         "<4F094BD7.1080408@slu.se>",
         "<CAO7JsnT+9YeewXf1izJ41Fh_uSMPweLOCsi4TDNjr=OgT6wSjw@mail.gmail.com>"
       ],
-      "body_plain": "Thanks for the input! It is appreciated. In practice, my problem is\nsolved but there still remains some questions.\n\nI was shown off list the conventional way of modelling this in a\nBayesian framework (below). It seems I was barking in the right general\ndirection, but not at the right tree. Prof. Bates objections may explain\nthe slight differences in results between my hack version and the more\nconventional, but I am not sure.\n\nI realise now that simply taking the mean of observations defined to be\nnormally distributed is not the same as estimating the mean of that\nunderlying distribution. For instance, there may be extreme values that\ncould be given undue influence by just taking the mean.\n\nI believe that the conventional BUGS approach deals with this problem,\nbut I am curious if it is still subject to any of Prof. Bates\nobjections. The unconditional means of the random effects is here\ndefined as the fixed intercept and slope values. Remember, the initial\nproblem was that doing differently resulted in non-convergence.\n\nWhen I manipulate the sleepstudy data set to produce a non-balanced data\nset, the three methods (my hack version, the conventional BUGS, and\nlmer) all gives slightly different answers, otherwise pretty much the\nsame. This leaves me curious if one can be considered more correct than\nthe other.\n\nAny other suggestions of model specifications or other thoughts are\nappreciated, otherwise I will settle with the conventional for now.\n\n\n\nFor future reference, this appears to be a conventional way to implement\nmodels of the form\nfm1<-lmer(Reaction~Days+(Days|Subject),data=sleepstudy)\nin BUGS/JAGS (thanks again Kent!). (Inverse wishart is another way)\n\n\n\n\nmodel{\n\n   for (i in 1:length(Reaction)){\n     Reaction[i] ~ dnorm (mu[i], tau.Reaction)\n     mu[i] <-subj.inter[subj[i]] + subj.Days[subj[i]]*Days[i]\n   }\n   tau.Reaction~dgamma(0.001,0.001)\n\n   sigma.Reaction<-sqrt(1/tau.Reaction)\n\n   for (j in 1:nr.subj){\n     subj.inter[j] <- B[j,1]\n     subj.Days[j] <- B[j,2]\n     B[j,1:2] ~ dmnorm (B.hat[j,], Tau.B[,])\n     B.hat[j,1] <- intercept\n     B.hat[j,2] <- Days.par\n   }\n   intercept ~ dnorm(0, 1.0e-6)\n   Days.par ~ dnorm(0, 1.0e-6)\n\n   ## hack.intercept<-mean(subj.inter[])\n   ## hack.Days.par<-mean(subj.Days[])\n\n   Tau.B[1:2,1:2] <- inverse(Sigma.B[,])\n   Sigma.B[1,1] <- pow(sigma.subj.inter, 2)\n   sigma.subj.inter ~ dunif (0, 100)\n   Sigma.B[2,2] <- pow(sigma.subj.Days, 2)\n   sigma.subj.Days ~ dunif (0, 100)\n   Sigma.B[1,2] <- rho*sigma.subj.inter*sigma.subj.Days\n   Sigma.B[2,1] <- Sigma.B[1,2]\n   rho ~ dunif (-1, 1)\n   #rho<-0 #set this at zero for non correlated random effects\n}\n\n\n/Jens\n\n\n\n\nOn 01/09/2012 09:02 PM, Douglas Bates wrote:\n> On Sun, Jan 8, 2012 at 1:55 AM, Jens ?str?m <jens.astrom at slu.se> wrote:\n>> Hi all,\n>>\n>> A couple of weeks ago I posted a question but got no answers. Here goes\n>> a second attempt, now shorter and more general.\n>>\n>>\n>> Are the following two model specifications interchangeable, or is there\n>> a statistical reason for why it is not OK to express model 1 in the form\n>> of model 2?\n>>\n>> Model 1)\n>> y=fixed.intercept+fixed.slope*x+random.intercept+random.slope*x\n>>\n>> Model 2)\n>> y=random.intercept*x+random.slope*x\n>> fixed.intercept=mean(random.intercept)\n>> fixed.slope=mean(random.slope)\n> \n> You would need at least equal group sizes and identical values of the\n> covariate with respect to which you have a random slope to be able to\n> count on this.  Even then I'm not entirely sure it would work.\n> \n> Generally the unconditional distribution of the random effects is\n> defined to have a mean of zero.  I don't know how you are defining\n> yours (and prefer not to wade through BUGS/JAGS model specifications\n> to find out).\n> \n>> The reasons for my asking is that I have trouble getting convergence\n>> with model specification 1, when the random intercepts and random slopes\n>> are correlated, but specifying it as model 2 seemed to work. This is me\n>> trying to implement some standard mixed models in BUGS/JAGS. Original\n>> post with complete working example is here:\n>> http://markmail.org/message/vhqeq4j3kldttlt5\n>>\n>>\n>>\n>> I'm happy for any comments, with or without BUGS/JAGS code.\n>>\n>> /Jens Astrom\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
+      "body_plain": "Thanks for the input! It is appreciated. In practice, my problem is\nsolved but there still remains some questions.\n\nI was shown off list the conventional way of modelling this in a\nBayesian framework (below). It seems I was barking in the right general\ndirection, but not at the right tree. Prof. Bates objections may explain\nthe slight differences in results between my hack version and the more\nconventional, but I am not sure.\n\nI realise now that simply taking the mean of observations defined to be\nnormally distributed is not the same as estimating the mean of that\nunderlying distribution. For instance, there may be extreme values that\ncould be given undue influence by just taking the mean.\n\nI believe that the conventional BUGS approach deals with this problem,\nbut I am curious if it is still subject to any of Prof. Bates\nobjections. The unconditional means of the random effects is here\ndefined as the fixed intercept and slope values. Remember, the initial\nproblem was that doing differently resulted in non-convergence.\n\nWhen I manipulate the sleepstudy data set to produce a non-balanced data\nset, the three methods (my hack version, the conventional BUGS, and\nlmer) all gives slightly different answers, otherwise pretty much the\nsame. This leaves me curious if one can be considered more correct than\nthe other.\n\nAny other suggestions of model specifications or other thoughts are\nappreciated, otherwise I will settle with the conventional for now.\n\n\n\nFor future reference, this appears to be a conventional way to implement\nmodels of the form\nfm1<-lmer(Reaction~Days+(Days|Subject),data=sleepstudy)\nin BUGS/JAGS (thanks again Kent!). (Inverse wishart is another way)\n\n\n\n\nmodel{\n\n   for (i in 1:length(Reaction)){\n     Reaction[i] ~ dnorm (mu[i], tau.Reaction)\n     mu[i] <-subj.inter[subj[i]] + subj.Days[subj[i]]*Days[i]\n   }\n   tau.Reaction~dgamma(0.001,0.001)\n\n   sigma.Reaction<-sqrt(1/tau.Reaction)\n\n   for (j in 1:nr.subj){\n     subj.inter[j] <- B[j,1]\n     subj.Days[j] <- B[j,2]\n     B[j,1:2] ~ dmnorm (B.hat[j,], Tau.B[,])\n     B.hat[j,1] <- intercept\n     B.hat[j,2] <- Days.par\n   }\n   intercept ~ dnorm(0, 1.0e-6)\n   Days.par ~ dnorm(0, 1.0e-6)\n\n   ## hack.intercept<-mean(subj.inter[])\n   ## hack.Days.par<-mean(subj.Days[])\n\n   Tau.B[1:2,1:2] <- inverse(Sigma.B[,])\n   Sigma.B[1,1] <- pow(sigma.subj.inter, 2)\n   sigma.subj.inter ~ dunif (0, 100)\n   Sigma.B[2,2] <- pow(sigma.subj.Days, 2)\n   sigma.subj.Days ~ dunif (0, 100)\n   Sigma.B[1,2] <- rho*sigma.subj.inter*sigma.subj.Days\n   Sigma.B[2,1] <- Sigma.B[1,2]\n   rho ~ dunif (-1, 1)\n   #rho<-0 #set this at zero for non correlated random effects\n}\n\n\n/Jens\n\n\n\n\nOn 01/09/2012 09:02 PM, Douglas Bates wrote:\n> On Sun, Jan 8, 2012 at 1:55 AM, Jens Åström <jens.astrom at slu.se> wrote:\n>> Hi all,\n>>\n>> A couple of weeks ago I posted a question but got no answers. Here goes\n>> a second attempt, now shorter and more general.\n>>\n>>\n>> Are the following two model specifications interchangeable, or is there\n>> a statistical reason for why it is not OK to express model 1 in the form\n>> of model 2?\n>>\n>> Model 1)\n>> y=fixed.intercept+fixed.slope*x+random.intercept+random.slope*x\n>>\n>> Model 2)\n>> y=random.intercept*x+random.slope*x\n>> fixed.intercept=mean(random.intercept)\n>> fixed.slope=mean(random.slope)\n> \n> You would need at least equal group sizes and identical values of the\n> covariate with respect to which you have a random slope to be able to\n> count on this.  Even then I'm not entirely sure it would work.\n> \n> Generally the unconditional distribution of the random effects is\n> defined to have a mean of zero.  I don't know how you are defining\n> yours (and prefer not to wade through BUGS/JAGS model specifications\n> to find out).\n> \n>> The reasons for my asking is that I have trouble getting convergence\n>> with model specification 1, when the random intercepts and random slopes\n>> are correlated, but specifying it as model 2 seemed to work. This is me\n>> trying to implement some standard mixed models in BUGS/JAGS. Original\n>> post with complete working example is here:\n>> http://markmail.org/message/vhqeq4j3kldttlt5\n>>\n>>\n>>\n>> I'm happy for any comments, with or without BUGS/JAGS code.\n>>\n>> /Jens Astrom\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models",
       "body_snippet": "Thanks for the input! It is appreciated. In practice, my problem is\nsolved but there still remains some questions.\n\nI was shown off list the conventional way of modelling this in a\nBayesian framework ",
       "thread_id": "thread-0532746b746a",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017540.html"
     },
     {
       "id": "msg-d81bcfa5ab23",
@@ -1436,7 +1489,8 @@
       "body_snippet": "Hello mixed modellers:\nI'm helping a coworker analyze some toxicology data and would\nappreciate any feedback on my proposed analysis, particularly in\nregards to how I've specified a contrast.\n\nHe coll",
       "thread_id": "thread-d81bcfa5ab23",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014645.html"
     },
     {
       "id": "msg-48fece046ec7",
@@ -1453,6 +1507,7 @@
       "thread_id": "thread-48fece046ec7",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014646.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120116/b8b1b892/attachment-0001.pl"
       ]
@@ -1471,7 +1526,8 @@
       "body_snippet": "Hi, I have an MCMCglmm run predicting a binary outcome with a single\nfixed effect and two groups of random effects like so\n\ntestprior4<-list( R=list(V=1, fix=1), G=list(G1=list(V=1, nu=1,\nalpha.mu=0, ",
       "thread_id": "thread-857d3cc44e4b",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014647.html"
     },
     {
       "id": "msg-da143692eb6c",
@@ -1489,7 +1545,8 @@
       "body_snippet": "Dear Colin,\n\nI don't think your Tukey tests are very informative. Because you are testing main effects how have an interaction with another variable. So you are not testing the overall effect of a var",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017544.html"
     },
     {
       "id": "msg-6371e0b0938a",
@@ -1507,7 +1564,8 @@
       "body_snippet": "Colin,\n\nA simple graph of means for your eight combinations of 4 watershed types \nand two riparian types shows there are significant differences between \nwatershed types c, d and f, and that for those",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017545.html"
     },
     {
       "id": "msg-299f5822d3a2",
@@ -1560,7 +1618,8 @@
       "body_snippet": "Good. This is the same conclusion I've made with a boxplot/graph of\nthe EPT data. The pattern is very clear. However, if not using p\nvalues, how do you conclude that the differences are \"significant?\"",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017548.html"
     },
     {
       "id": "msg-7a0d6160655a",
@@ -1579,7 +1638,8 @@
       "body_snippet": "Thierry,\nThank you for the suggestion. I think I understand, though creating\nuser defined contrasts will be difficult.\n\nI create a combined variable:\nwshrip <-c bind(wsh, rip)\n\nResulting in a new mode",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017549.html"
     },
     {
       "id": "msg-074cab77f2af",
@@ -1598,7 +1658,8 @@
       "body_snippet": "Here's the data.  In answer to your questions:\n\n1. Yes, I meant adding predictors should \"never\" make the model fit the data worse.\n2. The variable networth2.gmc is grand-mean centered - actually, I d",
       "thread_id": "thread-299f5822d3a2",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017554.html"
     },
     {
       "id": "msg-4be98ac82480",
@@ -1617,7 +1678,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> Isa Blasco <isa.blasco.costa at ...> writes:\n> \n> > \n> > Hi,\n> > I am using glmmADMB to fit a negative binomial model to my data. My\n> > explanatory variable ",
       "thread_id": "thread-0e97de52db0a",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017550.html"
     },
     {
       "id": "msg-8f37d493922f",
@@ -1634,6 +1696,7 @@
       "thread_id": "thread-8f37d493922f",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014657.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120117/92ce7131/attachment-0001.pl"
       ]
@@ -1653,6 +1716,7 @@
       "thread_id": "thread-991997a9b989",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014655.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120117/c45f15a7/attachment-0001.pl"
       ]
@@ -1675,7 +1739,8 @@
       "body_snippet": "Hi Colin,\n\nThis is what I would do. The example is on a simple lm() but is similar to a mixed model.\nI find it easier to define contrasts on models without the intercept.\n\nset.seed(12345)\ndataset <- e",
       "thread_id": "thread-42c46be1a826",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017552.html"
     },
     {
       "id": "msg-39aa12ca5ac1",
@@ -1694,7 +1759,8 @@
       "body_snippet": "Yet another occasion when I said I would cc: the list and forgot to.\n\n\n---------- Forwarded message ----------\nFrom: Douglas Bates <bates at stat.wisc.edu>\nDate: Tue, Jan 17, 2012 at 10:38 AM\nSubject:",
       "thread_id": "thread-39aa12ca5ac1",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014659.html"
     },
     {
       "id": "msg-e3d273ee5a00",
@@ -1748,6 +1814,7 @@
       "thread_id": "thread-116058e9ad02",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014662.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120117/1e3ac997/attachment-0001.pl"
       ]
@@ -1768,7 +1835,8 @@
       "body_snippet": "On Tue, 17 Jan 2012, Martin Schmettow wrote:\n\n> The problem I have is similar to the capture-recapture approach for\n> estimating abundance. In my case the captured animals are design flaws of\n> softwa",
       "thread_id": "thread-991997a9b989",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017559.html"
     },
     {
       "id": "msg-dbf7f3b49e77",
@@ -1820,7 +1888,8 @@
       "body_snippet": "Eryn McFarlane <mcfarlas at ...> writes:\n\n> \n> Dear list,\n> \n> I was wondering if anyone knew of a way to estimate BLUPs\n>  from an MCMCglmm model? I would just like to eyeball\n> the individuals with ",
       "thread_id": "thread-116058e9ad02",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017562.html"
     },
     {
       "id": "msg-907b4e5523a3",
@@ -1839,7 +1908,8 @@
       "body_snippet": "> > The problem I have is similar to the capture-recapture approach for\n> > estimating abundance. In my case the captured animals are design flaws\n> > of software.\n> >\n> > A given number of testers in",
       "thread_id": "thread-991997a9b989",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017563.html"
     },
     {
       "id": "msg-ff115fc77ec7",
@@ -1857,7 +1927,8 @@
       "body_snippet": "Hi Ryan,\n\nSorry for not replying earlier - I've been away for two months. I'm  \nhaving trouble understanding the issues but my gut feeling (especially  \nfor the second issue) is that they arise becaus",
       "thread_id": "thread-857d3cc44e4b",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017564.html"
     },
     {
       "id": "msg-292ef73bbd8a",
@@ -1876,7 +1947,8 @@
       "body_snippet": "Hi,\n\nThe random effects are actually stored in Sol (solutions) and will be  \nsaved if you use the argument pr=TRUE.  The marginal posterior modes  \nof the random effects should coincide with BLUPs if ",
       "thread_id": "thread-116058e9ad02",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017565.html"
     },
     {
       "id": "msg-2455cad75a96",
@@ -1896,7 +1968,8 @@
       "body_snippet": "Lorenzo Quaglietta <giaguarenzo at ...> writes:\n\n> \n> Ben Bolker <bbolker at ...> writes:\n> \n> >   It means that it doesn't make sense to use a numeric variable as\n> > a grouping variable for a random",
       "thread_id": "thread-0e97de52db0a",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017566.html"
     },
     {
       "id": "msg-8b6377dbe686",
@@ -1915,7 +1988,8 @@
       "body_snippet": "Hi Ben,\n\nThanks for the information.  If normal is the usual case, that is\nfine.  Mostly I just wanted to know what was done---from reading\nAgresti's book on Categorical Data Analysis, I got the sense",
       "thread_id": "thread-dbf7f3b49e77",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017567.html"
     },
     {
       "id": "msg-d06e82cc6a1a",
@@ -1935,7 +2009,8 @@
       "body_snippet": "Joshua Wiley <jwiley.psych at ...> writes:\n\n> \n> Hi Ben,\n> \n> Thanks for the information.  If normal is the usual case, that is\n> fine.  Mostly I just wanted to know what was done---from reading\n> Agr",
       "thread_id": "thread-dbf7f3b49e77",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017568.html"
     },
     {
       "id": "msg-ac17c1bf1338",
@@ -1956,8 +2031,9 @@
       "thread_id": "thread-991997a9b989",
       "thread_depth": 3,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017569.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120120/63f0d4b1/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120120/63f0d4b1/attachment-0002.pl"
       ]
     },
     {
@@ -2009,6 +2085,7 @@
       "thread_id": "thread-f8f8c7462c5f",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014676.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120120/2ceb0486/attachment-0001.pl"
       ]
@@ -2120,7 +2197,8 @@
       "body_snippet": "Thanks, although I should correct an omission in my description.? Factor A does not vary within level 1 OR level 2 subjects.? Does this change anything for that covariate?\n\nAdam\n\n---------------------",
       "thread_id": "thread-a5b4e7d1e23f",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017578.html"
     },
     {
       "id": "msg-eb4ed4036a5f",
@@ -2136,7 +2214,8 @@
       "body_snippet": "Adam,\nI had a similar question and found this post helpful:\n\nhttp://r.789695.n4.nabble.com/lme4-and-Variable-level-detection-td881680.html\n\nErik\n\n> ----------------------------------------------------",
       "thread_id": "thread-eb4ed4036a5f",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017579.html"
     },
     {
       "id": "msg-8ed40e1877c9",
@@ -2152,7 +2231,8 @@
       "body_snippet": "Hello, I'm interested in determining whether teachers are better at\nteaching one subject than another. I have a data set of reading and math\nvalue-added measures for students grouped by classroom. Her",
       "thread_id": "thread-8ed40e1877c9",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014684.html"
     },
     {
       "id": "msg-cdac2d03892c",
@@ -2170,7 +2250,8 @@
       "body_snippet": "Giorgio Arcara <giorgio.arcara at ...> writes:\n\n> I would like to use mixed models in R to analyze EEG data, but I don't  \n> know if it is more correct to use lme or lmer.\n> My data have the following",
       "thread_id": "thread-f8f8c7462c5f",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017581.html"
     },
     {
       "id": "msg-ef1a02c1550a",
@@ -2188,7 +2269,8 @@
       "body_snippet": "Hey Giorgio!\n\nI have one published paper in JoCN where we analyzed ERP data using \nLMER, another one is on the way, and a methods paper is almost finished \nand submitted to NeuroImage regarding the ad",
       "thread_id": "thread-ef1a02c1550a",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017582.html"
     },
     {
       "id": "msg-c7ebbcb9b153",
@@ -2204,7 +2286,8 @@
       "body_snippet": "Hey Giorgio!\n\nI have one published paper in JoCN where we analyzed ERP data using \nLMER, another one is on the way, and a methods paper is almost finished \nand submitted to NeuroImage regarding the ad",
       "thread_id": "thread-c7ebbcb9b153",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017583.html"
     },
     {
       "id": "msg-d5f3ecf47c2b",
@@ -2220,7 +2303,8 @@
       "body_snippet": "For posterity / google: It turns out the key issues were\n1) The R component specified in the model is not the latent\ngaussian(0,1)  noise inherent in a probit regression, but in addition\nto that quant",
       "thread_id": "thread-d5f3ecf47c2b",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014688.html"
     },
     {
       "id": "msg-9f41b5ac7611",
@@ -2257,7 +2341,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n> Lorenzo Quaglietta <giaguarenzo at ...> writes:\n> \n> > \n> > Ben Bolker <bbolker at ...> writes:\n> > \n> > >   It means that it doesn't make sense to use a nume",
       "thread_id": "thread-0e97de52db0a",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017586.html"
     },
     {
       "id": "msg-9c1ee5f7e5dd",
@@ -2275,7 +2360,8 @@
       "body_snippet": "I've been looking recently at animal count data that I've modeled\nas Poisson with an observation level random effect, and have\nworried a bit about such issues.\n\nThe observation level random effects mo",
       "thread_id": "thread-9f41b5ac7611",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017587.html"
     },
     {
       "id": "msg-1b39add0a4ce",
@@ -2294,7 +2380,8 @@
       "body_snippet": "John Maindonald <john.maindonald at ...> writes:\n\n> \n> I've been looking recently at animal count data that I've modeled\n> as Poisson with an observation level random effect, and have\n> worried a bit ",
       "thread_id": "thread-9f41b5ac7611",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017588.html"
     },
     {
       "id": "msg-c0a87b476b3b",
@@ -2312,7 +2399,8 @@
       "body_snippet": "Giorgio, another thing regarding the Interval variable that came to my \nattention after reading Ben Bolker's reply to your question.\n\nWere you planning on adding Interval to your model specification? ",
       "thread_id": "thread-c0a87b476b3b",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017589.html"
     },
     {
       "id": "msg-7f21cb6349cd",
@@ -2424,8 +2512,9 @@
       "thread_id": "thread-991997a9b989",
       "thread_depth": 4,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017595.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120124/47b0a87e/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120124/47b0a87e/attachment-0002.pl"
       ]
     },
     {
@@ -2482,7 +2571,8 @@
       "body_snippet": "Hello,\n\nI'd like to test the mixed-model approach taken in EMMA (-X):\nhttp://www.nature.com/ng/journal/v42/n4/abs/ng.548.html\n\nin a GLMM framework to analyze non-normal data (e.g. count data; sometime",
       "thread_id": "thread-bbe2cba690f7",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014702.html"
     },
     {
       "id": "msg-b2a0ba47aee4",
@@ -2540,7 +2630,8 @@
       "body_snippet": "Dear professor Bates,\n\nIs it possible to put the iteration information in an R object (this is printed when verbose=TRUE in the lmer function)? \n\nI like to monitor this output during simulations.\n\nKin",
       "thread_id": "thread-e20f1830d39a",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017602.html"
     },
     {
       "id": "msg-93b79630b86a",
@@ -2580,7 +2671,8 @@
       "body_snippet": "Hi Charles--\n\nSo, I don't know SAS at all, so just providing the SAS code and anova \ntable don't tell me (at least) all that much about what SAS is doing. \nAlso keep in mind that the anova table summa",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017603.html"
     },
     {
       "id": "msg-1bac6f00c30d",
@@ -2598,7 +2690,8 @@
       "body_snippet": "On Tue, 24 Jan 2012, mhorton at uchicago.edu wrote:\n\n> I'm trying this with MASS' glmmPQL, which seems to\n> allow the user to provide an \"an optional correlation structure\".\n>\n> There are a few classe",
       "thread_id": "thread-bbe2cba690f7",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017604.html"
     },
     {
       "id": "msg-7bb40cf4c37a",
@@ -2616,7 +2709,8 @@
       "body_snippet": "On Tue, 24 Jan 2012, Charles Determan Jr wrote:\n\n> Greetings,\n>\n> I have been working on R for some time now and I have begun the endeavor of\n> trying to replicate some SAS code in R.  I have scoured ",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017605.html"
     },
     {
       "id": "msg-38019831864d",
@@ -2635,7 +2729,8 @@
       "body_snippet": "It is well to note that type III sums of squares are problematic.\nFor testing the effects of a main effect, the null model is constraining\nthe main effect in a manner that depends on the parameterisat",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017606.html"
     },
     {
       "id": "msg-1827969df2d2",
@@ -2656,8 +2751,9 @@
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 3,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017607.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/f2c20fbd/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/f2c20fbd/attachment-0002.pl"
       ]
     },
     {
@@ -2678,7 +2774,8 @@
       "body_snippet": "I am unfamiliar with this critique of Type III SS. Can you point me to a reference discussing the difficulties with Type III SS?\n\n-----Original Message-----\nFrom: r-sig-mixed-models-bounces at r-proje",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017608.html"
     },
     {
       "id": "msg-660ee63d609b",
@@ -2699,7 +2796,8 @@
       "body_snippet": "I think:\n\nhttp://www.stats.ox.ac.uk/pub/MASS3/Exegeses.pdf\n\nHTH\nLuca\n\n\n\nLe 26/01/2012 15:52, Thompson,Paul a ?crit :\n> I am unfamiliar with this critique of Type III SS. Can you point me to a referenc",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017609.html"
     },
     {
       "id": "msg-c92589edc4fb",
@@ -2721,7 +2819,8 @@
       "body_snippet": "OK, I've looked at that reference. \n\nThere are 2 aspects of an estimate like a SS. The first is the stability of the estimate, and the second is the interpretation of the estimate. The issues with the",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 5,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017610.html"
     },
     {
       "id": "msg-28193e7d050b",
@@ -2740,7 +2839,8 @@
       "body_snippet": "Thanks David. I'll see if I can fit a kinship matrix using the other packages you show. \nIt would also be great to setup the same test case to see how quickly any of this will \nactually run. I can't d",
       "thread_id": "thread-bbe2cba690f7",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017611.html"
     },
     {
       "id": "msg-7d1482477315",
@@ -2816,7 +2916,8 @@
       "body_snippet": "Hi,\n\nJust a quick note on the MCMCglmm syntax: it is best to fix the  \nresidual variance a priori with binary data since it cannot be  \nestimated. In order to make the variance comparable with the oth",
       "thread_id": "thread-bbe2cba690f7",
       "thread_depth": 3,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017615.html"
     },
     {
       "id": "msg-eb04a70605dc",
@@ -2837,8 +2938,9 @@
       "thread_id": "thread-82f0375583d7",
       "thread_depth": 2,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017616.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/190d22ef/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/190d22ef/attachment-0002.pl"
       ]
     },
     {
@@ -2861,7 +2963,8 @@
       "body_snippet": "On Wed, Jan 25, 2012 at 5:02 AM, Bouwmeester, W.\n<W.Bouwmeester at umcutrecht.nl> wrote:\n> Dear professor Bates,\n\n> Is it possible to put the iteration information in an R object (this is printed when",
       "thread_id": "thread-e20f1830d39a",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017617.html"
     },
     {
       "id": "msg-3e4617bef04b",
@@ -2903,7 +3006,8 @@
       "body_snippet": "It is not really a matter of computational accuracy.  One can get highly\naccurate values for an inappropriate statistic.  \n\nOr if there is insistence on using the word, accuracy, what is the \nmeaning?",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 6,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017619.html"
     },
     {
       "id": "msg-dd79f7581070",
@@ -2928,8 +3032,9 @@
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 7,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017620.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/26eaf876/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/26eaf876/attachment-0002.pl"
       ]
     },
     {
@@ -2955,7 +3060,8 @@
       "body_snippet": "Since SAS does not publish its source code,\nreplicating SAS code is not always possible\n(nor always desirable).  \n\nR code is completely open, so can be studied,\ndebated and replicated or modified - ve",
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017621.html"
     },
     {
       "id": "msg-04edb822393f",
@@ -2982,8 +3088,9 @@
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 1,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017622.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/4adecd42/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/4adecd42/attachment-0002.pl"
       ]
     },
     {
@@ -3001,6 +3108,7 @@
       "thread_id": "thread-4ceb0478007e",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014739.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/7319db7c/attachment-0001.pl"
       ]
@@ -3030,7 +3138,8 @@
       "body_snippet": "Here's a typical agreement that users of SAS must agree to:\n\n\nSubject to the provisions contained herein, EMPLOYEE may use the SAS copyrighted computer software products which LICENSEE has provided in",
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017623.html"
     },
     {
       "id": "msg-eec6a2e752a1",
@@ -3059,8 +3168,9 @@
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 3,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017624.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/fceb609f/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/fceb609f/attachment-0002.pl"
       ]
     },
     {
@@ -3080,8 +3190,9 @@
       "thread_id": "thread-288ecbb1c51c",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017625.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/72d75ca2/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/72d75ca2/attachment-0002.pl"
       ]
     },
     {
@@ -3111,7 +3222,8 @@
       "body_snippet": "On Thu, 26 Jan 2012, Charles Determan Jr wrote:\n\n> I see, thank you Steven for your response.  Perhaps I should start a new\n> question on here for what people would recommend currently in R for\n> anal",
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017626.html"
     },
     {
       "id": "msg-8ce480cdfef0",
@@ -3140,7 +3252,8 @@
       "body_snippet": "Hi Charles,\n\nCaveat emptor: I have not read John Maindonalds analysis of this data.\n There may well be problems with this, but here are some of the things\nI would try with the data.\n\nBy the way, if yo",
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017627.html"
     },
     {
       "id": "msg-a4901451753f",
@@ -3171,8 +3284,9 @@
       "thread_id": "thread-a3fc7bad6d93",
       "thread_depth": 5,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017628.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/9725d363/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/9725d363/attachment-0002.pl"
       ]
     },
     {
@@ -3192,8 +3306,9 @@
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 1,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017629.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/75056ae5/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120126/75056ae5/attachment-0002.pl"
       ]
     },
     {
@@ -3213,7 +3328,8 @@
       "body_snippet": "I've twigged that \"unstructured\" means a variance-covariance matrix \nthat ignores the time structure, i.e., each element is estimated \nseparately.  One can do this in lme4, thus:\n\nOrthodont$Age <- fac",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017630.html"
     },
     {
       "id": "msg-8548e5347f2c",
@@ -3229,7 +3345,8 @@
       "body_snippet": "Hi all,\nA few times a have encountered a problem when I try to perform a \nparametric bootstrap to obtain a \"corrected\" p-value for a fixed effect \nusing glmer, like (lmer(y~x+x1+x2+(1|ran)+(1|id),data",
       "thread_id": "thread-8548e5347f2c",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014735.html"
     },
     {
       "id": "msg-ba9d66e08519",
@@ -3249,8 +3366,9 @@
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 2,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017632.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120127/b326ed53/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120127/b326ed53/attachment-0002.pl"
       ]
     },
     {
@@ -3272,8 +3390,9 @@
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 3,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017633.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120127/ebcca832/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120127/ebcca832/attachment-0002.pl"
       ]
     },
     {
@@ -3295,7 +3414,8 @@
       "body_snippet": "Charles,\n\nI guess that SAS is using the Satterthwaite formula to approximate \ndenominator degrees of freedom (google 'Satterthwaite'). See Kenward and \nRoger (1997) Biometrics 53 983-997 for another a",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017634.html"
     },
     {
       "id": "msg-95159b4fe354",
@@ -3316,7 +3436,8 @@
       "body_snippet": "It seems to me that the SAS documentation ought to tell you what algorithm\nit uses to compute the degrees of freedom. Perhaps they do that by\nreferencing a published paper. If so, just read the origin",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 4,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017636.html"
     },
     {
       "id": "msg-3473bcb8ff57",
@@ -3335,7 +3456,8 @@
       "body_snippet": "My post may be redundant, but just in case I wanted to comment.  I\nthink Kevin's post\naddressed a few things that are helpful to start with.\n\nThe original proc mixed syntax did not have a random state",
       "thread_id": "thread-b2a0ba47aee4",
       "thread_depth": 2,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017637.html"
     },
     {
       "id": "msg-586fecdb167a",
@@ -3351,7 +3473,8 @@
       "body_snippet": "> Date: Thu, 26 Jan 2012 13:16:12 -0600 From: Shawn McCracken \n> <smccracken at ...> To: r-sig-mixed-models at ... Subject: [R-sig-ME] GLMM\n>  distribution family model comparison using Poisson w/obse",
       "thread_id": "thread-586fecdb167a",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014742.html"
     },
     {
       "id": "msg-53056c25e6db",
@@ -3369,7 +3492,8 @@
       "body_snippet": "Kristen Mancuso <kmancuso88 at ...> writes:\n\n> \n> Hi,\n> \n> When looking at the R book, it suggests one should be able to check for\n> overdispersion when looking at the summary output of a mixed model ",
       "thread_id": "thread-4ceb0478007e",
       "thread_depth": 1,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017639.html"
     },
     {
       "id": "msg-d4e7bc97ff32",
@@ -3483,7 +3607,8 @@
       "body_snippet": "Hello all,\n\nI have a question regarding the use of the available correlation structures\nin package nlme.  We are using mixed effects models to relate information\nfrom lesser scaup kernel density distr",
       "thread_id": "thread-654008815863",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014755.html"
     },
     {
       "id": "msg-82412f2005cd",
@@ -3518,6 +3643,7 @@
       "thread_id": "thread-bfbbf0f238ed",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014750.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120131/50e23fa7/attachment-0001.pl"
       ]
@@ -3586,8 +3712,9 @@
       "thread_id": "thread-c532169696f9",
       "thread_depth": 0,
       "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/017649.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120131/93d3c7aa/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20120131/93d3c7aa/attachment-0002.pl"
       ]
     },
     {
@@ -3606,7 +3733,8 @@
       "body_snippet": "Dear Mixed Models Experts,\n\nMy colleague Tomasz Burzykowski from the Hasselt University, Belgium and \nI are in a final stage of writing a book about linear mixed effects \nmodels using R. The book focu",
       "thread_id": "thread-542c5d29189e",
       "thread_depth": 0,
-      "month": "2012-01"
+      "month": "2012-01",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2012q1/014754.html"
     },
     {
       "id": "msg-3e77d2b92bd3",

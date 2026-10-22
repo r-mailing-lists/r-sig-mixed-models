@@ -18,6 +18,7 @@
       "thread_id": "thread-2230a1e67c17",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004910.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101201/3e6898e5/attachment.pl"
       ]
@@ -37,6 +38,7 @@
       "thread_id": "thread-4f3d7abade2c",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004919.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101201/d8e12e01/attachment.pl"
       ]
@@ -57,7 +59,8 @@
       "body_snippet": "Hi,\n\nThere is a way, but its quite involved and you may find it easier to  \nfit this type of model in something like ASReml if you can get a  \nlicense. If not ......\n\nI have implemented simultaneous-r",
       "thread_id": "thread-f4d0a6e2bf1c",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004916.html"
     },
     {
       "id": "msg-5dc2497bab19",
@@ -73,11 +76,12 @@
         "<20101127082601.17263ut2ss7hdps0@www.staffmail.ed.ac.uk>",
         "<AANLkTinz8DoYctNbemHu7xVKXteixaYw0-e0gLn6P0Au@mail.gmail.com>"
       ],
-      "body_plain": "Hi Billy,\n\nThere are some earlier posts regarding circular statistics and lmer  \nwhich you could check out, although I'm not sure anything was  \nresolved.  Regarding the second suggestion of fitting an observation- \nlevel random effect, I think it is important that this is done as a  \nmatter of course. Heterogeneity in the expected response across  \nobservations will exist even in the most carefully controlled  \nexperiments  and should be modeled. If it is not, the SE's on the  \nfixed effects will be too small, and the variances associated with  \nother random effects may well be meaningless.  For example, refit the  \nexample glmm model in ?lmer with an observation-level random effect  \nand notice how different the conclusions are regarding the herd  \nvariance.\n\nCheers,\n\nJarrod\n\n\nOn 30 Nov 2010, at 20:26, Billy wrote:\n\n> Hi Jarrod,\n>\n> Thanks for the reply.\n> I followed your suggestion to treat months as continuous variable and\n> the model selection result was totally different. In the first\n> analyses, model 2 (considering an additive effect of x and month) was\n> the most likely model, but after implemented your suggestion, the best\n> model was model 1 (considering only the effect of x, with month as a\n> random variable). However, I think in such case (following your\n> suggestion) there is an assumption that the third month, for example,\n> is in a higher level than the first or second month, right? Maybe\n> that's not the case in nature and my goal is exactly investigate if\n> the relationship between y and x could change from one month to\n> another, not necessarily always increasing or always decreasing. In\n> fact, the first sampled month is August and the last one is July of\n> the next year. Assuming a seasonal variation, maybe a should use a\n> circular statistics approach to deal with this case, I don't know.\n> Furthermore, I don't know if I really understand your other  \n> suggestion.\n>\n> Thanks again and sorry for some misunderstandings.\n>\n> Billy\n>\n> -- \n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de S?o Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n>\n>\n> On Sat, Nov 27, 2010 at 2:26 AM, Jarrod Hadfield  \n> <j.hadfield at ed.ac.uk> wrote:\n>> Hi Billy,\n>>\n>> I think your models look reasonable, although in models 2 and 3 you  \n>> may want\n>>  to treat month as a continuous variable in the fixed part of the  \n>> model.\n>> Also, most count data are overdispersed with respect to the poisson  \n>> and so a\n>> model that does not account for this will be anti-conservative in  \n>> terms of\n>> standard errors etc. One way to deal with this is to fit an  \n>> additional\n>> random effect at the level of each observation:\n>>\n>> my.data$resid<-as.factor(1:dim(my.data)[2])\n>>\n>> and fit (1|resid) in the model formula.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>>\n>> Quoting Billy <billy.requena at gmail.com>:\n>>\n>>> Hello everybody!\n>>>\n>>> I'm relatively new at the mixed-models world and I'm facing a\n>>> theoretical/philosophical problem.\n>>> Let's go to my data collection.\n>>>\n>>> I wanna compare the number of eggs laid by females (different\n>>> individuals or the same, I have no idea) at the time 1 and at the  \n>>> time\n>>> 2 in the same location. Therefore, I have repeated measures by\n>>> location and wanna compare time 1 versus time two. Given I have  \n>>> count\n>>> data, to minimize the overdispersion I have considered the Poisson\n>>> distribution for the errors.\n>>> Furthermore, I have collected this data throughout one year and I'm\n>>> also interested in temporal variation among months.\n>>>\n>>> model0 <- glmer ( y ~ 1 + (1|location) + (1|month),  \n>>> family=\"poisson\")\n>>> model1 <- glmer ( y ~ x + (1|location) + (1|month),  \n>>> family=\"poisson\")\n>>>\n>>> where y = number of eggs laid,\n>>>          x = factor concerning the first or the second oviposition\n>>>          location = factor concerning the exactly position in the\n>>> space (just an identity of the oviposition site and responsible for\n>>> the repeated comparison)\n>>>          month = factor concerning the month when I've collected  \n>>> the data\n>>>\n>>> Is that right? If I wanna repeated comparison regarding specific\n>>> identity of oviposition sites, should this factor (location) be a\n>>> random variable?\n>>>\n>>> Furthermore, in both examples above, I'm just considering a temporal\n>>> variation (among months) as random a effect. But I'm also interested\n>>> if there are significant seasonal variation in the comparison (the\n>>> difference could be higher during warm season or not even existent\n>>> during cold season). Then:\n>>>\n>>> model2 <- glmer ( y ~ x + month + (1|location), family=\"poisson\")\n>>> model3 <- glmer ( y ~ x * month + (1|location), family=\"poisson\")\n>>>\n>>> Is that right too?\n>>> Finally, I'll use a model selection approach to compare the  \n>>> different\n>>> models and rank the most likely one to reproduce the data observed  \n>>> in\n>>> the nature.\n>>> Thanks to everyone\n>>>\n>>> --\n>>> Gustavo Requena\n>>> PhD student - Laboratory of Arthropod Behavior and Evolution\n>>> Universidade de S?o Paulo\n>>> Correspondence adress:\n>>> a/c Glauco Machado\n>>> Departamento de Ecologia - IBUSP\n>>> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo  \n>>> - SP,\n>>> Brasil\n>>> CEP 05508-900\n>>> Phone number: 55 11 3091-7488\n>>>\n>>> http://ecologia.ib.usp.br/opilio/gustavo.html\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>>\n>>\n>>\n>>\n>> --\n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "Hi Billy,\n\nThere are some earlier posts regarding circular statistics and lmer  \nwhich you could check out, although I'm not sure anything was  \nresolved.  Regarding the second suggestion of fitting an observation- \nlevel random effect, I think it is important that this is done as a  \nmatter of course. Heterogeneity in the expected response across  \nobservations will exist even in the most carefully controlled  \nexperiments  and should be modeled. If it is not, the SE's on the  \nfixed effects will be too small, and the variances associated with  \nother random effects may well be meaningless.  For example, refit the  \nexample glmm model in ?lmer with an observation-level random effect  \nand notice how different the conclusions are regarding the herd  \nvariance.\n\nCheers,\n\nJarrod\n\n\nOn 30 Nov 2010, at 20:26, Billy wrote:\n\n> Hi Jarrod,\n>\n> Thanks for the reply.\n> I followed your suggestion to treat months as continuous variable and\n> the model selection result was totally different. In the first\n> analyses, model 2 (considering an additive effect of x and month) was\n> the most likely model, but after implemented your suggestion, the best\n> model was model 1 (considering only the effect of x, with month as a\n> random variable). However, I think in such case (following your\n> suggestion) there is an assumption that the third month, for example,\n> is in a higher level than the first or second month, right? Maybe\n> that's not the case in nature and my goal is exactly investigate if\n> the relationship between y and x could change from one month to\n> another, not necessarily always increasing or always decreasing. In\n> fact, the first sampled month is August and the last one is July of\n> the next year. Assuming a seasonal variation, maybe a should use a\n> circular statistics approach to deal with this case, I don't know.\n> Furthermore, I don't know if I really understand your other  \n> suggestion.\n>\n> Thanks again and sorry for some misunderstandings.\n>\n> Billy\n>\n> -- \n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de São Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n>\n>\n> On Sat, Nov 27, 2010 at 2:26 AM, Jarrod Hadfield  \n> <j.hadfield at ed.ac.uk> wrote:\n>> Hi Billy,\n>>\n>> I think your models look reasonable, although in models 2 and 3 you  \n>> may want\n>>  to treat month as a continuous variable in the fixed part of the  \n>> model.\n>> Also, most count data are overdispersed with respect to the poisson  \n>> and so a\n>> model that does not account for this will be anti-conservative in  \n>> terms of\n>> standard errors etc. One way to deal with this is to fit an  \n>> additional\n>> random effect at the level of each observation:\n>>\n>> my.data$resid<-as.factor(1:dim(my.data)[2])\n>>\n>> and fit (1|resid) in the model formula.\n>>\n>> Cheers,\n>>\n>> Jarrod\n>>\n>>\n>>\n>>\n>> Quoting Billy <billy.requena at gmail.com>:\n>>\n>>> Hello everybody!\n>>>\n>>> I'm relatively new at the mixed-models world and I'm facing a\n>>> theoretical/philosophical problem.\n>>> Let's go to my data collection.\n>>>\n>>> I wanna compare the number of eggs laid by females (different\n>>> individuals or the same, I have no idea) at the time 1 and at the  \n>>> time\n>>> 2 in the same location. Therefore, I have repeated measures by\n>>> location and wanna compare time 1 versus time two. Given I have  \n>>> count\n>>> data, to minimize the overdispersion I have considered the Poisson\n>>> distribution for the errors.\n>>> Furthermore, I have collected this data throughout one year and I'm\n>>> also interested in temporal variation among months.\n>>>\n>>> model0 <- glmer ( y ~ 1 + (1|location) + (1|month),  \n>>> family=\"poisson\")\n>>> model1 <- glmer ( y ~ x + (1|location) + (1|month),  \n>>> family=\"poisson\")\n>>>\n>>> where y = number of eggs laid,\n>>>          x = factor concerning the first or the second oviposition\n>>>          location = factor concerning the exactly position in the\n>>> space (just an identity of the oviposition site and responsible for\n>>> the repeated comparison)\n>>>          month = factor concerning the month when I've collected  \n>>> the data\n>>>\n>>> Is that right? If I wanna repeated comparison regarding specific\n>>> identity of oviposition sites, should this factor (location) be a\n>>> random variable?\n>>>\n>>> Furthermore, in both examples above, I'm just considering a temporal\n>>> variation (among months) as random a effect. But I'm also interested\n>>> if there are significant seasonal variation in the comparison (the\n>>> difference could be higher during warm season or not even existent\n>>> during cold season). Then:\n>>>\n>>> model2 <- glmer ( y ~ x + month + (1|location), family=\"poisson\")\n>>> model3 <- glmer ( y ~ x * month + (1|location), family=\"poisson\")\n>>>\n>>> Is that right too?\n>>> Finally, I'll use a model selection approach to compare the  \n>>> different\n>>> models and rank the most likely one to reproduce the data observed  \n>>> in\n>>> the nature.\n>>> Thanks to everyone\n>>>\n>>> --\n>>> Gustavo Requena\n>>> PhD student - Laboratory of Arthropod Behavior and Evolution\n>>> Universidade de São Paulo\n>>> Correspondence adress:\n>>> a/c Glauco Machado\n>>> Departamento de Ecologia - IBUSP\n>>> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo  \n>>> - SP,\n>>> Brasil\n>>> CEP 05508-900\n>>> Phone number: 55 11 3091-7488\n>>>\n>>> http://ecologia.ib.usp.br/opilio/gustavo.html\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>>\n>>\n>>\n>>\n>> --\n>> The University of Edinburgh is a charitable body, registered in\n>> Scotland, with registration number SC005336.\n>>\n>>\n>\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi Billy,\n\nThere are some earlier posts regarding circular statistics and lmer  \nwhich you could check out, although I'm not sure anything was  \nresolved.  Regarding the second suggestion of fitting a",
       "thread_id": "thread-5dc2497bab19",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004917.html"
     },
     {
       "id": "msg-bfbbaba94a5e",
@@ -93,7 +97,8 @@
       "body_snippet": "Dear R users,\n\nWhile I was trying to learn MCMCglmm by following MCMCglmmCourseNotes.pdf, I ran into a few questions, and am looking for some help.\n\nFirst, for some reason, I cannot load the \"Traffic\"",
       "thread_id": "thread-bfbbaba94a5e",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004918.html"
     },
     {
       "id": "msg-cf3e4c879a69",
@@ -111,7 +116,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-01 05:22 AM, Robert Kinley wrote:\n> this is a clearer (I hope) version of an earlier post  -\n\n  (Please don't cross-post: r-sig-mixed-models is ",
       "thread_id": "thread-4f3d7abade2c",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004920.html"
     },
     {
       "id": "msg-064d28dc4083",
@@ -130,6 +136,7 @@
       "thread_id": "thread-bfbbaba94a5e",
       "thread_depth": 1,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004921.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101201/b37d422b/attachment.pl"
       ]
@@ -151,6 +158,7 @@
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004922.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101201/93d3e81c/attachment.pl"
       ]
@@ -170,6 +178,7 @@
       "thread_id": "thread-c91de5af8f6a",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004923.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101201/66edd1fc/attachment.pl"
       ]
@@ -190,7 +199,8 @@
       "body_snippet": "You are of course talking about cases, notably poisson\nor binomial, where there is a theoretical value for the\nexponential family component of variances.\n\np-values returned by glmer do suffer from the",
       "thread_id": "thread-c91de5af8f6a",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004924.html"
     },
     {
       "id": "msg-01f700dcb636",
@@ -208,7 +218,8 @@
       "body_snippet": "On 10-12-01 09:42 PM, Lucas Kid wrote:\n> Am I correct in assuming that the p-values returned by glmer do not suffer\n> from the same issues as those that are not returned by lmer (addressed quite\n> fam",
       "thread_id": "thread-c91de5af8f6a",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004925.html"
     },
     {
       "id": "msg-ebfe06874b32",
@@ -227,7 +238,8 @@
       "body_snippet": "Perhaps it is worth adding that there are two kinds of issues:\n\n1) there are the issues that arise in connection with the\nasymptotic (large sample) approximations used in GLMs.\nAdding in components of",
       "thread_id": "thread-c91de5af8f6a",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004926.html"
     },
     {
       "id": "msg-6a52b76bebb8",
@@ -246,7 +258,8 @@
       "body_snippet": "Hi Malcolm,\n\nThe suggestion of using SIR models for time series was a throw away  \nremark, but I can't see anything technically incorrect with it. For  \nexample the model y[t] = \\lambda*y[t-1]+..... c",
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004927.html"
     },
     {
       "id": "msg-4a2f5ce55543",
@@ -263,6 +276,7 @@
       "thread_id": "thread-4a2f5ce55543",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004928.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101202/13c99692/attachment.pl"
       ]
@@ -286,6 +300,7 @@
       "thread_id": "thread-c91de5af8f6a",
       "thread_depth": 3,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004929.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101202/3eb29906/attachment.pl"
       ]
@@ -304,7 +319,8 @@
       "body_snippet": "List members,\n\nI have a question regarding the structure of fixed effects and I was hoping\nto get a bit of feedback and hopefully direction to a few references. I\nfigured this topic should be okay her",
       "thread_id": "thread-5114ddbaa6a7",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004930.html"
     },
     {
       "id": "msg-405006c36a41",
@@ -322,7 +338,8 @@
       "body_snippet": "On Thu, Dec 2, 2010 at 3:45 PM, Ned Dochtermann\n<ned.dochtermann at gmail.com> wrote:\n> List members,\n>\n> I have a question regarding the structure of fixed effects and I was hoping\n> to get a bit of ",
       "thread_id": "thread-5114ddbaa6a7",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004931.html"
     },
     {
       "id": "msg-9489083c025e",
@@ -341,7 +358,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n\n>> Cliff notes:\n>> is: ~ trt + trt:grp\n>> versus: ~ trt + grp + trt:grp\n>> okay?\n\n  It may not have the effect you want or think -- it\nwill just reparam",
       "thread_id": "thread-5114ddbaa6a7",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004932.html"
     },
     {
       "id": "msg-791ac35fad3d",
@@ -359,7 +377,8 @@
       "body_snippet": "Hi Achaz,\n\nThe minimum and maximum values the response could take is the  \nresponse, essentially. As an example,\n\ny<-rexp(1000,exp(rnorm(1000, 0.5, 1)))\ndat<-data.frame(y=y, ymin=floor(y), ymax=ceilin",
       "thread_id": "thread-4a2f5ce55543",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004933.html"
     },
     {
       "id": "msg-6af77554f856",
@@ -375,7 +394,8 @@
       "body_snippet": "Hello,\n\nI'm a master student and a newbie with mixed models.\nI'm doing generalised linear mixed models using lme4 with binomial  \nfamily to test facotrs influencing reproduction (success or failure)  ",
       "thread_id": "thread-6af77554f856",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004934.html"
     },
     {
       "id": "msg-0c0f53e14117",
@@ -392,6 +412,7 @@
       "thread_id": "thread-0c0f53e14117",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004935.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101203/57daff06/attachment.pl"
       ]
@@ -412,7 +433,8 @@
       "body_snippet": "Arnaud,\n\nIf you have binary 0/1 data one widely used method for looking at the\nquality of the fit uses the Area under the Receiver Operating\nCharacteristic Curve - variously abbreviated ROC or AUC. It",
       "thread_id": "thread-0c0f53e14117",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004936.html"
     },
     {
       "id": "msg-60b52697457c",
@@ -429,6 +451,7 @@
       "thread_id": "thread-60b52697457c",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004944.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101203/ad718fa2/attachment.pl"
       ]
@@ -451,7 +474,8 @@
       "body_snippet": "Hi Jarrod,\n\nThanks very much for the suggestion. However, in trying what you said, I'm not getting very far (see code below). I redefine the function \"sir\", and then re-install the MCMCglmm package. B",
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004937.html"
     },
     {
       "id": "msg-e94898b29863",
@@ -468,6 +492,7 @@
       "thread_id": "thread-e94898b29863",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004938.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101203/00c91c49/attachment.pl"
       ]
@@ -491,7 +516,8 @@
       "body_snippet": "Hi Malcolm,\n\nI meant replace the sir function in the R directory and rebuild +  \nreinstall MCMCglmm. However, I later realised that for your problem  \nthere is a simpler way:\n\nN <- 50 # set sample siz",
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004939.html"
     },
     {
       "id": "msg-a7967738d914",
@@ -513,7 +539,8 @@
       "body_snippet": "Hi Jarrod,\n\nThanks very much for the suggestions, which did the trick. (And standardising the row weights to 1 seemed to prevent any trouble with any values of rho.)\n\nMCMCglmm does appear to fit spati",
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 4,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004940.html"
     },
     {
       "id": "msg-fd188d55d867",
@@ -531,7 +558,8 @@
       "body_snippet": "I 'quick and dirty' method I like to us is to calculate the mean predicted\nvalue by actual value. If your model is working well the predicted score\nfor actual 0's should be quite low and the predicted",
       "thread_id": "thread-0c0f53e14117",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004941.html"
     },
     {
       "id": "msg-9551ac2f9626",
@@ -549,7 +577,8 @@
       "body_snippet": "On Tue, 30 Nov 2010, Beth Holbrook wrote:\n\n> I've been running some mixed models in lmer and lme and I've found that in some\n> models lmer estimates essentially a zero variance for a random effect whi",
       "thread_id": "thread-9551ac2f9626",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004942.html"
     },
     {
       "id": "msg-e96f1aedce13",
@@ -572,7 +601,8 @@
       "body_snippet": "Hi Malcolm,\n\nI'm glad MCMCglmm seems to fit spatial simultaneous autoregressive lag  \nmodels . I had never heard of them before, but looking at some of the  \nliterature I agree they can be modeled usi",
       "thread_id": "thread-e0dd9b8ae39b",
       "thread_depth": 5,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004943.html"
     },
     {
       "id": "msg-3bc56fb1ae2d",
@@ -590,7 +620,8 @@
       "body_snippet": "You need to be using the development version (lme4a).\n\n  install.packages(\"lme4a\",repos=\"http://r-forge.r-project.org\")\n\n  if that fails, try posting sessionInfo()\n\n\nOn 10-12-03 12:52 PM, Robert Kinle",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004945.html"
     },
     {
       "id": "msg-fae66c16e9c9",
@@ -607,6 +638,7 @@
       "thread_id": "thread-60b52697457c",
       "thread_depth": 2,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004946.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101206/b90ccdb9/attachment.pl"
       ]
@@ -629,7 +661,8 @@
       "body_snippet": "On Mon, Nov 22, 2010 at 9:07 AM, Ben Bolker <bbolker at gmail.com> wrote:\n> ?However: centering the concentration doesn't actually have much effect\n> in this example (which it would if the remoteness ",
       "thread_id": "thread-fce467b4f3ae",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004947.html"
     },
     {
       "id": "msg-a962e67df627",
@@ -646,6 +679,7 @@
       "thread_id": "thread-a962e67df627",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004948.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101209/27d7b03a/attachment.pl"
       ]
@@ -666,7 +700,8 @@
       "body_snippet": "Hi,\n\n> Is this what Douglas Bates call \"implicit nesting\"? If so, the recommendation is to create a new variable\n\nI am not sure about implicit, but I'd argue that Id is nested within site. Whether you",
       "thread_id": "thread-a962e67df627",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004949.html"
     },
     {
       "id": "msg-2fc0f795b8cb",
@@ -684,7 +719,8 @@
       "body_snippet": "On Thu, Dec 9, 2010 at 10:22 AM, Gustavo Betini <betinig at uoguelph.ca> wrote:\n> Hi, all,\n\n> I have a dataset with several individuals from different sites measured\n> several times. There are 7 diffe",
       "thread_id": "thread-a962e67df627",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004950.html"
     },
     {
       "id": "msg-7817494e5e5b",
@@ -700,7 +736,8 @@
       "body_snippet": "Suppose that there are multiple task types (Task) and each task type\nis represented with a few questions (Item). And all subjects (Subj)\nanswer the same questions (Item).\n\nHow do I compare a model wit",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004951.html"
     },
     {
       "id": "msg-bb6f536ad5bd",
@@ -719,6 +756,7 @@
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 1,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004952.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101210/c0184b33/attachment.pl"
       ]
@@ -733,11 +771,12 @@
       "subject_clean": "spatial correlation structure for GLS (nlme)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI need some advice to include a spatial correlation structure to an\nANOVA one-way GLS model. \n\nFirst, I fit a simple model asuming uncorrelated errors and plotted the\nresiduals variogram which showed the spatial autocorrelation. Then, with\ngstat package, I fit some models to guess initial values for corSpatial.\nThe best model fitted has a nugget efect with to spherical structures (2\nranges).\nBefore adding more complexity to the model, I tried to fit few models\nwith basic predefined corStructures and then looking at their\nresiduals variograms. Although including correlation results in smaller\nAICs, the variograms still showing strong spatial correlation of\nresiduals.  \n\nIs there a way to bluid a spatial correlation structure including two\nranges?\n\nThanks in advance,\n\n\n\n-- \nIng. Agr. Agust?n Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
+      "body_plain": "Hello,\n\nI need some advice to include a spatial correlation structure to an\nANOVA one-way GLS model. \n\nFirst, I fit a simple model asuming uncorrelated errors and plotted the\nresiduals variogram which showed the spatial autocorrelation. Then, with\ngstat package, I fit some models to guess initial values for corSpatial.\nThe best model fitted has a nugget efect with to spherical structures (2\nranges).\nBefore adding more complexity to the model, I tried to fit few models\nwith basic predefined corStructures and then looking at their\nresiduals variograms. Although including correlation results in smaller\nAICs, the variograms still showing strong spatial correlation of\nresiduals.  \n\nIs there a way to bluid a spatial correlation structure including two\nranges?\n\nThanks in advance,\n\n\n\n-- \nIng. Agr. Agustín Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
       "body_snippet": "Hello,\n\nI need some advice to include a spatial correlation structure to an\nANOVA one-way GLS model. \n\nFirst, I fit a simple model asuming uncorrelated errors and plotted the\nresiduals variogram which",
       "thread_id": "thread-2447b1255bd0",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004953.html"
     },
     {
       "id": "msg-2a563669395a",
@@ -751,11 +790,12 @@
       "references": [
         "<1291981068.6676.38.camel@agustin-Studio14>"
       ],
-      "body_plain": "Dear Augustin,\n\nWhich residuals did you use? You need to normalised residuals because they take the effect of the correlation function into account.\n\nBest regards,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n  \n\n> -----Oorspronkelijk bericht-----\n> Van: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Ing. \n> Agr.\" Agust?n Alesso\n> Verzonden: vrijdag 10 december 2010 12:38\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] spatial correlation structure for GLS (nlme)\n> \n> Hello,\n> \n> I need some advice to include a spatial correlation structure \n> to an ANOVA one-way GLS model. \n> \n> First, I fit a simple model asuming uncorrelated errors and \n> plotted the residuals variogram which showed the spatial \n> autocorrelation. Then, with gstat package, I fit some models \n> to guess initial values for corSpatial.\n> The best model fitted has a nugget efect with to spherical \n> structures (2 ranges).\n> Before adding more complexity to the model, I tried to fit \n> few models with basic predefined corStructures and then \n> looking at their residuals variograms. Although including \n> correlation results in smaller AICs, the variograms still \n> showing strong spatial correlation of residuals.  \n> \n> Is there a way to bluid a spatial correlation structure \n> including two ranges?\n> \n> Thanks in advance,\n> \n> \n> \n> --\n> Ing. Agr. Agust?n Alesso\n> Dpto. Ciencias del Ambiente\n> Fac. Cs. Agrarias - UNL\n> Kreder 2805 - S3080HOF - Esperanza\n> Tel: 03496-428575 int 337/256\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "Dear Augustin,\n\nWhich residuals did you use? You need to normalised residuals because they take the effect of the correlation function into account.\n\nBest regards,\n\nThierry\n\n----------------------------------------------------------------------------\nir. Thierry Onkelinx\nInstituut voor natuur- en bosonderzoek\nteam Biometrie & Kwaliteitszorg\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\nResearch Institute for Nature and Forest\nteam Biometrics & Quality Assurance\nGaverstraat 4\n9500 Geraardsbergen\nBelgium\n\ntel. + 32 54/436 185\nThierry.Onkelinx at inbo.be\nwww.inbo.be\n\nTo call in the statistician after the experiment is done may be no more than asking him to perform a post-mortem examination: he may be able to say what the experiment died of.\n~ Sir Ronald Aylmer Fisher\n\nThe plural of anecdote is not data.\n~ Roger Brinner\n\nThe combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data.\n~ John Tukey\n  \n\n> -----Oorspronkelijk bericht-----\n> Van: r-sig-mixed-models-bounces at r-project.org \n> [mailto:r-sig-mixed-models-bounces at r-project.org] Namens Ing. \n> Agr.\" Agustín Alesso\n> Verzonden: vrijdag 10 december 2010 12:38\n> Aan: r-sig-mixed-models at r-project.org\n> Onderwerp: [R-sig-ME] spatial correlation structure for GLS (nlme)\n> \n> Hello,\n> \n> I need some advice to include a spatial correlation structure \n> to an ANOVA one-way GLS model. \n> \n> First, I fit a simple model asuming uncorrelated errors and \n> plotted the residuals variogram which showed the spatial \n> autocorrelation. Then, with gstat package, I fit some models \n> to guess initial values for corSpatial.\n> The best model fitted has a nugget efect with to spherical \n> structures (2 ranges).\n> Before adding more complexity to the model, I tried to fit \n> few models with basic predefined corStructures and then \n> looking at their residuals variograms. Although including \n> correlation results in smaller AICs, the variograms still \n> showing strong spatial correlation of residuals.  \n> \n> Is there a way to bluid a spatial correlation structure \n> including two ranges?\n> \n> Thanks in advance,\n> \n> \n> \n> --\n> Ing. Agr. Agustín Alesso\n> Dpto. Ciencias del Ambiente\n> Fac. Cs. Agrarias - UNL\n> Kreder 2805 - S3080HOF - Esperanza\n> Tel: 03496-428575 int 337/256\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list \n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "Dear Augustin,\n\nWhich residuals did you use? You need to normalised residuals because they take the effect of the correlation function into account.\n\nBest regards,\n\nThierry\n\n--------------------------",
       "thread_id": "thread-2447b1255bd0",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004954.html"
     },
     {
       "id": "msg-c3574248b475",
@@ -773,7 +813,8 @@
       "body_snippet": "On Tue, Nov 23, 2010 at 12:05 PM, Kevin E. Thorpe\n<kevin.thorpe at utoronto.ca> wrote:\n> I searched the archives and found questions like this with no definitive\n> answers. ?I also did not find an ans",
       "thread_id": "thread-c3574248b475",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004955.html"
     },
     {
       "id": "msg-641af59c7bf0",
@@ -790,6 +831,7 @@
       "thread_id": "thread-641af59c7bf0",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004956.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101210/76e0ceea/attachment.pl"
       ]
@@ -811,7 +853,8 @@
       "body_snippet": "Thanks for the help!\n\n> It could make sense if you anova these two models, to find a better one.\n> (1 | Subj) + (1 | Item)\n> (1 | Subj) + (1 | Subj:Item)\n\nThese two models have the same number of para",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004957.html"
     },
     {
       "id": "msg-2f839778bd15",
@@ -831,7 +874,8 @@
       "body_snippet": "On Fri, Dec 10, 2010 at 8:38 AM, Gang Chen <gangchen6 at gmail.com> wrote:\n> Thanks for the help!\n>\n>> It could make sense if you anova these two models, to find a better one.\n>> (1 | Subj) + (1 | Ite",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004958.html"
     },
     {
       "id": "msg-8fc0ad3a90a4",
@@ -852,7 +896,8 @@
       "body_snippet": "Thanks for the quick help, Dr. Bates!\n\n>> My second question is still open: I tend to believe that (1 | Subj) is\n>> nested within (Task | Subj) since the first model has one parameter\n>> (variance) wh",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 4,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004959.html"
     },
     {
       "id": "msg-0023d1bbb439",
@@ -874,7 +919,8 @@
       "body_snippet": "On Fri, Dec 10, 2010 at 9:27 AM, Gang Chen <gangchen6 at gmail.com> wrote:\n> Thanks for the quick help, Dr. Bates!\n>\n>>> My second question is still open: I tend to believe that (1 | Subj) is\n>>> nest",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 5,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004960.html"
     },
     {
       "id": "msg-a2e0993191c6",
@@ -897,6 +943,7 @@
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 5,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004961.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101210/f738e184/attachment.pl"
       ]
@@ -922,7 +969,8 @@
       "body_snippet": "On 10-12-10 10:35 AM, Yuan-Ye Zhang wrote:\n> test the sig. of random slope, if you compare these two\n> (1 | Subj): random intercept\n> (Task | Subj): random intercept and random slope\n> \n> but can you ",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 6,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004962.html"
     },
     {
       "id": "msg-d41ee12ff7ad",
@@ -941,7 +989,8 @@
       "body_snippet": "On 10-12-10 08:01 AM, Douglas Bates wrote:\n> On Tue, Nov 23, 2010 at 12:05 PM, Kevin E. Thorpe\n> <kevin.thorpe at utoronto.ca> wrote:\n>> I searched the archives and found questions like this with no d",
       "thread_id": "thread-c3574248b475",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004963.html"
     },
     {
       "id": "msg-e3cbdf295901",
@@ -960,7 +1009,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-09 11:40 AM, Douglas Bates wrote:\n> On Thu, Dec 9, 2010 at 10:22 AM, Gustavo Betini <betinig at uoguelph.ca> wrote:\n>> Hi, all,\n> \n>> I have a d",
       "thread_id": "thread-a962e67df627",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004964.html"
     },
     {
       "id": "msg-56a613ab6494",
@@ -972,11 +1022,12 @@
       "subject_clean": "Could the random effect at the level of each observation be a trap?",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hi all!\n\nI'm a relatively newbie ecologist student getting adventures at the\nmixed models world and facing some trouble to interpret random\neffects. I hope someone could help me.\nQuickly, I'm constructing different models using glmer() to discover\nwhich factors could influence females' reproductive decisions. I have\nsampled several males and classified them as successful or\nunsuccessful.  Therefore, I'm modelling logistic regressions with more\nthan one fixed variable and random variables.\nI have sampled individuals monthly and, sometimes, the same individual\n(MaleID) was sampled more than once, in different status. Then, I used\n\"MaleID\" as a random variable.\nWell, I built a bunch of models considering only MaleID as the random\nvariable as:\n\nm1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\nm2 <- glmer(y ~ x + (1|MaleID), family=binomial)\nm3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n\n\nMoreover, in several posts here I've read about count data show high\noverdispersion, even using family=binomial for the error. One\nrecurrent solution suggested is create a vector to each observation\nas:\n\nresid <- as.factor(1:dim(data)[1])\n\nThen, I built models considering this random variable too, trying to\nunderstand that, as following\n\nm4 <- glmer(y ~ 1 + (1|resid), family=binomial)\nm5 <- glmer(y ~ x + (1|resid), family=binomial)\nm6 <- glmer(y ~ w + (1|resid), family=binomial)\n\nand\n\nm7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\nm8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\nm9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n\nUsing a model selection approach and looking for the deviance and the\nAIC values, I observed that the correspondent models from the second\nblock (m4, m5 and m6 in the example above) and the third block (m7, m8\nand m9) showed the same values. Is that due to the \"resid\" random\neffect?\n\nBesides that, those models in fact showed a lower deviance (an\nimprovement of more than 300) compared to the models that only\nincluded \"MaleID\". When using only \"MaleID\" as random variable, a\nmodel considering the interaction between x and w was the most\nplausible. On the other hand, using the \"resid\" as random variable,\nthe null model (considering no effect of x or w) was selected.\n\nIs there any possibility that, with this \"resid\" procedure, I am being\ntrapped in some statistical artifact?\n\nThank you all for any help\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de S?o Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
+      "body_plain": "Hi all!\n\nI'm a relatively newbie ecologist student getting adventures at the\nmixed models world and facing some trouble to interpret random\neffects. I hope someone could help me.\nQuickly, I'm constructing different models using glmer() to discover\nwhich factors could influence females' reproductive decisions. I have\nsampled several males and classified them as successful or\nunsuccessful.  Therefore, I'm modelling logistic regressions with more\nthan one fixed variable and random variables.\nI have sampled individuals monthly and, sometimes, the same individual\n(MaleID) was sampled more than once, in different status. Then, I used\n\"MaleID\" as a random variable.\nWell, I built a bunch of models considering only MaleID as the random\nvariable as:\n\nm1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\nm2 <- glmer(y ~ x + (1|MaleID), family=binomial)\nm3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n\n\nMoreover, in several posts here I've read about count data show high\noverdispersion, even using family=binomial for the error. One\nrecurrent solution suggested is create a vector to each observation\nas:\n\nresid <- as.factor(1:dim(data)[1])\n\nThen, I built models considering this random variable too, trying to\nunderstand that, as following\n\nm4 <- glmer(y ~ 1 + (1|resid), family=binomial)\nm5 <- glmer(y ~ x + (1|resid), family=binomial)\nm6 <- glmer(y ~ w + (1|resid), family=binomial)\n\nand\n\nm7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\nm8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\nm9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n\nUsing a model selection approach and looking for the deviance and the\nAIC values, I observed that the correspondent models from the second\nblock (m4, m5 and m6 in the example above) and the third block (m7, m8\nand m9) showed the same values. Is that due to the \"resid\" random\neffect?\n\nBesides that, those models in fact showed a lower deviance (an\nimprovement of more than 300) compared to the models that only\nincluded \"MaleID\". When using only \"MaleID\" as random variable, a\nmodel considering the interaction between x and w was the most\nplausible. On the other hand, using the \"resid\" as random variable,\nthe null model (considering no effect of x or w) was selected.\n\nIs there any possibility that, with this \"resid\" procedure, I am being\ntrapped in some statistical artifact?\n\nThank you all for any help\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de São Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
       "body_snippet": "Hi all!\n\nI'm a relatively newbie ecologist student getting adventures at the\nmixed models world and facing some trouble to interpret random\neffects. I hope someone could help me.\nQuickly, I'm construc",
       "thread_id": "thread-56a613ab6494",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004965.html"
     },
     {
       "id": "msg-cec4272b459f",
@@ -993,6 +1044,7 @@
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004966.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101211/03ee22d5/attachment.pl"
       ]
@@ -1019,7 +1071,8 @@
       "body_snippet": "Thanks a lot for the clarifications, Dr. Bolker!\n\nCould you comment a little more about the following?\n\n>?I was going to write more about how one would interpret the\n> relationship between Task and Su",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 7,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004967.html"
     },
     {
       "id": "msg-7c616e7d5f13",
@@ -1044,7 +1097,8 @@
       "body_snippet": "On 10-12-11 09:40 AM, Gang Chen wrote:\n> Thanks a lot for the clarifications, Dr. Bolker!\n> \n> Could you comment a little more about the following?\n> \n>>  I was going to write more about how one would",
       "thread_id": "thread-7817494e5e5b",
       "thread_depth": 8,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004968.html"
     },
     {
       "id": "msg-3974dde41318",
@@ -1062,7 +1116,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-11 02:21 AM, Leeuwen, Casper van wrote:\n> Dear R-list,\n> \n> I'm running a mixed effect logistic regression with both factors and\n> covariates, a",
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004969.html"
     },
     {
       "id": "msg-6a0b9932e47a",
@@ -1080,7 +1135,8 @@
       "body_snippet": "On 10-12-10 09:39 PM, Billy wrote:\n> Hi all!\n> \n> I'm a relatively newbie ecologist student getting adventures at the\n> mixed models world and facing some trouble to interpret random\n> effects. I hope",
       "thread_id": "thread-56a613ab6494",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004970.html"
     },
     {
       "id": "msg-ed0012448ed3",
@@ -1098,7 +1154,8 @@
       "body_snippet": "On Sat, 11 Dec 2010, Leeuwen, Casper van wrote:\n\n> model <- glmer (intact_binomial ~\n>              species\n>              + sex\n>              + retention_time\n>              + body_mass\n>           ",
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004971.html"
     },
     {
       "id": "msg-e571d940cb5e",
@@ -1117,7 +1174,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-11 03:29 PM, David Duffy wrote:\n> On Sat, 11 Dec 2010, Leeuwen, Casper van wrote:\n> \n>> model <- glmer (intact_binomial ~\n>>              specie",
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004972.html"
     },
     {
       "id": "msg-29f8147c9130",
@@ -1137,6 +1195,7 @@
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 2,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004973.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101212/6316b57c/attachment.pl"
       ]
@@ -1159,7 +1218,8 @@
       "body_snippet": "What I meant is that in the linear model case, what you get when you\ncalculate the standardized regression coefficients is expected change in\n(y/(sd y)) per unit change in (x/(sd x)). With GLM you don",
       "thread_id": "thread-cec4272b459f",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004974.html"
     },
     {
       "id": "msg-223a2c2e1983",
@@ -1176,6 +1236,7 @@
       "thread_id": "thread-223a2c2e1983",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004975.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101212/363f915f/attachment.pl"
       ]
@@ -1193,11 +1254,12 @@
         "<AANLkTi=155JVhNP3L7U-MBwUqKzwxwtsWL10Lgo13yo1@mail.gmail.com>",
         "<4D03C2AC.7050503@gmail.com>"
       ],
-      "body_plain": "Hi Ben,\n\nthanks for your reply.\nIn fact, I've tried the additive random effect of MaleID and resid,\nbut I got the same problem: quantitatively and qualitatively\ndifferences. Models considering Male ID + resid showed smaller\ndeviances than models that only considered MaleID AND among models\nconsidering MaleID + resid, the best model was the one which consider\nno effect of any explanatory variable, while among models considering\nonly MaleID as random variable, the best model was the one considering\neffect of the interaction between 2 explanatory variables.\nI still have doubts about the usage of this \"resid\" variable, mainly\nbecause the interpretation of the results is completely different. Is\nthe decrease of the whole deviance enough justification to use that\nand interpret only the results obtained among models considering\nMaleID + resid?\n\nThanks again for you all,\n\nBilly\n\nOn Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> On 10-12-10 09:39 PM, Billy wrote:\n>> Hi all!\n>>\n>> I'm a relatively newbie ecologist student getting adventures at the\n>> mixed models world and facing some trouble to interpret random\n>> effects. I hope someone could help me.\n>> Quickly, I'm constructing different models using glmer() to discover\n>> which factors could influence females' reproductive decisions. I have\n>> sampled several males and classified them as successful or\n>> unsuccessful. ?Therefore, I'm modelling logistic regressions with more\n>> than one fixed variable and random variables.\n>> I have sampled individuals monthly and, sometimes, the same individual\n>> (MaleID) was sampled more than once, in different status. Then, I used\n>> \"MaleID\" as a random variable.\n>> Well, I built a bunch of models considering only MaleID as the random\n>> variable as:\n>>\n>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>\n>>\n>> Moreover, in several posts here I've read about count data show high\n>> overdispersion, even using family=binomial for the error. One\n>> recurrent solution suggested is create a vector to each observation\n>> as:\n>>\n>> resid <- as.factor(1:dim(data)[1])\n>>\n>> Then, I built models considering this random variable too, trying to\n>> understand that, as following\n>>\n>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>\n>> and\n>>\n>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>\n>> Using a model selection approach and looking for the deviance and the\n>> AIC values, I observed that the correspondent models from the second\n>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>> and m9) showed the same values. Is that due to the \"resid\" random\n>> effect?\n>>\n>\n> ? I think you want\n>\n> ?~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>\n> ?\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de S?o Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
+      "body_plain": "Hi Ben,\n\nthanks for your reply.\nIn fact, I've tried the additive random effect of MaleID and resid,\nbut I got the same problem: quantitatively and qualitatively\ndifferences. Models considering Male ID + resid showed smaller\ndeviances than models that only considered MaleID AND among models\nconsidering MaleID + resid, the best model was the one which consider\nno effect of any explanatory variable, while among models considering\nonly MaleID as random variable, the best model was the one considering\neffect of the interaction between 2 explanatory variables.\nI still have doubts about the usage of this \"resid\" variable, mainly\nbecause the interpretation of the results is completely different. Is\nthe decrease of the whole deviance enough justification to use that\nand interpret only the results obtained among models considering\nMaleID + resid?\n\nThanks again for you all,\n\nBilly\n\nOn Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n> On 10-12-10 09:39 PM, Billy wrote:\n>> Hi all!\n>>\n>> I'm a relatively newbie ecologist student getting adventures at the\n>> mixed models world and facing some trouble to interpret random\n>> effects. I hope someone could help me.\n>> Quickly, I'm constructing different models using glmer() to discover\n>> which factors could influence females' reproductive decisions. I have\n>> sampled several males and classified them as successful or\n>> unsuccessful.  Therefore, I'm modelling logistic regressions with more\n>> than one fixed variable and random variables.\n>> I have sampled individuals monthly and, sometimes, the same individual\n>> (MaleID) was sampled more than once, in different status. Then, I used\n>> \"MaleID\" as a random variable.\n>> Well, I built a bunch of models considering only MaleID as the random\n>> variable as:\n>>\n>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>\n>>\n>> Moreover, in several posts here I've read about count data show high\n>> overdispersion, even using family=binomial for the error. One\n>> recurrent solution suggested is create a vector to each observation\n>> as:\n>>\n>> resid <- as.factor(1:dim(data)[1])\n>>\n>> Then, I built models considering this random variable too, trying to\n>> understand that, as following\n>>\n>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>\n>> and\n>>\n>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>\n>> Using a model selection approach and looking for the deviance and the\n>> AIC values, I observed that the correspondent models from the second\n>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>> and m9) showed the same values. Is that due to the \"resid\" random\n>> effect?\n>>\n>\n>   I think you want\n>\n>  ~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>\n> ?\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de São Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
       "body_snippet": "Hi Ben,\n\nthanks for your reply.\nIn fact, I've tried the additive random effect of MaleID and resid,\nbut I got the same problem: quantitatively and qualitatively\ndifferences. Models considering Male ID",
       "thread_id": "thread-56a613ab6494",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004976.html"
     },
     {
       "id": "msg-34a3edd1ae8a",
@@ -1213,11 +1275,12 @@
         "<4D03C2AC.7050503@gmail.com>",
         "<AANLkTi==obqdyEUK8yhWhe4Pz0m=ZmRe4j7VmFBRn93C@mail.gmail.com>"
       ],
-      "body_plain": "This question of overdispersion in binomial models is near and dear to\nmy heart - so I tried to make an example to see if I can replicate the\ntype of situation you're describing Billy (code below). I guess I\ndon't understand the data you have, because as long as each male is\neither successful or unsuccessful (once), you will never observe\noverdispersion, at least not the way I understand it?\n\nsetseed(32493)\nx = rnorm(100)\nz = rnorm(100)\nmaleID = sample(1:40,size=100,replace=TRUE)\nn.male = length(unique(maleID))\nsigmaMale = 1\nsigmaResid = 0.2\nMaleeffect = rnorm(40,sd=sigmaMale)\nResideffect = rnorm(100,sd=sigmaResid)\nbeta = c(0,2,1,0.54) # effect of x, z, and x*z\n\nlogodds.y = cbind(1,x,z,x*z) %*% beta + Maleeffect[maleID] + Resideffect\n\ny = rbinom(100,1,1/(1+exp(-logodds.y)))\n\ndf = data.frame(x=x,z=z,maleID=maleID,y=y)\n\nglm(y~x*z,data=df,family=binomial) # OK, seems to work\n\nlibrary(lme4)\n\nmodels = list(y~x*z + (1|maleID),\n\ty~x+z + (1|maleID),\n\ty~x + (1|maleID),\n\ty~z + (1|maleID),\n\ty~1 + (1|maleID))\n\nfits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n\nsapply(fits,function(fm)summary(fm)@AICtab) # model 2 is best,\nparameters about right\n\n# ok try this residual idea\nresid <- as.factor(1:dim(df)[1])\n\nmodels = list(y~x*z + (1|maleID)+(1|resid),\n\ty~x+z + (1|maleID)+(1|resid),\n\ty~x + (1|maleID)+(1|resid),\n\ty~z + (1|maleID)+(1|resid),\n\ty~1 + (1|maleID)+(1|resid))\n\nfits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n\n# lots of warnings, otherwise results unaffected - estimated variance\nof resid very small\n\n\nOn Mon, Dec 13, 2010 at 11:33 AM, Billy <billy.requena at gmail.com> wrote:\n> Hi Ben,\n>\n> thanks for your reply.\n> In fact, I've tried the additive random effect of MaleID and resid,\n> but I got the same problem: quantitatively and qualitatively\n> differences. Models considering Male ID + resid showed smaller\n> deviances than models that only considered MaleID AND among models\n> considering MaleID + resid, the best model was the one which consider\n> no effect of any explanatory variable, while among models considering\n> only MaleID as random variable, the best model was the one considering\n> effect of the interaction between 2 explanatory variables.\n> I still have doubts about the usage of this \"resid\" variable, mainly\n> because the interpretation of the results is completely different. Is\n> the decrease of the whole deviance enough justification to use that\n> and interpret only the results obtained among models considering\n> MaleID + resid?\n>\n> Thanks again for you all,\n>\n> Billy\n>\n> On Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n>> On 10-12-10 09:39 PM, Billy wrote:\n>>> Hi all!\n>>>\n>>> I'm a relatively newbie ecologist student getting adventures at the\n>>> mixed models world and facing some trouble to interpret random\n>>> effects. I hope someone could help me.\n>>> Quickly, I'm constructing different models using glmer() to discover\n>>> which factors could influence females' reproductive decisions. I have\n>>> sampled several males and classified them as successful or\n>>> unsuccessful. ?Therefore, I'm modelling logistic regressions with more\n>>> than one fixed variable and random variables.\n>>> I have sampled individuals monthly and, sometimes, the same individual\n>>> (MaleID) was sampled more than once, in different status. Then, I used\n>>> \"MaleID\" as a random variable.\n>>> Well, I built a bunch of models considering only MaleID as the random\n>>> variable as:\n>>>\n>>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>>\n>>>\n>>> Moreover, in several posts here I've read about count data show high\n>>> overdispersion, even using family=binomial for the error. One\n>>> recurrent solution suggested is create a vector to each observation\n>>> as:\n>>>\n>>> resid <- as.factor(1:dim(data)[1])\n>>>\n>>> Then, I built models considering this random variable too, trying to\n>>> understand that, as following\n>>>\n>>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>>\n>>> and\n>>>\n>>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>>\n>>> Using a model selection approach and looking for the deviance and the\n>>> AIC values, I observed that the correspondent models from the second\n>>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>>> and m9) showed the same values. Is that due to the \"resid\" random\n>>> effect?\n>>>\n>>\n>> ? I think you want\n>>\n>> ?~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>>\n>> ?\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de S?o Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nDrew Tyre\n\nSchool of Natural Resources\nUniversity of Nebraska-Lincoln\n416 Hardin Hall, East Campus\n3310 Holdrege Street\nLincoln, NE 68583-0974\n\nphone: +1 402 472 4054\nfax: +1 402 472 2946\nemail: atyre2 at unl.edu\nhttp://snr.unl.edu/tyre\nhttp://aminpractice.blogspot.com\nhttp://www.flickr.com/photos/atiretoo",
+      "body_plain": "This question of overdispersion in binomial models is near and dear to\nmy heart - so I tried to make an example to see if I can replicate the\ntype of situation you're describing Billy (code below). I guess I\ndon't understand the data you have, because as long as each male is\neither successful or unsuccessful (once), you will never observe\noverdispersion, at least not the way I understand it?\n\nsetseed(32493)\nx = rnorm(100)\nz = rnorm(100)\nmaleID = sample(1:40,size=100,replace=TRUE)\nn.male = length(unique(maleID))\nsigmaMale = 1\nsigmaResid = 0.2\nMaleeffect = rnorm(40,sd=sigmaMale)\nResideffect = rnorm(100,sd=sigmaResid)\nbeta = c(0,2,1,0.54) # effect of x, z, and x*z\n\nlogodds.y = cbind(1,x,z,x*z) %*% beta + Maleeffect[maleID] + Resideffect\n\ny = rbinom(100,1,1/(1+exp(-logodds.y)))\n\ndf = data.frame(x=x,z=z,maleID=maleID,y=y)\n\nglm(y~x*z,data=df,family=binomial) # OK, seems to work\n\nlibrary(lme4)\n\nmodels = list(y~x*z + (1|maleID),\n\ty~x+z + (1|maleID),\n\ty~x + (1|maleID),\n\ty~z + (1|maleID),\n\ty~1 + (1|maleID))\n\nfits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n\nsapply(fits,function(fm)summary(fm)@AICtab) # model 2 is best,\nparameters about right\n\n# ok try this residual idea\nresid <- as.factor(1:dim(df)[1])\n\nmodels = list(y~x*z + (1|maleID)+(1|resid),\n\ty~x+z + (1|maleID)+(1|resid),\n\ty~x + (1|maleID)+(1|resid),\n\ty~z + (1|maleID)+(1|resid),\n\ty~1 + (1|maleID)+(1|resid))\n\nfits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n\n# lots of warnings, otherwise results unaffected - estimated variance\nof resid very small\n\n\nOn Mon, Dec 13, 2010 at 11:33 AM, Billy <billy.requena at gmail.com> wrote:\n> Hi Ben,\n>\n> thanks for your reply.\n> In fact, I've tried the additive random effect of MaleID and resid,\n> but I got the same problem: quantitatively and qualitatively\n> differences. Models considering Male ID + resid showed smaller\n> deviances than models that only considered MaleID AND among models\n> considering MaleID + resid, the best model was the one which consider\n> no effect of any explanatory variable, while among models considering\n> only MaleID as random variable, the best model was the one considering\n> effect of the interaction between 2 explanatory variables.\n> I still have doubts about the usage of this \"resid\" variable, mainly\n> because the interpretation of the results is completely different. Is\n> the decrease of the whole deviance enough justification to use that\n> and interpret only the results obtained among models considering\n> MaleID + resid?\n>\n> Thanks again for you all,\n>\n> Billy\n>\n> On Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n>> On 10-12-10 09:39 PM, Billy wrote:\n>>> Hi all!\n>>>\n>>> I'm a relatively newbie ecologist student getting adventures at the\n>>> mixed models world and facing some trouble to interpret random\n>>> effects. I hope someone could help me.\n>>> Quickly, I'm constructing different models using glmer() to discover\n>>> which factors could influence females' reproductive decisions. I have\n>>> sampled several males and classified them as successful or\n>>> unsuccessful.  Therefore, I'm modelling logistic regressions with more\n>>> than one fixed variable and random variables.\n>>> I have sampled individuals monthly and, sometimes, the same individual\n>>> (MaleID) was sampled more than once, in different status. Then, I used\n>>> \"MaleID\" as a random variable.\n>>> Well, I built a bunch of models considering only MaleID as the random\n>>> variable as:\n>>>\n>>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>>\n>>>\n>>> Moreover, in several posts here I've read about count data show high\n>>> overdispersion, even using family=binomial for the error. One\n>>> recurrent solution suggested is create a vector to each observation\n>>> as:\n>>>\n>>> resid <- as.factor(1:dim(data)[1])\n>>>\n>>> Then, I built models considering this random variable too, trying to\n>>> understand that, as following\n>>>\n>>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>>\n>>> and\n>>>\n>>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>>\n>>> Using a model selection approach and looking for the deviance and the\n>>> AIC values, I observed that the correspondent models from the second\n>>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>>> and m9) showed the same values. Is that due to the \"resid\" random\n>>> effect?\n>>>\n>>\n>>   I think you want\n>>\n>>  ~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>>\n>> ?\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de São Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\n\n-- \nDrew Tyre\n\nSchool of Natural Resources\nUniversity of Nebraska-Lincoln\n416 Hardin Hall, East Campus\n3310 Holdrege Street\nLincoln, NE 68583-0974\n\nphone: +1 402 472 4054\nfax: +1 402 472 2946\nemail: atyre2 at unl.edu\nhttp://snr.unl.edu/tyre\nhttp://aminpractice.blogspot.com\nhttp://www.flickr.com/photos/atiretoo",
       "body_snippet": "This question of overdispersion in binomial models is near and dear to\nmy heart - so I tried to make an example to see if I can replicate the\ntype of situation you're describing Billy (code below). I ",
       "thread_id": "thread-56a613ab6494",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004979.html"
     },
     {
       "id": "msg-c73b4c614812",
@@ -1234,11 +1297,12 @@
         "<AANLkTi==obqdyEUK8yhWhe4Pz0m=ZmRe4j7VmFBRn93C@mail.gmail.com>",
         "<AANLkTikLO=E_tscuww0H+xwzUaC62AzSc3cb_xVM7PLh@mail.gmail.com>"
       ],
-      "body_plain": "Hi Drew!\n\nThanks for the reply, but I think I wasn't clear enough before. As I\nhave sampled males throughout one year, some individuals were sampled\nin more than one month, but several individuals were sampled just once\n(as a successful or as unsuccessful). Therefore, differently from your\nexample, I don't have the same individuals recaptured in all 12\nmonths, just changing their breeding success status. I think that's\nthe reason to the overdispersion I mentioned before. It means the most\nof my data are about unsuccessful individuals (more than half of the\nsample size fall into the unsuccessful category) and I wanna\ninvestigated if some specific characteristics of the successful males\nare responsible to that success in achieving mates.\n\nBilly\n\nOn Mon, Dec 13, 2010 at 1:39 PM, Drew Tyre <atyre2 at unl.edu> wrote:\n> This question of overdispersion in binomial models is near and dear to\n> my heart - so I tried to make an example to see if I can replicate the\n> type of situation you're describing Billy (code below). I guess I\n> don't understand the data you have, because as long as each male is\n> either successful or unsuccessful (once), you will never observe\n> overdispersion, at least not the way I understand it?\n>\n> setseed(32493)\n> x = rnorm(100)\n> z = rnorm(100)\n> maleID = sample(1:40,size=100,replace=TRUE)\n> n.male = length(unique(maleID))\n> sigmaMale = 1\n> sigmaResid = 0.2\n> Maleeffect = rnorm(40,sd=sigmaMale)\n> Resideffect = rnorm(100,sd=sigmaResid)\n> beta = c(0,2,1,0.54) # effect of x, z, and x*z\n>\n> logodds.y = cbind(1,x,z,x*z) %*% beta + Maleeffect[maleID] + Resideffect\n>\n> y = rbinom(100,1,1/(1+exp(-logodds.y)))\n>\n> df = data.frame(x=x,z=z,maleID=maleID,y=y)\n>\n> glm(y~x*z,data=df,family=binomial) # OK, seems to work\n>\n> library(lme4)\n>\n> models = list(y~x*z + (1|maleID),\n> ? ? ? ?y~x+z + (1|maleID),\n> ? ? ? ?y~x + (1|maleID),\n> ? ? ? ?y~z + (1|maleID),\n> ? ? ? ?y~1 + (1|maleID))\n>\n> fits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n>\n> sapply(fits,function(fm)summary(fm)@AICtab) # model 2 is best,\n> parameters about right\n>\n> # ok try this residual idea\n> resid <- as.factor(1:dim(df)[1])\n>\n> models = list(y~x*z + (1|maleID)+(1|resid),\n> ? ? ? ?y~x+z + (1|maleID)+(1|resid),\n> ? ? ? ?y~x + (1|maleID)+(1|resid),\n> ? ? ? ?y~z + (1|maleID)+(1|resid),\n> ? ? ? ?y~1 + (1|maleID)+(1|resid))\n>\n> fits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n>\n> # lots of warnings, otherwise results unaffected - estimated variance\n> of resid very small\n>\n>\n> On Mon, Dec 13, 2010 at 11:33 AM, Billy <billy.requena at gmail.com> wrote:\n>> Hi Ben,\n>>\n>> thanks for your reply.\n>> In fact, I've tried the additive random effect of MaleID and resid,\n>> but I got the same problem: quantitatively and qualitatively\n>> differences. Models considering Male ID + resid showed smaller\n>> deviances than models that only considered MaleID AND among models\n>> considering MaleID + resid, the best model was the one which consider\n>> no effect of any explanatory variable, while among models considering\n>> only MaleID as random variable, the best model was the one considering\n>> effect of the interaction between 2 explanatory variables.\n>> I still have doubts about the usage of this \"resid\" variable, mainly\n>> because the interpretation of the results is completely different. Is\n>> the decrease of the whole deviance enough justification to use that\n>> and interpret only the results obtained among models considering\n>> MaleID + resid?\n>>\n>> Thanks again for you all,\n>>\n>> Billy\n>>\n>> On Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n>>> On 10-12-10 09:39 PM, Billy wrote:\n>>>> Hi all!\n>>>>\n>>>> I'm a relatively newbie ecologist student getting adventures at the\n>>>> mixed models world and facing some trouble to interpret random\n>>>> effects. I hope someone could help me.\n>>>> Quickly, I'm constructing different models using glmer() to discover\n>>>> which factors could influence females' reproductive decisions. I have\n>>>> sampled several males and classified them as successful or\n>>>> unsuccessful. ?Therefore, I'm modelling logistic regressions with more\n>>>> than one fixed variable and random variables.\n>>>> I have sampled individuals monthly and, sometimes, the same individual\n>>>> (MaleID) was sampled more than once, in different status. Then, I used\n>>>> \"MaleID\" as a random variable.\n>>>> Well, I built a bunch of models considering only MaleID as the random\n>>>> variable as:\n>>>>\n>>>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>>>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>>>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>>>\n>>>>\n>>>> Moreover, in several posts here I've read about count data show high\n>>>> overdispersion, even using family=binomial for the error. One\n>>>> recurrent solution suggested is create a vector to each observation\n>>>> as:\n>>>>\n>>>> resid <- as.factor(1:dim(data)[1])\n>>>>\n>>>> Then, I built models considering this random variable too, trying to\n>>>> understand that, as following\n>>>>\n>>>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>>>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>>>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>>>\n>>>> and\n>>>>\n>>>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>>>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>>>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>>>\n>>>> Using a model selection approach and looking for the deviance and the\n>>>> AIC values, I observed that the correspondent models from the second\n>>>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>>>> and m9) showed the same values. Is that due to the \"resid\" random\n>>>> effect?\n>>>>\n>>>\n>>> ? I think you want\n>>>\n>>> ?~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>>>\n>>> ?\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>\n>>\n>>\n>> --\n>> Gustavo Requena\n>> PhD student - Laboratory of Arthropod Behavior and Evolution\n>> Universidade de S?o Paulo\n>> Correspondence adress:\n>> a/c Glauco Machado\n>> Departamento de Ecologia - IBUSP\n>> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\n>> CEP 05508-900\n>> Phone number: 55 11 3091-7488\n>>\n>> http://ecologia.ib.usp.br/opilio/gustavo.html\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n> --\n> Drew Tyre\n>\n> School of Natural Resources\n> University of Nebraska-Lincoln\n> 416 Hardin Hall, East Campus\n> 3310 Holdrege Street\n> Lincoln, NE 68583-0974\n>\n> phone: +1 402 472 4054\n> fax: +1 402 472 2946\n> email: atyre2 at unl.edu\n> http://snr.unl.edu/tyre\n> http://aminpractice.blogspot.com\n> http://www.flickr.com/photos/atiretoo\n>\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de S?o Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
+      "body_plain": "Hi Drew!\n\nThanks for the reply, but I think I wasn't clear enough before. As I\nhave sampled males throughout one year, some individuals were sampled\nin more than one month, but several individuals were sampled just once\n(as a successful or as unsuccessful). Therefore, differently from your\nexample, I don't have the same individuals recaptured in all 12\nmonths, just changing their breeding success status. I think that's\nthe reason to the overdispersion I mentioned before. It means the most\nof my data are about unsuccessful individuals (more than half of the\nsample size fall into the unsuccessful category) and I wanna\ninvestigated if some specific characteristics of the successful males\nare responsible to that success in achieving mates.\n\nBilly\n\nOn Mon, Dec 13, 2010 at 1:39 PM, Drew Tyre <atyre2 at unl.edu> wrote:\n> This question of overdispersion in binomial models is near and dear to\n> my heart - so I tried to make an example to see if I can replicate the\n> type of situation you're describing Billy (code below). I guess I\n> don't understand the data you have, because as long as each male is\n> either successful or unsuccessful (once), you will never observe\n> overdispersion, at least not the way I understand it?\n>\n> setseed(32493)\n> x = rnorm(100)\n> z = rnorm(100)\n> maleID = sample(1:40,size=100,replace=TRUE)\n> n.male = length(unique(maleID))\n> sigmaMale = 1\n> sigmaResid = 0.2\n> Maleeffect = rnorm(40,sd=sigmaMale)\n> Resideffect = rnorm(100,sd=sigmaResid)\n> beta = c(0,2,1,0.54) # effect of x, z, and x*z\n>\n> logodds.y = cbind(1,x,z,x*z) %*% beta + Maleeffect[maleID] + Resideffect\n>\n> y = rbinom(100,1,1/(1+exp(-logodds.y)))\n>\n> df = data.frame(x=x,z=z,maleID=maleID,y=y)\n>\n> glm(y~x*z,data=df,family=binomial) # OK, seems to work\n>\n> library(lme4)\n>\n> models = list(y~x*z + (1|maleID),\n>        y~x+z + (1|maleID),\n>        y~x + (1|maleID),\n>        y~z + (1|maleID),\n>        y~1 + (1|maleID))\n>\n> fits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n>\n> sapply(fits,function(fm)summary(fm)@AICtab) # model 2 is best,\n> parameters about right\n>\n> # ok try this residual idea\n> resid <- as.factor(1:dim(df)[1])\n>\n> models = list(y~x*z + (1|maleID)+(1|resid),\n>        y~x+z + (1|maleID)+(1|resid),\n>        y~x + (1|maleID)+(1|resid),\n>        y~z + (1|maleID)+(1|resid),\n>        y~1 + (1|maleID)+(1|resid))\n>\n> fits = lapply(models,function(ff)glmer(ff,family=binomial,data=df))\n>\n> # lots of warnings, otherwise results unaffected - estimated variance\n> of resid very small\n>\n>\n> On Mon, Dec 13, 2010 at 11:33 AM, Billy <billy.requena at gmail.com> wrote:\n>> Hi Ben,\n>>\n>> thanks for your reply.\n>> In fact, I've tried the additive random effect of MaleID and resid,\n>> but I got the same problem: quantitatively and qualitatively\n>> differences. Models considering Male ID + resid showed smaller\n>> deviances than models that only considered MaleID AND among models\n>> considering MaleID + resid, the best model was the one which consider\n>> no effect of any explanatory variable, while among models considering\n>> only MaleID as random variable, the best model was the one considering\n>> effect of the interaction between 2 explanatory variables.\n>> I still have doubts about the usage of this \"resid\" variable, mainly\n>> because the interpretation of the results is completely different. Is\n>> the decrease of the whole deviance enough justification to use that\n>> and interpret only the results obtained among models considering\n>> MaleID + resid?\n>>\n>> Thanks again for you all,\n>>\n>> Billy\n>>\n>> On Sat, Dec 11, 2010 at 12:27 PM, Ben Bolker <bbolker at gmail.com> wrote:\n>>> On 10-12-10 09:39 PM, Billy wrote:\n>>>> Hi all!\n>>>>\n>>>> I'm a relatively newbie ecologist student getting adventures at the\n>>>> mixed models world and facing some trouble to interpret random\n>>>> effects. I hope someone could help me.\n>>>> Quickly, I'm constructing different models using glmer() to discover\n>>>> which factors could influence females' reproductive decisions. I have\n>>>> sampled several males and classified them as successful or\n>>>> unsuccessful.  Therefore, I'm modelling logistic regressions with more\n>>>> than one fixed variable and random variables.\n>>>> I have sampled individuals monthly and, sometimes, the same individual\n>>>> (MaleID) was sampled more than once, in different status. Then, I used\n>>>> \"MaleID\" as a random variable.\n>>>> Well, I built a bunch of models considering only MaleID as the random\n>>>> variable as:\n>>>>\n>>>> m1 <- glmer(y ~ 1 + (1|MaleID), family=binomial)\n>>>> m2 <- glmer(y ~ x + (1|MaleID), family=binomial)\n>>>> m3 <- glmer(y ~ z + (1|MaleID), family=binomial)\n>>>>\n>>>>\n>>>> Moreover, in several posts here I've read about count data show high\n>>>> overdispersion, even using family=binomial for the error. One\n>>>> recurrent solution suggested is create a vector to each observation\n>>>> as:\n>>>>\n>>>> resid <- as.factor(1:dim(data)[1])\n>>>>\n>>>> Then, I built models considering this random variable too, trying to\n>>>> understand that, as following\n>>>>\n>>>> m4 <- glmer(y ~ 1 + (1|resid), family=binomial)\n>>>> m5 <- glmer(y ~ x + (1|resid), family=binomial)\n>>>> m6 <- glmer(y ~ w + (1|resid), family=binomial)\n>>>>\n>>>> and\n>>>>\n>>>> m7 <- glmer(y ~ 1 + (1|MaleID:resid ), family=binomial)\n>>>> m8 <- glmer(y ~ x + (1|MaleID:resid ), family=binomial)\n>>>> m9 <- glmer(y ~ z + (1|MaleID:resid ), family=binomial)\n>>>>\n>>>> Using a model selection approach and looking for the deviance and the\n>>>> AIC values, I observed that the correspondent models from the second\n>>>> block (m4, m5 and m6 in the example above) and the third block (m7, m8\n>>>> and m9) showed the same values. Is that due to the \"resid\" random\n>>>> effect?\n>>>>\n>>>\n>>>   I think you want\n>>>\n>>>  ~ [fixed predictor(s)] + (1|MaleID)+(1|resid)\n>>>\n>>> ?\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>\n>>\n>>\n>> --\n>> Gustavo Requena\n>> PhD student - Laboratory of Arthropod Behavior and Evolution\n>> Universidade de São Paulo\n>> Correspondence adress:\n>> a/c Glauco Machado\n>> Departamento de Ecologia - IBUSP\n>> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\n>> CEP 05508-900\n>> Phone number: 55 11 3091-7488\n>>\n>> http://ecologia.ib.usp.br/opilio/gustavo.html\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>\n>\n>\n>\n> --\n> Drew Tyre\n>\n> School of Natural Resources\n> University of Nebraska-Lincoln\n> 416 Hardin Hall, East Campus\n> 3310 Holdrege Street\n> Lincoln, NE 68583-0974\n>\n> phone: +1 402 472 4054\n> fax: +1 402 472 2946\n> email: atyre2 at unl.edu\n> http://snr.unl.edu/tyre\n> http://aminpractice.blogspot.com\n> http://www.flickr.com/photos/atiretoo\n>\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de São Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
       "body_snippet": "Hi Drew!\n\nThanks for the reply, but I think I wasn't clear enough before. As I\nhave sampled males throughout one year, some individuals were sampled\nin more than one month, but several individuals wer",
       "thread_id": "thread-56a613ab6494",
       "thread_depth": 4,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004977.html"
     },
     {
       "id": "msg-37af3b1a2d7c",
@@ -1256,7 +1320,8 @@
       "body_snippet": "Jeremy--\n\nJarrod Hadfield (developer of MCMCglmm) has quite a bit of \ndocumentation, including an article at Journal of Statistical Software \nand fairly extensive course notes, included with the packa",
       "thread_id": "thread-223a2c2e1983",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004978.html"
     },
     {
       "id": "msg-a351d7767dca",
@@ -1273,6 +1338,7 @@
       "thread_id": "thread-a351d7767dca",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004980.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101213/becfd26c/attachment.pl"
       ]
@@ -1293,7 +1359,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-13 05:18 PM, Taylor, Jason wrote:\n> I am looking for some confirmation on the use of F statistics and P\n> values in the anova(model) output for ",
       "thread_id": "thread-a351d7767dca",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004981.html"
     },
     {
       "id": "msg-38bbc4947735",
@@ -1305,11 +1372,12 @@
       "subject_clean": "spatial correlation ANOVA-GLS",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello,\n\nI need some advice about how to include a spatial correlation structure\nto an ANOVA-GLS one-way model. \n\nAfter fitting a simple model asuming uncorrelated errors and plotting a\nvariogram with its normalized residuals variogram the spatial\nautocorrelation was evident (nuget 0,5 and range 600 m aprox).\nSo I tried to fit few models with predefined corStructures (lin, exp,\nsph) without initial values for range and nugget and then looking at\ntheir normalized residuals variograms. Although including correlation\nresults in smaller AICs, the variograms still showing strong spatial\ncorrelation of normalized residuals.  \n\n1) Could it be because of a poor estimation of corStructure? Indeed With\ngstat package, the best model fitted has a nugget efect with to\nspherical structures (2 ranges).\n\n2) Is there a way to bluid a spatial correlation structure including two\nranges?\n\nI'd appreciate some tip. Thanks.\n\n\n-- \nIng. Agr. Agust?n Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
+      "body_plain": "Hello,\n\nI need some advice about how to include a spatial correlation structure\nto an ANOVA-GLS one-way model. \n\nAfter fitting a simple model asuming uncorrelated errors and plotting a\nvariogram with its normalized residuals variogram the spatial\nautocorrelation was evident (nuget 0,5 and range 600 m aprox).\nSo I tried to fit few models with predefined corStructures (lin, exp,\nsph) without initial values for range and nugget and then looking at\ntheir normalized residuals variograms. Although including correlation\nresults in smaller AICs, the variograms still showing strong spatial\ncorrelation of normalized residuals.  \n\n1) Could it be because of a poor estimation of corStructure? Indeed With\ngstat package, the best model fitted has a nugget efect with to\nspherical structures (2 ranges).\n\n2) Is there a way to bluid a spatial correlation structure including two\nranges?\n\nI'd appreciate some tip. Thanks.\n\n\n-- \nIng. Agr. Agustín Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
       "body_snippet": "Hello,\n\nI need some advice about how to include a spatial correlation structure\nto an ANOVA-GLS one-way model. \n\nAfter fitting a simple model asuming uncorrelated errors and plotting a\nvariogram with ",
       "thread_id": "thread-38bbc4947735",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004982.html"
     },
     {
       "id": "msg-cbf270282b37",
@@ -1326,6 +1394,7 @@
       "thread_id": "thread-cbf270282b37",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004983.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101214/0609577a/attachment.pl"
       ]
@@ -1346,7 +1415,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-14 10:01 AM, Arnaud Mosnier wrote:\n> Dear list,\n> \n> I am searching a method to include spatial autocorrelation structure of my\n> dependent vari",
       "thread_id": "thread-cbf270282b37",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004984.html"
     },
     {
       "id": "msg-7cf6a2a3b5b6",
@@ -1365,6 +1435,7 @@
       "thread_id": "thread-cbf270282b37",
       "thread_depth": 1,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004985.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101215/c5a71457/attachment.pl"
       ]
@@ -1386,7 +1457,8 @@
       "body_snippet": "On 10-12-15 09:59 AM, Arnaud Mosnier wrote:\n\n> *However, when I define the correlation structure with a function like\n> corGaus, things start correctly, but after a moment, R simply close\n> without an",
       "thread_id": "thread-cbf270282b37",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004986.html"
     },
     {
       "id": "msg-af6ce7b4f712",
@@ -1402,7 +1474,8 @@
       "body_snippet": "Greetings list,\n\nI'm examining longitudinal data of counts [COUNT] of a species across three years [YEAR] and across 40 sites [SITE].  My primary interest is in the coefficient of YEAR to determine if",
       "thread_id": "thread-af6ce7b4f712",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004987.html"
     },
     {
       "id": "msg-99d4c7aaf15e",
@@ -1420,7 +1493,8 @@
       "body_snippet": "On Wed, 15 Dec 2010, Giancarlo Sadoti wrote:\n\n> I'm examining longitudinal data of counts [COUNT] of a species across \n> three years [YEAR] and across 40 sites [SITE].  My primary interest is \n> in th",
       "thread_id": "thread-af6ce7b4f712",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004988.html"
     },
     {
       "id": "msg-ff6d51bf7f3f",
@@ -1436,7 +1510,8 @@
       "body_snippet": "Thank you David. \n\nI meant to say \"three years is inadequate for the inclusion of an autoregressive or moving-average structure\".  Thank you for confirming this. \n\nMy central question relates to the a",
       "thread_id": "thread-af6ce7b4f712",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004989.html"
     },
     {
       "id": "msg-cae6cfc796b3",
@@ -1454,7 +1529,8 @@
       "body_snippet": "Sorry for the delayed response (end of semester and all that).  You\nmust bear in mind that you are estimating many variance-covariance\nparameters (at least 21 and perhaps more if cohort90 is a factor)",
       "thread_id": "thread-cae6cfc796b3",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004990.html"
     },
     {
       "id": "msg-86ce1221e75d",
@@ -1474,6 +1550,7 @@
       "thread_id": "thread-cbf270282b37",
       "thread_depth": 2,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004991.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101216/65e848a4/attachment.pl"
       ]
@@ -1498,11 +1575,12 @@
         "<AANLkTinTuTHTSuJQ+j12mPAp7dUBs=487WDbkpWBBNgw@mail.gmail.com>",
         "<AANLkTikT=krJ5Jnz+wkyoFOv2DhvwEj_h4UQNYOc8xLm@mail.gmail.com>"
       ],
-      "body_plain": "---------- Forwarded message ----------\nFrom: Billy <billy.requena at gmail.com>\nDate: Fri, Dec 17, 2010 at 3:57 PM\nSubject: Re: [R-sig-ME] Could the random effect at the level of each\nobservation be a trap?\nTo: Drew Tyre <atyre2 at unl.edu>\n\n\nHi Drew!\n\nWell, below I'm sending the summary of two corresponding models (just\nfor simplicity, because I have at least 5 models including onlye the\n'MaleID' random effect and other 5 including 'MaleID' + 'resid'\nrandiom effects):\n\nm1 <- glmer (y~ x + (1|MaleID), family=binomial)\nm1.1 <- glmer (y~ x + (1|MaleID) + (1|resid), family=binomial)\n\n> summary(m1)\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: y ~ x + (1 | MaleID)\n?AIC ?BIC logLik deviance\n?1012 1027 -502.9 ? ? 1006\nRandom effects:\n?Groups Name ? ? ? ?Variance ? Std.Dev.\n?MaleID (Intercept) 6.9038e-11 8.309e-06\nNumber of obs: 1045, groups: MaleID, 464\n\nFixed effects:\n? ? ? ? ? ?Estimate Std. Error z value Pr(>|z|)\n(Intercept) ? -8.273 ? ? ?2.036 ?-4.063 4.84e-05 ***\nx ? ? ? ? ? ? ? ? ? 1.192 ? ? ?0.354 ? 3.366 0.000762 ***\n---\nSignif. codes: ?0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n\nCorrelation of Fixed Effects:\n? (Intr)\nx ?-0.999\n\n> summary(m1.1)\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: y~ x + (1 | MaleID) + (1 | resid)\n? AIC ? BIC logLik deviance\n?619.4 639.2 -305.7 ? ?611.4\nRandom effects:\n?Groups Name ? ? ? ?Variance Std.Dev.\n?resid ?(Intercept) 2089.1 ? 45.707\n?MaleID (Intercept) ? ?0.0 ? ?0.000\nNumber of obs: 1045, groups: resid, 1045; MaleID, 464\n\nFixed effects:\n? ? ? ? ? ?Estimate Std. Error z value Pr(>|z|)\n(Intercept) ?-19.049 ? ? 85.552 ?-0.223 ? ?0.824\nx ? ? ? ? ? ? ? ? ? ?1.281 ? ? 14.844 ? 0.086 ? ?0.931\n\nCorrelation of Fixed Effects:\n? (Intr)\nx ?-0.999\n\n\nWe can see that the variance associated to the 'resid' random variable\nis really huge, but I don't really know if that's a problem or it's\njust expected due the nature of this individual observation-based\nvariable.\nFurthermore, the correlation between fixed effects seems pretty\nstrong, but again I don't know if it's a problem.\nDoes anyone have an insight to help me?\n\nThanks again\n\nBilly\n\n\n--\nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de S?o Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de S?o Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
+      "body_plain": "---------- Forwarded message ----------\nFrom: Billy <billy.requena at gmail.com>\nDate: Fri, Dec 17, 2010 at 3:57 PM\nSubject: Re: [R-sig-ME] Could the random effect at the level of each\nobservation be a trap?\nTo: Drew Tyre <atyre2 at unl.edu>\n\n\nHi Drew!\n\nWell, below I'm sending the summary of two corresponding models (just\nfor simplicity, because I have at least 5 models including onlye the\n'MaleID' random effect and other 5 including 'MaleID' + 'resid'\nrandiom effects):\n\nm1 <- glmer (y~ x + (1|MaleID), family=binomial)\nm1.1 <- glmer (y~ x + (1|MaleID) + (1|resid), family=binomial)\n\n> summary(m1)\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: y ~ x + (1 | MaleID)\n AIC  BIC logLik deviance\n 1012 1027 -502.9     1006\nRandom effects:\n Groups Name        Variance   Std.Dev.\n MaleID (Intercept) 6.9038e-11 8.309e-06\nNumber of obs: 1045, groups: MaleID, 464\n\nFixed effects:\n  ? ? ?    Estimate Std. Error z value Pr(>|z|)\n(Intercept)   -8.273      2.036  -4.063 4.84e-05 ***\nx   ? ? ? ? ? ? ?   1.192      0.354   3.366 0.000762 ***\n---\nSignif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n\nCorrelation of Fixed Effects:\n  (Intr)\nx  -0.999\n\n> summary(m1.1)\nGeneralized linear mixed model fit by the Laplace approximation\nFormula: y~ x + (1 | MaleID) + (1 | resid)\n  AIC   BIC logLik deviance\n 619.4 639.2 -305.7    611.4\nRandom effects:\n Groups Name        Variance Std.Dev.\n resid  (Intercept) 2089.1   45.707\n MaleID (Intercept)    0.0    0.000\nNumber of obs: 1045, groups: resid, 1045; MaleID, 464\n\nFixed effects:\n  ? ? ?    Estimate Std. Error z value Pr(>|z|)\n(Intercept)  -19.049     85.552  -0.223    0.824\nx   ? ? ? ? ? ? ?    1.281     14.844   0.086    0.931\n\nCorrelation of Fixed Effects:\n  (Intr)\nx  -0.999\n\n\nWe can see that the variance associated to the 'resid' random variable\nis really huge, but I don't really know if that's a problem or it's\njust expected due the nature of this individual observation-based\nvariable.\nFurthermore, the correlation between fixed effects seems pretty\nstrong, but again I don't know if it's a problem.\nDoes anyone have an insight to help me?\n\nThanks again\n\nBilly\n\n\n--\nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de São Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html\n\n\n\n-- \nGustavo Requena\nPhD student - Laboratory of Arthropod Behavior and Evolution\nUniversidade de São Paulo\nCorrespondence adress:\na/c Glauco Machado\nDepartamento de Ecologia - IBUSP\nRua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo - SP, Brasil\nCEP 05508-900\nPhone number: 55 11 3091-7488\n\nhttp://ecologia.ib.usp.br/opilio/gustavo.html",
       "body_snippet": "---------- Forwarded message ----------\nFrom: Billy <billy.requena at gmail.com>\nDate: Fri, Dec 17, 2010 at 3:57 PM\nSubject: Re: [R-sig-ME] Could the random effect at the level of each\nobservation be ",
       "thread_id": "thread-db649d6ef359",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004992.html"
     },
     {
       "id": "msg-44ac0a15ac83",
@@ -1525,11 +1603,12 @@
         "<AANLkTikT=krJ5Jnz+wkyoFOv2DhvwEj_h4UQNYOc8xLm@mail.gmail.com>",
         "<AANLkTimQ+=a82G5CbBDPLPctB_HrZbfLLijMtZc348mD@mail.gmail.com>"
       ],
-      "body_plain": "Hi Billy,\n\nAs Drew mentioned, if the data are binary then over-dispersion does  \nnot exist. There may well be heterogeneity at the observation-level  \nnot accounted for by the fixed/random effects, but the data would look  \nthe same irrespective of the magnitude of this heterogeneity. Because  \nthis \"residual\" variation cannot be estimated it is usual to set it to  \nzero (i.e omit 1|resid).\n\nThe sampling correlation between the x coefficient and the intercept  \nis not a problem. For example you could center x,  and the correlation  \nshould be close to zero.\n\nCheers,\n\nJarrod\n\n\n\n\nQuoting Billy <billy.requena at gmail.com>:\n\n> ---------- Forwarded message ----------\n> From: Billy <billy.requena at gmail.com>\n> Date: Fri, Dec 17, 2010 at 3:57 PM\n> Subject: Re: [R-sig-ME] Could the random effect at the level of each\n> observation be a trap?\n> To: Drew Tyre <atyre2 at unl.edu>\n>\n>\n> Hi Drew!\n>\n> Well, below I'm sending the summary of two corresponding models (just\n> for simplicity, because I have at least 5 models including onlye the\n> 'MaleID' random effect and other 5 including 'MaleID' + 'resid'\n> randiom effects):\n>\n> m1 <- glmer (y~ x + (1|MaleID), family=binomial)\n> m1.1 <- glmer (y~ x + (1|MaleID) + (1|resid), family=binomial)\n>\n>> summary(m1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: y ~ x + (1 | MaleID)\n> ?AIC ?BIC logLik deviance\n> ?1012 1027 -502.9 ? ? 1006\n> Random effects:\n> ?Groups Name ? ? ? ?Variance ? Std.Dev.\n> ?MaleID (Intercept) 6.9038e-11 8.309e-06\n> Number of obs: 1045, groups: MaleID, 464\n>\n> Fixed effects:\n> ? ? ? ? ? ?Estimate Std. Error z value Pr(>|z|)\n> (Intercept) ? -8.273 ? ? ?2.036 ?-4.063 4.84e-05 ***\n> x ? ? ? ? ? ? ? ? ? 1.192 ? ? ?0.354 ? 3.366 0.000762 ***\n> ---\n> Signif. codes: ?0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n>\n> Correlation of Fixed Effects:\n> ? (Intr)\n> x ?-0.999\n>\n>> summary(m1.1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: y~ x + (1 | MaleID) + (1 | resid)\n> ? AIC ? BIC logLik deviance\n> ?619.4 639.2 -305.7 ? ?611.4\n> Random effects:\n> ?Groups Name ? ? ? ?Variance Std.Dev.\n> ?resid ?(Intercept) 2089.1 ? 45.707\n> ?MaleID (Intercept) ? ?0.0 ? ?0.000\n> Number of obs: 1045, groups: resid, 1045; MaleID, 464\n>\n> Fixed effects:\n> ? ? ? ? ? ?Estimate Std. Error z value Pr(>|z|)\n> (Intercept) ?-19.049 ? ? 85.552 ?-0.223 ? ?0.824\n> x ? ? ? ? ? ? ? ? ? ?1.281 ? ? 14.844 ? 0.086 ? ?0.931\n>\n> Correlation of Fixed Effects:\n> ? (Intr)\n> x ?-0.999\n>\n>\n> We can see that the variance associated to the 'resid' random variable\n> is really huge, but I don't really know if that's a problem or it's\n> just expected due the nature of this individual observation-based\n> variable.\n> Furthermore, the correlation between fixed effects seems pretty\n> strong, but again I don't know if it's a problem.\n> Does anyone have an insight to help me?\n>\n> Thanks again\n>\n> Billy\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de S?o Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de S?o Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Mat?o - Travessa 14 no 321 Cidade Universit?ria, S?o Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
+      "body_plain": "Hi Billy,\n\nAs Drew mentioned, if the data are binary then over-dispersion does  \nnot exist. There may well be heterogeneity at the observation-level  \nnot accounted for by the fixed/random effects, but the data would look  \nthe same irrespective of the magnitude of this heterogeneity. Because  \nthis \"residual\" variation cannot be estimated it is usual to set it to  \nzero (i.e omit 1|resid).\n\nThe sampling correlation between the x coefficient and the intercept  \nis not a problem. For example you could center x,  and the correlation  \nshould be close to zero.\n\nCheers,\n\nJarrod\n\n\n\n\nQuoting Billy <billy.requena at gmail.com>:\n\n> ---------- Forwarded message ----------\n> From: Billy <billy.requena at gmail.com>\n> Date: Fri, Dec 17, 2010 at 3:57 PM\n> Subject: Re: [R-sig-ME] Could the random effect at the level of each\n> observation be a trap?\n> To: Drew Tyre <atyre2 at unl.edu>\n>\n>\n> Hi Drew!\n>\n> Well, below I'm sending the summary of two corresponding models (just\n> for simplicity, because I have at least 5 models including onlye the\n> 'MaleID' random effect and other 5 including 'MaleID' + 'resid'\n> randiom effects):\n>\n> m1 <- glmer (y~ x + (1|MaleID), family=binomial)\n> m1.1 <- glmer (y~ x + (1|MaleID) + (1|resid), family=binomial)\n>\n>> summary(m1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: y ~ x + (1 | MaleID)\n>  AIC  BIC logLik deviance\n>  1012 1027 -502.9     1006\n> Random effects:\n>  Groups Name        Variance   Std.Dev.\n>  MaleID (Intercept) 6.9038e-11 8.309e-06\n> Number of obs: 1045, groups: MaleID, 464\n>\n> Fixed effects:\n>   ? ? ?    Estimate Std. Error z value Pr(>|z|)\n> (Intercept)   -8.273      2.036  -4.063 4.84e-05 ***\n> x ? ? ? ? ? ? ? ?   1.192      0.354   3.366 0.000762 ***\n> ---\n> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n>\n> Correlation of Fixed Effects:\n>   (Intr)\n> x  -0.999\n>\n>> summary(m1.1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: y~ x + (1 | MaleID) + (1 | resid)\n>   AIC   BIC logLik deviance\n>  619.4 639.2 -305.7    611.4\n> Random effects:\n>  Groups Name        Variance Std.Dev.\n>  resid  (Intercept) 2089.1   45.707\n>  MaleID (Intercept)    0.0    0.000\n> Number of obs: 1045, groups: resid, 1045; MaleID, 464\n>\n> Fixed effects:\n>   ? ? ?    Estimate Std. Error z value Pr(>|z|)\n> (Intercept)  -19.049     85.552  -0.223    0.824\n> x ? ? ? ? ? ? ? ?    1.281     14.844   0.086    0.931\n>\n> Correlation of Fixed Effects:\n>   (Intr)\n> x  -0.999\n>\n>\n> We can see that the variance associated to the 'resid' random variable\n> is really huge, but I don't really know if that's a problem or it's\n> just expected due the nature of this individual observation-based\n> variable.\n> Furthermore, the correlation between fixed effects seems pretty\n> strong, but again I don't know if it's a problem.\n> Does anyone have an insight to help me?\n>\n> Thanks again\n>\n> Billy\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de São Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n>\n>\n> --\n> Gustavo Requena\n> PhD student - Laboratory of Arthropod Behavior and Evolution\n> Universidade de São Paulo\n> Correspondence adress:\n> a/c Glauco Machado\n> Departamento de Ecologia - IBUSP\n> Rua do Matão - Travessa 14 no 321 Cidade Universitária, São Paulo -  \n> SP, Brasil\n> CEP 05508-900\n> Phone number: 55 11 3091-7488\n>\n> http://ecologia.ib.usp.br/opilio/gustavo.html\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n\n\n\n-- \nThe University of Edinburgh is a charitable body, registered in\nScotland, with registration number SC005336.",
       "body_snippet": "Hi Billy,\n\nAs Drew mentioned, if the data are binary then over-dispersion does  \nnot exist. There may well be heterogeneity at the observation-level  \nnot accounted for by the fixed/random effects, bu",
       "thread_id": "thread-db649d6ef359",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004993.html"
     },
     {
       "id": "msg-8504ace6284a",
@@ -1545,7 +1624,8 @@
       "body_snippet": "Hi,\n\nI'm trying to compare models with same fixed effects but different\nrandom effects, but I've noticed that for lm models, I get a different\nAIC value when I compare models with anova, compared to w",
       "thread_id": "thread-8504ace6284a",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004994.html"
     },
     {
       "id": "msg-06a2531f1564",
@@ -1563,7 +1643,8 @@
       "body_snippet": "On 10-12-19 12:26 PM, Jude Phillips wrote:\n> Hi,\n> \n> I'm trying to compare models with same fixed effects but different\n> random effects, but I've noticed that for lm models, I get a different\n> AIC ",
       "thread_id": "thread-8504ace6284a",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004995.html"
     },
     {
       "id": "msg-0d7fb61e1218",
@@ -1581,7 +1662,8 @@
       "body_snippet": "On Wed, 15 Dec 2010, Giancarlo Sadoti wrote:\n\n> My central question relates to the apparent and confounding influence of \n> another characteristic of each site (in this case the mean # of \n> individua",
       "thread_id": "thread-af6ce7b4f712",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004996.html"
     },
     {
       "id": "msg-d686e164becc",
@@ -1598,6 +1680,7 @@
       "thread_id": "thread-d686e164becc",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004997.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101220/c09a2923/attachment.pl"
       ]
@@ -1617,6 +1700,7 @@
       "thread_id": "thread-a545a87169f6",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004998.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101220/1f7499e9/attachment.pl"
       ]
@@ -1636,6 +1720,7 @@
       "thread_id": "thread-503d63e3de2d",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004999.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101220/9e5e2fde/attachment.pl"
       ]
@@ -1652,11 +1737,12 @@
       "references": [
         "<SNT131-w36415687676905A864942FE1190@phx.gbl>"
       ],
-      "body_plain": "Hello,\n\nyou should first search the archives, very often  similar questions have \nbeen asked in the past. E.g. see :\n\nhttp://www.mail-archive.com/r-help at r-project.org/msg80092.html\n\n\n >I noticed that it appears most of the time when I try to include the \n(temperature^2).\n\nDo you have enough data to estimate a quadratic effect?\n\n\nHTH,\n\nCheers,\n\nLuca\n\n\n-------------------------------------------\nLuca Borger\nPostdoctoral Research Fellow\nCNRS - Centre d'Etudes Biologiques de Chiz?\nVilliers-en-Bois\n79360 Beauvoir-sur-Niort\nFrance\n\nTel: +33 (0)549 09 96 13\nFax: +33 (0)549 09 65 26\n\nemail: lborger at cebc.cnrs.fr\nhttp://www.researcherid.com/rid/C-6003-2008\n-------------------------------------------\n\n\nLe 20/12/2010 15:55, Marie-H?l?ne Hachey a ?crit :\n> Hi, I am running a model with lmer and I had this message from R (2.12)\n>> Model<-lmer(freq ~ ln_age_rel + ppt_vis + gps_dec + tempsq + (1|espece/nestid), family=poisson)Messages d'avis :1: In mer_finalize(ans) :  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 4322: In mer_finalize(ans) :  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 4323: In mer_finalize(ans) : singular convergence (7)>  summary (Model)Erreur dans asMethod(object) : matrix is not symmetric [1,2]\n> Can anyone give me a clue about what the message means?>  I noticed that it appears most of the time when I try to include the (temperature^2).\n> Thank you\n> Marie-Helene \t\t \t   \t\t\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> __________ Information from ESET Mail Security, version of virus signature database 5718 (20101220) __________\n>\n> The message was checked by ESET Mail Security.\n> http://www.eset.com\n>\n>\n>\n>\n>\n\n\n\n__________ Information from ESET Mail Security, version of virus signature database 5718 (20101220) __________\n\nThe message was checked by ESET Mail Security.\nhttp://www.eset.com",
+      "body_plain": "Hello,\n\nyou should first search the archives, very often  similar questions have \nbeen asked in the past. E.g. see :\n\nhttp://www.mail-archive.com/r-help at r-project.org/msg80092.html\n\n\n >I noticed that it appears most of the time when I try to include the \n(temperature^2).\n\nDo you have enough data to estimate a quadratic effect?\n\n\nHTH,\n\nCheers,\n\nLuca\n\n\n-------------------------------------------\nLuca Borger\nPostdoctoral Research Fellow\nCNRS - Centre d'Etudes Biologiques de Chizé\nVilliers-en-Bois\n79360 Beauvoir-sur-Niort\nFrance\n\nTel: +33 (0)549 09 96 13\nFax: +33 (0)549 09 65 26\n\nemail: lborger at cebc.cnrs.fr\nhttp://www.researcherid.com/rid/C-6003-2008\n-------------------------------------------\n\n\nLe 20/12/2010 15:55, Marie-Hélène Hachey a écrit :\n> Hi, I am running a model with lmer and I had this message from R (2.12)\n>> Model<-lmer(freq ~ ln_age_rel + ppt_vis + gps_dec + tempsq + (1|espece/nestid), family=poisson)Messages d'avis :1: In mer_finalize(ans) :  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 4322: In mer_finalize(ans) :  Cholmod warning 'not positive definite' at file:../Cholesky/t_cholmod_rowfac.c, line 4323: In mer_finalize(ans) : singular convergence (7)>  summary (Model)Erreur dans asMethod(object) : matrix is not symmetric [1,2]\n> Can anyone give me a clue about what the message means?>  I noticed that it appears most of the time when I try to include the (temperature^2).\n> Thank you\n> Marie-Helene \t\t \t   \t\t\n> \t[[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n>\n> __________ Information from ESET Mail Security, version of virus signature database 5718 (20101220) __________\n>\n> The message was checked by ESET Mail Security.\n> http://www.eset.com\n>\n>\n>\n>\n>\n\n\n\n__________ Information from ESET Mail Security, version of virus signature database 5718 (20101220) __________\n\nThe message was checked by ESET Mail Security.\nhttp://www.eset.com",
       "body_snippet": "Hello,\n\nyou should first search the archives, very often  similar questions have \nbeen asked in the past. E.g. see :\n\nhttp://www.mail-archive.com/r-help at r-project.org/msg80092.html\n\n\n >I noticed th",
       "thread_id": "thread-a545a87169f6",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005000.html"
     },
     {
       "id": "msg-b1ea9a09e55c",
@@ -1670,11 +1756,12 @@
       "references": [
         "<SNT131-w434EF557EA2B6546C152D4E1190@phx.gbl>"
       ],
-      "body_plain": "On 10-12-20 10:09 AM, Marie-H?l?ne Hachey wrote:\n> \n> Hi, Sorry I forgot to put a subjet on my last message. I also should\n> have added that my dataset has only 49 lines. I am starting to\n> understand by reading messages from R-help that the singular\n> convergence is a problem aboutthe number of lines of data not being\n> enough to estimate effects of many variables? Thank you for\n> confirming this! Marie-Helene\n\n  Yes.  The rule of thumb (see e.g. Frank Harrell's book) is that you\nshould have at least 10-20 data points per parameter you want to\nestimate, and that's a best case scenario for continuously distributed\ndata -- for example, if your Poisson data are fairly sparse they count\nfor less.",
-      "body_snippet": "On 10-12-20 10:09 AM, Marie-H?l?ne Hachey wrote:\n> \n> Hi, Sorry I forgot to put a subjet on my last message. I also should\n> have added that my dataset has only 49 lines. I am starting to\n> understand",
+      "body_plain": "On 10-12-20 10:09 AM, Marie-Hélène Hachey wrote:\n> \n> Hi, Sorry I forgot to put a subjet on my last message. I also should\n> have added that my dataset has only 49 lines. I am starting to\n> understand by reading messages from R-help that the singular\n> convergence is a problem aboutthe number of lines of data not being\n> enough to estimate effects of many variables? Thank you for\n> confirming this! Marie-Helene\n\n  Yes.  The rule of thumb (see e.g. Frank Harrell's book) is that you\nshould have at least 10-20 data points per parameter you want to\nestimate, and that's a best case scenario for continuously distributed\ndata -- for example, if your Poisson data are fairly sparse they count\nfor less.",
+      "body_snippet": "On 10-12-20 10:09 AM, Marie-Hélène Hachey wrote:\n> \n> Hi, Sorry I forgot to put a subjet on my last message. I also should\n> have added that my dataset has only 49 lines. I am starting to\n> understand",
       "thread_id": "thread-503d63e3de2d",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005001.html"
     },
     {
       "id": "msg-dc6f450b20c1",
@@ -1690,7 +1777,8 @@
       "body_snippet": "Hi all--\n\nI am wondering whether MCMCglmm will take an offset?  Specifically, we \nhave a study with number of drinks as the outcome, but we also have an \nestimate of over how many hours those drinks w",
       "thread_id": "thread-dc6f450b20c1",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005002.html"
     },
     {
       "id": "msg-d5f073346c57",
@@ -1702,11 +1790,12 @@
       "subject_clean": "help creating spatial autocorrelation structure",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Hello dear readers,\n\nI'm working with nlme package and I need to create a double-spherical\ncorrelation structure to include into my ANOVA-GLS model. As Pinheiro &\nBates suggests in their book (\"Mixed-effects models in S and S-Plus\",\n2000, Springer), I have to create a corSpatial constructor and at least\nmethods for 'coef', 'corMatrix' and 'Initialize' functions.\nI'm a (pre)intermediate user of R, so I'd appreciate if someone could\nsend me and example of how to create a croSpatial class and those\nmethods (commented code would be great).\n\nThanks in advance!\n\nBest regards,\n\n-- \nIng. Agr. Agust?n Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
+      "body_plain": "Hello dear readers,\n\nI'm working with nlme package and I need to create a double-spherical\ncorrelation structure to include into my ANOVA-GLS model. As Pinheiro &\nBates suggests in their book (\"Mixed-effects models in S and S-Plus\",\n2000, Springer), I have to create a corSpatial constructor and at least\nmethods for 'coef', 'corMatrix' and 'Initialize' functions.\nI'm a (pre)intermediate user of R, so I'd appreciate if someone could\nsend me and example of how to create a croSpatial class and those\nmethods (commented code would be great).\n\nThanks in advance!\n\nBest regards,\n\n-- \nIng. Agr. Agustín Alesso\nDpto. Ciencias del Ambiente\nFac. Cs. Agrarias - UNL\nKreder 2805 - S3080HOF - Esperanza\nTel: 03496-428575 int 337/256",
       "body_snippet": "Hello dear readers,\n\nI'm working with nlme package and I need to create a double-spherical\ncorrelation structure to include into my ANOVA-GLS model. As Pinheiro &\nBates suggests in their book (\"Mixed-",
       "thread_id": "thread-d5f073346c57",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005003.html"
     },
     {
       "id": "msg-4ed6c8e864b8",
@@ -1724,7 +1813,8 @@
       "body_snippet": "Setting the prior of \"off30\" manually to 1 produce results that appear\nvery similar to glmer with \"off30\" as an offset.\n\nIt would be interesting to know if this is the intended way of\nspecifying an of",
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005004.html"
     },
     {
       "id": "msg-46d6d30d6931",
@@ -1740,7 +1830,8 @@
       "body_snippet": "Thanks, all, for the discussion on this.\n\nMy take-home message seems to be that messing around with lme or\nlmer-like calculations is simply not very sensible with small numbers of\ngroups. Is that fair",
       "thread_id": "thread-46d6d30d6931",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005005.html"
     },
     {
       "id": "msg-c232d4530d0c",
@@ -1759,7 +1850,8 @@
       "body_snippet": "Ben Bolker <bbolker at ...> writes:\n\n> \n>   You need to be using the development version (lme4a).\n>   install.packages(\"lme4a\",repos=\"http://r-forge.r-project.org\")\n>   if that fails, try posting sess",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005006.html"
     },
     {
       "id": "msg-66618f271e23",
@@ -1779,7 +1871,8 @@
       "body_snippet": "On 10-12-21 12:58 PM, Dieter Menne wrote:\n> Ben Bolker <bbolker at ...> writes:\n> \n>>\n>>   You need to be using the development version (lme4a).\n>>   install.packages(\"lme4a\",repos=\"http://r-forge.r-p",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005007.html"
     },
     {
       "id": "msg-0c210dae2826",
@@ -1800,7 +1893,8 @@
       "body_snippet": "That's an lme4 binary that you linked to on r-forge. Your hosted\nbinary work though cheers.\n\nAndy.\n\n\nandydolman at gmail.com\n\n\n\nOn 21 December 2010 19:11, Ben Bolker <bbolker at gmail.com> wrote:\n> On",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 4,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005009.html"
     },
     {
       "id": "msg-3775dc9d2c1d",
@@ -1816,7 +1910,8 @@
       "body_snippet": "Hi,\nThe offset term should have mean = 1, I guess. A work around might be to \nfix the parameter to one. Or?\nThe results corresponds to what lmer() gives.\n\nprior2 = list(B= list (mu = matrix(c(0,1,0,0,",
       "thread_id": "thread-3775dc9d2c1d",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005008.html"
     },
     {
       "id": "msg-2b6cda18775f",
@@ -1838,7 +1933,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-21 01:25 PM, Andrew Dolman wrote:\n> That's an lme4 binary that you linked to on r-forge. Your hosted\n> binary work though cheers.\n> \n> Andy.\n> \n",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 5,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005010.html"
     },
     {
       "id": "msg-293609a871f2",
@@ -1857,7 +1953,8 @@
       "body_snippet": "Happy Holidays to All,\n\n  I'm trying to use nlmer to model some data from an experiment I ran \nand am having some trouble specifying the model correctly. Would \nappreciate any insight you can provide.",
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005011.html"
     },
     {
       "id": "msg-69a0872f6a52",
@@ -1877,7 +1974,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 10-12-21 02:43 PM, James Widman wrote:\n> Happy Holidays to All,\n> \n>  I'm trying to use nlmer to model some data from an experiment I ran and\n> am hav",
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005012.html"
     },
     {
       "id": "msg-4bf45d3d5623",
@@ -1898,6 +1996,7 @@
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 2,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005013.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101221/a5aa03df/attachment.pl"
       ]
@@ -1917,6 +2016,7 @@
       "thread_id": "thread-459be1a0728c",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005014.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101221/5a4993ef/attachment.pl"
       ]
@@ -1938,11 +2038,12 @@
         "<AANLkTimKFeXn2OevR6=92JtYUBn-CZijXyBxH30mLtOj@mail.gmail.com>",
         "<4D10F171.9070005@gmail.com>"
       ],
-      "body_plain": "I have a \"page not found\" message for this URL.\n\nRenaud\n\nLe 21/12/2010 19:26, Ben Bolker a ?crit :\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 10-12-21 01:25 PM, Andrew Dolman wrote:\n>> That's an lme4 binary that you linked to on r-forge. Your hosted\n>> binary work though cheers.\n>>\n>> Andy.\n>>\n>>\n>> andydolman at gmail.com\n>>\n>\n>   Oops.  How about\n>\n> <https://r-forge.r-project.org/bin/windows/contrib/latest/lme4a_0.999375-59.zip>\n>\n>    ?\n>\n>\n>>\n>>\n>> On 21 December 2010 19:11, Ben Bolker<bbolker at gmail.com>  wrote:\n>>> On 10-12-21 12:58 PM, Dieter Menne wrote:\n>>>> Ben Bolker<bbolker at ...>  writes:\n>>>>\n>>>>>\n>>>>>    You need to be using the development version (lme4a).\n>>>>>    install.packages(\"lme4a\",repos=\"http://r-forge.r-project.org\")\n>>>>>    if that fails, try posting sessionInfo()\n>>>>\n>>>> This fails on Windows, and has been reported several times already and confirmed\n>>>> as \"temporary broken\".\n>>>>\n>>>> Is there a way to get the Windows build updated?\n>>>>\n>>>> Dieter\n>>>>\n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>>   (Resending to list)\n>>>\n>>>   I've put up a recent binary (32-bit Windows, R 2.12.x): try\n>>>\n>>> install.packages(\"lme4a\",repos=\"http://www.math.mcmaster.ca/bolker/R\")\n>>>\n>>> and let me know if it works.\n>>>\n>>> I'm a little puzzled that install.packages() doesn't work from R-forge,\n>>> there seems to be a binary version there: can you download\n>>> <https://r-forge.r-project.org/bin/windows/contrib/latest/lme4_0.999375-37.zip>\n>>>   ... ?\n>>>\n>>>   Ben\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>\n> -----BEGIN PGP SIGNATURE-----\n> Version: GnuPG v1.4.10 (GNU/Linux)\n> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n>\n> iEYEARECAAYFAk0Q8XEACgkQc5UpGjwzenNo3gCePG24NoFCoZ/lcvv8QJawde43\n> O3oAnjZqcTR6y2KjbTgU9uKkzcVM/BW+\n> =g4SJ\n> -----END PGP SIGNATURE-----\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-- \nRenaud Lancelot\nEDEN Project, coordinator\nhttp://www.eden-fp6project.net/\n\nUMR CIRAD-INRA \"Contr?le des maladies animales exotiques et ?mergentes\"\nJoint research unit \"Control of emerging and exotic animal diseases\"\n\nCIRAD, Campus International de Baillarguet TA A-DIR / B\nF34398 Montpellier\nhttp://umr-cmaee.cirad.fr/\n\nTel.  +33 4 67 59 37 17  -  Fax  +33 4 67 59 37 95\nSecr. +33 4 67 59 37 37  - Cell. +33 6 77 52 08 69",
-      "body_snippet": "I have a \"page not found\" message for this URL.\n\nRenaud\n\nLe 21/12/2010 19:26, Ben Bolker a ?crit :\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 10-12-21 01:25 PM, Andrew Dolman wrote:\n>> T",
+      "body_plain": "I have a \"page not found\" message for this URL.\n\nRenaud\n\nLe 21/12/2010 19:26, Ben Bolker a écrit :\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 10-12-21 01:25 PM, Andrew Dolman wrote:\n>> That's an lme4 binary that you linked to on r-forge. Your hosted\n>> binary work though cheers.\n>>\n>> Andy.\n>>\n>>\n>> andydolman at gmail.com\n>>\n>\n>   Oops.  How about\n>\n> <https://r-forge.r-project.org/bin/windows/contrib/latest/lme4a_0.999375-59.zip>\n>\n>    ?\n>\n>\n>>\n>>\n>> On 21 December 2010 19:11, Ben Bolker<bbolker at gmail.com>  wrote:\n>>> On 10-12-21 12:58 PM, Dieter Menne wrote:\n>>>> Ben Bolker<bbolker at ...>  writes:\n>>>>\n>>>>>\n>>>>>    You need to be using the development version (lme4a).\n>>>>>    install.packages(\"lme4a\",repos=\"http://r-forge.r-project.org\")\n>>>>>    if that fails, try posting sessionInfo()\n>>>>\n>>>> This fails on Windows, and has been reported several times already and confirmed\n>>>> as \"temporary broken\".\n>>>>\n>>>> Is there a way to get the Windows build updated?\n>>>>\n>>>> Dieter\n>>>>\n>>>> _______________________________________________\n>>>> R-sig-mixed-models at r-project.org mailing list\n>>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>>>   (Resending to list)\n>>>\n>>>   I've put up a recent binary (32-bit Windows, R 2.12.x): try\n>>>\n>>> install.packages(\"lme4a\",repos=\"http://www.math.mcmaster.ca/bolker/R\")\n>>>\n>>> and let me know if it works.\n>>>\n>>> I'm a little puzzled that install.packages() doesn't work from R-forge,\n>>> there seems to be a binary version there: can you download\n>>> <https://r-forge.r-project.org/bin/windows/contrib/latest/lme4_0.999375-37.zip>\n>>>   ... ?\n>>>\n>>>   Ben\n>>>\n>>> _______________________________________________\n>>> R-sig-mixed-models at r-project.org mailing list\n>>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>>>\n>\n> -----BEGIN PGP SIGNATURE-----\n> Version: GnuPG v1.4.10 (GNU/Linux)\n> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n>\n> iEYEARECAAYFAk0Q8XEACgkQc5UpGjwzenNo3gCePG24NoFCoZ/lcvv8QJawde43\n> O3oAnjZqcTR6y2KjbTgU9uKkzcVM/BW+\n> =g4SJ\n> -----END PGP SIGNATURE-----\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n-- \nRenaud Lancelot\nEDEN Project, coordinator\nhttp://www.eden-fp6project.net/\n\nUMR CIRAD-INRA \"Contrôle des maladies animales exotiques et émergentes\"\nJoint research unit \"Control of emerging and exotic animal diseases\"\n\nCIRAD, Campus International de Baillarguet TA A-DIR / B\nF34398 Montpellier\nhttp://umr-cmaee.cirad.fr/\n\nTel.  +33 4 67 59 37 17  -  Fax  +33 4 67 59 37 95\nSecr. +33 4 67 59 37 37  - Cell. +33 6 77 52 08 69",
+      "body_snippet": "I have a \"page not found\" message for this URL.\n\nRenaud\n\nLe 21/12/2010 19:26, Ben Bolker a écrit :\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 10-12-21 01:25 PM, Andrew Dolman wrote:\n>> T",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 6,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005015.html"
     },
     {
       "id": "msg-11eff0be8c0d",
@@ -1966,7 +2067,8 @@
       "body_snippet": "There is a:\n\nhttps://r-forge.r-project.org/bin/windows/contrib/latest/lme4b_0.999375-60.zip\n????\n From previous mails, I believe this version was not intended to be used \nby  lambda user  ,  is it sti",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 7,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005016.html"
     },
     {
       "id": "msg-dd4f713dd9b4",
@@ -1987,11 +2089,12 @@
         "<4D11BD5A.7090504@cirad.fr>",
         "<4D11C3EF.7050302@lpl-aix.fr>"
       ],
-      "body_plain": "espesser <robert.espesser at ...> writes:\n\n> \n>   There is a:\n> \n> https://r-forge.r-project.org/bin/windows/contrib/latest/lme4b_0.999375-60.zip\n> ????\n>  From previous mails, I believe this version was not intended to be used \n> by  lambda user  ,  is it still true ?\n> I'm looking for a windows  lme4a   distribution to  use logit link from \n> package \"psyphy\" (function mafc()  )   in lmer() .\n> Dr Bates mailed some times ago about this.\n> R. Espesser\n> \n>>>>> snip <<<<<<<<<<<<\n\ndo see\n\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004531.html\n\nalthough the current version of lme4a doesn't seem to be available from\nthe package installer on Mac OS X, but this usually is resolved in several\ndays, if one is patient.\n\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen L?pine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
+      "body_plain": "espesser <robert.espesser at ...> writes:\n\n> \n>   There is a:\n> \n> https://r-forge.r-project.org/bin/windows/contrib/latest/lme4b_0.999375-60.zip\n> ????\n>  From previous mails, I believe this version was not intended to be used \n> by  lambda user  ,  is it still true ?\n> I'm looking for a windows  lme4a   distribution to  use logit link from \n> package \"psyphy\" (function mafc()  )   in lmer() .\n> Dr Bates mailed some times ago about this.\n> R. Espesser\n> \n>>>>> snip <<<<<<<<<<<<\n\ndo see\n\nhttps://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/004531.html\n\nalthough the current version of lme4a doesn't seem to be available from\nthe package installer on Mac OS X, but this usually is resolved in several\ndays, if one is patient.\n\n\n-- \nKen Knoblauch\nInserm U846\nStem-cell and Brain Research Institute\nDepartment of Integrative Neurosciences\n18 avenue du Doyen Lépine\n69500 Bron\nFrance\ntel: +33 (0)4 72 91 34 77\nfax: +33 (0)4 72 91 34 61\nportable: +33 (0)6 84 10 64 10\nhttp://www.sbri.fr/members/kenneth-knoblauch.html",
       "body_snippet": "espesser <robert.espesser at ...> writes:\n\n> \n>   There is a:\n> \n> https://r-forge.r-project.org/bin/windows/contrib/latest/lme4b_0.999375-60.zip\n> ????\n>  From previous mails, I believe this version ",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 8,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005017.html"
     },
     {
       "id": "msg-f8cfc70d79ee",
@@ -2015,7 +2118,8 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n  Yes.  For now I think\n\ninstall.packages(\"lme4a\",repos=\"http://www.math.mcmaster.ca/bolker/R\")\n\nor\n\nmanually getting\n\n<http://www.math.mcmaster.ca/bolke",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 7,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005018.html"
     },
     {
       "id": "msg-9638c3920b66",
@@ -2041,6 +2145,7 @@
       "thread_id": "thread-60b52697457c",
       "thread_depth": 8,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005019.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101222/5efd2481/attachment.pl"
       ]
@@ -2065,6 +2170,7 @@
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 3,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005021.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101222/267b5ed4/attachment.pl"
       ]
@@ -2088,7 +2194,8 @@
       "body_snippet": "Hi Ben,\n   Thanks for your help, I'm closer but not there yet - see below.\nOn 12/21/2010 04:16 PM, Ben Bolker wrote:\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n>\n> On 10-12-21 02:43 PM, James W",
       "thread_id": "thread-4ed6c8e864b8",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005020.html"
     },
     {
       "id": "msg-69783972cb4c",
@@ -2106,7 +2213,8 @@
       "body_snippet": "Thanks to both Gustaf and Jens for their responses.  In a nutshell, I \nwasn't thinking like a Bayesian! ;)\n\nLet me unpack their proposals, to confirm *I* understand, and also so \nthat there is a recor",
       "thread_id": "thread-3775dc9d2c1d",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005022.html"
     },
     {
       "id": "msg-96f261f4080c",
@@ -2122,7 +2230,8 @@
       "body_snippet": "Hello all!\nI noticed that many users, here and otherwise, use term \"hierarchical \nmodels\" to refer to models that are nested. However, in other places, \none can find \"hierarchical models\" to refer to ",
       "thread_id": "thread-96f261f4080c",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005023.html"
     },
     {
       "id": "msg-29b59cd2c420",
@@ -2141,6 +2250,7 @@
       "thread_id": "thread-459be1a0728c",
       "thread_depth": 1,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005024.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101223/8d13e87a/attachment.pl"
       ]
@@ -2160,6 +2270,7 @@
       "thread_id": "thread-d0dec8657b89",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005025.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101224/41fc6119/attachment.pl"
       ]
@@ -2180,7 +2291,8 @@
       "body_snippet": "A strict use of language would use the term \"hierarchical multilevel model\" when the error terms have a hierarchical structure, e.g. subplots within\nplots within blocks within sites.  One may also spe",
       "thread_id": "thread-96f261f4080c",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005026.html"
     },
     {
       "id": "msg-7668377de3f7",
@@ -2199,7 +2311,8 @@
       "body_snippet": "On 24/12/10 01:37, John Maindonald wrote:\n> A strict use of language would use the term \"hierarchical multilevel model\" when the error terms have a hierarchical structure, e.g. subplots within\n> plots",
       "thread_id": "thread-96f261f4080c",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005027.html"
     },
     {
       "id": "msg-393a1df96cc6",
@@ -2217,7 +2330,8 @@
       "body_snippet": "Hello Anna,\n\nMy first reaction on reading this was that your random effects\nstructure is far too complicated. In fact, I'm not sure you need to be\nusing mixed effects models at all.\n\n> model1_lme<-lme",
       "thread_id": "thread-d0dec8657b89",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005028.html"
     },
     {
       "id": "msg-837237735eb0",
@@ -2232,11 +2346,12 @@
         "<91268D5D4CFDA744A78BAA0F930F4F857CFDC8D2B0@exvic-mbx04.nexus.csiro.au>",
         "<AANLkTinDFe-EfVRGN4A+YMg+VON6F7PZc9+kzERyOqfP@mail.gmail.com>"
       ],
-      "body_plain": "El 24/12/2010 17:45, Andrew Dolman escribi?:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fire. (It's also a confusing name. Consider calling it\n> habitat, or canopy(T,F))\n>\nI may be misunderstanding the design, but I would be somewhat reluctant to throw \naway the random effect for patch. Indeed I think that Andrew is right when \nconsidering renaming this factor as canopy or habitat (a factor wih two levels); \nhowever, if the \"replicates\" are taken from beneath a single canopy (instead of \nselecting different canopies from a plot), should not this nesting be included \nin the random effects, even if the structure seems complicated?\nMoreover, I do not think that canopy and plot are crossed, since you cannot move \none canopy from one plot to another, and each canopy on each plot is actually a \ndifferent individual.\nForgive me if I got it completely wrong. And merry Christmas by the way.\n\n\n-- \n---------------------------------------\nJos? M. Blanco Moreno\n\nDept. de Biologia Vegetal (Bot?nica)\nUniversitat de Barcelona\nAv. Diagonal 645\n08028 Barcelona SPAIN\n---------------------------------------\n\nphone: (+34) 934 039 863\nfax: (+34) 934 112 842\ne-mail: jmblanco at ub.edu",
-      "body_snippet": "El 24/12/2010 17:45, Andrew Dolman escribi?:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fi",
+      "body_plain": "El 24/12/2010 17:45, Andrew Dolman escribió:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fire. (It's also a confusing name. Consider calling it\n> habitat, or canopy(T,F))\n>\nI may be misunderstanding the design, but I would be somewhat reluctant to throw \naway the random effect for patch. Indeed I think that Andrew is right when \nconsidering renaming this factor as canopy or habitat (a factor wih two levels); \nhowever, if the \"replicates\" are taken from beneath a single canopy (instead of \nselecting different canopies from a plot), should not this nesting be included \nin the random effects, even if the structure seems complicated?\nMoreover, I do not think that canopy and plot are crossed, since you cannot move \none canopy from one plot to another, and each canopy on each plot is actually a \ndifferent individual.\nForgive me if I got it completely wrong. And merry Christmas by the way.\n\n\n-- \n---------------------------------------\nJosé M. Blanco Moreno\n\nDept. de Biologia Vegetal (Botànica)\nUniversitat de Barcelona\nAv. Diagonal 645\n08028 Barcelona SPAIN\n---------------------------------------\n\nphone: (+34) 934 039 863\nfax: (+34) 934 112 842\ne-mail: jmblanco at ub.edu",
+      "body_snippet": "El 24/12/2010 17:45, Andrew Dolman escribió:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fi",
       "thread_id": "thread-d0dec8657b89",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005029.html"
     },
     {
       "id": "msg-d659afdff2c7",
@@ -2256,7 +2371,8 @@
       "body_snippet": "Petar,\n\nMediation analysis is not necessarily tied to multilevel models. While you\ncan certainly test meditation hypotheses with multilevel models, you can\nalso test them in data that do not have the ",
       "thread_id": "thread-96f261f4080c",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005030.html"
     },
     {
       "id": "msg-63b39fa25f57",
@@ -2277,7 +2393,8 @@
       "body_snippet": "Dear Steven,\nThis is very elaborated and precise explanation. Thank you very much!\nMoreover, this is exactly what I learned about these terms. Recently, \nfew of my students were confused with \"multile",
       "thread_id": "thread-96f261f4080c",
       "thread_depth": 4,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005031.html"
     },
     {
       "id": "msg-2c3caf27c70f",
@@ -2293,7 +2410,8 @@
       "body_snippet": "Hi folks,\n\nI'm working on an update to the \"ez\" package, which has an\n\"ezPredict()\" function to compute fixed effects predictions from an\nlmer object. The version currently on CRAN breaks when the lme",
       "thread_id": "thread-2c3caf27c70f",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005032.html"
     },
     {
       "id": "msg-f0b14a54885b",
@@ -2309,11 +2427,12 @@
         "<AANLkTinDFe-EfVRGN4A+YMg+VON6F7PZc9+kzERyOqfP@mail.gmail.com>",
         "<4D14FA2F.6060301@ub.edu>"
       ],
-      "body_plain": "Thanks Jose and Andrew for the advice, especially so close to Christmas!\n\nI included patch (or canopy type) in the random part of the model because I thought that the three samples taken from each patch type within a fire treatment are more closely related spatially than samples from other fire treatment. (Each 'patch' sample 'pseudo-replicate' was taken from beneath or far from a different tree canopy across the 1 hectare fire treatment plots). Does this mean I should nest patch within block in the random effects?\n\nie. y~patch*date*block, random=~1|block/patch/replicate  \n\nThanks again,\nAnna\n________________________________________\nFrom: Jos? Manuel Blanco Moreno [jmblanco at ub.edu]\nSent: Saturday, December 25, 2010 6:53 AM\nTo: Andrew Dolman\nCc: Richards, Anna (CES, Darwin); r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] design of nested mixed effects model with repeated measures\n\nEl 24/12/2010 17:45, Andrew Dolman escribi?:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fire. (It's also a confusing name. Consider calling it\n> habitat, or canopy(T,F))\n>\nI may be misunderstanding the design, but I would be somewhat reluctant to throw\naway the random effect for patch. Indeed I think that Andrew is right when\nconsidering renaming this factor as canopy or habitat (a factor wih two levels);\nhowever, if the \"replicates\" are taken from beneath a single canopy (instead of\nselecting different canopies from a plot), should not this nesting be included\nin the random effects, even if the structure seems complicated?\nMoreover, I do not think that canopy and plot are crossed, since you cannot move\none canopy from one plot to another, and each canopy on each plot is actually a\ndifferent individual.\nForgive me if I got it completely wrong. And merry Christmas by the way.\n\n\n--\n---------------------------------------\nJos? M. Blanco Moreno\n\nDept. de Biologia Vegetal (Bot?nica)\nUniversitat de Barcelona\nAv. Diagonal 645\n08028 Barcelona SPAIN\n---------------------------------------\n\nphone: (+34) 934 039 863\nfax: (+34) 934 112 842\ne-mail: jmblanco at ub.edu",
+      "body_plain": "Thanks Jose and Andrew for the advice, especially so close to Christmas!\n\nI included patch (or canopy type) in the random part of the model because I thought that the three samples taken from each patch type within a fire treatment are more closely related spatially than samples from other fire treatment. (Each 'patch' sample 'pseudo-replicate' was taken from beneath or far from a different tree canopy across the 1 hectare fire treatment plots). Does this mean I should nest patch within block in the random effects?\n\nie. y~patch*date*block, random=~1|block/patch/replicate  \n\nThanks again,\nAnna\n________________________________________\nFrom: José Manuel Blanco Moreno [jmblanco at ub.edu]\nSent: Saturday, December 25, 2010 6:53 AM\nTo: Andrew Dolman\nCc: Richards, Anna (CES, Darwin); r-sig-mixed-models at r-project.org\nSubject: Re: [R-sig-ME] design of nested mixed effects model with repeated measures\n\nEl 24/12/2010 17:45, Andrew Dolman escribió:\n> Patch is not random either and even if it were it only has 2 levels\n> and so cannot properly be fit as random. It's also crossed with block\n> and with fire. (It's also a confusing name. Consider calling it\n> habitat, or canopy(T,F))\n>\nI may be misunderstanding the design, but I would be somewhat reluctant to throw\naway the random effect for patch. Indeed I think that Andrew is right when\nconsidering renaming this factor as canopy or habitat (a factor wih two levels);\nhowever, if the \"replicates\" are taken from beneath a single canopy (instead of\nselecting different canopies from a plot), should not this nesting be included\nin the random effects, even if the structure seems complicated?\nMoreover, I do not think that canopy and plot are crossed, since you cannot move\none canopy from one plot to another, and each canopy on each plot is actually a\ndifferent individual.\nForgive me if I got it completely wrong. And merry Christmas by the way.\n\n\n--\n---------------------------------------\nJosé M. Blanco Moreno\n\nDept. de Biologia Vegetal (Botànica)\nUniversitat de Barcelona\nAv. Diagonal 645\n08028 Barcelona SPAIN\n---------------------------------------\n\nphone: (+34) 934 039 863\nfax: (+34) 934 112 842\ne-mail: jmblanco at ub.edu",
       "body_snippet": "Thanks Jose and Andrew for the advice, especially so close to Christmas!\n\nI included patch (or canopy type) in the random part of the model because I thought that the three samples taken from each pat",
       "thread_id": "thread-d0dec8657b89",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005033.html"
     },
     {
       "id": "msg-4600ddc3cafa",
@@ -2335,6 +2454,7 @@
       "thread_id": "thread-d0dec8657b89",
       "thread_depth": 4,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005034.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101227/30d1cf3d/attachment.pl"
       ]
@@ -2353,7 +2473,8 @@
       "body_snippet": "Hi folks,\n\nAs I've mentioned in previous posts, I maintain the \"ez\" package and\nof late I've been coding a number of functions that aim to provide\nshortcuts for very simple mixed effects modelling. I'",
       "thread_id": "thread-e971d4982f3a",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005035.html"
     },
     {
       "id": "msg-977fbc708dbf",
@@ -2380,6 +2501,7 @@
       "thread_id": "thread-60b52697457c",
       "thread_depth": 9,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005036.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101228/115641f6/attachment.pl"
       ]
@@ -2410,6 +2532,7 @@
       "thread_id": "thread-60b52697457c",
       "thread_depth": 10,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005037.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101228/90b31364/attachment.pl"
       ]
@@ -2440,7 +2563,8 @@
       "body_snippet": "Thanks for checking that out, Dennis.  I will produce updated scripts\netc. if I ever finish my grading of project reports.  (Well I have to\nfinish them because the grades are due tomorrow.)\n\nThe env s",
       "thread_id": "thread-60b52697457c",
       "thread_depth": 11,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005038.html"
     },
     {
       "id": "msg-cad593c7e2c0",
@@ -2456,7 +2580,8 @@
       "body_snippet": "Hello everyone, \n\nSince I'm not entirely sure this is THE list I should be referring too, feel\nfree to blow me off and refer me to another mailing list if necessary. \nI am analyzing a small dataset us",
       "thread_id": "thread-cad593c7e2c0",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005039.html"
     },
     {
       "id": "msg-8ea47753cfc2",
@@ -2472,7 +2597,8 @@
       "body_snippet": "Hello everyone, \n\nSince I'm not entirely sure this is THE list I should be referring too, feel\nfree to blow me off and refer me to another mailing list if necessary. \nI am analyzing a small dataset us",
       "thread_id": "thread-8ea47753cfc2",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005040.html"
     },
     {
       "id": "msg-a7c47d1eec3c",
@@ -2490,7 +2616,8 @@
       "body_snippet": "Hi Luciano,\n\nIf I understand you correctly, your issue is that the prediction for  \nthe first egg in the year that is NOT (?) 2007 is greater than second  \neggs in that year, yet the raw data indicate",
       "thread_id": "thread-8ea47753cfc2",
       "thread_depth": 1,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005041.html"
     },
     {
       "id": "msg-0ecd8959aa3b",
@@ -2509,7 +2636,8 @@
       "body_snippet": "Hi Jarrod,\n\nThank you for the speedy reply. My issue seems to be the opposite: raw data\nindicates that A-eggs are a little smaller than B-eggs in 2006, while the\nGLMM (with Nest IDs as random intercep",
       "thread_id": "thread-8ea47753cfc2",
       "thread_depth": 2,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005042.html"
     },
     {
       "id": "msg-9318b1f3d94e",
@@ -2529,7 +2657,8 @@
       "body_snippet": "Hi Luciano,\n\n\nQuoting Luciano La Sala <lucianolasala at yahoo.com.ar>:\n\n> Hi Jarrod,\n>\n> Thank you for the speedy reply. My issue seems to be the opposite: raw data\n> indicates that A-eggs are a littl",
       "thread_id": "thread-8ea47753cfc2",
       "thread_depth": 3,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005043.html"
     },
     {
       "id": "msg-9b6546227232",
@@ -2546,6 +2675,7 @@
       "thread_id": "thread-9b6546227232",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005044.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101229/defb2f73/attachment.pl"
       ]
@@ -2570,6 +2700,7 @@
       "thread_id": "thread-8ea47753cfc2",
       "thread_depth": 4,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005045.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101229/8cad5e2e/attachment.pl"
       ]
@@ -2591,6 +2722,7 @@
       "thread_id": "thread-9b6546227232",
       "thread_depth": 1,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005046.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101229/6eac4981/attachment.pl"
       ]
@@ -2609,7 +2741,8 @@
       "body_snippet": "Hi,\n\nI am trying out the function bootMer in lme4a (lme4a_0.999375-59), \nspecifically the option whether or not to bootstrap the random effects and \nstumbled on a couple of problems.\n\nThe documentatio",
       "thread_id": "thread-ae560a7cb7c1",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005049.html"
     },
     {
       "id": "msg-8ded7b03b707",
@@ -2625,7 +2758,8 @@
       "body_snippet": "Hi,\n\n(sorry for reposting...)\nI am trying out the function bootMer in lme4a (lme4a_0.999375-59), \nspecifically the option whether or not to bootstrap the random effects and \nstumbled on a couple of pr",
       "thread_id": "thread-8ded7b03b707",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005047.html"
     },
     {
       "id": "msg-9142ae5b61eb",
@@ -2641,7 +2775,8 @@
       "body_snippet": "Dear list,\n\nFollowing a hint of an exercise in Gelman & Hill's (2007) regression \ntextbook, I tried to understand  how to build a function generalizing to \nmixed models what polr() (MASS) does for fix",
       "thread_id": "thread-9142ae5b61eb",
       "thread_depth": 0,
-      "month": "2010-12"
+      "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005050.html"
     },
     {
       "id": "msg-70344d1e3794",
@@ -2658,6 +2793,7 @@
       "thread_id": "thread-70344d1e3794",
       "thread_depth": 0,
       "month": "2010-12",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2010q4/005048.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20101231/39ef439a/attachment.pl"
       ]
