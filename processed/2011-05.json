@@ -150,8 +150,7 @@
       "body_snippet": "On Tue, May 3, 2011 at 2:36 AM, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Hi,\n>\n> In the note section of ?rIW I have provided the relationships between the\n> inverse wishart samplers in MCMCgl",
       "thread_id": "thread-5dce3e7f7746",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016212.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-8d6dda07cc4a",
@@ -321,7 +320,6 @@
       "thread_id": "thread-115fa5d1f0bf",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013324.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110504/67629a94/attachment.pl"
       ]
@@ -377,8 +375,7 @@
       "body_snippet": "On 5 May 2011 01:08, Chris Gast <cmgast at gmail.com> wrote:\n> I'm having trouble replying directly to the list, so hopefully this gets\n> through as intended.\n>\n> Multinomial mixed models can be progr",
       "thread_id": "thread-0593747c870c",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016224.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-7f853631d8d3",
@@ -390,12 +387,11 @@
       "subject_clean": "reconstruction of effect sizes in Baayen, Davidson & Bates (2008)",
       "in_reply_to": null,
       "references": [],
-      "body_plain": "Dear all,\n\nI’ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can’t wrap my head around the effect sizes that the authors infer from their mixed model outputs. Can anyone put me on the right track? Thanks in advance.\n\nR code and quote re: effect sizes below.\n\nR.H. Baayen, D.J. Davidson, D.M. Bates, 2008. Mixed-effects modeling with crossed random effects for subjects and items. Journal of Memory and Language 59, 390-412. Available at http://www.ualberta.ca/~baayen/publications/baayenDavidsonBates.pdf\n\n----begin code----\nlibrary(languageR)\nattach(primingHeidPrevRT)\n# note: RT are log-transformed latencies\n\nmodel1.lmer <- lmer(RT ~ log(RTmin1) + Condition + (1|Word) + (1|Subject))\nprint(model1.lmer, corr=F)\n# model summary also on p. 400 (top left)\n----end code----\n\nQuote: ‘The latency to the preceding [i.e. log(RTmin1); JV] has a large effect size with a 400 ms difference between the smallest and the largest predictor values, the corresponding difference for the frequency effect [not in the model; JV] was only 50 ms.’\n\nI would like to find out how the authors arrived at these effect size estimates. I can’t reconstruct the 400 ms RTmin1 effect from the model output using the most extreme predictor values:\n\nexp((5.80465 + .12125*range(log(RTmin1))))\n# 685.746 820.627 --- i.e. a 135 ms difference\n\nIncidentally, this 135 ms difference corresponds to the partial effect I can glean from the plot produced by plotLMER.fnc():\n\nplotLMER.fnc(model1.lmer, pred=\"log(RTmin1)\")\n\nSimilarly, I’m at a loss as to how they arrived at the 50 ms frequency effect as frequency (in contrast to BaseFrequency) does not seem to be coded in the data set as well as at the 100 ms ‘ResponseToPrime’ effect in another model (p. 400, bottom left).\n\nThanks,\nJan\n\n---\nJan Vanhove\njan.vanhove at unifr.ch\n\nPhD student\nSection Multilingualism and foreign language didactics\nUniversity of Fribourg, Switzerland",
-      "body_snippet": "Dear all,\n\nI’ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can’t wrap my head around th",
+      "body_plain": "Dear all,\n\nI?ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can?t wrap my head around the effect sizes that the authors infer from their mixed model outputs. Can anyone put me on the right track? Thanks in advance.\n\nR code and quote re: effect sizes below.\n\nR.H. Baayen, D.J. Davidson, D.M. Bates, 2008. Mixed-effects modeling with crossed random effects for subjects and items. Journal of Memory and Language 59, 390-412. Available at http://www.ualberta.ca/~baayen/publications/baayenDavidsonBates.pdf\n\n----begin code----\nlibrary(languageR)\nattach(primingHeidPrevRT)\n# note: RT are log-transformed latencies\n\nmodel1.lmer <- lmer(RT ~ log(RTmin1) + Condition + (1|Word) + (1|Subject))\nprint(model1.lmer, corr=F)\n# model summary also on p. 400 (top left)\n----end code----\n\nQuote: ?The latency to the preceding [i.e. log(RTmin1); JV] has a large effect size with a 400 ms difference between the smallest and the largest predictor values, the corresponding difference for the frequency effect [not in the model; JV] was only 50 ms.?\n\nI would like to find out how the authors arrived at these effect size estimates. I can?t reconstruct the 400 ms RTmin1 effect from the model output using the most extreme predictor values:\n\nexp((5.80465 + .12125*range(log(RTmin1))))\n# 685.746 820.627 --- i.e. a 135 ms difference\n\nIncidentally, this 135 ms difference corresponds to the partial effect I can glean from the plot produced by plotLMER.fnc():\n\nplotLMER.fnc(model1.lmer, pred=\"log(RTmin1)\")\n\nSimilarly, I?m at a loss as to how they arrived at the 50 ms frequency effect as frequency (in contrast to BaseFrequency) does not seem to be coded in the data set as well as at the 100 ms ?ResponseToPrime? effect in another model (p. 400, bottom left).\n\nThanks,\nJan\n\n---\nJan Vanhove\njan.vanhove at unifr.ch\n\nPhD student\nSection Multilingualism and foreign language didactics\nUniversity of Fribourg, Switzerland",
+      "body_snippet": "Dear all,\n\nI?ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can?t wrap my head around th",
       "thread_id": "thread-7f853631d8d3",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013328.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-746f16f44f22",
@@ -413,8 +409,7 @@
       "body_snippet": "Dear Jose,\n\nDid you ever figure out how to replicate Western's (1998) model using lme4?\n\nI've figured out how to replicate precisely the \"Interactions Model\" in his Table 2, but not the \"Hierarchical ",
       "thread_id": "thread-746f16f44f22",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013329.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-1d829f05c933",
@@ -449,7 +444,6 @@
       "thread_id": "thread-55b3cc6c8d0e",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013331.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110506/03f1183b/attachment.pl"
       ]
@@ -466,12 +460,11 @@
       "references": [
         "<BANLkTimyY9zQLgydSzaR0O-xKNey6Mx3ng@mail.gmail.com>"
       ],
-      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 11-05-05 05:47 AM, Alicia Valdés wrote:\n> Dear members of the list,\n> \n> This is my first message and as I am very new to GLMMs (and my\n> statistical knowledge is far from broad) I hope to formulate my\n> questions adequately. I have spent some days reading through the list\n> archives to find a solution to my problem, but I am still not sure if\n> I am doing right. I am analyzing data on number of seedlings emerged\n> in experimental plots for a perennial plant (thus, my response\n> variable are counts). I have performed my experiment on 6 different\n> sites (random factor). Each site has two areas: one with presence and\n> one with absence of populations of this particular species (so I have\n> a factor called \"species\", which is binomial: 0/1).\n\n  Normally one would speak of *predictor* variables (which this is) as\n\"binary\" rather than \"binomial\"\n\n> Into each of these\n> areas I have 4 replies. Two of these replies are under closed forest\n> canopy and two in open areas (I called this fixed factor \"cover\" and\n> it has two levels: \"high\" and \"low\"). Finally, each of the replies\n> consists of 3 different treatments applied to sowed seeds (fixed\n> factor with three levels: A, E, C). I have made periodic revisions of\n> this experiment, so I have 7 dates of revision till now. I am trying\n> to fit a GLMM with lmer ni package lme4, in order to see the effect of\n> all these factors and their interactions in seedling emergence. I am\n> thinking of fitting a different GLMM for each revision (1-7) to see if\n> there are changes in significant factors.\n\n   Fitting a different GLMM for each one is simpler, but if you actually\nwant to make any inferences about the changes between revisions (don't\nquite know what this means) you should do a single combined analysis and\ninclude interactions with 'revision' in order to test differences in the\neffects of factors across revisions: e.g. cover:revision (interaction\nbetween cover and revision) would parameterize the variation in effect\nof cover between revisions.\n\n  6 sites is a fairly small number for estimating a random effect, but\nnot impossible -- you may discover, depending on the amount of noise in\nyour data set, that the estimated across-site variance is zero.  In\nprinciple you can also look at the variation across sites in the effects\nof factors (e.g. (1|site:cover) or (cover|site)), but you may run out of\ndata if you try to do too much of this ...\n> \n> Here is how part of my data (those for rev 1, site 1) look:\n> \n> rev         site        species  repl        cover     treat      seedlings\n> \n> 1             1             0             1             low        A\n>          3\n> \n> 1             1             0             1             low        C\n>          0\n> \n> 1             1             0             1             low        E\n>           0\n> \n> 1             1             0             2             low        A\n>          5\n> \n> 1             1             0             2             low        C\n>          0\n> \n> 1             1             0             2             low        E\n>           3\n> \n> 1             1             0             3             high       A\n>          1\n> \n> 1             1             0             3             high       C\n>          0\n> \n> 1             1             0             3             high       E\n>           0\n> \n> 1             1             0             4             high       A\n>          0\n> \n> 1             1             0             4             high       C\n>\n> ...\n> \n> My first problem is that 66% of this count data (taking all the\n> revisions together) are zeros (and into each revision the percentage\n> of zeros is also high). Should I then fit a zero-inflated model? This\n> is not available in lmer, and I investigated zeroinfl in the package\n> pscl but it does not allow to include random effects (and, to my\n> knowledge, I should include \"site\" as a random effect). \n\n  Maybe, but not necessarily.  If the means are low enough then\nzero-inflation may not be necessary.  glmmADMB will fit zero-inflated\nPoisson (or negative binomial) models with a single random effect (the\nnew version, coming soon, will allow multiple random effects).\n\n\n> Poisson family\n> is strongly suggested for count data, but using goodfit in the vcd\n> package I found that my data are significantly different from the\n> Poisson distribution. So which family should I use? I have read about\n> the problem with quasi distributions and why they are not any more\n> available in lmer. I have also read some posts talking about\n> overdispersion and translating the model to a lognormal-Poisson model\n> by using an individual-level random variable and using family=poisson.\n> I have tried this with my data and it worked, but I am really not sure\n> if I have overdispersion or not, as I do not know which parameter do I\n> have to look at in order to quantify overdispersion.\n\n   In general you want to look at the residual deviance or sum of\nsquared Pearson residuals, although this is only approximate. Checking\nwhether the overall (marginal) distribution is Poisson doesn't mean very\nmuch in general.\n\n> \n> Here is my poisson model for the first revision (I made subsets of the\n> data, and data1 corresponds to the first revision):\n> \n> model1<-lmer(seedlings~species+cover+treat+cover:treat+species:treat+\n> (1+species+treat|site),family=poisson,data1)\n\n  My guess is that this is a bit too complicated in the random effects.\n I would see first if this works:\n\nmodel1<-lmer(seedlings~treat*(species+cover)+(1|site),\n       family=poisson,data1)\n\n  then try to work up from there, seeing which combinations of (1)\nzero-inflation (2) overdispersion (via negative binomial in glmmADMB or\nvia lognormal-Poisson in lme4) (3) more complex random effects your data\ncan accommodate.  Basically, you want to specify the most complex\n*reasonable* model that your data can handle, then (if you are doing\nhypothesis tests) drop selected terms from the full model (one at a\ntime) and evaluate the difference in likelihood/deviance.\n\n  I'm not clear what 'revisions' are, and whether you want to treat them\nas random effects (i.e., experimental blocks), or whether you have\nspecific interests/hypotheses about how the effects changed between\nrevisions ...\n> \n> Then I created a new variable with a unique value for each observation\n> and included this as an additional random-effect term\n> \n> data1$over <- 1:nrow(data1)\n> \n> And this is the lognormal-Poisson model:\n> \n> model2<-lmer(seedlings~species+cover+treat+cover:treat+species:treat+(1+species+treat|site)+(1|over),data\n> = data1,family = poisson)\n\n> \n> This is the summary for both models:\n> \n>> summary(model1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +      treat | site)\n>    Data: data1\n>    AIC   BIC logLik deviance\n>  407.3 463.1 -184.7    369.3\n> Random effects:\n>  Groups Name        Variance Std.Dev. Corr\n>  site   (Intercept)  0        0\n>         species1          0        0         NaN\n>         treatC        0        0         NaN   NaN\n>         treatE        0        0         NaN   NaN   NaN\n> Number of obs: 139, groups: site, 6\n> \n> Fixed effects:\n>                  Estimate Std. Error z value Pr(>|z|)\n> (Intercept)     2.190e-01  2.374e-01   0.922   0.3563\n> species1            -3.586e-01  2.830e-01  -1.267   0.2050\n> coverlow        1.113e-01  2.803e-01   0.397   0.6913\n> treatC          -3.493e+01  2.432e+03  -0.014   0.9885\n> treatE          -1.136e-03  3.175e-01  -0.004   0.9971\n> coverlow:treatC  1.761e+01  1.803e+03   0.010   0.9922\n> coverlow:treatE  7.783e-01  3.534e-01   2.202   0.0277 *\n> species1:treatC       1.768e+01  1.632e+03   0.011   0.9914\n> species1:treatE       4.277e-01  3.451e-01   1.240   0.2152\n> ---\n> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n> \n> Correlation of Fixed Effects:\n>             (Intr) species1    covrlw treatC  treatE  cvrl:C cvrl:E species1:tC\n> species1         -0.539\n> coverlow    -0.623  0.041\n> treatC        0.000  0.000  0.000\n> treatE       -0.748  0.403  0.466  0.000\n> covrlw:trtC  0.000  0.000  0.000 -0.741  0.000\n> covrlw:trtE  0.494 -0.033 -0.793  0.000 -0.669  0.000\n> species1:treatC    0.000  0.000  0.000 -0.671  0.000  0.000  0.000\n> species1:treatE    0.442 -0.820 -0.034  0.000 -0.529  0.000  0.047  0.000\n>> summary(model2)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +      treat | site) + (1 | over)\n>    Data: data1\n>    AIC   BIC logLik deviance\n>  238.9 297.6 -99.47    198.9\n> Random effects:\n>  Groups Name        Variance Std.Dev. Corr\n>  over   (Intercept) 2.5371   1.5928\n>  site   (Intercept) 0.0000   0.0000\n>         species1         0.0000   0.0000     NaN\n>         treatC       0.0000   0.0000     NaN   NaN\n>         treatE       0.0000   0.0000     NaN   NaN   NaN\n> Number of obs: 139, groups: over, 139; site, 6\n> \n> Fixed effects:\n>                 Estimate Std. Error z value Pr(>|z|)\n> (Intercept)      -0.8544     0.5720  -1.494    0.135\n> species1              -0.8135     0.6783  -1.199    0.230\n> coverlow          0.3388     0.6719   0.504    0.614\n> treatC           -35.3404  6943.1491  -0.005    0.996\n> treatE             0.2528     0.7643   0.331    0.741\n> coverlow:treatC   17.1976  5840.7446   0.003    0.998\n> coverlow:treatE    0.8608     0.8823   0.976    0.329\n> species1:treatC        17.2652  3754.0680   0.005    0.996\n> species1:treatE         0.4864     0.8843   0.550    0.582\n> \n> Correlation of Fixed Effects:\n>             (Intr) species1    covrlw treatC  treatE  cvrl:C cvrl:E species1:tC\n> species1         -0.530\n> coverlow    -0.631  0.035\n> treatC        0.000  0.000  0.000\n> treatE       -0.748  0.396  0.472  0.000\n> covrlw:trtC  0.000  0.000  0.000 -0.841  0.000\n> covrlw:trtE  0.481 -0.027 -0.762  0.000 -0.635  0.000\n> species1:treatC    0.000  0.000  0.000 -0.541  0.000  0.000  0.000\n> species1:treatE    0.406 -0.767 -0.027  0.000 -0.528  0.000  0.020  0.000\n> \n> I don't know why I get this 0 and NaN for the random effects. I tried\n> to look at the interaction of site with species an treatment, apart\n> from the single effect of site. Perhaps my formula specification is\n> not correct?\n> \n> Besides, I performed an anova with the two models:\n> \n>> anova(model1,model2)\n> Data: data1\n> Models:\n> model1: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +\n> model1:     treat | site)\n> model2: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +\n> model2:     treat | site) + (1 | over)\n>        Df    AIC    BIC   logLik  Chisq Chi Df Pr(>Chisq)\n> model1 19 407.30 463.06 -184.651\n> model2 20 238.93 297.62  -99.465 170.37      1  < 2.2e-16 ***\n> ---\n> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1\n> \n> So looking at this I believe I should choose model 2, but I still\n> don’t see how can I know if there is an important overdispersion in\n> model 1. And do you think this model 2 is acceptable having too many\n> zeros in my data? Or should I try to fit any other kind of model? I\n> believe that keeping site as a fixed effect and using zeroinfl in pscl\n> package would be not correct at all… do you agree?\n> \n> And my last question is: do you think it is ok to fit a different\n> model for each revision, or could I try some kind of repeated-measures\n> approach? I don’t know if this is available for GLMMs, and it goes far\n> beyond my statistical knowledge, but perhaps there is some possible\n> way.\n> \n> Thanks a lot for your attention, and sorry for the long message. Any\n> kind of help or hint would be very welcome!\n> \n> Regards,\n> \n> Alicia Valdés Rapado\n> PhD Student\n> Dpto. Biología Organismos y Sistemas - Unidad de Ecología\n> Universidad de Oviedo\n> España - Spain\n> e-mail: valdesalicia.uo at uniovi.es\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n\niEYEARECAAYFAk3EIn0ACgkQc5UpGjwzenNBlgCdGlY7lDGvE8/0k0uDpgpJiUYz\nutEAnR4mUzF6tseDK/cmUqpsYxZzh2Dv\n=kEMb\n-----END PGP SIGNATURE-----",
-      "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 11-05-05 05:47 AM, Alicia Valdés wrote:\n> Dear members of the list,\n> \n> This is my first message and as I am very new to GLMMs (and my\n> statistical ",
+      "body_plain": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 11-05-05 05:47 AM, Alicia Vald?s wrote:\n> Dear members of the list,\n> \n> This is my first message and as I am very new to GLMMs (and my\n> statistical knowledge is far from broad) I hope to formulate my\n> questions adequately. I have spent some days reading through the list\n> archives to find a solution to my problem, but I am still not sure if\n> I am doing right. I am analyzing data on number of seedlings emerged\n> in experimental plots for a perennial plant (thus, my response\n> variable are counts). I have performed my experiment on 6 different\n> sites (random factor). Each site has two areas: one with presence and\n> one with absence of populations of this particular species (so I have\n> a factor called \"species\", which is binomial: 0/1).\n\n  Normally one would speak of *predictor* variables (which this is) as\n\"binary\" rather than \"binomial\"\n\n> Into each of these\n> areas I have 4 replies. Two of these replies are under closed forest\n> canopy and two in open areas (I called this fixed factor \"cover\" and\n> it has two levels: \"high\" and \"low\"). Finally, each of the replies\n> consists of 3 different treatments applied to sowed seeds (fixed\n> factor with three levels: A, E, C). I have made periodic revisions of\n> this experiment, so I have 7 dates of revision till now. I am trying\n> to fit a GLMM with lmer ni package lme4, in order to see the effect of\n> all these factors and their interactions in seedling emergence. I am\n> thinking of fitting a different GLMM for each revision (1-7) to see if\n> there are changes in significant factors.\n\n   Fitting a different GLMM for each one is simpler, but if you actually\nwant to make any inferences about the changes between revisions (don't\nquite know what this means) you should do a single combined analysis and\ninclude interactions with 'revision' in order to test differences in the\neffects of factors across revisions: e.g. cover:revision (interaction\nbetween cover and revision) would parameterize the variation in effect\nof cover between revisions.\n\n  6 sites is a fairly small number for estimating a random effect, but\nnot impossible -- you may discover, depending on the amount of noise in\nyour data set, that the estimated across-site variance is zero.  In\nprinciple you can also look at the variation across sites in the effects\nof factors (e.g. (1|site:cover) or (cover|site)), but you may run out of\ndata if you try to do too much of this ...\n> \n> Here is how part of my data (those for rev 1, site 1) look:\n> \n> rev         site        species  repl        cover     treat      seedlings\n> \n> 1             1             0             1             low        A\n>          3\n> \n> 1             1             0             1             low        C\n>          0\n> \n> 1             1             0             1             low        E\n>           0\n> \n> 1             1             0             2             low        A\n>          5\n> \n> 1             1             0             2             low        C\n>          0\n> \n> 1             1             0             2             low        E\n>           3\n> \n> 1             1             0             3             high       A\n>          1\n> \n> 1             1             0             3             high       C\n>          0\n> \n> 1             1             0             3             high       E\n>           0\n> \n> 1             1             0             4             high       A\n>          0\n> \n> 1             1             0             4             high       C\n>\n> ...\n> \n> My first problem is that 66% of this count data (taking all the\n> revisions together) are zeros (and into each revision the percentage\n> of zeros is also high). Should I then fit a zero-inflated model? This\n> is not available in lmer, and I investigated zeroinfl in the package\n> pscl but it does not allow to include random effects (and, to my\n> knowledge, I should include \"site\" as a random effect). \n\n  Maybe, but not necessarily.  If the means are low enough then\nzero-inflation may not be necessary.  glmmADMB will fit zero-inflated\nPoisson (or negative binomial) models with a single random effect (the\nnew version, coming soon, will allow multiple random effects).\n\n\n> Poisson family\n> is strongly suggested for count data, but using goodfit in the vcd\n> package I found that my data are significantly different from the\n> Poisson distribution. So which family should I use? I have read about\n> the problem with quasi distributions and why they are not any more\n> available in lmer. I have also read some posts talking about\n> overdispersion and translating the model to a lognormal-Poisson model\n> by using an individual-level random variable and using family=poisson.\n> I have tried this with my data and it worked, but I am really not sure\n> if I have overdispersion or not, as I do not know which parameter do I\n> have to look at in order to quantify overdispersion.\n\n   In general you want to look at the residual deviance or sum of\nsquared Pearson residuals, although this is only approximate. Checking\nwhether the overall (marginal) distribution is Poisson doesn't mean very\nmuch in general.\n\n> \n> Here is my poisson model for the first revision (I made subsets of the\n> data, and data1 corresponds to the first revision):\n> \n> model1<-lmer(seedlings~species+cover+treat+cover:treat+species:treat+\n> (1+species+treat|site),family=poisson,data1)\n\n  My guess is that this is a bit too complicated in the random effects.\n I would see first if this works:\n\nmodel1<-lmer(seedlings~treat*(species+cover)+(1|site),\n       family=poisson,data1)\n\n  then try to work up from there, seeing which combinations of (1)\nzero-inflation (2) overdispersion (via negative binomial in glmmADMB or\nvia lognormal-Poisson in lme4) (3) more complex random effects your data\ncan accommodate.  Basically, you want to specify the most complex\n*reasonable* model that your data can handle, then (if you are doing\nhypothesis tests) drop selected terms from the full model (one at a\ntime) and evaluate the difference in likelihood/deviance.\n\n  I'm not clear what 'revisions' are, and whether you want to treat them\nas random effects (i.e., experimental blocks), or whether you have\nspecific interests/hypotheses about how the effects changed between\nrevisions ...\n> \n> Then I created a new variable with a unique value for each observation\n> and included this as an additional random-effect term\n> \n> data1$over <- 1:nrow(data1)\n> \n> And this is the lognormal-Poisson model:\n> \n> model2<-lmer(seedlings~species+cover+treat+cover:treat+species:treat+(1+species+treat|site)+(1|over),data\n> = data1,family = poisson)\n\n> \n> This is the summary for both models:\n> \n>> summary(model1)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +      treat | site)\n>    Data: data1\n>    AIC   BIC logLik deviance\n>  407.3 463.1 -184.7    369.3\n> Random effects:\n>  Groups Name        Variance Std.Dev. Corr\n>  site   (Intercept)  0        0\n>         species1          0        0         NaN\n>         treatC        0        0         NaN   NaN\n>         treatE        0        0         NaN   NaN   NaN\n> Number of obs: 139, groups: site, 6\n> \n> Fixed effects:\n>                  Estimate Std. Error z value Pr(>|z|)\n> (Intercept)     2.190e-01  2.374e-01   0.922   0.3563\n> species1            -3.586e-01  2.830e-01  -1.267   0.2050\n> coverlow        1.113e-01  2.803e-01   0.397   0.6913\n> treatC          -3.493e+01  2.432e+03  -0.014   0.9885\n> treatE          -1.136e-03  3.175e-01  -0.004   0.9971\n> coverlow:treatC  1.761e+01  1.803e+03   0.010   0.9922\n> coverlow:treatE  7.783e-01  3.534e-01   2.202   0.0277 *\n> species1:treatC       1.768e+01  1.632e+03   0.011   0.9914\n> species1:treatE       4.277e-01  3.451e-01   1.240   0.2152\n> ---\n> Signif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n> \n> Correlation of Fixed Effects:\n>             (Intr) species1    covrlw treatC  treatE  cvrl:C cvrl:E species1:tC\n> species1         -0.539\n> coverlow    -0.623  0.041\n> treatC        0.000  0.000  0.000\n> treatE       -0.748  0.403  0.466  0.000\n> covrlw:trtC  0.000  0.000  0.000 -0.741  0.000\n> covrlw:trtE  0.494 -0.033 -0.793  0.000 -0.669  0.000\n> species1:treatC    0.000  0.000  0.000 -0.671  0.000  0.000  0.000\n> species1:treatE    0.442 -0.820 -0.034  0.000 -0.529  0.000  0.047  0.000\n>> summary(model2)\n> Generalized linear mixed model fit by the Laplace approximation\n> Formula: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +      treat | site) + (1 | over)\n>    Data: data1\n>    AIC   BIC logLik deviance\n>  238.9 297.6 -99.47    198.9\n> Random effects:\n>  Groups Name        Variance Std.Dev. Corr\n>  over   (Intercept) 2.5371   1.5928\n>  site   (Intercept) 0.0000   0.0000\n>         species1         0.0000   0.0000     NaN\n>         treatC       0.0000   0.0000     NaN   NaN\n>         treatE       0.0000   0.0000     NaN   NaN   NaN\n> Number of obs: 139, groups: over, 139; site, 6\n> \n> Fixed effects:\n>                 Estimate Std. Error z value Pr(>|z|)\n> (Intercept)      -0.8544     0.5720  -1.494    0.135\n> species1              -0.8135     0.6783  -1.199    0.230\n> coverlow          0.3388     0.6719   0.504    0.614\n> treatC           -35.3404  6943.1491  -0.005    0.996\n> treatE             0.2528     0.7643   0.331    0.741\n> coverlow:treatC   17.1976  5840.7446   0.003    0.998\n> coverlow:treatE    0.8608     0.8823   0.976    0.329\n> species1:treatC        17.2652  3754.0680   0.005    0.996\n> species1:treatE         0.4864     0.8843   0.550    0.582\n> \n> Correlation of Fixed Effects:\n>             (Intr) species1    covrlw treatC  treatE  cvrl:C cvrl:E species1:tC\n> species1         -0.530\n> coverlow    -0.631  0.035\n> treatC        0.000  0.000  0.000\n> treatE       -0.748  0.396  0.472  0.000\n> covrlw:trtC  0.000  0.000  0.000 -0.841  0.000\n> covrlw:trtE  0.481 -0.027 -0.762  0.000 -0.635  0.000\n> species1:treatC    0.000  0.000  0.000 -0.541  0.000  0.000  0.000\n> species1:treatE    0.406 -0.767 -0.027  0.000 -0.528  0.000  0.020  0.000\n> \n> I don't know why I get this 0 and NaN for the random effects. I tried\n> to look at the interaction of site with species an treatment, apart\n> from the single effect of site. Perhaps my formula specification is\n> not correct?\n> \n> Besides, I performed an anova with the two models:\n> \n>> anova(model1,model2)\n> Data: data1\n> Models:\n> model1: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +\n> model1:     treat | site)\n> model2: seedlings ~ species + cover + treat + cover:treat +\n> species:treat + (1 + species +\n> model2:     treat | site) + (1 | over)\n>        Df    AIC    BIC   logLik  Chisq Chi Df Pr(>Chisq)\n> model1 19 407.30 463.06 -184.651\n> model2 20 238.93 297.62  -99.465 170.37      1  < 2.2e-16 ***\n> ---\n> Signif. codes:  0 ?***? 0.001 ?**? 0.01 ?*? 0.05 ?.? 0.1 ? ? 1\n> \n> So looking at this I believe I should choose model 2, but I still\n> don?t see how can I know if there is an important overdispersion in\n> model 1. And do you think this model 2 is acceptable having too many\n> zeros in my data? Or should I try to fit any other kind of model? I\n> believe that keeping site as a fixed effect and using zeroinfl in pscl\n> package would be not correct at all? do you agree?\n> \n> And my last question is: do you think it is ok to fit a different\n> model for each revision, or could I try some kind of repeated-measures\n> approach? I don?t know if this is available for GLMMs, and it goes far\n> beyond my statistical knowledge, but perhaps there is some possible\n> way.\n> \n> Thanks a lot for your attention, and sorry for the long message. Any\n> kind of help or hint would be very welcome!\n> \n> Regards,\n> \n> Alicia Vald?s Rapado\n> PhD Student\n> Dpto. Biolog?a Organismos y Sistemas - Unidad de Ecolog?a\n> Universidad de Oviedo\n> Espa?a - Spain\n> e-mail: valdesalicia.uo at uniovi.es\n> \n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.10 (GNU/Linux)\nComment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/\n\niEYEARECAAYFAk3EIn0ACgkQc5UpGjwzenNBlgCdGlY7lDGvE8/0k0uDpgpJiUYz\nutEAnR4mUzF6tseDK/cmUqpsYxZzh2Dv\n=kEMb\n-----END PGP SIGNATURE-----",
+      "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\nOn 11-05-05 05:47 AM, Alicia Vald?s wrote:\n> Dear members of the list,\n> \n> This is my first message and as I am very new to GLMMs (and my\n> statistical ",
       "thread_id": "thread-954131501d37",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016234.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-8a48b1f4e671",
@@ -488,7 +481,6 @@
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013332.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110506/44038f87/attachment.pl"
       ]
@@ -546,8 +538,7 @@
       "body_snippet": "Hi Arthur,\n\nExample code for fitting bivariate logistic (m1) / probit (m2) models  \nwith hierarchical structures are given below. The function will not  \ngive you the likelihood but it will sample fro",
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016232.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-2855f38330c3",
@@ -562,12 +553,11 @@
         "<5B5E18FD-DA32-4DC7-BDA3-2327E3F49B57@unifr.ch>",
         "<20110505232131.GX11856@ms.unimelb.edu.au>"
       ],
-      "body_plain": "On Thu, May 5, 2011 at 7:21 PM, Andrew Robinson\n<A.Robinson at ms.unimelb.edu.au> wrote:\n> Jan,\n>\n> surely it would be most appropriate to approach the authors directly?\n>\n> Andrew\n>\n> On Thu, May 05, 2011 at 04:24:37PM +0200, VANHOVE Jan wrote:\n>> Dear all,\n>>\n>> I’ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can’t wrap my head around the effect sizes that the authors infer from their mixed model outputs. Can anyone put me on the right track? Thanks in advance.\n\nThis is a nice survey paper. I copied the data from the paper and tried to\nreproduce the results. Everything works as advertised until the 'mcmc$random'\nat the end (see below). I get quite different intervals for\nitem/subject, with a zero lower\nbound for item.\n\nPerhaps the differences are due to changes made to lme4 since this\npaper was published?\n\nDominick\n\n## BEGIN CODE\nlibrary(lme4)\n\n## Data from Baayen, Davidson, Bates (2008) on mixed-effects modeling.\nsubj = gl(3,6,labels=c('s1','s2','s3'))\nitem = factor(rep(c('w1','w2','w3'),6))\nSOA  = factor(rep(c('Long','Long','Long','Short','Short','Short'),3))\nRT = c(466,520,502,475,494,490,516,566,577,\n       491,544,526,484,529,539,470,511,528)\n\npriming <- data.frame(subj=subj,item=item,SOA=SOA,RT=RT)\npriming\n\npriming.lmer <- lmer(RT ~ SOA + (1|item) + (1 + SOA|subj),data = priming)\nsummary(priming.lmer)\nfixef(priming.lmer)\nranef(priming.lmer)\n\n## SOA/subj correlation -1, so we try independence:\npriming.lmer1 = lmer(RT ~ SOA + (1|item) + (1|subj)+(1|SOA:subj),data=priming)\nsummary(priming.lmer1)\n\n## Variance of SOA:subj is small, so we try just random intercepts:\npriming.lmer2 = lmer(RT ~ SOA + (1|item) + (1|subj),data=priming)\nsummary(priming.lmer2)\n\n## Compare simplest with most sophisticated model:\nanova(priming.lmer, priming.lmer2)\n\n## Simpler model is OK, let's look at it:\npriming.lmer2\n\n## Try mcmc\nmcmc = mcmcsamp(priming.lmer2,n=50000)\ndensityplot(mcmc,plot.points=FALSE)\n\n## languageR (linguistics for R by Baayen); uses mcmc from lme4\nrequire(languageR)\nmcmc = pvals.fnc(priming.lmer2,nsim=10000)\n\n## HPD intervals for fixed effects\nmcmc$fixed\n\n## HPD intervals for random effects\nmcmc$random\n\n## END CODE\n\n>>\n>> R code and quote re: effect sizes below.\n>>\n>> R.H. Baayen, D.J. Davidson, D.M. Bates, 2008. Mixed-effects modeling with crossed random effects for subjects and items. Journal of Memory and Language 59, 390-412. Available at http://www.ualberta.ca/~baayen/publications/baayenDavidsonBates.pdf\n>>\n>> ----begin code----\n>> library(languageR)\n>> attach(primingHeidPrevRT)\n>> # note: RT are log-transformed latencies\n>>\n>> model1.lmer <- lmer(RT ~ log(RTmin1) + Condition + (1|Word) + (1|Subject))\n>> print(model1.lmer, corr=F)\n>> # model summary also on p. 400 (top left)\n>> ----end code----\n>>\n>> Quote: ‘The latency to the preceding [i.e. log(RTmin1); JV] has a large effect size with a 400 ms difference between the smallest and the largest predictor values, the corresponding difference for the frequency effect [not in the model; JV] was only 50 ms.’\n>>\n>> I would like to find out how the authors arrived at these effect size estimates. I can’t reconstruct the 400 ms RTmin1 effect from the model output using the most extreme predictor values:\n>>\n>> exp((5.80465 + .12125*range(log(RTmin1))))\n>> # 685.746 820.627 --- i.e. a 135 ms difference\n>>\n>> Incidentally, this 135 ms difference corresponds to the partial effect I can glean from the plot produced by plotLMER.fnc():\n>>\n>> plotLMER.fnc(model1.lmer, pred=\"log(RTmin1)\")\n>>\n>> Similarly, I’m at a loss as to how they arrived at the 50 ms frequency effect as frequency (in contrast to BaseFrequency) does not seem to be coded in the data set as well as at the 100 ms ‘ResponseToPrime’ effect in another model (p. 400, bottom left).\n>>\n>> Thanks,\n>> Jan\n>>\n>> ---\n>> Jan Vanhove\n>> jan.vanhove at unifr.ch\n>>\n>> PhD student\n>> Section Multilingualism and foreign language didactics\n>> University of Fribourg, Switzerland\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n> Andrew Robinson\n> Program Manager, ACERA\n> Department of Mathematics and Statistics   ? ? ?    Tel: +61-3-8344-6410\n> University of Melbourne, VIC 3010 Australia   ? ? ? ? ?   (prefer email)\n> http://www.ms.unimelb.edu.au/~andrewpr   ? ? ? ?    Fax: +61-3-8344-4599\n> http://www.acera.unimelb.edu.au/\n>\n> Forest Analytics with R (Springer, 2011)\n> http://www.ms.unimelb.edu.au/FAwR/\n> Introduction to Scientific Programming and Simulation using R (CRC, 2009):\n> http://www.ms.unimelb.edu.au/spuRs/\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
+      "body_plain": "On Thu, May 5, 2011 at 7:21 PM, Andrew Robinson\n<A.Robinson at ms.unimelb.edu.au> wrote:\n> Jan,\n>\n> surely it would be most appropriate to approach the authors directly?\n>\n> Andrew\n>\n> On Thu, May 05, 2011 at 04:24:37PM +0200, VANHOVE Jan wrote:\n>> Dear all,\n>>\n>> I?ve been reading Baayen et al. (2008) for quite some time now in order to get a feel for the usefulness of mixed modeling in language studies. Unfortunately, I can?t wrap my head around the effect sizes that the authors infer from their mixed model outputs. Can anyone put me on the right track? Thanks in advance.\n\nThis is a nice survey paper. I copied the data from the paper and tried to\nreproduce the results. Everything works as advertised until the 'mcmc$random'\nat the end (see below). I get quite different intervals for\nitem/subject, with a zero lower\nbound for item.\n\nPerhaps the differences are due to changes made to lme4 since this\npaper was published?\n\nDominick\n\n## BEGIN CODE\nlibrary(lme4)\n\n## Data from Baayen, Davidson, Bates (2008) on mixed-effects modeling.\nsubj = gl(3,6,labels=c('s1','s2','s3'))\nitem = factor(rep(c('w1','w2','w3'),6))\nSOA  = factor(rep(c('Long','Long','Long','Short','Short','Short'),3))\nRT = c(466,520,502,475,494,490,516,566,577,\n       491,544,526,484,529,539,470,511,528)\n\npriming <- data.frame(subj=subj,item=item,SOA=SOA,RT=RT)\npriming\n\npriming.lmer <- lmer(RT ~ SOA + (1|item) + (1 + SOA|subj),data = priming)\nsummary(priming.lmer)\nfixef(priming.lmer)\nranef(priming.lmer)\n\n## SOA/subj correlation -1, so we try independence:\npriming.lmer1 = lmer(RT ~ SOA + (1|item) + (1|subj)+(1|SOA:subj),data=priming)\nsummary(priming.lmer1)\n\n## Variance of SOA:subj is small, so we try just random intercepts:\npriming.lmer2 = lmer(RT ~ SOA + (1|item) + (1|subj),data=priming)\nsummary(priming.lmer2)\n\n## Compare simplest with most sophisticated model:\nanova(priming.lmer, priming.lmer2)\n\n## Simpler model is OK, let's look at it:\npriming.lmer2\n\n## Try mcmc\nmcmc = mcmcsamp(priming.lmer2,n=50000)\ndensityplot(mcmc,plot.points=FALSE)\n\n## languageR (linguistics for R by Baayen); uses mcmc from lme4\nrequire(languageR)\nmcmc = pvals.fnc(priming.lmer2,nsim=10000)\n\n## HPD intervals for fixed effects\nmcmc$fixed\n\n## HPD intervals for random effects\nmcmc$random\n\n## END CODE\n\n>>\n>> R code and quote re: effect sizes below.\n>>\n>> R.H. Baayen, D.J. Davidson, D.M. Bates, 2008. Mixed-effects modeling with crossed random effects for subjects and items. Journal of Memory and Language 59, 390-412. Available at http://www.ualberta.ca/~baayen/publications/baayenDavidsonBates.pdf\n>>\n>> ----begin code----\n>> library(languageR)\n>> attach(primingHeidPrevRT)\n>> # note: RT are log-transformed latencies\n>>\n>> model1.lmer <- lmer(RT ~ log(RTmin1) + Condition + (1|Word) + (1|Subject))\n>> print(model1.lmer, corr=F)\n>> # model summary also on p. 400 (top left)\n>> ----end code----\n>>\n>> Quote: ?The latency to the preceding [i.e. log(RTmin1); JV] has a large effect size with a 400 ms difference between the smallest and the largest predictor values, the corresponding difference for the frequency effect [not in the model; JV] was only 50 ms.?\n>>\n>> I would like to find out how the authors arrived at these effect size estimates. I can?t reconstruct the 400 ms RTmin1 effect from the model output using the most extreme predictor values:\n>>\n>> exp((5.80465 + .12125*range(log(RTmin1))))\n>> # 685.746 820.627 --- i.e. a 135 ms difference\n>>\n>> Incidentally, this 135 ms difference corresponds to the partial effect I can glean from the plot produced by plotLMER.fnc():\n>>\n>> plotLMER.fnc(model1.lmer, pred=\"log(RTmin1)\")\n>>\n>> Similarly, I?m at a loss as to how they arrived at the 50 ms frequency effect as frequency (in contrast to BaseFrequency) does not seem to be coded in the data set as well as at the 100 ms ?ResponseToPrime? effect in another model (p. 400, bottom left).\n>>\n>> Thanks,\n>> Jan\n>>\n>> ---\n>> Jan Vanhove\n>> jan.vanhove at unifr.ch\n>>\n>> PhD student\n>> Section Multilingualism and foreign language didactics\n>> University of Fribourg, Switzerland\n>>\n>> _______________________________________________\n>> R-sig-mixed-models at r-project.org mailing list\n>> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n> --\n> Andrew Robinson\n> Program Manager, ACERA\n> Department of Mathematics and Statistics ? ? ? ? ? ?Tel: +61-3-8344-6410\n> University of Melbourne, VIC 3010 Australia ? ? ? ? ? ? ? (prefer email)\n> http://www.ms.unimelb.edu.au/~andrewpr ? ? ? ? ? ? ?Fax: +61-3-8344-4599\n> http://www.acera.unimelb.edu.au/\n>\n> Forest Analytics with R (Springer, 2011)\n> http://www.ms.unimelb.edu.au/FAwR/\n> Introduction to Scientific Programming and Simulation using R (CRC, 2009):\n> http://www.ms.unimelb.edu.au/spuRs/\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>",
       "body_snippet": "On Thu, May 5, 2011 at 7:21 PM, Andrew Robinson\n<A.Robinson at ms.unimelb.edu.au> wrote:\n> Jan,\n>\n> surely it would be most appropriate to approach the authors directly?\n>\n> Andrew\n>\n> On Thu, May 05,",
       "thread_id": "thread-7f853631d8d3",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016233.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-8d736ff0ca6e",
@@ -586,8 +576,7 @@
       "body_snippet": "On Tue, May 3, 2011 at 2:36 AM, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Hi,\n>\n> In the note section of ?rIW I have provided the relationships between the\n> inverse wishart samplers in MCMCgl",
       "thread_id": "thread-5dce3e7f7746",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016235.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-608ef62c072d",
@@ -607,8 +596,7 @@
       "body_snippet": "Hi,\n\nThe third call to rIW is fix which fixes a (sub) matrix of the matrix  \nto be sampled. Replace rIW(Sigma,nu,1) with rIW(Sigma,nu,n=1) in your  \ncode and you get the desired result.\n\nJarrod\n\n\n\nQuo",
       "thread_id": "thread-5dce3e7f7746",
       "thread_depth": 3,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016236.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-5e188a1d6f72",
@@ -624,8 +612,7 @@
       "body_snippet": "Dear R users,\n\nI have a question with respect to the pvals.fnc from the package\nlanguageR. \n\nI am working on a small and unbalanced dataset (18 nests of eurasian\nkestrels with a total of 64 nestlings;",
       "thread_id": "thread-5e188a1d6f72",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013340.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-06f7b16e68ff",
@@ -641,8 +628,7 @@
       "body_snippet": "Dear R users,\n\nI have a question with respect to the pvals.fnc from the package\nlanguageR. \n\nI am working on a small and unbalanced dataset (18 nests of eurasian\nkestrels with a total of 64 nestlings;",
       "thread_id": "thread-06f7b16e68ff",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013341.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-50746c71775c",
@@ -690,8 +676,7 @@
       "body_snippet": "Dear R users,\n\nI apologize for having sent many times the same message.\nEach time I did it, I received an e-mail specifying that my message had\nnot been delivered.\n\nBest regards,\n\nRomain",
       "thread_id": "thread-8e6f402b1c0c",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016241.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-801b8b71dcb3",
@@ -710,9 +695,8 @@
       "thread_id": "thread-8e6f402b1c0c",
       "thread_depth": 1,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016242.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110510/bafb8590/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110510/bafb8590/attachment.pl"
       ]
     },
     {
@@ -767,7 +751,6 @@
       "thread_id": "thread-46deb55079e3",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013348.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110510/3335afe1/attachment.pl"
       ]
@@ -791,8 +774,7 @@
       "body_snippet": "On Tue, May 10, 2011 at 1:04 AM, Jarrod Hadfield <j.hadfield at ed.ac.uk> wrote:\n> Hi,\n>\n> The third call to rIW is fix which fixes a (sub) matrix of the matrix to be\n> sampled. Replace rIW(Sigma,nu,1",
       "thread_id": "thread-5dce3e7f7746",
       "thread_depth": 4,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016246.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-cca715f53d6b",
@@ -810,8 +792,7 @@
       "body_snippet": "On Fri, 6 May 2011, Arthur Charpentier wrote:\n\n> I would like to fit a bivariate probit model, i.e. I observe Y=(Y1,Y2),\n> I have some covariates X1,...Xk, and I assume that there is a hierarchical\n> ",
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016247.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-bc1d97c22221",
@@ -830,8 +811,7 @@
       "body_snippet": "On May 10, 2011, at 15:13 , Ben Bolker wrote:\n\n> -----BEGIN PGP SIGNED MESSAGE-----\n> Hash: SHA1\n> \n> On 05/10/2011 08:14 AM, Zofia Prokop wrote:\n>> Hello,\n>> \n>> I'm wondering how to obtain df-s asso",
       "thread_id": "thread-de3d93561e63",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016248.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-14e6427ec0bf",
@@ -850,8 +830,7 @@
       "body_snippet": "The `residual' variances would not be identifiable even though the  \nresidual correlation is, which I think would cause problems unless the  \nvariances are fixed at some value (may be possible with th",
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016249.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-18705aa5e22c",
@@ -870,9 +849,8 @@
       "thread_id": "thread-de3d93561e63",
       "thread_depth": 1,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016250.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110511/f09c7323/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110511/f09c7323/attachment.pl"
       ]
     },
     {
@@ -893,8 +871,7 @@
       "body_snippet": "On Wed, 11 May 2011, Jarrod Hadfield wrote:\n\n> Quoting David Duffy <davidD at qimr.edu.au> on Wed, 11 May 2011 16:10:04 \n>\n>> On Fri, 6 May 2011, Arthur Charpentier wrote:\n>> \n>>> I would like to fit ",
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 3,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016251.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-15ecfcda9855",
@@ -911,7 +888,6 @@
       "thread_id": "thread-15ecfcda9855",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013355.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110512/ee8bdf39/attachment.pl"
       ]
@@ -929,12 +905,11 @@
         "<BANLkTimyY9zQLgydSzaR0O-xKNey6Mx3ng@mail.gmail.com>",
         "<BANLkTikgqyd6jC+nxdrxEMgqxPDm75sq_g@mail.gmail.com>"
       ],
-      "body_plain": "Dear Ben,\n\nThanks for your response.\n\nLooking at what you said, the variance in my random factor \"site\" is\nnearly zero in most of the cases (the higher value is 0.1). Do you\nthink that then I can say that differences in site are not important?\nBecause I was thinking of just removing \"site\" from the model and then\nfit a GLM instead of GLMM (as I will have only fixed effects).\n\nWhat do you mean when you say that \"if the means are low enough then\nzero-inflation may not be necessary\"? Do you refer to the means of the\n\"y\" values without zeros? And which value should I take as \"low\nenough\"? I believe that the means of the response variable are around\n2 with the zero values included, and around 3-4 without the zeros. Is\nit low enough to not include zero-inflation? Anyway, if I remove the\nrandom factor, I will try to fir a zero-inflated GLM with zeroinfl in\npscl package, and compare it with a poisson or negative binoimial\nmodel. Should I have any problem in comparing AIC between these\ndifferent kinds of models?\n\nI am still a bit confused about overdispersion. You said that in order\nto evaluate if there was overdispersion in my model, I should look at\nthe residual deviance or sum of squared Pearson residuals, but these\nvalues are not given by lmer. I only got a \"deviance\" value. How can I\ncalculate these values, and which threshold should I consider in order\nto say that I have (or not) overdispersion in my data?\n\nThe \"revisions\" in my data are just temporal repetitions of the\nsampling. I mean, I did different samplings of the same experimental\nunits in different dates, and I call each of these samplings a\n\"revision\". Anyway, I think that fitting a model for each revision\nshould be fine, because I can compare the significant factors between\nthem, as I don't have any specific hypothesis about how the effects\nshould change temporally.\n\nAgain, thank you very much for your time and suggestions!\n\nAlicia Valdés Rapado\nPhD Student\nDpto. Biología Organismos y Sistemas - Unidad de Ecología\nUniversidad de Oviedo\nEspaña - Spain\ne-mail: valdesalicia.uo at uniovi.es\n\n\nEl 5 de mayo de 2011 11:53, Alicia Valdés <aliciavaldes1501 at gmail.com> escribió:\n>\n> I am sorry, one of the colummns of the example data was oddly\n> displaced. Here it should be right (I hope).\n>\n> rev         site        species  repl        cover     treat      seedlings\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 3\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 5\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?3\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? A\n> ? ? ? ? 1\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 2\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?4\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?1\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ?   high     ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? A\n> ? ? ? ? 2\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ?   high     ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ?   ? ?E\n> ? ? ? ? ?0\n>\n>\n> Alicia Valdés Rapado\n> PhD Student\n> Dpto. Biología Organismos y Sistemas - Unidad de Ecología\n> Universidad de Oviedo\n> España - Spain\n> e-mail: valdesalicia.uo at uniovi.es\n\n\n\n--\n\n\nAlicia Valdés Rapado\n\nAntes de imprimir este e-mail, piensa bien si es necesario hacerlo.\nUna tonelada de papel implica la tala de 15 árboles. Cuida el medio\nambiente.",
+      "body_plain": "Dear Ben,\n\nThanks for your response.\n\nLooking at what you said, the variance in my random factor \"site\" is\nnearly zero in most of the cases (the higher value is 0.1). Do you\nthink that then I can say that differences in site are not important?\nBecause I was thinking of just removing \"site\" from the model and then\nfit a GLM instead of GLMM (as I will have only fixed effects).\n\nWhat do you mean when you say that \"if the means are low enough then\nzero-inflation may not be necessary\"? Do you refer to the means of the\n\"y\" values without zeros? And which value should I take as \"low\nenough\"? I believe that the means of the response variable are around\n2 with the zero values included, and around 3-4 without the zeros. Is\nit low enough to not include zero-inflation? Anyway, if I remove the\nrandom factor, I will try to fir a zero-inflated GLM with zeroinfl in\npscl package, and compare it with a poisson or negative binoimial\nmodel. Should I have any problem in comparing AIC between these\ndifferent kinds of models?\n\nI am still a bit confused about overdispersion. You said that in order\nto evaluate if there was overdispersion in my model, I should look at\nthe residual deviance or sum of squared Pearson residuals, but these\nvalues are not given by lmer. I only got a \"deviance\" value. How can I\ncalculate these values, and which threshold should I consider in order\nto say that I have (or not) overdispersion in my data?\n\nThe \"revisions\" in my data are just temporal repetitions of the\nsampling. I mean, I did different samplings of the same experimental\nunits in different dates, and I call each of these samplings a\n\"revision\". Anyway, I think that fitting a model for each revision\nshould be fine, because I can compare the significant factors between\nthem, as I don't have any specific hypothesis about how the effects\nshould change temporally.\n\nAgain, thank you very much for your time and suggestions!\n\nAlicia Vald?s Rapado\nPhD Student\nDpto. Biolog?a Organismos y Sistemas - Unidad de Ecolog?a\nUniversidad de Oviedo\nEspa?a - Spain\ne-mail: valdesalicia.uo at uniovi.es\n\n\nEl 5 de mayo de 2011 11:53, Alicia Vald?s <aliciavaldes1501 at gmail.com> escribi?:\n>\n> I am sorry, one of the colummns of the example data was oddly\n> displaced. Here it should be right (I hope).\n>\n> rev ? ? ? ? site ? ? ? ?species ?repl ? ? ? ?cover ? ? treat ? ? ?seedlings\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 3\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 5\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?3\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? A\n> ? ? ? ? 1\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 0 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 2\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?4\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?1\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 3 ? ? ? ? ? ? high ? ? ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? A\n> ? ? ? ? 2\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 1 ? ? ? ? ? ? 4 ? ? ? ? ? ? high ? ? ? E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 1 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?A\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?C\n> ? ? ? ? 0\n>\n> 1 ? ? ? ? ? ? 2 ? ? ? ? ? ? 0 ? ? ? ? ? ? 2 ? ? ? ? ? ? low ? ? ? ?E\n> ? ? ? ? ?0\n>\n>\n> Alicia Vald?s Rapado\n> PhD Student\n> Dpto. Biolog?a Organismos y Sistemas - Unidad de Ecolog?a\n> Universidad de Oviedo\n> Espa?a - Spain\n> e-mail: valdesalicia.uo at uniovi.es\n\n\n\n--\n\n\nAlicia Vald?s Rapado\n\nAntes de imprimir este e-mail, piensa bien si es necesario hacerlo.\nUna tonelada de papel implica la tala de 15 ?rboles. Cuida el medio\nambiente.",
       "body_snippet": "Dear Ben,\n\nThanks for your response.\n\nLooking at what you said, the variance in my random factor \"site\" is\nnearly zero in most of the cases (the higher value is 0.1). Do you\nthink that then I can say ",
       "thread_id": "thread-954131501d37",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016253.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-21a78f89c9b6",
@@ -949,12 +924,11 @@
         "<BANLkTimyY9zQLgydSzaR0O-xKNey6Mx3ng@mail.gmail.com>",
         "<4DC4227D.1080305@gmail.com>"
       ],
-      "body_plain": "Dear Ben,\n\nThanks for your response. As I am not very used to these kind of lists, I posted\nthis response to my own message at first, so I will try to answer properly to\nyour message now (I hope this works). \n\nLooking at what you said, the variance in my random factor \"site\" is nearly zero\nin most of the cases (the higher value is 0.1). Do you think that then I can say\nthat differences in site are not important? Because I was thinking of just\nremoving \"site\" from the model and then fit a GLM instead of GLMM (as I will\nhave only fixed effects).\n\nWhat do you mean when you say that \"if the means are low enough then\nzero-inflation may not be necessary\"? Do you refer to the means of the \"y\"\nvalues without zeros? And which value should I take as \"low enough\"? I believe\nthat the means of the response variable are around 2 with the zero values\nincluded, and around 3-4 without the zeros. Is it low enough to not include\nzero-inflation? Anyway, if I remove the random factor, I will try to fir a\nzero-inflated GLM with zeroinfl in pscl package, and compare it with a poisson\nor negative binoimial model. Should I have any problem in comparing AIC between\nthese different kinds of models?\n\nI am still a bit confused about overdispersion. You said that in order to\nevaluate if there was overdispersion in my model, I should look at the residual\ndeviance or sum of squared Pearson residuals, but these values are not given by\nlmer. I only got a \"deviance\" value. How can I calculate these values, and which\nthreshold should I consider in order to say that I have (or not) overdispersion\nin my data?\n\nThe \"revisions\" in my data are just temporal repetitions of the sampling. I\nmean, I did different samplings of the same experimental units in different\ndates, and I call each of these samplings a \"revision\". Anyway, I think that\nfitting a model for each revision should be fine, because I can compare the\nsignificant factors between them, as I don't have any specific hypothesis about\nhow the effects should change temporally.\n\nAgain, thank you very much for your time and suggestions!\n\n\nAlicia Valdés Rapado\nPhD Student\nDpto. Biología Organismos y Sistemas - Unidad de Ecología\nUniversidad de Oviedo\nEspaña - Spain\ne-mail: valdesalicia.uo at uniovi.es",
+      "body_plain": "Dear Ben,\n\nThanks for your response. As I am not very used to these kind of lists, I posted\nthis response to my own message at first, so I will try to answer properly to\nyour message now (I hope this works). \n\nLooking at what you said, the variance in my random factor \"site\" is nearly zero\nin most of the cases (the higher value is 0.1). Do you think that then I can say\nthat differences in site are not important? Because I was thinking of just\nremoving \"site\" from the model and then fit a GLM instead of GLMM (as I will\nhave only fixed effects).\n\nWhat do you mean when you say that \"if the means are low enough then\nzero-inflation may not be necessary\"? Do you refer to the means of the \"y\"\nvalues without zeros? And which value should I take as \"low enough\"? I believe\nthat the means of the response variable are around 2 with the zero values\nincluded, and around 3-4 without the zeros. Is it low enough to not include\nzero-inflation? Anyway, if I remove the random factor, I will try to fir a\nzero-inflated GLM with zeroinfl in pscl package, and compare it with a poisson\nor negative binoimial model. Should I have any problem in comparing AIC between\nthese different kinds of models?\n\nI am still a bit confused about overdispersion. You said that in order to\nevaluate if there was overdispersion in my model, I should look at the residual\ndeviance or sum of squared Pearson residuals, but these values are not given by\nlmer. I only got a \"deviance\" value. How can I calculate these values, and which\nthreshold should I consider in order to say that I have (or not) overdispersion\nin my data?\n\nThe \"revisions\" in my data are just temporal repetitions of the sampling. I\nmean, I did different samplings of the same experimental units in different\ndates, and I call each of these samplings a \"revision\". Anyway, I think that\nfitting a model for each revision should be fine, because I can compare the\nsignificant factors between them, as I don't have any specific hypothesis about\nhow the effects should change temporally.\n\nAgain, thank you very much for your time and suggestions!\n\n\nAlicia Vald?s Rapado\nPhD Student\nDpto. Biolog?a Organismos y Sistemas - Unidad de Ecolog?a\nUniversidad de Oviedo\nEspa?a - Spain\ne-mail: valdesalicia.uo at uniovi.es",
       "body_snippet": "Dear Ben,\n\nThanks for your response. As I am not very used to these kind of lists, I posted\nthis response to my own message at first, so I will try to answer properly to\nyour message now (I hope this ",
       "thread_id": "thread-954131501d37",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016254.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-108e33eacfbe",
@@ -972,8 +946,7 @@
       "body_snippet": "On Tue, May 10, 2011 at 9:47 AM, Chester Kam <chester_kam at yahoo.com> wrote:\n> Hi all,\n>\n> I am conducting an analysis in which I need to specify the error\n> variance/covariance structure in a Linea",
       "thread_id": "thread-46deb55079e3",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016255.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-f426b9b100b4",
@@ -989,8 +962,7 @@
       "body_snippet": "Hello,\n\nI have an interesting setup to my data, and I'm looking for a little\nassistance building the random effects syntax up correctly.\n\nI have repeated measurements on Products, which are nested wit",
       "thread_id": "thread-f426b9b100b4",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013359.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-c89deb39b0de",
@@ -1075,9 +1047,8 @@
       "thread_id": "thread-695c8e2418a3",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016261.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110513/44bac5bf/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110513/44bac5bf/attachment.pl"
       ]
     },
     {
@@ -1094,8 +1065,7 @@
       "body_snippet": "Hi,\n\nI'm a master student in statistics at NTNU in Norway, writing my thesis on\nLinear mixed effect models. I was recommended to try this mailing list  \nby Douglas Bates, because I have some questions",
       "thread_id": "thread-576fe521c7ec",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013366.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-4448ea4e6abd",
@@ -1111,8 +1081,7 @@
       "body_snippet": "Has anyone considered the possible advantages of Hamiltonian Monte\nCarlo (http://www.cs.toronto.edu/~radford/) or Reimann manifold Langevin\nMonte Carlo (http://www.dcs.gla.ac.uk/inference/rmhmc/) in t",
       "thread_id": "thread-4448ea4e6abd",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013365.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-8c8fdd83d987",
@@ -1207,8 +1176,7 @@
       "body_snippet": "On 11-05-16 02:09 PM, Petar Milin wrote:\n> On Fri, May 13, 2011 at 10:51 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n>> On Fri, May 13, 2011 at 3:32 PM, Petar Milin <pmilin at ff.uns.ac.rs> wrot",
       "thread_id": "thread-8c8fdd83d987",
       "thread_depth": 5,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016275.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-38286fe11bf8",
@@ -1226,8 +1194,7 @@
       "body_snippet": "I implemented hybrid mcmc (Hamiltonian) in AD Model Builder's random \neffects module.\nSo far as I know it has not been used much.  It should be possible to \naccess it for testing from\nBen Bolker's glm",
       "thread_id": "thread-4448ea4e6abd",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016268.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-5995cb13717e",
@@ -1248,8 +1215,7 @@
       "body_snippet": "Hi David,\n\nYes, I see, it can be done that way, but care has to be taken. In your  \nexample the observation-level correlation is actually negative which  \nmeans the group variance gets set to zero. Yo",
       "thread_id": "thread-8a48b1f4e671",
       "thread_depth": 4,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016269.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-dea27b92cd86",
@@ -1268,8 +1234,7 @@
       "body_snippet": "On Sat, May 14, 2011 at 1:12 PM, dave fournier <davef at otter-rsch.com> wrote:\n> I implemented hybrid mcmc (Hamiltonian) in AD Model Builder's random effects\n> module.\n> So far as I know it has not b",
       "thread_id": "thread-4448ea4e6abd",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016270.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-0875c74b0960",
@@ -1289,8 +1254,7 @@
       "body_snippet": "On 11-05-15 07:43 PM, Dominick Samperi wrote:\n\nYes well that is more difficult. Now that we are open source you are \ndealing with a committee.\nI do the ADMB side. Ben and others do the R side (I guess",
       "thread_id": "thread-4448ea4e6abd",
       "thread_depth": 3,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016271.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-11ce4f9b2aca",
@@ -1307,7 +1271,6 @@
       "thread_id": "thread-11ce4f9b2aca",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013375.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110516/b79e23bc/attachment.pl"
       ]
@@ -1331,8 +1294,7 @@
       "body_snippet": "On Fri, May 13, 2011 at 10:51 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n> On Fri, May 13, 2011 at 3:32 PM, Petar Milin <pmilin at ff.uns.ac.rs> wrote:\n>>\n>> On 13/05/11 22:00, Douglas Bates wr",
       "thread_id": "thread-8c8fdd83d987",
       "thread_depth": 4,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016273.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-cd5c86ae01e6",
@@ -1354,8 +1316,7 @@
       "body_snippet": "On Mon, May 16, 2011 at 1:09 PM, Petar Milin <pmilin at ff.uns.ac.rs> wrote:\n> On Fri, May 13, 2011 at 10:51 PM, Douglas Bates <bates at stat.wisc.edu> wrote:\n>> On Fri, May 13, 2011 at 3:32 PM, Petar",
       "thread_id": "thread-8c8fdd83d987",
       "thread_depth": 5,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016274.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-9d3e070baa02",
@@ -1373,8 +1334,7 @@
       "body_snippet": "On Mon, 16 May 2011, Ross Culloch wrote:\n\n> I was hoping someone could help me understand more about the use of the \n> Observation-Level Random Effect.\n>\n> What I am not sure about is whether the OLRE",
       "thread_id": "thread-11ce4f9b2aca",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016276.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-c220a78faecb",
@@ -1409,7 +1369,6 @@
       "thread_id": "thread-984d97dbd898",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013381.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110517/573e5564/attachment.pl"
       ]
@@ -1487,8 +1446,7 @@
       "body_snippet": "[forwarding to r-sig-mixed-models list ...]\n\n  As of today, Gamma models are (still) not feasible in lme4 -- they are\nsomewhat more numerically challenging than the other families, so Doug\nBates is ha",
       "thread_id": "thread-6a79f84a758d",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013385.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-dff580b4fa8d",
@@ -1504,8 +1462,7 @@
       "body_snippet": "I administered a questionnaire a bunch of people people. The\nquestionnaire asked about demographics, which I would like to model as\nrandom effects, and a bunch of related questions that could be thoug",
       "thread_id": "thread-dff580b4fa8d",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013386.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-42f787c13669",
@@ -1607,8 +1564,7 @@
       "body_snippet": "I administered a questionnaire a bunch of people people. The\nquestionnaire asked about demographics, which I would like to model as\nrandom effects, and a bunch of related questions that could be thoug",
       "thread_id": "thread-dff580b4fa8d",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016288.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-049ce4f19bd1",
@@ -1624,8 +1580,7 @@
       "body_snippet": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA1\n\n\n  The bleeding-edge development version of glmmADMB will now do Gamma\nfits, but you will have to be brave and/or patient.  At the moment the\ncode is ava",
       "thread_id": "thread-049ce4f19bd1",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013392.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-4d5774905e7e",
@@ -1677,8 +1632,7 @@
       "body_snippet": "It would be nice if all the source for a package was included\nin an easily accessible way. Maybe it is?",
       "thread_id": "thread-049ce4f19bd1",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016292.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-6ae852c8c89e",
@@ -1697,8 +1651,7 @@
       "body_snippet": "On Thu, May 19, 2011 at 11:20 AM, dave fournier <davef at otter-rsch.com> wrote:\n> It would be nice if all the source for a package was included\n> in an easily accessible way. Maybe it is?\n\nThis may s",
       "thread_id": "thread-049ce4f19bd1",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016293.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-4378c65c37f8",
@@ -1751,8 +1704,7 @@
       "body_snippet": "Here is how just about every dataset I need to analyze in the course\nof my research looks:\n\n|ID|F1|F2|N1|N2|T1|R1|T2|R2|T3|R3|\n|S1|A |X |3.0|4.2|10|1.4|27|4.5|31|4.6|\n|S2|A |Y |2.2|5.1|11|1.5|23|5.0|3",
       "thread_id": "thread-dcf7feeae376",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013399.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-bd4acafd6771",
@@ -1935,7 +1887,6 @@
       "thread_id": "thread-331b583cdb64",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013408.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110524/8f27ae94/attachment.pl"
       ]
@@ -1954,8 +1905,7 @@
       "body_snippet": "Probably the question fits better in the lme4 mailing list, so I\nforwarded it.\n\n-------- Original-Nachricht --------\nBetreff: linear regression with replication\nDatum: Mon, 23 May 2011 16:31:54 +0200\n",
       "thread_id": "thread-c740efa02ed8",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013420.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-39192ecdaf2f",
@@ -1989,8 +1939,7 @@
       "body_snippet": "Dear list,\n\nI am using the GLS function to fit spatial regressions and trying to\nfind an equivalent of the OLS R-squared.\nDoes something like the Nagelkerke R-squared constitute a correct approach ?\n\n",
       "thread_id": "thread-508e2c457508",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013409.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-04791da52d09",
@@ -2211,8 +2160,7 @@
       "body_snippet": "hi all,\ntrying to fit either this model:\n\nproto1 <- lmer(hibpe ~ age + b + b_age + h + h_age + female +\nfemale_age + bxf + hxf + numwaves + dead + nodoctor + nohosp\n\t+(1|hhidpn) +(0 + age | hhidpn) , ",
       "thread_id": "thread-e8c3e6a05672",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013423.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-95eef017d39c",
@@ -2233,8 +2181,7 @@
       "body_snippet": "Excellent! This is exactly the answer I was looking for and it makes\nperfect sense.\n\nThank you, John and Tom for your help.\n\nChing\n\nOn Thu, May 26, 2011 at 3:03 AM, John Maindonald\n<john.maindonald at",
       "thread_id": "thread-ebc41d049e3b",
       "thread_depth": 4,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016321.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-0405a80e6b94",
@@ -2252,8 +2199,7 @@
       "body_snippet": "> Date: Thu, 26 May 2011 18:50:50 +0200\n> From: Jens Oldeland<oldeland at gmx.de>\n> To: r-sig-mixed-models at r-project.org\n> Subject: [R-sig-ME] Combining spatial and temporal correlation\n> \tstructur",
       "thread_id": "thread-0405a80e6b94",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013425.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-e1f3a3ac9f64",
@@ -2269,8 +2215,7 @@
       "body_snippet": "Hi,\n\nConsider the need for a mixed-effects model with an ordered multinomial \nresponse variable. To the best of my knowledge, lme4 would not provide \nsuch a thing.\n\nHowever, I was wondering if such a ",
       "thread_id": "thread-e1f3a3ac9f64",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013426.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-f82afe37a8f4",
@@ -2329,8 +2274,7 @@
       "body_snippet": "On Thu, May 26, 2011 at 8:53 PM, Daniel Adkins <deadkins at vcu.edu> wrote:\n> hi all,\n> trying to fit either this model:\n>\n> proto1 <- lmer(hibpe ~ age + b + b_age + h + h_age + female +\n> female_age ",
       "thread_id": "thread-e8c3e6a05672",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016327.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-a1c2c97d9b39",
@@ -2350,8 +2294,7 @@
       "body_snippet": "Daniel,\n\nThis has happened to me before, and Harald Baayen explained the issue:\nIt appears that recent versions of the languageR package are not\ncompatible with the newest version of R.\n\nPlease try to",
       "thread_id": "thread-f82afe37a8f4",
       "thread_depth": 3,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016328.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-f4fb76ef9d3a",
@@ -2370,8 +2313,7 @@
       "body_snippet": "doug,\nthanks for your reply. i do tons of mixed modeling, so obviously am a\nbig fan of / highly dependent on your work.\n\nresults from:\n>sessionInfo()\n\nR version 2.13.0 (2011-04-13)\nPlatform: i386-pc-m",
       "thread_id": "thread-e8c3e6a05672",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016329.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-c44491774134",
@@ -2393,9 +2335,8 @@
       "thread_id": "thread-f82afe37a8f4",
       "thread_depth": 4,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016330.html",
       "restored_from": [
-        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110527/ab5d46f5/attachment-0001.pl"
+        "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110527/ab5d46f5/attachment.pl"
       ]
     },
     {
@@ -2417,8 +2358,7 @@
       "body_snippet": "Dennis,\nThank you for your help. I save installed the \"Matrix\" package several\ndifferent ways (until i am currently blue in the face) and still\nreceive the following error:\n\n> library(lme4a)\nError: pa",
       "thread_id": "thread-2ade60130a24",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016331.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-68b14eab34a4",
@@ -2440,8 +2380,7 @@
       "body_snippet": "Sorry for cluttering up the listserve, hopefully this is the last one.\n\ni have successfully installed \"lme4a\". however it ignores any \"nAGQ\"\nsyntax and gives laplace approx-based solution. this soulti",
       "thread_id": "thread-2ade60130a24",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016332.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-50da24870f4b",
@@ -2459,8 +2398,7 @@
       "body_snippet": "On 27 May 2011 17:03, Thomas Mang <thomasmang.ng at googlemail.com> wrote:\n> Hi,\n>\n> Consider the need for a mixed-effects model with an ordered multinomial\n> response variable. To the best of my know",
       "thread_id": "thread-e1f3a3ac9f64",
       "thread_depth": 1,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016333.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-840d71be0853",
@@ -2478,8 +2416,7 @@
       "body_snippet": "Dennis,\nVery kind of you to help me out - I really do appreciate it and hope\nto return the favor some day.\n\nI checked out the book chapters/course notes and did not really find\nanything directly germa",
       "thread_id": "thread-840d71be0853",
       "thread_depth": 0,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016334.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-04f4d125d08f",
@@ -2498,8 +2435,7 @@
       "body_snippet": "Hi,\n\nOn 28.05.2011 22:02, Rune Haubo wrote:\n> On 27 May 2011 17:03, Thomas Mang<thomasmang.ng at googlemail.com>  wrote:\n>> Hi,\n>>\n>> Consider the need for a mixed-effects model with an ordered multin",
       "thread_id": "thread-e1f3a3ac9f64",
       "thread_depth": 2,
-      "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/016335.html"
+      "month": "2011-05"
     },
     {
       "id": "msg-2dcd8ea3407e",
@@ -2550,7 +2486,6 @@
       "thread_id": "thread-a6b849df0995",
       "thread_depth": 0,
       "month": "2011-05",
-      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2011q2/013441.html",
       "restored_from": [
         "https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20110530/45b6ef7f/attachment.pl"
       ]
