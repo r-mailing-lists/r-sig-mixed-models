@@ -36,3 +36,136 @@ mobile: +49 17645230846
 	[[alternative HTML version deleted]]
 
 
+From jorgemmtte|xe|r@ @end|ng |rom gm@||@com  Sat Oct 24 15:00:30 2026
+From: jorgemmtte|xe|r@ @end|ng |rom gm@||@com (Jorge Teixeira)
+Date: Sat, 24 Oct 2026 14:00:30 +0100
+Subject: [R-sig-ME] Random-effects structure for a volleyball tactics model
+ (crossed vs. nested)
+Message-ID: <CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>
+
+Hi
+
+I am analysing a volleyball dataset in which a tactic (secret ?), ordered
+by the coach, is executed by one player.
+
+The outcome is binary (WIN / LOSS).
+
+Each observation (row of data) involves exactly one coach and one player,
+and the data were collected across matches over three seasons.
+
+The fixed effects will be MATCH_STATUS, SET_STATUS, SEX and DIVISION.
+
+I am unsure about the random-effects structure. Which of these is more
+appropriate?
+
+   1. Crossed effects: (1 | COACH) + (1 | PLAYER) + (1 | MATCH)
+   2. Nested effects: (1 | MATCH/COACH) + (1 | MATCH/PLAYER)
+
+Thank you in advance for your help.
+
+Best
+
+	[[alternative HTML version deleted]]
+
+
+From i@io m@iii@g oii phys@ii@-courses@org  Sat Oct 24 15:11:15 2026
+From: i@io m@iii@g oii phys@ii@-courses@org (i@io m@iii@g oii phys@ii@-courses@org)
+Date: Sat, 24 Oct 2026 15:11:15 +0200 (CEST)
+Subject: [R-sig-ME] Online live course - Generalised Additive Models in R
+Message-ID: <1792847475.865724559@webmail.jimdo.com>
+
+
+Dear all,
+We would like to inform you that our [ Generalised Additive Models in R ]( https://www.physalia-courses.org/courses-workshops/gams-in-r/ ) course is almost fully booked, with only a few seats remaining!
+ 
+ 
+Course website: [ https://www.physalia-courses.org/courses-workshops/gams-in-r/ ]( https://www.physalia-courses.org/courses-workshops/gams-in-r/ ) 
+ 
+ 
+Learn how Generalised Additive Models (GAMs) use splines to capture complex, non-linear relationships between covariates and responses, going beyond traditional parametric approaches such as GLMs. Discover the flexibility of GAMs and how to apply them to real-world data using R.
+ 
+If you are interested in taking your statistical modelling skills further, now is the time to secure your place!
+ 
+Best regards,
+Carlo
+ 
+--------------------
+
+Carlo Pecoraro, Ph.D
+
+
+Physalia-courses DIRECTOR
+
+info at physalia-courses.org
+
+mobile: +49 17645230846
+
+[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )
+
+
+	[[alternative HTML version deleted]]
+
+
+From j|@ver|@@|mo @end|ng |rom gm@||@com  Sat Oct 24 15:12:17 2026
+From: j|@ver|@@|mo @end|ng |rom gm@||@com (=?UTF-8?B?Sm/Do28gVmVyw61zc2ltbw==?=)
+Date: Sat, 24 Oct 2026 14:12:17 +0100
+Subject: [R-sig-ME] 
+ Random-effects structure for a volleyball tactics model
+ (crossed vs. nested)
+In-Reply-To: <CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>
+References: <CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>
+Message-ID: <CA+RFYHkdSB_chrVfBTiztKiHmVNKZ__3hQ3SjHAFSogDcepFAw@mail.gmail.com>
+
+Hi Jorge,
+
+Check this:
+https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#nested-or-crossed
+
+Presumably you'd want crossed effects here, because otherwise you lose a
+random effect that captures the fact that PLAYER A within MATCH 1 is the
+same player as PLAYER A within MATCH 2.
+(1 | MATCH/PLAYER) is the same as (1 | MATCH) + (1 | MATCH:PLAYER), so you
+can see that you'd only get random intercepts for MATCHes and for the
+MATCH:PLAYER unique *combinations*.
+
+(note that this also depends on the way PLAYER is coded; if PLAYERs get
+different codes on different matches, then crossed or nested would be
+identical)
+
+Jo?o
+
+On Sat, 24 Oct 2026 at 14:00, Jorge Teixeira <jorgemmtteixeira at gmail.com>
+wrote:
+
+> Hi
+>
+> I am analysing a volleyball dataset in which a tactic (secret ?), ordered
+> by the coach, is executed by one player.
+>
+> The outcome is binary (WIN / LOSS).
+>
+> Each observation (row of data) involves exactly one coach and one player,
+> and the data were collected across matches over three seasons.
+>
+> The fixed effects will be MATCH_STATUS, SET_STATUS, SEX and DIVISION.
+>
+> I am unsure about the random-effects structure. Which of these is more
+> appropriate?
+>
+>    1. Crossed effects: (1 | COACH) + (1 | PLAYER) + (1 | MATCH)
+>    2. Nested effects: (1 | MATCH/COACH) + (1 | MATCH/PLAYER)
+>
+> Thank you in advance for your help.
+>
+> Best
+>
+>         [[alternative HTML version deleted]]
+>
+> _______________________________________________
+> R-sig-mixed-models at r-project.org mailing list
+> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>
+
+	[[alternative HTML version deleted]]
+
+

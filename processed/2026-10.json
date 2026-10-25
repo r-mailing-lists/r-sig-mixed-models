@@ -19,6 +19,59 @@
       "thread_depth": 0,
       "month": "2026-10",
       "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030897.html"
+    },
+    {
+      "id": "msg-f581b9cdf895",
+      "message_id": "<CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>",
+      "from_name": "Jorge Teixeira",
+      "from_email_hash": "304a743c29fe7399f083c8afca312fd3d83578d24d9612c282073381938e1091",
+      "date": "2026-10-24T13:00:30Z",
+      "subject": "[R-sig-ME] Random-effects structure for a volleyball tactics model (crossed vs. nested)",
+      "subject_clean": "Random-effects structure for a volleyball tactics model (crossed vs. nested)",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Hi\n\nI am analysing a volleyball dataset in which a tactic (secret ?), ordered\nby the coach, is executed by one player.\n\nThe outcome is binary (WIN / LOSS).\n\nEach observation (row of data) involves exactly one coach and one player,\nand the data were collected across matches over three seasons.\n\nThe fixed effects will be MATCH_STATUS, SET_STATUS, SEX and DIVISION.\n\nI am unsure about the random-effects structure. Which of these is more\nappropriate?\n\n   1. Crossed effects: (1 | COACH) + (1 | PLAYER) + (1 | MATCH)\n   2. Nested effects: (1 | MATCH/COACH) + (1 | MATCH/PLAYER)\n\nThank you in advance for your help.\n\nBest\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi\n\nI am analysing a volleyball dataset in which a tactic (secret ?), ordered\nby the coach, is executed by one player.\n\nThe outcome is binary (WIN / LOSS).\n\nEach observation (row of data) involves exa",
+      "thread_id": "thread-f581b9cdf895",
+      "thread_depth": 0,
+      "month": "2026-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030898.html"
+    },
+    {
+      "id": "msg-6ff9a12dab6c",
+      "message_id": "<1792847475.865724559@webmail.jimdo.com>",
+      "from_name": "i@io m@iii@g oii phys@ii@-courses@org",
+      "from_email_hash": "ca8ae7fca04226cbf7116003b962efbd86b9ffdf6a68e1a8cee80f656f89cb9c",
+      "date": "2026-10-24T13:11:15Z",
+      "subject": "[R-sig-ME] Online live course - Generalised Additive Models in R",
+      "subject_clean": "Online live course - Generalised Additive Models in R",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear all,\nWe would like to inform you that our [ Generalised Additive Models in R ]( https://www.physalia-courses.org/courses-workshops/gams-in-r/ ) course is almost fully booked, with only a few seats remaining!\n \n \nCourse website: [ https://www.physalia-courses.org/courses-workshops/gams-in-r/ ]( https://www.physalia-courses.org/courses-workshops/gams-in-r/ ) \n \n \nLearn how Generalised Additive Models (GAMs) use splines to capture complex, non-linear relationships between covariates and responses, going beyond traditional parametric approaches such as GLMs. Discover the flexibility of GAMs and how to apply them to real-world data using R.\n \nIf you are interested in taking your statistical modelling skills further, now is the time to secure your place!\n \nBest regards,\nCarlo\n \n--------------------\n\nCarlo Pecoraro, Ph.D\n\n\nPhysalia-courses DIRECTOR\n\ninfo at physalia-courses.org\n\nmobile: +49 17645230846\n\n[ Bluesky ]( https://bsky.app/profile/physaliacourses.bsky.social ) [ Linkedin ]( https://www.linkedin.com/in/physalia-courses-a64418127/ )\n\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Dear all,\nWe would like to inform you that our [ Generalised Additive Models in R ]( https://www.physalia-courses.org/courses-workshops/gams-in-r/ ) course is almost fully booked, with only a few seat",
+      "thread_id": "thread-6ff9a12dab6c",
+      "thread_depth": 0,
+      "month": "2026-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030899.html"
+    },
+    {
+      "id": "msg-b8a123d86ecc",
+      "message_id": "<CA+RFYHkdSB_chrVfBTiztKiHmVNKZ__3hQ3SjHAFSogDcepFAw@mail.gmail.com>",
+      "from_name": "João Veríssimo",
+      "from_email_hash": "ce054f73a91dc738bbc55c3bc337816f33299a9c06f6f44c584044f57878997d",
+      "date": "2026-10-24T13:12:17Z",
+      "subject": "[R-sig-ME]  Random-effects structure for a volleyball tactics model (crossed vs. nested)",
+      "subject_clean": "Random-effects structure for a volleyball tactics model (crossed vs. nested)",
+      "in_reply_to": "<CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>",
+      "references": [
+        "<CAOYO_yDDUwWEXrewYU8PhTNP=W=sZTimJvtKKUDBkZAwghMRyg@mail.gmail.com>"
+      ],
+      "body_plain": "Hi Jorge,\n\nCheck this:\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#nested-or-crossed\n\nPresumably you'd want crossed effects here, because otherwise you lose a\nrandom effect that captures the fact that PLAYER A within MATCH 1 is the\nsame player as PLAYER A within MATCH 2.\n(1 | MATCH/PLAYER) is the same as (1 | MATCH) + (1 | MATCH:PLAYER), so you\ncan see that you'd only get random intercepts for MATCHes and for the\nMATCH:PLAYER unique *combinations*.\n\n(note that this also depends on the way PLAYER is coded; if PLAYERs get\ndifferent codes on different matches, then crossed or nested would be\nidentical)\n\nJoão\n\nOn Sat, 24 Oct 2026 at 14:00, Jorge Teixeira <jorgemmtteixeira at gmail.com>\nwrote:\n\n> Hi\n>\n> I am analysing a volleyball dataset in which a tactic (secret 🤐), ordered\n> by the coach, is executed by one player.\n>\n> The outcome is binary (WIN / LOSS).\n>\n> Each observation (row of data) involves exactly one coach and one player,\n> and the data were collected across matches over three seasons.\n>\n> The fixed effects will be MATCH_STATUS, SET_STATUS, SEX and DIVISION.\n>\n> I am unsure about the random-effects structure. Which of these is more\n> appropriate?\n>\n>    1. Crossed effects: (1 | COACH) + (1 | PLAYER) + (1 | MATCH)\n>    2. Nested effects: (1 | MATCH/COACH) + (1 | MATCH/PLAYER)\n>\n> Thank you in advance for your help.\n>\n> Best\n>\n>         [[alternative HTML version deleted]]\n>\n> _______________________________________________\n> R-sig-mixed-models at r-project.org mailing list\n> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models\n>\n\n\t[[alternative HTML version deleted]]",
+      "body_snippet": "Hi Jorge,\n\nCheck this:\nhttps://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#nested-or-crossed\n\nPresumably you'd want crossed effects here, because otherwise you lose a\nrandom effect that captures t",
+      "thread_id": "thread-f581b9cdf895",
+      "thread_depth": 1,
+      "month": "2026-10",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030900.html"
     }
   ],
   "threads": [
@@ -32,6 +85,29 @@
       "started": "2026-10-12T14:53:00Z",
       "last_reply": "2026-10-12T14:53:00Z",
       "root_message_id": "msg-3a8f3764eda3"
+    },
+    {
+      "id": "thread-f581b9cdf895",
+      "subject": "Random-effects structure for a volleyball tactics model (crossed vs. nested)",
+      "message_count": 2,
+      "participants": [
+        "Jorge Teixeira",
+        "João Veríssimo"
+      ],
+      "started": "2026-10-24T13:00:30Z",
+      "last_reply": "2026-10-24T13:12:17Z",
+      "root_message_id": "msg-f581b9cdf895"
+    },
+    {
+      "id": "thread-6ff9a12dab6c",
+      "subject": "Online live course - Generalised Additive Models in R",
+      "message_count": 1,
+      "participants": [
+        "i@io m@iii@g oii phys@ii@-courses@org"
+      ],
+      "started": "2026-10-24T13:11:15Z",
+      "last_reply": "2026-10-24T13:11:15Z",
+      "root_message_id": "msg-6ff9a12dab6c"
     }
   ]
 }
