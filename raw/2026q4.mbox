@@ -936,3 +936,1412 @@ On Sat, 7 Nov 2026 at 02:26, Ben Bolker <bbolker at gmail.com> wrote:
 	[[alternative HTML version deleted]]
 
 
+From bbo|ker @end|ng |rom gm@||@com  Mon Nov  9 14:14:26 2026
+From: bbo|ker @end|ng |rom gm@||@com (Ben Bolker)
+Date: Mon, 9 Nov 2026 08:14:26 -0500
+Subject: [R-sig-ME] Query about sample size for GLMM
+In-Reply-To: <CAC7U3_ogk3mVLsUfxvuMwHW8YTPS+OkdgZtyW3=dxUhdj3T-Rw@mail.gmail.com>
+References: <CAC7U3_r7+qSXL0S2hMVC70MH3O=U17Kb3WJjFHzO9_08ewsCiA@mail.gmail.com>
+ <CAJuCY5xLPn5c1=fey_MuYBmnifxvursr80eSAbq88p1mvi=k-A@mail.gmail.com>
+ <CAC7U3_oy4EBMVRJZv6Etq+dPbJtFu3aq22e9odP+eb=LFYiz2g@mail.gmail.com>
+ <CABghstR-x9505Vbgwc7ve7jr2WjmvF0eZG6xcKzTVe3W_Az9yQ@mail.gmail.com>
+ <CAC7U3_ogk3mVLsUfxvuMwHW8YTPS+OkdgZtyW3=dxUhdj3T-Rw@mail.gmail.com>
+Message-ID: <1baf20e9-5a0d-4e4b-9afa-492668309752@gmail.com>
+
+
+
+On 11/8/26 23:51, Audrey Dsouza wrote:
+> Subject: Re: Minimum sample size for LMM/GLMM: my study details
+> 
+> Dear Dr. Ben Bolker,
+> 
+> Thank you very much for your helpful reply. As you suggested, here are 
+> the details of my study.
+> 
+> Design
+> - Three parallel intervention groups (A, B, C) with 15 participants 
+> each, so 45 participants (clusters) in total.
+> - Four assessment points per participant. Time is treated as a 
+> categorical factor.
+> - Missing data: 6 participants (3 in A, 1 in B, 2 in C) missed the fifth 
+> assessment, so they have 4 observations and the others have 5. Time 5 
+> has 12, 14 and 13 observations in the three groups.
+
+    Missing observations of this type (and lack of balance more 
+generally) are not a big problem in mixed models; this is one of their 
+advantages over ANOVA-type approaches.>
+> Outcome measures (each analyzed in its own model may be the right choice)
+> - Percentage
+> - Scores
+> - Ordinal scales
+> 
+> Planned model
+> - Fixed effects: Group, Time and Group x Time (15 fixed-effect 
+> parameters including the intercept). No other covariates.
+> - Participant as the clustering unit, with either a random intercept or 
+> a repeated-measures covariance structure (compound symmetry, AR(1) or 
+> unstructured), chosen by AIC/BIC.
+> - For the non-normal outcomes, I am considering a GLMM (beta or binomial 
+> for the bounded scores, a cumulative-link model for the ordinal scales).
+
+   binomial is generally preferable when you have responses with known 
+denominators (e.g. "k out of N" rather than a percentage out of a 
+continuous total amount), although you might need to consider 
+overdispersion (beta-binomial or observation-level random effects)
+
+> 
+> My questions
+> 1. With 45 clusters and 4 observations each, do you consider this 
+> analysis appropriately complex for the design?
+
+   Seems reasonable
+
+> 2. Is an unstructured covariance matrix (15 parameters) reasonable with 
+> 45 participants, or would you prefer a simpler structure?
+
+   The unstructured covariance is probably too complex.
+
+> 3. For the bounded and ordinal outcomes, would you recommend a GLMM, or 
+> a linear mixed model with a small-sample correction (Kenward-Roger)?
+> 4. Are there particular diagnostics you would want me to report to show 
+> that the small sample is not causing problems (for example a parametric 
+> bootstrap)?
+
+     Ordinal would technically be better, although the tools for ordinal 
+GLMMs are a bit scattered. The `ordinal` package is mature but there are 
+a few holes (but probably fine for your uses); ordinal support in 
+glmmTMB is new and slightly immature.
+
+   Kenward-Roger and similar corrections are solving a different problem 
+from ordinal vs Gaussian responses.
+
+   The main issue with the small cluster sizes is that you might want to 
+use Gauss-Hermite quadrature (available in lme4 for binomial responses, 
+and in `ordinal` for ordinal responses), and/or parametric bootstrapping 
+for confidence intervals.
+
+> 
+> I would be grateful for any advice.
+> 
+> With kind regards,
+> Audrey
+> 
+> On Sat, 7 Nov 2026 at 02:26, Ben Bolker <bbolker at gmail.com 
+> <mailto:bbolker at gmail.com>> wrote:
+> 
+>      ? There are no hard and fast rules, except the basic rules for
+>     identifiability (at least two observations per cluster, typically).
+>     Some integration methods will be unreliable for small *effective*
+>     sample sizes per cluster [e.g. Bernoulli outcomes with small numbers
+>     of observations per cluster]. There are also rules of thumb that
+>     suggest that you should have at least 5-10 clusters, or at least 40
+>     clusters, depending on whether you're talking to an ecologist or an
+>     economist :-) and what kind of inferential methods you're using.
+>      ? If you can be more specific about the numbers of clusters and
+>     numbers of observations per cluster (and what type of response
+>     distribution you are assuming, e.g. Bernoulli/Poisson/Gaussian, and
+>     how many/what types?of covariates you are including in your model),
+>     we might have opinions about whether your analysis is appropriately
+>     complex for your experimental design ...
+> 
+>      ? ?cheers
+>      ? ? Ben Bolker
+> 
+>     On Fri, Nov 6, 2026 at 11:14?AM Audrey Dsouza
+>     <audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>> wrote:
+> 
+>         Dear Onkelinx,
+> 
+>         Thank you for your response and for sharing the blog post. I
+>         will certainly
+>         go through it.
+> 
+>         The sample size for my study was estimated beforehand, prior to data
+>         collection. However, I would like to clarify one additional
+>         point: Are
+>         there any specific sample size requirements or minimum sample
+>         size criteria
+>         that should be considered before applying mixed-effects models? In
+>         particular, can mixed-effects models be reliably applied to
+>         relatively
+>         small sample sizes, or are there any limitations regarding the
+>         sample size?
+> 
+>         I would appreciate your insights on this.
+> 
+>         Thank you again for your time and guidance.
+> 
+>         Best regards,
+>         Audrey
+> 
+> 
+>         On Fri, 6 Nov 2026 at 9:02?PM, Thierry Onkelinx
+>         <thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>>
+>         wrote:
+> 
+>          > Dear Audrey,
+>          >
+>          > You should calculate the sample size before collecting the data.
+>          >
+>          > I wrote a blog post about random vs versus fixed effects:
+>          > https://www.muscardinus.be/statistics/levels.html <https://
+>         www.muscardinus.be/statistics/levels.html>
+>          >
+>          > Best regards,
+>          >
+>          >
+>          > ir. Thierry Onkelinx
+>          > Statisticus / Statistician
+>          >
+>          > Vlaamse Overheid / Government of Flanders
+>          > INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE
+>         FOR NATURE AND
+>          > FOREST
+>          > Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality
+>         Assurance
+>          > thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>
+>          > Havenlaan 88 <https://www.google.com/maps/search/
+>         Havenlaan+88?entry=gmail&source=g> bus 73, 1000 Brussel
+>          > <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>         +1000+Brussel?entry=gmail&source=g <https://www.google.com/maps/
+>         search/be+Havenlaan+88+bus+73,+1000+Brussel?entry=gmail&source=g>>
+>          > *Postadres:* Koning Albert II-laan 15 <https://
+>         www.google.com/maps/search/Koning+Albert+II-laan+15?
+>         entry=gmail&source=g> bus 186
+>          > <https://www.google.com/maps/search/Koning+Albert+II-
+>         laan+15+bus+186?entry=gmail&source=g <https://www.google.com/
+>         maps/search/Koning+Albert+II-laan+15+bus+186?entry=gmail&source=g>>
+>          > , 1210 Brussel
+>          > *Poststukken die naar dit adres worden gestuurd, worden
+>         ingescand en
+>          > digitaal aan de geadresseerde bezorgd. Zo kan de Vlaamse
+>         overheid haar
+>          > dossiers volledig digitaal be
+>          > <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>         +1000+Brussel?entry=gmail&source=g <https://www.google.com/maps/
+>         search/be+Havenlaan+88+bus+73,+1000+Brussel?
+>         entry=gmail&source=g>>handelen.
+>          > Poststukken met de vermelding ?vertrouwelijk? worden niet
+>         ingescand, maar
+>          > ongeopend aan de geadresseerde bezorgd.*
+>          > www.inbo.be <http://www.inbo.be>
+>          >
+>          >
+>          > ///////////////////////////////////////////////////////////////////////////////////////////
+>          > To call in the statistician after the experiment is done may
+>         be no more
+>          > than asking him to perform a post-mortem examination: he may
+>         be able to say
+>          > what the experiment died of. ~ Sir Ronald Aylmer Fisher
+>          > The plural of anecdote is not data. ~ Roger Brinner
+>          > The combination of some data and an aching desire for an
+>         answer does not
+>          > ensure that a reasonable answer can be extracted from a given
+>         body of data.
+>          > ~ John Tukey
+>          >
+>          > ///////////////////////////////////////////////////////////////////////////////////////////
+>          >
+>          > <https://www.inbo.be <https://www.inbo.be>>
+>          >
+>          >
+>          > Op vr 6 nov 2026 om 16:10 schreef Audrey Dsouza
+>         <audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>
+>          > >:
+>          >
+>          >> Hi team,
+>          >>
+>          >> I hope this email finds you well.
+>          >>
+>          >> I am Audrey, a PhD scholar from India. I am currently
+>         planning to use a
+>          >> Generalized Linear Mixed Model (GLMM) for our research and
+>         would like to
+>          >> seek your expert opinion regarding sample size requirements.
+>          >>
+>          >> Is there a recommended minimum sample size or any specific
+>         criteria that
+>          >> should be considered when deciding whether a dataset is
+>         adequate for
+>          >> fitting a GLMM? For instance, are there established
+>         guidelines regarding
+>          >> the minimum number of observations, groups/clusters, or
+>         observations
+>          >> within
+>          >> each group?
+>          >>
+>          >> Additionally, if there are any general recommendations or
+>         published
+>          >> references addressing sample size requirements for GLMMs, we
+>         would be
+>          >> grateful if you could kindly point us towards them.
+>          >>
+>          >> Thank you very much for your time and consideration. I look
+>         forward to
+>          >> hearing from you.
+>          >>
+>          >> Best regards,
+>          >> Audrey
+>          >>
+>          >>? ? ? ? ?[[alternative HTML version deleted]]
+>          >>
+>          >> _______________________________________________
+>          >> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-
+>         models at r-project.org> mailing list
+>          >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>         <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+>          >>
+>          >
+> 
+>          ? ? ? ? [[alternative HTML version deleted]]
+> 
+>         _______________________________________________
+>         R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-
+>         project.org> mailing list
+>         https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>         <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+> 
+
+-- 
+Dr. Benjamin Bolker
+Professor, Mathematics & Statistics and Biology, McMaster University
+Associate chair (graduate), Mathematics & Statistics
+Director, School of Computational Science and Engineering
+* E-mail is sent at my convenience; I don't expect replies outside of 
+working hours.
+
+
+From @udreyd@ouz@98 @end|ng |rom gm@||@com  Mon Nov  9 17:48:36 2026
+From: @udreyd@ouz@98 @end|ng |rom gm@||@com (Audrey Dsouza)
+Date: Mon, 9 Nov 2026 22:18:36 +0530
+Subject: [R-sig-ME] Query about sample size for GLMM
+In-Reply-To: <1baf20e9-5a0d-4e4b-9afa-492668309752@gmail.com>
+References: <CAC7U3_r7+qSXL0S2hMVC70MH3O=U17Kb3WJjFHzO9_08ewsCiA@mail.gmail.com>
+ <CAJuCY5xLPn5c1=fey_MuYBmnifxvursr80eSAbq88p1mvi=k-A@mail.gmail.com>
+ <CAC7U3_oy4EBMVRJZv6Etq+dPbJtFu3aq22e9odP+eb=LFYiz2g@mail.gmail.com>
+ <CABghstR-x9505Vbgwc7ve7jr2WjmvF0eZG6xcKzTVe3W_Az9yQ@mail.gmail.com>
+ <CAC7U3_ogk3mVLsUfxvuMwHW8YTPS+OkdgZtyW3=dxUhdj3T-Rw@mail.gmail.com>
+ <1baf20e9-5a0d-4e4b-9afa-492668309752@gmail.com>
+Message-ID: <CAC7U3_rZoxLnHmtA5qMqrP7B7BVML1_FWy0CYzf=uKo1OwKZ6Q@mail.gmail.com>
+
+Dear Dr. Bolker,
+
+Thank you for your helpful and quick reply. I would like to ask a few
+follow-up questions.
+
+Questions
+1. Since an unstructured covariance is probably too complex with 4 time
+points, would you prefer a random intercept (compound symmetry) or AR(1)?
+Would a random slope for time be unnecessary at this sample size?
+2. For the percentage and score outcomes: if I have the counts or a fixed
+number of items, would you use a binomial model with the known denominator
+(checking for overdispersion), or is a Gaussian linear mixed model
+acceptable when scores are far from the boundaries? For percentages with
+some values at 0 or 100, would you prefer binomial or beta?
+4. For the Gaussian outcomes, is REML with Kenward-Roger or Satterthwaite
+degrees of freedom sufficient at 45 clusters? For the GLMMs, you suggested
+Gauss-Hermite quadrature and a parametric bootstrap; would you report the
+bootstrap for every model, or only for the key tests?
+5. Could you point me to any articles or books that I could cite for the
+sample size (number of clusters) needed for linear and generalized linear
+mixed models, and for the small-sample issues you mentioned? I would like
+to cite published sources in my study to support the analysis plan.
+
+I appreciate any comments you can give on any of these.
+
+Kind regards,
+Audrey
+
+On Mon, 9 Nov 2026 at 18:44, Ben Bolker <bbolker at gmail.com> wrote:
+
+>
+>
+> On 11/8/26 23:51, Audrey Dsouza wrote:
+> > Subject: Re: Minimum sample size for LMM/GLMM: my study details
+> >
+> > Dear Dr. Ben Bolker,
+> >
+> > Thank you very much for your helpful reply. As you suggested, here are
+> > the details of my study.
+> >
+> > Design
+> > - Three parallel intervention groups (A, B, C) with 15 participants
+> > each, so 45 participants (clusters) in total.
+> > - Four assessment points per participant. Time is treated as a
+> > categorical factor.
+> > - Missing data: 6 participants (3 in A, 1 in B, 2 in C) missed the fifth
+> > assessment, so they have 4 observations and the others have 5. Time 5
+> > has 12, 14 and 13 observations in the three groups.
+>
+>     Missing observations of this type (and lack of balance more
+> generally) are not a big problem in mixed models; this is one of their
+> advantages over ANOVA-type approaches.>
+> > Outcome measures (each analyzed in its own model may be the right choice)
+> > - Percentage
+> > - Scores
+> > - Ordinal scales
+> >
+> > Planned model
+> > - Fixed effects: Group, Time and Group x Time (15 fixed-effect
+> > parameters including the intercept). No other covariates.
+> > - Participant as the clustering unit, with either a random intercept or
+> > a repeated-measures covariance structure (compound symmetry, AR(1) or
+> > unstructured), chosen by AIC/BIC.
+> > - For the non-normal outcomes, I am considering a GLMM (beta or binomial
+> > for the bounded scores, a cumulative-link model for the ordinal scales).
+>
+>    binomial is generally preferable when you have responses with known
+> denominators (e.g. "k out of N" rather than a percentage out of a
+> continuous total amount), although you might need to consider
+> overdispersion (beta-binomial or observation-level random effects)
+>
+> >
+> > My questions
+> > 1. With 45 clusters and 4 observations each, do you consider this
+> > analysis appropriately complex for the design?
+>
+>    Seems reasonable
+>
+> > 2. Is an unstructured covariance matrix (15 parameters) reasonable with
+> > 45 participants, or would you prefer a simpler structure?
+>
+>    The unstructured covariance is probably too complex.
+>
+> > 3. For the bounded and ordinal outcomes, would you recommend a GLMM, or
+> > a linear mixed model with a small-sample correction (Kenward-Roger)?
+> > 4. Are there particular diagnostics you would want me to report to show
+> > that the small sample is not causing problems (for example a parametric
+> > bootstrap)?
+>
+>      Ordinal would technically be better, although the tools for ordinal
+> GLMMs are a bit scattered. The `ordinal` package is mature but there are
+> a few holes (but probably fine for your uses); ordinal support in
+> glmmTMB is new and slightly immature.
+>
+>    Kenward-Roger and similar corrections are solving a different problem
+> from ordinal vs Gaussian responses.
+>
+>    The main issue with the small cluster sizes is that you might want to
+> use Gauss-Hermite quadrature (available in lme4 for binomial responses,
+> and in `ordinal` for ordinal responses), and/or parametric bootstrapping
+> for confidence intervals.
+>
+> >
+> > I would be grateful for any advice.
+> >
+> > With kind regards,
+> > Audrey
+> >
+> > On Sat, 7 Nov 2026 at 02:26, Ben Bolker <bbolker at gmail.com
+> > <mailto:bbolker at gmail.com>> wrote:
+> >
+> >        There are no hard and fast rules, except the basic rules for
+> >     identifiability (at least two observations per cluster, typically).
+> >     Some integration methods will be unreliable for small *effective*
+> >     sample sizes per cluster [e.g. Bernoulli outcomes with small numbers
+> >     of observations per cluster]. There are also rules of thumb that
+> >     suggest that you should have at least 5-10 clusters, or at least 40
+> >     clusters, depending on whether you're talking to an ecologist or an
+> >     economist :-) and what kind of inferential methods you're using.
+> >        If you can be more specific about the numbers of clusters and
+> >     numbers of observations per cluster (and what type of response
+> >     distribution you are assuming, e.g. Bernoulli/Poisson/Gaussian, and
+> >     how many/what types of covariates you are including in your model),
+> >     we might have opinions about whether your analysis is appropriately
+> >     complex for your experimental design ...
+> >
+> >         cheers
+> >          Ben Bolker
+> >
+> >     On Fri, Nov 6, 2026 at 11:14?AM Audrey Dsouza
+> >     <audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>> wrote:
+> >
+> >         Dear Onkelinx,
+> >
+> >         Thank you for your response and for sharing the blog post. I
+> >         will certainly
+> >         go through it.
+> >
+> >         The sample size for my study was estimated beforehand, prior to
+> data
+> >         collection. However, I would like to clarify one additional
+> >         point: Are
+> >         there any specific sample size requirements or minimum sample
+> >         size criteria
+> >         that should be considered before applying mixed-effects models?
+> In
+> >         particular, can mixed-effects models be reliably applied to
+> >         relatively
+> >         small sample sizes, or are there any limitations regarding the
+> >         sample size?
+> >
+> >         I would appreciate your insights on this.
+> >
+> >         Thank you again for your time and guidance.
+> >
+> >         Best regards,
+> >         Audrey
+> >
+> >
+> >         On Fri, 6 Nov 2026 at 9:02?PM, Thierry Onkelinx
+> >         <thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>>
+> >         wrote:
+> >
+> >          > Dear Audrey,
+> >          >
+> >          > You should calculate the sample size before collecting the
+> data.
+> >          >
+> >          > I wrote a bl
+> <https://www.google.com/maps/search/I+wrote+a+bl?entry=gmail&source=g>og
+> post about random vs versus fixed effects:
+> >          > https://www.muscardinus.be/statistics/levels.html <https://
+> >         www.muscardinus.be/statistics/levels.html>
+> >          >
+> >          > Best regards,
+> >          >
+> >          >
+> >          > ir. Thierry Onkelinx
+> >          > Statisticus / Statistician
+> >          >
+> >          > Vlaamse Overheid / Government of Flanders
+> >          > INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH INSTITUTE
+> >         FOR NATURE AND
+> >          > FOREST
+> >          > Team Biometrie & Kwaliteitszorg / Team Biometrics & Quality
+> >         Assurance
+> >          > thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>
+> >          > Havenlaan 88 <https://www.google.com/maps/search/
+> >         Havenlaan+88?entry=gmail&source=g> bus 73, 1000 Brussel
+> >          > <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+> >         +1000+Brussel?entry=gmail&source=g <https://www.google.com/maps/
+> >
+>  search/be+Havenlaan+88+bus+73,+1000+Brussel?entry=gmail&source=g>>
+> >          > *Postadres:* Koning Albert II-laan 15 <https://
+> >         www.google.com/maps/search/Koning+Albert+II-laan+15?
+> >         entry=gmail&source=g> bus 186
+> >          > <https://www.google.com/maps/search/Koning+Albert+II-
+> >         laan+15+bus+186?entry=gmail&source=g <https://www.google.com/
+> >
+>  maps/search/Koning+Albert+II-laan+15+bus+186?entry=gmail&source=g>>
+> >          > , 1210 Brussel
+> >          > *Poststukken die naar dit adres worden gestuurd, worden
+> >         ingescand en
+> >          > digitaal aan de geadresseerde bezorgd. Zo kan de Vlaamse
+> >         overheid haar
+> >          > dossiers volledig digitaal be
+> >          > <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+> >         +1000+Brussel?entry=gmail&source=g <https://www.google.com/maps/
+> >         search/be+Havenlaan+88+bus+73,+1000+Brussel?
+> >         entry=gmail&source=g>>handelen.
+> >          > Poststukken met de vermelding ?vertrouwelijk? worden niet
+> >         ingescand, maar
+> >          > ongeopend aan de geadresseerde bezorgd.*
+> >          > www.inbo.be <http://www.inbo.be>
+> >          >
+> >          >
+> >          >
+> ///////////////////////////////////////////////////////////////////////////////////////////
+> >          > To call in the statistician after the experiment is done may
+> >         be no more
+> >          > than asking him to perform a post-mortem examination: he may
+> >         be able to say
+> >          > what the experiment died of. ~ Sir Ronald Aylmer Fisher
+> >          > The plural of anecdote is not data. ~ Roger Brinner
+> >          > The combination of some data and an aching desire for an
+> >         answer does not
+> >          > ensure that a reasonable answer can be extracted from a given
+> >         body of data.
+> >          > ~ John Tukey
+> >          >
+> >          >
+> ///////////////////////////////////////////////////////////////////////////////////////////
+> >          >
+> >          > <https://www.inbo.be <https://www.inbo.be>>
+> >          >
+> >          >
+> >          > Op vr 6 nov 2026 om 16:10 schreef Audrey Dsouza
+> >         <audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>
+> >          > >:
+> >          >
+> >          >> Hi team,
+> >          >>
+> >          >> I hope this email finds you well.
+> >          >>
+> >          >> I am Audrey, a PhD scholar from India. I am currently
+> >         planning to use a
+> >          >> Generalized Linear Mixed Model (GLMM) for our research and
+> >         would like to
+> >          >> seek your expert opinion regarding sample size requirements.
+> >          >>
+> >          >> Is there a recommended minimum sample size or any specific
+> >         criteria that
+> >          >> should be considered when deciding whether a dataset is
+> >         adequate for
+> >          >> fitting a GLMM? For instance, are there established
+> >         guidelines regarding
+> >          >> the minimum number of observations, groups/clusters, or
+> >         observations
+> >          >> within
+> >          >> each group?
+> >          >>
+> >          >> Additionally, if there are any general recommendations or
+> >         published
+> >          >> references addressing sample size requirements for GLMMs, we
+> >         would be
+> >          >> grateful if you could kindly point us towards them.
+> >          >>
+> >          >> Thank you very much for your time and consideration. I look
+> >         forward to
+> >          >> hearing from you.
+> >          >>
+> >          >> Best regards,
+> >          >> Audrey
+> >          >>
+> >          >>         [[alternative HTML version deleted]]
+> >          >>
+> >          >> _______________________________________________
+> >          >> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-
+> >         models at r-project.org> mailing list
+> >          >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+> >         <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+> >          >>
+> >          >
+> >
+> >                  [[alternative HTML version deleted]]
+> >
+> >         _______________________________________________
+> >         R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-
+> >         project.org> mailing list
+> >         https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+> >         <https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+> >
+>
+> --
+> Dr. Benjamin Bolker
+> Professor, Mathematics & Statistics and Biology, McMaster University
+> Associate chair (graduate), Mathematics & Statistics
+> Director, School of Computational Science and Engineering
+> * E-mail is sent at my convenience; I don't expect replies outside of
+> working hours.
+>
+>
+
+	[[alternative HTML version deleted]]
+
+
+From bbo|ker @end|ng |rom gm@||@com  Mon Nov  9 19:00:43 2026
+From: bbo|ker @end|ng |rom gm@||@com (Ben Bolker)
+Date: Mon, 9 Nov 2026 13:00:43 -0500
+Subject: [R-sig-ME] Query about sample size for GLMM
+In-Reply-To: <CAC7U3_rZoxLnHmtA5qMqrP7B7BVML1_FWy0CYzf=uKo1OwKZ6Q@mail.gmail.com>
+References: <CAC7U3_r7+qSXL0S2hMVC70MH3O=U17Kb3WJjFHzO9_08ewsCiA@mail.gmail.com>
+ <CAJuCY5xLPn5c1=fey_MuYBmnifxvursr80eSAbq88p1mvi=k-A@mail.gmail.com>
+ <CAC7U3_oy4EBMVRJZv6Etq+dPbJtFu3aq22e9odP+eb=LFYiz2g@mail.gmail.com>
+ <CABghstR-x9505Vbgwc7ve7jr2WjmvF0eZG6xcKzTVe3W_Az9yQ@mail.gmail.com>
+ <CAC7U3_ogk3mVLsUfxvuMwHW8YTPS+OkdgZtyW3=dxUhdj3T-Rw@mail.gmail.com>
+ <1baf20e9-5a0d-4e4b-9afa-492668309752@gmail.com>
+ <CAC7U3_rZoxLnHmtA5qMqrP7B7BVML1_FWy0CYzf=uKo1OwKZ6Q@mail.gmail.com>
+Message-ID: <8dcd06f7-1b6b-4d48-9a92-524e3f9c0e62@gmail.com>
+
+
+On 2026-11-09 11:48, Audrey Dsouza wrote:
+> Dear Dr. Bolker,
+>
+> Thank you for your helpful and quick reply. I would like to ask a few 
+> follow-up questions.
+>
+> Questions
+> 1. Since an unstructured covariance is probably too complex with 4 
+> time points, would you prefer a random intercept (compound symmetry) 
+> or AR(1)? Would a random slope for time be unnecessary at this sample 
+> size?
+
+ ? ?I prefer to include random slopes wherever possible (see Forstmeier 
+and Schielzeth 2009). AR(1) is probably more suited to the example 
+(evenly spaced samples in time). You may still find that this model 
+results in a singular fit ...
+
+> 2. For the percentage and score outcomes: if I have the counts or a 
+> fixed number of items, would you use a binomial model with the known 
+> denominator (checking for overdispersion), or is a Gaussian linear 
+> mixed model acceptable when scores are far from the boundaries? For 
+> percentages with some values at 0 or 100, would you prefer binomial or 
+> beta?
+
+ ? ? In general I prefer binomial models, as they handle 'perfect' 
+(0%/100%) cases in a natural way. If you wanted to use beta you'd either 
+need a zero-one inflated model (ZOIB) or an ordered-beta 
+(`family=ordbeta` in glmmTMB, or the `ordbetareg` package if you're 
+willing to go Bayesian)
+
+> 4. For the Gaussian outcomes, is REML with Kenward-Roger or 
+> Satterthwaite degrees of freedom sufficient at 45 clusters?
+
+ ? Yes (Kenward-Roger is generally better for cases where it's 
+computationally feasible).
+
+> For the GLMMs, you suggested Gauss-Hermite quadrature and a parametric 
+> bootstrap; would you report the bootstrap for every model, or only for 
+> the key tests?
+
+ ? ? Not sure what this means. You should be able to derive the 
+confidence intervals for all the parameters with a single PB run ...
+
+> 5. Could you point me to any articles or books that I could cite for 
+> the sample size (number of clusters) needed for linear and generalized 
+> linear mixed models, and for the small-sample issues you mentioned? I 
+> would like to cite published sources in my study to support the 
+> analysis plan.
+ ? ? Check 
+https://stats.stackexchange.com/questions/37647/what-is-the-minimum-recommended-number-of-groups-for-a-random-effects-factor 
+and 
+https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#should-i-treat-factor-xxx-as-fixed-or-random 
+; there's not much published since it's hard to specify a hard-and-fast 
+limit, but you could probably cite Gelman and Hill or Crawley (both 
+mentioned in the GLMM FAQ, I think). Might also be mentioned in Bolker 
+et al 2009.
+>
+> I appreciate any comments you can give on any of these.
+>
+> Kind regards,
+> Audrey
+>
+> On Mon, 9 Nov 2026 at 18:44, Ben Bolker <bbolker at gmail.com> wrote:
+>
+>
+>
+>     On 11/8/26 23:51, Audrey Dsouza wrote:
+>     > Subject: Re: Minimum sample size for LMM/GLMM: my study details
+>     >
+>     > Dear Dr. Ben Bolker,
+>     >
+>     > Thank you very much for your helpful reply. As you suggested,
+>     here are
+>     > the details of my study.
+>     >
+>     > Design
+>     > - Three parallel intervention groups (A, B, C) with 15 participants
+>     > each, so 45 participants (clusters) in total.
+>     > - Four assessment points per participant. Time is treated as a
+>     > categorical factor.
+>     > - Missing data: 6 participants (3 in A, 1 in B, 2 in C) missed
+>     the fifth
+>     > assessment, so they have 4 observations and the others have 5.
+>     Time 5
+>     > has 12, 14 and 13 observations in the three groups.
+>
+>     ? ? Missing observations of this type (and lack of balance more
+>     generally) are not a big problem in mixed models; this is one of
+>     their
+>     advantages over ANOVA-type approaches.>
+>     > Outcome measures (each analyzed in its own model may be the
+>     right choice)
+>     > - Percentage
+>     > - Scores
+>     > - Ordinal scales
+>     >
+>     > Planned model
+>     > - Fixed effects: Group, Time and Group x Time (15 fixed-effect
+>     > parameters including the intercept). No other covariates.
+>     > - Participant as the clustering unit, with either a random
+>     intercept or
+>     > a repeated-measures covariance structure (compound symmetry,
+>     AR(1) or
+>     > unstructured), chosen by AIC/BIC.
+>     > - For the non-normal outcomes, I am considering a GLMM (beta or
+>     binomial
+>     > for the bounded scores, a cumulative-link model for the ordinal
+>     scales).
+>
+>     ? ?binomial is generally preferable when you have responses with
+>     known
+>     denominators (e.g. "k out of N" rather than a percentage out of a
+>     continuous total amount), although you might need to consider
+>     overdispersion (beta-binomial or observation-level random effects)
+>
+>     >
+>     > My questions
+>     > 1. With 45 clusters and 4 observations each, do you consider this
+>     > analysis appropriately complex for the design?
+>
+>     ? ?Seems reasonable
+>
+>     > 2. Is an unstructured covariance matrix (15 parameters)
+>     reasonable with
+>     > 45 participants, or would you prefer a simpler structure?
+>
+>     ? ?The unstructured covariance is probably too complex.
+>
+>     > 3. For the bounded and ordinal outcomes, would you recommend a
+>     GLMM, or
+>     > a linear mixed model with a small-sample correction (Kenward-Roger)?
+>     > 4. Are there particular diagnostics you would want me to report
+>     to show
+>     > that the small sample is not causing problems (for example a
+>     parametric
+>     > bootstrap)?
+>
+>     ? ? ?Ordinal would technically be better, although the tools for
+>     ordinal
+>     GLMMs are a bit scattered. The `ordinal` package is mature but
+>     there are
+>     a few holes (but probably fine for your uses); ordinal support in
+>     glmmTMB is new and slightly immature.
+>
+>     ? ?Kenward-Roger and similar corrections are solving a different
+>     problem
+>     from ordinal vs Gaussian responses.
+>
+>     ? ?The main issue with the small cluster sizes is that you might
+>     want to
+>     use Gauss-Hermite quadrature (available in lme4 for binomial
+>     responses,
+>     and in `ordinal` for ordinal responses), and/or parametric
+>     bootstrapping
+>     for confidence intervals.
+>
+>     >
+>     > I would be grateful for any advice.
+>     >
+>     > With kind regards,
+>     > Audrey
+>     >
+>     > On Sat, 7 Nov 2026 at 02:26, Ben Bolker <bbolker at gmail.com
+>     > <mailto:bbolker at gmail.com>> wrote:
+>     >
+>     >? ? ? ? There are no hard and fast rules, except the basic rules for
+>     >? ? ?identifiability (at least two observations per cluster,
+>     typically).
+>     >? ? ?Some integration methods will be unreliable for small
+>     *effective*
+>     >? ? ?sample sizes per cluster [e.g. Bernoulli outcomes with small
+>     numbers
+>     >? ? ?of observations per cluster]. There are also rules of thumb that
+>     >? ? ?suggest that you should have at least 5-10 clusters, or at
+>     least 40
+>     >? ? ?clusters, depending on whether you're talking to an
+>     ecologist or an
+>     >? ? ?economist :-) and what kind of inferential methods you're using.
+>     >? ? ? ? If you can be more specific about the numbers of clusters and
+>     >? ? ?numbers of observations per cluster (and what type of response
+>     >? ? ?distribution you are assuming, e.g.
+>     Bernoulli/Poisson/Gaussian, and
+>     >? ? ?how many/what types?of covariates you are including in your
+>     model),
+>     >? ? ?we might have opinions about whether your analysis is
+>     appropriately
+>     >? ? ?complex for your experimental design ...
+>     >
+>     >? ? ? ? ?cheers
+>     >? ? ? ? ? Ben Bolker
+>     >
+>     >? ? ?On Fri, Nov 6, 2026 at 11:14?AM Audrey Dsouza
+>     >? ? ?<audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>>
+>     wrote:
+>     >
+>     >? ? ? ? ?Dear Onkelinx,
+>     >
+>     >? ? ? ? ?Thank you for your response and for sharing the blog post. I
+>     >? ? ? ? ?will certainly
+>     >? ? ? ? ?go through it.
+>     >
+>     >? ? ? ? ?The sample size for my study was estimated beforehand,
+>     prior to data
+>     >? ? ? ? ?collection. However, I would like to clarify one additional
+>     >? ? ? ? ?point: Are
+>     >? ? ? ? ?there any specific sample size requirements or minimum
+>     sample
+>     >? ? ? ? ?size criteria
+>     >? ? ? ? ?that should be considered before applying mixed-effects
+>     models? In
+>     >? ? ? ? ?particular, can mixed-effects models be reliably applied to
+>     >? ? ? ? ?relatively
+>     >? ? ? ? ?small sample sizes, or are there any limitations
+>     regarding the
+>     >? ? ? ? ?sample size?
+>     >
+>     >? ? ? ? ?I would appreciate your insights on this.
+>     >
+>     >? ? ? ? ?Thank you again for your time and guidance.
+>     >
+>     >? ? ? ? ?Best regards,
+>     >? ? ? ? ?Audrey
+>     >
+>     >
+>     >? ? ? ? ?On Fri, 6 Nov 2026 at 9:02?PM, Thierry Onkelinx
+>     >? ? ? ? ?<thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>>
+>     >? ? ? ? ?wrote:
+>     >
+>     >? ? ? ? ? > Dear Audrey,
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > You should calculate the sample size before
+>     collecting the data.
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > I wrote a bl
+>     <https://www.google.com/maps/search/I+wrote+a+bl?entry=gmail&source=g>og
+>     post about random vs versus fixed effects:
+>     >? ? ? ? ? > https://www.muscardinus.be/statistics/levels.html
+>     <https://
+>     > www.muscardinus.be/statistics/levels.html
+>     <http://www.muscardinus.be/statistics/levels.html>>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Best regards,
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > ir. Thierry Onkelinx
+>     >? ? ? ? ? > Statisticus / Statistician
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Vlaamse Overheid / Government of Flanders
+>     >? ? ? ? ? > INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH
+>     INSTITUTE
+>     >? ? ? ? ?FOR NATURE AND
+>     >? ? ? ? ? > FOREST
+>     >? ? ? ? ? > Team Biometrie & Kwaliteitszorg / Team Biometrics &
+>     Quality
+>     >? ? ? ? ?Assurance
+>     >? ? ? ? ? > thierry.onkelinx at inbo.be
+>     <mailto:thierry.onkelinx at inbo.be>
+>     >? ? ? ? ? > Havenlaan 88 <https://www.google.com/maps/search/
+>     >? ? ? ? ?Havenlaan+88?entry=gmail&source=g> bus 73, 1000 Brussel
+>     >? ? ? ? ? >
+>     <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>     >? ? ? ? ?+1000+Brussel?entry=gmail&source=g
+>     <https://www.google.com/maps/
+>     > ?search/be+Havenlaan+88+bus+73,+1000+Brussel?entry=gmail&source=g>>
+>     >? ? ? ? ? > *Postadres:* Koning Albert II-laan 15 <https://
+>     > www.google.com/maps/search/Koning+Albert+II-laan+15
+>     <http://www.google.com/maps/search/Koning+Albert+II-laan+15>?
+>     >? ? ? ? ?entry=gmail&source=g> bus 186
+>     >? ? ? ? ? > <https://www.google.com/maps/search/Koning+Albert+II-
+>     >? ? ? ? ?laan+15+bus+186?entry=gmail&source=g
+>     <https://www.google.com/
+>     > ?maps/search/Koning+Albert+II-laan+15+bus+186?entry=gmail&source=g>>
+>     >? ? ? ? ? > , 1210 Brussel
+>     >? ? ? ? ? > *Poststukken die naar dit adres worden gestuurd, worden
+>     >? ? ? ? ?ingescand en
+>     >? ? ? ? ? > digitaal aan de geadresseerde bezorgd. Zo kan de Vlaamse
+>     >? ? ? ? ?overheid haar
+>     >? ? ? ? ? > dossiers volledig digitaal be
+>     >? ? ? ? ? >
+>     <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>     >? ? ? ? ?+1000+Brussel?entry=gmail&source=g
+>     <https://www.google.com/maps/
+>     >? ? ? ? ?search/be+Havenlaan+88+bus+73,+1000+Brussel?
+>     >? ? ? ? ?entry=gmail&source=g>>handelen.
+>     >? ? ? ? ? > Poststukken met de vermelding ?vertrouwelijk? worden niet
+>     >? ? ? ? ?ingescand, maar
+>     >? ? ? ? ? > ongeopend aan de geadresseerde bezorgd.*
+>     >? ? ? ? ? > www.inbo.be <http://www.inbo.be> <http://www.inbo.be>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     ///////////////////////////////////////////////////////////////////////////////////////////
+>     >? ? ? ? ? > To call in the statistician after the experiment is
+>     done may
+>     >? ? ? ? ?be no more
+>     >? ? ? ? ? > than asking him to perform a post-mortem examination:
+>     he may
+>     >? ? ? ? ?be able to say
+>     >? ? ? ? ? > what the experiment died of. ~ Sir Ronald Aylmer Fisher
+>     >? ? ? ? ? > The plural of anecdote is not data. ~ Roger Brinner
+>     >? ? ? ? ? > The combination of some data and an aching desire for an
+>     >? ? ? ? ?answer does not
+>     >? ? ? ? ? > ensure that a reasonable answer can be extracted from
+>     a given
+>     >? ? ? ? ?body of data.
+>     >? ? ? ? ? > ~ John Tukey
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     ///////////////////////////////////////////////////////////////////////////////////////////
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > <https://www.inbo.be <https://www.inbo.be>>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Op vr 6 nov 2026 om 16:10 schreef Audrey Dsouza
+>     >? ? ? ? ?<audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>
+>     >? ? ? ? ? > >:
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >> Hi team,
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> I hope this email finds you well.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> I am Audrey, a PhD scholar from India. I am currently
+>     >? ? ? ? ?planning to use a
+>     >? ? ? ? ? >> Generalized Linear Mixed Model (GLMM) for our
+>     research and
+>     >? ? ? ? ?would like to
+>     >? ? ? ? ? >> seek your expert opinion regarding sample size
+>     requirements.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Is there a recommended minimum sample size or any
+>     specific
+>     >? ? ? ? ?criteria that
+>     >? ? ? ? ? >> should be considered when deciding whether a dataset is
+>     >? ? ? ? ?adequate for
+>     >? ? ? ? ? >> fitting a GLMM? For instance, are there established
+>     >? ? ? ? ?guidelines regarding
+>     >? ? ? ? ? >> the minimum number of observations, groups/clusters, or
+>     >? ? ? ? ?observations
+>     >? ? ? ? ? >> within
+>     >? ? ? ? ? >> each group?
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Additionally, if there are any general
+>     recommendations or
+>     >? ? ? ? ?published
+>     >? ? ? ? ? >> references addressing sample size requirements for
+>     GLMMs, we
+>     >? ? ? ? ?would be
+>     >? ? ? ? ? >> grateful if you could kindly point us towards them.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Thank you very much for your time and consideration.
+>     I look
+>     >? ? ? ? ?forward to
+>     >? ? ? ? ? >> hearing from you.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Best regards,
+>     >? ? ? ? ? >> Audrey
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >>? ? ? ? ?[[alternative HTML version deleted]]
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> _______________________________________________
+>     >? ? ? ? ? >> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-
+>     > models at r-project.org> mailing list
+>     >? ? ? ? ? >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>     >? ? ? ? ?<https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >
+>     >
+>     >? ? ? ? ? ? ? ? ? [[alternative HTML version deleted]]
+>     >
+>     >? ? ? ? ?_______________________________________________
+>     > R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-
+>     > project.org <http://project.org>> mailing list
+>     > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>     >? ? ? ? ?<https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+>     >
+>
+>     -- 
+>     Dr. Benjamin Bolker
+>     Professor, Mathematics & Statistics and Biology, McMaster University
+>     Associate chair (graduate), Mathematics & Statistics
+>     Director, School of Computational Science and Engineering
+>     * E-mail is sent at my convenience; I don't expect replies outside of
+>     working hours.
+>
+	[[alternative HTML version deleted]]
+
+
+From chr|@ @end|ng |rom tr|cky@o|ut|on@@com@@u  Mon Nov  9 23:50:32 2026
+From: chr|@ @end|ng |rom tr|cky@o|ut|on@@com@@u (Chris Howden)
+Date: Mon, 9 Nov 2026 22:50:32 +0000
+Subject: [R-sig-ME] Query about sample size for GLMM
+In-Reply-To: <8dcd06f7-1b6b-4d48-9a92-524e3f9c0e62@gmail.com>
+References: <CAC7U3_r7+qSXL0S2hMVC70MH3O=U17Kb3WJjFHzO9_08ewsCiA@mail.gmail.com>
+ <CAJuCY5xLPn5c1=fey_MuYBmnifxvursr80eSAbq88p1mvi=k-A@mail.gmail.com>
+ <CAC7U3_oy4EBMVRJZv6Etq+dPbJtFu3aq22e9odP+eb=LFYiz2g@mail.gmail.com>
+ <CABghstR-x9505Vbgwc7ve7jr2WjmvF0eZG6xcKzTVe3W_Az9yQ@mail.gmail.com>
+ <CAC7U3_ogk3mVLsUfxvuMwHW8YTPS+OkdgZtyW3=dxUhdj3T-Rw@mail.gmail.com>
+ <1baf20e9-5a0d-4e4b-9afa-492668309752@gmail.com>
+ <CAC7U3_rZoxLnHmtA5qMqrP7B7BVML1_FWy0CYzf=uKo1OwKZ6Q@mail.gmail.com>
+ <8dcd06f7-1b6b-4d48-9a92-524e3f9c0e62@gmail.com>
+Message-ID: <SYBPR01MB7193D55AB8F443C73B16417498732@SYBPR01MB7193.ausprd01.prod.outlook.com>
+
+Hi Audrey,
+
+In practice I'm told there are situations where a random intercept model can have some observational units sampled just once (rules of thumb say 10-20% with one observation still gives a robust model). Don?t think it works for random slopes though! Be very careful with such models, in general I'd do a sensitivity analysis comparing a model including singletons against a model without.
+
+Interested to know what others think though?
+
+Chris Howden B.Sc. (Hons)
+Founding Partner
+Data Analysis, Modelling and Training
+Evidence Based Strategy/Policy Development, IP Commercialisation and Innovation
+(mobile) +61 (0) 410 689 945 | (skype) chris at trickysolutions.com.au
+
+-----Original Message-----
+From: R-sig-mixed-models <r-sig-mixed-models-bounces at r-project.org> On Behalf Of Ben Bolker
+Sent: Tuesday, 10 November 2026 5:01 AM
+To: Audrey Dsouza <audreydsouza98 at gmail.com>
+Cc: r-sig-mixed-models at r-project.org
+Subject: Re: [R-sig-ME] Query about sample size for GLMM
+
+
+On 2026-11-09 11:48, Audrey Dsouza wrote:
+> Dear Dr. Bolker,
+>
+> Thank you for your helpful and quick reply. I would like to ask a few 
+> follow-up questions.
+>
+> Questions
+> 1. Since an unstructured covariance is probably too complex with 4 
+> time points, would you prefer a random intercept (compound symmetry) 
+> or AR(1)? Would a random slope for time be unnecessary at this sample 
+> size?
+
+ ? ?I prefer to include random slopes wherever possible (see Forstmeier and Schielzeth 2009). AR(1) is probably more suited to the example (evenly spaced samples in time). You may still find that this model results in a singular fit ...
+
+> 2. For the percentage and score outcomes: if I have the counts or a 
+> fixed number of items, would you use a binomial model with the known 
+> denominator (checking for overdispersion), or is a Gaussian linear 
+> mixed model acceptable when scores are far from the boundaries? For 
+> percentages with some values at 0 or 100, would you prefer binomial or 
+> beta?
+
+ ? ? In general I prefer binomial models, as they handle 'perfect' 
+(0%/100%) cases in a natural way. If you wanted to use beta you'd either need a zero-one inflated model (ZOIB) or an ordered-beta (`family=ordbeta` in glmmTMB, or the `ordbetareg` package if you're willing to go Bayesian)
+
+> 4. For the Gaussian outcomes, is REML with Kenward-Roger or 
+> Satterthwaite degrees of freedom sufficient at 45 clusters?
+
+ ? Yes (Kenward-Roger is generally better for cases where it's computationally feasible).
+
+> For the GLMMs, you suggested Gauss-Hermite quadrature and a parametric 
+> bootstrap; would you report the bootstrap for every model, or only for 
+> the key tests?
+
+ ? ? Not sure what this means. You should be able to derive the confidence intervals for all the parameters with a single PB run ...
+
+> 5. Could you point me to any articles or books that I could cite for 
+> the sample size (number of clusters) needed for linear and generalized 
+> linear mixed models, and for the small-sample issues you mentioned? I 
+> would like to cite published sources in my study to support the 
+> analysis plan.
+ ? ? Check
+https://stats.stackexchange.com/questions/37647/what-is-the-minimum-recommended-number-of-groups-for-a-random-effects-factor
+and
+https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#should-i-treat-factor-xxx-as-fixed-or-random
+; there's not much published since it's hard to specify a hard-and-fast limit, but you could probably cite Gelman and Hill or Crawley (both mentioned in the GLMM FAQ, I think). Might also be mentioned in Bolker et al 2009.
+>
+> I appreciate any comments you can give on any of these.
+>
+> Kind regards,
+> Audrey
+>
+> On Mon, 9 Nov 2026 at 18:44, Ben Bolker <bbolker at gmail.com> wrote:
+>
+>
+>
+>     On 11/8/26 23:51, Audrey Dsouza wrote:
+>     > Subject: Re: Minimum sample size for LMM/GLMM: my study details
+>     >
+>     > Dear Dr. Ben Bolker,
+>     >
+>     > Thank you very much for your helpful reply. As you suggested,
+>     here are
+>     > the details of my study.
+>     >
+>     > Design
+>     > - Three parallel intervention groups (A, B, C) with 15 participants
+>     > each, so 45 participants (clusters) in total.
+>     > - Four assessment points per participant. Time is treated as a
+>     > categorical factor.
+>     > - Missing data: 6 participants (3 in A, 1 in B, 2 in C) missed
+>     the fifth
+>     > assessment, so they have 4 observations and the others have 5.
+>     Time 5
+>     > has 12, 14 and 13 observations in the three groups.
+>
+>     ? ? Missing observations of this type (and lack of balance more
+>     generally) are not a big problem in mixed models; this is one of
+>     their
+>     advantages over ANOVA-type approaches.>
+>     > Outcome measures (each analyzed in its own model may be the
+>     right choice)
+>     > - Percentage
+>     > - Scores
+>     > - Ordinal scales
+>     >
+>     > Planned model
+>     > - Fixed effects: Group, Time and Group x Time (15 fixed-effect
+>     > parameters including the intercept). No other covariates.
+>     > - Participant as the clustering unit, with either a random
+>     intercept or
+>     > a repeated-measures covariance structure (compound symmetry,
+>     AR(1) or
+>     > unstructured), chosen by AIC/BIC.
+>     > - For the non-normal outcomes, I am considering a GLMM (beta or
+>     binomial
+>     > for the bounded scores, a cumulative-link model for the ordinal
+>     scales).
+>
+>     ? ?binomial is generally preferable when you have responses with
+>     known
+>     denominators (e.g. "k out of N" rather than a percentage out of a
+>     continuous total amount), although you might need to consider
+>     overdispersion (beta-binomial or observation-level random effects)
+>
+>     >
+>     > My questions
+>     > 1. With 45 clusters and 4 observations each, do you consider this
+>     > analysis appropriately complex for the design?
+>
+>     ? ?Seems reasonable
+>
+>     > 2. Is an unstructured covariance matrix (15 parameters)
+>     reasonable with
+>     > 45 participants, or would you prefer a simpler structure?
+>
+>     ? ?The unstructured covariance is probably too complex.
+>
+>     > 3. For the bounded and ordinal outcomes, would you recommend a
+>     GLMM, or
+>     > a linear mixed model with a small-sample correction (Kenward-Roger)?
+>     > 4. Are there particular diagnostics you would want me to report
+>     to show
+>     > that the small sample is not causing problems (for example a
+>     parametric
+>     > bootstrap)?
+>
+>     ? ? ?Ordinal would technically be better, although the tools for
+>     ordinal
+>     GLMMs are a bit scattered. The `ordinal` package is mature but
+>     there are
+>     a few holes (but probably fine for your uses); ordinal support in
+>     glmmTMB is new and slightly immature.
+>
+>     ? ?Kenward-Roger and similar corrections are solving a different
+>     problem
+>     from ordinal vs Gaussian responses.
+>
+>     ? ?The main issue with the small cluster sizes is that you might
+>     want to
+>     use Gauss-Hermite quadrature (available in lme4 for binomial
+>     responses,
+>     and in `ordinal` for ordinal responses), and/or parametric
+>     bootstrapping
+>     for confidence intervals.
+>
+>     >
+>     > I would be grateful for any advice.
+>     >
+>     > With kind regards,
+>     > Audrey
+>     >
+>     > On Sat, 7 Nov 2026 at 02:26, Ben Bolker <bbolker at gmail.com
+>     > <mailto:bbolker at gmail.com>> wrote:
+>     >
+>     >? ? ? ? There are no hard and fast rules, except the basic rules for
+>     >? ? ?identifiability (at least two observations per cluster,
+>     typically).
+>     >? ? ?Some integration methods will be unreliable for small
+>     *effective*
+>     >? ? ?sample sizes per cluster [e.g. Bernoulli outcomes with small
+>     numbers
+>     >? ? ?of observations per cluster]. There are also rules of thumb that
+>     >? ? ?suggest that you should have at least 5-10 clusters, or at
+>     least 40
+>     >? ? ?clusters, depending on whether you're talking to an
+>     ecologist or an
+>     >? ? ?economist :-) and what kind of inferential methods you're using.
+>     >? ? ? ? If you can be more specific about the numbers of clusters and
+>     >? ? ?numbers of observations per cluster (and what type of response
+>     >? ? ?distribution you are assuming, e.g.
+>     Bernoulli/Poisson/Gaussian, and
+>     >? ? ?how many/what types?of covariates you are including in your
+>     model),
+>     >? ? ?we might have opinions about whether your analysis is
+>     appropriately
+>     >? ? ?complex for your experimental design ...
+>     >
+>     >? ? ? ? ?cheers
+>     >? ? ? ? ? Ben Bolker
+>     >
+>     >? ? ?On Fri, Nov 6, 2026 at 11:14?AM Audrey Dsouza
+>     >? ? ?<audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>>
+>     wrote:
+>     >
+>     >? ? ? ? ?Dear Onkelinx,
+>     >
+>     >? ? ? ? ?Thank you for your response and for sharing the blog post. I
+>     >? ? ? ? ?will certainly
+>     >? ? ? ? ?go through it.
+>     >
+>     >? ? ? ? ?The sample size for my study was estimated beforehand,
+>     prior to data
+>     >? ? ? ? ?collection. However, I would like to clarify one additional
+>     >? ? ? ? ?point: Are
+>     >? ? ? ? ?there any specific sample size requirements or minimum
+>     sample
+>     >? ? ? ? ?size criteria
+>     >? ? ? ? ?that should be considered before applying mixed-effects
+>     models? In
+>     >? ? ? ? ?particular, can mixed-effects models be reliably applied to
+>     >? ? ? ? ?relatively
+>     >? ? ? ? ?small sample sizes, or are there any limitations
+>     regarding the
+>     >? ? ? ? ?sample size?
+>     >
+>     >? ? ? ? ?I would appreciate your insights on this.
+>     >
+>     >? ? ? ? ?Thank you again for your time and guidance.
+>     >
+>     >? ? ? ? ?Best regards,
+>     >? ? ? ? ?Audrey
+>     >
+>     >
+>     >? ? ? ? ?On Fri, 6 Nov 2026 at 9:02?PM, Thierry Onkelinx
+>     >? ? ? ? ?<thierry.onkelinx at inbo.be <mailto:thierry.onkelinx at inbo.be>>
+>     >? ? ? ? ?wrote:
+>     >
+>     >? ? ? ? ? > Dear Audrey,
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > You should calculate the sample size before
+>     collecting the data.
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > I wrote a bl
+>     <https://www.google.com/maps/search/I+wrote+a+bl?entry=gmail&source=g>og
+>     post about random vs versus fixed effects:
+>     >? ? ? ? ? > https://www.muscardinus.be/statistics/levels.html
+>     <https://
+>     > www.muscardinus.be/statistics/levels.html
+>     <http://www.muscardinus.be/statistics/levels.html>>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Best regards,
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > ir. Thierry Onkelinx
+>     >? ? ? ? ? > Statisticus / Statistician
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Vlaamse Overheid / Government of Flanders
+>     >? ? ? ? ? > INSTITUUT VOOR NATUUR- EN BOSONDERZOEK / RESEARCH
+>     INSTITUTE
+>     >? ? ? ? ?FOR NATURE AND
+>     >? ? ? ? ? > FOREST
+>     >? ? ? ? ? > Team Biometrie & Kwaliteitszorg / Team Biometrics &
+>     Quality
+>     >? ? ? ? ?Assurance
+>     >? ? ? ? ? > thierry.onkelinx at inbo.be
+>     <mailto:thierry.onkelinx at inbo.be>
+>     >? ? ? ? ? > Havenlaan 88 <https://www.google.com/maps/search/
+>     >? ? ? ? ?Havenlaan+88?entry=gmail&source=g> bus 73, 1000 Brussel
+>     >? ? ? ? ? >
+>     <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>     >? ? ? ? ?+1000+Brussel?entry=gmail&source=g
+>     <https://www.google.com/maps/
+>     > ?search/be+Havenlaan+88+bus+73,+1000+Brussel?entry=gmail&source=g>>
+>     >? ? ? ? ? > *Postadres:* Koning Albert II-laan 15 <https://
+>     > www.google.com/maps/search/Koning+Albert+II-laan+15
+>     <http://www.google.com/maps/search/Koning+Albert+II-laan+15>?
+>     >? ? ? ? ?entry=gmail&source=g> bus 186
+>     >? ? ? ? ? > <https://www.google.com/maps/search/Koning+Albert+II-
+>     >? ? ? ? ?laan+15+bus+186?entry=gmail&source=g
+>     <https://www.google.com/
+>     > ?maps/search/Koning+Albert+II-laan+15+bus+186?entry=gmail&source=g>>
+>     >? ? ? ? ? > , 1210 Brussel
+>     >? ? ? ? ? > *Poststukken die naar dit adres worden gestuurd, worden
+>     >? ? ? ? ?ingescand en
+>     >? ? ? ? ? > digitaal aan de geadresseerde bezorgd. Zo kan de Vlaamse
+>     >? ? ? ? ?overheid haar
+>     >? ? ? ? ? > dossiers volledig digitaal be
+>     >? ? ? ? ? >
+>     <https://www.google.com/maps/search/be+Havenlaan+88+bus+73,
+>     >? ? ? ? ?+1000+Brussel?entry=gmail&source=g
+>     <https://www.google.com/maps/
+>     >? ? ? ? ?search/be+Havenlaan+88+bus+73,+1000+Brussel?
+>     >? ? ? ? ?entry=gmail&source=g>>handelen.
+>     >? ? ? ? ? > Poststukken met de vermelding ?vertrouwelijk? worden niet
+>     >? ? ? ? ?ingescand, maar
+>     >? ? ? ? ? > ongeopend aan de geadresseerde bezorgd.*
+>     >? ? ? ? ? > www.inbo.be <http://www.inbo.be> <http://www.inbo.be>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     ///////////////////////////////////////////////////////////////////////////////////////////
+>     >? ? ? ? ? > To call in the statistician after the experiment is
+>     done may
+>     >? ? ? ? ?be no more
+>     >? ? ? ? ? > than asking him to perform a post-mortem examination:
+>     he may
+>     >? ? ? ? ?be able to say
+>     >? ? ? ? ? > what the experiment died of. ~ Sir Ronald Aylmer Fisher
+>     >? ? ? ? ? > The plural of anecdote is not data. ~ Roger Brinner
+>     >? ? ? ? ? > The combination of some data and an aching desire for an
+>     >? ? ? ? ?answer does not
+>     >? ? ? ? ? > ensure that a reasonable answer can be extracted from
+>     a given
+>     >? ? ? ? ?body of data.
+>     >? ? ? ? ? > ~ John Tukey
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     ///////////////////////////////////////////////////////////////////////////////////////////
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > <https://www.inbo.be <https://www.inbo.be>>
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >
+>     >? ? ? ? ? > Op vr 6 nov 2026 om 16:10 schreef Audrey Dsouza
+>     >? ? ? ? ?<audreydsouza98 at gmail.com <mailto:audreydsouza98 at gmail.com>
+>     >? ? ? ? ? > >:
+>     >? ? ? ? ? >
+>     >? ? ? ? ? >> Hi team,
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> I hope this email finds you well.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> I am Audrey, a PhD scholar from India. I am currently
+>     >? ? ? ? ?planning to use a
+>     >? ? ? ? ? >> Generalized Linear Mixed Model (GLMM) for our
+>     research and
+>     >? ? ? ? ?would like to
+>     >? ? ? ? ? >> seek your expert opinion regarding sample size
+>     requirements.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Is there a recommended minimum sample size or any
+>     specific
+>     >? ? ? ? ?criteria that
+>     >? ? ? ? ? >> should be considered when deciding whether a dataset is
+>     >? ? ? ? ?adequate for
+>     >? ? ? ? ? >> fitting a GLMM? For instance, are there established
+>     >? ? ? ? ?guidelines regarding
+>     >? ? ? ? ? >> the minimum number of observations, groups/clusters, or
+>     >? ? ? ? ?observations
+>     >? ? ? ? ? >> within
+>     >? ? ? ? ? >> each group?
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Additionally, if there are any general
+>     recommendations or
+>     >? ? ? ? ?published
+>     >? ? ? ? ? >> references addressing sample size requirements for
+>     GLMMs, we
+>     >? ? ? ? ?would be
+>     >? ? ? ? ? >> grateful if you could kindly point us towards them.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Thank you very much for your time and consideration.
+>     I look
+>     >? ? ? ? ?forward to
+>     >? ? ? ? ? >> hearing from you.
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> Best regards,
+>     >? ? ? ? ? >> Audrey
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >>? ? ? ? ?[[alternative HTML version deleted]]
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >> _______________________________________________
+>     >? ? ? ? ? >> R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-
+>     > models at r-project.org> mailing list
+>     >? ? ? ? ? >> https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>     >? ? ? ? ?<https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+>     >? ? ? ? ? >>
+>     >? ? ? ? ? >
+>     >
+>     >? ? ? ? ? ? ? ? ? [[alternative HTML version deleted]]
+>     >
+>     >? ? ? ? ?_______________________________________________
+>     > R-sig-mixed-models at r-project.org <mailto:R-sig-mixed-models at r-
+>     > project.org <http://project.org>> mailing list
+>     > https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+>     >? ? ? ? ?<https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models>
+>     >
+>
+>     -- 
+>     Dr. Benjamin Bolker
+>     Professor, Mathematics & Statistics and Biology, McMaster University
+>     Associate chair (graduate), Mathematics & Statistics
+>     Director, School of Computational Science and Engineering
+>     * E-mail is sent at my convenience; I don't expect replies outside of
+>     working hours.
+>
+	[[alternative HTML version deleted]]
+
+_______________________________________________
+R-sig-mixed-models at r-project.org mailing list https://stat.ethz.ch/mailman/listinfo/r-sig-mixed-models
+
