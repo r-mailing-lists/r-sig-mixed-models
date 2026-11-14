@@ -226,6 +226,42 @@
       "thread_depth": 9,
       "month": "2026-11",
       "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030912.html"
+    },
+    {
+      "id": "msg-168a09a0b57b",
+      "message_id": "<CA+_DO+zhtLEKt06snPdp1+g2_nfq_AdoT=F2Y_fvo8um56KqdQ@mail.gmail.com>",
+      "from_name": "HATICE T KUBRA AKDUR",
+      "from_email_hash": "946460cefecc59eb5edf88c0bd2bab88aef880fc9f883a0423c15ff2105936b9",
+      "date": "2026-11-13T13:51:22Z",
+      "subject": "[R-sig-ME] Bell GLMM with glmmTMB: convergence after nlminb restart with near-perfect random-effect correlation",
+      "subject_clean": "Bell GLMM with glmmTMB: convergence after nlminb restart with near-perfect random-effect correlation",
+      "in_reply_to": null,
+      "references": [],
+      "body_plain": "Dear colleagues,\n\nFollowing Dr. Ben Bolker's suggestion, I am sharing a reproducible example\nof a convergence issue encountered when fitting a Bell GLMM using glmmTMB.\n\nA dataset was generated from a Poisson mixed-effects model with 65 clusters\nand 12 observations per cluster, including correlated random intercepts and\nslopes.\n\nThe initial Bell GLMM fit returned convergence code 1 and a\nnon-positive-definite Hessian. After restarting nlminb from the fitted\nparameter estimates, the convergence code changed to 0 and the Hessian\nbecame positive definite.\n\nThe fixed-effect estimates remained identical to the reported precision,\nand their standard errors changed only slightly. However, the estimated\nrandom-intercept–random-slope correlation remained approximately +1 in both\nfits.\n\nMy main question is whether fixed-effect Wald confidence intervals from the\nrestarted fit can be considered reliable under this near-boundary\ncovariance structure, and what additional diagnostics you would recommend.\n\nThe initial and restarted model summaries, together with the R code and\nconvergence diagnostics, are provided in the attachment r script.\n\nThank you for your advice.\n\nBest regards,\n\nHatice T. Kubra Akdur\n-- \nAssoc. Prof. Dr. Hatice T. Kubra AKDUR\nDepartment of Statistics, Faculty of Science, Gazi University\n06500 Teknikokullar ANKARA, TURKEY\nPhone: +90 553 324 5380\nEmail: hatice_senol at wsu.edu\nhttps://scholar.google.com/citations?user=_DLBsl4AAAAJ&hl=en",
+      "body_snippet": "Dear colleagues,\n\nFollowing Dr. Ben Bolker's suggestion, I am sharing a reproducible example\nof a convergence issue encountered when fitting a Bell GLMM using glmmTMB.\n\nA dataset was generated from a ",
+      "thread_id": "thread-168a09a0b57b",
+      "thread_depth": 0,
+      "month": "2026-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030913.html"
+    },
+    {
+      "id": "msg-faf516afe427",
+      "message_id": "<72c08755-a38b-4a17-9f55-ad4ac22bfe41@gmail.com>",
+      "from_name": "Ben Bolker",
+      "from_email_hash": "058f22460bce77c55c3340fec40d01e374409ed76ec5a897b62075a27eb9734c",
+      "date": "2026-11-13T14:50:57Z",
+      "subject": "[R-sig-ME]  Bell GLMM with glmmTMB: convergence after nlminb restart with near-perfect random-effect correlation",
+      "subject_clean": "Bell GLMM with glmmTMB: convergence after nlminb restart with near-perfect random-effect correlation",
+      "in_reply_to": "<CA+_DO+zhtLEKt06snPdp1+g2_nfq_AdoT=F2Y_fvo8um56KqdQ@mail.gmail.com>",
+      "references": [
+        "<CA+_DO+zhtLEKt06snPdp1+g2_nfq_AdoT=F2Y_fvo8um56KqdQ@mail.gmail.com>"
+      ],
+      "body_plain": "? ?(As usual) the answer is \"try something more expensive and accurate \n[profile confidence intervals, parametric bootstrap] and see if it the \nextra effort make a difference or not\".  The answer in this case is \n\"barely\".  Plotting the results (see attached), the differences are \nbarely noticeable.\n\n   cheers\n\n     Ben Bolker\n\n\ndd\n     method        parm      ? ?lwr?      upr\n1     wald (Intercept) -0.02299003 0.3802900\n2     wald        x1i1 -0.07677294 0.3831500\n3     wald      ?  x2i -0.38223649 0.2217166\n4  profile (Intercept) -0.02977880 0.3762083\n5  profile        x1i1 -0.08056528 0.3873322\n6  profile      ?  x2i -0.38828515 0.2186733\n7  uniroot (Intercept) -0.02977547 0.3761910\n8  uniroot        x1i1 -0.08033621 0.3873288\n9  uniroot      ?  x2i -0.38794736 0.2186518\n10    boot (Intercept) -0.03347494 0.3815095\n11    boot        x1i1 -0.08191243 0.3860964\n12    boot      ?  x2i -0.38061628 0.2250045\n\n\n\nOn 2026-11-13 08:51, HATICE T KUBRA AKDUR wrote:\n> Dear colleagues,\n>\n> Following Dr. Ben Bolker's suggestion, I am sharing a reproducible \n> example of a convergence issue encountered when fitting a Bell GLMM \n> using glmmTMB.\n>\n> A dataset was generated from a Poisson mixed-effects model with 65 \n> clusters and 12 observations per cluster, including correlated random \n> intercepts and slopes.\n>\n> The initial Bell GLMM fit returned convergence code 1 and a \n> non-positive-definite Hessian. After restarting nlminb from the fitted \n> parameter estimates, the convergence code changed to 0 and the Hessian \n> became positive definite.\n>\n> The fixed-effect estimates remained identical to the reported \n> precision, and their standard errors changed only slightly. However, \n> the estimated random-intercept–random-slope correlation remained \n> approximately +1 in both fits.\n>\n> My main question is whether fixed-effect Wald confidence intervals \n> from the restarted fit can be considered reliable under this \n> near-boundary covariance structure, and what additional diagnostics \n> you would recommend.\n>\n> The initial and restarted model summaries, together with the R code \n> and convergence diagnostics, are provided in the attachment r script.\n>\n> Thank you for your advice.\n>\n> Best regards,\n>\n> Hatice T. Kubra Akdur\n>\n> -- \n> Assoc. Prof. Dr. Hatice T. Kubra AKDUR\n> Department of Statistics, Faculty of Science, Gazi University\n> 06500 Teknikokullar ANKARA, TURKEY\n> Phone: +90 553 324 5380\n> Email: hatice_senol at wsu.edu\n> https://scholar.google.com/citations?user=_DLBsl4AAAAJ&hl=en \n> <https://scholar.google.com/citations?user=_DLBsl4AAAAJ&hl=en>\n-------------- next part --------------\nAn embedded and charset-unspecified text was scrubbed...\nName: poissonmm_fit_bellmm_diag..R\nURL: <https://stat.ethz.ch/pipermail/r-sig-mixed-models/attachments/20261113/809008ab/attachment-0001.ksh>",
+      "body_snippet": "? ?(As usual) the answer is \"try something more expensive and accurate \n[profile confidence intervals, parametric bootstrap] and see if it the \nextra effort make a difference or not\".  The answer in t",
+      "thread_id": "thread-168a09a0b57b",
+      "thread_depth": 1,
+      "month": "2026-11",
+      "source_url": "https://stat.ethz.ch/pipermail/r-sig-mixed-models/2026q4/030914.html"
     }
   ],
   "threads": [
@@ -242,6 +278,18 @@
       "started": "2026-11-06T15:09:04Z",
       "last_reply": "2026-11-11T10:13:53Z",
       "root_message_id": "msg-efd9749e9df4"
+    },
+    {
+      "id": "thread-168a09a0b57b",
+      "subject": "Bell GLMM with glmmTMB: convergence after nlminb restart with near-perfect random-effect correlation",
+      "message_count": 2,
+      "participants": [
+        "Ben Bolker",
+        "HATICE T KUBRA AKDUR"
+      ],
+      "started": "2026-11-13T13:51:22Z",
+      "last_reply": "2026-11-13T14:50:57Z",
+      "root_message_id": "msg-168a09a0b57b"
     }
   ]
 }
